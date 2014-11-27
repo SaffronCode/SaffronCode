@@ -23,10 +23,12 @@ package netManager
 		
 		private var imageURL:String ;
 		
+		private var onlineURL:String ;
+		
 		private var myWidth:Number,
 					myHeight:Number;
 					
-		private var loader:Loader;
+		public var loader:Loader;
 		
 		/**If this boolean is true , that means your image have to fit in the area box , but if not , your area box will fit in the ratio of image*/
 		private var loadIn:Boolean ;
@@ -36,6 +38,7 @@ package netManager
 		private var myPreLoader:DisplayObject ;
 		
 		private var preLoaderClass:Class ;
+		
 		
 		/**if you whant to resize image in each ratio , set your size on it*/
 		public function ImageLoader(MyWidth:Number=0,MyHeight:Number=0,loadInThisArea:Boolean = false , myPreLoaderClassItem:Class = null)
@@ -71,7 +74,7 @@ package netManager
 		
 		public function load(url:String)
 		{
-			imageURL = url ;
+			onlineURL = imageURL = url ;
 			stageTest();
 		}
 		
@@ -122,13 +125,13 @@ package netManager
 			}
 		}
 		
-		protected function imageLoadingStarted(event:URLSaverEvent):void
+		protected function imageLoadingStarted(ev:URLSaverEvent):void
 		{
 			// TODO Auto-generated method stub
-			trace('downloading : '+event.precent);
+			trace('downloading : '+ev.precent);
 			if(myPreLoader!=null && myPreLoader.hasOwnProperty('setUp'))
 			{
-				(myPreLoader['setUp'] as Function).apply(event.precent);
+				(myPreLoader['setUp'] as Function).apply(ev.precent);
 			}
 		}
 		
@@ -147,11 +150,11 @@ package netManager
 			}
 		}
 		
-		protected function imageURLChagedToLocal(event:URLSaverEvent):void
+		protected function imageURLChagedToLocal(ev:URLSaverEvent):void
 		{
 			myURLSaver.cansel();
 			// TODO Auto-generated method stub
-			imageURL = event.offlineTarget ;
+			imageURL = ev.offlineTarget ;
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE,imageLoaded);
 			loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR,urlProblem);
 			loader.load(new URLRequest(imageURL));
@@ -217,6 +220,12 @@ package netManager
 			
 			
 			this.dispatchEvent(new Event(IMAGE_LOADED));
+		}
+		
+		public function deleteImageIfItsCashed():void
+		{
+			// TODO Auto Generated method stub
+			myURLSaver.deletFileIfExists(onlineURL);
 		}
 	}
 }

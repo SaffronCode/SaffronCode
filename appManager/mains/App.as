@@ -112,6 +112,10 @@ package appManager.mains
 			{
 				trace("show homw page")
 				backToHomePage();
+				
+				//I forgot to write this line of code here ↓
+				changePage(event);
+				//It will close PageManger instantly
 			}
 			else
 			{

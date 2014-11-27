@@ -8,7 +8,7 @@ package appManager.animatedPages.pageManager
 	
 	public class PageManager extends MovieClip
 	{
-		public var currentEvent:AppEvent = new AppEvent();
+		public static var currentEvent:AppEvent = new AppEvent();
 		
 		public var toEvent:AppEvent = new AppEvent() ;
 		
