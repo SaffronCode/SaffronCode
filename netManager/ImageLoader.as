@@ -2,6 +2,7 @@ package netManager
 {
 	
 	import flash.display.Bitmap;
+	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.Loader;
 	import flash.display.MovieClip;
@@ -12,8 +13,8 @@ package netManager
 	import netManager.urlSaver.URLSaver;
 	import netManager.urlSaver.URLSaverEvent;
 	
-	[Event(name="IMAGE_LOADED", type="com.mteamapp.loader.urlSaver.URLSaverEvent")]
-	[Event(name="IMAGE_URL_NOT_FOUNDS", type="com.mteamapp.loader.urlSaver.URLSaverEvent")]
+	[Event(name="IMAGE_LOADED", type="flash.events.Event")]
+	[Event(name="IMAGE_URL_NOT_FOUNDS", type="flash.events.Event")]
 	
 	public class ImageLoader extends MovieClip
 	{
@@ -38,12 +39,15 @@ package netManager
 		private var myPreLoader:DisplayObject ;
 		
 		private var preLoaderClass:Class ;
+		private var resizeBitmapFlag:Boolean;
 		
 		
 		/**if you whant to resize image in each ratio , set your size on it*/
-		public function ImageLoader(MyWidth:Number=0,MyHeight:Number=0,loadInThisArea:Boolean = false , myPreLoaderClassItem:Class = null)
+		public function ImageLoader(MyWidth:Number=0,MyHeight:Number=0,loadInThisArea:Boolean = false , myPreLoaderClassItem:Class = null,resizeBitmap:Boolean=false)
 		{
 			super();
+			
+			resizeBitmapFlag = resizeBitmap ;
 			
 			preLoaderClass = myPreLoaderClassItem ;
 			
@@ -97,6 +101,7 @@ package netManager
 		{
 			trace("Cansel "+imageURL+" downloading");
 			// TODO Auto-generated method stub
+			this.removeChildren();
 			myURLSaver.cansel();
 			try
 			{
@@ -107,6 +112,7 @@ package netManager
 		private function loadImage():void
 		{
 			// TODO Auto Generated method stub
+			unLoad(null);
 			if(imageURL == "")
 			{
 				this.dispatchEvent(new Event(IMAGE_URL_NOT_FOUNDS));
@@ -177,46 +183,58 @@ package netManager
 		protected function imageLoaded(event:Event):void
 		{
 			// TODO Auto-generated method stub
-			var image:Bitmap = loader.content as Bitmap ;
-			image.smoothing = true ;
-			this.addChild(image);
-			
-			trace("myWidth : "+myWidth+" , myHeight : "+myHeight+" > "+imageURL);
-			
-			if(myWidth!=0)
+			var image:Bitmap ;
+			if(resizeBitmapFlag)
 			{
-				image.width = myWidth ;
-			}
-			if(myHeight !=0)
-			{
-				image.height = myHeight ;
-			}
-			
-			trace("image current hieght : "+image.height);
-			
-			if(loadIn)
-			{
-				image.scaleX = image.scaleY = Math.min(image.scaleX,image.scaleY);
+				var resizedPhoto:BitmapData = BitmapEffects.changeSize((loader.content as Bitmap).bitmapData,myWidth,myHeight,true) ;
+				image = new Bitmap(resizedPhoto);
+				image.smoothing = true ;
+				this.addChild(image) ;
 			}
 			else
 			{
-				trace("Wrong proccess");
-				image.scaleX = image.scaleY = Math.max(image.scaleX,image.scaleY);
+				/*trace("myWidth : "+myWidth+" , myHeight : "+myHeight+" > "+imageURL);*/
+				image = loader.content as Bitmap ;
+				
+				if(myWidth!=0)
+				{
+					image.width = myWidth ;
+				}
+				if(myHeight !=0)
+				{
+					image.height = myHeight ;
+				}
+				
+				//trace("image current hieght : "+image.height);
+				
+				if(loadIn)
+				{
+					image.scaleX = image.scaleY = Math.min(image.scaleX,image.scaleY);
+				}
+				else
+				{
+					image.scaleX = image.scaleY = Math.max(image.scaleX,image.scaleY);
+				}
+				
+				trace("image final hieght : "+image.height);
+				
+				if(myWidth==0)
+				{
+					myWidth = image.width ;
+				}
+				if(myHeight == 0)
+				{
+					myHeight = image.height ;
+				}
+				
+				
+				image.smoothing = true ;
+				this.addChild(image) ;
+				
+				image.x = (myWidth-image.width)/2 ;
+				image.y = (myHeight-image.height)/2 ;
+				
 			}
-			
-			trace("image final hieght : "+image.height);
-			
-			if(myWidth==0)
-			{
-				myWidth = image.width ;
-			}
-			if(myHeight == 0)
-			{
-				myHeight = image.height ;
-			}
-			
-			image.x = (myWidth-image.width)/2 ;
-			image.y = (myHeight-image.height)/2 ;
 			
 			
 			this.dispatchEvent(new Event(IMAGE_LOADED));

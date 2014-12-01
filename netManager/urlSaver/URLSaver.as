@@ -99,11 +99,13 @@ package netManager.urlSaver
 			if( offlineURL == null )
 			{
 				//downloadThisFile
+				DownloadManager.autoReload = false ;
+				
 				DownloadManager.contentLoaderInfo.addEventListener(DownloadManagerEvents.DOWNLOAD_COMPLETE,downloadCompletes);
 				DownloadManager.contentLoaderInfo.addEventListener(DownloadManagerEvents.DOWNLOAD_PROGRESS,downloading);
 				DownloadManager.contentLoaderInfo.addEventListener(DownloadManagerEvents.URL_IS_NOT_EXISTS,noFileExists);
 				DownloadManager.contentLoaderInfo.addEventListener(DownloadManagerEvents.NO_INTERNET_CONNECTION_AVAILABLE,noInternetConnection);
-				trace('listen to download manager : '+onlineURL);
+				//trace('listen to download manager : '+onlineURL);
 				DownloadManager.download(onlineURL);
 				
 				return false ;
@@ -201,8 +203,8 @@ package netManager.urlSaver
 				oflineFolder.createDirectory();
 			}
 			var nameCash:String = onlineURL.split('\\').join('/');
-			var offlineURLFileName:String = nameCash.substring(nameCash.lastIndexOf('/')+1);
-			offlineURLFileName = offlineURLFileName.split('?').join('');
+			var offlineURLFileName:String = nameCash.substring(nameCash.indexOf('/')+1);
+			offlineURLFileName = offlineURLFileName.split('?').join('').split('/').join();
 			trace("name : "+offlineURLFileName);
 			var oflineFile:File = oflineFolder.resolvePath(offlineURLFileName);
 			offlineURL = oflineFile.url; 
