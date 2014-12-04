@@ -25,6 +25,7 @@ package appManager.event
 		 * this variable is just on Content base applications*/
 		public var myID:String ;
 		
+		
 		public function AppEvent(pageType:String=home,eventType:String=PAGE_CHANGES,pageID:String=id_not_set)
 		{
 			myType = pageType ;

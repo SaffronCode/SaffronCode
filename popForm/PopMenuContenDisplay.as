@@ -111,7 +111,7 @@
 				myDisplay = content.displayObject ;
 				myDisplay.y = Y ;
 				this.addChild(myDisplay);
-				Y+=myDisplay.height ;
+				Y+=myDisplay.height+10 ;
 			}
 			
 			var deltaYForFiedl:Number = 0 ;
@@ -134,14 +134,15 @@
 						,content.fieldDatas.isPassWorld[i]
 						,content.fieldDatas.editable[i]
 						,content.fieldDatas.isArabic[i]
-						,content.fieldDatas.numLines[i]);
+						,content.fieldDatas.numLines[i]
+					);
 					this.addChild(newfield);
 					newfield.y = Y ;
 					Y+=newfield.height+10;
-					deltaYForFiedl = newfield.height*2 ;
+					deltaYForFiedl = 10;//newfield.height*2 ;
 					field.push(newfield) ;
 				}
-				Y -= newfield.height ;
+				//Y -= newfield.height ;
 			}
 			else
 			{
@@ -200,7 +201,10 @@
 			maxAreaMC.height -= 5 ;
 			var areaRect:Rectangle = new Rectangle(maxAreaMC.width/-2,0,maxAreaMC.width,butY) ;
 			
-			trace(maxAreaMC.height+' vs '+this.height+' vs '+butY);
+			this.graphics.beginFill(0,0);
+			this.graphics.drawRect(areaRect.width/-2,0,areaRect.width,areaRect.height);
+			
+			//trace(maxAreaMC.height+' vs '+this.height+' vs '+butY);
 			
 			scroll = new ScrollMT(this,scrollRect,areaRect);
 		}

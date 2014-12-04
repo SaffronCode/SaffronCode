@@ -1,8 +1,8 @@
 package appManager.event
 {
-	import contents.Contents;
 	import contents.LinkData;
 	import contents.PageData;
+	import contents.Contents;
 
 	/**This event is uses whenever application has contents*/
 	public class AppEventContent extends AppEvent
@@ -40,7 +40,7 @@ package appManager.event
 			//trace('find page data for : '+pageLink.id);
 			pageData = Contents.getPage(pageLink.id);
 			
-			trace("what is the id : "+pageLink.id);
+			//trace("what is the id : "+pageLink.id);
 			
 			//trace('finded pageData : '+pageData);
 			
@@ -80,8 +80,8 @@ package appManager.event
 		/**returns lastPageEvent*/
 		public static function lastPage():AppEventContent
 		{
-			/*trace("dispatch last page");
-			for(var i = 0 ; i<history.length ; i++)
+			//trace("dispatch last page");
+			/*for(var i = 0 ; i<history.length ; i++)
 			{
 				trace('history['+i+'] : '+history[i].id);
 			}*/

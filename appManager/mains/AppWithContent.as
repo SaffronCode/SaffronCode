@@ -1,9 +1,9 @@
 package appManager.mains
 {
-	import contents.Contents;
 	import contents.ContentsEvent;
 	
 	import flash.display.MovieClip;
+	import contents.Contents;
 	
 	public class AppWithContent extends App
 	{

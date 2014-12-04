@@ -1,6 +1,5 @@
 package contents.contentUpdate
 {
-	import contents.Contents;
 	import contents.PageData;
 	
 	import flash.events.Event;
@@ -10,6 +9,7 @@ package contents.contentUpdate
 	import flash.net.URLRequest;
 	
 	import netManager.urlSaver.URLSaver;
+	import contents.Contents;
 
 	public class ContentUpdateFromSameXML
 	{

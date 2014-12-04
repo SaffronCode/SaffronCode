@@ -1,12 +1,12 @@
 package contents.displayElements
 {
-	import contents.Contents;
 	
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
 	
 	import soundPlayer.SoundPlayer;
 	import soundPlayer.SoundPlayerEvent;
+	import contents.Contents;
 	
 	public class SoundButton extends MovieClip
 	{
