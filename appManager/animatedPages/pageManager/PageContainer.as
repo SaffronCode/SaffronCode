@@ -16,6 +16,7 @@ package appManager.animatedPages.pageManager
 		public function PageContainer()
 		{
 			super();
+			stop();
 		}
 		
 		public function setUp(myEvent:AppEvent=null)
