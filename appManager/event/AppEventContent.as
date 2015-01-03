@@ -1,10 +1,10 @@
 package appManager.event
 {
+	import contents.Contents;
 	import contents.LinkData;
 	import contents.PageData;
-	import contents.Contents;
 
-	/**This event is uses whenever application has contents*/
+	/**This event is using when application has contents*/
 	public class AppEventContent extends AppEvent
 	{
 		public static var currentLink:LinkData;
@@ -23,6 +23,12 @@ package appManager.event
 			linkData = currentLink = pageLink ;
 			
 			resetHistory();
+			
+			if(pageLink.id == home)
+			{
+				pageLink.level = 0 ;
+			}
+			
 			//trace('currentLink.level : '+currentLink.level+' - '+currentLink.id);
 			if(!skipHistory)
 			{
@@ -74,6 +80,21 @@ package appManager.event
 			else
 			{
 				return Contents.homeID;
+			}
+		}
+		
+		/**You can predect if back is availabe*/
+		public static function backAvailable():Boolean
+		{
+			//trace("history : "+JSON.stringify(history));
+			//This situation will not ocure on any pages but home
+			if(history!=null && ( history.length>1 /*|| (history.length>0 && history[0].id == home)*/))
+			{
+				return true ;
+			}
+			else
+			{
+				return false ;
 			}
 		}
 		

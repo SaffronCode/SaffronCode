@@ -4,9 +4,13 @@ package appManager.mains
 	import appManager.animatedPages.MainAnim;
 	import appManager.animatedPages.pageManager.PageManager;
 	import appManager.event.AppEvent;
+	import appManager.event.AppEventContent;
 	
+	import flash.desktop.NativeApplication;
 	import flash.display.MovieClip;
 	import flash.events.Event;
+	import flash.events.KeyboardEvent;
+	import flash.ui.Keyboard;
 	
 	import myAsCSS.MyAsCSS;
 	
@@ -47,7 +51,22 @@ package appManager.mains
 			
 			this.addEventListener(AppEvent.PAGE_CHANGES,managePages);
 			
+			NativeApplication.nativeApplication.addEventListener(KeyboardEvent.KEY_DOWN,controllBackButton);
 		}	
+		
+		/**Controll the back button on android*/
+		protected function controllBackButton(ev:KeyboardEvent):void
+		{
+			if(ev.keyCode == Keyboard.BACK || ev.keyCode == Keyboard.PAGE_UP)
+			{
+				//trace("back button selects : "+AppEventContent.backAvailable());
+				if(AppEventContent.backAvailable())
+				{
+					ev.preventDefault();
+					this.dispatchEvent(AppEventContent.lastPage());
+				}
+			}
+		}
 		
 /////////////////////////intro mangers ↓
 		

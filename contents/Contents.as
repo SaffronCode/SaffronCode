@@ -1,5 +1,7 @@
 package contents 
 {
+	import appManager.event.AppEvent;
+	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IOErrorEvent;
@@ -12,7 +14,7 @@ package contents
 	{
 		public static var eventDispatcher:ContentEventDispatcher = new ContentEventDispatcher();
 		
-		public static const homeID:String = "home" ;
+		public static var homeID:String = AppEvent.home ;
 		
 		public static const id_music:uint = 1,
 							id_soundEffects:uint=2;
@@ -138,6 +140,7 @@ package contents
 		{
 			var homeLink:LinkData = new LinkData();
 			homeLink.id = Contents.homeID ;
+			homeLink.level = 0 ;
 			return homeLink;
 		}
 		

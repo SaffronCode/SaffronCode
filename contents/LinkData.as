@@ -16,6 +16,8 @@
 		public function LinkData(linkXML:XML=null)
 		{
 			subLinks = new Vector.<LinkData>();
+			//I add -1 as defaulte level value here
+			level = -1 ;
 			
 			if(linkXML!=null)
 			{
@@ -63,6 +65,13 @@
 			//Add export for sublink here
 			
 			return xml ;
+		}
+		
+		/**Clone the link*/
+		public function clone():LinkData
+		{
+			var clonedLink:LinkData = new LinkData(this.export());
+			return clonedLink ;
 		}
 	}
 }

@@ -15,13 +15,13 @@ package contents.displayPages
 	/**You can trigger me by calling imSelected function*/
 	public class LinkItem extends MovieClip
 	{
-		private var myImage:ImageBox;
+		protected var myImage:ImageBox;
 		
-		private var myTitle:TitleText ;
+		protected var myTitle:TitleText ;
 		
-		private var myParag:TextParag ;
+		protected var myParag:TextParag ;
 		
-		protected var myLinkData:LinkData ;
+		public var myLinkData:LinkData ;
 		
 		public function LinkItem()
 		{
