@@ -1,4 +1,11 @@
-﻿package popForm
+﻿/**
+ * 
+				//☻s are removed Ys in current version
+ * 
+ * 
+ */
+
+package popForm
 {
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
@@ -99,7 +106,8 @@
 			var Y:Number ;
 			if(content.mainTXT=='')
 			{
-				Y = mainText.y+10 ;
+				//☻
+				Y = mainText.y;//+10 ;
 			}
 			else
 			{
@@ -117,7 +125,8 @@
 			var deltaYForFiedl:Number = 0 ;
 			
 			var deltaXForButtons:Number = 10,
-				deltaYForButtons:Number = 20;
+				//☻
+				deltaYForButtons:Number = 0;//20;
 			
 			//trace('content.haveField : '+content.haveField);
 			
@@ -146,10 +155,13 @@
 			}
 			else
 			{
-				deltaYForFiedl = 20 ;
+				//☻
+				deltaYForFiedl = 0;//20 ;
 			}
 			
 			var butY:Number = Y+deltaYForFiedl+deltaYForButtons ;
+			
+			trace("butY1 : "+butY+' : '+Y+'+'+deltaYForFiedl+'+'+deltaYForButtons);
 			
 			var but:PopButton;
 			
