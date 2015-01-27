@@ -10,6 +10,11 @@ package contents
 					imageTarget:String='',
 					content:String='';
 		
+		//New variables on content tag↓
+		public var contentX:Number=NaN,
+					contentY:Number=NaN,
+					contentW:Number=NaN;
+		
 		public var links1:Vector.<LinkData>,
 					links2:Vector.<LinkData>;
 					
@@ -56,6 +61,19 @@ package contents
 			title = inputXML.title ;
 			imageTarget = inputXML.image;
 			content = inputXML.content ;
+			
+			if(String(inputXML.content.@x)!='')
+			{
+				contentX = Number(inputXML.content.@x);
+			}
+			if(String(inputXML.content.@y)!='')
+			{
+				contentY = Number(inputXML.content.@y);
+			}
+			if(String(inputXML.content.@w)!='')
+			{
+				contentW = Number(inputXML.content.@w);
+			}
 			
 			var newLink:LinkData ;
 			var newImg:ImageData ;

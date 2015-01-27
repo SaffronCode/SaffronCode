@@ -13,13 +13,13 @@ package contents
 	{
 		public var 	targURL:String ;
 		
-		public var width:Number = 0 ;
+		public var width:Number = NaN ;
 		
-		public var height:Number = 0 ;
+		public var height:Number = NaN ;
 		
-		public var x:Number=0;
+		public var x:Number=NaN;
 		
-		public var y:Number = 0 ;
+		public var y:Number = NaN ;
 		
 		public var text:String = '';
 		
@@ -28,16 +28,28 @@ package contents
 		
 		private var loader:Loader;
 		
-		/*<img text="" targ="" width="" height="" x="" y=""/>*/
+		/*<img text="" targ="" w="" h="" x="" y=""/>*/
 		public function ImageData(imageXML:XML)
 		{
 			text = imageXML.@text ;
 			targURL = imageXML.@targ ;
 			
-			width = Number(imageXML.@width);
-			height = Number(imageXML.@height);
-			x = Number(imageXML.@x);
-			y = Number(imageXML.@y);
+			if(String(imageXML.@w)!='')
+			{
+				width = Number(imageXML.@w);
+			}
+			if(String(imageXML.@h)!='')
+			{
+				height = Number(imageXML.@h);
+			}
+			if(String(imageXML.@x)!='')
+			{
+				x = Number(imageXML.@x);
+			}
+			if(String(imageXML.@y)!='')
+			{
+				y = Number(imageXML.@y);
+			}
 			
 			swfContainer = new MovieClip();
 		}
@@ -48,8 +60,8 @@ package contents
 			xml.@text = text;
 			xml.@targ = targURL;
 			
-			xml.@width = width;
-			xml.@height = height;
+			xml.@w = width;
+			xml.@h = height;
 			xml.@x = x;
 			xml.@y = y;
 			
