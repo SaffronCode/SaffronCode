@@ -3,18 +3,23 @@ package netManager.urlSaver
 	
 	///import contents.fileSystem.SavedDatas;
 	
+	//import com.mteamapp.downloadManager.DownloadManager;
+	//import com.mteamapp.downloadManager.DownloadManagerEvents;
+	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import flash.events.IOErrorEvent;
+	import flash.events.ProgressEvent;
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
 	import flash.net.SharedObject;
+	import flash.net.URLLoader;
+	import flash.net.URLLoaderDataFormat;
+	import flash.net.URLRequest;
 	import flash.utils.ByteArray;
 	import flash.utils.getTimer;
 	
-	import netManager.downloadManager.DownloadManager;
-	import netManager.downloadManager.DownloadManagerEvents;
-
 	
 	[Event(name="LOADING", type="com.mteamapp.loader.urlSaver.URLSaverEvent")]
 	[Event(name="NO_INTERNET", type="com.mteamapp.loader.urlSaver.URLSaverEvent")]
@@ -23,7 +28,14 @@ package netManager.urlSaver
 	public class URLSaver extends EventDispatcher
 	{
 		private static var storage:SharedObject = SharedObject.getLocal('URLSaverSharedObject','/');
+		private static var datestorage:SharedObject = SharedObject.getLocal('URLSaverSharedObjectForDate','/') ;
 		
+		private static var acceptableDate:Number = 0 ;
+		
+		public static function activateDateControll(noOlder:Date)
+		{
+			acceptableDate = noOlder.time ;
+		}
 		
 		private static const offlineFolderName:String = "offlines";
 		
@@ -33,6 +45,8 @@ package netManager.urlSaver
 		private var myLoadedBytes:ByteArray ;
 		/**if this variable was false , load the image in byte array and pass it on event , else , just pass the ofline url*/
 		private var justOfflineURL:Boolean;
+		
+		private var urlLoader:URLLoader ;
 		
 					
 		/**you have to call load() function to start file loading proccess<br>
@@ -78,18 +92,35 @@ package netManager.urlSaver
 			{
 				//This file is loaded befor
 				//offlineURL = SavedDatas.load(onlineURL) ;
-				offlineURL = storage.data[onlineURL];
+				if(datestorage != null && (datestorage.data[onlineURL] == undefined || datestorage.data[onlineURL]<acceptableDate))
+				{
+					trace('let try to download this image : '+datestorage.data[onlineURL]+" vs "+acceptableDate);
+				}
+				else
+				{
+					trace('the data is so fresh : '+datestorage.data[onlineURL]+" vs "+acceptableDate);
+					offlineURL = storage.data[onlineURL];
+				}
 			}
 			
 			if( offlineURL == null )
 			{
 				//downloadThisFile
-				DownloadManager.contentLoaderInfo.addEventListener(DownloadManagerEvents.DOWNLOAD_COMPLETE,downloadCompletes);
-				DownloadManager.contentLoaderInfo.addEventListener(DownloadManagerEvents.DOWNLOAD_PROGRESS,downloading);
-				DownloadManager.contentLoaderInfo.addEventListener(DownloadManagerEvents.URL_IS_NOT_EXISTS,noFileExists);
-				DownloadManager.contentLoaderInfo.addEventListener(DownloadManagerEvents.NO_INTERNET_CONNECTION_AVAILABLE,noInternetConnection);
-				trace('listen to download manager : '+onlineURL);
-				DownloadManager.download(onlineURL);
+				//DownloadManager.autoReload = false ;
+				urlLoader = new URLLoader();
+				urlLoader.dataFormat = URLLoaderDataFormat.BINARY ;
+				
+					//DownloadManager.contentLoaderInfo.addEventListener(DownloadManagerEvents.DOWNLOAD_COMPLETE,downloadCompletes);
+				urlLoader.addEventListener(Event.COMPLETE,downloadCompletes);
+					//DownloadManager.contentLoaderInfo.addEventListener(DownloadManagerEvents.DOWNLOAD_PROGRESS,downloading);
+				urlLoader.addEventListener(ProgressEvent.PROGRESS,downloading);
+					//DownloadManager.contentLoaderInfo.addEventListener(DownloadManagerEvents.URL_IS_NOT_EXISTS,noFileExists);
+				//We don't have this Event type on urlLoaders
+					//DownloadManager.contentLoaderInfo.addEventListener(DownloadManagerEvents.NO_INTERNET_CONNECTION_AVAILABLE,noInternetConnection);
+				urlLoader.addEventListener(IOErrorEvent.IO_ERROR,noInternetConnection);
+				//trace('listen to download manager : '+onlineURL);
+					//DownloadManager.download(onlineURL);
+				urlLoader.load(new URLRequest(onlineURL));
 				
 				return false ;
 			}
@@ -111,60 +142,81 @@ package netManager.urlSaver
 		{
 			trace('Cansel donwload manager : '+onlineURL);
 			
-			DownloadManager.stopDwonload(onlineURL);
-			DownloadManager.contentLoaderInfo.removeEventListener(DownloadManagerEvents.DOWNLOAD_COMPLETE,downloadCompletes);
-			DownloadManager.contentLoaderInfo.removeEventListener(DownloadManagerEvents.DOWNLOAD_PROGRESS,downloading);
-			DownloadManager.contentLoaderInfo.removeEventListener(DownloadManagerEvents.URL_IS_NOT_EXISTS,noFileExists);
-			DownloadManager.contentLoaderInfo.removeEventListener(DownloadManagerEvents.NO_INTERNET_CONNECTION_AVAILABLE,noInternetConnection);
-		}
-		
-		
-		protected function noInternetConnection(event:DownloadManagerEvents):void
-		{
-			// TODO Auto-generated method stub
-			if(event.urlID == onlineURL)
+			if(urlLoader != null)
 			{
-				//This will dispatch this event just to tell parent to make desition on canseling download
-				trace("no internet deteted : "+onlineURL);
-				this.dispatchEvent(new URLSaverEvent(URLSaverEvent.NO_INTERNET));
+				try
+				{
+					urlLoader.close();
+				}catch(e){};
 			}
+			urlLoader = null ;
+			
+			//DownloadManager.stopDwonload(onlineURL);
+			//DownloadManager.contentLoaderInfo.removeEventListener(DownloadManagerEvents.DOWNLOAD_COMPLETE,downloadCompletes);
+			//DownloadManager.contentLoaderInfo.removeEventListener(DownloadManagerEvents.DOWNLOAD_PROGRESS,downloading);
+			//DownloadManager.contentLoaderInfo.removeEventListener(DownloadManagerEvents.URL_IS_NOT_EXISTS,noFileExists);
+			//DownloadManager.contentLoaderInfo.removeEventListener(DownloadManagerEvents.NO_INTERNET_CONNECTION_AVAILABLE,noInternetConnection);
 		}
 		
-		protected function downloadCompletes(event:DownloadManagerEvents):void
+		
+		protected function noInternetConnection(ev:IOErrorEvent/*DownloadManagerEvents*/):void
 		{
 			// TODO Auto-generated method stub
-			if(event.urlID == onlineURL)
+			/*if(ev.urlID == onlineURL)
+			{*/
+				//This will dispatch this event just to tell parent to make desition on canseling download
+			trace("no internet deteted : "+onlineURL);
+			if(datestorage != null)
 			{
-				cansel();
+				offlineURL = storage.data[onlineURL];
+				if( offlineURL != null )
+				{
+					loadOflineFile();
+					return ;
+				}
+			}
+			this.dispatchEvent(new URLSaverEvent(URLSaverEvent.NO_INTERNET));
+			/*}*/
+		}
+		
+		protected function downloadCompletes(ev:Event/*DownloadManagerEvents*/):void
+		{
+			// TODO Auto-generated method stub
+			/*if(ev.urlID == onlineURL)
+			{*/
 				
-				myLoadedBytes = new ByteArray();
-				myLoadedBytes.writeBytes(event.loadedFile,0,event.loadedFile.bytesAvailable);
+				//myLoadedBytes = new ByteArray();
+				//myLoadedBytes.writeBytes(ev.loadedFile,0,ev.loadedFile.bytesAvailable);
+				//trace("urlLoader.data : "+urlLoader.data);
+				myLoadedBytes = urlLoader.data;
 				myLoadedBytes.position = 0 ;
 				
 				saveLoadedBytes();
-				DownloadManager.forget(onlineURL);
+				//DownloadManager.forgetWithDilay(onlineURL);
 				loadOflineFile();
-			}
+				
+				cansel();
+			/*}*/
 		}
 		
-		protected function downloading(event:DownloadManagerEvents):void
+		protected function downloading(ev:ProgressEvent/*DownloadManagerEvents*/):void
 		{
 			// TODO Auto-generated method stub
-			if(event.urlID == onlineURL)
-			{
-				this.dispatchEvent(new URLSaverEvent(URLSaverEvent.LOADING,event.precent));
-			}
+			/*if(ev.urlID == onlineURL)
+			{*/
+				this.dispatchEvent(new URLSaverEvent(URLSaverEvent.LOADING,urlLoader.bytesLoaded/urlLoader.bytesTotal/*ev.precent*/));
+			/*}*/
 		}
 		
-		protected function noFileExists(event:DownloadManagerEvents):void
+		/*protected function noFileExists(ev:DownloadManagerEvents):void
 		{
 			// TODO Auto-generated method stub
-			if(event.urlID == onlineURL)
+			if(ev.urlID == onlineURL)
 			{
 				cansel();
 				this.dispatchEvent(new URLSaverEvent(URLSaverEvent.NO_INTERNET));
 			}
-		}
+		}*/
 		
 	//////////////////////////////////Network process are completed now ↓
 		
@@ -177,15 +229,24 @@ package netManager.urlSaver
 				oflineFolder.createDirectory();
 			}
 			var nameCash:String = onlineURL.split('\\').join('/');
-			var offlineURLFileName:String = nameCash.substring(nameCash.lastIndexOf('/')+1);
-			offlineURLFileName = offlineURLFileName.split('?').join('');
+			var offlineURLFileName:String = nameCash.substring(nameCash.indexOf('/')+1);
+			offlineURLFileName = offlineURLFileName.split('?').join('').split('/').join();
 			trace("name : "+offlineURLFileName);
 			var oflineFile:File = oflineFolder.resolvePath(offlineURLFileName);
 			offlineURL = oflineFile.url; 
 			
 			if(oflineFile.exists)
 			{
-				oflineFile.deleteFile();
+				try
+				{
+					oflineFile.deleteFile();
+				}
+				catch(e)
+				{
+					storage.data[onlineURL] = offlineURL ;
+					return ;
+					trace('i cannot delete this file');
+				}
 			}
 			
 			//Now save loaded file on hard
@@ -195,7 +256,11 @@ package netManager.urlSaver
 			fileSaver.writeBytes(myLoadedBytes,0,myLoadedBytes.bytesAvailable);
 			
 			//SavedDatas.save(onlineURL,offlineURL);
+			//trace('offile file saved on : '+onlineURL);
 			storage.data[onlineURL] = offlineURL ;
+			datestorage.data[onlineURL] = new Date().time ;
+			//trace("datestorage.data[onlineURL] : " +datestorage.data[onlineURL]);
+			datestorage.flush();
 			storage.flush();
 		}
 		
@@ -255,6 +320,7 @@ package netManager.urlSaver
 			var localFileURL:String = storage.data[fileURL] ;
 			if(localFileURL == null)
 			{
+				trace("i can not find your image");
 				return false ;
 			}
 			else
@@ -263,11 +329,17 @@ package netManager.urlSaver
 				if(fileChecker.exists)
 				{
 					trace("this file is deleted : "+fileChecker.url);
-					fileChecker.deleteFile();
+					try
+					{
+						fileChecker.deleteFile();
+					}catch(e){};
 				}
 				trace("this file is not deleted : "+fileChecker.url);
 				
 				storage.data[fileURL] = undefined ;
+				datestorage.data[fileURL] = undefined ;
+				datestorage.flush();
+				storage.flush();
 				
 				ScrollMT
 				
