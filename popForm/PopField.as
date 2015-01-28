@@ -66,7 +66,7 @@
 			//FarsiInputText.steKeyBord(myTXT,false);
 			if(editable)
 			{
-				FarsiInputCorrection.setUp(myTXT,KeyBordType,isAraic);
+				FarsiInputCorrection.setUp(myTXT,KeyBordType);
 			}
 			else
 			{
@@ -74,7 +74,7 @@
 				backMC.visible = false;
 				if(isAraic)
 				{
-					myTXT.text = UnicodeStatic.convert(defaultText);
+					UnicodeStatic.fastUnicodeOnLines(myTXT,defaultText);
 				}
 				else
 				{

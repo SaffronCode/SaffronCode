@@ -161,7 +161,7 @@ package popForm
 			
 			var butY:Number = Y+deltaYForFiedl+deltaYForButtons ;
 			
-			trace("butY1 : "+butY+' : '+Y+'+'+deltaYForFiedl+'+'+deltaYForButtons);
+			//trace("butY1 : "+butY+' : '+Y+'+'+deltaYForFiedl+'+'+deltaYForButtons);
 			
 			var but:PopButton;
 			
@@ -173,16 +173,21 @@ package popForm
 					continue ;
 				}
 				
-				
-				but = new PopButton(content.buttonList[i]/*,color*/,i,content.buttonsInterface[i]);
+				//I am passing complete buttonData with current function to let it controll all state for it self
+				but = new PopButton(content.buttonList[i]/*,color*/,i,content.buttonsInterface[i],content.buttonList[i]);
 				
 				Obj.setButton(but,buttonSelected);
 				
 				buttonList.push(but);
 				this.addChild(but);
-				but.y = butY ;
+				but.y = butY+but.height/2 ;
 				
 				butY += but.height+10 ;
+			}
+			if(content.buttonList.length!=0)
+			{
+				//Added to prevet page from stop scroll if there are buttons
+				butY+=20;
 			}
 			/*for(i = 0 ; i<content.bigButtonList.length ; i++)
 			{

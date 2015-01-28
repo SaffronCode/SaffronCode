@@ -93,7 +93,7 @@
 			var mainBackMC:MovieClip ;
 			
 			var backGroundchilds:Array = Obj.getAllChilds('main_back_mc',this);
-			trace("backGroundchilds : "+backGroundchilds);
+			//trace("backGroundchilds : "+backGroundchilds);
 			if(backGroundchilds.length > 0)
 			{
 				mainBackMC = backGroundchilds[0] ;
@@ -138,7 +138,7 @@
 		protected function backClicked(event:MouseEvent):Boolean
 		{
 			// TODO Auto-generated method stub
-			trace("show : "+show);
+			//trace("show : "+show);
 			if(show)
 			{
 				trace("Back ground clicked");

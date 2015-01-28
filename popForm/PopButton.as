@@ -23,16 +23,26 @@
 		
 		private var backMC:MovieClip ;
 		
-		public var ID:uint ;
+		/**it can be an uint or string*/
+		public var ID:* ;
 		
 		public var title:String ;
 		
 		private var me:PopButton ;
 		
-		/**You can change the button type with entering its frame index*/
-		public function PopButton(str:String=''/*,colorTrans:ColorTransform=null*/,buttonID:uint=0,type:uint = 1 )
+		/**You can change the button type with entering its frame index.<br>
+		 * You can set full button data with ability to change selectable or button id by using PopButtonData object on completeButtonObject*/
+		public function PopButton(str:String=''/*,colorTrans:ColorTransform=null*/,buttonID:*=0,type:uint = 1,completeButtonObject:* = null )
 		{
 			super();
+			
+			if(completeButtonObject != null && completeButtonObject is PopButtonData)
+			{
+				type = completeButtonObject.buttonFrame ;
+				buttonID = completeButtonObject.id ;
+				str = completeButtonObject.title ;
+				this.mouseChildren = this.mouseEnabled = completeButtonObject.selectable;
+			}
 			
 			this.gotoAndStop(type);
 			
@@ -63,6 +73,8 @@
 			
 			setUp(str/*,colorTrans*/,buttonID);
 		}
+		
+		
 		
 		/**add titles that will triggerring the back button*/
 		public static function addBackTitleTrigger(backTitle:String)
@@ -111,8 +123,8 @@
 			}
 		}
 		
-		
-		public function setUp(str:String/*,colorTrans:ColorTransform=null*/,buttonID:uint=0)
+		/**From now , buttonID can be both string or uint*/
+		public function setUp(str:String/*,colorTrans:ColorTransform=null*/,buttonID:*=0)
 		{
 			
 			ID = buttonID ;
