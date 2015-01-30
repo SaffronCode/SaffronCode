@@ -1,13 +1,16 @@
+/***Version
+ * 1.1 : Instant data.xml laoded
+ * 
+ */
 package contents 
 {
 	import appManager.event.AppEvent;
 	
 	import flash.events.Event;
-	import flash.events.EventDispatcher;
-	import flash.events.IOErrorEvent;
+	import flash.filesystem.File;
+	import flash.filesystem.FileMode;
+	import flash.filesystem.FileStream;
 	import flash.net.URLLoader;
-	import flash.net.URLLoaderDataFormat;
-	import flash.net.URLRequest;
 
 	
 	public class Contents
@@ -48,22 +51,40 @@ package contents
 			}
 		}
 		
-		
-		public static function setUp(OnLoaded:Function)
+		/**From this version, content.xml will load instantly and there is no need to wail till onLoaded function calls.*/
+		public static function setUp(OnLoaded:Function=null)
 		{
 			onLoaded = OnLoaded ;
+			if(OnLoaded==null)
+			{
+				onLoaded = new Function();
+			}
+			var fileLoader:FileStream = new FileStream();
+			var fileTarger:File = File.applicationDirectory.resolvePath(dataFile);
+			fileLoader.open(fileTarger,FileMode.READ);
 			
-			loader = new URLLoader();
+			xmlLoaded(null,fileLoader.readUTFBytes(fileLoader.bytesAvailable));
+			
+			
+			
+			/*loader = new URLLoader();
 			loader.dataFormat = URLLoaderDataFormat.TEXT ;
 			loader.addEventListener(Event.COMPLETE,xmlLoaded);
-			loader.load(new URLRequest(dataFile));
+			loader.load(new URLRequest(dataFile));*/
 			
 		}
 		
 		/**xml file loaded*/
-		private static function xmlLoaded(e:Event)
+		private static function xmlLoaded(e:Event,myInstantData:String='')
 		{
-			loadedXML = XML(loader.data);
+			if(myInstantData!='')
+			{
+				loadedXML = XML(myInstantData);
+			}
+			else
+			{	
+				loadedXML = XML(loader.data);
+			}
 			
 			pages = new Vector.<PageData>();
 			

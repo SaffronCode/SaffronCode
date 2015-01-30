@@ -3,6 +3,7 @@ package contents.displayElements
 {
 	import appManager.event.AppEventContent;
 	
+	import contents.Contents;
 	import contents.LinkData;
 	
 	import flash.display.MovieClip;
@@ -35,7 +36,15 @@ package contents.displayElements
 				var link:LinkData = new LinkData();
 				//level was 0 , but it sas cause of problem on back event dispatching , there is no page at level of 0 , page
 				//on level zero is main menu
-				link.level = 1 ;
+				//Controll if this is a Home button, make link level to 0.
+				if(this.name == Contents.homeID)
+				{
+					link.level = 0 ;
+				}
+				else
+				{
+					link.level = 1 ;
+				}
 				link.id = this.name ;
 					
 				ev = new AppEventContent(link,false);
