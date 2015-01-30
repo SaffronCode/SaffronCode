@@ -11,9 +11,8 @@ package appManager.mains
 		{
 			super();
 			
-			Contents.setUp(startApp);
-			
 			stopIntro();
+			Contents.setUp(startApp);
 		}
 		
 		/**Contents are load now*/
