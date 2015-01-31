@@ -6,6 +6,8 @@ package contents
 {
 	import appManager.event.AppEvent;
 	
+	import contents.soundControll.ContentSoundManager;
+	
 	import flash.events.Event;
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
@@ -19,8 +21,9 @@ package contents
 		
 		public static var homeID:String = AppEvent.home ;
 		
-		public static const id_music:uint = 1,
-							id_soundEffects:uint=2;
+		/**The only cause that these values are staing here is the old applications that used them from here.*/
+		public static var 	id_music:uint = ContentSoundManager.MusicID,
+							id_soundEffects:uint=ContentSoundManager.EffectsID;
 		
 	/////////////////////////////////////////////////////	
 	
@@ -163,6 +166,12 @@ package contents
 			homeLink.id = Contents.homeID ;
 			homeLink.level = 0 ;
 			return homeLink;
+		}
+		
+		/**This function will returns the homePage data*/
+		public static function get homePage():PageData
+		{
+			return getPage(homeID);
 		}
 		
 		

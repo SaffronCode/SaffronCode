@@ -1,15 +1,19 @@
 package contents.displayElements
 {
 	
+	import contents.Contents;
+	import contents.soundControll.ContentSoundManager;
+	
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
+	import flash.net.SharedObject;
 	
 	import soundPlayer.SoundPlayer;
 	import soundPlayer.SoundPlayerEvent;
-	import contents.Contents;
 	
 	public class SoundButton extends MovieClip
 	{
+		
 		public function SoundButton()
 		{
 			super();
@@ -28,19 +32,19 @@ package contents.displayElements
 		
 		private function switchMusic(e:MouseEvent)
 		{
-			if(this.currentFrame ==1)
+			if( this.currentFrame == 1 )
 			{
-				SoundPlayer.pause(Contents.id_music);
+				ContentSoundManager.pauseMusic() ;
 			}
 			else
 			{
-				SoundPlayer.play(Contents.id_music);				
+				ContentSoundManager.startMusic() ;
 			}
 		}
 		
 		private function musicPlayed(e:SoundPlayerEvent)
 		{
-			if(e.SoundID == Contents.id_music)
+			if(e.SoundID == ContentSoundManager.MusicID)
 			{				
 				this.gotoAndStop(1);
 			}
@@ -48,7 +52,7 @@ package contents.displayElements
 		
 		private function musicStoped(e:SoundPlayerEvent)
 		{
-			if(e.SoundID == Contents.id_music)
+			if(e.SoundID == ContentSoundManager.MusicID)
 			{
 				this.gotoAndStop(2);
 			}
