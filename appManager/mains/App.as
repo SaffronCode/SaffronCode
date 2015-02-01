@@ -3,6 +3,7 @@ package appManager.mains
 	import appManager.animatedPages.Intro;
 	import appManager.animatedPages.MainAnim;
 	import appManager.animatedPages.pageManager.PageManager;
+	import appManager.animatedPages.pageManager.TitleManager;
 	import appManager.event.AppEvent;
 	import appManager.event.AppEventContent;
 	
@@ -20,6 +21,8 @@ package appManager.mains
 	{
 		protected var pageManagerObject:PageManager ;
 		
+		protected var titleManager:TitleManager ;
+		
 		protected var introMC:Intro ;
 		
 		protected var mainAnim:MainAnim ;
@@ -30,6 +33,8 @@ package appManager.mains
 			super();
 			
 			pageManagerObject = Obj.findThisClass(PageManager,this,true) as PageManager;
+			titleManager = Obj.findThisClass(TitleManager,this,true) as TitleManager;
+			
 			introMC = Obj.findThisClass(Intro,this,true) as Intro;
 			mainAnim = Obj.findThisClass(MainAnim,this,true) ;
 			
@@ -125,6 +130,10 @@ package appManager.mains
 			{
 				//do it if mainAnim doesent exists
 				pageManagerObject.setUp(event);
+				if(titleManager!=null)
+				{
+					titleManager.setUp(event);
+				}
 			}
 			
 			if(event.myType == AppEvent.home)
@@ -150,6 +159,10 @@ package appManager.mains
 			// TODO Auto-generated method stub
 			trace("Main anim is ready");
 			pageManagerObject.setUp(currentAppEvent);
+			if(titleManager!=null)
+			{
+				titleManager.setUp(currentAppEvent);
+			}
 		}	
 		
 		

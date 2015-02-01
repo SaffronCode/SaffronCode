@@ -1,18 +1,9 @@
 package appManager.displayContentElemets
 	//appManager.displayContentElemets.ImageBox
 {
-	import appManager.animatedPages.pageManager.PageContainer;
-	import appManager.animatedPages.pageManager.PageManager;
-	
-	import flash.display.Bitmap;
-	import flash.display.DisplayObject;
-	import flash.display.Loader;
 	import flash.display.MovieClip;
 	import flash.events.Event;
-	import flash.events.IOErrorEvent;
-	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import flash.net.URLRequest;
 	
 	import netManager.ImageLoader;
 	

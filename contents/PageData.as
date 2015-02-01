@@ -12,6 +12,7 @@ package contents
 		
 		//New variables on content tag↓
 		public var contentX:Number=NaN,
+					contentAlign:String = '',
 					contentY:Number=NaN,
 					contentW:Number=NaN;
 		
@@ -62,6 +63,7 @@ package contents
 			imageTarget = inputXML.image;
 			content = inputXML.content ;
 			
+			contentAlign = inputXML.content.@align ;
 			if(String(inputXML.content.@x)!='')
 			{
 				contentX = Number(inputXML.content.@x);
@@ -140,6 +142,12 @@ package contents
 			xml.title = title;
 			xml.image = imageTarget;
 			xml.content = content;
+			
+			xml.content.@x = contentX ;
+			xml.content.@y = contentY ;
+			xml.content.@w = contentW ;
+			xml.content.@align = contentAlign ; 
+			
 			
 			//var link1Node:XML = XML('<links/>');
 			//xml.links = new XML();

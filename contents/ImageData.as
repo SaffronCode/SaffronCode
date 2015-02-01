@@ -29,8 +29,12 @@ package contents
 		private var loader:Loader;
 		
 		/*<img text="" targ="" w="" h="" x="" y=""/>*/
-		public function ImageData(imageXML:XML)
+		public function ImageData(imageXML:XML=null)
 		{
+			if(imageXML == null)
+			{
+				return ;
+			}
 			text = imageXML.@text ;
 			targURL = imageXML.@targ ;
 			
@@ -50,6 +54,7 @@ package contents
 			{
 				y = Number(imageXML.@y);
 			}
+			//trace("image data is loaded : "+targURL);
 			
 			swfContainer = new MovieClip();
 		}

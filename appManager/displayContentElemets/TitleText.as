@@ -1,4 +1,5 @@
 package appManager.displayContentElemets
+	//appManager.displayContentElemets.TitleText
 {
 	import flash.display.MovieClip;
 	import flash.text.TextField;
@@ -12,6 +13,10 @@ package appManager.displayContentElemets
 			super();
 			
 			myText = Obj.get("text_txt",this);
+			if(myText==null)
+			{
+				myText = Obj.findThisClass(TextField,this);
+			}
 			myText.multiline = false ;
 			myText.text = '';
 		}

@@ -5,6 +5,7 @@ package contents.displayElements
 	import contents.soundControll.ContentSoundManager;
 	
 	import flash.display.MovieClip;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.net.SharedObject;
 	
@@ -18,7 +19,7 @@ package contents.displayElements
 		{
 			super();
 			this.stop();
-			if(SoundPlayer.getStatuse_pause(Contents.id_soundEffects))
+			if(SoundPlayer.getStatuse_pause(ContentSoundManager.MusicID))
 			{
 				this.gotoAndStop(2);
 			}
@@ -28,6 +29,16 @@ package contents.displayElements
 			
 			this.addEventListener(MouseEvent.CLICK,switchMusic);
 			this.buttonMode = true ;
+			
+			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
+		}
+		
+		protected function unLoad(event:Event):void
+		{
+			// TODO Auto-generated method stub
+			SoundPlayer.eventsDispatch.removeEventListener(SoundPlayerEvent.PAUSED,musicStoped);
+			SoundPlayer.eventsDispatch.removeEventListener(SoundPlayerEvent.STOPED,musicStoped);
+			SoundPlayer.eventsDispatch.removeEventListener(SoundPlayerEvent.PLAYED,musicPlayed);
 		}
 		
 		private function switchMusic(e:MouseEvent)

@@ -1,4 +1,5 @@
 package appManager.displayContentElemets
+	//appManager.displayContentElemets.TextParag
 {
 	import flash.display.MovieClip;
 	import flash.events.Event;
@@ -21,7 +22,7 @@ package appManager.displayContentElemets
 			H = super.height;
 			W = super.width ;
 			
-			myTextTF = Obj.get("text_txt",this);
+			myTextTF = Obj.findThisClass(TextField,this);
 			myTextTF.text = '' ;
 			
 			myTextTF.multiline = true ;

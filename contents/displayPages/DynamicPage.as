@@ -1,5 +1,7 @@
 package contents.displayPages
+	//contents.displayPages.DynamicPage
 {
+	import appManager.displayContentElemets.TextParag;
 	import appManager.displayContentElemets.TitleText;
 	
 	import contents.Contents;
@@ -16,7 +18,7 @@ package contents.displayPages
 
 	public class DynamicPage extends MovieClip implements DisplayPageInterface
 	{
-		private var currentPageData:PageData;
+		protected var currentPageData:PageData;
 		
 		private var myTitle:TitleText ;
 		
@@ -37,6 +39,10 @@ package contents.displayPages
 			
 			myTitle = Obj.findThisClass(TitleText,this);
 			textContainer = Obj.get("text_txt",this);
+			if(textContainer == null)
+			{
+				textContainer = Obj.findThisClass(TextParag,this,true);
+			}
 			textTF = Obj.get("text_txt",textContainer);
 			textTF.text = '' ;
 			
@@ -63,6 +69,7 @@ package contents.displayPages
 			{
 				myTitle.setUp(currentPageData.title);
 			}
+			trace("page titel : "+pageData.title);
 			trace("textContainer.x : "+textContainer.x);
 			if(!isNaN(currentPageData.contentX))
 			{
@@ -76,12 +83,21 @@ package contents.displayPages
 			{
 				textTF.width = currentPageData.contentW ;
 			}
+			var align:Boolean = false ;
 			
-			TextPutter.onTextArea(textTF,currentPageData.content,true,true,true,0,true);
 			
+			if(currentPageData.contentAlign!='' && currentPageData.contentAlign!='0' && currentPageData.contentAlign!=null)
+			{
+				align = true ;
+			}
+			trace("align : "+align+' from : '+currentPageData.contentAlign)
+			
+			TextPutter.onTextArea(textTF,currentPageData.content,true,true,true,0,align);
+			trace("Number of imates : "+currentPageData.images.length);
 			for(var i = 0 ; i<currentPageData.images.length ; i++)
 			{
 				var imageData:ImageData = currentPageData.images[i] ;
+				trace("image icon is : "+imageData.targURL);
 				var H:Number = 0 ,
 					W:Number = 0;
 				if(!isNaN(imageData.width))
@@ -93,10 +109,9 @@ package contents.displayPages
 					H = imageData.height ;
 				}
 				var oneImage:ImageLoader = new ImageLoader(W,H,true,null);
-				oneImage.load(File.applicationDirectory.resolvePath(Contents.dataFile).parent.resolvePath(imageData.targURL).url);
+				oneImage.load(imageData.targURL);
 				oneImage.x = imageData.x;
 				oneImage.y = imageData.y;
-				trace("imageData.x : "+imageData.x);
 				scrollAbleObject.addChild(oneImage)
 			}
 			scrollMC = new ScrollMT(scrollAbleObject,maskArea,new Rectangle(0,0,maskArea.width,maskArea.height),true);
