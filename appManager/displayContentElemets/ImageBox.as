@@ -53,7 +53,8 @@ package appManager.displayContentElemets
 		
 		public function setUp(imageURL:String,loadInThisArea:Boolean = true ,imageW:Number=0,imageH:Number=0,X:Number=0,Y:Number=0)
 		{
-			trace("load this image : "+imageURL);
+			trace("Image box calls");
+			trace("load this image : "+imageURL+' > loadInThisArea: '+loadInThisArea);
 			
 			if(imageW==0)
 			{

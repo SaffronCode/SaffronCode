@@ -54,8 +54,8 @@ package netManager
 			myURLSaver = new URLSaver(true);
 			
 			//this.alpha = 0.5 ;
-			
 			loadIn = loadInThisArea;
+			trace("ImageLoader Initialize : "+loadIn);
 			
 			myWidth = MyWidth ;
 			myHeight = MyHeight ;
@@ -193,7 +193,7 @@ package netManager
 			}
 			else
 			{
-				/*trace("myWidth : "+myWidth+" , myHeight : "+myHeight+" > "+imageURL);*/
+				trace("myWidth : "+myWidth+" , myHeight : "+myHeight+" > "+imageURL);
 				image = loader.content as Bitmap ;
 				
 				if(myWidth!=0)
@@ -205,7 +205,9 @@ package netManager
 					image.height = myHeight ;
 				}
 				
-				//trace("image current hieght : "+image.height);
+				trace("image current hieght : "+image.height);
+				
+				trace("loadIn : "+loadIn);
 				
 				if(loadIn)
 				{
