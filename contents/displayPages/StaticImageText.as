@@ -13,11 +13,11 @@ package contents.displayPages
 	
 	public class StaticImageText extends MovieClip implements DisplayPageInterface
 	{
-		private var myImage:ImageBox;
+		protected var myImage:ImageBox;
 		
-		private var myParag:TextParag ;
+		protected var myParag:TextParag ;
 		
-		private var myTitle:TitleText ;
+		protected var myTitle:TitleText ;
 		
 		protected var currentPageData:PageData ;
 		

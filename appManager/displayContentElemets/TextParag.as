@@ -15,11 +15,11 @@ package appManager.displayContentElemets
 		
 		private var scrollMC:ScrollMT;
 		
-		public function TextParag()
+		public function TextParag(moreHight:Number=0)
 		{
 			super();
 			
-			H = super.height;
+			H = super.height+moreHight;
 			W = super.width ;
 			
 			myTextTF = Obj.findThisClass(TextField,this);
