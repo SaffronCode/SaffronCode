@@ -14,17 +14,17 @@ package contents.displayPages
 	
 	public class DynamicLinks extends MovieClip implements DisplayPageInterface
 	{
-		private var myPageData:PageData ;
+		protected var myPageData:PageData ;
 		
-		private var sampleLink:LinkItem,
+		protected var sampleLink:LinkItem,
 					linkClass:Class;
 					
-		private var linkScroller:ScrollMT,
+		protected var linkScroller:ScrollMT,
 					areaRect:Rectangle,
 					linksContainer:Sprite,
 					linksSensor:Sprite ;
 					
-		private var lastGeneratedLinkIndes:uint ;
+		protected var lastGeneratedLinkIndes:uint ;
 		
 		public static var deltaY:Number = 20 ;
 		
@@ -117,7 +117,7 @@ package contents.displayPages
 			}
 		}
 		
-		private function creatOneLink():Boolean
+		protected function creatOneLink():Boolean
 		{
 			// TODO Auto Generated method stub
 			if(lastGeneratedLinkIndes<myPageData.links1.length)
@@ -128,6 +128,10 @@ package contents.displayPages
 				newLink.x = (areaRect.width-newLink.width)/2 ;
 				newLink.y = linksSensor.y ;
 				linksSensor.y+=newLink.height+deltaY ;
+				
+				linksContainer.graphics.clear();
+				linksContainer.graphics.beginFill(0,0) ;
+				linksContainer.graphics.drawRect(0,0,areaRect.width,linksSensor.y) ;
 				
 				lastGeneratedLinkIndes++ ;
 				return true ;
