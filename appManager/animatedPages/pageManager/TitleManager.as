@@ -40,7 +40,9 @@ package appManager.animatedPages.pageManager
 		protected function anim(event:Event):void
 		{
 			// TODO Auto-generated method stub
-			if(toEvent.myType == AppEvent.home || toEvent.myID!=currentEvent.myID)
+			
+			//Have to change like pageContainer
+			if(toEvent.myType == AppEvent.home || toEvent.myID!=currentEvent.myID || toEvent.myType == AppEvent.refresh)
 			{
 				this.prevFrame() ;
 				if(this.currentFrame == 1)
@@ -57,7 +59,14 @@ package appManager.animatedPages.pageManager
 					}
 					else
 					{
-						currentEvent = toEvent ;
+						if( toEvent.myType != AppEvent.refresh )
+						{
+							currentEvent = toEvent ;
+						}
+						else
+						{
+							toEvent = currentEvent ;
+						}
 						//pageContainer.setUp(currentEvent);
 						if(currentEvent is AppEventContent)
 						{

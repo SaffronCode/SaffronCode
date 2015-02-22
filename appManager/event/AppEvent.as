@@ -18,6 +18,8 @@ package appManager.event
 		/**app event types , PageManager will listtening tho these variable*/
 		public static const home:String = 'home' ;
 		
+		public static const refresh:String = "ReffreshCurrentPage" ;
+		
 		/**This variable is not unic */
 		public var myType:String ;
 		
@@ -37,7 +39,7 @@ package appManager.event
 			
 			myID = pageID ;
 			
-			trace("AppEvent trace : "+pageType+" vs "+pageID);
+			//trace("AppEvent trace : "+pageType+" vs "+pageID);
 			
 			super(eventType,true);
 		}
