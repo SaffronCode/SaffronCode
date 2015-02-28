@@ -48,6 +48,7 @@ package netManager.urlSaver
 		
 		private var urlLoader:URLLoader ;
 		
+		private var maxNameLength:uint = 100 ;
 					
 		/**you have to call load() function to start file loading proccess<br>
 		 * if you set true in this value , it will not load byte array of your file and it will just return URL*/
@@ -229,12 +230,14 @@ package netManager.urlSaver
 				oflineFolder.createDirectory();
 			}
 			var nameCash:String = onlineURL.split('\\').join('/');
+			trace("oflineFolder : "+oflineFolder.nativePath); 
 			var offlineURLFileName:String = nameCash.substring(nameCash.indexOf('/')+1);
-			offlineURLFileName = offlineURLFileName.split('?').join('').split('/').join();
-			trace("name : "+offlineURLFileName);
+			offlineURLFileName = offlineURLFileName.split('?').join('').split('/').join('');
+			offlineURLFileName = offlineURLFileName.substr(offlineURLFileName.length-Math.min(maxNameLength,offlineURLFileName.length),offlineURLFileName.length);
+			trace("offlineURLFileName : "+offlineURLFileName);
 			var oflineFile:File = oflineFolder.resolvePath(offlineURLFileName);
 			offlineURL = oflineFile.url; 
-			
+			trace("Offline file is : "+oflineFile.nativePath);
 			if(oflineFile.exists)
 			{
 				try
