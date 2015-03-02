@@ -6,8 +6,10 @@ package contents
 {
 	import appManager.event.AppEvent;
 	
+	import contents.multiLanguage.Language;
 	import contents.soundControll.ContentSoundManager;
 	
+	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
@@ -19,6 +21,7 @@ package contents
 	{
 		public static var eventDispatcher:ContentEventDispatcher = new ContentEventDispatcher();
 		
+		
 		public static var homeID:String = AppEvent.home ;
 		
 		/**The only cause that these values are staing here is the old applications that used them from here.*/
@@ -29,16 +32,28 @@ package contents
 	
 		public static const dataFile:String = "Data/data.xml";
 		
+		
 		private static var loadedXML:XML,
 							loader:URLLoader ;
 							
 		private static var onLoaded:Function ;
 		
+	////////////////////////////////////////////Language variables
+		
+		public static var 	lang:Language,
+							langFile:String = "Data/language.xml",
+							langEnabled:Boolean = false ;
 		
 		
 	//////////////////////////////////////////////////////↓
+					
+		/**This will be true if debug tag is created on data.xml and it will be cause to update xml on each request*/
+		private static var isDebug:Boolean = false ;
+		
+		private static var xmlLoadedOnce:Boolean = false ;
 		
 		private static var pages:Vector.<PageData>;
+		private static var myStage:Stage;
 		
 		
 		/**returns true if data is ready*/
@@ -54,27 +69,56 @@ package contents
 			}
 		}
 		
-		/**From this version, content.xml will load instantly and there is no need to wail till onLoaded function calls.*/
-		public static function setUp(OnLoaded:Function=null)
+		/**From this version, content.xml will load instantly and there is no need to wail till onLoaded function calls.<br>
+		 * if your application is supporting multilanguages, you have to use language.xml standart near the content.xml file. and also 
+		 * you have to set application stage here for the Language class to help it to find added elements to stage.*/
+		public static function setUp(OnLoaded:Function=null,supportsMultiLanguage:Boolean=false,stage:Stage=null)
 		{
 			onLoaded = OnLoaded ;
-			if(OnLoaded==null)
+			
+			lang = new Language();
+			
+			langEnabled = supportsMultiLanguage ;
+			myStage = stage ;
+			
+			
+			loadLang();
+			
+			
+			//Don't need to initialize OnLoaded, because it will controll on call method.
+			/*if(OnLoaded==null)
 			{
 				onLoaded = new Function();
-			}
-			var fileLoader:FileStream = new FileStream();
-			var fileTarger:File = File.applicationDirectory.resolvePath(dataFile);
-			fileLoader.open(fileTarger,FileMode.READ);
-			
-			xmlLoaded(null,fileLoader.readUTFBytes(fileLoader.bytesAvailable));
+			}*/
 			
 			
+			loadXML();
 			
 			/*loader = new URLLoader();
 			loader.dataFormat = URLLoaderDataFormat.TEXT ;
 			loader.addEventListener(Event.COMPLETE,xmlLoaded);
 			loader.load(new URLRequest(dataFile));*/
 			
+		}
+		
+		/**This function will controll the langEnabled, so be sure that you are calling it after langEnabled set*/
+		private static function loadLang()
+		{
+			if(langEnabled)
+			{
+				lang.setUp(langFile,myStage);
+				UnicodeStatic.deactiveConvertor = !lang.isArabic ;
+			}
+		}
+		
+		/**Load the xml file now*/
+		private static function loadXML()
+		{
+			var fileLoader:FileStream = new FileStream();
+			var fileTarger:File = File.applicationDirectory.resolvePath(dataFile);
+			fileLoader.open(fileTarger,FileMode.READ);
+			
+			xmlLoaded(null,fileLoader.readUTFBytes(fileLoader.bytesAvailable));
 		}
 		
 		/**xml file loaded*/
@@ -89,6 +133,8 @@ package contents
 				loadedXML = XML(loader.data);
 			}
 			
+			isDebug = loadedXML.hasOwnProperty('debug') ;
+			
 			pages = new Vector.<PageData>();
 			
 			for(var i = 0 ; i<loadedXML.page.length() ; i++)
@@ -97,8 +143,19 @@ package contents
 				pages.push(pageData);
 			}
 			
-			onLoaded() ;
-			eventDispatcher.dispatchEvent(new ContentsEvent());
+			//You have to keep ides so you cannot override the names and titles once for all. it will distroy ides. so update it when getPage function calls.
+			//controllLanguage();
+			
+			if(onLoaded!=null)
+			{
+				onLoaded() ;
+			}
+			onLoaded = null ;
+			if(!xmlLoadedOnce)
+			{
+				eventDispatcher.dispatchEvent(new ContentsEvent());
+			}
+			xmlLoadedOnce = true ;
 		}
 		
 		/**add these datas to pageContents*/
@@ -127,21 +184,56 @@ package contents
 		}
 		
 		
-		
-		
-		
-		
 		/**this will returns page data based on input id*/
 		public static function getPage(pageID:String):PageData 
 		{
+			if(isDebug)
+			{
+				trace("Debug mode");
+				loadLang();
+				loadXML();
+			}
+			
+			var foundedPage:PageData = new PageData();
 			for(var i = 0 ; i<pages.length ;i++)
 			{
 				if(pages[i].id == pageID )
 				{
-					return pages[i];
+					foundedPage = pages[i].clone();
 				}
 			}
-			return new PageData();
+			
+			//This will update all contents with current language and it will controll for the existing of the language
+			if(langEnabled)
+			{
+				var controller:String ;
+				
+				controller = lang.t[foundedPage.title];
+				if(controller != null)
+					foundedPage.title = controller ;
+				controller = lang.t[foundedPage.content];
+				if(controller != null)
+					foundedPage.content = controller ;
+				for(i = 0 ; i<foundedPage.links1.length ; i++)
+				{
+					controller = lang.t[foundedPage.links1[i].name];
+					if(controller != null)
+						foundedPage.links1[i].name = controller ;
+				}
+				for(i = 0 ; i<foundedPage.links2.length ; i++)
+				{
+					controller = lang.t[foundedPage.links2[i].name];
+					if(controller != null)
+						foundedPage.links2[i].name = controller ;
+				}
+				for(i = 0 ; i<foundedPage.images.length ; i++)
+				{
+					controller = lang.t[foundedPage.images[i].text];
+					if(controller != null)
+						foundedPage.images[i].text = controller ;
+				}
+			}
+			return foundedPage;
 		}
 		
 		/**remove pages with this id from the contents<br>
@@ -184,6 +276,33 @@ package contents
 				exports += pages[i].export()+'\n';
 			}
 			return exports;
+		}
+		
+		
+	///////////////////////////////////////////// language functions
+		/**This function will tells you if you have this language information or not*/
+		public static function hasThisLanguage(languageID:String):Boolean
+		{
+			if(langEnabled)
+			{
+				return lang.hasThisLangID(languageID);
+			}
+			return false ;
+		}
+		
+		
+		/**This function will update the current language*/
+		public static function changeLanguage(languageID:String):void
+		{
+			if(langEnabled)
+			{
+				trace("languageID  : "+languageID);
+				lang.changeLanguage(languageID);
+			}
+			else
+			{
+				throw "Lanuage is not enabled yet.";
+			}
 		}
 	}
 }

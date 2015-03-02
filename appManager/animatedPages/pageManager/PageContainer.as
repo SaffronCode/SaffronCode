@@ -48,8 +48,9 @@ package appManager.animatedPages.pageManager
 				catch(e)
 				{
 					trace("Page is not generated");
+					return;
 				}
-				
+				trace("*** currentPage added to stage");
 				this.addChild(currentPage);
 				
 				if(myEvent is AppEventContent)

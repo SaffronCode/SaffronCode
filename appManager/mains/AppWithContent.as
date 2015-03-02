@@ -1,18 +1,19 @@
 package appManager.mains
 {
+	import contents.Contents;
 	import contents.ContentsEvent;
 	
 	import flash.display.MovieClip;
-	import contents.Contents;
 	
 	public class AppWithContent extends App
 	{
-		public function AppWithContent()
+		public function AppWithContent(supportsMultiLanguage:Boolean=false)
 		{
 			super();
 			
 			stopIntro();
-			Contents.setUp(startApp);
+			//Multilanguage support added to current version.
+			Contents.setUp(startApp,supportsMultiLanguage,this.stage);
 		}
 		
 		/**Contents are load now*/
