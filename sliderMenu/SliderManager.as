@@ -98,20 +98,19 @@ package sliderMenu
 				return ;
 			}
 			mouseFirstPose = new Point(myStage.mouseX,myStage.mouseY);
-			
-			if(slider_l!=null && myStage.mouseX<resolution)
+			if(slider_l!=null && myStage.mouseX<resolution && currentDraggingPose!=LEFT_MENU)
 			{
 				currentDraggingPose = LEFT_MENU;
 			}
-			else if(slider_r!=null && myStage.mouseX>slider_r.x-resolution)
+			else if(slider_r!=null && myStage.mouseX>slider_r.x-resolution && currentDraggingPose != RIGHT_MENU)
 			{
 				currentDraggingPose = RIGHT_MENU;
 			}
-			else if(slider_t!=null && myStage.mouseY<resolution)
+			else if(slider_t!=null && myStage.mouseY<resolution && currentDraggingPose != TOP_MENU)
 			{
 				currentDraggingPose = TOP_MENU;
 			}
-			else if(slider_b!=null && myStage.mouseY>slider_b.y-resolution)
+			else if(slider_b!=null && myStage.mouseY>slider_b.y-resolution && currentDraggingPose != BOTTOM_MENU)
 			{
 				currentDraggingPose = BOTTOM_MENU;
 			}
@@ -197,7 +196,6 @@ package sliderMenu
 				}
 			}
 			
-				
 			if(currentDraggingPose =='')
 			{
 				//nothing
