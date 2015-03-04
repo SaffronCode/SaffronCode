@@ -47,7 +47,7 @@ package appManager.animatedPages.pageManager
 				}
 				catch(e)
 				{
-					trace("Page is not generated");
+					trace("Page is not generated : "+e);
 					return;
 				}
 				trace("*** currentPage added to stage");
