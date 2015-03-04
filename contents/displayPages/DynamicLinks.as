@@ -116,12 +116,12 @@ package contents.displayPages
 			linkScroller = new ScrollMT(linksContainer,areaRect,areaRect,true,false,true);
 			if(scrollPosesObject[myPageData.id]!=null)
 			{
-				linkScroller.setPose(areaRect.x,scrollPosesObject[myPageData.id]);
-				controllSensor();
 				if(scrollPosesObject[myPageData.id]<areaRect.y-1)
 				{
 					linkScroller.stopFloat();
 				}
+				linkScroller.setPose(areaRect.x,scrollPosesObject[myPageData.id]);
+				controllSensor();
 			}
 			
 			this.addEventListener(Event.ENTER_FRAME,controllSensor);
