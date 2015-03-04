@@ -82,7 +82,12 @@ package contents.displayPages
 			// TODO Auto Generated method stub
 			if(myParag != null)
 			{
-				myParag.setUp(currentPageData.content);
+			var align:Boolean = false;
+			if(currentPageData.contentAlign!='' && currentPageData.contentAlign!='0' && currentPageData.contentAlign!=null)
+			{
+				align = true ;
+			}
+			myParag.setUp(currentPageData.content,true,align);
 			}
 		}
 	}
