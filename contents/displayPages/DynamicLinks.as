@@ -1,3 +1,13 @@
+/***Version
+ * 	1.1 : Save the last position of the scrollMT for each pageID to load it from that position later
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
+
+
 package contents.displayPages
 	//contents.displayPages.DynamicLinks
 {
@@ -14,6 +24,8 @@ package contents.displayPages
 	
 	public class DynamicLinks extends MovieClip implements DisplayPageInterface
 	{
+		private static var scrollPosesObject:Object = {} ;
+		
 		protected var myPageData:PageData ;
 		
 		protected var sampleLink:LinkItem,
@@ -65,6 +77,14 @@ package contents.displayPages
 			{
 				createLinks();
 			}
+			this.addEventListener(Event.REMOVED_FROM_STAGE,saveLastY);
+		}
+		
+		protected function saveLastY(event:Event):void
+		{
+			// TODO Auto-generated method stub
+			trace("*.Last Y : "+linksContainer.y);
+			scrollPosesObject[myPageData.id] = linksContainer.y ;
 		}
 		
 		private function createLinks()
@@ -87,8 +107,22 @@ package contents.displayPages
 			
 			linksContainer.addChild(linksSensor);
 			
+			if(scrollPosesObject[myPageData.id]!=null)
+			{
+				linksContainer.y = scrollPosesObject[myPageData.id];
+				controllSensor();
+			}
 			
 			linkScroller = new ScrollMT(linksContainer,areaRect,areaRect,true,false,true);
+			if(scrollPosesObject[myPageData.id]!=null)
+			{
+				linkScroller.setPose(areaRect.x,scrollPosesObject[myPageData.id]);
+				controllSensor();
+				if(scrollPosesObject[myPageData.id]<areaRect.y-1)
+				{
+					linkScroller.stopFloat();
+				}
+			}
 			
 			this.addEventListener(Event.ENTER_FRAME,controllSensor);
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
