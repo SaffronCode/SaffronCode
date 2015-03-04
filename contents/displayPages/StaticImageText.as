@@ -1,3 +1,9 @@
+/***Version 1.1- all gallery items can inserts in ImageBoxes here.
+ * 
+ * 
+ * 
+ */
+
 package contents.displayPages
 	//contents.displayPages.StaticImageText
 {
@@ -11,9 +17,12 @@ package contents.displayPages
 	import flash.display.MovieClip;
 	import flash.text.TextField;
 	
+	
 	public class StaticImageText extends MovieClip implements DisplayPageInterface
 	{
 		protected var myImage:ImageBox;
+		
+		protected var imageArr:Array ;
 		
 		protected var myParag:TextParag ;
 		
@@ -25,7 +34,11 @@ package contents.displayPages
 		{
 			super();
 			
-			myImage = Obj.findThisClass(ImageBox,this);
+			imageArr = Obj.findAllClass(ImageBox,this);
+			if(imageArr.length != 0)
+			{
+				myImage = imageArr[0] ;
+			}
 			myParag = Obj.findThisClass(TextParag,this);
 			myTitle = Obj.findThisClass(TitleText,this);
 			
@@ -33,7 +46,6 @@ package contents.displayPages
 		
 		public function setUp(pageData:PageData):void
 		{
-			trace("*** Data inserted");
 			currentPageData = pageData ;
 			
 			setImage();
@@ -44,9 +56,15 @@ package contents.displayPages
 		protected function setImage():void
 		{
 			// TODO Auto Generated method stub
-			if(myImage != null)
+			var i:int = 0 ;
+			if(myImage != null && currentPageData.imageTarget!='')
 			{
 				myImage.setUp(currentPageData.imageTarget);
+				i++;
+			}
+			for(i ; i<currentPageData.images.length && i<imageArr.length ; i++)
+			{
+				(imageArr[i] as ImageBox).setUp(currentPageData.images[i].targURL)
 			}
 		}
 		
@@ -64,12 +82,7 @@ package contents.displayPages
 			// TODO Auto Generated method stub
 			if(myParag != null)
 			{
-				var align:Boolean = false;
-				if(currentPageData.contentAlign!='' && currentPageData.contentAlign!='0' && currentPageData.contentAlign!=null)
-				{
-					align = true ;
-				}
-				myParag.setUp(currentPageData.content,true,align);
+				myParag.setUp(currentPageData.content);
 			}
 		}
 	}
