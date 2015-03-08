@@ -163,6 +163,7 @@
 				_rtl = true ;
 			}
 			
+			UnicodeStatic.deactiveConvertor = !_isArabic ;
 			manageAll(myStage);
 		}
 		

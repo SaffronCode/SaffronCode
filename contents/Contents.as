@@ -107,7 +107,6 @@ package contents
 			if(langEnabled)
 			{
 				lang.setUp(langFile,myStage);
-				UnicodeStatic.deactiveConvertor = !lang.isArabic ;
 			}
 		}
 		
