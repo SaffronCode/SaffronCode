@@ -90,8 +90,8 @@ package contents
 				contentH = Number(inputXML.content.@h);
 			}
 			
-			trace("inputXML.content.@w : "+inputXML.content.@w);
-			trace("inputXML.content.@h : "+inputXML.content.@h);
+			///trace("inputXML.content.@w : "+inputXML.content.@w);
+			///trace("inputXML.content.@h : "+inputXML.content.@h);
 			
 			var newLink:LinkData ;
 			var newImg:ImageData ;

@@ -42,8 +42,8 @@ package webService
 							newsID:uint,
 							recevedNewsID:uint;;
 							
-		public static var	retrys:uint=2,
-							connectiontimeOut:Number=6000;
+		public static var	retrys:uint=20,
+							connectiontimeOut:Number=100;
 							
 							
 		//private static var myHeader:String="myHeader";
