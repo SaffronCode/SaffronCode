@@ -52,7 +52,7 @@
 					
 ///////////////////////////////////////////////
 		/**this class will generate conten input of main from this class*/
-		private var myContent:PopMenuContenDisplay ;
+		public var myContent:PopMenuContenDisplay ;
 		
 		private var closeTimer:Timer ;
 		private var cashedContents:PopMenuContent;

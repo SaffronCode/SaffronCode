@@ -177,7 +177,8 @@ package netManager
 			trace('cansel!!');
 			myURLSaver.cansel();
 			myURLSaver.deletFileIfExists(imageURL);
-			this.dispatchEvent(new Event(IMAGE_LOADED));
+			//Bug found, i was dispatched IMAGE_LOADED by mistake.
+			this.dispatchEvent(new Event(IMAGE_URL_NOT_FOUNDS));
 		}
 		
 		protected function imageLoaded(event:Event):void

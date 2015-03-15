@@ -21,6 +21,8 @@ package popForm
 	{
 		private static var stagePlusHaight:Number = 0;
 		
+		private var myHieghtPlus:Number = 0 ;
+		
 		
 		private var mainText:TextField;
 		
@@ -36,7 +38,15 @@ package popForm
 
 		private var scroll:ScrollMT;
 		
-		private var thisY:Number ; 
+		private var thisY:Number ;
+		
+		public var height0:Number; 
+		
+		/**Add more Height for scrolling*/
+		public function localHeight(H:Number)
+		{
+			myHieghtPlus = H ;
+		}
 		
 		public function PopMenuContenDisplay()
 		{
@@ -51,7 +61,8 @@ package popForm
 			maxAreaMC.removeChildren();
 			maxAreaMC.graphics.clear();
 			maxAreaMC.graphics.beginFill(0);
-			maxAreaMC.graphics.drawRect(areaW/-2,areaH/-2,areaW,areaH);
+			//Why areaH/2 ????
+			maxAreaMC.graphics.drawRect(areaW/-2,0/*areaH/-2*/,areaW,areaH);
 			maxAreaMC.alpha = 0 ;
 			
 			field = new Vector.<PopField>();
@@ -68,6 +79,8 @@ package popForm
 			mainText.text = '' ;
 			
 			buttonList = new Vector.<PopButton>();
+			
+			height0 = this.height ;
 		}
 		
 		/**set up the pop menu contents*/
@@ -211,19 +224,41 @@ package popForm
 			
 			maxAreaMC.scaleY = 1 ;
 			
-			var scrollRect:Rectangle = new Rectangle(this.x-maxAreaMC.width/2,thisY,maxAreaMC.width,maxAreaMC.height+stagePlusHaight) ;
+			var scrollRect:Rectangle = new Rectangle(this.x-maxAreaMC.width/2,thisY,maxAreaMC.width,maxAreaMC.height+stagePlusHaight+myHieghtPlus) ;
 			
 			//prevent maxAreaMC to rduce height size
 			//maxAreaMC.scaleY = 0 ;
 			maxAreaMC.height -= 5 ;
 			var areaRect:Rectangle = new Rectangle(maxAreaMC.width/-2,0,maxAreaMC.width,butY) ;
 			
-			this.graphics.beginFill(0,0);
+			//I forgot this line
+				this.graphics.clear();
+			this.graphics.beginFill(0xff0000,0);
 			this.graphics.drawRect(areaRect.width/-2,0,areaRect.width,areaRect.height);
 			
 			//trace(maxAreaMC.height+' vs '+this.height+' vs '+butY);
 			
 			scroll = new ScrollMT(this,scrollRect,areaRect);
+			//trace("* : this.height:"+this.height+' vs scrollRect.height:'+scrollRect.height);
+			if(this.height<=scrollRect.height+10)
+			{
+				scroll.reset();
+				scroll.lock();
+			}
+		}
+		
+		public function updateScrollheight()
+		{
+			trace(maxAreaMC.height+'+'+stagePlusHaight+'+'+myHieghtPlus);
+			var scrollRect:Rectangle = new Rectangle(this.x-maxAreaMC.width/2,thisY,maxAreaMC.width,maxAreaMC.height+stagePlusHaight+myHieghtPlus) ;
+			var areaRect:Rectangle = new Rectangle(maxAreaMC.width/-2,0,maxAreaMC.width,10) ;
+			scroll = new ScrollMT(this,scrollRect,areaRect,true);
+			//trace("* : this.height:"+this.height+' vs scrollRect.height:'+scrollRect.height);
+			if(this.height<=scrollRect.height+10)
+			{
+				scroll.reset();
+				scroll.lock();
+			}
 		}
 		
 		/**one of the buttons are selected*/

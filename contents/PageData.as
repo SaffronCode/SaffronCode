@@ -1,3 +1,11 @@
+/**3/11/2015
+ * version 1.0.1 : contentH added to this class.
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
 package contents
 {
 
@@ -14,7 +22,8 @@ package contents
 		public var contentX:Number=NaN,
 					contentAlign:String = '',
 					contentY:Number=NaN,
-					contentW:Number=NaN;
+					contentW:Number=NaN,
+					contentH:Number=NaN;
 		
 		public var links1:Vector.<LinkData>,
 					links2:Vector.<LinkData>;
@@ -76,6 +85,13 @@ package contents
 			{
 				contentW = Number(inputXML.content.@w);
 			}
+			if(String(inputXML.content.@h)!='')
+			{
+				contentH = Number(inputXML.content.@h);
+			}
+			
+			trace("inputXML.content.@w : "+inputXML.content.@w);
+			trace("inputXML.content.@h : "+inputXML.content.@h);
 			
 			var newLink:LinkData ;
 			var newImg:ImageData ;
@@ -146,6 +162,7 @@ package contents
 			xml.content.@x = contentX ;
 			xml.content.@y = contentY ;
 			xml.content.@w = contentW ;
+			xml.content.@h = contentH ;
 			xml.content.@align = contentAlign ; 
 			
 			
