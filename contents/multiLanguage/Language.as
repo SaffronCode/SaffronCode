@@ -234,6 +234,7 @@
 		
 		public function manageAll(targ:DisplayObjectContainer)
 		{
+			//trace("Manage all calls");
 			for(var i = 0  ; i<targ.numChildren ; i++)
 			{
 				var targ2:* = targ.getChildAt(i);
@@ -270,7 +271,8 @@
 				targ = e ;
 			}
 			
-			//trace('some thing added : '+targ);
+			//trace('some thing added : '+targ+' > '+(targ as DisplayObject).getBounds(myStage));
+			//trace('some thing added : '+targ.parent.name);
 			if(targ is MovieClip)
 			{
 				if(addedItems.indexOf(targ)==-1)
@@ -305,7 +307,7 @@
 						}
 						else
 						{
-							trace('object founds');
+							//trace('object founds');
 						}
 						//trace('font size increased');
 						tf.size = lastSize+increasedSize;
@@ -323,7 +325,7 @@
 						{
 							var xmlFontName:String = String(curXML.from.@name).toLocaleLowerCase();
 							var xmlBoldState:String = String(curXML.from.@bold) ;
-							//trace("xmlFontName == font && xmlBoldState == String(bold) : "+xmlFontName+' == '+font+' && '+xmlBoldState+' == '+String(bold));
+							//trace("xmlFontName == font && xmlBoldState == String(bold) : "+xmlFontName+' == '+font+' && '+xmlBoldState+' == '+String(bold)+'  >>>  '+(xmlFontName == font)+' && '+(xmlBoldState == String(bold) ));
 							if(xmlFontName == font && xmlBoldState == String(bold) )
 							{
 								//trace("So i have to change its font");
@@ -346,6 +348,7 @@
 								//(targ as TextField).defaultTextFormat = tf ;
 								//(targ as TextField).setTextFormat(tf) ;
 								(targ as TextField).embedFonts = true ;
+								//trace("Font changed");
 							}
 						}	
 					}

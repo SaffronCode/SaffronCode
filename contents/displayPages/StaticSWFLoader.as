@@ -42,7 +42,8 @@ package contents.displayPages
 			loader = new Loader();
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE,contentLoaded);
 			var loaderContex:LoaderContext = new LoaderContext(false,ApplicationDomain.currentDomain);
-			loader.load(new URLRequest(pageData.content),loaderContex);
+			trace("SWF target is : "+pageData.imageTarget);
+			loader.load(new URLRequest(pageData.imageTarget),loaderContex);
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 		}
 		

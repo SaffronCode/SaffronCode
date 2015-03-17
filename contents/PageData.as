@@ -11,6 +11,7 @@ package contents
 
 	public class PageData
 	{
+		
 		public var 	id:String='',
 					musicURL:String='',
 					type:String='',

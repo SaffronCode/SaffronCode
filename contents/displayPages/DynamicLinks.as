@@ -67,7 +67,7 @@ package contents.displayPages
 		
 		public function setUp(pageData:PageData):void
 		{
-			//trace("current page data is : "+pageData.export());
+			trace("current page data is : "+pageData.export());
 			this.removeChildren();
 			myPageData = pageData;
 			if(pageData.links1.length == 0 && noLinksMC!=null)

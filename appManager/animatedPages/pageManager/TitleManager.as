@@ -48,7 +48,10 @@ package appManager.animatedPages.pageManager
 				if(this.currentFrame == 1)
 				{
 					//pageContainer.setUp();
-					myTitle.setUp('');
+					if(myTitle.text != '')
+					{
+						myTitle.setUp('');
+					}
 					if(toEvent.myType == AppEvent.home)
 					{
 						//this.visible = false ;
@@ -74,7 +77,10 @@ package appManager.animatedPages.pageManager
 						}
 						else
 						{
-							myTitle.setUp('');
+							if(myTitle.text != '')
+							{
+								myTitle.setUp('');
+							}
 						}
 					}
 				}

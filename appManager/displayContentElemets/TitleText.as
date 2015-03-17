@@ -6,7 +6,7 @@ package appManager.displayContentElemets
 	
 	public class TitleText extends MovieClip
 	{
-		private var myText:TextField ;
+		protected var myText:TextField ;
 		
 		public function TitleText()
 		{
@@ -24,6 +24,11 @@ package appManager.displayContentElemets
 		public function setUp(title:String,arabicText:Boolean = true)
 		{
 			TextPutter.OnButton(myText,title,arabicText,true,true);
+		}
+		
+		public function get text():String
+		{
+			return myText.text ;
 		}
 	}
 }

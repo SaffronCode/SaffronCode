@@ -1,6 +1,6 @@
 /***Version
  * 1.1 : Instant data.xml laoded
- * 
+ * 1.1.1 : link id s on link will change with language class on multiLanguage applications
  */
 package contents 
 {
@@ -133,7 +133,7 @@ package contents
 			}
 			
 			isDebug = loadedXML.hasOwnProperty('debug') ;
-			
+			//Dynamic pages will lost in this mode
 			pages = new Vector.<PageData>();
 			
 			for(var i = 0 ; i<loadedXML.page.length() ; i++)
@@ -188,7 +188,7 @@ package contents
 		{
 			if(isDebug)
 			{
-				trace("Debug mode");
+				trace("Debug mode. Warning: Debug mode will remove all pages that added dynamicaly like News nad webGalleries!");
 				loadLang();
 				loadXML();
 			}
@@ -218,12 +218,20 @@ package contents
 					controller = lang.t[foundedPage.links1[i].name];
 					if(controller != null)
 						foundedPage.links1[i].name = controller ;
+					//New ↓
+					controller = lang.t[foundedPage.links1[i].id];
+					if(controller != null)
+						foundedPage.links1[i].id = controller ;
 				}
 				for(i = 0 ; i<foundedPage.links2.length ; i++)
 				{
 					controller = lang.t[foundedPage.links2[i].name];
 					if(controller != null)
 						foundedPage.links2[i].name = controller ;
+					//New ↓
+					controller = lang.t[foundedPage.links2[i].id];
+					if(controller != null)
+						foundedPage.links2[i].id = controller ;
 				}
 				for(i = 0 ; i<foundedPage.images.length ; i++)
 				{

@@ -46,6 +46,13 @@ package contents.displayElements
 					link.level = 1 ;
 				}
 				link.id = this.name ;
+				
+				if(Contents.langEnabled)
+				{
+					var controller:String = Contents.lang.t[link.id];
+					if(controller!=null)
+						link.id = controller ;
+				}
 					
 				ev = new AppEventContent(link,false);
 			}
