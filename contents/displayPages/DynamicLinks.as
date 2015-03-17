@@ -1,6 +1,6 @@
 /***Version
  * 	1.1 : Save the last position of the scrollMT for each pageID to load it from that position later
- * 
+ * 	1.1.1 : when the menu was empty, it will cause an error on leave stage.
  * 
  * 
  * 
@@ -84,8 +84,11 @@ package contents.displayPages
 		protected function saveLastY(event:Event):void
 		{
 			// TODO Auto-generated method stub
-			trace("*.Last Y : "+linksContainer.y);
-			scrollPosesObject[myPageData.id] = linksContainer.y ;
+			if(linksContainer!=null)
+			{
+				trace("*.Last Y : "+linksContainer.y);
+				scrollPosesObject[myPageData.id] = linksContainer.y ;
+			}
 		}
 		
 		private function createLinks()
