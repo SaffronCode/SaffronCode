@@ -8,9 +8,8 @@ package webService.webCallers
 	import mx.rpc.soap.Operation;
 	
 	import webService.WebEvent;
-	import webService.myWebService;
-	
 	import webService.WebServiceSaver;
+	import webService.myWebService;
 	
 	[Event(name="complete", type="flash.events.Event")]
 	[Event(name="unload", type="flash.events.Event")]
@@ -35,10 +34,16 @@ package webService.webCallers
 		
 		private var myServiceName:String ;
 		
-		public function WebServiceCaller(myWebServiceName:String,offlineDataIsOK_v:Boolean=true,justLoadOfline_v:Boolean=false)
+		private var offlineDate:Date,
+					loadAgainJustForDoubleControll:Boolean = false,
+					doNotDispatchEventsAgain:Boolean = false;
+		
+		public function WebServiceCaller(myWebServiceName:String,offlineDataIsOK_v:Boolean=true,justLoadOfline_v:Boolean=false,maximomOfflineData:Date = null)
 		{
 			//TODO: implement function
 			//#4
+			offlineDate = maximomOfflineData ;
+			
 			myServiceName = myWebServiceName ;
 			myWebService.activateOperation(myWebServiceName);
 			offlineDataIsOK = offlineDataIsOK_v ;
@@ -50,11 +55,31 @@ package webService.webCallers
 		protected function loadParams(...params):void
 		{
 			cansel();
+			//You have permition to dispatch events now.
+			doNotDispatchEventsAgain = false ;
 			myParam = params ;
 			//#1
 			if(justLoadOffline)
 			{
-				generateDataAndDispatchEvent(null);
+				var cashedData:String = WebServiceSaver.load(this,myParam);
+				if(offlineDate!=null && cashedData!=null)
+				{
+					loadAgainJustForDoubleControll = WebServiceSaver.isExpired(this,myParam,offlineDate)
+				}
+				
+				if(cashedData != null)
+				{
+					generateDataAndDispatchEvent(cashedData);
+					doNotDispatchEventsAgain = true ;
+					if(loadAgainJustForDoubleControll)
+					{
+	 					myWebService.Connect(onConnected,noInternet);	
+					}
+				}
+				else
+				{
+ 					myWebService.Connect(onConnected,noInternet);	
+				}
 			}
 			else
 			{
@@ -163,7 +188,14 @@ package webService.webCallers
 		private function dispatchEveryWhere(eventName:String)
 		{
 			//TODO: implement function
-			this.dispatchEvent(new Event(eventName));
+			if(!doNotDispatchEventsAgain)
+			{
+				this.dispatchEvent(new Event(eventName));
+			}
+			else
+			{
+				trace("I cannot dispatch my events any more : "+eventName);
+			}
 		}
 	}
 }

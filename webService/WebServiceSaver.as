@@ -12,6 +12,21 @@ package webService
 			return SavedDatas2.load(valueName) ;
 		}
 		
+		/**Returns true if cashed data is older than acceptable date or it is not exists.*/
+		public static function isExpired(ClassObject:Object,Parameters:Array,lastAcceptableDate:Date):Boolean
+		{
+			var valueName:String = generateID(ClassObject,Parameters) ;
+			var cash:String = SavedDatas2.loadIfNewer(valueName,lastAcceptableDate);
+			if(cash!=null)
+			{
+				return false ;
+			}
+			else
+			{
+				return true ;
+			}
+		}
+		
 		
 		public static function save(ClassObject:Object,Parameters:Array,value:String):void
 		{
