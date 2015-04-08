@@ -41,12 +41,14 @@ package contents.soundControll
 		{
 			SoundPlayer.play(MusicID);
 			lastMusicState.data.state = true ;
+			lastMusicState.flush();
 		}
 		
 		public static function pauseMusic()
 		{
 			SoundPlayer.pause(MusicID);
 			lastMusicState.data.state = false ;
+			lastMusicState.flush();
 		}
 		
 		public static function muteMusic()
