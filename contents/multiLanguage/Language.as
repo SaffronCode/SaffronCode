@@ -111,7 +111,7 @@
 			}*/
 			
 			
-			myStage.addEventListener(Event.ADDED,itemIsAdded);
+			myStage.addEventListener(Event.ADDED,itemIsAdded,false,1);
 			
 			
 			langDispatcher.dispatchEvent(new Event(IM_READY_EVENT));
