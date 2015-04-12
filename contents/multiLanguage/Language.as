@@ -292,7 +292,9 @@
 				if(addedItems.indexOf(targ)==-1)
 				{
 					//trace("Manage this text : "+(targ as TextField).getBounds(myStage)+' : '+(targ as TextField).text);
-					var tf:TextFormat = (targ as TextField).defaultTextFormat ;
+					//var tf:TextFormat = (targ as TextField).defaultTextFormat ;
+					//Upgraded line ↓
+					var tf:TextFormat = TextManager.addThis(targ as TextField).format ;
 					var mydisp:DisplayObject = targ as DisplayObject;
 					
 					/**Add this later*/
@@ -344,6 +346,11 @@
 								if(xmlBoldStage == true)
 								{
 									tf.bold = xmlBoldState ;
+								}
+								else
+								{
+									//I forgot this line. I catched bug when I switched font from bold to normal.
+									tf.bold = false;
 								}
 								//(targ as TextField).defaultTextFormat = tf ;
 								//(targ as TextField).setTextFormat(tf) ;
