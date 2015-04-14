@@ -27,11 +27,25 @@
 			return myTitle;
 		}
 		
-		public function PopField(tagName:String,defaultText:String,KeyBordType:String = SoftKeyboardType.DEFAULT,isPass:Boolean = false,editable:Boolean = true,isAraic:Boolean=true,numLines:uint = 1)
+		public function changeColor(colorFrame:uint)
+		{
+			backMC.gotoAndStop(colorFrame);
+		}
+		
+		public function PopField(tagName:String,defaultText:String,KeyBordType:String = SoftKeyboardType.DEFAULT,isPass:Boolean = false,editable:Boolean = true,isAraic:Boolean=true,numLines:uint = 1,color:uint=1,frame:uint=1)
 		{
 			super();
+			
+			//New lines to manage language style ( like rtl and ltr )
+			this.gotoAndStop(frame);
+			
+			
 			myTitle = tagName ;
 			backMC = Obj.get("back_mc",this);
+			
+			//New Line to manage textfield background color 
+			changeColor(color);
+			
 			tagNameTXT = Obj.get("tag_txt",Obj.get("tag_txt",this));
 			tagNameTXT.text = "" ;
 			TextPutter.OnButton(tagNameTXT,tagName,true,false,true);

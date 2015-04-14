@@ -164,6 +164,8 @@
 			}
 			
 			UnicodeStatic.deactiveConvertor = !_isArabic ;
+			FarsiInputCorrection.preventConvertor = !_isArabic ;
+			FarsiInputCorrection.detectArabic = isArabic ;
 			manageAll(myStage);
 		}
 		

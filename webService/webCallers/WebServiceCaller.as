@@ -1,6 +1,7 @@
 package webService.webCallers
 {
 	
+	import flash.events.ErrorEvent;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	
@@ -13,6 +14,8 @@ package webService.webCallers
 	
 	[Event(name="complete", type="flash.events.Event")]
 	[Event(name="unload", type="flash.events.Event")]
+	[Event(name="error", type="flash.events.ErrorEvent")]
+	
 	
 	public class WebServiceCaller extends EventDispatcher
 	{
@@ -35,7 +38,7 @@ package webService.webCallers
 		private var myServiceName:String ;
 		
 		private var offlineDate:Date,
-					loadAgainJustForDoubleControll:Boolean = false,
+					LoadForDoubleControll:Boolean = false,
 					doNotDispatchEventsAgain:Boolean = false;
 		
 		public function WebServiceCaller(myWebServiceName:String,offlineDataIsOK_v:Boolean=true,justLoadOfline_v:Boolean=false,maximomOfflineData:Date = null)
@@ -64,14 +67,15 @@ package webService.webCallers
 				var cashedData:String = WebServiceSaver.load(this,myParam);
 				if(offlineDate!=null && cashedData!=null)
 				{
-					loadAgainJustForDoubleControll = WebServiceSaver.isExpired(this,myParam,offlineDate)
+					var controll:Boolean = WebServiceSaver.isExpired(this,myParam,offlineDate);
+					LoadForDoubleControll = controll ;
 				}
 				
 				if(cashedData != null)
 				{
 					generateDataAndDispatchEvent(cashedData);
 					doNotDispatchEventsAgain = true ;
-					if(loadAgainJustForDoubleControll)
+					if(LoadForDoubleControll)
 					{
 	 					myWebService.Connect(onConnected,noInternet);	
 					}
@@ -163,6 +167,7 @@ package webService.webCallers
 			}
 			else
 			{
+				dispatchEveryWhere(ErrorEvent.ERROR);
 				dispatchEveryWhere(Event.UNLOAD);
 			}
 		}
