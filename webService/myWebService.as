@@ -84,7 +84,7 @@ package webService
 				ws[operationName].resultFormat = "e4x" ;
 				ws[operationName].addEventListener("result", Result) ;
 				ws[operationName].addEventListener("fault", serviceNotFound) ;
-				activatedOperations.push(operationName)
+				activatedOperations.push(operationName) ;
 			}
 		}
 		
