@@ -30,7 +30,7 @@ package popForm
 		
 		private var buttonList:Vector.<PopButton>;
 		
-		private var field:Vector.<PopField> ;
+		private var field:Vector.<PopFieldInterface> ;
 		
 		private var myDisplay:DisplayObject ;
 		
@@ -65,7 +65,7 @@ package popForm
 			maxAreaMC.graphics.drawRect(areaW/-2,0/*areaH/-2*/,areaW,areaH);
 			maxAreaMC.alpha = 0 ;
 			
-			field = new Vector.<PopField>();
+			field = new Vector.<PopFieldInterface>();
 			
 			mainText = Obj.get('main_txt',this);
 			mainTextMinHeight = mainText.height ;
@@ -150,19 +150,62 @@ package popForm
 				for(i = 0 ; i<content.fieldDatas.fieldDefaults.length ; i++)
 				{
 					//trace("content.fieldDatas.keyBoards[i] : "+content.fieldDatas.keyBoards[i]);
-					var newfield:PopField = new PopField(content.fieldDatas.tagNames[i]
-						,content.fieldDatas.fieldDefaults[i]
-						,content.fieldDatas.keyBoards[i]
-						,content.fieldDatas.isPassWorld[i]
-						,content.fieldDatas.editable[i]
-						,content.fieldDatas.isArabic[i]
-						,content.fieldDatas.numLines[i]
-					);
-					this.addChild(newfield);
-					newfield.y = Y ;
-					Y+=newfield.height+10;
-					deltaYForFiedl = 10;//newfield.height*2 ;
-					field.push(newfield) ;
+					if(content.fieldDatas.popFieldType[i] == PopMenuFieldTypes.STRING)
+					{
+						trace("It is String field");
+						var newfield:PopField = new PopField(
+							content.fieldDatas.tagNames[i]
+							,content.fieldDatas.fieldDefaults[i]
+							,content.fieldDatas.keyBoards[i]
+							,content.fieldDatas.isPassWorld[i]
+							,content.fieldDatas.editable[i]
+							,content.fieldDatas.isArabic[i]
+							,content.fieldDatas.numLines[i]
+							,content.fieldDatas.languageDirection[i]
+							,content.fieldDatas.backColor[i]
+						);
+						this.addChild(newfield);
+						newfield.y = Y ;
+						Y+=newfield.height+10;
+						deltaYForFiedl = 10;//newfield.height*2 ;
+						field.push(newfield) ;
+					}
+					else if(content.fieldDatas.popFieldType[i] == PopMenuFieldTypes.DATE)
+					{
+						trace("add date input field");
+						var newfieldDate:PopFieldDate = new PopFieldDate(
+							content.fieldDatas.tagNames[i]
+							,content.fieldDatas.fieldDefaultDate[i]
+							,content.fieldDatas.isArabic[i]
+							,content.fieldDatas.languageDirection[i]
+							,content.fieldDatas.backColor[i]
+						);
+						this.addChild(newfieldDate);
+						newfieldDate.y = Y ;
+						Y+=newfieldDate.height+10;
+						deltaYForFiedl = 10;//newfield.height*2 ;
+						field.push(newfieldDate) ;
+					}
+					else if(content.fieldDatas.popFieldType[i] == PopMenuFieldTypes.TIME)
+					{
+						trace("add Time input field");
+						var newfieldTime:PopFieldTime = new PopFieldTime(
+							content.fieldDatas.tagNames[i]
+							,content.fieldDatas.fieldDefaultDate[i]
+							,content.fieldDatas.isArabic[i]
+							,content.fieldDatas.languageDirection[i]
+							,content.fieldDatas.backColor[i]
+						);
+						this.addChild(newfieldTime);
+						newfieldTime.y = Y ;
+						Y+=newfieldTime.height+10;
+						deltaYForFiedl = 10;//newfield.height*2 ;
+						field.push(newfieldTime) ;
+					}
+					else
+					{
+						throw "This is undefined type of PopMenuField";
+					}
 				}
 				//Y -= newfield.height ;
 			}
@@ -267,7 +310,9 @@ package popForm
 			var outField:Object = {};
 			for(var i = 0 ; i<field.length ; i++)
 			{
-				outField[field[i].title] = field[i].text ;
+				//trace("field[i].title : "+field[i].title);
+				//trace("field[i].data : "+field[i].data);
+				outField[field[i].title] = field[i].data ;
 			}
 			this.dispatchEvent(new PopMenuEvent(PopMenuEvent.POP_BUTTON_SELECTED,PopButton(e.currentTarget).ID,outField,PopButton(e.currentTarget).title));
 		}

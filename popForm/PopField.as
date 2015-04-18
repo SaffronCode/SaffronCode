@@ -6,7 +6,7 @@
 	import flash.text.SoftKeyboardType;
 	import flash.text.TextField;
 	
-	public class PopField extends MovieClip
+	public class PopField extends PopFieldInterface
 	{
 		private var myTXT:TextField ;
 		
@@ -22,9 +22,14 @@
 			return myTXT.text ;
 		}
 		
-		public function get title():String
+		override public function get title():String
 		{
 			return myTitle;
+		}
+		
+		override public function get data():*
+		{
+			return title ;
 		}
 		
 		public function changeColor(colorFrame:uint)
