@@ -82,10 +82,20 @@ package sliderMenu
 		}
 		
 		/**hide all menus*/
-		public static function hide()
+		public static function hide(instanceHide:Boolean=false)
 		{
-			mouseFirstPose = null ;
-			currentDraggingPose = '' ;
+			if(myRoot!=null)
+			{
+				mouseFirstPose = null ;
+				currentDraggingPose = '' ;
+				if(instanceHide)
+				{
+					var cashedAnimSpeed:uint = animSpeed ;
+					animSpeed = 1;
+					anim(null);
+					animSpeed = cashedAnimSpeed ;
+				}
+			}
 		}
 		
 		
