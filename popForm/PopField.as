@@ -15,6 +15,9 @@
 		private var backMC:MovieClip ;
 		private var myTitle:String;
 		
+		/**If this was true, data function will controll the phone correction befor returning the value*/
+		public var phoneControl:Boolean = false ;
+		
 		
 		/**this will returns last inputed text to client*/
 		public function get text():String
@@ -27,9 +30,31 @@
 			return myTitle;
 		}
 		
+		override public function update(data:*):void
+		{
+			if(data!=null)
+			{
+				myTXT.text = data as String ;
+				myTXT.dispatchEvent(new Event(Event.CHANGE));
+			}
+		}
+		
 		override public function get data():*
 		{
-			return title ;
+			if(phoneControl)
+			{
+				var cash:String = PhoneNumberEditor.clearPhoneNumber(text);
+				if(cash == 'false')
+				{
+					trace("This phone number is incorrect");
+					return text ;
+				}
+				else
+				{
+					return cash ;
+				}
+			}
+			return text ;
 		}
 		
 		public function changeColor(colorFrame:uint)

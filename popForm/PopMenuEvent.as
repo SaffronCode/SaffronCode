@@ -11,6 +11,10 @@
 		
 		public static const POP_BUTTON_SELECTED = "buttonSelecte";
 		
+		/**Dispatches when CLICK field selects.<br>
+		 * When this event dispatches from field, you have to detect field id from buttonID value and you can get last field value by using field[buttinID]*/
+		public static const FIELD_SELECTED:String = "FIELD_SELECTED" ;
+		
 		/**Button id can be String or Number*/
 		public var 	buttonID:*,
 					buttonTitle:String; 
@@ -20,9 +24,9 @@
 		public var field:Object ;
 		
 		/**Button id can be a String value*/
-		public function PopMenuEvent(type:String,ButtonID:*=0,enteredField:Object=null,ButtonTitle:String='')
+		public function PopMenuEvent(type:String,ButtonID:*=0,enteredField:Object=null,ButtonTitle:String='',bubble:Boolean=false)
 		{
-			super(type);
+			super(type,bubble);
 			buttonID = ButtonID;
 			buttonTitle = ButtonTitle ;
 			if(enteredField == null)

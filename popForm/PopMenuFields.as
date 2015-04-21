@@ -63,6 +63,42 @@ package popForm
 			popFieldType.push(PopMenuFieldTypes.STRING);
 		}
 		
+		public function addPhoneField(tagName:String,fieldDefault:String='',isArabic_v:Boolean=true,frameForDirection:uint=1,fieldColorFrame:uint=1)
+		{
+			tagNames.push(tagName);
+			fieldDefaults.push(fieldDefault);
+			fieldDefaultDate.push(null);
+			keyBoards.push(SoftKeyboardType.NUMBER);
+			isPassWorld.push(false);
+			editable.push(true);
+			isArabic.push(isArabic_v);
+			numLines.push(1);
+			languageDirection.push(frameForDirection);
+			backColor.push(fieldColorFrame);
+			
+			popFieldType.push(PopMenuFieldTypes.PHONE);
+		}
+		
+		/**add new field<br>
+		 * frameForDirection: 1 for rtl and 2 for ltr script*/
+		public function addClickField(tagName:String,fieldDefault:String='',/*keyBoardType:String = SoftKeyboardType.DEFAULT*//*,isPass:Boolean=false*//*,Editable:Boolean = true,*/isArabic_v:Boolean=true,numLine:uint=1,frameForDirection:uint=1,fieldColorFrame:uint=1)
+		{
+			//keyBoardType = (keyBoardType==null)?SoftKeyboardType.DEFAULT:keyBoardType;
+			
+			tagNames.push(tagName);
+			fieldDefaults.push(fieldDefault);
+			fieldDefaultDate.push(null);
+			keyBoards.push(null);
+			isPassWorld.push(false);
+			editable.push(true);
+			isArabic.push(isArabic_v);
+			numLines.push(numLine);
+			languageDirection.push(frameForDirection);
+			backColor.push(fieldColorFrame);
+			
+			popFieldType.push(PopMenuFieldTypes.CLICK);
+		}
+		
 		/**add new field<br>
 		 * frameForDirection: 1 for rtl and 2 for ltr script*/
 		public function addDateField(tagName:String,fieldDefaultDates:Date=null,Editable:Boolean = true,isArabic_v:Boolean=true,frameForDirection:uint=1,fieldColorFrame:uint=1)

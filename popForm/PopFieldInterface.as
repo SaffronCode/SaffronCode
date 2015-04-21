@@ -9,6 +9,11 @@ package popForm
 			super();
 		}
 		
+		public function update(data:*):void
+		{
+			
+		}
+		
 		public function get title():String
 		{
 			return '' ;

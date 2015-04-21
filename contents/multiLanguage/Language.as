@@ -111,7 +111,14 @@
 			}*/
 			
 			
-			myStage.addEventListener(Event.ADDED,itemIsAdded,false,1);
+			if(myStage!=null)
+			{
+				myStage.addEventListener(Event.ADDED,itemIsAdded,false,1);
+			}
+			else
+			{
+				trace("**languagesAuto Convert is disabled");
+			}
 			
 			
 			langDispatcher.dispatchEvent(new Event(IM_READY_EVENT));
@@ -163,10 +170,17 @@
 				_rtl = true ;
 			}
 			
-			UnicodeStatic.deactiveConvertor = !_isArabic ;
-			FarsiInputCorrection.preventConvertor = !_isArabic ;
-			FarsiInputCorrection.detectArabic = isArabic ;
-			manageAll(myStage);
+			if(myStage!=null)
+			{
+				UnicodeStatic.deactiveConvertor = !_isArabic ;
+				FarsiInputCorrection.preventConvertor = !_isArabic ;
+				FarsiInputCorrection.detectArabic = isArabic ;
+				manageAll(myStage);
+			}
+			else
+			{
+				trace("**Auto language switch is disabled");
+			}
 		}
 		
 		

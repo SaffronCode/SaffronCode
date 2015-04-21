@@ -6,6 +6,8 @@ package popForm
 	import flash.text.SoftKeyboardType;
 	import flash.text.TextField;
 	
+	import soundPlayer.SoundPlayer;
+	
 	public class PopFieldDate extends PopFieldInterface
 	{
 		public var tagTF:TextField,
@@ -15,6 +17,7 @@ package popForm
 					myTitle:String;
 		
 		private var backMC:MovieClip;
+		private var IsArabic:Boolean;
 		
 		public function changeColor(colorFrame:uint)
 		{
@@ -24,6 +27,8 @@ package popForm
 		public function PopFieldDate(tagName:String,defaultDate:Date=null,isArabic:Boolean=false,languageFrame:uint=1,color:uint=1)
 		{
 			super();
+			
+			IsArabic = isArabic ;
 			
 			myTitle = tagName ;
 			
@@ -41,8 +46,15 @@ package popForm
 			monthTF = Obj.get("month_txt",this);
 			dayTF = Obj.get("day_txt",this);
 			
-			var clearAfterSelects:Boolean = false ;
 			
+			update(defaultDate);
+			
+		}
+		
+		override public function update(data:*):void
+		{
+			var clearAfterSelects:Boolean = false ;
+			var defaultDate:Date = data as Date ;
 			if(defaultDate!=null)
 			{
 				yearTF.text = String(defaultDate.fullYear);
@@ -57,9 +69,9 @@ package popForm
 				dayTF.text = 'dd';
 			}
 			
-			FarsiInputCorrection.setUp(yearTF,SoftKeyboardType.NUMBER,isArabic,true,clearAfterSelects);
-			FarsiInputCorrection.setUp(monthTF,SoftKeyboardType.NUMBER,isArabic,true,clearAfterSelects);
-			FarsiInputCorrection.setUp(dayTF,SoftKeyboardType.NUMBER,isArabic,true,clearAfterSelects);
+			FarsiInputCorrection.setUp(yearTF,SoftKeyboardType.NUMBER,IsArabic,true,clearAfterSelects);
+			FarsiInputCorrection.setUp(monthTF,SoftKeyboardType.NUMBER,IsArabic,true,clearAfterSelects);
+			FarsiInputCorrection.setUp(dayTF,SoftKeyboardType.NUMBER,IsArabic,true,clearAfterSelects);
 		}
 		
 		override public function get title():String
@@ -91,7 +103,12 @@ package popForm
 				return null;
 			}
 			
-			if(yearNum<1394 || yearNum>2100 || (yearNum>1500 && yearNum<2015))
+			if(yearNum<100)
+			{
+				yearNum+=1300 ;
+			}
+			
+			if(yearNum<1200 || yearNum>2100 || (yearNum>1500 && yearNum<1850))
 			{
 				return null 
 			}
@@ -108,11 +125,12 @@ package popForm
 			
 			
 			var finalDate:Date ;
-			
+			//trace("yearNum : "+yearNum);
 			if(yearNum<1500)
 			{
 				var shamsiDate:DateShamsi = new DateShamsi(yearNum,(monthNum-1),dayNum);
 				finalDate = DateShamsi.shamsiToMiladi(shamsiDate);
+				//trace("This was shamsi : "+finalDate);
 			}
 			else
 			{

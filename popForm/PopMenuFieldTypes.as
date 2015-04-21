@@ -8,6 +8,11 @@ package popForm
 		
 		public static const TIME:uint = 2 ;
 		
+		/**This type is same as string value but user cannot edit the text but when he clicek, it will dispatch an event*/
+		public static const CLICK:uint = 3 ;
+		
+		public static const PHONE:uint = 4 ;
+		
 		public var type:uint ;
 		
 		public function PopMenuFieldTypes(myType:uint=STRING)

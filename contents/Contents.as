@@ -42,7 +42,8 @@ package contents
 		
 		public static var 	lang:Language,
 							langFile:String = "Data/language.xml",
-							langEnabled:Boolean = false ;
+							langEnabled:Boolean = false,
+							autoLangUpdate:Boolean = false ;
 		
 		
 	//////////////////////////////////////////////////////↓
@@ -72,13 +73,15 @@ package contents
 		/**From this version, content.xml will load instantly and there is no need to wail till onLoaded function calls.<br>
 		 * if your application is supporting multilanguages, you have to use language.xml standart near the content.xml file. and also 
 		 * you have to set application stage here for the Language class to help it to find added elements to stage.*/
-		public static function setUp(OnLoaded:Function=null,supportsMultiLanguage:Boolean=false,stage:Stage=null)
+		public static function setUp(OnLoaded:Function=null,supportsMultiLanguage:Boolean=false,autoConvertFontsAndContentTextsByLanguage:Boolean=true,stage:Stage=null)
 		{
 			onLoaded = OnLoaded ;
 			
 			lang = new Language();
 			
 			langEnabled = supportsMultiLanguage ;
+			autoLangUpdate = supportsMultiLanguage && autoConvertFontsAndContentTextsByLanguage ;
+			//trace("autoLangUpdate : "+autoLangUpdate);
 			myStage = stage ;
 			
 			
@@ -106,7 +109,12 @@ package contents
 		{
 			if(langEnabled)
 			{
-				lang.setUp(langFile,myStage);
+				var passStage:Stage = null ;
+				if(autoLangUpdate)
+				{
+					passStage = myStage ;
+				}
+				lang.setUp(langFile,passStage);
 			}
 		}
 		
@@ -203,7 +211,7 @@ package contents
 			}
 			
 			//This will update all contents with current language and it will controll for the existing of the language
-			if(langEnabled)
+			if(/*langEnabled*/autoLangUpdate)
 			{
 				var controller:String ;
 				

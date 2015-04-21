@@ -7,13 +7,14 @@ package appManager.mains
 	
 	public class AppWithContent extends App
 	{
-		public function AppWithContent(supportsMultiLanguage:Boolean=false)
+		/**AutoLanguageConvertion will enabled just when supportsMutilanguage was true*/
+		public function AppWithContent(supportsMultiLanguage:Boolean=false,autoLanguageConvertEnabled:Boolean=true)
 		{
 			super();
 			
 			stopIntro();
 			//Multilanguage support added to current version.
-			Contents.setUp(startApp,supportsMultiLanguage,this.stage);
+			Contents.setUp(startApp,supportsMultiLanguage,autoLanguageConvertEnabled,this.stage);
 		}
 		
 		/**Contents are load now*/

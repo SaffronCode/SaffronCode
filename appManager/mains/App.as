@@ -120,11 +120,15 @@ package appManager.mains
 		protected function managePages(event:AppEvent):Boolean
 		{
 			trace('page changes to : '+event.myID);
-			currentAppEvent = event ;
-			if(pageManagerObject.toEvent.myID == event.myID)
+			//currentAppEvent = event ;•↓
+			//Why it dosen't currentAppEvent befor???????????????????????????
+			//I had bug befot, I tried to get back to home page when the main anim is animating to external pages and it caused crash when I checked current Event with pageManager's event.
+			if(/*pageManagerObject.toEvent*/currentAppEvent.myID == event.myID)
 			{
 				return false;
 			}
+			//Moved from top↑•
+				currentAppEvent = event ;
 			// TODO Auto-generated method stub
 			if(mainAnim == null)
 			{

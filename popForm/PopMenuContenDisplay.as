@@ -83,6 +83,30 @@ package popForm
 			height0 = this.height ;
 		}
 		
+		public function update(content:PopMenuFields):void
+		{
+			for(var i = 0 ; i<content.fieldDefaults.length ; i++)
+			{
+				for(var j=0 ; j<field.length ; j++)
+				{
+					if(field[j].title == content.tagNames[i])
+					{
+						//Update this field;
+						if(field[j] is PopFieldDate)
+						{
+							trace("Update date");
+							field[j].update(content.fieldDefaultDate[i]);
+						}
+						else
+						{
+							field[j].update(content.fieldDefaults[i]);
+						}
+						break;
+					}
+				}
+			}
+		}
+		
 		/**set up the pop menu contents*/
 		public function setUp(content:PopMenuContent=null/*,color:ColorTransform*/)
 		{
@@ -150,61 +174,88 @@ package popForm
 				for(i = 0 ; i<content.fieldDatas.fieldDefaults.length ; i++)
 				{
 					//trace("content.fieldDatas.keyBoards[i] : "+content.fieldDatas.keyBoards[i]);
-					if(content.fieldDatas.popFieldType[i] == PopMenuFieldTypes.STRING)
+					switch(content.fieldDatas.popFieldType[i])
 					{
-						trace("It is String field");
-						var newfield:PopField = new PopField(
-							content.fieldDatas.tagNames[i]
-							,content.fieldDatas.fieldDefaults[i]
-							,content.fieldDatas.keyBoards[i]
-							,content.fieldDatas.isPassWorld[i]
-							,content.fieldDatas.editable[i]
-							,content.fieldDatas.isArabic[i]
-							,content.fieldDatas.numLines[i]
-							,content.fieldDatas.languageDirection[i]
-							,content.fieldDatas.backColor[i]
-						);
-						this.addChild(newfield);
-						newfield.y = Y ;
-						Y+=newfield.height+10;
-						deltaYForFiedl = 10;//newfield.height*2 ;
-						field.push(newfield) ;
-					}
-					else if(content.fieldDatas.popFieldType[i] == PopMenuFieldTypes.DATE)
-					{
-						trace("add date input field");
-						var newfieldDate:PopFieldDate = new PopFieldDate(
-							content.fieldDatas.tagNames[i]
-							,content.fieldDatas.fieldDefaultDate[i]
-							,content.fieldDatas.isArabic[i]
-							,content.fieldDatas.languageDirection[i]
-							,content.fieldDatas.backColor[i]
-						);
-						this.addChild(newfieldDate);
-						newfieldDate.y = Y ;
-						Y+=newfieldDate.height+10;
-						deltaYForFiedl = 10;//newfield.height*2 ;
-						field.push(newfieldDate) ;
-					}
-					else if(content.fieldDatas.popFieldType[i] == PopMenuFieldTypes.TIME)
-					{
-						trace("add Time input field");
-						var newfieldTime:PopFieldTime = new PopFieldTime(
-							content.fieldDatas.tagNames[i]
-							,content.fieldDatas.fieldDefaultDate[i]
-							,content.fieldDatas.isArabic[i]
-							,content.fieldDatas.languageDirection[i]
-							,content.fieldDatas.backColor[i]
-						);
-						this.addChild(newfieldTime);
-						newfieldTime.y = Y ;
-						Y+=newfieldTime.height+10;
-						deltaYForFiedl = 10;//newfield.height*2 ;
-						field.push(newfieldTime) ;
-					}
-					else
-					{
-						throw "This is undefined type of PopMenuField";
+						case(PopMenuFieldTypes.CLICK):
+						case(PopMenuFieldTypes.PHONE):
+						case(PopMenuFieldTypes.STRING):
+						{
+							trace("It is String field");
+							var newfield:PopField = new PopField(
+								content.fieldDatas.tagNames[i]
+								,content.fieldDatas.fieldDefaults[i]
+								,content.fieldDatas.keyBoards[i]
+								,content.fieldDatas.isPassWorld[i]
+								,content.fieldDatas.editable[i]
+								,content.fieldDatas.isArabic[i]
+								,content.fieldDatas.numLines[i]
+								,content.fieldDatas.backColor[i]
+								,content.fieldDatas.languageDirection[i]
+							);
+							this.addChild(newfield);
+							newfield.y = Y ;
+							Y+=newfield.height+10;
+							deltaYForFiedl = 10;//newfield.height*2 ;
+							field.push(newfield) ;
+							
+							switch(content.fieldDatas.popFieldType[i])
+							{
+								case(PopMenuFieldTypes.CLICK):
+								{
+									newfield.mouseChildren = false ;
+									newfield.mouseEnabled = true ;
+									newfield.buttonMode = true ;
+									newfield.addEventListener(MouseEvent.CLICK,clicableFieldSelects);
+									break;
+								}
+								case(PopMenuFieldTypes.PHONE):
+								{
+									newfield.phoneControl = true ;
+									break
+								}
+							}
+							
+							break;
+						}
+						case(PopMenuFieldTypes.DATE):
+						{
+							trace("add date input field");
+							var newfieldDate:PopFieldDate = new PopFieldDate(
+								content.fieldDatas.tagNames[i]
+								,content.fieldDatas.fieldDefaultDate[i]
+								,content.fieldDatas.isArabic[i]
+								,content.fieldDatas.languageDirection[i]
+								,content.fieldDatas.backColor[i]
+							);
+							this.addChild(newfieldDate);
+							newfieldDate.y = Y ;
+							Y+=newfieldDate.height+10;
+							deltaYForFiedl = 10;//newfield.height*2 ;
+							field.push(newfieldDate) ;
+							
+							break;
+						}
+						case(PopMenuFieldTypes.TIME):
+						{
+							trace("add Time input field");
+							var newfieldTime:PopFieldTime = new PopFieldTime(
+								content.fieldDatas.tagNames[i]
+								,content.fieldDatas.fieldDefaultDate[i]
+								,content.fieldDatas.isArabic[i]
+								,content.fieldDatas.languageDirection[i]
+								,content.fieldDatas.backColor[i]
+							);
+							this.addChild(newfieldTime);
+							newfieldTime.y = Y ;
+							Y+=newfieldTime.height+10;
+							deltaYForFiedl = 10;//newfield.height*2 ;
+							field.push(newfieldTime) ;
+							break;
+						}
+						default:
+						{
+							throw "This is undefined type of PopMenuField";
+						}
 					}
 				}
 				//Y -= newfield.height ;
@@ -290,9 +341,23 @@ package popForm
 			}
 		}
 		
+		
+		private function clicableFieldSelects(e:MouseEvent)
+		{
+			//trace("Dispatch selected field");
+			var targ:PopField = e.currentTarget as PopField ;
+			targ.title;
+			targ.data ;
+			
+			var fieldData:Object = {} ;
+			fieldData[targ.title] = targ.data ;
+			
+			this.dispatchEvent(new PopMenuEvent(PopMenuEvent.FIELD_SELECTED,targ.title,fieldData,targ.title,true));
+		}
+		
 		public function updateScrollheight()
 		{
-			trace(maxAreaMC.height+'+'+stagePlusHaight+'+'+myHieghtPlus);
+			trace("myHieghtPlus : "+maxAreaMC.height+'+'+stagePlusHaight+'+'+myHieghtPlus);
 			var scrollRect:Rectangle = new Rectangle(this.x-maxAreaMC.width/2,thisY,maxAreaMC.width,maxAreaMC.height+stagePlusHaight+myHieghtPlus) ;
 			var areaRect:Rectangle = new Rectangle(maxAreaMC.width/-2,0,maxAreaMC.width,10) ;
 			scroll = new ScrollMT(this,scrollRect,areaRect,true);
