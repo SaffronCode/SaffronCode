@@ -191,8 +191,9 @@ package contents
 		}
 		
 		
-		/**this will returns page data based on input id*/
-		public static function getPage(pageID:String):PageData 
+		/**this will returns page data based on input id<.br>
+		 * dontUseLanguage balue will prevent this function to converting texts from language.xml clas*/
+		public static function getPage(pageID:String,dontUseLanguage:Boolean=false):PageData 
 		{
 			if(isDebug)
 			{
@@ -211,10 +212,12 @@ package contents
 			}
 			
 			//This will update all contents with current language and it will controll for the existing of the language
-			if(/*langEnabled*/autoLangUpdate)
+			if(/*langEnabled*/autoLangUpdate && !dontUseLanguage)
 			{
 				var controller:String ;
-				
+				controller = lang.t[foundedPage.imageTarget];
+				if(controller != null)
+					foundedPage.imageTarget = controller ;
 				controller = lang.t[foundedPage.title];
 				if(controller != null)
 					foundedPage.title = controller ;
