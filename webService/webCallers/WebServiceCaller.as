@@ -163,7 +163,7 @@ package webService.webCallers
 			
 			if(parsedSituation)
 			{
-				dispatchEveryWhere(Event.COMPLETE);
+				dispatchEveryWhere(Event.COMPLETE,true);
 			}
 			else
 			{
@@ -190,12 +190,17 @@ package webService.webCallers
 			return true ;
 		}
 		
-		private function dispatchEveryWhere(eventName:String)
+		private function dispatchEveryWhere(eventName:String,sendChangeIfSentErlier:Boolean = false )
 		{
 			//TODO: implement function
 			if(!doNotDispatchEventsAgain)
 			{
 				this.dispatchEvent(new Event(eventName));
+			}
+			else if(sendChangeIfSentErlier)
+			{
+				this.dispatchEvent(new Event(Event.CHANGE));
+				trace("Service Content is Updated");
 			}
 			else
 			{
