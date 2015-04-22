@@ -195,7 +195,14 @@ package webService.webCallers
 			//TODO: implement function
 			if(!doNotDispatchEventsAgain)
 			{
-				this.dispatchEvent(new Event(eventName));
+				if(eventName == ErrorEvent.ERROR)
+				{
+					this.dispatchEvent(new ErrorEvent(ErrorEvent.ERROR));
+				}
+				else
+				{
+					this.dispatchEvent(new Event(eventName));
+				}
 			}
 			else if(sendChangeIfSentErlier)
 			{
