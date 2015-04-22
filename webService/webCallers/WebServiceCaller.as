@@ -15,6 +15,7 @@ package webService.webCallers
 	[Event(name="complete", type="flash.events.Event")]
 	[Event(name="unload", type="flash.events.Event")]
 	[Event(name="error", type="flash.events.ErrorEvent")]
+	[Event(name="change", type="flash.events.Event")]
 	
 	
 	public class WebServiceCaller extends EventDispatcher
@@ -39,7 +40,8 @@ package webService.webCallers
 		
 		private var offlineDate:Date,
 					LoadForDoubleControll:Boolean = false,
-					doNotDispatchEventsAgain:Boolean = false;
+					offlineValuesToSend:String = null;//,
+					//doNotDispatchEventsAgain:Boolean = false
 		
 		public function WebServiceCaller(myWebServiceName:String,offlineDataIsOK_v:Boolean=true,justLoadOfline_v:Boolean=false,maximomOfflineData:Date = null)
 		{
@@ -58,8 +60,9 @@ package webService.webCallers
 		protected function loadParams(...params):void
 		{
 			cansel();
+			offlineValuesToSend = null ;
 			//You have permition to dispatch events now.
-			doNotDispatchEventsAgain = false ;
+			//doNotDispatchEventsAgain = false ;
 			myParam = params ;
 			//#1
 			if(justLoadOffline)
@@ -74,7 +77,8 @@ package webService.webCallers
 				if(cashedData != null)
 				{
 					generateDataAndDispatchEvent(cashedData);
-					doNotDispatchEventsAgain = true ;
+					//doNotDispatchEventsAgain = true ;
+					offlineValuesToSend = cashedData ;
 					if(LoadForDoubleControll)
 					{
 	 					myWebService.Connect(onConnected,noInternet);	
@@ -94,6 +98,7 @@ package webService.webCallers
 		public function cansel()
 		{
 			//TODO: implement function
+			
 			myWebService.eventListen.removeEventListener(WebEvent.EVENT_DISCONNECTED,noInternet);
 			myWebService.eventListen.removeEventListener(WebEvent.Result,loaded);
 			myWebService.Disconnect(onConnected,noInternet);
@@ -124,7 +129,7 @@ package webService.webCallers
 				}
 				else
 				{
-					dispatchEveryWhere(Event.UNLOAD);
+					event_noInternet();
 				}
 			}
 		}
@@ -143,10 +148,11 @@ package webService.webCallers
 		private function generateDataAndDispatchEvent(pureData:String):void
 		{
 			//#3
+			
 			if(pureData==null)
 			{
 				pureData = WebServiceSaver.load(this,myParam);
-				trace('cash loads : '+pureData);
+				//trace('cash loads : '+pureData);
 			}
 			else if(offlineDataIsOK && pureData!=null)
 			{
@@ -154,7 +160,7 @@ package webService.webCallers
 			}
 			if(pureData==null)
 			{
-				dispatchEveryWhere(Event.UNLOAD);
+				//dispatchEveryWhere(Event.UNLOAD);
 				return ;
 			}
 			
@@ -163,12 +169,34 @@ package webService.webCallers
 			
 			if(parsedSituation)
 			{
-				dispatchEveryWhere(Event.COMPLETE,true);
+				//trace("Load complete");
+				//trace("offlineValuesToSend : "+offlineValuesToSend);
+				//trace("pureData : "+pureData);
+				if(offlineValuesToSend == null && pureData!=null)
+				{
+					offlineValuesToSend = pureData ;
+					//trace("It is the first dispatching time");
+					//dispatchEveryWhere(Event.COMPLETE,false);
+					event_data();
+				}
+				else if(offlineValuesToSend != pureData)
+				{
+					//There is no need to send update
+					trace(">Server data is changed");
+					//dispatchEveryWhere(Event.COMPLETE,true);
+					event_dataUpdated()
+				}
+				else
+				{
+					trace(">Server data is steal same as old dispatched data");
+				}
 			}
 			else
 			{
-				dispatchEveryWhere(ErrorEvent.ERROR);
-				dispatchEveryWhere(Event.UNLOAD);
+				event_wrongInputs();
+				event_noInternet();
+				//dispatchEveryWhere(ErrorEvent.ERROR);
+				//dispatchEveryWhere(Event.UNLOAD);
 			}
 		}
 		
@@ -190,10 +218,36 @@ package webService.webCallers
 			return true ;
 		}
 		
-		private function dispatchEveryWhere(eventName:String,sendChangeIfSentErlier:Boolean = false )
+		//private function eventDispatcher(completedAtTheFirstTime:Boolean=false,Updated:Boolean=false,DataError:Boolean){};
+		
+		
+		
+	/////////////////////////New Managed events
+		private function event_noInternet():void
 		{
-			//TODO: implement function
-			if(!doNotDispatchEventsAgain)
+			this.dispatchEvent(new Event(Event.UNLOAD));
+		}
+		
+		private function event_wrongInputs():void
+		{
+			this.dispatchEvent(new ErrorEvent(ErrorEvent.ERROR));
+		}
+		
+		private function event_dataUpdated():void
+		{
+			this.dispatchEvent(new Event(Event.CHANGE));
+		}
+		
+		private function event_data():void
+		{
+			this.dispatchEvent(new Event(Event.COMPLETE));
+		}
+		
+		//Removed to make any situation dispatchs its own event.
+		/*private function dispatchEveryWhere(eventName:String,sendChangeIfSentErlier:Boolean = false )
+		{
+			//below meand ofline data is not dispatched yet.
+			if(offlineValuesToSend==null)//!doNotDispatchEventsAgain)
 			{
 				if(eventName == ErrorEvent.ERROR)
 				{
@@ -213,6 +267,6 @@ package webService.webCallers
 			{
 				trace("I cannot dispatch my events any more : "+eventName);
 			}
-		}
+		}*/
 	}
 }
