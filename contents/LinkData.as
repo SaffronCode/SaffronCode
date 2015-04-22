@@ -70,8 +70,22 @@
 		/**Clone the link*/
 		public function clone():LinkData
 		{
-			var clonedLink:LinkData = new LinkData(this.export());
-			return clonedLink ;
+			//return new LinkData(this.export()) ;
+			
+			//new method for clone
+			var newLinkData:LinkData = new LinkData();
+			
+			for(var i = 0 ; i<subLinks.length ; i++)
+			{
+				newLinkData.subLinks[i] = subLinks[i].clone();
+			}
+			
+			newLinkData.name = name ;
+			newLinkData.id = id ;
+			newLinkData.iconURL = iconURL ;
+			newLinkData.level = level ;
+			
+			return newLinkData ;
 		}
 	}
 }

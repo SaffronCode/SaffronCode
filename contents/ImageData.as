@@ -108,5 +108,20 @@ package contents
 			}
 			catch(e){};
 		}
+		
+		
+		/**Creat copy for this ImageData*/
+		public function clone():ImageData
+		{
+			var newImageData = new ImageData();
+			newImageData.targURL = targURL ;
+			newImageData.width = width ;
+			newImageData.height = height ;
+			newImageData.x = x ;
+			newImageData.y = y ;
+			newImageData.text = text ;
+			
+			return newImageData ;
+		}
 	}
 }

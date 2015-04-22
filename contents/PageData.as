@@ -191,7 +191,39 @@ package contents
 		public function clone():PageData
 		{
 			// TODO Auto Generated method stub
-			return new PageData(export());
+			//return new PageData(export());
+			
+			//new Clone system 
+			var newPageData:PageData = new PageData();
+			var i:int ;
+			
+			newPageData.id = id ;
+			newPageData.musicURL = musicURL ;
+			newPageData.type = type ;
+			newPageData.title = title ;
+			newPageData.imageTarget = imageTarget ;
+			newPageData.content = content ;
+			newPageData.contentX = contentX ;
+			newPageData.contentAlign = contentAlign ;
+			newPageData.contentY = contentY ;
+			newPageData.contentW = contentW ;
+			newPageData.contentH = contentH ;
+			
+			//Mange belos ↓
+			for(i = 0 ; i<links1.length ; i++)
+			{
+				newPageData.links1[i] = links1[i].clone() ;
+			}
+			for(i = 0 ; i<links2.length ; i++)
+			{
+				newPageData.links2[i] = links2[i].clone() ;
+			}
+			
+			for(i = 0 ; i<images.length ; i++)
+			{
+				newPageData.images[i] = images[i].clone() ;
+			}
+			return newPageData ;
 		}
 	}
 }

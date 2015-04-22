@@ -15,6 +15,7 @@ package contents
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
 	import flash.net.URLLoader;
+	import flash.utils.getTimer;
 
 	
 	public class Contents
@@ -121,10 +122,11 @@ package contents
 		/**Load the xml file now*/
 		private static function loadXML()
 		{
+			//trace("1. debug time : "+getTimer());
 			var fileLoader:FileStream = new FileStream();
 			var fileTarger:File = File.applicationDirectory.resolvePath(dataFile);
 			fileLoader.open(fileTarger,FileMode.READ);
-			
+			//trace("2. debug time : "+getTimer());
 			xmlLoaded(null,fileLoader.readUTFBytes(fileLoader.bytesAvailable));
 		}
 		
@@ -149,6 +151,7 @@ package contents
 				var pageData:PageData = new PageData(loadedXML.page[i]);
 				pages.push(pageData);
 			}
+			//trace("3. debug time : "+getTimer());
 			
 			//You have to keep ides so you cannot override the names and titles once for all. it will distroy ides. so update it when getPage function calls.
 			//controllLanguage();
@@ -163,6 +166,7 @@ package contents
 				eventDispatcher.dispatchEvent(new ContentsEvent());
 			}
 			xmlLoadedOnce = true ;
+			//trace("4. debug time : "+getTimer());
 		}
 		
 		/**add these datas to pageContents*/
@@ -195,6 +199,8 @@ package contents
 		 * dontUseLanguage balue will prevent this function to converting texts from language.xml clas*/
 		public static function getPage(pageID:String,dontUseLanguage:Boolean=false):PageData 
 		{
+			//trace('1- '+getTimer());
+			
 			if(isDebug)
 			{
 				trace("Debug mode. Warning: Debug mode will remove all pages that added dynamicaly like News nad webGalleries!");
@@ -202,14 +208,21 @@ package contents
 				loadXML();
 			}
 			
+			//trace('2- '+getTimer());
+			
 			var foundedPage:PageData = new PageData();
 			for(var i = 0 ; i<pages.length ;i++)
 			{
 				if(pages[i].id == pageID )
 				{
+					//trace('3- '+getTimer());
 					foundedPage = pages[i].clone();
+					//trace('4- '+getTimer());
+					break;
 				}
 			}
+			
+			//trace('5- '+getTimer());
 			
 			//This will update all contents with current language and it will controll for the existing of the language
 			if(/*langEnabled*/autoLangUpdate && !dontUseLanguage)
@@ -251,6 +264,8 @@ package contents
 						foundedPage.images[i].text = controller ;
 				}
 			}
+			
+			//trace('6- '+getTimer());
 			return foundedPage;
 		}
 		
