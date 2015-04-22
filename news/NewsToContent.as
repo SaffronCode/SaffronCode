@@ -57,7 +57,7 @@ package news
 		{
 			trace("news loaded");
 			// TODO Auto-generated method stub
-			var newsPageData:PageData = Contents.getPage(id_newsPageId).clone();
+			var newsPageData:PageData = Contents.getPage(id_newsPageId,true).clone();
 			newsPageData.links1 = new Vector.<LinkData>();
 			
 			for(var i = 0 ; i<newsListLoader.data.length ; i++)
