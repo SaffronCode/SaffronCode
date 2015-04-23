@@ -62,7 +62,7 @@
 			backMC.gotoAndStop(colorFrame);
 		}
 		
-		public function PopField(tagName:String,defaultText:String,KeyBordType:String = SoftKeyboardType.DEFAULT,isPass:Boolean = false,editable:Boolean = true,isAraic:Boolean=true,numLines:uint = 1,color:uint=1,frame:uint=1)
+		public function PopField(tagName:String,defaultText:String,KeyBordType:String = SoftKeyboardType.DEFAULT,isPass:Boolean = false,editable:Boolean = true,isAraic:Boolean=true,numLines:uint = 1,color:uint=1,frame:uint=1,maxChar:uint=0)
 		{
 			super();
 			
@@ -78,8 +78,11 @@
 			
 			tagNameTXT = Obj.get("tag_txt",Obj.get("tag_txt",this));
 			tagNameTXT.text = "" ;
+			
 			TextPutter.OnButton(tagNameTXT,tagName,true,false,true);
 			myTXT = Obj.get('txt_txt',this);
+			
+			myTXT.maxChars = maxChar ;
 			myTXT.borderColor = 0xD92C5C;
 			myTXT.displayAsPassword = isPass ;
 			myTXT.mouseEnabled = myTXT.selectable = editable ;

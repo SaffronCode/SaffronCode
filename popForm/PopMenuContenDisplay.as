@@ -191,6 +191,7 @@ package popForm
 								,content.fieldDatas.numLines[i]
 								,content.fieldDatas.backColor[i]
 								,content.fieldDatas.languageDirection[i]
+								,content.fieldDatas.maxCharacters[i]
 							);
 							this.addChild(newfield);
 							newfield.y = Y ;

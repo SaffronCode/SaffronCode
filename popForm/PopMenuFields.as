@@ -26,6 +26,8 @@ package popForm
 		
 		/**This will shows if the pop MenuField is STRING or DATE or TIME from the PoMenuFieldTypes*/
 		public var popFieldType:Vector.<uint> ;
+		
+		public var maxCharacters:Vector.<uint> ;
 		/***/
 		public function PopMenuFields()
 		{
@@ -41,11 +43,12 @@ package popForm
 			backColor = new Vector.<uint>();
 			
 			popFieldType = new Vector.<uint>();
+			maxCharacters = new Vector.<uint>();
 		}
 		
 		/**add new field<br>
 		 * frameForDirection: 1 for rtl and 2 for ltr script*/
-		public function addField(tagName:String,fieldDefault:String='',keyBoardType:String = SoftKeyboardType.DEFAULT,isPass:Boolean=false,Editable:Boolean = true,isArabic_v:Boolean=true,numLine:uint=1,frameForDirection:uint=1,fieldColorFrame:uint=1)
+		public function addField(tagName:String,fieldDefault:String='',keyBoardType:String = SoftKeyboardType.DEFAULT,isPass:Boolean=false,Editable:Boolean = true,isArabic_v:Boolean=true,numLine:uint=1,frameForDirection:uint=1,fieldColorFrame:uint=1,maxChar:uint=0)
 		{
 			keyBoardType = (keyBoardType==null)?SoftKeyboardType.DEFAULT:keyBoardType;
 			
@@ -61,6 +64,7 @@ package popForm
 			backColor.push(fieldColorFrame);
 			
 			popFieldType.push(PopMenuFieldTypes.STRING);
+			maxCharacters.push(maxChar);
 		}
 		
 		public function addPhoneField(tagName:String,fieldDefault:String='',isArabic_v:Boolean=true,frameForDirection:uint=1,fieldColorFrame:uint=1)
@@ -77,6 +81,7 @@ package popForm
 			backColor.push(fieldColorFrame);
 			
 			popFieldType.push(PopMenuFieldTypes.PHONE);
+			maxCharacters.push(50);
 		}
 		
 		/**add new field<br>
@@ -97,6 +102,7 @@ package popForm
 			backColor.push(fieldColorFrame);
 			
 			popFieldType.push(PopMenuFieldTypes.CLICK);
+			maxCharacters.push(0);
 		}
 		
 		/**add new field<br>
@@ -117,6 +123,7 @@ package popForm
 			backColor.push(fieldColorFrame);
 			
 			popFieldType.push(PopMenuFieldTypes.DATE);
+			maxCharacters.push(0);
 		}
 		
 		/**add new field<br>
@@ -137,6 +144,7 @@ package popForm
 			backColor.push(fieldColorFrame);
 			
 			popFieldType.push(PopMenuFieldTypes.TIME);
+			maxCharacters.push(0);
 		}
 	}
 }
