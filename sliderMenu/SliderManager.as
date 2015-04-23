@@ -97,6 +97,11 @@ package sliderMenu
 				}
 			}
 		}
+		/**Tells if menu is open or not*/
+		public static function isOpen():Boolean
+		{
+			return !(currentDraggingPose == '') ;
+		}
 		
 		
 		/**start the drag*/
@@ -304,9 +309,12 @@ package sliderMenu
 		}
 		
 		/**lock the slider menus*/
-		public static function lock()
+		public static function lock(closeBeforLock:Boolean=true)
 		{
-			hide();
+			if(closeBeforLock)
+			{
+				hide();
+			}
 			lock_flag = true ;
 		}
 		
