@@ -12,9 +12,13 @@ package webService.webCallers
 	import webService.WebServiceSaver;
 	import webService.myWebService;
 	
+	/**This event dispatches when ofline or server data is ready to use.*/
 	[Event(name="complete", type="flash.events.Event")]
+	/**This event dispatches when there is no internet connection and there is no ofline data to use. So you have to notify user to controll internet connection.*/
 	[Event(name="unload", type="flash.events.Event")]
+	/**This event tells that server send an error because of wrong input datas on load() function. It can happens after register or login, because of wrong login or register information.*/
 	[Event(name="error", type="flash.events.ErrorEvent")]
+	/**This event dispatches when an update happend whe you used ofline datas. for example you called and service and requseted offline datas and ofline data was available and it was dispatched with COMPLETE event. then web service will try to load the server datas again and the cahnes between last data and new one is discovered. so it will update the data vlue then this event dispatches.*/
 	[Event(name="change", type="flash.events.Event")]
 	
 	
@@ -76,7 +80,7 @@ package webService.webCallers
 				
 				if(cashedData != null)
 				{
-					generateDataAndDispatchEvent(cashedData);
+					generateDataAndDispatchEvent(cashedData,true);
 					//doNotDispatchEventsAgain = true ;
 					offlineValuesToSend = cashedData ;
 					if(LoadForDoubleControll)
@@ -91,6 +95,7 @@ package webService.webCallers
 			}
 			else
 			{
+				Constants.count(4);
 				myWebService.Connect(onConnected,noInternet);
 			}
 		}
@@ -112,7 +117,9 @@ package webService.webCallers
 			myWebService.eventListen.addEventListener(WebEvent.EVENT_DISCONNECTED,noInternet);
 			myWebService.eventListen.addEventListener(WebEvent.Result,loaded);
 			
-			myToken = myWebService.callFunction(myServiceName,myParam)
+			Constants.count(5);
+			myToken = myWebService.callFunction(myServiceName,myParam);
+			Constants.count(6);
 		}
 		
 		private function noInternet(e:WebEvent=null)
@@ -145,18 +152,23 @@ package webService.webCallers
 			}
 		}
 		
-		private function generateDataAndDispatchEvent(pureData:String):void
+		private function generateDataAndDispatchEvent(pureData:String,dontSaveItAgain:Boolean = false ):void
 		{
 			//#3
+			Constants.count(7);
 			
 			if(pureData==null)
 			{
+				Constants.count(7.01);
 				pureData = WebServiceSaver.load(this,myParam);
+				Constants.count(7.02);
 				//trace('cash loads : '+pureData);
 			}
-			else if(offlineDataIsOK && pureData!=null)
+			else if(offlineDataIsOK && pureData!=null && !dontSaveItAgain)//dontSaveItAgain added to prevent oversaving the cashed data again. it was destroies the save date
 			{
+				Constants.count(7.03);
 				WebServiceSaver.save(this,myParam,pureData);
+				Constants.count(7.04);
 			}
 			if(pureData==null)
 			{
@@ -164,11 +176,14 @@ package webService.webCallers
 				return ;
 			}
 			
+			Constants.count(7.1);
 			//you can even controll the data value from overrided function
 			var parsedSituation:Boolean = manageData(pureData);
+			Constants.count(7.2);
 			
 			if(parsedSituation)
 			{
+				Constants.count(8);
 				//trace("Load complete");
 				//trace("offlineValuesToSend : "+offlineValuesToSend);
 				//trace("pureData : "+pureData);
@@ -177,6 +192,7 @@ package webService.webCallers
 					offlineValuesToSend = pureData ;
 					//trace("It is the first dispatching time");
 					//dispatchEveryWhere(Event.COMPLETE,false);
+					Constants.count(9);
 					event_data();
 				}
 				else if(offlineValuesToSend != pureData)

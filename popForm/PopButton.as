@@ -124,8 +124,21 @@
 		}
 		
 		/**From now , buttonID can be both string or uint*/
-		public function setUp(str:String/*,colorTrans:ColorTransform=null*/,buttonID:*=0)
+		public function setUp(str:String/*,colorTrans:ColorTransform=null*/,buttonID:*=0,type:uint = 1,completeButtonObject:* = null )
 		{
+			if(completeButtonObject != null && completeButtonObject is PopButtonData)
+			{
+				type = completeButtonObject.buttonFrame ;
+				buttonID = completeButtonObject.id ;
+				str = completeButtonObject.title ;
+				this.mouseChildren = this.mouseEnabled = completeButtonObject.selectable;
+			}
+			
+			this.gotoAndStop(type);
+			
+			txtTF = Obj.get('txt_txt',Obj.get('txt_txt',this));
+			txtTF.dispatchEvent(new Event(Event.ADDED,true));
+			backMC = Obj.get('back_mc',this);
 			
 			ID = buttonID ;
 			//trace("Button title is : "+title);

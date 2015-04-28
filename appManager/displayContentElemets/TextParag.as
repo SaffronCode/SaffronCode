@@ -26,7 +26,7 @@ package appManager.displayContentElemets
 			//Removed for debug
 			//myTextTF.text = '' ;
 			//Added for debug
-				trace(myTextTF.getTextFormat().font+' added to textParag class') ;
+				//trace(myTextTF.getTextFormat().font+' added to textParag class') ;
 				
 				
 			

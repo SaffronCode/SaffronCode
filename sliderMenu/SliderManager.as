@@ -74,9 +74,30 @@ package sliderMenu
 		////////////////////animation functions
 		
 		/**opent this menu*/
-		public static function openMenu(MenuDirection:String = LEFT_MENU)
+		public static function openMenu(MenuDirection:String = null)
 		{
 			unLock();
+			
+			if(MenuDirection==null)
+			{
+				if(slider_l!=null)
+				{
+					MenuDirection = LEFT_MENU ;
+				}
+				else if(slider_r!=null)
+				{
+					MenuDirection = RIGHT_MENU ;
+				}
+				else if(slider_t!=null)
+				{
+					MenuDirection = TOP_MENU ;
+				}
+				else if(slider_b != null)
+				{
+					MenuDirection = BOTTOM_MENU ;
+				}
+			}
+			
 			mouseFirstPose = null ;
 			currentDraggingPose = MenuDirection;
 		}

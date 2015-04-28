@@ -10,15 +10,18 @@ package dataManager
 	import flash.utils.ByteArray;
 	
 	/**none encripted sql db*/
-	public class SavedDatas2
+	public class SavedDatas3
 	{
-		private static var  sql:SQLConnection ,
-		query:SQLStatement;
+		private static var  sqlRead:SQLConnection ,
+							queryRead:SQLStatement;
+							
+		private static var  sqlWrite:SQLConnection ,
+							queryWrite:SQLStatement;
 		
 		private static const tableBaseName:String = "SAVED_DATA";
 		
 		private static var 	dbFolder:String = "DB",
-			dbName:String = "saves2",
+			dbName:String = "saves6",
 			tableName:String = tableBaseName,
 			field_id:String = "ID",
 			field_value:String = "VALUE",
@@ -66,7 +69,7 @@ package dataManager
 		
 		public static function setUp(checkTable:Boolean = false)
 		{
-			if(sql == null)
+			if(sqlRead == null)
 			{
 				checkTable = true ;
 				//temporaryObject = {};
@@ -80,22 +83,27 @@ package dataManager
 				/*var encrypt:ByteArray = new ByteArray();
 				encrypt.writeUTFBytes(setOrGetDeviceCode().substring(0,16));*/
 				
-				sql = new SQLConnection();
-				sql.open(sqlFile,SQLMode.CREATE);
+				sqlRead = new SQLConnection();
+				sqlRead.open(sqlFile,SQLMode.READ);
 				
-				query = new SQLStatement();
-				
-				
-				
-				query.sqlConnection = sql ;
-				
-			}
+				sqlWrite = new SQLConnection();
+				sqlWrite.openAsync(sqlFile,SQLMode.UPDATE);
+					
+					queryRead = new SQLStatement();
+					queryRead.sqlConnection = sqlRead ;
+					
+					queryWrite = new SQLStatement();
+					queryWrite.sqlConnection = sqlWrite ;
+					
+					//throw "Do not update me till you are sure from my performance";
+					
+					}
 			if(checkTable)
 			{
 				try
 				{
-					query.text = "create table "+tableName+" ("+field_id+" VARCHAR(1) , "+field_value+" BLOB , "+field_date+" INT) ";
-					query.execute();
+					queryWrite.text = "create table "+tableName+" ("+field_id+" VARCHAR(100) , "+field_value+" BLOB , "+field_date+" INT) ";
+					queryWrite.execute();
 					trace('table is creats');
 				}
 				catch(e)
@@ -105,8 +113,8 @@ package dataManager
 				
 				try
 				{
-					query.text = "create index if not EXISTS "+tableName+"_indexes on "+tableName+" ("+field_id+");" ;
-					query.execute() ;
+					queryWrite.text = "create index if not EXISTS "+tableName+"_indexes on "+tableName+" ("+field_id+");" ;
+					queryWrite.execute() ;
 					trace('index is creates') ;
 				}
 				catch(e)
@@ -147,14 +155,17 @@ package dataManager
 			temporaryObject[id].time = dateNum ;*/
 			sql.begin();
 			query.clearParameters();
-			query.text = "delete from "+tableName+" where "+field_id+" == '"+id+"'" ;
+			/*query.text = "delete from "+tableName+" where "+field_id+" == '"+id+"'" ;
 			try
 			{
-				query.execute();
+			query.execute();
 			}
-			catch(e){}
+			catch(e){}*/
 			//( "+field_id+" , "+field_value+" , "+field_date+" )
+			//new query : insert or update instead of delete then insert
 			query.text = "insert into "+tableName+"  values( @"+field_id+" , @"+field_value+" , "+dateNum+" )";
+			//query.text = "insert into "+tableName+"  values( @"+field_id+" , @"+field_value+" , "+dateNum+" )";
+			trace("inserted id is : "+id);
 			query.parameters["@"+field_id] =  id ;
 			query.parameters["@"+field_value] =  data ;
 			
@@ -167,6 +178,7 @@ package dataManager
 			}
 			catch(e)
 			{
+				//trace("Execure error : "+e);
 				sql.rollback();
 			}
 		}

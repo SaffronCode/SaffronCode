@@ -9,6 +9,7 @@ package sliderMenu
 		public function SliderButtonSwitcher()
 		{
 			super();
+			this.buttonMode = true ;
 			
 			this.addEventListener(MouseEvent.CLICK,clicked);
 		}
@@ -18,10 +19,12 @@ package sliderMenu
 			// TODO Auto-generated method stub
 			if(SliderManager.isOpen())
 			{
+				trace("Hide the menu");
 				SliderManager.hide();
 			}
 			else
 			{
+				trace("Show the menu");
 				SliderManager.openMenu();
 			}
 		}

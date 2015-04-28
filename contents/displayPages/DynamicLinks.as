@@ -1,7 +1,9 @@
 /***Version
  * 	1.1 : Save the last position of the scrollMT for each pageID to load it from that position later
  * 	1.1.1 : when the menu was empty, it will cause an error on leave stage.
- * 
+ * 	1.2 : 	add function added to add linkData to old link datas
+ * 			DynamicLinks can request more links. you can set this on setUp function at the beggining.
+ * 			3 new functions : canGetMore, addLinks, noMoreLinks
  * 
  * 
  * 
@@ -15,6 +17,7 @@ package contents.displayPages
 	import contents.PageData;
 	import contents.interFace.DisplayPageInterface;
 	
+	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -42,6 +45,13 @@ package contents.displayPages
 		
 		private var noLinksMC:MovieClip ;
 		
+		//New values
+		/**It will call the parent for more links if there is and until then, it will shows preloader*/
+		private var requestMore:Function;
+		
+		/**Preloader for more datas*/
+		private var requestPreLoader:Sprite ;
+		
 		/**1-Cereate LinkItem on this pages<br>
 		 * 2- Draw a shape to define scrollArea in this object*/
 		public function DynamicLinks()
@@ -65,9 +75,26 @@ package contents.displayPages
 			this.removeChildren();
 		}
 		
+		/**Call this after setUp*/
+		public function canGetMore(youCanRequestForMore:Function,preLoaderObject:Sprite):void
+		{
+			requestMore = youCanRequestForMore ;
+			requestPreLoader = preLoaderObject ;
+		}
+		
 		public function setUp(pageData:PageData):void
 		{
-			trace("current page data is : "+pageData.export());
+			//new functions
+			if(requestPreLoader==null)
+			{
+				requestPreLoader = new Sprite(); 
+			}
+			if(requestMore==null)
+			{
+				requestMore = new Function() ;
+			}
+			
+			//trace("current page data is : "+pageData.export());
 			this.removeChildren();
 			myPageData = pageData;
 			if(pageData.links1.length == 0 && noLinksMC!=null)
@@ -133,6 +160,16 @@ package contents.displayPages
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 		}
 		
+		/**Adds more links to links list. but if there is no link any more, you have to call noMoreLinks() funcion to remove preloader*/
+		public function addLink(listOfLinks:Vector.<LinkData>):void
+		{
+			trace("controll again");
+			myPageData.links1 = myPageData.links1.concat(listOfLinks);
+			
+			this.addEventListener(Event.ENTER_FRAME,controllSensor);
+			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
+		}
+		
 		private function unLoad(ev:Event=null)
 		{
 			this.removeEventListener(Event.ENTER_FRAME,controllSensor) ;
@@ -147,13 +184,32 @@ package contents.displayPages
 				var ifTherIs:Boolean = creatOneLink();
 				if(ifTherIs)
 				{
+					requestPreLoader.visible = false ;
+					//Call this recursive function after preloader is invisible
 					controllSensor();
 				}
 				else
 				{
-					unLoad()
+					unLoad();
+					linksContainer.addChild(requestPreLoader);
+					requestPreLoader.y = linksSensor.y ;
+					requestPreLoader.x = areaRect.width/2 ;
+					requestPreLoader.visible = true ;
+					//Call below function after preloader added.
+					requestMore();
 				}
 			}
+		}
+		
+		/**This will just remove preloader from list*/
+		public function noMoreLinks():void
+		{
+			//linksContainer.removeChild(requestPreLoader);
+			requestPreLoader.visible = false ;
+			
+			//New lines to prevent any more requests till canGetMore functin calls again.
+			requestMore = new Function() ;
+			requestPreLoader = new Sprite() ;
 		}
 		
 		protected function creatOneLink():Boolean

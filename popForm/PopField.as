@@ -105,8 +105,9 @@
 			}
 			else
 			{
-				myTXT.multiline = true ;
-				myTXT.wordWrap = true ;
+				//Why do i need multiline textfield if I desided to use single line text??
+				myTXT.multiline = false ;
+				myTXT.wordWrap = false ;
 			}
 			myTXT.text = (defaultText==null)?'': defaultText ;
 			

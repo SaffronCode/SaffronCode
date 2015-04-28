@@ -57,6 +57,9 @@ package appManager.mains
 			this.addEventListener(AppEvent.PAGE_CHANGES,managePages);
 			
 			NativeApplication.nativeApplication.addEventListener(KeyboardEvent.KEY_DOWN,controllBackButton);
+			
+			//This will remind that first page of the application is HomePage
+			hopePageOppened(true);
 		}	
 		
 		/**Controll the back button on android*/
@@ -148,13 +151,23 @@ package appManager.mains
 				//I forgot to write this line of code here ↓
 				changePage(event);
 				//It will close PageManger instantly
+				//This function calls with true when the home page oppened:
+				hopePageOppened(true);
 			}
 			else
 			{
 				trace("close home page")
 				showExternalPages();
+				//This function calls when external pages oppened:
+				hopePageOppened(false);
 			}
 			return true ;
+		}
+		
+		/**This function will tell you if this is the home page or not*/
+		protected function hopePageOppened(status:Boolean):void
+		{
+			//This is home page or not
 		}
 		
 		/**This function will call just when the mainAnim is exists*/
