@@ -30,11 +30,8 @@ package webService
 		
 		public static function save(ClassObject:Object,Parameters:Array,value:String):void
 		{
-			Constants.count(7.031);
 			var valueName:String = generateID(ClassObject,Parameters);
-			Constants.count(7.032);
 			SavedDatas2.save(valueName,value);
-			Constants.count(7.033);
 		}
 		
 		

@@ -95,7 +95,6 @@ package webService.webCallers
 			}
 			else
 			{
-				Constants.count(4);
 				myWebService.Connect(onConnected,noInternet);
 			}
 		}
@@ -117,9 +116,7 @@ package webService.webCallers
 			myWebService.eventListen.addEventListener(WebEvent.EVENT_DISCONNECTED,noInternet);
 			myWebService.eventListen.addEventListener(WebEvent.Result,loaded);
 			
-			Constants.count(5);
 			myToken = myWebService.callFunction(myServiceName,myParam);
-			Constants.count(6);
 		}
 		
 		private function noInternet(e:WebEvent=null)
@@ -155,20 +152,15 @@ package webService.webCallers
 		private function generateDataAndDispatchEvent(pureData:String,dontSaveItAgain:Boolean = false ):void
 		{
 			//#3
-			Constants.count(7);
 			
 			if(pureData==null)
 			{
-				Constants.count(7.01);
 				pureData = WebServiceSaver.load(this,myParam);
-				Constants.count(7.02);
 				//trace('cash loads : '+pureData);
 			}
 			else if(offlineDataIsOK && pureData!=null && !dontSaveItAgain)//dontSaveItAgain added to prevent oversaving the cashed data again. it was destroies the save date
 			{
-				Constants.count(7.03);
 				WebServiceSaver.save(this,myParam,pureData);
-				Constants.count(7.04);
 			}
 			if(pureData==null)
 			{
@@ -176,14 +168,11 @@ package webService.webCallers
 				return ;
 			}
 			
-			Constants.count(7.1);
 			//you can even controll the data value from overrided function
 			var parsedSituation:Boolean = manageData(pureData);
-			Constants.count(7.2);
 			
 			if(parsedSituation)
 			{
-				Constants.count(8);
 				//trace("Load complete");
 				//trace("offlineValuesToSend : "+offlineValuesToSend);
 				//trace("pureData : "+pureData);
@@ -192,7 +181,6 @@ package webService.webCallers
 					offlineValuesToSend = pureData ;
 					//trace("It is the first dispatching time");
 					//dispatchEveryWhere(Event.COMPLETE,false);
-					Constants.count(9);
 					event_data();
 				}
 				else if(offlineValuesToSend != pureData)
