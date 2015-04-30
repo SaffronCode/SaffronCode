@@ -1,7 +1,7 @@
 package contents.displayPages
 	//contents.displayPages.LinkItem
 {
-	import appManager.displayContentElemets.ImageBox;
+	import appManager.displayContentElemets.Image;
 	import appManager.displayContentElemets.TextParag;
 	import appManager.displayContentElemets.TitleText;
 	import appManager.event.AppEvent;
@@ -15,7 +15,7 @@ package contents.displayPages
 	/**You can trigger me by calling imSelected function*/
 	public class LinkItem extends MovieClip
 	{
-		protected var myImage:ImageBox;
+		protected var myImage:Image;
 		
 		protected var myTitle:TitleText ;
 		
@@ -27,8 +27,9 @@ package contents.displayPages
 		{
 			super();
 			
-			myImage = Obj.findThisClass(ImageBox,this) as ImageBox;
+			myImage = Obj.findThisClass(Image,this) as Image;
 			myTitle = Obj.findThisClass(TitleText,this) as TitleText;
+			//trace("founded text title is : "+myTitle)
 			myParag = Obj.findThisClass(TextParag,this);
 			
 			this.mouseChildren = false ;

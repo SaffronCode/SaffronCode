@@ -196,6 +196,7 @@ package contents
 		
 		
 		/**this will returns page data based on input id<.br>
+		 * IT WILL GET CLONE FROM THE FIRST PAGE. SO YOU CAN EDIT RENURNED PAGES.
 		 * dontUseLanguage balue will prevent this function to converting texts from language.xml clas*/
 		public static function getPage(pageID:String,dontUseLanguage:Boolean=false):PageData 
 		{

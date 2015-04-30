@@ -108,7 +108,7 @@ package contents.displayPages
 			this.addEventListener(Event.REMOVED_FROM_STAGE,saveLastY);
 		}
 		
-		protected function saveLastY(event:Event):void
+		private function saveLastY(event:Event):void
 		{
 			// TODO Auto-generated method stub
 			if(linksContainer!=null)
@@ -210,31 +210,53 @@ package contents.displayPages
 			//New lines to prevent any more requests till canGetMore functin calls again.
 			requestMore = new Function() ;
 			requestPreLoader = new Sprite() ;
+			
 		}
 		
-		protected function creatOneLink():Boolean
+		private function creatOneLink():Boolean
 		{
 			// TODO Auto Generated method stub
 			if(lastGeneratedLinkIndes<myPageData.links1.length)
 			{
-				var newLink:LinkItem = new linkClass() ;
-				linksContainer.addChild(newLink) ;
-				newLink.setUp(myPageData.links1[lastGeneratedLinkIndes]) ;
-				newLink.x = (areaRect.width-newLink.width)/2 ;
-				newLink.y = linksSensor.y ;
-				linksSensor.y+=newLink.height+deltaY ;
-				
-				linksContainer.graphics.clear();
-				linksContainer.graphics.beginFill(0,0) ;
-				linksContainer.graphics.drawRect(0,0,areaRect.width,linksSensor.y) ;
-				
-				lastGeneratedLinkIndes++ ;
+				for(var i = 0 ; i<howManyLinksGenerates && lastGeneratedLinkIndes<myPageData.links1.length ; i++)
+				{
+					var newLink:LinkItem = new linkClass() ;
+					linksContainer.addChild(newLink) ;
+					newLink.setUp(myPageData.links1[lastGeneratedLinkIndes]) ;
+					
+					createLinkOn(newLink,linksSensor);
+					
+					linksContainer.graphics.clear();
+					linksContainer.graphics.beginFill(0,0) ;
+					linksContainer.graphics.drawRect(0,0,areaRect.width,linksSensor.y) ;
+					
+					lastGeneratedLinkIndes++ ;
+				}
 				return true ;
 			}
 			else
 			{
 				return false ;
 			}
+		}
+		
+		
+		/**Return the number of generated links for each lik generation*/
+		protected function get howManyLinksGenerates():uint
+		{
+			return 1 ;
+		}
+		
+		/**use currentLinksSensor to move it down and use its position and to know menuWidth from currentLinksSensor.width<br>
+		 * DONT FORGET TO MOVE currentLinksSensor DOWN WHEN YOU USE IT<br>
+		 *  newLink.x = (areaRect.width-newLink.width)/2 ;<br>
+			newLink.y = linksSensor.y ;<br>
+			linksSensor.y += newLink.height+deltaY ;<br>*/
+		protected function createLinkOn(newLink:LinkItem,currentLinksSensor:Sprite):void
+		{
+			newLink.x = (areaRect.width-newLink.width)/2 ;
+			newLink.y = linksSensor.y ;
+			linksSensor.y += newLink.height+deltaY ;
 		}
 	}
 }

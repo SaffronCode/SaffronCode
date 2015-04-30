@@ -74,6 +74,8 @@ package news2
 		
 		private function noInternetConnection():void
 		{
+			trace("Connection fails on newsListPage");
+			this.dispatchEvent(AppEventContent.lastPage());
 			Hints.noInternet();
 		}
 	}

@@ -126,7 +126,8 @@ package appManager.mains
 			//currentAppEvent = event ;•↓
 			//Why it dosen't currentAppEvent befor???????????????????????????
 			//I had bug befot, I tried to get back to home page when the main anim is animating to external pages and it caused crash when I checked current Event with pageManager's event.
-			if(/*pageManagerObject.toEvent*/currentAppEvent.myID == event.myID)
+			//I added currentAppEvent != null to prevent error when you requested to open page when it is not reached to main page.
+			if(currentAppEvent!=null && /*pageManagerObject.toEvent*/currentAppEvent.myID == event.myID)
 			{
 				return false;
 			}

@@ -163,11 +163,6 @@ package news2
 			else
 			{
 				//reset basePageData
-				//reset basePageData
-				//reset basePageData
-				//reset basePageData
-				//reset basePageData
-				//reset basePageData
 				basePageData.title = '';
 				basePageData.content = '';
 				basePageData.images = new Vector.<ImageData>();

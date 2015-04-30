@@ -15,8 +15,8 @@ package news2
 	import flash.text.TextField;
 	
 	import maskan.elements.PreLoader;
-	import maskan.projects.webCallers.GetBases;
 	import maskan.projects.types.TBase;
+	import maskan.projects.webCallers.GetBases;
 	
 	public class NewsCatPage extends MovieClip implements DisplayPageInterface
 	{
@@ -44,9 +44,9 @@ package news2
 			searchAreaTF.text = '' ;
 			
 			myPreLoader = new PreLoader();
-			this.addChild(myPreLoader);
 			myPreLoader.x = this.width/2;
 			myPreLoader.y = this.height/2;
+			this.addChild(myPreLoader);
 			
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 		}
@@ -89,6 +89,7 @@ package news2
 		protected function noInternetConnection():void
 		{
 			Hints.noInternet();
+			this.dispatchEvent(AppEventContent.lastPage());
 		}
 		
 		/**Categories loaded*/

@@ -4,6 +4,8 @@ package webService.webCallers
 	import flash.events.ErrorEvent;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import flash.events.TimerEvent;
+	import flash.utils.Timer;
 	
 	import mx.rpc.AsyncToken;
 	import mx.rpc.soap.Operation;
@@ -24,6 +26,8 @@ package webService.webCallers
 	
 	public class WebServiceCaller extends EventDispatcher
 	{
+		private var reLoader:Timer ;
+		
 		public var connected:Boolean = false ;
 		
 		private var myToken:AsyncToken;
@@ -58,6 +62,32 @@ package webService.webCallers
 			offlineDataIsOK = offlineDataIsOK_v ;
 			justLoadOffline = justLoadOfline_v ;
 			super();
+		}
+		
+		/**Make this service reloads again*/
+		public function reLoad(delay:uint=10000):void
+		{
+			if(reLoader!=null)
+			{
+				reLoader.reset();
+			}
+			if(delay==0)
+			{
+				reLoadLastRequest(null)
+			}
+			else
+			{
+				reLoader = new Timer(delay,1);
+				reLoader.addEventListener(TimerEvent.TIMER_COMPLETE,reLoadLastRequest);
+				reLoader.start();
+			}
+		}
+		
+		/**It is tile to reload service*/
+		private function reLoadLastRequest(e:TimerEvent):void
+		{
+			trace("Service reloaded");
+			loadParams.apply(this,myParam);
 		}
 		
 		/**Create load function on extended class to call this function with its own parameters*/
@@ -102,6 +132,12 @@ package webService.webCallers
 		public function cansel()
 		{
 			//TODO: implement function
+			
+			if(reLoader!=null)
+			{
+				reLoader.reset();
+				reLoader = null ;
+			}
 			
 			myWebService.eventListen.removeEventListener(WebEvent.EVENT_DISCONNECTED,noInternet);
 			myWebService.eventListen.removeEventListener(WebEvent.Result,loaded);

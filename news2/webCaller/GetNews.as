@@ -17,9 +17,12 @@ package news2.webCaller
 		}
 		
 		
-		public function load(NewsTypeBaseId='0',Title='',Hashtags='',Context='',FromRecord='0',PageSize='1')
+		
+		public function load(NewsTypeBaseId='0',Title='',Hashtags='not_used',Context='not_used',FromRecord='0',PageSize='1')
 		{
-			super.loadParams(Title,NewsTypeBaseId,Hashtags,Context,FromRecord,PageSize);
+			//Old version:
+			//super.loadParams(Title,NewsTypeBaseId,Hashtags,Context,FromRecord,PageSize);
+			super.loadParams(Title,NewsTypeBaseId,FromRecord,PageSize);
 		}
 		
 		override protected function manageData(pureData:String):Boolean
