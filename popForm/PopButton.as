@@ -35,8 +35,11 @@
 		public function PopButton(str:String=''/*,colorTrans:ColorTransform=null*/,buttonID:*=0,type:uint = 1,completeButtonObject:* = null )
 		{
 			super();
+			me = this ;
+			this.buttonMode = true ;
 			
-			if(completeButtonObject != null && completeButtonObject is PopButtonData)
+			//Bellow lines will used on setUp function ↓
+			/*if(completeButtonObject != null && completeButtonObject is PopButtonData)
 			{
 				type = completeButtonObject.buttonFrame ;
 				buttonID = completeButtonObject.id ;
@@ -44,16 +47,14 @@
 				this.mouseChildren = this.mouseEnabled = completeButtonObject.selectable;
 			}
 			
-			this.gotoAndStop(type);
-			
-			me = this ;
+			this.gotoAndStop(type);*/
 			
 			
-			this.mouseChildren = false;
-			this.buttonMode = true ;
-			txtTF = Obj.get('txt_txt',Obj.get('txt_txt',this));
-			txtTF.dispatchEvent(new Event(Event.ADDED,true));
-			backMC = Obj.get('back_mc',this);
+			
+			//this.mouseChildren = false;
+			//txtTF = Obj.get('txt_txt',Obj.get('txt_txt',this));
+			//txtTF.dispatchEvent(new Event(Event.ADDED,true));
+			//backMC = Obj.get('back_mc',this);
 			
 			/*if(!DevicePrefrence.isTablet)
 			{
@@ -71,7 +72,7 @@
 			checkStage();
 			
 			
-			setUp(str/*,colorTrans*/,buttonID);
+			setUp(str,buttonID,type,completeButtonObject);
 		}
 		
 		
@@ -131,7 +132,7 @@
 				type = completeButtonObject.buttonFrame ;
 				buttonID = completeButtonObject.id ;
 				str = completeButtonObject.title ;
-				this.mouseChildren = this.mouseEnabled = completeButtonObject.selectable;
+				this.mouseEnabled = completeButtonObject.selectable;
 			}
 			
 			this.gotoAndStop(type);
