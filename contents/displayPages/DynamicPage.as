@@ -15,7 +15,7 @@ package contents.displayPages
 	import flash.text.TextField;
 	
 	import netManager.ImageLoader;
-
+	
 	public class DynamicPage extends MovieClip implements DisplayPageInterface
 	{
 		protected var currentPageData:PageData;
@@ -43,19 +43,24 @@ package contents.displayPages
 			{
 				textContainer = Obj.findThisClass(TextParag,this,true);
 			}
-			textTF = Obj.get("text_txt",textContainer);
-			textTF.text = '' ;
-			
-			maskArea = textContainer.getBounds(this).clone();
-			trace("maskArea : "+maskArea);
-			scrollAbleObject.x = textContainer.x ;
-			scrollAbleObject.y = textContainer.y ;
-			trace("scrollAbleObject.x : "+scrollAbleObject.x);
-			textContainer.x = 0 ;
-			textContainer.y = 0 ;
+			if(textContainer!=null)
+			{
+				textTF = Obj.get("text_txt",textContainer);
+				textTF.text = '' ;
+				maskArea = textContainer.getBounds(this).clone();
+				scrollAbleObject.x = textContainer.x ;
+				scrollAbleObject.y = textContainer.y ;
+				textContainer.x = 0 ;
+				textContainer.y = 0 ;
+				scrollAbleObject.addChild(textContainer);
+			}
+			else
+			{
+				maskArea = new Rectangle(0,0,this.width,this.height);
+			}
+			//trace("scrollAbleObject.x : "+scrollAbleObject.x);
 			
 			this.addChild(scrollAbleObject);
-			scrollAbleObject.addChild(textContainer);
 			
 			scrollAbleObject.graphics.beginFill(0,0);
 			scrollAbleObject.graphics.drawRect(0,0,maskArea.width,maskArea.height);
@@ -69,35 +74,37 @@ package contents.displayPages
 			{
 				myTitle.setUp(currentPageData.title);
 			}
-			trace("page titel : "+pageData.title);
-			trace("textContainer.x : "+textContainer.x);
-			if(!isNaN(currentPageData.contentX))
-			{
-				textContainer.x = currentPageData.contentX ;
-			}
-			if(!isNaN(currentPageData.contentY))
-			{
-				textContainer.y = currentPageData.contentY ;
-			}
-			if(!isNaN(currentPageData.contentW))
-			{
-				textTF.width = currentPageData.contentW ;
-			}
-			var align:Boolean = false ;
 			
-			
-			if(currentPageData.contentAlign!='' && currentPageData.contentAlign!='0' && currentPageData.contentAlign!=null)
+			if(textContainer!=null && textTF!=null)
 			{
-				align = true ;
+				if(!isNaN(currentPageData.contentX))
+				{
+					textContainer.x = currentPageData.contentX ;
+				}
+				if(!isNaN(currentPageData.contentY))
+				{
+					textContainer.y = currentPageData.contentY ;
+				}
+				if(!isNaN(currentPageData.contentW))
+				{
+					textTF.width = currentPageData.contentW ;
+				}
+				var align:Boolean = false ;
+				
+				
+				if(currentPageData.contentAlign!='' && currentPageData.contentAlign!='0' && currentPageData.contentAlign!=null)
+				{
+					align = true ;
+				}
+				//trace("align : "+align+' from : '+currentPageData.contentAlign)
+				
+				TextPutter.onTextArea(textTF,currentPageData.content,true,true,true,0,align);
 			}
-			trace("align : "+align+' from : '+currentPageData.contentAlign)
-			
-			TextPutter.onTextArea(textTF,currentPageData.content,true,true,true,0,align);
-			trace("Number of imates : "+currentPageData.images.length);
+			//trace("Number of imates : "+currentPageData.images.length);
 			for(var i = 0 ; i<currentPageData.images.length ; i++)
 			{
 				var imageData:ImageData = currentPageData.images[i] ;
-				trace("image icon is : "+imageData.targURL);
+				//trace("image icon is : "+imageData.targURL);
 				var H:Number = 0 ,
 					W:Number = 0;
 				if(!isNaN(imageData.width))

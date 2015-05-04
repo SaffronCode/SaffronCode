@@ -9,9 +9,8 @@ package appManager.displayContentElemets
 			super();
 		}
 		
-		public function setUp(imageURL:String,loadInThisArea:Boolean = true ,imageW:Number=0,imageH:Number=0,X:Number=0,Y:Number=0)
+		public function setUp(imageURL:String,loadInThisArea:Boolean = false ,imageW:Number=0,imageH:Number=0,X:Number=0,Y:Number=0)
 		{
-			trace("na na na");
 		}
 	}
 }
