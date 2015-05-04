@@ -200,7 +200,9 @@ package webService.webCallers
 			}
 			if(pureData==null)
 			{
-				//dispatchEveryWhere(Event.UNLOAD);
+				//Why did I remove this event dispatcher? It may forgoten, because it is cause of bug on no connection 
+					//dispatchEveryWhere(Event.UNLOAD);
+				event_noInternet();
 				return ;
 			}
 			
