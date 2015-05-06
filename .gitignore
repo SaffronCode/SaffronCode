@@ -95,3 +95,7 @@ $RECYCLE.BIN/
 # Sound files
 *.mp3
 *.wav
+
+# Adobe air files
+*.vch
+sliderMenu/SliderButtonSwitcher.as
