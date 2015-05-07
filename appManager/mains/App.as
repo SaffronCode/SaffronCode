@@ -100,6 +100,12 @@ package appManager.mains
 			}
 		}
 		
+		/**This functin will make intro to skip to the end*/
+		public function skipIntro():void
+		{
+			introMC.gotoAndStop(introMC.totalFrames-1);
+		}
+		
 //////////////////////intro managers ↑
 		
 		
@@ -133,6 +139,11 @@ package appManager.mains
 				return false;
 			}
 			//Moved from top↑•
+			if(event.myType == AppEvent.refresh && currentAppEvent.myType == AppEvent.home)
+			{
+				trace("refresh is not works on home page");
+				return false ;
+			}
 				currentAppEvent = event ;
 			// TODO Auto-generated method stub
 			if(mainAnim == null)

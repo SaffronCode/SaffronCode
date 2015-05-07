@@ -1,5 +1,7 @@
 package appManager.event
 {
+	import contents.LinkData;
+	
 	import flash.events.Event;
 	
 	public class AppEvent extends Event
@@ -27,6 +29,11 @@ package appManager.event
 		 * this variable is just on Content base applications*/
 		public var myID:String ;
 		
+		/**Returns the refrest event*/
+		public static function refreshEvent():AppEvent
+		{
+			return new AppEvent(refresh);
+		}
 		
 		public function AppEvent(pageType:String=home,eventType:String=PAGE_CHANGES,pageID:String=id_not_set)
 		{
