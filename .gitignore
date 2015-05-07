@@ -98,4 +98,6 @@ $RECYCLE.BIN/
 
 # Adobe air files
 *.vch
-sliderMenu/SliderButtonSwitcher.as
+*.p12
+*.umlj
+*.xlsx
