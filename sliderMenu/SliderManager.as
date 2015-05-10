@@ -31,11 +31,15 @@ package sliderMenu
 		/**slider s variables*/
 		private static var 	slider_l:MovieClip,
 							l_w:Number,
+							l_p:Point,
 							slider_r:MovieClip,
 							r_w:Number,
+							r_p:Point,
 							slider_t:MovieClip,
 							t_w:Number,
+							t_p:Point,
 							slider_b:MovieClip,
+							b_p:Point,
 							b_w:Number;
 		
 		private static var manageMenusFrames:Boolean;
@@ -67,7 +71,7 @@ package sliderMenu
 		
 	/////////////////////////////////
 		
-		
+		public static var moveStage:Boolean = false ;
 		
 		
 		
@@ -254,12 +258,15 @@ package sliderMenu
 			}
 			
 			//trace("myStage : "+myStage.x++);
-			myRoot.x += (deltaPose.x-myRoot.x)/animSpeed;
-			myRoot.y += (deltaPose.y-myRoot.y)/animSpeed;
+			if(moveStage)
+			{
+				myRoot.x += (deltaPose.x-myRoot.x)/animSpeed;
+				myRoot.y += (deltaPose.y-myRoot.y)/animSpeed;
+			}
 			
 			var i:int;
 			
-			if(manageMenusFrames)
+			if(manageMenusFrames || !moveStage)
 			{
 				var rootPose:Point = new Point(myRoot.x,myRoot.y);
 				var precent:Number = rootPose.length ;
@@ -273,8 +280,33 @@ package sliderMenu
 					}
 					var deltaW:Number = addGetSlider(allPose[i]);
 					
-					var cprecent:uint = Math.min(obj.totalFrames,Math.ceil(Math.min(1,precent/deltaW)*obj.totalFrames));
-					obj.gotoAndStop(cprecent);
+					if(manageMenusFrames)
+					{
+						if(currentDraggingPose == allPose[i])
+						{
+							var cprecent:uint = Math.min(obj.totalFrames,Math.ceil(Math.min(1,precent/deltaW)*obj.totalFrames));
+							obj.gotoAndStop(cprecent);
+						}
+						else
+						{
+							obj.gotoAndStop(1);
+						}
+					}
+					
+					if(!moveStage)
+					{
+						var pose:Point = addGetSlider(allPose[i],null,0,false,true);
+						if(currentDraggingPose == allPose[i])
+						{
+							obj.x += ((pose.x+deltaPose.x)-obj.x)/animSpeed ;
+							obj.y += ((pose.y+deltaPose.y)-obj.y)/animSpeed ;
+						}
+						else
+						{
+							obj.x += (pose.x-obj.x)/animSpeed ;
+							obj.y += (pose.y-obj.y)/animSpeed ;
+						}
+					}
 				}
 			}
 			
@@ -311,8 +343,9 @@ package sliderMenu
 		
 		/**set up a slider menu for the stage on selected position and with yourMenu<br>
 		 * you have only one stage*/
-		public static function setMenu(yourMenu:MovieClip,deltaSlide:Number,menuPosition:String = LEFT_MENU,manageFrames:Boolean=true)
+		public static function setMenu(yourMenu:MovieClip,deltaSlide:Number,menuPosition:String = LEFT_MENU,manageFrames:Boolean=true,moveTheStage:Boolean=true)
 		{
+			moveStage = moveTheStage ;
 			manageMenusFrames = manageFrames ;
 			if(manageMenusFrames)
 			{
@@ -385,7 +418,7 @@ package sliderMenu
 		
 		
 		/**set or get the menu on the selected direction - this function will take menu position to the asked position for the menu*/
-		private static function addGetSlider(pose:String,menu:MovieClip=null,yourSize:Number=0,returnMenuObject:Boolean = false):*
+		private static function addGetSlider(pose:String,menu:MovieClip=null,yourSize:Number=0,returnMenuObject:Boolean = false,returnMenuPose:Boolean=false):*
 		{
 			switch(pose)
 			{
@@ -394,11 +427,16 @@ package sliderMenu
 					if(menu!=null)
 					{
 						t_w = yourSize ;
+						t_p = new Point(menu.x,menu.y) ;
 						/*menu.x = lx ;
 						menu.y = ty;*/
 						slider_t = menu ;
 					}
-					if(returnMenuObject)
+					if(returnMenuPose)
+					{
+						return t_p ;
+					}
+					else if(returnMenuObject)
 					{
 						return slider_t ;
 					}
@@ -414,12 +452,16 @@ package sliderMenu
 					if(menu!=null)
 					{
 						r_w = yourSize ;
+						r_p = new Point( menu.x,menu.y);
 						/*menu.x = rx ;
 						menu.y = ty;*/
 						slider_r = menu ;
 					}
-					
-					if(returnMenuObject)
+					if(returnMenuPose)
+					{
+						return r_p;
+					}
+					else if(returnMenuObject)
 					{
 						return slider_r ;
 					}
@@ -434,12 +476,17 @@ package sliderMenu
 					if(menu!=null)
 					{
 						l_w = yourSize ;
+						l_p = new Point(menu.x,menu.y);
 						/*menu.x = lx ;
 						menu.y = ty;*/
 						slider_l = menu ;
 					}
 				
-					if(returnMenuObject)
+					if(returnMenuPose)
+					{
+						return l_p ;
+					}
+					else if(returnMenuObject)
 					{
 						return slider_l ;
 					}
@@ -454,12 +501,17 @@ package sliderMenu
 					if(menu!=null)
 					{
 						b_w = yourSize ;
+						b_p = new Point(menu.x,menu.y) ;
 						/*menu.x = lx ;
 						menu.y = by;*/
 						slider_b = menu ;
 					}
 					
-					if(returnMenuObject)
+					if(returnMenuPose)
+					{
+						return b_p ;
+					}
+					else if(returnMenuObject)
 					{
 						return slider_b ;
 					}
@@ -488,7 +540,6 @@ package sliderMenu
 			{
 				currentDraggingPose = MenuDirection;
 			}
-			
 		}
 	}
 }

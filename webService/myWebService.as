@@ -32,7 +32,7 @@ package webService
 							onDisconnectedFunctionList:Vector.<Function> = new Vector.<Function>();
 		
 		//public static const webServiceWsdl:String = "192.168.0.130:85/STBWebServices.asmx?wsdl";
-		public static var webServiceWsdl:String = Constants.appDomain+Constants.asmxurl;
+		public static var webServiceWsdl:String ;//= Constants.appDomain+Constants.asmxurl;
 		
 		private static var 	ws:WebService,
 							retryer:Timer,
@@ -50,9 +50,11 @@ package webService
 						
 		private static var activatedOperations:Array ;
 		
-		public static function setUp()
+		public static function setUp(wsdlLocation:String):void
 		{
 			//myStage = MyStage ;
+			
+			webServiceWsdl = wsdlLocation ;
 			
 			if(operetionsList == null)
 			{
