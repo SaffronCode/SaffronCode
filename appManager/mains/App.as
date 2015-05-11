@@ -103,7 +103,7 @@ package appManager.mains
 		/**This functin will make intro to skip to the end*/
 		public function skipIntro():void
 		{
-			introMC.gotoAndStop(introMC.totalFrames-1);
+			introMC.gotoAndPlay(introMC.totalFrames-1);
 		}
 		
 //////////////////////intro managers ↑

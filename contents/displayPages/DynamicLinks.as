@@ -75,6 +75,13 @@ package contents.displayPages
 			this.removeChildren();
 		}
 		
+		
+		/**This will change the scroll area value but you have to call setUp after this functin*/
+		public function chageHeight(newValue:Number):void
+		{
+			areaRect.height = newValue ;
+		}
+		
 		/**Call this after setUp*/
 		public function canGetMore(youCanRequestForMore:Function,preLoaderObject:Sprite):void
 		{

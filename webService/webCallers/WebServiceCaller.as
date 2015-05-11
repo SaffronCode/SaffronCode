@@ -6,6 +6,8 @@ package webService.webCallers
 	import flash.events.EventDispatcher;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
+	import flash.utils.clearTimeout;
+	import flash.utils.setTimeout;
 	
 	import mx.rpc.AsyncToken;
 	import mx.rpc.soap.Operation;
@@ -18,7 +20,9 @@ package webService.webCallers
 	[Event(name="complete", type="flash.events.Event")]
 	/**This event dispatches when there is no internet connection and there is no ofline data to use. So you have to notify user to controll internet connection.*/
 	[Event(name="unload", type="flash.events.Event")]
-	/**This event tells that server send an error because of wrong input datas on load() function. It can happens after register or login, because of wrong login or register information.*/
+	/**This event tells that server send an error because of wrong input datas on load() function. It can happens after register or login, because of wrong login or register information.<br><br>
+	 * 
+	 * This evetn will dispatches befor unload dispatches.*/
 	[Event(name="error", type="flash.events.ErrorEvent")]
 	/**This event dispatches when an update happend whe you used ofline datas. for example you called and service and requseted offline datas and ofline data was available and it was dispatched with COMPLETE event. then web service will try to load the server datas again and the cahnes between last data and new one is discovered. so it will update the data vlue then this event dispatches.*/
 	[Event(name="change", type="flash.events.Event")]
@@ -26,7 +30,8 @@ package webService.webCallers
 	
 	public class WebServiceCaller extends EventDispatcher
 	{
-		private var reLoader:Timer ;
+		//private var reLoader:Timer ;
+		private var timerId:uint ;
 		
 		public var connected:Boolean = false ;
 		
@@ -67,24 +72,26 @@ package webService.webCallers
 		/**Make this service reloads again*/
 		public function reLoad(delay:uint=10000):void
 		{
-			if(reLoader!=null)
+			clearTimeout(timerId);
+			/*if(reLoader!=null)
 			{
 				reLoader.reset();
-			}
+			}*/
 			if(delay==0)
 			{
-				reLoadLastRequest(null)
+				reLoadLastRequest(/*null*/);
 			}
 			else
 			{
-				reLoader = new Timer(delay,1);
+				timerId = setTimeout(reLoadLastRequest,delay);
+				/*reLoader = new Timer(delay,1);
 				reLoader.addEventListener(TimerEvent.TIMER_COMPLETE,reLoadLastRequest);
-				reLoader.start();
+				reLoader.start();*/
 			}
 		}
 		
 		/**It is tile to reload service*/
-		private function reLoadLastRequest(e:TimerEvent):void
+		private function reLoadLastRequest(/*e:TimerEvent*/):void
 		{
 			trace("Service reloaded");
 			loadParams.apply(this,myParam);
@@ -133,11 +140,13 @@ package webService.webCallers
 		{
 			//TODO: implement function
 			
-			if(reLoader!=null)
+			clearTimeout(timerId);
+			
+			/*if(reLoader!=null)
 			{
 				reLoader.reset();
 				reLoader = null ;
-			}
+			}*/
 			
 			myWebService.eventListen.removeEventListener(WebEvent.EVENT_DISCONNECTED,noInternet);
 			myWebService.eventListen.removeEventListener(WebEvent.Result,loaded);

@@ -49,6 +49,9 @@ package netManager.urlSaver
 		private var urlLoader:URLLoader ;
 		
 		private var maxNameLength:uint = 100 ;
+		
+		/**If this variable was ture, it means the URLSaver dispatched old file but it is downloading new file to override that*/
+		private var justDownlaodToUpdate:Boolean ;
 					
 		/**you have to call load() function to start file loading proccess<br>
 		 * if you set true in this value , it will not load byte array of your file and it will just return URL*/
@@ -63,6 +66,8 @@ package netManager.urlSaver
 		{
 			onlineURL = url ;
 			offlineURL = null ;
+			
+			justDownlaodToUpdate = false ;
 			
 			
 			trace("Requested image url is : "+onlineURL);
@@ -96,15 +101,16 @@ package netManager.urlSaver
 				if(datestorage != null && (datestorage.data[onlineURL] == undefined || datestorage.data[onlineURL]<acceptableDate))
 				{
 					trace('let try to download this image : '+datestorage.data[onlineURL]+" vs "+acceptableDate);
+					justDownlaodToUpdate = true ;
 				}
 				else
 				{
 					trace('the data is so fresh : '+datestorage.data[onlineURL]+" vs "+acceptableDate);
-					offlineURL = storage.data[onlineURL];
 				}
+				offlineURL = storage.data[onlineURL];
 			}
 			
-			if( offlineURL == null )
+			if( offlineURL == null || justDownlaodToUpdate)
 			{
 				//downloadThisFile
 				//DownloadManager.autoReload = false ;
@@ -113,8 +119,12 @@ package netManager.urlSaver
 				
 					//DownloadManager.contentLoaderInfo.addEventListener(DownloadManagerEvents.DOWNLOAD_COMPLETE,downloadCompletes);
 				urlLoader.addEventListener(Event.COMPLETE,downloadCompletes);
-					//DownloadManager.contentLoaderInfo.addEventListener(DownloadManagerEvents.DOWNLOAD_PROGRESS,downloading);
-				urlLoader.addEventListener(ProgressEvent.PROGRESS,downloading);
+				
+				if(!justDownlaodToUpdate)
+				{
+						//DownloadManager.contentLoaderInfo.addEventListener(DownloadManagerEvents.DOWNLOAD_PROGRESS,downloading);
+					urlLoader.addEventListener(ProgressEvent.PROGRESS,downloading);
+				}
 					//DownloadManager.contentLoaderInfo.addEventListener(DownloadManagerEvents.URL_IS_NOT_EXISTS,noFileExists);
 				//We don't have this Event type on urlLoaders
 					//DownloadManager.contentLoaderInfo.addEventListener(DownloadManagerEvents.NO_INTERNET_CONNECTION_AVAILABLE,noInternetConnection);
@@ -123,7 +133,16 @@ package netManager.urlSaver
 					//DownloadManager.download(onlineURL);
 				urlLoader.load(new URLRequest(onlineURL));
 				
-				return false ;
+				if(offlineURL==null)
+				{
+					return false ;
+				}
+				else
+				{
+					loadOflineFile();
+					
+					return true ;
+				}
 			}
 			else
 			{
@@ -162,6 +181,11 @@ package netManager.urlSaver
 		
 		protected function noInternetConnection(ev:IOErrorEvent/*DownloadManagerEvents*/):void
 		{
+			if(justDownlaodToUpdate)
+			{
+				//This image is dispatched befor
+				return ;
+			}
 			// TODO Auto-generated method stub
 			/*if(ev.urlID == onlineURL)
 			{*/
@@ -194,7 +218,15 @@ package netManager.urlSaver
 				
 				saveLoadedBytes();
 				//DownloadManager.forgetWithDilay(onlineURL);
-				loadOflineFile();
+				if(!justDownlaodToUpdate)
+				{
+					loadOflineFile();
+				}
+				else
+				{
+					loadOflineFile();
+					trace("Image URL is updated. so be carfull for errors");
+				}
 				
 				cansel();
 			/*}*/
@@ -247,8 +279,8 @@ package netManager.urlSaver
 				catch(e)
 				{
 					storage.data[onlineURL] = offlineURL ;
+					trace('***** i cannot delete this file');
 					return ;
-					trace('i cannot delete this file');
 				}
 			}
 			
@@ -294,10 +326,19 @@ package netManager.urlSaver
 		
 		
 //////////////////////////////////////////////delete temporary
-		/**Delete images older than this date
+		/**Delete images older than this date*/
 		public static function deleteDatasOlderThan(date:Date)
 		{
-			var imageList:Array = SavedDatas.getDatasOlderThan(date);
+			for(var i in datestorage.data)
+			{
+				if(datestorage.data[i] < date.time)
+				{
+					trace("This file is old : "+i);
+					deletFileIfExists(i);
+				}
+			}
+			
+			/*var imageList:Array = SavedDatas.getDatasOlderThan(date);
 			var fileChecker:File ; 
 			for(var i = 0 ; i<imageList.length ; i++)
 			{
@@ -313,12 +354,12 @@ package netManager.urlSaver
 				}
 			}
 			//Delete all saved datas whenever all provess tested
-				SavedDatas.removeDatasOlderThan(date);
-		}*/
+				SavedDatas.removeDatasOlderThan(date);*/
+		}
 		
 		
 		/**returns true if file was exist*/
-		public function deletFileIfExists(fileURL:String):Boolean
+		public static function deletFileIfExists(fileURL:String):Boolean
 		{
 			var localFileURL:String = storage.data[fileURL] ;
 			if(localFileURL == null)

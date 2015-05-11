@@ -10,6 +10,8 @@ package appManager.displayContentElemets
 	import flash.net.URLRequest;
 	import flash.system.ApplicationDomain;
 	import flash.system.LoaderContext;
+	import flash.utils.clearTimeout;
+	import flash.utils.setTimeout;
 	
 	import netManager.urlSaver.URLSaver;
 	import netManager.urlSaver.URLSaverEvent;
@@ -32,10 +34,18 @@ package appManager.displayContentElemets
 		
 		private var W:Number,H:Number,URL:String,
 					LoadInThisArea:Boolean;
+					
+		private var timeOutValue:uint ;
 		
 		public function LightImage()
 		{
 			super();
+		}
+		
+		/**Second setting up the LightImage class*/
+		public function setUp2(doAnimation:Boolean = true)
+		{
+			animated = doAnimation ;
 		}
 		
 		
@@ -61,7 +71,11 @@ package appManager.displayContentElemets
 			{
 				H = this.height;
 			}
-			this.removeChildren();
+			//I dont want to remove content for this 
+				this.removeChildren();
+			
+			this.graphics.beginFill(0x000000,0);
+			this.graphics.drawRect(0,0,W,H);
 			
 			LoadInThisArea = loadInThisArea ;
 			
@@ -83,7 +97,7 @@ package appManager.displayContentElemets
 			}
 		}
 		
-		protected function startWork(event:Event):void
+		protected function startWork(event:Event=null):void
 		{
 			//trace("Start to load");
 			// TODO Auto-generated method stub
@@ -110,6 +124,8 @@ package appManager.displayContentElemets
 		{
 			// TODO Auto-generated method stub
 			this.dispatchEvent(new Event(Event.UNLOAD));
+			
+			timeOutValue = setTimeout(startWork,10000);
 		}
 		
 		protected function imageLoaded(event:Event):void
@@ -135,6 +151,8 @@ package appManager.displayContentElemets
 		protected function unLoad(event:Event):void
 		{
 			// TODO Auto-generated method stub
+			clearTimeout(timeOutValue);
+			
 			urlSaver.removeEventListener(URLSaverEvent.LOAD_COMPLETE,imageSaved);
 			urlSaver.removeEventListener(URLSaverEvent.NO_INTERNET,imageNotFound);
 			try
