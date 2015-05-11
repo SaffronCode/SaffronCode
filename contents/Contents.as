@@ -228,6 +228,9 @@ package contents
 			//This will update all contents with current language and it will controll for the existing of the language
 			if(/*langEnabled*/autoLangUpdate && !dontUseLanguage)
 			{
+				controller = lang.t[foundedPage.musicURL];
+				if(controller != null)
+					foundedPage.musicURL = controller ;
 				var controller:String ;
 				controller = lang.t[foundedPage.imageTarget];
 				if(controller != null)
