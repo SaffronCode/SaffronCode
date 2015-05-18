@@ -4,6 +4,7 @@
  * 	1.2 : 	add function added to add linkData to old link datas
  * 			DynamicLinks can request more links. you can set this on setUp function at the beggining.
  * 			3 new functions : canGetMore, addLinks, noMoreLinks
+ * 	1.3 : revertY Activated. if the 0,0 point for the menu is bottom of the movieClip, it will generate reverted menu like Viber text messages page
  * 
  * 
  * 
@@ -29,6 +30,8 @@ package contents.displayPages
 	{
 		private static var scrollPosesObject:Object = {} ;
 		
+		private const backAlpha:Number = 0 ;
+		
 		protected var myPageData:PageData ;
 		
 		protected var sampleLink:LinkItem,
@@ -51,6 +54,23 @@ package contents.displayPages
 		
 		/**Preloader for more datas*/
 		private var requestPreLoader:Sprite ;
+		/**This will prevent scroller to have animation if there is.*/
+		public var acceptAnimation:Boolean = true;
+		
+		private var reverted:Boolean = false ;
+		
+		/**returns Y direction by reverted value*/
+		protected function get Ydirection():int
+		{
+			if(reverted)
+			{
+				return -1 ;
+			}
+			else
+			{
+				return 1 ;
+			}
+		}
 		
 		/**1-Cereate LinkItem on this pages<br>
 		 * 2- Draw a shape to define scrollArea in this object*/
@@ -72,6 +92,13 @@ package contents.displayPages
 			linkClass = getDefinitionByName(getQualifiedClassName(sampleLink)) as Class;
 			trace('link class is : '+linkClass);
 			
+			//Controll it by it's height to prevent revert activating at most of times.
+			if(this.getBounds(this).y<this.height/-2)
+			{
+				trace("*****Reverted menu activated******");
+				reverted = true ;
+			}
+			
 			this.removeChildren();
 		}
 		
@@ -79,7 +106,26 @@ package contents.displayPages
 		/**This will change the scroll area value but you have to call setUp after this functin*/
 		public function chageHeight(newValue:Number):void
 		{
-			areaRect.height = newValue ;
+			if(reverted)
+			{
+				trace("**********************Revert added");
+				areaRect.top = newValue*-1 ;
+				areaRect.bottom = 0 ;
+			}
+			else
+			{
+				areaRect.height = newValue ;
+			}
+		}
+		
+		override public function set height(value:Number):void
+		{
+			chageHeight(value);
+		}
+		
+		override public function get width():Number
+		{
+			return areaRect.width ;
 		}
 		
 		/**Call this after setUp*/
@@ -113,6 +159,7 @@ package contents.displayPages
 				createLinks();
 			}
 			this.addEventListener(Event.REMOVED_FROM_STAGE,saveLastY);
+			this.addEventListener(Event.REMOVED_FROM_STAGE,saveLastY);
 		}
 		
 		private function saveLastY(event:Event):void
@@ -129,20 +176,40 @@ package contents.displayPages
 		{
 			trace("Creat links");
 			lastGeneratedLinkIndes = 0 ;
+			/*Bellow movieClips are allready removed by removeAllChildren() function by setUp function.
+			if(linkScroller!=null)
+			{
+				linkScroller.reset();
+			}
+			
+			if(linksContainer!=null)
+			{
+				this.removeChild(linksContainer);
+			}	*/
+			
 			
 			linksContainer = new Sprite();
 			linksContainer.x = areaRect.x ;
-			linksContainer.y = areaRect.y ;
-			linksContainer.graphics.beginFill(0,0) ;
-			linksContainer.graphics.drawRect(0,0,areaRect.width,areaRect.height) ;
+			if(reverted)
+			{
+				linksContainer.y = areaRect.y+areaRect.height ;
+			}
+			else
+			{
+				linksContainer.y = areaRect.y ;
+			}
+			linksContainer.graphics.beginFill(0,backAlpha) ;
+			linksContainer.graphics.drawRect(0,0,areaRect.width,areaRect.height*Ydirection) ;
 			
 			this.addChild(linksContainer);
 		
 			
 			linksSensor = new Sprite();
-			linksSensor.y = deltaY ;
-			linksSensor.graphics.beginFill(0,0);
-			linksSensor.graphics.drawRect(0,0,areaRect.width,areaRect.height/2);
+			linksSensor.y = deltaY*Ydirection ;
+			linksSensor.graphics.beginFill(0xff0000,0);
+			linksSensor.graphics.drawRect(0,0,areaRect.width,areaRect.height/2*Ydirection);
+			linksSensor.mouseChildren = false ;
+			linksSensor.mouseEnabled = false ;
 			
 			linksContainer.addChild(linksSensor);
 			
@@ -152,7 +219,7 @@ package contents.displayPages
 				controllSensor();
 			}
 			
-			linkScroller = new ScrollMT(linksContainer,areaRect,areaRect,true,false,true);
+			linkScroller = new ScrollMT(linksContainer,areaRect,/*areaRect*/null,true,false,acceptAnimation&&!reverted,reverted);
 			if(scrollPosesObject[myPageData.id]!=null)
 			{
 				if(scrollPosesObject[myPageData.id]<areaRect.y-1)
@@ -177,6 +244,16 @@ package contents.displayPages
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 		}
 		
+		/**This will returns my links length*/
+		public function get length():uint
+		{
+			if(myPageData == null || myPageData.links1 == null)
+			{
+				return 0 ;
+			}
+			return myPageData.links1.length  ;
+		}
+		
 		private function unLoad(ev:Event=null)
 		{
 			this.removeEventListener(Event.ENTER_FRAME,controllSensor) ;
@@ -186,7 +263,7 @@ package contents.displayPages
 		private function controllSensor(ev:Event=null)
 		{
 			var sens:Rectangle = linksSensor.getBounds(this);
-			if(sens.top<areaRect.bottom)
+			if((!reverted && sens.top<areaRect.bottom) || (reverted && sens.bottom>areaRect.top))
 			{
 				var ifTherIs:Boolean = creatOneLink();
 				if(ifTherIs)
@@ -234,7 +311,7 @@ package contents.displayPages
 					createLinkOn(newLink,linksSensor);
 					
 					linksContainer.graphics.clear();
-					linksContainer.graphics.beginFill(0,0) ;
+					linksContainer.graphics.beginFill(0,backAlpha) ;
 					linksContainer.graphics.drawRect(0,0,areaRect.width,linksSensor.y) ;
 					
 					lastGeneratedLinkIndes++ ;
@@ -262,8 +339,16 @@ package contents.displayPages
 		protected function createLinkOn(newLink:LinkItem,currentLinksSensor:Sprite):void
 		{
 			newLink.x = (areaRect.width-newLink.width)/2 ;
-			newLink.y = linksSensor.y ;
-			linksSensor.y += newLink.height+deltaY ;
+			if(reverted)
+			{
+				newLink.y = linksSensor.y-newLink.height ;
+			}
+			else
+			{
+				newLink.y = linksSensor.y ;
+			}
+			linksSensor.y += (newLink.height+deltaY)*Ydirection ;
+			trace(" linksSensor.y : "+linksSensor.y) ;
 		}
 	}
 }

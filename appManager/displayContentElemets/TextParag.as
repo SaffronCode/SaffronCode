@@ -43,6 +43,12 @@ package appManager.displayContentElemets
 			return W ;
 		}
 		
+		override public function set width(value:Number):void
+		{
+			myTextTF.width = value ;
+			W = value ;
+		}
+		
 		public function setUp(myText:String,isArabic:Boolean = true,align:Boolean=true)
 		{
 			//This event dispatches to remove old scrollMC class

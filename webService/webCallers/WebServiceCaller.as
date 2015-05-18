@@ -69,8 +69,9 @@ package webService.webCallers
 			super();
 		}
 		
-		/**Make this service reloads again*/
-		public function reLoad(delay:uint=10000):void
+		/**Make this service reloads again<br>
+		 * After few tests, I noticed that the 10 second delay is not enaugh*/
+		public function reLoad(delay:uint=20000):void
 		{
 			clearTimeout(timerId);
 			/*if(reLoader!=null)
@@ -244,8 +245,15 @@ package webService.webCallers
 			}
 			else
 			{
-				event_wrongInputs();
-				event_noInternet();
+				var hasErrorListener:Boolean = event_wrongInputs();
+				if(!hasErrorListener)
+				{
+					event_noInternet();
+				}
+				else
+				{
+					trace("User is listening to Error Event, So there is no need to dispatch netError");
+				}
 				//dispatchEveryWhere(ErrorEvent.ERROR);
 				//dispatchEveryWhere(Event.UNLOAD);
 			}
@@ -279,9 +287,11 @@ package webService.webCallers
 			this.dispatchEvent(new Event(Event.UNLOAD));
 		}
 		
-		private function event_wrongInputs():void
+		/**Returns true if someone listenning to it*/
+		private function event_wrongInputs():Boolean
 		{
 			this.dispatchEvent(new ErrorEvent(ErrorEvent.ERROR));
+			return this.hasEventListener(ErrorEvent.ERROR);
 		}
 		
 		private function event_dataUpdated():void

@@ -5,6 +5,7 @@ package appManager.displayContentElemets
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Loader;
+	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.net.URLRequest;
@@ -95,6 +96,7 @@ package appManager.displayContentElemets
 			{
 				this.addEventListener(Event.ADDED_TO_STAGE,startWork);
 			}
+			this.scaleX = this.scaleY = 1 ;
 		}
 		
 		protected function startWork(event:Event=null):void
@@ -136,7 +138,13 @@ package appManager.displayContentElemets
 			
 			var newBitmapData:BitmapData = BitmapEffects.changeSize(bitmapData,W,H,true,LoadInThisArea) ;
 			newBitmap = new Bitmap(newBitmapData);
-			this.addChild(newBitmap);
+			newBitmap.smoothing = true ;
+			//this.addChild(newBitmap);
+			
+			//I will try to load image in imageContainer to controll mask but on Android
+			var imageContainer:Sprite = new Sprite();
+			this.addChild(imageContainer);
+			imageContainer.addChild(newBitmap);
 			
 			if(acitvateAnimation && animated)
 			{
