@@ -18,7 +18,6 @@ package netManager.urlSaver
 	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequest;
 	import flash.utils.ByteArray;
-	import flash.utils.getTimer;
 	
 	
 	[Event(name="LOADING", type="com.mteamapp.loader.urlSaver.URLSaverEvent")]
@@ -357,6 +356,12 @@ package netManager.urlSaver
 				SavedDatas.removeDatasOlderThan(date);*/
 		}
 		
+		/**This will refer back to static function with the same name*/
+		public function deletFileIfExists(fileURL:String):Boolean
+		{
+			return deletFileIfExists(fileURL);
+		}
+		
 		
 		/**returns true if file was exist*/
 		public static function deletFileIfExists(fileURL:String):Boolean
@@ -384,8 +389,6 @@ package netManager.urlSaver
 				datestorage.data[fileURL] = undefined ;
 				datestorage.flush();
 				storage.flush();
-				
-				ScrollMT
 				
 				return true ;
 			}

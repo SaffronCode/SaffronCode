@@ -5,7 +5,7 @@
  * 			DynamicLinks can request more links. you can set this on setUp function at the beggining.
  * 			3 new functions : canGetMore, addLinks, noMoreLinks
  * 	1.3 : revertY Activated. if the 0,0 point for the menu is bottom of the movieClip, it will generate reverted menu like Viber text messages page
- * 
+ * 	1.3.1 : dynamic deltaY is created by MyDeltaY value
  * 
  * 
  */
@@ -28,6 +28,9 @@ package contents.displayPages
 	
 	public class DynamicLinks extends MovieClip implements DisplayPageInterface
 	{
+		public static const UPDATE_LINKS_POSITION:String = "UPDATE_LINKS_POSITION" ;
+		
+		
 		private static var scrollPosesObject:Object = {} ;
 		
 		private const backAlpha:Number = 0 ;
@@ -37,14 +40,19 @@ package contents.displayPages
 		protected var sampleLink:LinkItem,
 					linkClass:Class;
 					
-		protected var linkScroller:ScrollMT,
-					areaRect:Rectangle,
-					linksContainer:Sprite,
-					linksSensor:Sprite ;
+		protected var 	linkScroller:ScrollMT,
+						areaRect:Rectangle,
+						linksContainer:Sprite,
+						linksSensor:Sprite ;
+						
+		/**This is the list of creted linkItems on the stage.*/
+		private var linksInterfaceStorage:Vector.<LinkItem> ;
 					
 		protected var lastGeneratedLinkIndes:uint ;
 		
 		public static var deltaY:Number = 20 ;
+		
+		public var myDeltaY:Number ;
 		
 		private var noLinksMC:MovieClip ;
 		
@@ -78,6 +86,10 @@ package contents.displayPages
 		{
 			super();
 			
+			this.addEventListener(UPDATE_LINKS_POSITION,updateLinksPosition);
+			
+			myDeltaY = deltaY ;
+			
 			//This will automaticaly removes at the last line
 			noLinksMC = Obj.get("no_link_mc",this);
 			
@@ -90,7 +102,7 @@ package contents.displayPages
 			}
 			
 			linkClass = getDefinitionByName(getQualifiedClassName(sampleLink)) as Class;
-			trace('link class is : '+linkClass);
+			//trace('link class is : '+linkClass);
 			
 			//Controll it by it's height to prevent revert activating at most of times.
 			if(this.getBounds(this).y<this.height/-2)
@@ -108,7 +120,7 @@ package contents.displayPages
 		{
 			if(reverted)
 			{
-				trace("**********************Revert added");
+				//trace("**********************Revert added");
 				areaRect.top = newValue*-1 ;
 				areaRect.bottom = 0 ;
 			}
@@ -126,6 +138,11 @@ package contents.displayPages
 		override public function get width():Number
 		{
 			return areaRect.width ;
+		}
+		
+		override public function set width(value:Number):void
+		{
+			areaRect.width = value ;
 		}
 		
 		/**Call this after setUp*/
@@ -147,6 +164,9 @@ package contents.displayPages
 				requestMore = new Function() ;
 			}
 			
+			//reset cashed list
+			linksInterfaceStorage = new  Vector.<LinkItem>();
+			
 			//trace("current page data is : "+pageData.export());
 			this.removeChildren();
 			myPageData = pageData;
@@ -167,8 +187,11 @@ package contents.displayPages
 			// TODO Auto-generated method stub
 			if(linksContainer!=null)
 			{
-				trace("*.Last Y : "+linksContainer.y);
-				scrollPosesObject[myPageData.id] = linksContainer.y ;
+				//trace("*.Last Y : "+linksContainer.y);
+				if(myPageData.id!='')
+				{
+					scrollPosesObject[myPageData.id] = linksContainer.y ;
+				}
 			}
 		}
 		
@@ -205,7 +228,7 @@ package contents.displayPages
 		
 			
 			linksSensor = new Sprite();
-			linksSensor.y = deltaY*Ydirection ;
+			linksSensor.y = myDeltaY*Ydirection ;
 			linksSensor.graphics.beginFill(0xff0000,0);
 			linksSensor.graphics.drawRect(0,0,areaRect.width,areaRect.height/2*Ydirection);
 			linksSensor.mouseChildren = false ;
@@ -243,6 +266,8 @@ package contents.displayPages
 			this.addEventListener(Event.ENTER_FRAME,controllSensor);
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 		}
+		
+		
 		
 		/**This will returns my links length*/
 		public function get length():uint
@@ -310,6 +335,8 @@ package contents.displayPages
 					
 					createLinkOn(newLink,linksSensor);
 					
+					linksInterfaceStorage.push(newLink);
+					
 					linksContainer.graphics.clear();
 					linksContainer.graphics.beginFill(0,backAlpha) ;
 					linksContainer.graphics.drawRect(0,0,areaRect.width,linksSensor.y) ;
@@ -322,6 +349,23 @@ package contents.displayPages
 			{
 				return false ;
 			}
+		}
+		
+		
+		/**This will update links position from 0*/
+		public function updateLinksPosition(e:Event=null):void
+		{
+			if(e!=null)
+			{
+				e.stopImmediatePropagation();
+			}
+			var l:uint = linksInterfaceStorage.length ;
+			//var Y:Number = myDeltaY*Ydirection ;
+			for(var i = 1 ; i<l ; i++)
+			{
+				linksInterfaceStorage[i].y = linksInterfaceStorage[i-1].y+(linksInterfaceStorage[i-1].height+myDeltaY)*Ydirection;
+			}
+			linksSensor.y = linksInterfaceStorage[i-2].y+(linksInterfaceStorage[i-2].height+myDeltaY)*Ydirection;
 		}
 		
 		
@@ -347,8 +391,8 @@ package contents.displayPages
 			{
 				newLink.y = linksSensor.y ;
 			}
-			linksSensor.y += (newLink.height+deltaY)*Ydirection ;
-			trace(" linksSensor.y : "+linksSensor.y) ;
+			linksSensor.y += (newLink.height+myDeltaY)*Ydirection ;
+			//trace(" linksSensor.y : "+linksSensor.y) ;
 		}
 	}
 }

@@ -54,7 +54,8 @@ package contents
 		
 		private static var xmlLoadedOnce:Boolean = false ;
 		
-		private static var pages:Vector.<PageData>;
+		//I initialize this value to prevet error when you call functions without setting it up
+		private static var pages:Vector.<PageData> = new Vector.<PageData>();
 		private static var myStage:Stage;
 		
 		
@@ -201,6 +202,12 @@ package contents
 		public static function getPage(pageID:String,dontUseLanguage:Boolean=false):PageData 
 		{
 			//trace('1- '+getTimer());
+			if(pages==null)
+			{
+				trace("You have to set Contents first");
+				return new PageData();
+			}
+			
 			
 			if(isDebug)
 			{
