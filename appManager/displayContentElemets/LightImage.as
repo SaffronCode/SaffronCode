@@ -24,6 +24,10 @@ package appManager.displayContentElemets
 	/**This class will resize the loaded image to its size to prevent gpu process and also it will crop the image to.*/
 	public class LightImage extends Image
 	{
+		/**If the image item name contains below string, it will make it show image in the area and do not crop it*/
+		public static const _full:String = "_full";
+		
+		
 		/**This will make image to load in the stage with fade in animation*/
 		public static var acitvateAnimation:Boolean = true ;
 		
@@ -79,6 +83,11 @@ package appManager.displayContentElemets
 			this.graphics.drawRect(0,0,W,H);
 			
 			LoadInThisArea = loadInThisArea ;
+			if(this.name.indexOf(_full)!=-1)
+			{
+				trace("Load in this area type changed because of its name");
+				LoadInThisArea = true ;
+			}
 			
 			if(X!=0)
 			{

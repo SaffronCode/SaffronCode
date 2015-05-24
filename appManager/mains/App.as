@@ -145,6 +145,7 @@ package appManager.mains
 				return false ;
 			}
 				currentAppEvent = event ;
+				
 			// TODO Auto-generated method stub
 			if(mainAnim == null)
 			{
@@ -174,7 +175,19 @@ package appManager.mains
 				//This function calls when external pages oppened:
 				hopePageOppened(false);
 			}
+			
+			if(currentAppEvent is AppEventContent)
+			{
+				setPageId(currentAppEvent.myID);
+			}
+			
 			return true ;
+		}
+		
+		/**You can use pageID by this class*/
+		public function setPageId(pageId:String):void
+		{
+			
 		}
 		
 		/**This function will tell you if this is the home page or not*/
