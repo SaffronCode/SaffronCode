@@ -1,6 +1,6 @@
 package diagrams.calender
 {
-	public class CalenderContent
+	internal class CalenderContent
 	{
 		public var id:*;
 		

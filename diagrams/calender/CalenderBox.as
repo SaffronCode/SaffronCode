@@ -7,7 +7,7 @@ package diagrams.calender
 	import flash.text.TextFormatAlign;
 	import flash.utils.Timer;
 	
-	public class CalenderBox extends MovieClip
+	internal class CalenderBox extends MovieClip
 	{
 		private static const padding:Number = 1 ;
 		private static const maskPadding:Number = 5 ;

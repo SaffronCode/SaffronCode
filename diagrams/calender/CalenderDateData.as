@@ -1,9 +1,8 @@
 package diagrams.calender
 {
-	import webService.WebEvent;
-	import webService.myWebService;
+	
 
-	public class CalenderDateData
+	internal class CalenderDateData
 	{
 		private var onReady:Function ;
 		

@@ -13,7 +13,8 @@ package diagrams.instagram
 			myTitle = new InstaTitle(color,InstagramConstants.Diagram_values_size,true) ;
 			this.addChild(myTitle) ;
 			myTitle.width = InstagramConstants.Diagram_values_width ;
-			myTitle.y = myTitle.height/-2;
+			//CHANGED LINE ↓
+			myTitle.y = myTitle.height/-1;// /-2;
 			//myTitle.x-=InstagramConstants.Diagram_values_width/2;
 			//setTitle(String(value)) ;
 			this.graphics.beginFill(color);

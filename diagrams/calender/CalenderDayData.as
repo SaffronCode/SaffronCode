@@ -5,7 +5,7 @@
 
 package diagrams.calender
 {
-	public class CalenderDayData
+	internal class CalenderDayData
 	{
 		public static const CalenderDataType_day:uint = 1 ;
 		

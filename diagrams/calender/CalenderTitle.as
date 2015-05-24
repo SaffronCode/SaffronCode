@@ -2,7 +2,7 @@ package diagrams.calender
 {
 	import flash.display.MovieClip;
 	
-	public class CalenderTitle extends MovieClip
+	internal class CalenderTitle extends MovieClip
 	{
 		private var myText:CalenderText ;
 		

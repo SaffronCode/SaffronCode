@@ -285,6 +285,7 @@ package diagrams.instagram
 				{
 					var vVal:Number = myDiagramDatas[i].values[j].Vval ;
 					minVNumber = Math.min(minVNumber,vVal) ;
+					//trace("min val : "+minVNumber,vVal);
 					maxVNumber = Math.max(maxVNumber,vVal) ;
 					
 					myTitles.addHTitle(new InstaTitleValue(myDiagramDatas[i].values[j].Hval));
@@ -310,6 +311,7 @@ package diagrams.instagram
 			
 			if(pushedTitles != null && pushedTitles.vTitle.length>0)
 			{
+				//trace("min val2 : "+pushedTitles.vTitle[0].value);
 				realMinimom = minVNumber = Math.min(pushedTitles.vTitle[0].value,minVNumber);
 				realMaximom = maxVNumber = Math.max(pushedTitles.vTitle[pushedTitles.vTitle.length-1].value,maxVNumber);
 			}
@@ -317,8 +319,8 @@ package diagrams.instagram
 			//trace("minHNumber : "+minHNumber);
 			//trace("maxHNumber : "+maxHNumber);
 			
-			trace("minVNumber : "+minVNumber+' < '+realMinimom);
-			trace("maxVNumber : "+maxVNumber+' < '+realMaximom);
+			//trace("minVNumber : "+minVNumber+' < '+realMinimom);
+			//trace("maxVNumber : "+maxVNumber+' < '+realMaximom);
 			
 			
 			//Generate myTitles ↓
@@ -333,30 +335,30 @@ package diagrams.instagram
 					return;*/
 				
 				//1- Maximom steps :
-				trace("0-1 maxHeight : "+maxHeight); 
+				//trace("0-1 maxHeight : "+maxHeight); 
 				var maxTitleNumber:uint  = Math.floor(maxHeight/vTitleHeights);
 				maxTitleNumber = dividableBy5(maxTitleNumber);
-				trace("1-maxTitleNumber : "+maxTitleNumber);
+				//trace("1-maxTitleNumber : "+maxTitleNumber);
 				/**n*///it doesn't need to increase 2 step from available places because, from now, titles can be at the toppest and bottomest places on the diagram.
 				var availableTitleNumbers:uint = Math.max(1,maxTitleNumber/*-2*/) ;
-				trace("2-availableTitleNumbers : "+availableTitleNumbers);
+				//trace("2-availableTitleNumbers : "+availableTitleNumbers);
 				//2- delta phase on availableTitileNumbers
 				var deltaPhase:Number = maxVNumber - minVNumber ;
-				trace("3-deltaPhase : "+deltaPhase);
+				//trace("3-deltaPhase : "+deltaPhase);
 				/**m*/
 				var pureSteps:Number = deltaPhase/availableTitleNumbers ;
-				trace("4-pureSteps : "+pureSteps);
+				//trace("4-pureSteps : "+pureSteps);
 				//3- find steps level ( 10 , 100 , 1000 , ... )
 				/**o*/
 				var stepsPower:Number = log10(pureSteps);
-				trace('5-stepsPower : '+stepsPower);
+				//trace('5-stepsPower : '+stepsPower);
 				/**p*/
 				var smallSteps:Number = pureSteps/stepsPower ;
-				trace('6-smallSteps : '+smallSteps);
+				//trace('6-smallSteps : '+smallSteps);
 				var steps:Number = stepsPower*Math.round(smallSteps);
-				trace('7-steps : '+steps);
+				//trace('7-steps : '+steps);
 				var minStep:Number = Math.max(realMinimom,Math.floor(minVNumber/steps)*steps);
-				trace("8-minStep : "+minStep);
+				//trace("8-minStep : "+minStep);
 				
 				var vTitleTemp:String ;
 				var vStepValTemp:Number ;
@@ -381,9 +383,13 @@ package diagrams.instagram
 				//It makes maxLevel shows the wrong value
 				//maxVNumber = minStep-steps ;
 				
-				trace("VTitles : "+myTitles.vTitle);
+				//trace("VTitles : "+myTitles.vTitle);
 				
-			trace("minVNumber : "+minVNumber+" maxVNumber : "+maxVNumber);
+				//Change the min and max : 
+				minVNumber = Math.min(myTitles.vTitle[0].value,minVNumber); 
+				maxVNumber = Math.max(myTitles.vTitle[myTitles.vTitle.length-1].value,maxVNumber); 
+				
+			//trace("minVNumber : "+minVNumber+" maxVNumber : "+maxVNumber);
 			
 			//Draw vertical titles ↓
 			
@@ -497,6 +503,7 @@ package diagrams.instagram
 		private function generatePrecent(titleData:InstaTitleValue,min:Number,max:Number):Number
 		{
 			//trace(titleData.value,min,max)
+			//trace("("+titleData.value+"-"+min+")/("+max+"-"+min+") = "+((titleData.value-min)/(max-min)));
 			return (titleData.value-min)/(max-min);
 		}
 		
@@ -551,7 +558,7 @@ package diagrams.instagram
 		}
 		
 		/**Split titles if theyr length are more than this number*/
-		private function titleSplitter(title:String,availableChars:uint = 4)
+		private function titleSplitter(title:String,availableChars:uint = InstagramConstants.availableCharsOnTitles)
 		{
 			availableChars = Math.min(availableChars,title.length);
 			return title.substring(0,availableChars);

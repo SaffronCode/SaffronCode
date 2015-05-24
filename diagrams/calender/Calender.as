@@ -1,8 +1,9 @@
 package diagrams.calender
 {
 	import flash.display.MovieClip;
-	import flash.events.Event;
 	import flash.geom.Rectangle;
+	
+	[Event(name="DATE_SELECTED", type="diagrams.calender.CalenderEvent")]
 	
 	public class Calender extends MovieClip
 	{
@@ -123,6 +124,12 @@ package diagrams.calender
 		public function get currentMonthName():String
 		{
 			return CalenderConstants.monthNames[dateData.firstDateShamsi.month];
+		}
+		
+		/**returns the current month name in shamsi*/
+		public function get currentMonthID():uint
+		{
+			return dateData.firstDateShamsi.month;
 		}
 		
 		/**returns year name on shamsi*/

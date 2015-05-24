@@ -3,7 +3,7 @@ package diagrams.calender
 	import flash.display.MovieClip;
 	import flash.text.TextFormatAlign;
 	
-	public class CelenderBoxContent extends MovieClip
+	internal class CelenderBoxContent extends MovieClip
 	{
 		public function CelenderBoxContent(W:Number,H:Number,cashedContents:CalenderContents )
 		{

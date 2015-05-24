@@ -4,7 +4,7 @@ package diagrams.calender
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
 	
-	public class CalenderText extends TextField
+	internal class CalenderText extends TextField
 	{
 		private var myFormat:TextFormat ;
 		
