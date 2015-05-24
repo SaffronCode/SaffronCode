@@ -2,6 +2,7 @@ package webService
 {
 	import flash.display.Stage;
 	import flash.events.TimerEvent;
+	import flash.utils.ByteArray;
 	import flash.utils.Timer;
 	
 	import mx.rpc.AbstractOperation;
@@ -238,7 +239,23 @@ package webService
 		
 		public static function callFunction(serviceName:String,params:Array):AsyncToken
 		{
-			trace(serviceName+" : "+params);
+			var showValues:Boolean = true ;
+			for(var i = 0 ; i<params.length ; i++)
+			{
+				if(params[i] is ByteArray)
+				{
+					showValues = false ;
+					break;
+				}
+			}
+			if(showValues)
+			{
+				trace(serviceName+" : "+params);
+			}
+			else
+			{
+				trace(serviceName+" : params");
+			}
 			var op:AbstractOperation = ws.getOperation(serviceName);
 			op.arguments = params;
 			return op.send()

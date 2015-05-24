@@ -172,7 +172,7 @@ package sliderMenu
 		/**stop the dragging */
 		private static function stopDrag(e:MouseEvent)
 		{
-			if(mouseFirstPose!=null)
+			if(mouseFirstPose!=null && !lock_flag)
 			{
 				var deltaPoseNumber = addGetSlider(currentDraggingPose);
 				if(currentDraggingPose == LEFT_MENU || currentDraggingPose == RIGHT_MENU)

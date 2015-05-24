@@ -2,6 +2,8 @@ package popForm
 {
 	import DateManager.DateShamsi;
 	
+	import diagrams.calender.MyShamsi;
+	
 	import flash.display.MovieClip;
 	import flash.text.SoftKeyboardType;
 	import flash.text.TextField;
@@ -57,9 +59,19 @@ package popForm
 			var defaultDate:Date = data as Date ;
 			if(defaultDate!=null)
 			{
-				yearTF.text = String(defaultDate.fullYear);
-				monthTF.text = String(defaultDate.month+1);
-				dayTF.text = String(defaultDate.date);
+				if(IsArabic)
+				{
+					var shamsi:MyShamsi = MyShamsi.miladiToShamsi(defaultDate);
+					yearTF.text = String(shamsi.fullYear);
+					monthTF.text = String(shamsi.month+1);
+					dayTF.text = String(shamsi.date);
+				}
+				else
+				{
+					yearTF.text = String(defaultDate.fullYear);
+					monthTF.text = String(defaultDate.month+1);
+					dayTF.text = String(defaultDate.date);
+				}
 			}
 			else
 			{

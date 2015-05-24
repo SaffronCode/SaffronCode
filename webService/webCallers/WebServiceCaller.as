@@ -49,6 +49,8 @@ package webService.webCallers
 					
 		private var myOperation:Operation ;
 		
+		public var PureData:String = '' ;
+		
 		private var myServiceName:String ;
 		
 		private var offlineDate:Date,
@@ -73,7 +75,12 @@ package webService.webCallers
 		 * After few tests, I noticed that the 10 second delay is not enaugh*/
 		public function reLoad(delay:uint=20000):void
 		{
-			clearTimeout(timerId);
+			cansel();
+			
+			LoadForDoubleControll = false,
+			offlineValuesToSend = null;
+			
+			//clearTimeout(timerId);
 			/*if(reLoader!=null)
 			{
 				reLoader.reset();
@@ -218,6 +225,7 @@ package webService.webCallers
 			
 			//you can even controll the data value from overrided function
 			var parsedSituation:Boolean = manageData(pureData);
+			PureData = pureData ;
 			
 			if(parsedSituation)
 			{
@@ -290,8 +298,13 @@ package webService.webCallers
 		/**Returns true if someone listenning to it*/
 		private function event_wrongInputs():Boolean
 		{
-			this.dispatchEvent(new ErrorEvent(ErrorEvent.ERROR));
-			return this.hasEventListener(ErrorEvent.ERROR);
+			var hasErrorListener:Boolean = this.hasEventListener(ErrorEvent.ERROR);
+			if(hasErrorListener)
+			{
+				this.dispatchEvent(new ErrorEvent(ErrorEvent.ERROR));
+				return true ;
+			}
+			return false;
 		}
 		
 		private function event_dataUpdated():void
