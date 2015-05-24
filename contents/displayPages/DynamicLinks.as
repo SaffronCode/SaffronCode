@@ -102,7 +102,7 @@ package contents.displayPages
 			}
 			
 			linkClass = getDefinitionByName(getQualifiedClassName(sampleLink)) as Class;
-			//trace('link class is : '+linkClass);
+			trace('link class is : '+linkClass);
 			
 			//Controll it by it's height to prevent revert activating at most of times.
 			if(this.getBounds(this).y<this.height/-2)
@@ -120,7 +120,7 @@ package contents.displayPages
 		{
 			if(reverted)
 			{
-				//trace("**********************Revert added");
+				trace("**********************Revert added");
 				areaRect.top = newValue*-1 ;
 				areaRect.bottom = 0 ;
 			}
@@ -185,7 +185,7 @@ package contents.displayPages
 		private function saveLastY(event:Event):void
 		{
 			// TODO Auto-generated method stub
-			if(linksContainer!=null)
+			if(linksContainer!=null && myPageData.id!='')
 			{
 				//trace("*.Last Y : "+linksContainer.y);
 				if(myPageData.id!='')
@@ -228,7 +228,7 @@ package contents.displayPages
 		
 			
 			linksSensor = new Sprite();
-			linksSensor.y = myDeltaY*Ydirection ;
+			linksSensor.y = deltaY*Ydirection ;
 			linksSensor.graphics.beginFill(0xff0000,0);
 			linksSensor.graphics.drawRect(0,0,areaRect.width,areaRect.height/2*Ydirection);
 			linksSensor.mouseChildren = false ;
@@ -236,14 +236,14 @@ package contents.displayPages
 			
 			linksContainer.addChild(linksSensor);
 			
-			if(scrollPosesObject[myPageData.id]!=null)
+			if(myPageData.id!='' && scrollPosesObject[myPageData.id]!=null)
 			{
 				linksContainer.y = scrollPosesObject[myPageData.id];
 				controllSensor();
 			}
 			
 			linkScroller = new ScrollMT(linksContainer,areaRect,/*areaRect*/null,true,false,acceptAnimation&&!reverted,reverted);
-			if(scrollPosesObject[myPageData.id]!=null)
+			if(myPageData.id!='' && scrollPosesObject[myPageData.id]!=null)
 			{
 				if(scrollPosesObject[myPageData.id]<areaRect.y-1)
 				{
