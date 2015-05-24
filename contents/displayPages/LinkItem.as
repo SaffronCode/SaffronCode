@@ -23,7 +23,7 @@ package contents.displayPages
 		
 		public var myLinkData:LinkData ;
 		
-		public function LinkItem()
+		public function LinkItem(mouseChildAccept:Boolean=false)
 		{
 			super();
 			
@@ -32,7 +32,7 @@ package contents.displayPages
 			//trace("founded text title is : "+myTitle)
 			myParag = Obj.findThisClass(TextParag,this);
 			
-			this.mouseChildren = false ;
+			this.mouseChildren = mouseChildAccept ;
 			this.addEventListener(MouseEvent.CLICK,imSelected);
 		}
 		
@@ -40,6 +40,10 @@ package contents.displayPages
 		public function setUp(linkData:LinkData):void
 		{
 			myLinkData = linkData ;
+			if(myLinkData!=null)
+			{
+				this.buttonMode = true ;
+			}
 			
 			if(myImage!=null)
 			{
