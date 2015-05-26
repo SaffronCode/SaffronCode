@@ -85,7 +85,7 @@ package diagrams.calender
 		
 		public function toString(e=null):String
 		{
-			return '['+fullYear+','+month+','+date+'   '+hours+':'+minutes+':'+seconds+']';
+			return fullYear+'/'+month+'/'+date+'   '+hours+':'+minutes+':'+seconds;
 		}
 	}
 }

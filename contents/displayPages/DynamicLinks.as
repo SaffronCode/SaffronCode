@@ -145,6 +145,18 @@ package contents.displayPages
 			areaRect.width = value ;
 		}
 		
+		override public function get height():Number
+		{
+			if(areaRect == null )
+			{
+				return super.height;
+			}
+			else
+			{
+				return areaRect.height ;
+			}
+		}
+		
 		/**Call this after setUp*/
 		public function canGetMore(youCanRequestForMore:Function,preLoaderObject:Sprite):void
 		{

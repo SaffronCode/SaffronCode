@@ -57,11 +57,28 @@ package webService.webCallers
 					LoadForDoubleControll:Boolean = false,
 					offlineValuesToSend:String = null;//,
 					//doNotDispatchEventsAgain:Boolean = false
+					
+					
+		/**This function will change the maximomOfflineData value to new date<br>
+		 * null changes with new Date();*/
+		public function changeOfflineDate(newDate:Date=null):void
+		{
+			if(newDate == null)
+			{
+				newDate = new Date();
+			}
+			offlineDate = newDate ;
+		}
 		
+					/**If you dont enter a date, it will take current date as maximomOFflieneDate*/
 		public function WebServiceCaller(myWebServiceName:String,offlineDataIsOK_v:Boolean=true,justLoadOfline_v:Boolean=false,maximomOfflineData:Date = null)
 		{
 			//TODO: implement function
 			//#4
+			if(justLoadOfline_v && maximomOfflineData == null)
+			{
+				maximomOfflineData = new Date();
+			}
 			offlineDate = maximomOfflineData ;
 			
 			myServiceName = myWebServiceName ;
@@ -75,7 +92,9 @@ package webService.webCallers
 		 * After few tests, I noticed that the 10 second delay is not enaugh*/
 		public function reLoad(delay:uint=20000):void
 		{
-			cansel();
+			//I prefer to dont cansel the current webservice
+				//cansel();
+				clearTimeout(timerId);
 			
 			LoadForDoubleControll = false,
 			offlineValuesToSend = null;

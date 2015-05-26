@@ -37,7 +37,7 @@ package appManager.displayContentElemets
 		private var loader:Loader ,
 					urlSaver:URLSaver; 
 		
-		private var W:Number,H:Number,URL:String,
+		private var W:Number=0,H:Number=0,URL:String,
 					LoadInThisArea:Boolean;
 					
 		private var timeOutValue:uint ;
@@ -45,6 +45,24 @@ package appManager.displayContentElemets
 		public function LightImage()
 		{
 			super();
+		}
+		
+		override public function get height():Number
+		{
+			if(H==0)
+			{
+				return super.height;
+			}
+			return H ;
+		}
+		
+		override public function get width():Number
+		{
+			if(W==0)
+			{
+				return super.width;
+			}
+			return W ;
 		}
 		
 		/**Second setting up the LightImage class*/
@@ -66,7 +84,7 @@ package appManager.displayContentElemets
 			}
 			else
 			{
-				W = this.width ;
+				W = super.width ;
 			}
 			if(imageH!=0)
 			{
@@ -74,7 +92,7 @@ package appManager.displayContentElemets
 			}
 			else
 			{
-				H = this.height;
+				H = super.height;
 			}
 			//I dont want to remove content for this 
 				this.removeChildren();
