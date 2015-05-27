@@ -1,6 +1,7 @@
 package appManager.event
 {
 	import contents.Contents;
+	import contents.History;
 	import contents.LinkData;
 	import contents.PageData;
 
@@ -9,20 +10,23 @@ package appManager.event
 	{
 		public static var currentLink:LinkData;
 		
-		public static var history:Vector.<LinkData> ;
+		//public static var history:Vector.<LinkData> ;
 		
 		public var linkData:LinkData;
 		
 		public var pageData:PageData ;
 		
+		public var SkipHistory:Boolean ;
+		
 		//public var myID:String ;
 		
 		public function AppEventContent(pageLink:LinkData,skipHistory:Boolean = false)
 		{
+			SkipHistory = skipHistory ;
 			
 			linkData = currentLink = pageLink ;
 			
-			resetHistory();
+			//resetHistory();
 			
 			if(pageLink.id == home)
 			{
@@ -30,19 +34,20 @@ package appManager.event
 			}
 			
 			//trace('currentLink.level : '+currentLink.level+' - '+currentLink.id);
-			if(!skipHistory)
+			/*if(!skipHistory)
 			{
-				if(currentLink.level==-1)
-				{
-					history.push(currentLink);
-				}
-				else
-				{
-					//trace("♠ split : "+currentLink.level+' , '+history.length+' - '+currentLink.level);
-					history.splice(currentLink.level/*-1*/,Math.max(history.length-currentLink.level/*+1*/,0));
-					history.push(currentLink);
-				}
-			}
+				History.pushHistory(currentLink);
+				//if(currentLink.level==-1)
+				//{
+				//	history.push(currentLink);
+				//}
+				//else
+				//{
+				//	//trace("♠ split : "+currentLink.level+' , '+history.length+' - '+currentLink.level);
+				//	history.splice(currentLink.level,Math.max(history.length-currentLink.level,0));
+				//	history.push(currentLink);
+				//}
+			}*/
 			//trace('find page data for : '+pageLink.id);
 			pageData = Contents.getPage(pageLink.id);
 			
@@ -58,7 +63,7 @@ package appManager.event
 			}*/
 		}
 		
-		private static function resetHistory():void
+		/*private static function resetHistory():void
 		{
 			// TODO Auto Generated method stub
 			
@@ -68,7 +73,7 @@ package appManager.event
 				
 				history.push(Contents.homeLink);
 			}
-		}
+		}*/
 		
 		/**return current page*/
 		public static function get currentPage():String
@@ -86,27 +91,31 @@ package appManager.event
 		/**You can predect if back is availabe*/
 		public static function backAvailable():Boolean
 		{
-			//trace("history : "+JSON.stringify(history));
+			trace("backAvailable methode is moved from AppEventContent to History Class");
+			return History.backAvailable();
+			/*//trace("history : "+JSON.stringify(history));
 			//This situation will not ocure on any pages but home
-			if(history!=null && ( history.length>1 /*|| (history.length>0 && history[0].id == home)*/))
+			if(history!=null && ( history.length>1 ))
 			{
 				return true ;
 			}
 			else
 			{
 				return false ;
-			}
+			}*/
 		}
 		
 		/**returns lastPageEvent*/
 		public static function lastPage():AppEventContent
 		{
+			trace("lastPage methode is moved from AppEventContent to History Class");
+			return History.lastPage();
 			//trace("dispatch last page");
 			/*for(var i = 0 ; i<history.length ; i++)
 			{
 				trace('history['+i+'] : '+history[i].id);
 			}*/
-			resetHistory()
+			/*resetHistory()
 			
 			if(history.length>1)
 			{
@@ -116,7 +125,7 @@ package appManager.event
 			else
 			{
 				return new AppEventContent(Contents.homeLink,true);
-			}
+			}*/
 		}
 	}
 }
