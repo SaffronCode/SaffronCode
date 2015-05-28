@@ -45,5 +45,31 @@ package diagrams.instagram
 			//6 Clear the textField
 			this.text = '' ;
 		}
+		
+		override public function set text(value:String):void
+		{
+			//trace(" , seperatore used for : "+value);
+			if(!isNaN(Number(value)))
+			{
+				//trace(" ... and value is number");
+				var newText:String = '';
+				var cnt:uint = 0 ;
+				for(var i = value.length-1 ; i>=0 ; i--)
+				{
+					cnt++;
+					newText = value.charAt(i)+newText;
+					if(cnt%3==0)
+					{
+						newText = ','+newText ;
+					}
+				}	
+				if(newText.charAt(0) == ',')
+				{
+					newText = newText.substring(1);
+				}
+				value = newText ;
+			}
+			super.text = value ;
+		}
 	}
 }

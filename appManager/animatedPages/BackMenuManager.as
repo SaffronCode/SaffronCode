@@ -1,7 +1,6 @@
 package appManager.animatedPages
 {
-	import appManager.event.AppEvent;
-	import appManager.event.AppEventContent;
+	import contents.History;
 	
 	import flash.display.MovieClip;
 	import flash.events.Event;
@@ -13,19 +12,19 @@ package appManager.animatedPages
 			super();
 			
 			this.stop();
-			if(AppEventContent.backAvailable())
+			if(History.backAvailable())
 			{
 				this.gotoAndStop(this.totalFrames);
 			}
 			this.addEventListener(Event.ENTER_FRAME,anim);
 			
-			AppEventContent.backAvailable()
+			History.backAvailable()
 		}
 		
 		protected function anim(event:Event):void
 		{
 			// TODO Auto-generated method stub
-			if(AppEventContent.backAvailable())
+			if(History.backAvailable())
 			{
 				this.nextFrame();
 			}
