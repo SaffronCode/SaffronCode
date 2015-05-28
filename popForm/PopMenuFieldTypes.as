@@ -13,6 +13,8 @@ package popForm
 		
 		public static const PHONE:uint = 4 ;
 		
+		public static const RadioButton:uint = 4 ;
+		
 		public var type:uint ;
 		
 		public function PopMenuFieldTypes(myType:uint=STRING)

@@ -22,7 +22,11 @@
 		
 		public var displayObject:DisplayObject ;
 		
-		public function PopMenuContent(MainText:String = '' , HaveField:PopMenuFields = null , buttonsArray:Array = null,innerDisplayObject:DisplayObject = null,buttonFrames_v:Array = null)
+		public function PopMenuContent(MainText:String = '' ,
+									   HaveField:PopMenuFields = null ,
+									   buttonsArray:Array = null,
+									   innerDisplayObject:DisplayObject = null,
+									   buttonFrames_v:Array = null)
 		{
 			displayObject = innerDisplayObject ;
 			

@@ -177,6 +177,7 @@ package popForm
 					switch(content.fieldDatas.popFieldType[i])
 					{
 						case(PopMenuFieldTypes.CLICK):
+						case(PopMenuFieldTypes.RadioButton):
 						case(PopMenuFieldTypes.PHONE):
 						case(PopMenuFieldTypes.STRING):
 						{
@@ -192,6 +193,7 @@ package popForm
 								,content.fieldDatas.backColor[i]
 								,content.fieldDatas.languageDirection[i]
 								,content.fieldDatas.maxCharacters[i]
+								,content.fieldDatas.fieldDefaultBooleans[i]
 							);
 							this.addChild(newfield);
 							newfield.y = Y ;
@@ -207,6 +209,14 @@ package popForm
 									newfield.mouseEnabled = true ;
 									newfield.buttonMode = true ;
 									newfield.addEventListener(MouseEvent.CLICK,clicableFieldSelects);
+									break;
+								}
+								case(PopMenuFieldTypes.RadioButton):
+								{
+									newfield.mouseChildren = false ;
+									newfield.mouseEnabled = true ;
+									newfield.buttonMode = true ;
+									newfield.addEventListener(MouseEvent.CLICK,newfield.switchRadioButton);
 									break;
 								}
 								case(PopMenuFieldTypes.PHONE):

@@ -18,6 +18,8 @@
 		/**If this was true, data function will controll the phone correction befor returning the value*/
 		public var phoneControl:Boolean = false ;
 		
+		private var radioButtonArray:Array ;
+		
 		
 		/**this will returns last inputed text to client*/
 		public function get text():String
@@ -62,9 +64,10 @@
 			backMC.gotoAndStop(colorFrame);
 		}
 		
-		public function PopField(tagName:String,defaultText:String,KeyBordType:String = SoftKeyboardType.DEFAULT,isPass:Boolean = false,editable:Boolean = true,isAraic:Boolean=true,numLines:uint = 1,color:uint=1,frame:uint=1,maxChar:uint=0)
+		public function PopField(tagName:String,defaultText:String,KeyBordType:String = SoftKeyboardType.DEFAULT,isPass:Boolean = false,editable:Boolean = true,isAraic:Boolean=true,numLines:uint = 1,color:uint=1,frame:uint=1,maxChar:uint=0,otherOptions:Array=null)
 		{
 			super();
+			radioButtonArray = otherOptions ;
 			
 			//New lines to manage language style ( like rtl and ltr )
 			this.gotoAndStop(frame);
@@ -127,6 +130,32 @@
 				else
 				{
 					myTXT.text = defaultText ;
+				}
+			}
+		}
+		
+		/**Returns true if radio butto changed*/
+		public function switchRadioButton(e=null):Boolean
+		{
+			if(radioButtonArray == null || radioButtonArray.length ==0)
+			{
+				trace("No radio button values receved");
+				return false ;
+			}
+			else
+			{
+				var I:int = radioButtonArray.indexOf(myTXT.text);
+				if(I==-1)
+				{
+					trace("Cannot find current value between enterd radio buttons");
+					return false ;
+				}
+				else
+				{
+					I = (I+1)%radioButtonArray.length ;
+					myTXT.text = radioButtonArray[I];
+					myTXT.dispatchEvent(new Event(Event.CHANGE));
+					return true ;
 				}
 			}
 		}
