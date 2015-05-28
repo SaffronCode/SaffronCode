@@ -361,5 +361,27 @@ package webService.webCallers
 				trace("I cannot dispatch my events any more : "+eventName);
 			}
 		}*/
+		
+	/////////////////////////////////////////Comparition function 
+		public function isFalse(str:String):Boolean
+		{
+			str = str.toLowerCase();
+			if(str == 'false')
+			{
+				return true ;
+			}
+			
+			var numericValue:Number = Number(str);
+			if(isNaN(numericValue))
+			{
+				return false ;
+			}
+			
+			if(numericValue<0)
+			{
+				return true ;
+			}
+			return false ;
+		}
 	}
 }
