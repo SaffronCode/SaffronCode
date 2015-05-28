@@ -76,7 +76,11 @@ package appManager.displayContentElemets
 		override public function setUp(imageURL:String, loadInThisArea:Boolean=false, imageW:Number=0, imageH:Number=0, X:Number=0, Y:Number=0):*
 		{
 			//trace("Load this image : "+imageURL);
-			
+			if(URL == imageURL)
+			{
+				trace("current image is same as old image on lightImage");
+				return ;
+			}
 			URL = imageURL;
 			if(imageW!=0)
 			{
@@ -96,7 +100,8 @@ package appManager.displayContentElemets
 			}
 			//I dont want to remove content for this 
 				this.removeChildren();
-			
+
+			this.graphics.clear();
 			this.graphics.beginFill(0x000000,0);
 			this.graphics.drawRect(0,0,W,H);
 			
