@@ -36,6 +36,7 @@ package contents.displayPages
 		{
 			super();
 			scrollAbleObject = new MovieClip();
+			this.addChild(scrollAbleObject);
 			
 			myTitle = Obj.findThisClass(TitleText,this);
 			textContainer = Obj.get("text_txt",this);
@@ -43,32 +44,56 @@ package contents.displayPages
 			{
 				textContainer = Obj.findThisClass(TextParag,this,true);
 			}
+			
 			if(textContainer!=null)
 			{
-				textTF = Obj.get("text_txt",textContainer);
+				textTF = Obj.get("text_txt",textContainer) ;
 				textTF.text = '' ;
-				maskArea = textContainer.getBounds(this).clone();
+				maskArea = textContainer.getBounds(this).clone() ;
+				
 				scrollAbleObject.x = textContainer.x ;
 				scrollAbleObject.y = textContainer.y ;
 				textContainer.x = 0 ;
 				textContainer.y = 0 ;
-				scrollAbleObject.addChild(textContainer);
+				//scrollAbleObject.addChild(textContainer);
 			}
 			else
 			{
 				maskArea = new Rectangle(0,0,this.width,this.height);
 			}
+			resetScrollAreaInterface();
+		}
+		
+		private function resetScrollAreaInterface():void
+		{
+			scrollAbleObject.removeChildren();
+			if(textContainer)
+			{
+				scrollAbleObject.addChild(textContainer);	
+			}
 			//trace("scrollAbleObject.x : "+scrollAbleObject.x);
 			
-			this.addChild(scrollAbleObject);
 			
+			scrollAbleObject.graphics.clear();
 			scrollAbleObject.graphics.beginFill(0,0);
 			scrollAbleObject.graphics.drawRect(0,0,maskArea.width,maskArea.height);
+		}
+		
+		override public function set height(value:Number):void
+		{
+			maskArea.height = value ;
 		}
 		
 		public function setUp(pageData:PageData):void
 		{
 			currentPageData = pageData ;
+			
+			
+			
+			if(scrollMC)
+			{
+				scrollMC.unLoad();
+			}
 			
 			if(myTitle != null)
 			{
