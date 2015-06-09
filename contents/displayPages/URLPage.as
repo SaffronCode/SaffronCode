@@ -6,17 +6,37 @@ package contents.displayPages
 	
 	import flash.display.MovieClip;
 	import flash.events.Event;
+	import flash.events.MouseEvent;
+	import flash.geom.Rectangle;
 	import flash.media.StageWebView;
+	import flash.net.URLRequest;
+	import flash.net.navigateToURL;
 	
 	public class URLPage extends MovieClip implements DisplayPageInterface
 	{
 		private static var sw:StageWebView = new StageWebView();
 		private var myPage:PageData;
 		
+		
+		private var openInWeb:MovieClip ;
+		
 		public function URLPage()
 		{
 			super();
 			this.visible = false ;
+			
+			openInWeb = Obj.get("open_mc",this);
+			if(openInWeb)
+			{
+				openInWeb.addEventListener(MouseEvent.CLICK,openInWebBrowser);
+				this.visible = true;
+			}
+		}
+		
+		protected function openInWebBrowser(event:MouseEvent):void
+		{
+			// TODO Auto-generated method stub
+			navigateToURL(new URLRequest(myPage.content));
 		}
 		
 		public function setUp(pageData:PageData):void
@@ -58,7 +78,13 @@ package contents.displayPages
 		
 		private function controllStagePlace(e:Event=null)
 		{
-			sw.viewPort = this.getBounds(stage);
+			var rect:Rectangle = this.getBounds(stage);
+			if(openInWeb)
+			{
+				var buttonRect:Rectangle = openInWeb.getBounds(stage);
+				rect.bottom = buttonRect.top ;
+			}
+			sw.viewPort = rect;
 		}
 			
 	}
