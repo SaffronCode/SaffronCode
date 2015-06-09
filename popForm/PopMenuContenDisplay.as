@@ -393,6 +393,25 @@ package popForm
 			this.dispatchEvent(new PopMenuEvent(PopMenuEvent.POP_BUTTON_SELECTED,PopButton(e.currentTarget).ID,outField,PopButton(e.currentTarget).title));
 		}
 		
+		/**This will returns all PopFieldInterfaces*/
+		public function getFields():Vector.<PopFieldInterface>
+		{
+			return field.concat();
+		}
+		
+		/**Returns field values*/
+		public function getFieldValue(fieldTitle:String):*
+		{
+			for(var i = 0 ; i<field.length ; i++)
+			{
+				if(field[i].title == fieldTitle)
+				{
+					return field[i].data ;
+				}
+			}
+			return null ;
+		}
+		
 		public static function addMoreHeight(moreHeight:Number):void
 		{
 			// TODO Auto Generated method stub
