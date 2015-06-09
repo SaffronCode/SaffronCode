@@ -138,6 +138,11 @@ package popForm
 		{
 			//keyBoardType = (keyBoardType==null)?SoftKeyboardType.DEFAULT:keyBoardType;
 			
+			for(var i = 0 ; i<fieldBooleanBalues.length ; i++)
+			{
+				fieldBooleanBalues[i] = String(fieldBooleanBalues[i]);
+			}
+			
 			tagNames.push(tagName);
 			fieldDefaults.push(defaultVal);
 			fieldDefaultDate.push(null);

@@ -13,7 +13,7 @@ package popForm
 		
 		public static const PHONE:uint = 4 ;
 		
-		public static const RadioButton:uint = 4 ;
+		public static const RadioButton:uint = 5 ;
 		
 		public var type:uint ;
 		

@@ -145,9 +145,10 @@
 			else
 			{
 				var I:int = radioButtonArray.indexOf(myTXT.text);
+				//trace("radioButtonArray : "+radioButtonArray.indexOf(myTXT));
 				if(I==-1)
 				{
-					trace("Cannot find current value between enterd radio buttons");
+					trace("Cannot find current value between enterd radio buttons : "+myTXT.text+' vs '+radioButtonArray);
 					return false ;
 				}
 				else
