@@ -11,6 +11,7 @@ package appManager.displayContentElemets
 	import flash.net.URLRequest;
 	import flash.system.ApplicationDomain;
 	import flash.system.LoaderContext;
+	import flash.utils.ByteArray;
 	import flash.utils.clearTimeout;
 	import flash.utils.setTimeout;
 	
@@ -42,6 +43,8 @@ package appManager.displayContentElemets
 					
 		private var timeOutValue:uint ;
 		
+		private var loadedBytes:ByteArray ;
+		
 		public function LightImage()
 		{
 			super();
@@ -71,14 +74,26 @@ package appManager.displayContentElemets
 			animated = doAnimation ;
 		}
 		
+		/**You can show loaded image by this methode.*/
+		public function setUpBytes(imageBytes:ByteArray, loadInThisArea:Boolean=false, imageW:Number=0, imageH:Number=0, X:Number=0, Y:Number=0):void
+		{
+			loadedBytes = imageBytes ;
+			setUp(null, loadInThisArea, imageW, imageH, X, Y);
+		}
+		
 		
 		/**This class will resize the loaded image to its size to prevent gpu process and also it will crop the image to.*/
 		override public function setUp(imageURL:String, loadInThisArea:Boolean=false, imageW:Number=0, imageH:Number=0, X:Number=0, Y:Number=0):*
 		{
 			//trace("Load this image : "+imageURL);
-			if(URL == imageURL)
+			if(URL!=null && URL == imageURL)
 			{
 				trace("current image is same as old image on lightImage");
+				return ;
+			}
+			if(imageURL==null && loadedBytes==null)
+			{
+				trace("No URL and no LoadedBytes defined yet");
 				return ;
 			}
 			URL = imageURL;
@@ -136,14 +151,22 @@ package appManager.displayContentElemets
 			//trace("Start to load");
 			// TODO Auto-generated method stub
 			urlSaver = new URLSaver(true);
-			urlSaver.addEventListener(URLSaverEvent.LOAD_COMPLETE,imageSaved);
-			urlSaver.addEventListener(URLSaverEvent.NO_INTERNET,imageNotFound);
-			urlSaver.load(URL);
-			
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
+			if(URL!=null)
+			{
+				urlSaver.addEventListener(URLSaverEvent.LOAD_COMPLETE,imageSaved);
+				urlSaver.addEventListener(URLSaverEvent.NO_INTERNET,imageNotFound);
+				urlSaver.load(URL);
+			}
+			else
+			{
+				//The byte array should loaded befor
+				imageSaved();	
+			}
 		}
 		
-		protected function imageSaved(event:URLSaverEvent):void
+		/**If you pass null to this functino, it will use loadedBytes valeu*/
+		protected function imageSaved(event:URLSaverEvent=null):void
 		{
 			// TODO Auto-generated method stub
 			var loaderContext:LoaderContext = new LoaderContext(false,ApplicationDomain.currentDomain);
@@ -151,7 +174,16 @@ package appManager.displayContentElemets
 			loader = new Loader();
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE,imageLoaded);
 			loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR,imageNotFound);
-			loader.load(new URLRequest(event.offlineTarget),loaderContext);
+			if(event!=null)
+			{
+				loader.load(new URLRequest(event.offlineTarget),loaderContext);
+			}
+			else
+			{
+				loadedBytes.position = 0 ;
+				loaderContext.allowLoadBytesCodeExecution = true ;
+				loader.loadBytes(loadedBytes,loaderContext);
+			}
 		}
 		
 		protected function imageNotFound(event:*):void
