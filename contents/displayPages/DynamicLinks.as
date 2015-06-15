@@ -33,7 +33,7 @@ package contents.displayPages
 		
 		private static var scrollPosesObject:Object = {} ;
 		
-		private const backAlpha:Number = 0 ;
+		private const backAlpha:Number = 0.0 ;
 		
 		protected var myPageData:PageData ;
 		
@@ -240,7 +240,7 @@ package contents.displayPages
 		
 			
 			linksSensor = new Sprite();
-			linksSensor.y = deltaY*Ydirection ;
+			linksSensor.y = myDeltaY*Ydirection ;
 			linksSensor.graphics.beginFill(0xff0000,0);
 			linksSensor.graphics.drawRect(0,0,areaRect.width,areaRect.height/2*Ydirection);
 			linksSensor.mouseChildren = false ;
@@ -248,15 +248,16 @@ package contents.displayPages
 			
 			linksContainer.addChild(linksSensor);
 			
-			if(myPageData.id!='' && scrollPosesObject[myPageData.id]!=null)
+			/*if(myPageData.id!='' && scrollPosesObject[myPageData.id]!=null)
 			{
-				linksContainer.y = scrollPosesObject[myPageData.id];
-				controllSensor();
-			}
+				//linksContainer.y = scrollPosesObject[myPageData.id];
+			}*/
+			controllSensor();
 			
 			linkScroller = new ScrollMT(linksContainer,areaRect,/*areaRect*/null,true,false,acceptAnimation&&!reverted,reverted);
 			if(myPageData.id!='' && scrollPosesObject[myPageData.id]!=null)
 			{
+				linksContainer.y = scrollPosesObject[myPageData.id];
 				if(scrollPosesObject[myPageData.id]<areaRect.y-1)
 				{
 					linkScroller.stopFloat();
@@ -373,11 +374,17 @@ package contents.displayPages
 			}
 			var l:uint = linksInterfaceStorage.length ;
 			//var Y:Number = myDeltaY*Ydirection ;
-			for(var i = 1 ; i<l ; i++)
+			var i:int = 1;
+			for(i = 1 ; i<l ; i++)
 			{
 				linksInterfaceStorage[i].y = linksInterfaceStorage[i-1].y+(linksInterfaceStorage[i-1].height+myDeltaY)*Ydirection;
 			}
-			linksSensor.y = linksInterfaceStorage[i-2].y+(linksInterfaceStorage[i-2].height+myDeltaY)*Ydirection;
+			var index:int = i-2;
+			if(l<2)
+			{
+				index = 0 ;
+			}
+			linksSensor.y = linksInterfaceStorage[index].y+(linksInterfaceStorage[index].height+myDeltaY)*Ydirection;
 		}
 		
 		
