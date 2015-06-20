@@ -42,6 +42,8 @@ package popForm
 		
 		public var height0:Number; 
 		
+		private static var lastScrollY:Number = 0 ;
+		
 		/**Add more Height for scrolling*/
 		public function localHeight(H:Number)
 		{
@@ -108,7 +110,7 @@ package popForm
 		}
 		
 		/**set up the pop menu contents*/
-		public function setUp(content:PopMenuContent=null/*,color:ColorTransform*/)
+		public function setUp(content:PopMenuContent=null/*,color:ColorTransform*//*,resetScroll:Boolean=true*/)
 		{
 			this.dispatchEvent(new Event(Event.REMOVED_FROM_STAGE));
 			
@@ -342,8 +344,17 @@ package popForm
 			this.graphics.drawRect(areaRect.width/-2,0,areaRect.width,areaRect.height);
 			
 			//trace(maxAreaMC.height+' vs '+this.height+' vs '+butY);
-			
+			lastScrollY = 0 ;
+			if(!content.resetScroll && scroll!=null)
+			{
+				lastScrollY = this.y ;
+			}
 			scroll = new ScrollMT(this,scrollRect,areaRect);
+			if(!content.resetScroll)
+			{
+				scroll.setPose(NaN,lastScrollY);
+				scroll.stopFloat();
+			}
 			//trace("* : this.height:"+this.height+' vs scrollRect.height:'+scrollRect.height);
 			if(this.height<=scrollRect.height+10)
 			{

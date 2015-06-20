@@ -4,6 +4,7 @@
 
 	public class PopMenuContent
 	{
+		public var resetScroll:Boolean=true ;
 		
 		public var mainTXT:String ;
 		
@@ -26,9 +27,12 @@
 									   HaveField:PopMenuFields = null ,
 									   buttonsArray:Array = null,
 									   innerDisplayObject:DisplayObject = null,
-									   buttonFrames_v:Array = null)
+									   buttonFrames_v:Array = null,
+										ResetYScroll:Boolean=true)
 		{
 			displayObject = innerDisplayObject ;
+			
+			resetScroll = ResetYScroll ;
 			
 			var i:int ;
 			
