@@ -19,7 +19,8 @@ package appManager.displayContentElemets
 		
 		private var imageLoader:ImageLoader ;
 		
-		private var myURL:String ;
+		//Switched with URL
+		//private var myURL:String ;
 		
 		private static var stageRect:Rectangle ;
 		private static var preClass:Class;
@@ -69,7 +70,7 @@ package appManager.displayContentElemets
 			imageLoader = new ImageLoader(imageW,imageH,loadInThisArea);
 			this.addChild(imageLoader);
 			
-			myURL = imageURL ;
+			URL = imageURL ;
 			
 			
 			
@@ -116,7 +117,7 @@ package appManager.displayContentElemets
 		private function loadMe():void
 		{
 			// TODO Auto Generated method stub
-			imageLoader.load(myURL);
+			imageLoader.load(URL);
 		}
 		
 	}

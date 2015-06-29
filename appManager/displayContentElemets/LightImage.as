@@ -38,15 +38,20 @@ package appManager.displayContentElemets
 		private var loader:Loader ,
 					urlSaver:URLSaver; 
 		
-		private var W:Number=0,H:Number=0,URL:String,
+		private var W:Number=0,H:Number=0,
 					LoadInThisArea:Boolean;
 					
 		private var timeOutValue:uint ;
 		
 		private var loadedBytes:ByteArray ;
 		
-		public function LightImage()
+		private var backColor:uint,
+					backAlpha:Number;
+		
+		public function LightImage(BackColor:uint=0x000000,BackAlpha:Number=0)
 		{
+			backColor = BackColor ;
+			backAlpha = BackAlpha ; 
 			super();
 		}
 		
@@ -117,7 +122,7 @@ package appManager.displayContentElemets
 				this.removeChildren();
 
 			this.graphics.clear();
-			this.graphics.beginFill(0x000000,0);
+			this.graphics.beginFill(backColor,backAlpha);
 			this.graphics.drawRect(0,0,W,H);
 			
 			LoadInThisArea = loadInThisArea ;
@@ -233,7 +238,7 @@ package appManager.displayContentElemets
 			}
 			catch(e)
 			{
-				trace("LightImage problem : "+e);
+				//trace("LightImage problem : "+e);
 			}
 		}
 	}
