@@ -1,8 +1,11 @@
 package contents.displayPages
 	//contents.displayPages.DynamicPage
 {
+	import appManager.displayContentElemets.LightImage;
 	import appManager.displayContentElemets.TextParag;
 	import appManager.displayContentElemets.TitleText;
+	
+	import com.mteamapp.StringFunctions;
 	
 	import contents.Contents;
 	import contents.ImageData;
@@ -18,15 +21,27 @@ package contents.displayPages
 	
 	public class DynamicPage extends MovieClip implements DisplayPageInterface
 	{
+		private var activateHTMLLink:Boolean = false,
+					linkColor:int=-1;
+		
+		protected var fullImageShow:Boolean = true ;
+		
+		/**This will prevent text to be bitmap to make it selectable by <a/> link*/
+		public function activateHTMLLinks(LinkColor:int = -1):void
+		{
+			activateHTMLLink = true ;
+			linkColor = LinkColor ;
+		}
+		
 		protected var currentPageData:PageData;
 		
 		private var myTitle:TitleText ;
 		
-		private var textTF:TextField ;
+		protected var textTF:TextField ;
 		
-		private var textContainer:MovieClip ;
+		protected var textContainer:MovieClip ;
 		
-		private var maskArea:Rectangle ;
+		protected var maskArea:Rectangle ;
 		
 		private var scrollMC:ScrollMT ;
 		
@@ -122,8 +137,12 @@ package contents.displayPages
 					align = true ;
 				}
 				//trace("align : "+align+' from : '+currentPageData.contentAlign)
-				
-				TextPutter.onTextArea(textTF,currentPageData.content,true,true,true,0,align);
+				var pageContent:String = currentPageData.content ;
+				if(activateHTMLLink)
+				{
+					pageContent = StringFunctions.htmlCorrect(pageContent,linkColor);
+				}
+				TextPutter.onTextArea(textTF,pageContent,true,!activateHTMLLink,true,0,align/*,activateHTMLLink*/);
 			}
 			//trace("Number of imates : "+currentPageData.images.length);
 			for(var i = 0 ; i<currentPageData.images.length ; i++)
@@ -140,13 +159,15 @@ package contents.displayPages
 				{
 					H = imageData.height ;
 				}
-				var oneImage:ImageLoader = new ImageLoader(W,H,true,null);
-				oneImage.load(imageData.targURL);
-				oneImage.x = imageData.x;
-				oneImage.y = imageData.y;
+				var oneImage:LightImage = new LightImage();
+				oneImage.setUp(imageData.targURL,fullImageShow,W,H,imageData.x,imageData.y);
+				//trace(i+"imageData.y : "+imageData.y);
+				//oneImage.x = imageData.x;
+				//oneImage.y = imageData.y;
 				scrollAbleObject.addChild(oneImage)
 			}
 			scrollMC = new ScrollMT(scrollAbleObject,maskArea,new Rectangle(0,0,maskArea.width,maskArea.height),true);
+			
 		}
 	}
 }
