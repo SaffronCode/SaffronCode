@@ -26,6 +26,11 @@ package appManager.displayContentElemets
 			TextPutter.OnButton(myText,title,arabicText,true,true);
 		}
 		
+		override public function set width(value:Number):void
+		{
+			myText.width = value;
+		}
+		
 		public function get text():String
 		{
 			return myText.text ;
