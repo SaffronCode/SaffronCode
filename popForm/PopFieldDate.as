@@ -45,8 +45,11 @@ package popForm
 			TextPutter.OnButton(tagTF,tagName,isArabic,true,false);
 			
 			yearTF = Obj.get("year_txt",this);
+			yearTF.maxChars = 4 ;
 			monthTF = Obj.get("month_txt",this);
+			monthTF.maxChars = 2 ;
 			dayTF = Obj.get("day_txt",this);
+			dayTF.maxChars = 2 ;
 			
 			
 			update(defaultDate);

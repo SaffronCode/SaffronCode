@@ -183,7 +183,7 @@ package popForm
 						case(PopMenuFieldTypes.PHONE):
 						case(PopMenuFieldTypes.STRING):
 						{
-							trace("It is String field");
+							//trace("It is String field");
 							var newfield:PopField = new PopField(
 								content.fieldDatas.tagNames[i]
 								,content.fieldDatas.fieldDefaults[i]
@@ -349,7 +349,7 @@ package popForm
 			{
 				lastScrollY = this.y ;
 			}
-			scroll = new ScrollMT(this,scrollRect,areaRect);
+			scroll = new ScrollMT(this,scrollRect,areaRect,false,false,content.resetScroll);
 			if(!content.resetScroll)
 			{
 				scroll.setPose(NaN,lastScrollY);
