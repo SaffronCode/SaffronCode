@@ -1,3 +1,9 @@
+/**Version 1.0
+	There is no need to trace urls any more
+ * **/
+
+
+
 package netManager.urlSaver
 {
 	
@@ -69,7 +75,7 @@ package netManager.urlSaver
 			justDownlaodToUpdate = false ;
 			
 			
-			trace("Requested image url is : "+onlineURL);
+			//trace("Requested image url is : "+onlineURL);
 			var localFileChecker:File;
 			try
 			{
@@ -99,12 +105,12 @@ package netManager.urlSaver
 				//offlineURL = SavedDatas.load(onlineURL) ;
 				if(datestorage != null && (datestorage.data[onlineURL] == undefined || datestorage.data[onlineURL]<acceptableDate))
 				{
-					trace('let try to download this image : '+datestorage.data[onlineURL]+" vs "+acceptableDate);
+					//trace('let try to download this image : '+datestorage.data[onlineURL]+" vs "+acceptableDate);
 					justDownlaodToUpdate = true ;
 				}
 				else
 				{
-					trace('the data is so fresh : '+datestorage.data[onlineURL]+" vs "+acceptableDate);
+					//trace('the data is so fresh : '+datestorage.data[onlineURL]+" vs "+acceptableDate);
 				}
 				offlineURL = storage.data[onlineURL];
 			}
@@ -119,11 +125,15 @@ package netManager.urlSaver
 					//DownloadManager.contentLoaderInfo.addEventListener(DownloadManagerEvents.DOWNLOAD_COMPLETE,downloadCompletes);
 				urlLoader.addEventListener(Event.COMPLETE,downloadCompletes);
 				
-				if(!justDownlaodToUpdate)
+				/*if(!justDownlaodToUpdate)
 				{
 						//DownloadManager.contentLoaderInfo.addEventListener(DownloadManagerEvents.DOWNLOAD_PROGRESS,downloading);
+					trace("Listen to progress");
 					urlLoader.addEventListener(ProgressEvent.PROGRESS,downloading);
-				}
+				}*///Why?? I whant you to listen to this event any way
+				urlLoader.addEventListener(ProgressEvent.PROGRESS,downloading);
+				
+				//trace("justDownlaodToUpdate : "+justDownlaodToUpdate);
 					//DownloadManager.contentLoaderInfo.addEventListener(DownloadManagerEvents.URL_IS_NOT_EXISTS,noFileExists);
 				//We don't have this Event type on urlLoaders
 					//DownloadManager.contentLoaderInfo.addEventListener(DownloadManagerEvents.NO_INTERNET_CONNECTION_AVAILABLE,noInternetConnection);
@@ -159,7 +169,7 @@ package netManager.urlSaver
 		/**Cansel current download*/
 		public function cansel()
 		{
-			trace('Cansel donwload manager : '+onlineURL);
+			//trace('Cansel donwload manager : '+onlineURL);
 			
 			if(urlLoader != null)
 			{
@@ -189,7 +199,7 @@ package netManager.urlSaver
 			/*if(ev.urlID == onlineURL)
 			{*/
 				//This will dispatch this event just to tell parent to make desition on canseling download
-			trace("no internet deteted : "+onlineURL);
+			//trace("no internet deteted : "+onlineURL);
 			if(datestorage != null)
 			{
 				offlineURL = storage.data[onlineURL];
@@ -224,7 +234,7 @@ package netManager.urlSaver
 				else
 				{
 					loadOflineFile();
-					trace("Image URL is updated. so be carfull for errors");
+					//trace("Image URL is updated. so be carfull for errors");
 				}
 				
 				cansel();
@@ -233,6 +243,7 @@ package netManager.urlSaver
 		
 		protected function downloading(ev:ProgressEvent/*DownloadManagerEvents*/):void
 		{
+			//trace("Somthing downloaded");
 			// TODO Auto-generated method stub
 			/*if(ev.urlID == onlineURL)
 			{*/
@@ -261,14 +272,14 @@ package netManager.urlSaver
 				oflineFolder.createDirectory();
 			}
 			var nameCash:String = onlineURL.split('\\').join('/');
-			trace("oflineFolder : "+oflineFolder.nativePath); 
+			//trace("oflineFolder : "+oflineFolder.nativePath); 
 			var offlineURLFileName:String = nameCash.substring(nameCash.indexOf('/')+1);
-			offlineURLFileName = offlineURLFileName.split('?').join('').split('/').join('');
+			offlineURLFileName = offlineURLFileName.split('?').join('Q').split('/').join('');
 			offlineURLFileName = offlineURLFileName.substr(offlineURLFileName.length-Math.min(maxNameLength,offlineURLFileName.length),offlineURLFileName.length);
-			trace("offlineURLFileName : "+offlineURLFileName);
+			//trace("offlineURLFileName : "+offlineURLFileName);
 			var oflineFile:File = oflineFolder.resolvePath(offlineURLFileName);
 			offlineURL = oflineFile.url; 
-			trace("Offline file is : "+oflineFile.nativePath);
+			//trace("Offline file is : "+oflineFile.nativePath);
 			if(oflineFile.exists)
 			{
 				try
@@ -278,7 +289,7 @@ package netManager.urlSaver
 				catch(e)
 				{
 					storage.data[onlineURL] = offlineURL ;
-					trace('***** i cannot delete this file');
+					//trace('***** i cannot delete this file');
 					return ;
 				}
 			}
@@ -332,7 +343,7 @@ package netManager.urlSaver
 			{
 				if(datestorage.data[i] < date.time)
 				{
-					trace("This file is old : "+i);
+					//trace("This file is old : "+i);
 					deletFileIfExists(i);
 				}
 			}
@@ -369,7 +380,7 @@ package netManager.urlSaver
 			var localFileURL:String = storage.data[fileURL] ;
 			if(localFileURL == null)
 			{
-				trace("i can not find your image");
+				//trace("i can not find your image");
 				return false ;
 			}
 			else
@@ -377,13 +388,13 @@ package netManager.urlSaver
 				var fileChecker:File = new File(localFileURL);
 				if(fileChecker.exists)
 				{
-					trace("this file is deleted : "+fileChecker.url);
+					//trace("this file is deleted : "+fileChecker.url);
 					try
 					{
 						fileChecker.deleteFile();
 					}catch(e){};
 				}
-				trace("this file is not deleted : "+fileChecker.url);
+				//trace("this file is not deleted : "+fileChecker.url);
 				
 				storage.data[fileURL] = undefined ;
 				datestorage.data[fileURL] = undefined ;

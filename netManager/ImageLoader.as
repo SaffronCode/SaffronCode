@@ -1,6 +1,8 @@
 package netManager
 {
 	
+	import appManager.displayContentElemets.ImageEvent;
+	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
@@ -8,6 +10,7 @@ package netManager
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
+	import flash.events.MouseEvent;
 	import flash.net.URLRequest;
 	
 	import netManager.urlSaver.URLSaver;
@@ -64,6 +67,22 @@ package netManager
 			
 			loader = new Loader();
 			
+			this.addEventListener(MouseEvent.CLICK,imSelected);
+		}
+		
+		protected function imSelected(event:MouseEvent):void
+		{
+			// TODO Auto-generated method stub
+			var target:String ;
+			if(imageURL!=null)
+			{
+				target = imageURL ;
+			}
+			else
+			{
+				target = onlineURL ;
+			}
+			this.dispatchEvent(new ImageEvent(ImageEvent.IMAGE_SELECTED,target));
 		}
 		
 		override public function get height():Number
