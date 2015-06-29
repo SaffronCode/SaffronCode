@@ -45,7 +45,7 @@ package webService.types
 		/**Correcting the json string*/
 		private static function jsonCorrector(oldJson:String)
 		{
-			return oldJson.split('\n').join(' \\n').split('\r').join(' \\r').split('"').join('\"') ;
+			return oldJson.split('\n').join(' \\n').split('\r').join(' \\r').split('"').join('\"').split('\t').join('\\t') ;
 		}
 	}
 }
