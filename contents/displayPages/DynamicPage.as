@@ -22,14 +22,16 @@ package contents.displayPages
 	public class DynamicPage extends MovieClip implements DisplayPageInterface
 	{
 		private var activateHTMLLink:Boolean = false,
+					generateURLLink:Boolean=true,
 					linkColor:int=-1;
 		
 		protected var fullImageShow:Boolean = true ;
 		
 		/**This will prevent text to be bitmap to make it selectable by <a/> link*/
-		public function activateHTMLLinks(LinkColor:int = -1):void
+		public function activateHTMLLinks(LinkColor:int = -1,generateURLLinks:Boolean=true):void
 		{
 			activateHTMLLink = true ;
+			generateURLLink = generateURLLinks ;
 			linkColor = LinkColor ;
 		}
 		
@@ -140,6 +142,10 @@ package contents.displayPages
 				var pageContent:String = currentPageData.content ;
 				if(activateHTMLLink)
 				{
+					if(generateURLLink)
+					{
+						pageContent = StringFunctions.generateLinks(pageContent);
+					}
 					pageContent = StringFunctions.htmlCorrect(pageContent,linkColor);
 				}
 				TextPutter.onTextArea(textTF,pageContent,true,!activateHTMLLink,true,0,align/*,activateHTMLLink*/);

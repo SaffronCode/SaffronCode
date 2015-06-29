@@ -1,5 +1,7 @@
 package contents.displayPages
 {
+	import com.mteamapp.StringFunctions;
+	
 	import contents.ImageData;
 	import contents.PageData;
 	
@@ -17,7 +19,7 @@ package contents.displayPages
 			fullImageShow = false ;
 		}
 		
-		public function setUpParag(maskRect:Rectangle,listOfParag:Vector.<ParagData>,activateHTMLlink:Boolean=false,linkColor:int=-1):void
+		public function setUpParag(maskRect:Rectangle,listOfParag:Vector.<ParagData>,activateHTMLlink:Boolean=false,linkColor:int=-1,createURLLinks:Boolean=true):void
 		{
 			var i:int ;
 			
@@ -32,7 +34,7 @@ package contents.displayPages
 			
 			if(activateHTMLlink!=-1)
 			{
-				super.activateHTMLLinks(linkColor) ;
+				super.activateHTMLLinks(linkColor,createURLLinks) ;
 			}
 			
 			maskArea = maskRect.clone();
@@ -132,6 +134,7 @@ package contents.displayPages
 					
 				//TextPutter.onTextArea(textTF,currentPageData.content,true,true,true,0,alighn);
 			}
+			
 			
 			samplePagedata.content = contentsString ;
 			//trace("samplePagedata.content : "+samplePagedata.content);
