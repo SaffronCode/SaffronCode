@@ -142,13 +142,13 @@ package contents.displayPages
 				var pageContent:String = currentPageData.content ;
 				if(activateHTMLLink)
 				{
-					if(generateURLLink)
+					if(generateURLLink && pageContent.indexOf('<a')==-1)
 					{
 						pageContent = StringFunctions.generateLinks(pageContent);
 					}
 					pageContent = StringFunctions.htmlCorrect(pageContent,linkColor);
 				}
-				TextPutter.onTextArea(textTF,pageContent,true,!activateHTMLLink,true,0,align/*,activateHTMLLink*/);
+				TextPutter.onTextArea(textTF,pageContent,true,!activateHTMLLink,true,0,align);
 			}
 			//trace("Number of imates : "+currentPageData.images.length);
 			for(var i = 0 ; i<currentPageData.images.length ; i++)

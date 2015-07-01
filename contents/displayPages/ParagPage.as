@@ -32,7 +32,7 @@ package contents.displayPages
 					trace(this.mouseY);
 				}*/
 			
-			if(activateHTMLlink!=-1)
+			if(activateHTMLlink)
 			{
 				super.activateHTMLLinks(linkColor,createURLLinks) ;
 			}
@@ -98,7 +98,7 @@ package contents.displayPages
 						//contentsString+=imageParagEnters;
 						while(textTF.textHeight<ImageY)
 						{
-							trace("textTF.textHeight : "+textTF.textHeight+' vs ImageY : '+ImageY);
+							//trace("textTF.textHeight : "+textTF.textHeight+' vs ImageY : '+ImageY);
 							textTF.appendText(' \n ');
 							contentsString+=' \n ';
 						}
@@ -107,7 +107,7 @@ package contents.displayPages
 					//textY=imageParagHeight;
 					//trace("Enters added to content : "+contentsString+' > '+contentsString.length);
 				}
-				else
+				else if(i!=0)
 				{
 					contentsString+=singleEnter;
 					//textY+=paragH ;
@@ -123,12 +123,12 @@ package contents.displayPages
 					//	contents+='\n ';
 					//}
 				}*/
-				trace('----------------------');
-				trace("Parag string is : • "+listOfParag[i].content+' • ');
+				//trace('----------------------');
+				//trace("Parag string is : • "+listOfParag[i].content+' • ');
 				contentsString+=listOfParag[i].content;
 				TextPutter.onTextArea(textTF,contentsString,true,false,false,0,alighn);
 				textY = textTF.textHeight;
-				trace("ImageY : "+ImageY);
+				//trace("ImageY : "+ImageY);
 				ImageY = textY ;
 				//textY+=paragH;
 					
