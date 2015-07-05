@@ -26,7 +26,7 @@ package appManager.mains
 		protected var introMC:Intro ;
 		
 		protected var mainAnim:MainAnim ;
-		private var currentAppEvent:AppEvent;
+		public static var currentAppEvent:AppEvent;
 		
 		public function App()
 		{
