@@ -24,11 +24,14 @@ package netManager.urlSaver
 	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequest;
 	import flash.utils.ByteArray;
+	import flash.utils.clearTimeout;
+	import flash.utils.setTimeout;
 	
 	
-	[Event(name="LOADING", type="com.mteamapp.loader.urlSaver.URLSaverEvent")]
-	[Event(name="NO_INTERNET", type="com.mteamapp.loader.urlSaver.URLSaverEvent")]
-	[Event(name="LOAD_COMPLETE", type="com.mteamapp.loader.urlSaver.URLSaverEvent")]
+	[Event(name="LOADING", type="netManager.urlSaver.URLSaverEvent")]
+	[Event(name="NO_INTERNET", type="netManager.urlSaver.URLSaverEvent")]
+	[Event(name="LOAD_COMPLETE", type="netManager.urlSaver.URLSaverEvent")]
+	[Event(name="UPDATED", type="netManager.urlSaver.URLSaverEvent")]
 	
 	public class URLSaver extends EventDispatcher
 	{
@@ -57,6 +60,11 @@ package netManager.urlSaver
 		
 		/**If this variable was ture, it means the URLSaver dispatched old file but it is downloading new file to override that*/
 		private var justDownlaodToUpdate:Boolean ;
+		
+		
+		/**The loader will not close till the image is loaded*/
+		private var reloadTimeOutId:uint,
+					reloadTime:uint = 10000;
 					
 		/**you have to call load() function to start file loading proccess<br>
 		 * if you set true in this value , it will not load byte array of your file and it will just return URL*/
@@ -67,10 +75,16 @@ package netManager.urlSaver
 		
 		/**Start to load my file<br>
 		 * this function will return true if image was offline*/
-		public function load(url:String):Boolean
+		public function load(url:String,myAcceptableDate:Date=null):Boolean
 		{
 			onlineURL = url ;
 			offlineURL = null ;
+			
+			if(myAcceptableDate==null)
+			{
+				myAcceptableDate = new Date();
+				myAcceptableDate.time = acceptableDate ;
+			}
 			
 			justDownlaodToUpdate = false ;
 			
@@ -103,7 +117,7 @@ package netManager.urlSaver
 			{
 				//This file is loaded befor
 				//offlineURL = SavedDatas.load(onlineURL) ;
-				if(datestorage != null && (datestorage.data[onlineURL] == undefined || datestorage.data[onlineURL]<acceptableDate))
+				if(datestorage != null && (datestorage.data[onlineURL] == undefined || datestorage.data[onlineURL]<myAcceptableDate.time))
 				{
 					//trace('let try to download this image : '+datestorage.data[onlineURL]+" vs "+acceptableDate);
 					justDownlaodToUpdate = true ;
@@ -140,7 +154,8 @@ package netManager.urlSaver
 				urlLoader.addEventListener(IOErrorEvent.IO_ERROR,noInternetConnection);
 				//trace('listen to download manager : '+onlineURL);
 					//DownloadManager.download(onlineURL);
-				urlLoader.load(new URLRequest(onlineURL));
+				//urlLoader.load(new URLRequest(onlineURL));
+				reLoadUrlLoader();
 				
 				if(offlineURL==null)
 				{
@@ -166,11 +181,19 @@ package netManager.urlSaver
 			
 		}
 		
+		/**reload the image*/
+		private function reLoadUrlLoader():void
+		{
+			clearTimeout(reloadTimeOutId);
+			urlLoader.load(new URLRequest(onlineURL));
+		}
+		
 		/**Cansel current download*/
 		public function cansel()
 		{
 			//trace('Cansel donwload manager : '+onlineURL);
 			
+			clearTimeout(reloadTimeOutId);
 			if(urlLoader != null)
 			{
 				try
@@ -209,6 +232,9 @@ package netManager.urlSaver
 					return ;
 				}
 			}
+			reloadTimeOutId = setTimeout(reLoadUrlLoader,reloadTime);
+			return ;
+			//Do not dispatch NO_INTERNET ever!!
 			this.dispatchEvent(new URLSaverEvent(URLSaverEvent.NO_INTERNET));
 			/*}*/
 		}
@@ -218,6 +244,11 @@ package netManager.urlSaver
 			// TODO Auto-generated method stub
 			/*if(ev.urlID == onlineURL)
 			{*/
+			if(urlLoader==null || urlLoader.data == null)
+			{
+				noInternetConnection(null);
+				return ;
+			}
 				
 				//myLoadedBytes = new ByteArray();
 				//myLoadedBytes.writeBytes(ev.loadedFile,0,ev.loadedFile.bytesAvailable);
@@ -227,15 +258,7 @@ package netManager.urlSaver
 				
 				saveLoadedBytes();
 				//DownloadManager.forgetWithDilay(onlineURL);
-				if(!justDownlaodToUpdate)
-				{
-					loadOflineFile();
-				}
-				else
-				{
-					loadOflineFile();
-					//trace("Image URL is updated. so be carfull for errors");
-				}
+				loadOflineFile();
 				
 				cansel();
 			/*}*/
@@ -247,7 +270,10 @@ package netManager.urlSaver
 			// TODO Auto-generated method stub
 			/*if(ev.urlID == onlineURL)
 			{*/
+			if(urlLoader!=null)
+			{
 				this.dispatchEvent(new URLSaverEvent(URLSaverEvent.LOADING,urlLoader.bytesLoaded/urlLoader.bytesTotal/*ev.precent*/));
+			}
 			/*}*/
 		}
 		
@@ -274,7 +300,7 @@ package netManager.urlSaver
 			var nameCash:String = onlineURL.split('\\').join('/');
 			//trace("oflineFolder : "+oflineFolder.nativePath); 
 			var offlineURLFileName:String = nameCash.substring(nameCash.indexOf('/')+1);
-			offlineURLFileName = offlineURLFileName.split('?').join('Q').split('/').join('');
+			offlineURLFileName = offlineURLFileName.split('?').join('Q').split('/').join('').split('=').join('').split(':').join('');
 			offlineURLFileName = offlineURLFileName.substr(offlineURLFileName.length-Math.min(maxNameLength,offlineURLFileName.length),offlineURLFileName.length);
 			//trace("offlineURLFileName : "+offlineURLFileName);
 			var oflineFile:File = oflineFolder.resolvePath(offlineURLFileName);
