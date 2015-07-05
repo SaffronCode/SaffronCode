@@ -3,21 +3,24 @@ package darkBox
 	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import flash.utils.ByteArray;
 	import flash.utils.clearTimeout;
 	import flash.utils.setTimeout;
 	
 	import netManager.urlSaver.URLSaver;
 	import netManager.urlSaver.URLSaverEvent;
 	
-	[Event(name="LOADING", type="com.mteamapp.loader.urlSaver.URLSaverEvent")]
-	[Event(name="NO_INTERNET", type="com.mteamapp.loader.urlSaver.URLSaverEvent")]
-	[Event(name="LOAD_COMPLETE", type="com.mteamapp.loader.urlSaver.URLSaverEvent")]
+	[Event(name="LOADING", type="netManager.urlSaver.URLSaverEvent")]
+	[Event(name="NO_INTERNET", type="netManager.urlSaver.URLSaverEvent")]
+	[Event(name="LOAD_COMPLETE", type="netManager.urlSaver.URLSaverEvent")]
 	public class ImageFile extends EventDispatcher
 	{
 		public static const TYPE_FLAT:int = 1,
 							TYPE_PANORAMA:int = 2,
 							TYPE_SPHERE:int = 3,
-							TYPE_VIDEO:int = 4;
+							TYPE_VIDEO:int = 4,
+							TYPE_PDF:int = 5,
+							TYPE_BINARY:int = 6;
 		/**Uses to catch offline file*/
 		private var saver:URLSaver ;
 		
@@ -40,7 +43,27 @@ package darkBox
 		
 		/**You have to save this file for offline usage*/
 		public var storeOffline:Boolean;
+		
 		private var timeOutId:uint;
+		
+		public var targetBytes:ByteArray ;
+		
+		public function get fullTitle():String
+		{
+			var end:String ='';
+			if(type!=TYPE_BINARY && type!=TYPE_PDF)
+			{
+				end = '.jpg';
+			}
+			if(title!='')
+			{
+				return title+end ;
+			}
+			else
+			{
+				return onlineTarget.substr(onlineTarget.lastIndexOf('/')+1)+end;
+			}
+		}
 		
 		/**TYPE_FLAT:int = 1,
 							TYPE_PANORAMA:int = 2,
@@ -72,10 +95,15 @@ package darkBox
 		
 		private function startDownload():void
 		{
+			if(onlineTarget=='')
+			{
+				trace("NO File selected");
+				return ;
+			}
 			if(offlineTarget==null)
 			{
 				trace("Start donwload the image");
-				saver = new URLSaver(true);
+				saver = new URLSaver();
 				saver.addEventListener(URLSaverEvent.LOAD_COMPLETE,onImageFileSaved);
 				saver.addEventListener(URLSaverEvent.NO_INTERNET,noNet);
 				saver.addEventListener(URLSaverEvent.LOADING,loadingProcess);
@@ -85,6 +113,16 @@ package darkBox
 			{
 				trace("Image is donwloaded befor");
 				onImageFileSaved(null,offlineTarget);
+			}
+		}
+		
+		/**This will delete the temprary file*/
+		public function deleteFile():void
+		{
+			cansel();
+			if(onlineTarget!=null && onlineTarget!='')
+			{
+				saver.deletFileIfExists(onlineTarget);
 			}
 		}
 		
@@ -106,10 +144,12 @@ package darkBox
 			if(event!=null)
 			{
 				target = event.offlineTarget;
+				targetBytes = event.loadedBytes ;
 			}
 			else
 			{
 				target = downloadedFileTarget ;
+				//The targetBytes had to saved once
 			}
 			offlineTarget = target ;
 			

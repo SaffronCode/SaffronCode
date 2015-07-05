@@ -14,6 +14,8 @@ package darkBox
 			this.x = newSize.x;
 			this.y = newSize.y;
 			rect = newSize;
+			rect.x = 0 ;
+			rect.y = 0 ;
 		}
 		
 		/**Hide this class*/
@@ -22,6 +24,7 @@ package darkBox
 			this.mouseChildren = false ;
 			this.mouseEnabled = false ;
 			this.visible = false ;
+			//...
 		}
 		
 		/**Show current class and show this file on it*/

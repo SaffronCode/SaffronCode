@@ -23,10 +23,12 @@ package darkBox
 		private var box_flat:FlatImage,
 					box_pano:PanoramaImage,
 					box_shp:SphereImage,
+					box_binary:BinaryFile,
 					box_vid:VideoImage;
 					
 		private var bannerMC:MovieClip,
 					titleMC:TitleText,
+					downloadMC:MovieClip,
 					backMC:MovieClip,
 					nextMC:MovieClip,
 					prevMC:MovieClip,
@@ -39,12 +41,29 @@ package darkBox
 					
 		private var currentImage:uint = 0 ,
 					totalImages:uint;
-					private var timeOutId:uint;
+		private var timeOutId:uint;
 					
-		
-		/**Initialize the DarkBox area*/
-		public static function setUp(newSize:Rectangle,noNetHintText:String='No Internet Connection Available',noImageHereText:String=''):void
+		private static var saveButtonFunction:Function;
+					
+		/**Get the current file*/
+		public static function get currentMedia():ImageFile
 		{
+			return ME.currentMedia();
+		}
+		
+		public function currentMedia():ImageFile
+		{
+			if(images.length>currentImage)
+			{
+				return images[currentImage] ;
+			}
+			return null ; 
+		}
+					
+		/**Initialize the DarkBox area*/
+		public static function setUp(newSize:Rectangle,noNetHintText:String='No Internet Connection Available',noImageHereText:String='',downloadFunction:Function=null):void
+		{
+			saveButtonFunction = downloadFunction ; 
 			noNetTitle = noNetHintText ;
 			noImageTitle = noImageHereText ;
 			ME.setUp(newSize);
@@ -70,6 +89,9 @@ package darkBox
 			closeMC = Obj.get("close_mc",this);
 			titleMC = Obj.get("title_mc",this);
 			preLoderMC = Obj.get("wait_mc",this);
+			downloadMC = Obj.get("download_mc",this);
+			downloadMC.buttonMode = true ;
+			downloadMC.addEventListener(MouseEvent.CLICK,downloadCurrentMedia);
 			preLoderMC.visible = false ;
 			precentMC.visible = false;
 			
@@ -82,6 +104,7 @@ package darkBox
 			box_flat = Obj.findThisClass(FlatImage,this);
 			box_pano = Obj.findThisClass(PanoramaImage,this);
 			box_shp = Obj.findThisClass(SphereImage,this);
+			box_binary = Obj.findThisClass(BinaryFile,this);
 			box_vid = Obj.findThisClass(VideoImage,this);
 			
 			/*box_flat.mask = box_pano.mask = box_shp.mask = box_vid.mask = maskMC ;
@@ -89,9 +112,21 @@ package darkBox
 			box_vid.mask = maskMC ;*/
 			
 			//Hide box
-			hideAll();
+			//hideAll();
 			this.alpha = 0 ;
 			hide();
+			//Video box will make a bug if hide function didn't call agin
+			setTimeout(hide,100);
+		}
+		
+		protected function downloadCurrentMedia(event:MouseEvent):void
+		{
+			// TODO Auto-generated method stub
+			//images[currentImage].target
+			if(saveButtonFunction!=null)
+			{
+				saveButtonFunction();
+			}
 		}
 		
 		protected function closeMe(event:MouseEvent):void
@@ -105,6 +140,7 @@ package darkBox
 		{
 			box_flat.hide();
 			box_pano.hide();
+			box_binary.hide();
 			box_shp.hide();
 			box_vid.hide();
 		}
@@ -130,8 +166,9 @@ package darkBox
 			var imageSize:Rectangle = new Rectangle(0,bannerMC.height,newSize.width,newSize.height-bannerMC.height);
 			
 			bannerMC.x = 0 ;
-			closeMC.y = nextMC.y = prevMC.y = bannerMC.y = titleMC.y = 0 ;
+			//closeMC.y = nextMC.y = prevMC.y = bannerMC.y = titleMC.y = 0 ;
 			closeMC.x = newSize.width-closeMC.width ;
+			downloadMC.x = closeMC.x - downloadMC.width ;
 			titleMC.x = prevMC.x + prevMC.width ;
 			preLoderMC.x = imageSize.width/2;
 			preLoderMC.y = imageSize.y+imageSize.height/2;
@@ -140,11 +177,12 @@ package darkBox
 			
 			backMC.width = newSize.width;
 			backMC.height = newSize.height ;
-			titleMC.width = newSize.width - (closeMC.width + prevMC.x + prevMC.width ) ;
+			titleMC.width = newSize.width - (closeMC.width + prevMC.x + prevMC.width + downloadMC.width ) ;
 			bannerMC.width = newSize.width ;
 			
 			box_flat.setUp(imageSize);
 			box_pano.setUp(imageSize);
+			box_binary.setUp(imageSize);
 			box_shp.setUp(imageSize);
 			box_vid.setUp(imageSize);
 			
@@ -319,6 +357,9 @@ package darkBox
 					break;
 				case ImageFile.TYPE_VIDEO:
 					box_vid.show(image.target);
+					break;
+				case ImageFile.TYPE_BINARY:
+					box_binary.show(image.target);
 					break;
 					
 				default:
