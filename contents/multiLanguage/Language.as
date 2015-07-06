@@ -145,7 +145,7 @@
 			
 			for(var i = 0 ; i<textXML.*.length() ; i++)
 			{
-				t[textXML.*[i].localName()] = textXML.*[i][currentLang];
+				t[String(textXML.*[i].localName())] = String(textXML.*[i][currentLang]);
 				//trace("t[textXML.*[i].localName()] : "+t[textXML.*[i].localName()]);
 			}
 			
