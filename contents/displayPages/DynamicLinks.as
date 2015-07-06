@@ -270,6 +270,12 @@ package contents.displayPages
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 		}
 		
+		public function lockScroll(X:Number=0,Y:Number=0):void
+		{
+			linkScroller.setPose(X,Y);
+			linkScroller.lock();
+		}
+		
 		/**Adds more links to links list. but if there is no link any more, you have to call noMoreLinks() funcion to remove preloader*/
 		public function addLink(listOfLinks:Vector.<LinkData>):void
 		{
