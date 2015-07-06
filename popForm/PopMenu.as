@@ -1,5 +1,7 @@
 ﻿package popForm
 {
+	import avmplus.getQualifiedClassName;
+	
 	import flash.desktop.NativeApplication;
 	import flash.display.FocusDirection;
 	import flash.display.MovieClip;
@@ -14,6 +16,8 @@
 	
 	public class PopMenu extends MovieClip
 	{
+		private static const CANCEL_ELEMENT_NAME:String = "cancel_mc" ;
+		
 		/**main object of class*/
 		private static var ME:PopMenu;
 		
@@ -58,9 +62,24 @@
 		private var cashedContents:PopMenuContent;
 		private var onButton:Function;
 		
+		private static var 	cancelNames:Array=[],
+							cancelButton:MovieClip,
+							cancelEvent:PopMenuEvent;
+		
+		
 		public static function backEnable(backString:String)
 		{
 			backButtonName = backString ;
+		}
+		
+		/**Activate the static cansel button*/
+		public static function staticCanselEnabled(CancelNames:Array):void
+		{
+			cancelNames = CancelNames.concat() ;
+			for(var i = 0 ; i<cancelNames.length ; i++)
+			{
+				cancelNames[i] = String(cancelNames[i]);
+			}
 		}
 		
 		public static function get popDispatcher():PopMenuDispatcher
@@ -72,6 +91,21 @@
 		{
 			super();
 			ME = this ;
+			var cancelButtons:Array = Obj.getAllChilds(CANCEL_ELEMENT_NAME,this); 
+			if(cancelButtons.length>0)
+			{
+				cancelButton = cancelButtons[0];
+			}
+			if(cancelButton)
+			{
+				trace("cancelButton is defined");
+				cancelButton.addEventListener(MouseEvent.CLICK,cancelSelected);
+				cancelButton.buttonMode = true ;
+			}
+			else
+			{
+				trace("No global cancel button here");
+			}
 			
 			Y0 = this.y ;
 			
@@ -255,6 +289,45 @@
 			myContent.setUp(content/*,type.colorTransform*/);
 			backMC.height = Math.max(Math.min(myContent.height+50,backMaxH),backMinH) ;//backMinH+Math.floor(Math.random()*(backMaxH-backMinH));
 			//trace("myContent.height : "+myContent.height + ' vs backMaxH : '+backMaxH+' vs backMinH : '+backMinH+' > '+backMC.height);
+			
+			if(cancelButton)
+			{
+				cancelEvent = null ;
+				cancelButton.visible = false ;
+				for(var i = 0 ; i<content.buttonList.length ; i++)
+				{
+					var button:* = content.buttonList[i] ;
+					//trace("button : "+button);
+					//trace("button is : "+getQualifiedClassName(button));
+					var buttonName:String ;
+					var buttonId:String ;
+					if(button is PopButtonData)
+					{
+						//trace("This is data button");
+						buttonName = (button as PopButtonData).title ;
+						buttonId = (button as PopButtonData).id ;
+					}
+					else
+					{
+						//trace("This is the string button");
+						buttonName = buttonId = String(button) ;
+					}
+					//trace("cancelNames : "+cancelNames);
+					//trace("buttonName : "+buttonName);
+					//trace(" cancelNames.indexOf(buttonName) : "+ cancelNames.indexOf(buttonName));
+					if( cancelNames.indexOf(buttonName)!=-1)
+					{
+						cancelButton.visible = true ;
+						cancelEvent = new PopMenuEvent(PopMenuEvent.POP_BUTTON_SELECTED,buttonId,null,buttonName) ;
+					}
+				}
+			}
+		}
+		
+		private function cancelSelected(e:MouseEvent):void
+		{
+			this.close();
+			this.dispatchEvent(cancelEvent);
 		}
 		
 		
