@@ -23,7 +23,7 @@ package contents.displayElements
 		}
 		
 		/***/
-		private function generateLink(e:MouseEvent)
+		protected function generateLink(e:MouseEvent)
 		{
 			var ev:AppEventContent ;
 			if(this.name == backButtonDispatcher)
