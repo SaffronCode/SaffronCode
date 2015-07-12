@@ -5,6 +5,9 @@
 		/**some links can have submenu on them*/
 		public var subLinks:Vector.<LinkData> ;
 		
+		/**You can enter any value that you need to use on the LinkManagers but it will not export and import on xml*/
+		public var dynamicData:Object ;
+		
 		public var 	name:String='',
 					id:String='',
 					iconURL:String='';
