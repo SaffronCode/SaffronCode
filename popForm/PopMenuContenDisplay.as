@@ -16,7 +16,8 @@ package popForm
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
-	[Event(name="buttonSelecte", type="nabat.forms.popForm.PopMenuEvent")]
+	[Event(name="buttonSelecte", type="popForm.PopMenuEvent")]
+	[Event(name="FIELD_SELECTED", type="popForm.PopMenuEvent")]
 	public class PopMenuContenDisplay extends MovieClip
 	{
 		private static var stagePlusHaight:Number = 0;
@@ -44,10 +45,17 @@ package popForm
 		
 		private static var lastScrollY:Number = 0 ;
 		
+		private var absoluteHeight:Number = NaN ;
+		
 		/**Add more Height for scrolling*/
 		public function localHeight(H:Number)
 		{
 			myHieghtPlus = H ;
+		}
+		
+		override public function set height(value:Number):void
+		{
+			absoluteHeight = value ;
 		}
 		
 		public function PopMenuContenDisplay()
@@ -184,7 +192,8 @@ package popForm
 						case(PopMenuFieldTypes.STRING):
 						{
 							//trace("It is String field");
-							var newfield:PopField = new PopField(
+							var newfield:PopField = new PopField();
+							newfield.setUp(
 								content.fieldDatas.tagNames[i]
 								,content.fieldDatas.fieldDefaults[i]
 								,content.fieldDatas.keyBoards[i]
@@ -196,7 +205,7 @@ package popForm
 								,content.fieldDatas.languageDirection[i]
 								,content.fieldDatas.maxCharacters[i]
 								,content.fieldDatas.fieldDefaultBooleans[i]
-							);
+								);
 							this.addChild(newfield);
 							newfield.y = Y ;
 							Y+=newfield.height+10;
@@ -285,12 +294,22 @@ package popForm
 			
 			var but:PopButton;
 			
+			var lastInLineButton:int = -1 ;
+			var lastButFrame:uint = 0 ;
+			
 			for(i = 0 ; i<content.buttonList.length ; i++)
 			{
 				if(content.buttonList[i] == '')
 				{
 					butY+=20;
 					continue ;
+				}
+				
+				var butData:PopButtonData ;
+				
+				if(content.buttonList[i] is PopButtonData)
+				{
+					butData = content.buttonList[i] as PopButtonData;
 				}
 				
 				//I am passing complete buttonData with current function to let it controll all state for it self
@@ -300,9 +319,56 @@ package popForm
 				
 				buttonList.push(but);
 				this.addChild(but);
+				
 				but.y = butY+but.height/2 ;
 				
 				butY += but.height+10 ;
+				//trace("lastButFrame == but.currentFrame : "+lastButFrame+" vs "+but.currentFrame);
+				//trace("butData.singleLine : "+butData.singleLine);
+				if(butData!=null && butData.singleLine)
+				{
+					if(lastInLineButton == -1)
+					{
+						lastInLineButton = i ;
+					}
+					else if(lastButFrame == but.currentFrame)
+					{
+						var butW:Number = but.width ;
+						var menuW:Number = this.width ;
+						var lineY:Number = buttonList[lastInLineButton].y ;
+						/**This value is allways more than 0*/
+						var inLineButtons:uint = i-lastInLineButton+1 ;
+						var X0:Number = (menuW-butW)/-2;
+						var deltaX:Number = (menuW-butW)/(inLineButtons-1) ;
+						
+						if(butW*inLineButtons<menuW)
+						{
+							for(var k = lastInLineButton ; k<buttonList.length ; k++)
+							{
+								//trace("Manage button "+k);
+								buttonList[k].y = lineY ;
+								buttonList[k].x = X0 + (k-lastInLineButton)*deltaX ;
+							}
+							butY = lineY+but.height/2+10 ;
+						}
+						else
+						{
+							lastInLineButton = i ;
+						}
+					}
+					else
+					{
+						lastInLineButton = i ;
+					}
+					//trace("lastInLineButton : "+lastInLineButton);
+				}
+				else
+				{
+					//Cansel inline buttons
+					lastInLineButton = -1 ;
+				}
+				
+				lastButFrame = but.currentFrame ;
 			}
 			if(content.buttonList.length!=0)
 			{
@@ -331,7 +397,14 @@ package popForm
 			
 			maxAreaMC.scaleY = 1 ;
 			
-			var scrollRect:Rectangle = new Rectangle(this.x-maxAreaMC.width/2,thisY,maxAreaMC.width,maxAreaMC.height+stagePlusHaight+myHieghtPlus) ;
+			var scrollHeight:Number = absoluteHeight ;
+			
+			if(isNaN(scrollHeight))
+			{
+				scrollHeight = maxAreaMC.height+stagePlusHaight+myHieghtPlus ;
+			}
+			
+			var scrollRect:Rectangle = new Rectangle(this.x-maxAreaMC.width/2,thisY,maxAreaMC.width,scrollHeight) ;
 			
 			//prevent maxAreaMC to rduce height size
 			//maxAreaMC.scaleY = 0 ;

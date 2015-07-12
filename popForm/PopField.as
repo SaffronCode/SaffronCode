@@ -64,9 +64,20 @@
 			backMC.gotoAndStop(colorFrame);
 		}
 		
-		public function PopField(tagName:String,defaultText:String,KeyBordType:String = SoftKeyboardType.DEFAULT,isPass:Boolean = false,editable:Boolean = true,isAraic:Boolean=true,numLines:uint = 1,color:uint=1,frame:uint=1,maxChar:uint=0,otherOptions:Array=null)
+		public function PopField()
 		{
 			super();
+			stop();
+		}
+		
+		/**Changing the form color without making effect on other values*/
+		public function colorChange(colorFrame:uint):void
+		{
+			changeColor(colorFrame);
+		}
+		
+		public function setUp(tagName:String,defaultText:String,KeyBordType:String = SoftKeyboardType.DEFAULT,isPass:Boolean = false,editable:Boolean = true,isAraic:Boolean=true,numLines:uint = 1,color:uint=1,frame:uint=1,maxChar:uint=0,otherOptions:Array=null):void
+		{
 			radioButtonArray = otherOptions ;
 			
 			//New lines to manage language style ( like rtl and ltr )
