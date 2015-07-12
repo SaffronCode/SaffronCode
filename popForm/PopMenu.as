@@ -62,9 +62,10 @@
 		private var cashedContents:PopMenuContent;
 		private var onButton:Function;
 		
-		private static var 	cancelNames:Array=[],
-							cancelButton:MovieClip,
-							cancelEvent:PopMenuEvent;
+		private static var cancelNames:Array=[],
+					cancelEvent:PopMenuEvent;
+		
+		private var cancelButton:MovieClip;
 		
 		
 		public static function backEnable(backString:String)
@@ -157,15 +158,14 @@
 			// TODO Auto-generated method stub
 			if(ev.keyCode == Keyboard.BACK || ev.keyCode == Keyboard.BACKSPACE || ev.keyCode == Keyboard.PAGE_UP )
 			{
-				var controll:Boolean = backClicked(null);
-				//trace("FocusDirection : "+FocusDirection);
-				//trace("(stage as Stage).focus : "+(stage as Stage).focus);
-				
 				if(show)
 				{
 					ev.preventDefault();
 					ev.stopImmediatePropagation();
 				}
+				var controll:Boolean = backClicked(null);
+				//trace("FocusDirection : "+FocusDirection);
+				//trace("(stage as Stage).focus : "+(stage as Stage).focus);
 			}
 		}
 		
