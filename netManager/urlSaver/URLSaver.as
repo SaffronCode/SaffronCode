@@ -357,6 +357,7 @@ package netManager.urlSaver
 			{
 				myLoadedBytes = null ;
 			}
+			trace("offlineURL : "+offlineURL);
 			this.dispatchEvent(new URLSaverEvent(URLSaverEvent.LOAD_COMPLETE,1,myLoadedBytes,offlineURL));
 		}
 		

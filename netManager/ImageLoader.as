@@ -12,6 +12,8 @@ package netManager
 	import flash.events.IOErrorEvent;
 	import flash.events.MouseEvent;
 	import flash.net.URLRequest;
+	import flash.system.ApplicationDomain;
+	import flash.system.LoaderContext;
 	
 	import netManager.urlSaver.URLSaver;
 	import netManager.urlSaver.URLSaverEvent;
@@ -58,12 +60,12 @@ package netManager
 			
 			//this.alpha = 0.5 ;
 			loadIn = loadInThisArea;
-			trace("ImageLoader Initialize : "+loadIn);
+			//trace("ImageLoader Initialize : "+loadIn);
 			
 			myWidth = MyWidth ;
 			myHeight = MyHeight ;
 			
-			trace('Create image width '+MyWidth+' width.');
+			//trace('Create image width '+MyWidth+' width.');
 			
 			loader = new Loader();
 			
@@ -118,7 +120,7 @@ package netManager
 		
 		protected function unLoad(event:Event):void
 		{
-			trace("Cansel "+imageURL+" downloading");
+			//trace("Cansel "+imageURL+" downloading");
 			// TODO Auto-generated method stub
 			this.removeChildren();
 			myURLSaver.cansel();
@@ -153,7 +155,7 @@ package netManager
 		protected function imageLoadingStarted(ev:URLSaverEvent):void
 		{
 			// TODO Auto-generated method stub
-			trace('downloading : '+ev.precent);
+			//trace('downloading : '+ev.precent);
 			if(myPreLoader!=null && myPreLoader.hasOwnProperty('setUp'))
 			{
 				(myPreLoader['setUp'] as Function).apply(ev.precent);
@@ -163,11 +165,11 @@ package netManager
 		/**Generate pre loader*/
 		private function showPreLoader():void
 		{
-			trace("ask to load pre loader");
+			//trace("ask to load pre loader");
 			// TODO Auto Generated method stub
 			if(myPreLoader == null && preLoaderClass!=null)
 			{
-				trace("this is pre loader");
+				//trace("this is pre loader");
 				myPreLoader = new preLoaderClass() ;
 				this.addChild(myPreLoader) ;
 				myPreLoader.x = myWidth/2 ;
@@ -178,11 +180,13 @@ package netManager
 		protected function imageURLChagedToLocal(ev:URLSaverEvent):void
 		{
 			myURLSaver.cansel();
+			//return ;
 			// TODO Auto-generated method stub
 			imageURL = ev.offlineTarget ;
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE,imageLoaded);
 			loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR,urlProblem);
-			loader.load(new URLRequest(imageURL));
+			var loaderContext:LoaderContext = new LoaderContext(false,ApplicationDomain.currentDomain);
+			loader.load(new URLRequest(imageURL),loaderContext);
 			
 			if(myPreLoader!=null)
 			{
@@ -193,7 +197,7 @@ package netManager
 		protected function urlProblem(event:*):void
 		{
 			// TODO Auto-generated method stub
-			trace('cansel!!');
+			//trace('cansel!!');
 			myURLSaver.cansel();
 			myURLSaver.deletFileIfExists(imageURL);
 			//Bug found, i was dispatched IMAGE_LOADED by mistake.
@@ -213,7 +217,7 @@ package netManager
 			}
 			else
 			{
-				trace("myWidth : "+myWidth+" , myHeight : "+myHeight+" > "+imageURL);
+				//trace("myWidth : "+myWidth+" , myHeight : "+myHeight+" > "+imageURL);
 				image = loader.content as Bitmap ;
 				
 				if(myWidth!=0)
@@ -224,10 +228,10 @@ package netManager
 				{
 					image.height = myHeight ;
 				}
-				
-				trace("image current hieght : "+image.height);
-				
-				trace("loadIn : "+loadIn);
+				//
+				//trace("image current hieght : "+image.height);
+				//
+				//trace("loadIn : "+loadIn);
 				
 				if(loadIn)
 				{
@@ -238,7 +242,7 @@ package netManager
 					image.scaleX = image.scaleY = Math.max(image.scaleX,image.scaleY);
 				}
 				
-				trace("image final hieght : "+image.height);
+				//trace("image final hieght : "+image.height);
 				
 				if(myWidth==0)
 				{
