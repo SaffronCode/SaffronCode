@@ -87,6 +87,7 @@
 			newLinkData.id = id ;
 			newLinkData.iconURL = iconURL ;
 			newLinkData.level = level ;
+			newLinkData.dynamicData = dynamicData ;
 			
 			return newLinkData ;
 		}

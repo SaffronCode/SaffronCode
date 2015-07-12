@@ -24,7 +24,7 @@ package appManager.event
 		{
 			SkipHistory = skipHistory ;
 			
-			linkData = currentLink = pageLink ;
+			linkData = currentLink = pageLink.clone() ;
 			
 			//resetHistory();
 			

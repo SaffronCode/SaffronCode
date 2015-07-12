@@ -155,7 +155,7 @@
 		private function checkBack(ev:KeyboardEvent):void
 		{
 			// TODO Auto-generated method stub
-			if(ev.keyCode == Keyboard.BACK || ev.keyCode == Keyboard.BACKSPACE )
+			if(ev.keyCode == Keyboard.BACK || ev.keyCode == Keyboard.BACKSPACE || ev.keyCode == Keyboard.PAGE_UP )
 			{
 				var controll:Boolean = backClicked(null);
 				//trace("FocusDirection : "+FocusDirection);
@@ -182,9 +182,17 @@
 				}
 				for(var i = 0 ; i<cashedContents.buttonList.length ; i++)
 				{
-					if(cashedContents.buttonList[i] == backButtonName)
+					var currentButtonName:String = cashedContents.buttonList[i] ;
+					var currentButtonId:String = cashedContents.buttonList[i] ;
+					if(cashedContents.buttonList[i] is PopButtonData)
 					{
-						popMenuitemsAreSelected(new PopMenuEvent(PopMenuEvent.POP_BUTTON_SELECTED,i,null,backButtonName));
+						currentButtonName = (cashedContents.buttonList[i] as PopButtonData).title ;
+						currentButtonId = (cashedContents.buttonList[i] as PopButtonData).id ;
+					}
+					//trace("Control this button : "+currentButtonName);
+					if(currentButtonName == backButtonName)
+					{
+						popMenuitemsAreSelected(new PopMenuEvent(PopMenuEvent.POP_BUTTON_SELECTED,currentButtonId,null,backButtonName));
 						trace('back button selected');
 						return true;
 					}
