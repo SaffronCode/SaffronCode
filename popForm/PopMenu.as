@@ -190,7 +190,7 @@
 						currentButtonId = (cashedContents.buttonList[i] as PopButtonData).id ;
 					}
 					//trace("Control this button : "+currentButtonName);
-					if(currentButtonName == backButtonName)
+					if(currentButtonName == backButtonName || currentButtonId == backButtonName)
 					{
 						popMenuitemsAreSelected(new PopMenuEvent(PopMenuEvent.POP_BUTTON_SELECTED,currentButtonId,null,backButtonName));
 						trace('back button selected');
@@ -335,7 +335,7 @@
 		private function cancelSelected(e:MouseEvent):void
 		{
 			this.close();
-			this.dispatchEvent(cancelEvent);
+			popMenuitemsAreSelected(cancelEvent);
 		}
 		
 		
