@@ -35,12 +35,13 @@ package appManager.animatedPages.pageManager
 		protected function anim(event:Event):void
 		{
 			// TODO Auto-generated method stub
-			if(toEvent.myType == AppEvent.home || toEvent.myID!=currentEvent.myID || toEvent.myType == AppEvent.refresh)
+			if(toEvent.myType == AppEvent.home || toEvent.myID!=currentEvent.myID || toEvent.myType == AppEvent.refresh || toEvent.reload)
 			{
 				this.prevFrame() ;
 				if(this.currentFrame == 1)
 				{
 					pageContainer.setUp();
+					toEvent.reload = false ;
 					if(toEvent.myType == AppEvent.home)
 					{
 						//this.visible = false ;

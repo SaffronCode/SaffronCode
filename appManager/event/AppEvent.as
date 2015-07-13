@@ -22,22 +22,30 @@ package appManager.event
 		
 		public static const refresh:String = "ReffreshCurrentPage" ;
 		
-		/**This variable is not unic */
+		/**This variable is not unic - this is the class name that application needs to create it. */
 		public var myType:String ;
 		
 		/**This is the page id and this is unic , you have to detect home types from myType<br>
 		 * this variable is just on Content base applications*/
 		public var myID:String ;
 		
+		public var reload:Boolean = false ;
+		
 		/**Returns the refrest event*/
 		public static function refreshEvent():AppEvent
 		{
-			return new AppEvent(refresh);
+			var newAppEventContent:AppEventContent = new AppEventContent(null,true);
+			newAppEventContent.myType = refresh ;
+			newAppEventContent.myID = id_not_set ;
+			
+			return newAppEventContent;
 		}
 		
-		public function AppEvent(pageType:String=home,eventType:String=PAGE_CHANGES,pageID:String=id_not_set)
+		public function AppEvent(pageType:String=home,eventType:String=PAGE_CHANGES,pageID:String=id_not_set,reloadNeeded:Boolean=false)
 		{
 			myType = pageType ;
+			
+			reload = reloadNeeded ;
 			
 			if(pageID == id_not_set)
 			{

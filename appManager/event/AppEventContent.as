@@ -20,47 +20,27 @@ package appManager.event
 		
 		//public var myID:String ;
 		
-		public function AppEventContent(pageLink:LinkData,skipHistory:Boolean = false)
+		/**Enter null here to make refresh event*/
+		public function AppEventContent(pageLink:LinkData,skipHistory:Boolean = false,reload:Boolean=false)
 		{
+			if(pageLink == null)
+			{
+				pageLink = new LinkData();
+				pageLink.id == refresh ;
+				skipHistory = true ;
+			}
 			SkipHistory = skipHistory ;
 			
 			linkData = currentLink = pageLink.clone() ;
-			
-			//resetHistory();
 			
 			if(pageLink.id == home)
 			{
 				pageLink.level = 0 ;
 			}
-			
-			//trace('currentLink.level : '+currentLink.level+' - '+currentLink.id);
-			/*if(!skipHistory)
-			{
-				History.pushHistory(currentLink);
-				//if(currentLink.level==-1)
-				//{
-				//	history.push(currentLink);
-				//}
-				//else
-				//{
-				//	//trace("♠ split : "+currentLink.level+' , '+history.length+' - '+currentLink.level);
-				//	history.splice(currentLink.level,Math.max(history.length-currentLink.level,0));
-				//	history.push(currentLink);
-				//}
-			}*/
-			//trace('find page data for : '+pageLink.id);
 			pageData = Contents.getPage(pageLink.id);
 			
-			//trace("what is the id : "+pageLink.id);
 			
-			//trace('finded pageData : '+pageData);
-			
-			super(pageData.type, PAGE_CHANGES,pageLink.id);
-			
-			/*for(var i = 0 ; i<history.length ; i++)
-			{
-				trace('history['+i+'] : '+history[i].id);
-			}*/
+			super(pageData.type, PAGE_CHANGES,pageLink.id,reload);
 		}
 		
 		/*private static function resetHistory():void

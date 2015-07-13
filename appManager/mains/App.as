@@ -133,7 +133,7 @@ package appManager.mains
 			//Why it dosen't currentAppEvent befor???????????????????????????
 			//I had bug befot, I tried to get back to home page when the main anim is animating to external pages and it caused crash when I checked current Event with pageManager's event.
 			//I added currentAppEvent != null to prevent error when you requested to open page when it is not reached to main page.
-			if(currentAppEvent!=null && /*pageManagerObject.toEvent*/currentAppEvent.myID == event.myID && currentAppEvent.myType!=AppEvent.refresh)
+			if(currentAppEvent!=null && /*pageManagerObject.toEvent*/currentAppEvent.myID == event.myID && currentAppEvent.myType!=AppEvent.refresh && event.reload==false)
 			{
 				trace("Duplicated page id : "+currentAppEvent.myID);
 				return false;
