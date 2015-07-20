@@ -27,7 +27,15 @@ package contents.displayPages
 		{
 			super();
 			
-			myImage = Obj.findThisClass(Image,this) as Image;
+			var images:Array = Obj.findAllClass(Image,this);
+			if(images.length>1)
+			{
+				myImage = Obj.findThisClass(Image,this) as Image;
+			}
+			else if(images.length!=0)
+			{
+				myImage = images[0];
+			}
 			myTitle = Obj.findThisClass(TitleText,this) as TitleText;
 			//trace("founded text title is : "+myTitle)
 			myParag = Obj.findThisClass(TextParag,this);
