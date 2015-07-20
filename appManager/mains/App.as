@@ -28,6 +28,13 @@ package appManager.mains
 		protected var mainAnim:MainAnim ;
 		public static var currentAppEvent:AppEvent;
 		
+		private static var is_in_home:Boolean = true ;
+		
+		public static function get isInHome():Boolean
+		{
+			return is_in_home ;
+		}
+		
 		public function App()
 		{
 			super();
@@ -59,6 +66,7 @@ package appManager.mains
 			NativeApplication.nativeApplication.addEventListener(KeyboardEvent.KEY_DOWN,controllBackButton);
 			
 			//This will remind that first page of the application is HomePage
+			is_in_home = true ;
 			hopePageOppened(true);
 		}	
 		
@@ -166,6 +174,7 @@ package appManager.mains
 				changePage(event);
 				//It will close PageManger instantly
 				//This function calls with true when the home page oppened:
+				is_in_home = true ;
 				hopePageOppened(true);
 			}
 			else
@@ -173,6 +182,7 @@ package appManager.mains
 				trace("close home page")
 				showExternalPages();
 				//This function calls when external pages oppened:
+				is_in_home = false ;
 				hopePageOppened(false);
 			}
 			
