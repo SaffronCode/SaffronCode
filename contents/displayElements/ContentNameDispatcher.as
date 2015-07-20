@@ -13,6 +13,8 @@ package contents.displayElements
 	{
 		public static const backButtonDispatcher:String = "backButtonDispatcher";
 		
+		protected var defaultLevel:int = 1 ;
+		
 		public function ContentNameDispatcher()
 		{
 			super();
@@ -43,7 +45,7 @@ package contents.displayElements
 				}
 				else
 				{
-					link.level = 1 ;
+					link.level = defaultLevel ;
 				}
 				link.id = this.name ;
 				
