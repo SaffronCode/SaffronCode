@@ -8,7 +8,20 @@ package appManager.animatedPages.pageManager
 	
 	public class PageManager extends MovieClip
 	{
-		public static var currentEvent:AppEvent = new AppEvent();
+		/*public static function get currentEvent():AppEvent
+		{
+			return myCurrentEvent;
+		}*/
+		/**External pages will anitmate themselves*/
+		internal static var animateInternalPages:Boolean = false ;
+		
+		public static function activatePageAnimation():void
+		{
+			// TODO Auto Generated method stub
+			animateInternalPages = true ;
+		}
+		
+		private var myCurrentEvent:AppEvent = new AppEvent() ;
 		
 		public var toEvent:AppEvent = new AppEvent() ;
 		
@@ -35,32 +48,42 @@ package appManager.animatedPages.pageManager
 		protected function anim(event:Event):void
 		{
 			// TODO Auto-generated method stub
-			if(toEvent.myType == AppEvent.home || toEvent.myID!=currentEvent.myID || toEvent.myType == AppEvent.refresh || toEvent.reload)
+			var animIsOver:Boolean = false;
+			if(toEvent.myType == AppEvent.home || toEvent.myID!=myCurrentEvent.myID || toEvent.myType == AppEvent.refresh || toEvent.reload)
 			{
-				this.prevFrame() ;
-				if(this.currentFrame == 1)
+				if(animateInternalPages && pageContainer.hadSelfAnim())
 				{
+					animIsOver = pageContainer.prev();
+				}
+				else
+				{
+					this.prevFrame() ;
+					animIsOver = (this.currentFrame == 1) ;
+				}
+				if(animIsOver)
+				{
+					this.gotoAndStop(1);
 					pageContainer.setUp();
 					toEvent.reload = false ;
 					if(toEvent.myType == AppEvent.home)
 					{
 						//this.visible = false ;
-						if( currentEvent != toEvent  )
+						if( myCurrentEvent != toEvent  )
 						{
-							currentEvent = toEvent ;
+							myCurrentEvent = toEvent ;
 						}
 					}
 					else
 					{
 						if( toEvent.myType != AppEvent.refresh )
 						{
-							currentEvent = toEvent ;
+							myCurrentEvent = toEvent ;
 						}
 						else
 						{
-							toEvent = currentEvent ;
+							toEvent = myCurrentEvent ;
 						}
-						pageContainer.setUp(currentEvent);
+						pageContainer.setUp(myCurrentEvent);
 					}
 				}
 				
@@ -68,7 +91,15 @@ package appManager.animatedPages.pageManager
 			else 
 			{
 				//this.visible = true ;
-				this.nextFrame();
+				if(animateInternalPages && pageContainer.hadSelfAnim())
+				{
+					this.gotoAndStop(this.totalFrames);
+					animIsOver = pageContainer.next();
+				}
+				else
+				{
+					this.nextFrame();
+				}
 			}
 		}
 	}

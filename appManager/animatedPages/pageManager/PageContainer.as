@@ -6,12 +6,15 @@ package appManager.animatedPages.pageManager
 	
 	import contents.interFace.DisplayPageInterface;
 	
+	import flash.display.FrameLabel;
 	import flash.display.MovieClip;
 	import flash.system.System;
 	
 	public class PageContainer extends MovieClip
 	{
-		private var currentPage:MovieClip ;
+		private var currentPage:MovieClip,
+					middleFrame:uint,
+					finishFrame:uint;
 		
 		public function PageContainer()
 		{
@@ -26,6 +29,8 @@ package appManager.animatedPages.pageManager
 				trace("delete current page");
 				this.removeChild(currentPage);
 				currentPage = null ;
+				middleFrame = 0 ;
+				finishFrame = 0 ;
 				System.gc();
 				System.gc();
 			}
@@ -44,6 +49,16 @@ package appManager.animatedPages.pageManager
 				try
 				{
 					currentPage = new pageClassType();
+					var framesList:Array = currentPage.currentLabels;
+					if(framesList.length > 0)
+					{
+						middleFrame = (framesList[0] as FrameLabel).frame ;
+					}
+					else if(currentPage.totalFrames>1)
+					{
+						middleFrame = currentPage.totalFrames ;
+					}
+					finishFrame = currentPage.totalFrames ;
 				}
 				catch(e)
 				{
@@ -70,6 +85,68 @@ package appManager.animatedPages.pageManager
 					trace("static application page");
 				}
 			}
+		}
+		
+		/**returns true if current MovieClip had its own animation*/
+		public function hadSelfAnim():Boolean
+		{
+			return middleFrame!=0;
+		}
+		
+		/**returns true if the animation is over*/
+		public function next():Boolean
+		{
+			if(currentPage)
+			{
+				if(currentPage.currentFrame<middleFrame)
+				{
+					currentPage.nextFrame();
+					return false;
+				}
+				else if(currentPage.currentFrame>middleFrame)
+				{
+					currentPage.prevFrame();
+					return false ;
+				}
+				else
+				{
+					return true ;
+				}
+			}
+			return true ;
+		}
+		
+		/**returns true if the animation is over*/
+		public function prev():Boolean
+		{
+			if(currentPage)
+			{
+				if(middleFrame<finishFrame)
+				{
+					if(currentPage.currentFrame<finishFrame)
+					{
+						currentPage.nextFrame();
+						return false ;
+					}
+					else
+					{
+						return true ;
+					}
+				}
+				else
+				{
+					if(currentPage.currentFrame>1)
+					{
+						currentPage.prevFrame();
+						return false ;
+					}
+					else
+					{
+						return true ;
+					}
+				}
+			}
+			return true;
 		}
 	}
 }

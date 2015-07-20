@@ -1,5 +1,6 @@
 package appManager.mains
 {
+	import appManager.animatedPages.pageManager.PageManager;
 	import appManager.event.AppEvent;
 	import appManager.event.AppEventContent;
 	
@@ -12,9 +13,14 @@ package appManager.mains
 	public class AppWithContent extends App
 	{
 		/**AutoLanguageConvertion will enabled just when supportsMutilanguage was true*/
-		public function AppWithContent(supportsMultiLanguage:Boolean=false,autoLanguageConvertEnabled:Boolean=true)
+		public function AppWithContent(supportsMultiLanguage:Boolean=false,autoLanguageConvertEnabled:Boolean=true,animagePageContents:Boolean=false)
 		{
 			super();
+			
+			if(animagePageContents)
+			{
+				PageManager.activatePageAnimation();
+			}
 			
 			stopIntro();
 			//Multilanguage support added to current version.
