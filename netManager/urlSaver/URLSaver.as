@@ -1,4 +1,4 @@
-/**Version 1.0
+﻿/**Version 1.0
 	There is no need to trace urls any more
  * **/
 
@@ -79,6 +79,12 @@ package netManager.urlSaver
 		{
 			onlineURL = url ;
 			offlineURL = null ;
+			
+			if(url=='')
+			{
+				trace("Requested Url is ''. are you serius??");
+				return false;
+			}
 			
 			if(myAcceptableDate==null)
 			{
