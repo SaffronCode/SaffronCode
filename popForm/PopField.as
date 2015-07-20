@@ -27,6 +27,11 @@
 			return myTXT.text ;
 		}
 		
+		public function set text(value:String):void
+		{
+			myTXT.text = value ;
+			myTXT.dispatchEvent(new Event(Event.CHANGE));
+		}
 		override public function get title():String
 		{
 			return myTitle;
@@ -76,7 +81,7 @@
 			changeColor(colorFrame);
 		}
 		
-		public function setUp(tagName:String,defaultText:String,KeyBordType:String = SoftKeyboardType.DEFAULT,isPass:Boolean = false,editable:Boolean = true,isAraic:Boolean=true,numLines:uint = 1,color:uint=1,frame:uint=1,maxChar:uint=0,otherOptions:Array=null):void
+		public function setUp(tagName:String,defaultText:String,KeyBordType:String = SoftKeyboardType.DEFAULT,isPass:Boolean = false,editable:Boolean = true,isAraic:Boolean=true,numLines:uint = 1,color:uint=1,frame:uint=1,maxChar:uint=0,otherOptions:Array=null,deleteDefautlText:Boolean=false):void
 		{
 			radioButtonArray = otherOptions ;
 			
@@ -128,7 +133,7 @@
 			//FarsiInputText.steKeyBord(myTXT,false);
 			if(editable)
 			{
-				FarsiInputCorrection.setUp(myTXT,KeyBordType);
+				FarsiInputCorrection.setUp(myTXT,KeyBordType,true,true,deleteDefautlText);
 			}
 			else
 			{
@@ -173,9 +178,9 @@
 		}
 		
 		/**item is added to stage
-		private function imAdded(e:Event)
-		{
-			FarsiInputCorrection.setUp(myTXT,keyBordType);
-		}*/
+		 private function imAdded(e:Event)
+		 {
+		 FarsiInputCorrection.setUp(myTXT,keyBordType);
+		 }*/
 	}
 }

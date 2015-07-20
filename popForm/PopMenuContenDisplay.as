@@ -43,6 +43,9 @@ package popForm
 		
 		public var height0:Number; 
 		
+		private var popFieldType:Class,
+					buttonFieldType:Class;
+		
 		private static var lastScrollY:Number = 0 ;
 		
 		private var absoluteHeight:Number = NaN ;
@@ -61,6 +64,28 @@ package popForm
 		public function PopMenuContenDisplay()
 		{
 			super();
+			
+			var samplePopField:PopField = Obj.findThisClass(PopField,this);
+			if(samplePopField==null)
+			{
+				popFieldType = PopField ;
+			}
+			else
+			{
+				popFieldType = Obj.getObjectClass(samplePopField);
+				Obj.remove(samplePopField);
+			}
+			var sampleButton:PopButton = Obj.findThisClass(PopButton,this);
+			if(sampleButton==null)
+			{
+				buttonFieldType = PopButton ;
+			}
+			else
+			{
+				buttonFieldType =  Obj.getObjectClass(sampleButton);
+				trace("buttonFieldType : "+buttonFieldType);
+				Obj.remove(sampleButton);
+			}
 			
 			thisY = this.y ;
 			
@@ -192,7 +217,7 @@ package popForm
 						case(PopMenuFieldTypes.STRING):
 						{
 							//trace("It is String field");
-							var newfield:PopField = new PopField();
+							var newfield:PopField = new popFieldType();
 							newfield.setUp(
 								content.fieldDatas.tagNames[i]
 								,content.fieldDatas.fieldDefaults[i]
@@ -313,7 +338,8 @@ package popForm
 				}
 				
 				//I am passing complete buttonData with current function to let it controll all state for it self
-				but = new PopButton(content.buttonList[i]/*,color*/,i,content.buttonsInterface[i],content.buttonList[i]);
+				but = new buttonFieldType();
+				but.setUp(content.buttonList[i]/*,color*/,i,content.buttonsInterface[i],content.buttonList[i]);
 				
 				Obj.setButton(but,buttonSelected);
 				
