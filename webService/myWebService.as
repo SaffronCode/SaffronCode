@@ -240,22 +240,21 @@ package webService
 		public static function callFunction(serviceName:String,params:Array):AsyncToken
 		{
 			var showValues:Boolean = true ;
+			var paramList:Array = [] ;
 			for(var i = 0 ; i<params.length ; i++)
 			{
 				if(params[i] is ByteArray)
 				{
-					showValues = false ;
-					break;
+					paramList.push("Bytes");
+				}
+				else
+				{
+					paramList.push(params[i]);
 				}
 			}
-			if(showValues)
-			{
-				trace(serviceName+" : "+params);
-			}
-			else
-			{
-				trace(serviceName+" : params");
-			}
+			
+			trace(serviceName+" : "+paramList);
+			
 			var op:AbstractOperation = ws.getOperation(serviceName);
 			op.arguments = params;
 			return op.send()
