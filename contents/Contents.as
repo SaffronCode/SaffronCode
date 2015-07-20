@@ -124,11 +124,13 @@ package contents
 		private static function loadXML()
 		{
 			//trace("1. debug time : "+getTimer());
-			var fileLoader:FileStream = new FileStream();
+			/*var fileLoader:FileStream = new FileStream();
 			var fileTarger:File = File.applicationDirectory.resolvePath(dataFile);
-			fileLoader.open(fileTarger,FileMode.READ);
+			fileLoader.open(fileTarger,FileMode.READ);*/
+			
+			var loadedFile:String = TextFile.load(File.applicationDirectory.resolvePath(dataFile));
 			//trace("2. debug time : "+getTimer());
-			xmlLoaded(null,fileLoader.readUTFBytes(fileLoader.bytesAvailable));
+			xmlLoaded(null,loadedFile);
 		}
 		
 		/**xml file loaded*/
