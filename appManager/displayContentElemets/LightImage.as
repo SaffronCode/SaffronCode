@@ -203,6 +203,11 @@ package appManager.displayContentElemets
 		{
 			// TODO Auto-generated method stub
 			var newBitmap:Bitmap = (loader.content as Bitmap);
+			if(newBitmap==null)
+			{
+				trace("Image load faild on lightImage function imageLoaded");
+				return ;
+			}
 			var bitmapData:BitmapData = newBitmap.bitmapData ;
 			
 			var newBitmapData:BitmapData = BitmapEffects.changeSize(bitmapData,W,H,true,LoadInThisArea) ;
