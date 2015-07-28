@@ -36,8 +36,8 @@ package diagrams.calender
 		
 		/**Special font for calender title*/
 		
-		public static const Font_title:String = "B Yekan Bold",
-							Font_boxNames:String = "B Yekan",
+		public static const Font_title:String = "B Yekan Bold Bold",
+							Font_boxNames:String = "B Yekan Regular",
 							Font_contents_name:String = Font_boxNames;
 		
 		public static const Color_boxBackGround:uint = 0xffffff,

@@ -106,6 +106,7 @@ package darkBox
 			box_shp = Obj.findThisClass(SphereImage,this);
 			box_binary = Obj.findThisClass(BinaryFile,this);
 			box_vid = Obj.findThisClass(VideoImage,this);
+				
 			
 			/*box_flat.mask = box_pano.mask = box_shp.mask = box_vid.mask = maskMC ;
 			box_shp.mask = maskMC ;
@@ -142,7 +143,8 @@ package darkBox
 			box_pano.hide();
 			box_binary.hide();
 			box_shp.hide();
-			box_vid.hide();
+			if(box_vid)
+				box_vid.hide();
 		}
 		
 		/*private function initMask():void
@@ -184,7 +186,8 @@ package darkBox
 			box_pano.setUp(imageSize);
 			box_binary.setUp(imageSize);
 			box_shp.setUp(imageSize);
-			box_vid.setUp(imageSize);
+			if(box_vid)
+				box_vid.setUp(imageSize);
 			
 			
 			MouseDrag.setUp(stage);
@@ -356,7 +359,8 @@ package darkBox
 					box_shp.show(image.target);
 					break;
 				case ImageFile.TYPE_VIDEO:
-					box_vid.show(image.target);
+					if(box_vid)
+						box_vid.show(image.target);
 					break;
 				case ImageFile.TYPE_BINARY:
 					box_binary.show(image.target);

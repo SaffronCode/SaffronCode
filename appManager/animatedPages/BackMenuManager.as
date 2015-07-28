@@ -7,6 +7,8 @@ package appManager.animatedPages
 	
 	public class BackMenuManager extends MovieClip
 	{
+		protected var minHistoryRequired:uint = 1 ;
+		
 		public function BackMenuManager()
 		{
 			super();
@@ -24,7 +26,7 @@ package appManager.animatedPages
 		protected function anim(event:Event):void
 		{
 			// TODO Auto-generated method stub
-			if(History.backAvailable())
+			if((minHistoryRequired == 1 && History.backAvailable()) || minHistoryRequired<History.length)
 			{
 				this.nextFrame();
 			}

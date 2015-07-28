@@ -50,6 +50,18 @@ package contents
 			}
 		}
 		
+		public static function get length():uint
+		{
+			if(history == null)
+			{
+				return 0;
+			}
+			else
+			{
+				return history.length ;
+			}
+		}
+		
 		/**returns lastPageEvent*/
 		public static function lastPage():AppEventContent
 		{

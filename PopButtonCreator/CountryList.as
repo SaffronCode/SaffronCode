@@ -8,26 +8,25 @@ package PopButtonCreator
 
 	public class CountryList
 	{
-		private static var countriesXML:XMLList ;
-
-		private static var buttons:Array;
+		private static var creator:GlobalButtonCreator ;
 		
 		public static function setUp(xmlTarget:String="Data/countries.xml",buttonFrame:uint=2):void
 		{
-			countriesXML = XMLList(TextFile.load(File.applicationDirectory.resolvePath(xmlTarget)));
+			creator = new GlobalButtonCreator(xmlTarget,buttonFrame);
+			/*countriesXML = XMLList(TextFile.load(File.applicationDirectory.resolvePath(xmlTarget)));
 			buttons = new Array();
 			for(var i = 0 ; i<countriesXML.length();i++)
 			{
 				var newCountry:PopButtonData = new PopButtonData(countriesXML[i].@name,buttonFrame,String(countriesXML[i].@code));
 				buttons.push(newCountry);
 			}
-			buttons.sortOn("title");
+			buttons.sortOn("title");*/
 		}
 		
 		public static function countrieButtons():Array
 		{
 			
-			return buttons ;
+			return creator.buttonsList() ;
 		}
 	}
 }

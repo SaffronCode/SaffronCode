@@ -298,7 +298,7 @@ package fileBrowser
 			trace("Start the search about : "+lastSearchVal);
 			// TODO Auto Generated method stub
 			var searchMC:MovieClip = new MovieClip();
-			searchTF = new MTTextField(0,30,"B Yekan");
+			searchTF = new MTTextField(0,30,"B Yekan Regular");
 			searchTF.width = 400 ;
 			searchMC.addChild(searchTF);
 			searchTF.x = searchTF.width/-2;
