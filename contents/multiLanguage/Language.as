@@ -68,7 +68,7 @@
 					myStage:Stage;
 		
 		/**this object will have all texts in its tag name on its variabes*/			
-		public var t:Object = new Object();
+		public var t:SmartObject = new SmartObject();
 		
 		/**controll the added items*/
 		private var addedItems:Array = [],
@@ -146,8 +146,11 @@
 			for(var i = 0 ; i<textXML.*.length() ; i++)
 			{
 				t[String(textXML.*[i].localName())] = String(textXML.*[i][currentLang]);
+				t.saveValue(String(textXML.*[i].localName()),String(textXML.*[i][currentLang]));
 				//trace("t[textXML.*[i].localName()] : "+t[textXML.*[i].localName()]);
 			}
+			
+			t.saveForCompiler();
 			
 			var arabic:String = loadedXML.language_info[currentLang].@arabic ;
 			var rtl_:String = loadedXML.language_info[currentLang].@rtl ;
