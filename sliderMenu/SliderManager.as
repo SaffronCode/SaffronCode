@@ -284,7 +284,15 @@ package sliderMenu
 					{
 						if(currentDraggingPose == allPose[i])
 						{
-							var cprecent:uint = Math.min(obj.totalFrames,Math.ceil(Math.min(1,precent/deltaW)*obj.totalFrames));
+							var cprecent:uint;
+							if(moveStage)
+							{
+								cprecent = Math.min(obj.totalFrames,Math.ceil(Math.min(1,precent/deltaW)*obj.totalFrames));
+							}
+							else
+							{
+								cprecent = Math.min(obj.totalFrames,Math.ceil(Math.min(1,deltaPose.length/deltaW)*obj.totalFrames));
+							}
 							obj.gotoAndStop(cprecent);
 						}
 						else
