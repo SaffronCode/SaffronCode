@@ -329,8 +329,15 @@ package netManager.urlSaver
 			//Now save loaded file on hard
 			myLoadedBytes.position = 0 ;
 			var fileSaver:FileStream = new FileStream();
-			fileSaver.open(oflineFile,FileMode.WRITE);
-			fileSaver.writeBytes(myLoadedBytes,0,myLoadedBytes.bytesAvailable);
+			try
+			{
+				fileSaver.open(oflineFile,FileMode.WRITE);
+				fileSaver.writeBytes(myLoadedBytes,0,myLoadedBytes.bytesAvailable);
+			}
+			catch(e)
+			{
+				trace("URL saver file is not write able. saveLoadedByte");
+			}
 			
 			//SavedDatas.save(onlineURL,offlineURL);
 			//trace('offile file saved on : '+onlineURL);
