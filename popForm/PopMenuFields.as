@@ -49,7 +49,8 @@ package popForm
 		}
 		
 		/**add new field<br>
-		 * frameForDirection: 1 for rtl and 2 for ltr script*/
+		 * frameForDirection: 1 for rtl and 2 for ltr script<br>
+		 * if the field is read only, you can set numLines to 0 and make it change the lines by it's needs*/
 		public function addField(tagName:String,fieldDefault:String='',keyBoardType:String = SoftKeyboardType.DEFAULT,isPass:Boolean=false,Editable:Boolean = true,isArabic_v:Boolean=true,numLine:uint=1,frameForDirection:uint=1,fieldColorFrame:uint=1,maxChar:uint=0)
 		{
 			keyBoardType = (keyBoardType==null)?SoftKeyboardType.DEFAULT:keyBoardType;

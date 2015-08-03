@@ -83,7 +83,16 @@
 		
 		public function setUp(tagName:String,defaultText:String,KeyBordType:String = SoftKeyboardType.DEFAULT,isPass:Boolean = false,editable:Boolean = true,isAraic:Boolean=true,numLines:uint = 1,color:uint=1,frame:uint=1,maxChar:uint=0,otherOptions:Array=null,deleteDefautlText:Boolean=false):void
 		{
+			var Y0:Number ;
+			var Y1:Number ;
+			
 			radioButtonArray = otherOptions ;
+			
+			if(editable && numLines==0)
+			{
+				trace("You cant have dynamic field size on editable texts");
+				numLines = 1 ;
+			}
 			
 			//New lines to manage language style ( like rtl and ltr )
 			this.gotoAndStop(frame);
@@ -108,7 +117,7 @@
 			
 			if(numLines>1)
 			{
-				var Y0:Number = myTXT.height ;
+				Y0 = myTXT.height;
 				myTXT.multiline = true ;
 				myTXT.wordWrap = true ;
 				for(var i = 0 ; i<numLines ; i++)
@@ -117,7 +126,7 @@
 				}
 				myTXT.text = myTXT.text.substring(0,myTXT.text.length-1);
 				myTXT.height = myTXT.textHeight+10;
-				var Y1:Number = myTXT.height ;
+				Y1 = myTXT.height;
 				backMC.height += Y1-Y0 ;
 				backMC.y+=(Y1-Y0)/2;
 				myTXT.text = '' ;
@@ -128,7 +137,9 @@
 				myTXT.multiline = false ;
 				myTXT.wordWrap = false ;
 			}
+			
 			myTXT.text = (defaultText==null)?'': defaultText ;
+			
 			
 			//FarsiInputText.steKeyBord(myTXT,false);
 			if(editable)
@@ -138,7 +149,18 @@
 			else
 			{
 				//remove texts back ground
-				backMC.visible = false;
+				
+				if(numLines==0)
+				{
+					myTXT.multiline = true ;
+					myTXT.wordWrap = true ;
+					backMC.visible = true ;
+				}
+				else
+				{
+					backMC.visible = false;
+				}
+				
 				if(isAraic)
 				{
 					UnicodeStatic.fastUnicodeOnLines(myTXT,defaultText);
@@ -146,6 +168,15 @@
 				else
 				{
 					myTXT.text = defaultText ;
+				}
+				
+				if(numLines==0)
+				{
+					Y0 = myTXT.height;
+					myTXT.height = myTXT.textHeight+10;
+					Y1 = myTXT.height ;
+					backMC.height += Y1-Y0 ;
+					backMC.y+=(Y1-Y0)/2;
 				}
 			}
 		}
