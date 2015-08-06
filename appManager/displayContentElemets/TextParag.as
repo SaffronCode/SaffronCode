@@ -14,6 +14,7 @@ package appManager.displayContentElemets
 					W:Number ;
 		
 		private var scrollMC:ScrollMT;
+		private var nativeText:FarsiInputCorrection;
 		
 		public function TextParag(moreHight:Number=0)
 		{
@@ -55,20 +56,36 @@ package appManager.displayContentElemets
 			H = value;
 		}
 		
-		public function setUp(myText:String,isArabic:Boolean = true,align:Boolean=true,knownAsHTML:Boolean=false,activateLinks:Boolean=false)
+		public function setUp(myText:String,isArabic:Boolean = true,align:Boolean=true,knownAsHTML:Boolean=false,activateLinks:Boolean=false,useNativeText:Boolean=false)
 		{
 			//This event dispatches to remove old scrollMC class
 			this.dispatchEvent(new Event(Event.REMOVED_FROM_STAGE)) ;
-			
-			//trace("1 add parag on TextParag and its font is : "+myTextTF.defaultTextFormat.font+' added to textParag class')
-			//TextPutter.onTextArea(myTextTF,myText,isArabic,true,true,1,align,knownAsHTML) ;
-			//TextPutter.onTextArea(myTextTF,myText,isArabic,!activateLinks,false,0,align,knownAsHTML,-1);
-			TextPutter.onTextArea(myTextTF,myText,true,false,false,0,false,true,-1);
-			trace("Done");
-			//Debug line ↓
-			//TextPutter.onTextArea(myTextTF,myText,isArabic,false,false,1,true) ;
-		//	trace("2 add parag on TextParag and its font is : "+myTextTF.defaultTextFormat.font+' added to textParag class : '+myTextTF.text)
-			scrollMC = new ScrollMT(this,new Rectangle(this.x,this.y,W,H),new Rectangle(0,0,W,super.height)) ;
+			if(nativeText)
+			{
+				nativeText.unLoad();
+			}
+			if(scrollMC)
+			{
+				scrollMC.unLoad();
+			}
+			if(useNativeText)
+			{
+				myTextTF.text = UnicodeStatic.KaafYe(myText) ;
+				trace("myTextTF.text : "+myTextTF.text);
+				nativeText = FarsiInputCorrection.setUp(myTextTF,null,true,true,false,true,false);
+				trace("Farsi input created for this text to make it native");
+			}
+			else
+			{
+				//trace("1 add parag on TextParag and its font is : "+myTextTF.defaultTextFormat.font+' added to textParag class')
+				//TextPutter.onTextArea(myTextTF,myText,isArabic,true,true,1,align,knownAsHTML) ;
+				//TextPutter.onTextArea(myTextTF,myText,isArabic,!activateLinks,false,0,align,knownAsHTML,-1);
+				TextPutter.onTextArea(myTextTF,myText,true,false,false,0,false,true,-1);
+				//Debug line ↓
+				//TextPutter.onTextArea(myTextTF,myText,isArabic,false,false,1,true) ;
+				//	trace("2 add parag on TextParag and its font is : "+myTextTF.defaultTextFormat.font+' added to textParag class : '+myTextTF.text)
+				scrollMC = new ScrollMT(this,new Rectangle(this.x,this.y,W,H),new Rectangle(0,0,W,super.height)) ;
+			}
 		}
 	}
 }
