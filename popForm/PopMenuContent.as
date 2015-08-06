@@ -17,6 +17,9 @@
 		
 		public var haveField:Boolean ;
 		
+		/**Justify title*/
+		public var justify:Boolean ;
+		
 		/**generate popMenuContent manager<br>
 		 * enter default text of "" space on haveField to show it as field
 		 * enter buttons name on buttonArray array in string*/
@@ -28,9 +31,12 @@
 									   buttonsArray:Array = null,
 									   innerDisplayObject:DisplayObject = null,
 									   buttonFrames_v:Array = null,
-										ResetYScroll:Boolean=true)
+										ResetYScroll:Boolean=true,
+										justifyTitle:Boolean=false)
 		{
 			displayObject = innerDisplayObject ;
+			
+			justify = justifyTitle ;
 			
 			resetScroll = ResetYScroll ;
 			

@@ -71,7 +71,7 @@ package popForm
 			maxCharacters.push(maxChar);
 		}
 		
-		public function addPhoneField(tagName:String,fieldDefault:String='',isArabic_v:Boolean=true,frameForDirection:uint=1,fieldColorFrame:uint=1)
+		public function addPhoneField(tagName:String,fieldDefault:String='',isArabic_v:Boolean=true,frameForDirection:uint=1,fieldColorFrame:uint=1,isEditable:Boolean=true)
 		{
 			tagNames.push(tagName);
 			fieldDefaults.push(fieldDefault);
@@ -79,7 +79,7 @@ package popForm
 			fieldDefaultBooleans.push(null);
 			keyBoards.push(SoftKeyboardType.NUMBER);
 			isPassWorld.push(false);
-			editable.push(true);
+			editable.push(isEditable);
 			isArabic.push(isArabic_v);
 			numLines.push(1);
 			languageDirection.push(frameForDirection);

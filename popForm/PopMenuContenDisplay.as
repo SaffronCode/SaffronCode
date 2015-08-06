@@ -169,8 +169,14 @@ package popForm
 			{
 				return ;
 			}
-			
-			UnicodeStatic.fastUnicodeOnLines(mainText,content.mainTXT,true);
+			if(!content.justify)
+			{
+				UnicodeStatic.fastUnicodeOnLines(mainText,content.mainTXT,true);
+			}
+			else
+			{
+				UnicodeStatic.htmlText(mainText,content.mainTXT,false,true,true);
+			}
 			if(content.displayObject == null)
 			{
 				mainText.height = Math.max(mainText.height,mainTextMinHeight);
