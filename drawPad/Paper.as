@@ -93,7 +93,16 @@ package drawPad
 				if(backAlignRect.width!=Infinity)
 				{
 					backImage.width = backAlignRect.width ;
-					backImage.scaleY = backImage.scaleX ;
+				//Why I didn't aligh the paper with height??
+					if(backAlignRect.height!=Infinity)
+					{
+						backImage.height = backAlignRect.height ;
+						backImage.scaleY = backImage.scaleX = Math.min(backImage.scaleY,backImage.scaleX);
+					}
+					else
+					{
+						backImage.scaleY = backImage.scaleX ;
+					}
 					lastDrawnBitmap.scaleX = backImage.scaleX ;
 					lastDrawnBitmap.scaleY = backImage.scaleY ;
 				}
