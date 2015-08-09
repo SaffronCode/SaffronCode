@@ -29,10 +29,14 @@ package contents
 			
 			if(history==null)
 			{
-				history = new Vector.<LinkData>();
-				
-				history.push(Contents.homeLink);
+				reset();
 			}
+		}
+		
+		public static function reset():void
+		{
+			history = new Vector.<LinkData>();
+			history.push(Contents.homeLink);
 		}
 		
 		/**You can predect if back is availabe*/
@@ -82,5 +86,6 @@ package contents
 				return new AppEventContent(Contents.homeLink,true);
 			}
 		}
+		
 	}
 }
