@@ -210,19 +210,25 @@ package contents.displayPages
 			{
 				createLinks();
 			}
-			this.addEventListener(Event.REMOVED_FROM_STAGE,saveLastY);
-			this.addEventListener(Event.REMOVED_FROM_STAGE,saveLastY);
+			this.addEventListener(Event.REMOVED_FROM_STAGE,saveLastPosition);
+			this.addEventListener(Event.REMOVED_FROM_STAGE,saveLastPosition);
 		}
 		
-		private function saveLastY(event:Event):void
+		private function saveLastPosition(event:Event):void
 		{
 			// TODO Auto-generated method stub
 			if(linksContainer!=null && myPageData.id!='')
 			{
-				//trace("*.Last Y : "+linksContainer.y);
 				if(myPageData.id!='')
 				{
-					scrollPosesObject[myPageData.id] = linksContainer.y ;
+					if(horizontalMenu)
+					{
+						scrollPosesObject[myPageData.id] = linksContainer.x ;
+					}
+					else
+					{
+						scrollPosesObject[myPageData.id] = linksContainer.y ;
+					}
 				}
 			}
 		}
@@ -312,7 +318,7 @@ package contents.displayPages
 					{
 						linkScroller.stopFloat();
 					}
-					linkScroller.setPose(areaRect.x,scrollPosesObject[myPageData.id]);
+					linkScroller.setAbsolutePose(areaRect.x,scrollPosesObject[myPageData.id]);
 				}
 				else
 				{
@@ -321,7 +327,7 @@ package contents.displayPages
 					{
 						linkScroller.stopFloat();
 					}
-					linkScroller.setPose(scrollPosesObject[myPageData.id],areaRect.y);
+					linkScroller.setAbsolutePose(scrollPosesObject[myPageData.id],areaRect.y);
 				}
 				controllSensor();
 			}
