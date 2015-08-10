@@ -330,6 +330,7 @@ package contents.displayPages
 					linkScroller.setAbsolutePose(scrollPosesObject[myPageData.id],areaRect.y);
 				}
 				controllSensor();
+				linkScroller.lock(true);
 			}
 			
 			this.addEventListener(Event.ENTER_FRAME,controllSensor);
