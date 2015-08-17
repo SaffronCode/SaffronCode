@@ -333,6 +333,7 @@ package popForm
 				if(content.buttonList[i] == '')
 				{
 					butY+=20;
+					buttonList.push(null);
 					continue ;
 				}
 				
@@ -356,11 +357,13 @@ package popForm
 				
 				butY += but.height+10 ;
 				//trace("lastButFrame == but.currentFrame : "+lastButFrame+" vs "+but.currentFrame);
-				//trace("butData.singleLine : "+butData.singleLine);
 				if(butData!=null && butData.singleLine)
 				{
 					if(lastInLineButton == -1)
 					{
+						//Why??
+						//Because this is the first inline button
+						//trace("Pop Button began : "+i);
 						lastInLineButton = i ;
 					}
 					else if(lastButFrame == but.currentFrame)
@@ -372,24 +375,28 @@ package popForm
 						var inLineButtons:uint = i-lastInLineButton+1 ;
 						var X0:Number = (menuW-butW)/-2;
 						var deltaX:Number = (menuW-butW)/(inLineButtons-1) ;
-						
+						//trace("butW = "+butW+' inLineButtons = '+inLineButtons+' menuW = '+menuW+' >>> '+lastInLineButton);
 						if(butW*inLineButtons<menuW)
 						{
+							//trace("lastInLineButton : "+lastInLineButton+' buttonList.length : '+buttonList.length);
 							for(var k = lastInLineButton ; k<buttonList.length ; k++)
 							{
 								//trace("Manage button "+k);
 								buttonList[k].y = lineY ;
 								buttonList[k].x = X0 + (k-lastInLineButton)*deltaX ;
 							}
+							//trace("This button has problem : "+JSON.stringify(butData));
 							butY = lineY+but.height/2+10 ;
 						}
 						else
 						{
+							//trace("Time to go to next line for : "+i);
 							lastInLineButton = i ;
 						}
 					}
 					else
 					{
+						//trace("The butoon frame is different");
 						lastInLineButton = i ;
 					}
 					//trace("lastInLineButton : "+lastInLineButton);
@@ -397,6 +404,7 @@ package popForm
 				else
 				{
 					//Cansel inline buttons
+					//trace("Cansel the inline buttons");
 					lastInLineButton = -1 ;
 				}
 				
