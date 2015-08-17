@@ -15,7 +15,7 @@ package panorama
 	import flash.events.Event;
 	import flash.net.URLRequest;
 	
-	import maskan.elements.PreLoader;
+	//import maskan.elements.PreLoader;
 	
 	import netManager.ImageLoader;
 	import netManager.urlSaver.URLSaver;
@@ -66,7 +66,7 @@ package panorama
 		{
 			// TODO Auto-generated method stub
 			trace("Cant load this image : "+myPageData.images[0].targURL);
-			Hints.hint(Contents.lang.t.image_not_loaded,myPageData.title);
+			//Hints.hint(Contents.lang.t.image_not_loaded,myPageData.title);
 			this.dispatchEvent(AppEventContent.lastPage());
 		}
 		
