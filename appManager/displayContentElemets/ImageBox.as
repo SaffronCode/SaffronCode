@@ -1,4 +1,4 @@
-package appManager.displayContentElemets
+﻿package appManager.displayContentElemets
 	//appManager.displayContentElemets.ImageBox
 {
 	import flash.display.MovieClip;
@@ -52,7 +52,7 @@ package appManager.displayContentElemets
 			this.graphics.drawRect(0,0,W,H);
 		}
 		
-		override public function setUp(imageURL:String,loadInThisArea:Boolean = true ,imageW:Number=0,imageH:Number=0,X:Number=0,Y:Number=0)
+		override public function setUp(imageURL:String,loadInThisArea:Boolean = true ,imageW:Number=0,imageH:Number=0,X:Number=0,Y:Number=0,keepRatio:Boolean=true)
 		{
 			trace("Image box calls");
 			trace("load this image : "+imageURL+' > loadInThisArea: '+loadInThisArea);

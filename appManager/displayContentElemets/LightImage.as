@@ -47,6 +47,8 @@ package appManager.displayContentElemets
 		
 		private var backColor:uint,
 					backAlpha:Number;
+					
+		private var keepImageRatio:Boolean ;
 		
 		public function LightImage(BackColor:uint=0x000000,BackAlpha:Number=0)
 		{
@@ -88,7 +90,7 @@ package appManager.displayContentElemets
 		
 		
 		/**This class will resize the loaded image to its size to prevent gpu process and also it will crop the image to.*/
-		override public function setUp(imageURL:String, loadInThisArea:Boolean=false, imageW:Number=0, imageH:Number=0, X:Number=0, Y:Number=0):*
+		override public function setUp(imageURL:String, loadInThisArea:Boolean=false, imageW:Number=0, imageH:Number=0, X:Number=0, Y:Number=0,keepRatio:Boolean=true):*
 		{
 			//trace("Load this image : "+imageURL);
 			if(URL!=null && URL == imageURL)
@@ -118,6 +120,8 @@ package appManager.displayContentElemets
 			{
 				H = super.height;
 			}
+			
+			keepImageRatio = keepRatio ;
 			//I dont want to remove content for this 
 				this.removeChildren();
 
@@ -210,7 +214,7 @@ package appManager.displayContentElemets
 			}
 			var bitmapData:BitmapData = newBitmap.bitmapData ;
 			
-			var newBitmapData:BitmapData = BitmapEffects.changeSize(bitmapData,W,H,true,LoadInThisArea) ;
+			var newBitmapData:BitmapData = BitmapEffects.changeSize(bitmapData,W,H,keepImageRatio,LoadInThisArea) ;
 			newBitmap = new Bitmap(newBitmapData);
 			newBitmap.smoothing = true ;
 			//this.addChild(newBitmap);
