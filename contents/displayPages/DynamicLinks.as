@@ -186,6 +186,7 @@ package contents.displayPages
 		
 		public function setUp(pageData:PageData):void
 		{
+			saveLastPosition();
 			//new functions
 			if(requestPreLoader==null)
 			{
@@ -214,10 +215,10 @@ package contents.displayPages
 			this.addEventListener(Event.REMOVED_FROM_STAGE,saveLastPosition);
 		}
 		
-		private function saveLastPosition(event:Event):void
+		private function saveLastPosition(event:Event=null):void
 		{
 			// TODO Auto-generated method stub
-			if(linksContainer!=null && myPageData.id!='')
+			if(linksContainer!=null && myPageData!=null && myPageData.id!='')
 			{
 				if(myPageData.id!='')
 				{
@@ -341,6 +342,11 @@ package contents.displayPages
 		{
 			linkScroller.setPose(X,Y);
 			linkScroller.lock();
+		}
+		
+		public function scrollReset():void
+		{
+			linkScroller.reset();
 		}
 		
 		/**Adds more links to links list. but if there is no link any more, you have to call noMoreLinks() funcion to remove preloader*/
