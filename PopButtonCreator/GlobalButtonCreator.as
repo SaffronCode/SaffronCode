@@ -43,6 +43,12 @@ package PopButtonCreator
 			}
 		}
 		
+		/**Returns a random PopButtonData from the buttons list*/
+		public function randomButton():PopButtonData
+		{
+			return buttons[Math.floor(Math.random()*buttons.length)];
+		}
+		
 		public function titlesList():Array
 		{
 			return titles.concat();
