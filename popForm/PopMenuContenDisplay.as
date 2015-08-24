@@ -161,7 +161,10 @@ package popForm
 			
 			for(var i = 0 ; i<buttonList.length ;i++)
 			{
-				this.removeChild(buttonList[i]);
+				if(buttonList[i] is DisplayObject)
+				{
+					this.removeChild(buttonList[i]);
+				}
 			}
 			buttonList = new Vector.<PopButton>();
 			
