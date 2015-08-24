@@ -370,8 +370,18 @@ package netManager.urlSaver
 			{
 				myLoadedBytes = null ;
 			}
-			trace("offlineURL : "+offlineURL);
-			this.dispatchEvent(new URLSaverEvent(URLSaverEvent.LOAD_COMPLETE,1,myLoadedBytes,offlineURL));
+			if(new File(offlineURL).exists)
+			{
+				trace("offlineURL : "+offlineURL);
+				this.dispatchEvent(new URLSaverEvent(URLSaverEvent.LOAD_COMPLETE,1,myLoadedBytes,offlineURL));
+			}
+			else
+			{
+				trace("Offline url is not exists : "+offlineURL);
+				URLSaver.deletFileIfExists(onlineURL);
+				trace("So I have to download it again");
+				load(onlineURL);
+			}
 		}
 		
 		
