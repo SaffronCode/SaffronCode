@@ -35,9 +35,9 @@ package contents.multiLanguage
 			}
 			var compilerValuesFile:File;
 			compilerValuesFile = new File(_____compilerValuesLocation);
-			trace("compilerValuesFile : "+compilerValuesFile.url);
-			trace("compilerValuesFile is exists? :"+compilerValuesFile.exists);
-			if(compilerValuesFile!=null && compilerValuesFile.exists)
+			//trace("compilerValuesFile : "+compilerValuesFile.url);
+			//trace("compilerValuesFile is exists? :"+compilerValuesFile.exists);
+			if(_____compilerValuesLocation!=null && compilerValuesFile!=null && compilerValuesFile.exists)
 			{
 				/*compilerValsAre = '';
 				for(var i in this)
