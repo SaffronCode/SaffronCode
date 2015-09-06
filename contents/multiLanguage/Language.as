@@ -14,9 +14,9 @@
 	import flash.net.SharedObject;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
+	import flash.text.TextFormatAlign;
 	import flash.utils.Timer;
 	
-	import flashx.textLayout.formats.TextAlign;
 	
 	public class Language
 	{
@@ -350,13 +350,13 @@
 							if(xmlFontName == font && xmlBoldState == String(bold) )
 							{
 								//trace("So i have to change its font");
-								if(isArabic && direction == TextAlign.LEFT)
+								if(isArabic && direction == TextFormatAlign.LEFT)
 								{
-									tf.align = TextAlign.RIGHT;
+									tf.align = TextFormatAlign.RIGHT;
 								}
-								else if(!isArabic && direction == TextAlign.RIGHT)
+								else if(!isArabic && direction == TextFormatAlign.RIGHT)
 								{
-									tf.align = TextAlign.LEFT;
+									tf.align = TextFormatAlign.LEFT;
 								}
 								
 								var xmlFontTo:String = String(curXML.to.@name);
