@@ -14,11 +14,15 @@ package contents.soundControll
 							NarationID:uint = 1003;
 		
 		private static var lastMusicState:SharedObject = SharedObject.getLocal('lastMusicState','/');
+		
+		/**This is the last playing music*/
+		private static var lastPlayingMusic:String ;
 							
 		public static function setUp(myStage:Stage)
 		{
 			SoundPlayer.setUp(myStage,true,false);
-			SoundPlayer.addSound(Contents.homePage.musicURL,Contents.id_music,true,1);
+			//SoundPlayer.addSound(Contents.homePage.musicURL,Contents.id_music,true,1);
+			changeMainMusic();
 			
 			if(lastMusicState.data.state == undefined)
 			{
@@ -59,6 +63,26 @@ package contents.soundControll
 		public static function unMuteMusit()
 		{
 			SoundPlayer.volumeContril(MusicID,1);
+		}
+		
+		/**This will change the current playing music ( not tested yet )*/
+		public static function changeMainMusic(musicURL:String=''):void
+		{
+			// TODO Auto Generated method stub
+			trace("Change the music to : "+musicURL);
+			SoundPlayer.pause(MusicID);
+			if(musicURL=='')
+			{
+				musicURL = Contents.homePage.musicURL ;
+			}
+			if(lastPlayingMusic == musicURL)
+			{
+				trace("Music is duplicated on ContentSoundManager.changeMainMusic : "+musicURL);
+				return ;
+			}
+			SoundPlayer.addSound(musicURL,Contents.id_music,true,1);
+			
+			lastPlayingMusic = musicURL ;
 		}
 	}
 }

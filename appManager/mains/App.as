@@ -7,6 +7,8 @@ package appManager.mains
 	import appManager.event.AppEvent;
 	import appManager.event.AppEventContent;
 	
+	import contents.soundControll.ContentSoundManager;
+	
 	import flash.desktop.NativeApplication;
 	import flash.display.MovieClip;
 	import flash.events.Event;
@@ -30,14 +32,19 @@ package appManager.mains
 		
 		private static var is_in_home:Boolean = true ;
 		
+		
+		private static var AutoPlayThePageMusics:Boolean ;
+		
 		public static function get isInHome():Boolean
 		{
 			return is_in_home ;
 		}
 		
-		public function App()
+		public function App(autoPlayThePageMusics:Boolean=false)
 		{
 			super();
+			
+			AutoPlayThePageMusics = autoPlayThePageMusics ;
 			
 			pageManagerObject = Obj.findThisClass(PageManager,this,true) as PageManager;
 			titleManager = Obj.findThisClass(TitleManager,this,true) as TitleManager;
@@ -128,6 +135,7 @@ package appManager.mains
 		/**now the application is ready for client to use*/
 		protected function appIsStarts()
 		{
+			ContentSoundManager.setUp(stage);
 			this.dispatchEvent(new AppEvent(null,AppEvent.APP_STARTS));
 			currentAppEvent = new AppEvent();
 			backToHomePage();
@@ -153,6 +161,11 @@ package appManager.mains
 				return false ;
 			}
 				currentAppEvent = event ;
+				
+				if(AutoPlayThePageMusics && event is AppEventContent && (event as AppEventContent).pageData.musicURL!='')
+				{
+					ContentSoundManager.changeMainMusic((event as AppEventContent).pageData.musicURL);
+				}
 				
 			// TODO Auto-generated method stub
 			if(mainAnim == null)

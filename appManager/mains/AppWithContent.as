@@ -1,4 +1,4 @@
-package appManager.mains
+﻿package appManager.mains
 {
 	import appManager.animatedPages.pageManager.PageManager;
 	import appManager.event.AppEvent;
@@ -13,9 +13,9 @@ package appManager.mains
 	public class AppWithContent extends App
 	{
 		/**AutoLanguageConvertion will enabled just when supportsMutilanguage was true*/
-		public function AppWithContent(supportsMultiLanguage:Boolean=false,autoLanguageConvertEnabled:Boolean=true,animagePageContents:Boolean=false)
+		public function AppWithContent(supportsMultiLanguage:Boolean=false,autoLanguageConvertEnabled:Boolean=true,animagePageContents:Boolean=false,autoChangeMusics:Boolean=false)
 		{
-			super();
+			super(autoChangeMusics);
 			
 			if(animagePageContents)
 			{
