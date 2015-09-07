@@ -369,7 +369,7 @@ package popForm
 						//trace("Pop Button began : "+i);
 						lastInLineButton = i ;
 					}
-					else if(lastButFrame == but.currentFrame)
+					else if(lastButFrame == but.currentFrame || butData.ignoreButtonFrameOnLining)
 					{
 						var butW:Number = but.width ;
 						var menuW:Number = this.width ;
