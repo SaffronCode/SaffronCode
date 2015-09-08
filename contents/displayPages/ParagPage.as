@@ -55,9 +55,13 @@ package contents.displayPages
 			var imageH:Number = 768/(1024/maskRect.width)
 			
 			var samplePagedata:PageData = new PageData();
-			samplePagedata.contentX = maskRect.x;
-			samplePagedata.contentY = maskRect.y;
+			//Do not set the X and Y to the text container, because it will act on Scroller
+				//samplePagedata.contentX = maskRect.x;
+				//samplePagedata.contentY = maskRect.y;
 			samplePagedata.contentW = maskRect.width;
+			
+			trace("samplePagedata.contentW : "+samplePagedata.contentW);
+			trace("maskRect.width : "+maskRect.width);
 			
 			samplePagedata.contentAlign = '1';
 			var alighn:Boolean = true ;
