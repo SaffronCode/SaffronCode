@@ -213,8 +213,15 @@ package appManager.displayContentElemets
 				return ;
 			}
 			var bitmapData:BitmapData = newBitmap.bitmapData ;
-			
-			var newBitmapData:BitmapData = BitmapEffects.changeSize(bitmapData,W,H,keepImageRatio,LoadInThisArea) ;
+			var newBitmapData:BitmapData ;
+			if(W!=0 && H!=0)
+			{
+				newBitmapData = BitmapEffects.changeSize(bitmapData,W,H,keepImageRatio,LoadInThisArea);
+			}
+			else
+			{
+				newBitmapData = bitmapData ;
+			}
 			newBitmap = new Bitmap(newBitmapData);
 			newBitmap.smoothing = true ;
 			//this.addChild(newBitmap);
