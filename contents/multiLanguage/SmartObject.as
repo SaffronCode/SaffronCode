@@ -21,8 +21,13 @@ package contents.multiLanguage
 		/**This function will helps to save the values for compiler in the next run*/
 		public function saveValue(valueName:String,value:String):void
 		{
-			_____compilerValsAre+='public var '+valueName+':String ;\n';
+			_____compilerValsAre+='public var '+cleanValName(valueName)+':String ;\n';
 			this[valueName] = value ;
+		}
+		
+		private function cleanValName(valName:String):String
+		{
+			return valName.split('(').join('').split(')').join('');
 		}
 		
 		/**This will make values to save for the compiler use in the next run*/
