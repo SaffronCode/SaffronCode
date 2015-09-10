@@ -14,7 +14,7 @@ package
 			super();
 			ME1 = this;
 		}
-		
+		///message foram kheshti
 		public static function popUp(title:String='' , type:PopMenuTypes=null , content:PopMenuContent=null,closeOnTime:uint=0,onButtonSelects:Function = null)
 		{
 			//trace('POP 1 MENU OPENED '+Math.random());
