@@ -8,6 +8,7 @@
  */
 package contents
 {
+	import flash.utils.getQualifiedClassName;
 
 	public class PageData
 	{
@@ -32,7 +33,17 @@ package contents
 		public var images:Vector.<ImageData>;
 		
 		
+		/**New variables to make auto scroll on the pageManager*/
+		public var scrollAble:Boolean=false,
+					scrollWidth:Number=0,
+					scrollHeight:Number=0,
+					scrollEffect:Boolean=false;
+		
+		
+		
+		
 		/*<page id="homePage">
+			<scroll w="" h=""/>
 			<music>The Descent.mp3</music>
 			<type>home</type>
 			<title>خانه</title>
@@ -72,6 +83,25 @@ package contents
 			title = inputXML.title ;
 			imageTarget = inputXML.image;
 			content = inputXML.content ;
+			
+			if(inputXML.scroll == inputXML.no_tag_like_this)
+			{
+				scrollAble = false ;
+			}
+			else
+			{
+				scrollAble = true ;
+				scrollWidth = uint(inputXML.scroll.@w) ;
+				scrollHeight = uint(inputXML.scroll.@h) ;
+				if(inputXML.scroll.@effect!="false")
+				{
+					scrollEffect = true ;
+				}
+				else
+				{
+					scrollEffect = false ;
+				}
+			}
 			
 			contentAlign = inputXML.content.@align ;
 			if(String(inputXML.content.@x)!='')
@@ -166,6 +196,14 @@ package contents
 			xml.content.@h = contentH ;
 			xml.content.@align = contentAlign ; 
 			
+			if(scrollAble)
+			{
+				xml.scroll = new XML();
+				xml.scroll.@w = scrollWidth;
+				xml.scroll.@h = scrollHeight;
+				xml.scroll.@effect = scrollEffect ;
+			}
+			
 			
 			//var link1Node:XML = XML('<links/>');
 			//xml.links = new XML();
@@ -208,6 +246,12 @@ package contents
 			newPageData.contentY = contentY ;
 			newPageData.contentW = contentW ;
 			newPageData.contentH = contentH ;
+			
+			newPageData.scrollAble = scrollAble ;
+			newPageData.scrollWidth = scrollWidth ;
+			newPageData.scrollHeight = scrollHeight ;
+			newPageData.scrollEffect = scrollEffect ;
+			
 			
 			//Mange belos ↓
 			for(i = 0 ; i<links1.length ; i++)

@@ -3,11 +3,14 @@ package appManager.animatedPages.pageManager
 {
 	import appManager.event.AppEvent;
 	import appManager.event.AppEventContent;
+	import appManager.mains.AppWithContent;
 	
+	import contents.PageData;
 	import contents.interFace.DisplayPageInterface;
 	
 	import flash.display.FrameLabel;
 	import flash.display.MovieClip;
+	import flash.geom.Rectangle;
 	import flash.system.System;
 	
 	public class PageContainer extends MovieClip
@@ -15,6 +18,8 @@ package appManager.animatedPages.pageManager
 		private var currentPage:MovieClip,
 					middleFrame:uint,
 					finishFrame:uint;
+					
+		private var scrollerMC:ScrollMT ;
 		
 		public function PageContainer()
 		{
@@ -28,6 +33,11 @@ package appManager.animatedPages.pageManager
 			{
 				trace("delete current page");
 				this.removeChild(currentPage);
+				if(scrollerMC)
+				{
+					scrollerMC.unLoad();
+					scrollerMC = null ;
+				}
 				currentPage = null ;
 				middleFrame = 0 ;
 				finishFrame = 0 ;
@@ -38,6 +48,7 @@ package appManager.animatedPages.pageManager
 			{
 				return ;
 			}
+			var currentPageData:PageData = (myEvent as AppEventContent).pageData ;
 			var pageClassType:Class ;
 			pageClassType = Obj.generateClass(myEvent.myType);
 			
@@ -68,12 +79,26 @@ package appManager.animatedPages.pageManager
 				trace("*** currentPage added to stage");
 				this.addChild(currentPage);
 				
+				if(currentPageData.scrollAble)
+				{
+					var targetArea:Rectangle ;
+					var autoSizeDetector:Boolean = true ;
+					if(currentPageData.scrollWidth!=0 && currentPageData.scrollHeight!=0)
+					{
+						targetArea = new Rectangle(0,0,currentPageData.scrollWidth,currentPageData.scrollHeight);
+						autoSizeDetector = false ;
+					}
+					
+					//auto size detector on horizontal >< position had bug, if you set it true, the scroll will lock anyway
+					scrollerMC = new ScrollMT(currentPage,AppWithContent.contentRect,targetArea,autoSizeDetector,false/*autoSizeDetector*/,currentPageData.scrollEffect,false);
+				}
+				
 				if(myEvent is AppEventContent)
 				{
 					if(currentPage.hasOwnProperty('setUp'))
 					{
 						trace("This page can get values");
-						(currentPage as DisplayPageInterface).setUp((myEvent as AppEventContent).pageData);
+						(currentPage as DisplayPageInterface).setUp(currentPageData);
 					}
 					else
 					{
