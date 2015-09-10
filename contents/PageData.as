@@ -93,7 +93,7 @@ package contents
 				scrollAble = true ;
 				scrollWidth = uint(inputXML.scroll.@w) ;
 				scrollHeight = uint(inputXML.scroll.@h) ;
-				if(inputXML.scroll.@effect!="false")
+				if(inputXML.scroll.@effect=="true")
 				{
 					scrollEffect = true ;
 				}
