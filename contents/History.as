@@ -9,7 +9,6 @@ package contents
 		public static function pushHistory(currentLink:LinkData):void
 		{
 			resetHistory();
-			
 			if(currentLink.level==-1)
 			{
 				history.push(currentLink);

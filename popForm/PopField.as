@@ -2,6 +2,7 @@
 {
 	import flash.display.MovieClip;
 	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
 	import flash.text.SoftKeyboardType;
 	import flash.text.TextField;
@@ -81,7 +82,7 @@
 			changeColor(colorFrame);
 		}
 		
-		public function setUp(tagName:String,defaultText:String,KeyBordType:String = SoftKeyboardType.DEFAULT,isPass:Boolean = false,editable:Boolean = true,isAraic:Boolean=true,numLines:uint = 1,color:uint=1,frame:uint=1,maxChar:uint=0,otherOptions:Array=null,deleteDefautlText:Boolean=false):void
+		public function setUp(tagName:String,defaultText:String,KeyBordType:String = SoftKeyboardType.DEFAULT,isPass:Boolean = false,editable:Boolean = true,isAraic:Boolean=true,numLines:uint = 1,color:uint=1,frame:uint=1,maxChar:uint=0,otherOptions:Array=null,deleteDefautlText:Boolean=false,activateRadioSwitcher:Boolean=false):void
 		{
 			var Y0:Number ;
 			var Y1:Number ;
@@ -179,6 +180,14 @@
 					backMC.y+=(Y1-Y0)/2;
 				}
 			}
+			
+			if(activateRadioSwitcher)
+			{
+				this.mouseChildren = false ;
+				this.mouseEnabled = true ;
+				this.buttonMode = true ;
+				this.addEventListener(MouseEvent.CLICK,switchRadioButton);
+			}
 		}
 		
 		/**Returns true if radio butto changed*/
@@ -196,6 +205,8 @@
 				if(I==-1)
 				{
 					trace("Cannot find current value between enterd radio buttons : "+myTXT.text+' vs '+radioButtonArray);
+					myTXT.text = radioButtonArray[0];
+					myTXT.dispatchEvent(new Event(Event.CHANGE));
 					return false ;
 				}
 				else
