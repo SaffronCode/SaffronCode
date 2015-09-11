@@ -40,46 +40,46 @@ package contents.soundControll
 			
 			if(lastMusicState.data.state)
 			{
-				SoundPlayer.play(MusicID);
+				SoundPlayer.play(currentSoundId);
 			}
 		}
 		
 		public static function get MusicIsPlaying():Boolean
 		{
-			return SoundPlayer.getStatuse_pause(MusicID);
+			//Forgotten ! befor the return solved on 94-06-20
+			return !SoundPlayer.getStatuse_pause(currentSoundId);
 		}
 		
 		public static function startMusic()
 		{
-			SoundPlayer.play(MusicID);
+			SoundPlayer.play(currentSoundId);
 			lastMusicState.data.state = true ;
 			lastMusicState.flush();
 		}
 		
 		public static function pauseMusic()
 		{
-			SoundPlayer.pause(MusicID);
+			SoundPlayer.pause(currentSoundId);
 			lastMusicState.data.state = false ;
 			lastMusicState.flush();
 		}
 		
 		public static function muteMusic()
 		{
-			SoundPlayer.volumeContril(MusicID,0);
+			SoundPlayer.volumeContril(currentSoundId,0);
 		}
 		
 		public static function unMuteMusit()
 		{
-			SoundPlayer.volumeContril(MusicID,1);
+			SoundPlayer.volumeContril(currentSoundId,1);
 		}
 		
 		/**This will change the current playing music ( not tested yet )*/
 		public static function changeMainMusic(musicURL:String='',volume:Number=1):void
 		{
 			// TODO Auto Generated method stub
-			trace("Change the music to : "+musicURL);
-			trace("Change volume to : "+volume);
-			SoundPlayer.pause(MusicID);
+			//SoundPlayer.pause(currentSoundId);
+			var musicWasPlaying:Boolean = MusicIsPlaying ;
 			if(musicURL=='')
 			{
 				musicURL = Contents.homePage.musicURL ;
@@ -89,9 +89,18 @@ package contents.soundControll
 				trace("Music is duplicated on ContentSoundManager.changeMainMusic : "+musicURL);
 				return ;
 			}
+			
+			trace("Change the music to : "+musicURL);
+			trace("Change volume to : "+volume);
+			
 			SoundPlayer.pause(currentSoundId);
 			SoundPlayer.addSound(musicURL,otherSoundId,true,volume);
-			SoundPlayer.play(otherSoundId);
+			if(lastPlayingMusic==null || musicWasPlaying)
+			{
+				trace("lastPlayingMusic : "+lastPlayingMusic);
+				trace("musicWasPlaying : "+musicWasPlaying);
+				SoundPlayer.play(otherSoundId);
+			}
 			
 			lastPlayingMusic = musicURL ;
 			
