@@ -10,6 +10,7 @@ package contents.soundControll
 	public class ContentSoundManager
 	{
 		public static const MusicID:uint = 1001,
+							MusicID2:uint = 1004,
 							EffectsID:uint = 1002,
 							NarationID:uint = 1003;
 		
@@ -17,9 +18,16 @@ package contents.soundControll
 		
 		/**This is the last playing music*/
 		private static var lastPlayingMusic:String ;
+		
+		/**2 sound id to swap musics smoothly*/
+		private static var currentSoundId:uint,
+							otherSoundId:uint;
 							
 		public static function setUp(myStage:Stage)
 		{
+			currentSoundId = Contents.id_music ;
+			otherSoundId = Contents.id_music2 ;
+			
 			SoundPlayer.setUp(myStage,true,false);
 			//SoundPlayer.addSound(Contents.homePage.musicURL,Contents.id_music,true,1);
 			changeMainMusic();
@@ -66,10 +74,11 @@ package contents.soundControll
 		}
 		
 		/**This will change the current playing music ( not tested yet )*/
-		public static function changeMainMusic(musicURL:String=''):void
+		public static function changeMainMusic(musicURL:String='',volume:Number=1):void
 		{
 			// TODO Auto Generated method stub
 			trace("Change the music to : "+musicURL);
+			trace("Change volume to : "+volume);
 			SoundPlayer.pause(MusicID);
 			if(musicURL=='')
 			{
@@ -80,9 +89,15 @@ package contents.soundControll
 				trace("Music is duplicated on ContentSoundManager.changeMainMusic : "+musicURL);
 				return ;
 			}
-			SoundPlayer.addSound(musicURL,Contents.id_music,true,1);
+			SoundPlayer.pause(currentSoundId);
+			SoundPlayer.addSound(musicURL,otherSoundId,true,volume);
+			SoundPlayer.play(otherSoundId);
 			
 			lastPlayingMusic = musicURL ;
+			
+			otherSoundId = otherSoundId+currentSoundId ;
+			currentSoundId = otherSoundId-currentSoundId ;
+			otherSoundId = otherSoundId-currentSoundId;
 		}
 	}
 }
