@@ -27,6 +27,7 @@ package contents
 		
 		/**The only cause that these values are staing here is the old applications that used them from here.*/
 		public static var 	id_music:uint = ContentSoundManager.MusicID,
+							id_music2:uint = ContentSoundManager.MusicID2,
 							id_soundEffects:uint=ContentSoundManager.EffectsID;
 		
 	/////////////////////////////////////////////////////	

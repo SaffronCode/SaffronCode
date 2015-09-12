@@ -20,8 +20,11 @@ package contents
 					imageTarget:String='',
 					content:String='';
 		
+		/**New atribute for music volume */
+		public var musicVolume:Number = 1 ;
+		
 		//New variables on content tag↓
-		public var contentX:Number=NaN,
+		public var 	contentX:Number=NaN,
 					contentAlign:String = '',
 					contentY:Number=NaN,
 					contentW:Number=NaN,
@@ -34,7 +37,7 @@ package contents
 		
 		
 		/**New variables to make auto scroll on the pageManager*/
-		public var scrollAble:Boolean=false,
+		public var 	scrollAble:Boolean=false,
 					scrollWidth:Number=0,
 					scrollHeight:Number=0,
 					scrollEffect:Boolean=false;
@@ -79,6 +82,20 @@ package contents
 			}
 			id = inputXML.@id ;
 			musicURL = inputXML.music ;
+			trace("inputXML.music.@v : "+inputXML.music.@v);
+			if( inputXML.music.@v != inputXML.music.@no_attribute_like_this )
+			{
+				musicVolume = Number(inputXML.music.@v);
+				if(isNaN(musicVolume))
+				{
+					musicVolume = 1 ;
+				}
+				else
+				{
+					musicVolume = Math.min(Math.max(0,musicVolume),1);
+				}
+			}
+			trace("musicVolume : "+musicVolume);
 			type = inputXML.type ;
 			title = inputXML.title ;
 			imageTarget = inputXML.image;
@@ -196,6 +213,11 @@ package contents
 			xml.content.@h = contentH ;
 			xml.content.@align = contentAlign ; 
 			
+			if( musicVolume != 1 )
+			{
+				xml.music.@v = musicVolume ;
+			}
+			
 			if(scrollAble)
 			{
 				xml.scroll = new XML();
@@ -251,6 +273,8 @@ package contents
 			newPageData.scrollWidth = scrollWidth ;
 			newPageData.scrollHeight = scrollHeight ;
 			newPageData.scrollEffect = scrollEffect ;
+
+			newPageData.musicVolume = musicVolume ;
 			
 			
 			//Mange belos ↓

@@ -15,12 +15,13 @@ package contents.displayElements
 	
 	public class SoundButton extends MovieClip
 	{
-		
+		private var sound1Playing:Boolean,
+					sound2Playing:Boolean;
 		public function SoundButton()
 		{
 			super();
 			this.stop();
-			if(SoundPlayer.getStatuse_pause(ContentSoundManager.MusicID))
+			if(!ContentSoundManager.MusicIsPlaying)// SoundPlayer.getStatuse_pause(ContentSoundManager.MusicID) && SoundPlayer.getStatuse_pause(ContentSoundManager.MusicID2)
 			{
 				this.gotoAndStop(2);
 			}
@@ -57,7 +58,18 @@ package contents.displayElements
 		private function musicPlayed(e:SoundPlayerEvent)
 		{
 			if(e.SoundID == ContentSoundManager.MusicID)
-			{				
+			{
+				trace("Music 1 played");
+				sound1Playing = true; 
+			}
+			else if(e.SoundID == ContentSoundManager.MusicID2)
+			{
+				trace("Music 2 played");
+				sound2Playing = true; 
+			}
+			if(sound2Playing || sound1Playing)
+			{
+				trace("Sound is playing");
 				this.gotoAndStop(1);
 			}
 		}
@@ -66,6 +78,17 @@ package contents.displayElements
 		{
 			if(e.SoundID == ContentSoundManager.MusicID)
 			{
+				trace("Music1 stopped");
+				sound1Playing = false; 
+			}
+			else if(e.SoundID == ContentSoundManager.MusicID2)
+			{
+				trace("Music 2 stopped");
+				sound2Playing = false; 
+			}
+			if(!sound2Playing && !sound1Playing)
+			{
+				trace("Sound is stopped");
 				this.gotoAndStop(2);
 			}
 		}

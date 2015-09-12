@@ -164,7 +164,7 @@ package appManager.mains
 				
 				if(AutoPlayThePageMusics && event is AppEventContent && (event as AppEventContent).pageData.musicURL!='')
 				{
-					ContentSoundManager.changeMainMusic((event as AppEventContent).pageData.musicURL);
+					ContentSoundManager.changeMainMusic((event as AppEventContent).pageData.musicURL,(event as AppEventContent).pageData.musicVolume);
 				}
 				
 			// TODO Auto-generated method stub
