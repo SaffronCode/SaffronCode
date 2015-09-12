@@ -13,6 +13,15 @@ package contents
 			{
 				history.push(currentLink);
 			}
+			else if(currentLink.level == -2)//New level on 9/12/2015
+			{
+				trace("current page replaced with last page level");
+				if(history.length>0)
+				{
+					history.pop();
+				}
+				history.push(currentLink);
+			}
 			else
 			{
 				//trace("♠ split : "+currentLink.level+' , '+history.length+' - '+currentLink.level);

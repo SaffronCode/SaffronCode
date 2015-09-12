@@ -82,7 +82,7 @@ package contents
 			}
 			id = inputXML.@id ;
 			musicURL = inputXML.music ;
-			trace("inputXML.music.@v : "+inputXML.music.@v);
+			//trace("inputXML.music.@v : "+inputXML.music.@v);
 			if( inputXML.music.@v != inputXML.music.@no_attribute_like_this )
 			{
 				musicVolume = Number(inputXML.music.@v);
@@ -95,7 +95,7 @@ package contents
 					musicVolume = Math.min(Math.max(0,musicVolume),1);
 				}
 			}
-			trace("musicVolume : "+musicVolume);
+			//trace("musicVolume : "+musicVolume);
 			type = inputXML.type ;
 			title = inputXML.title ;
 			imageTarget = inputXML.image;

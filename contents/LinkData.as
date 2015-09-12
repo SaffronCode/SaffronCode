@@ -12,7 +12,8 @@
 					id:String='',
 					iconURL:String='';
 					
-		/**if level is -1 , it will add to curren page , if level is 0 , it is the page from main menu*/
+		/**if level is -1 , it will add to curren page , if level is 0 , it is the page from main menu<br>
+		 * New Level defined: -2 means this page had to replace with current page on history*/
 		public var level:int;
 					
 		/*<link level="" name="فعالیت های عملی" id="faaliathayeamali" icon="sf.jpg"/>*/
