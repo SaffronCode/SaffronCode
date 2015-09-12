@@ -35,5 +35,10 @@ package appManager.displayContentElemets
 		{
 			return myText.text ;
 		}
+		
+		public function set text(string:String):void
+		{
+			setUp(string);
+		}
 	}
 }

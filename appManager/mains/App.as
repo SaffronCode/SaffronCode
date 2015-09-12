@@ -6,7 +6,10 @@ package appManager.mains
 	import appManager.animatedPages.pageManager.TitleManager;
 	import appManager.event.AppEvent;
 	import appManager.event.AppEventContent;
+	import appManager.event.TitleEvent;
 	
+	import contents.LinkData;
+	import contents.PageData;
 	import contents.soundControll.ContentSoundManager;
 	
 	import flash.desktop.NativeApplication;
@@ -69,6 +72,7 @@ package appManager.mains
 			}
 			
 			this.addEventListener(AppEvent.PAGE_CHANGES,managePages);
+			this.addEventListener(TitleEvent.CHANGE_TITLE,changeTheTitle);
 			
 			NativeApplication.nativeApplication.addEventListener(KeyboardEvent.KEY_DOWN,controllBackButton);
 			
@@ -76,6 +80,20 @@ package appManager.mains
 			is_in_home = true ;
 			hopePageOppened(true);
 		}	
+		
+		protected function changeTheTitle(event:TitleEvent):void
+		{
+			// TODO Auto-generated method stub
+			if(titleManager)
+			{
+				var fakePageData:PageData = new PageData();
+				fakePageData.title = event.title;
+				var fakeAppEvent:AppEventContent = new AppEventContent(new LinkData(),true,true);
+				fakeAppEvent.pageData = fakePageData ;
+				trace("Just change the page title");
+				titleManager.setUp(fakeAppEvent);
+			}
+		}
 		
 		/**Controll the back button on android*/
 		protected function controllBackButton(ev:KeyboardEvent):void
