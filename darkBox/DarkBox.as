@@ -171,6 +171,7 @@ package darkBox
 			//closeMC.y = nextMC.y = prevMC.y = bannerMC.y = titleMC.y = 0 ;
 			closeMC.x = newSize.width-closeMC.width ;
 			downloadMC.x = closeMC.x - downloadMC.width ;
+			downloadMC.visible = (saveButtonFunction!=null);
 			titleMC.x = prevMC.x + prevMC.width ;
 			preLoderMC.x = imageSize.width/2;
 			preLoderMC.y = imageSize.y+imageSize.height/2;
