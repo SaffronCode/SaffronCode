@@ -184,8 +184,24 @@ package contents.displayPages
 			requestPreLoader = preLoaderObject ;
 		}
 		
+		
+		/**To change the this menu DeltaX and DeltaY, use this function a*/
+		public function changeDeltaXY(pageDeltaX:Number=NaN,pageDeltaY:Number=NaN):void
+		{
+			if(!isNaN(pageDeltaX))
+			{
+				myDeltaX = pageDeltaX ;
+			}
+			if(!isNaN(pageDeltaY))
+			{
+				myDeltaY = pageDeltaY ;
+			}
+		}
+		
 		public function setUp(pageData:PageData):void
 		{
+			
+			
 			saveLastPosition();
 			//new functions
 			if(requestPreLoader==null)
