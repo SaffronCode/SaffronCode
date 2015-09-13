@@ -59,12 +59,12 @@ package contents.displayElements
 		{
 			if(e.SoundID == ContentSoundManager.MusicID)
 			{
-				trace("Music 1 played");
+				trace("Music 2 played");
 				sound1Playing = true; 
 			}
 			else if(e.SoundID == ContentSoundManager.MusicID2)
 			{
-				trace("Music 2 played");
+				trace("Music 1 played");
 				sound2Playing = true; 
 			}
 			if(sound2Playing || sound1Playing)
@@ -86,7 +86,7 @@ package contents.displayElements
 				trace("Music 2 stopped");
 				sound2Playing = false; 
 			}
-			if(!sound2Playing && !sound1Playing)
+			if(!sound2Playing && !sound1Playing && !ContentSoundManager.MusicIsPlaying)
 			{
 				trace("Sound is stopped");
 				this.gotoAndStop(2);

@@ -47,7 +47,7 @@ package contents.soundControll
 		public static function get MusicIsPlaying():Boolean
 		{
 			//Forgotten ! befor the return solved on 94-06-20
-			return !SoundPlayer.getStatuse_pause(currentSoundId);
+			return !SoundPlayer.getStatuse_pause(currentSoundId) || !SoundPlayer.getStatuse_pause(otherSoundId);
 		}
 		
 		public static function startMusic()
@@ -92,8 +92,9 @@ package contents.soundControll
 			
 			trace("Change the music to : "+musicURL);
 			trace("Change volume to : "+volume);
-			
+			trace("Pause the sound : "+currentSoundId);
 			SoundPlayer.pause(currentSoundId);
+			trace("Add the sound : "+otherSoundId);
 			SoundPlayer.addSound(musicURL,otherSoundId,true,volume);
 			if(lastPlayingMusic==null || musicWasPlaying)
 			{
