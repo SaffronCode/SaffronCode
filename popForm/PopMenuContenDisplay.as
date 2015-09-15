@@ -452,7 +452,17 @@ package popForm
 			//prevent maxAreaMC to rduce height size
 			//maxAreaMC.scaleY = 0 ;
 			maxAreaMC.height -= 5 ;
-			var areaRect:Rectangle = new Rectangle(maxAreaMC.width/-2,0,maxAreaMC.width,butY) ;
+			var areaRect:Rectangle ;
+			
+			if(butY<=scrollRect.height+10)
+			{
+				areaRect = new Rectangle(maxAreaMC.width/-2,0,maxAreaMC.width,butY);
+			}
+			else
+			{
+				trace("The menu had a scroller, so you are free to add extra area for scrolling.");
+				areaRect = new Rectangle(maxAreaMC.width/-2,0,maxAreaMC.width,butY+scrollRect.height/2);
+			}
 			
 			//I forgot this line
 				this.graphics.clear();
