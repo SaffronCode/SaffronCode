@@ -20,7 +20,7 @@ package contents.displayElements
 			super();
 			
 			this.buttonMode = true ;
-			this.mouseChildren = false;
+			//this.mouseChildren = false;
 			this.addEventListener(MouseEvent.CLICK,generateLink);
 		}
 		
