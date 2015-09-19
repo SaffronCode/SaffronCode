@@ -19,7 +19,7 @@ package contents.displayPages
 			fullImageShow = false ;
 		}
 		
-		public function setUpParag(maskRect:Rectangle,listOfParag:Vector.<ParagData>,activateHTMLlink:Boolean=false,linkColor:int=-1,createURLLinks:Boolean=true):void
+		public function setUpParag(maskRect:Rectangle,listOfParag:Vector.<ParagData>,activateHTMLlink:Boolean=false,linkColor:int=-1,createURLLinks:Boolean=true,alighn:Boolean=true):void
 		{
 			var i:int ;
 			
@@ -62,9 +62,15 @@ package contents.displayPages
 			
 			trace("samplePagedata.contentW : "+samplePagedata.contentW);
 			trace("maskRect.width : "+maskRect.width);
-			
-			samplePagedata.contentAlign = '1';
-			var alighn:Boolean = true ;
+			if(alighn)
+			{
+				samplePagedata.contentAlign = '1';
+			}
+			else
+			{
+				samplePagedata.contentAlign = '0';
+			}
+			//var alighn:Boolean = true ;
 			
 			var ImageY:Number = 0 ;
 			var textY:Number = 0 ;

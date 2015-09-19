@@ -134,7 +134,7 @@ package contents.displayPages
 				var align:Boolean = false ;
 				
 				
-				if(currentPageData.contentAlign!='' && currentPageData.contentAlign!='0' && currentPageData.contentAlign!=null)
+				if(currentPageData.contentAlign!='' && currentPageData.contentAlign!='0' && currentPageData.contentAlign!='false' && currentPageData.contentAlign!=null)
 				{
 					align = true ;
 				}
