@@ -3,6 +3,7 @@ package contents.soundControll
 	import contents.Contents;
 	
 	import flash.display.Stage;
+	import flash.media.SoundMixer;
 	import flash.net.SharedObject;
 	
 	import soundPlayer.SoundPlayer;
@@ -18,6 +19,8 @@ package contents.soundControll
 		
 		/**This is the last playing music*/
 		private static var lastPlayingMusic:String ;
+		
+		private static var lastMusicVolume:Number ;
 		
 		/**2 sound id to swap musics smoothly*/
 		private static var currentSoundId:uint,
@@ -50,9 +53,30 @@ package contents.soundControll
 			return !SoundPlayer.getStatuse_pause(currentSoundId) || !SoundPlayer.getStatuse_pause(otherSoundId);
 		}
 		
-		public static function startMusic()
+		public static function killOtherSounds():void
 		{
-			SoundPlayer.play(currentSoundId);
+			var firstSoundPlaying:Boolean = MusicIsPlaying;
+			var soundPose:Number = SoundPlayer.getPlayedPrecent(currentSoundId);
+			pauseMusic();
+			SoundMixer.stopAll();
+			SoundPlayer.addSound(lastPlayingMusic,currentSoundId,true,lastMusicVolume);
+			if(firstSoundPlaying)
+			{
+				startMusic(soundPose);
+			}
+		}
+		
+		public static function startMusic(soundPlayingFrom:Number=NaN)
+		{
+			if(isNaN(soundPlayingFrom))
+			{
+				SoundPlayer.play(currentSoundId);
+			}
+			else
+			{
+				trace("soundPose  : "+soundPlayingFrom);
+				SoundPlayer.play(currentSoundId,true,true,soundPlayingFrom);
+			}
 			lastMusicState.data.state = true ;
 			lastMusicState.flush();
 		}
@@ -80,13 +104,17 @@ package contents.soundControll
 			// TODO Auto Generated method stub
 			//SoundPlayer.pause(currentSoundId);
 			var musicWasPlaying:Boolean = MusicIsPlaying ;
-			if(musicURL=='')
+			if(lastPlayingMusic==null && musicURL=='')
 			{
 				musicURL = Contents.homePage.musicURL ;
+				volume = Contents.homePage.musicVolume ;
 			}
-			if(lastPlayingMusic == musicURL)
+			lastMusicVolume = volume ;
+			if(musicURL=='' || lastPlayingMusic == musicURL)
 			{
 				trace("Music is duplicated on ContentSoundManager.changeMainMusic : "+musicURL);
+				SoundPlayer.volumeContril(currentSoundId,volume);
+				trace("Change volume to : "+volume);
 				return ;
 			}
 			

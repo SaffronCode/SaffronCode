@@ -179,7 +179,7 @@ package appManager.mains
 			}
 				currentAppEvent = event ;
 				
-				if(AutoPlayThePageMusics && event is AppEventContent && (event as AppEventContent).pageData.musicURL!='')
+				if(AutoPlayThePageMusics && event is AppEventContent/* && (event as AppEventContent).pageData.musicURL!=''*/)
 				{
 					ContentSoundManager.changeMainMusic((event as AppEventContent).pageData.musicURL,(event as AppEventContent).pageData.musicVolume);
 				}
