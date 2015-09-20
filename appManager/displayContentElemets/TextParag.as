@@ -56,7 +56,7 @@ package appManager.displayContentElemets
 			H = value;
 		}
 		
-		public function setUp(myText:String,isArabic:Boolean = true,align:Boolean=true,knownAsHTML:Boolean=false,activateLinks:Boolean=false,useNativeText:Boolean=false,addScroller:Boolean=true):void
+		public function setUp(myText:String,isArabic:Boolean = true,align:Boolean=true,knownAsHTML:Boolean=false,activateLinks:Boolean=false,useNativeText:Boolean=false,addScroller:Boolean=true,generateLinksForURLs:Boolean=false):void
 		{
 			//This event dispatches to remove old scrollMC class
 			this.dispatchEvent(new Event(Event.REMOVED_FROM_STAGE)) ;
@@ -80,7 +80,7 @@ package appManager.displayContentElemets
 				//trace("1 add parag on TextParag and its font is : "+myTextTF.defaultTextFormat.font+' added to textParag class')
 				//TextPutter.onTextArea(myTextTF,myText,isArabic,true,true,1,align,knownAsHTML) ;
 				//TextPutter.onTextArea(myTextTF,myText,isArabic,!activateLinks,false,0,align,knownAsHTML,-1);
-				TextPutter.onTextArea(myTextTF,myText,true,false,false,0,false,true,-1);
+				TextPutter.onTextArea(myTextTF,myText,isArabic,!activateLinks,false,0,false,activateLinks,-1,generateLinksForURLs);
 				//Debug line ↓
 				//TextPutter.onTextArea(myTextTF,myText,isArabic,false,false,1,true) ;
 				//	trace("2 add parag on TextParag and its font is : "+myTextTF.defaultTextFormat.font+' added to textParag class : '+myTextTF.text)
