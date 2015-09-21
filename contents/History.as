@@ -6,8 +6,12 @@ package contents
 	{
 		public static var history:Vector.<LinkData> ;
 		
+		private static var lastPopedHistory:Vector.<LinkData> ;
+		
 		public static function pushHistory(currentLink:LinkData):void
 		{
+			lastPopedHistory = null ;
+			trace("Yes, the history is changing");
 			resetHistory();
 			if(currentLink.level==-1)
 			{
@@ -45,6 +49,7 @@ package contents
 		{
 			history = new Vector.<LinkData>();
 			history.push(Contents.homeLink);
+			lastPopedHistory=null;
 		}
 		
 		/**You can predect if back is availabe*/
@@ -82,7 +87,9 @@ package contents
 			{
 			trace('history['+i+'] : '+history[i].id);
 			}*/
-			resetHistory()
+			resetHistory();
+			
+			lastPopedHistory = history.concat();
 			
 			if(history.length>1)
 			{
@@ -92,6 +99,22 @@ package contents
 			else
 			{
 				return new AppEventContent(Contents.homeLink,true);
+			}
+		}
+		
+		/**undo the history on prvented pages<br>
+		 * Returns true if the unod history was available that mean last call was last page
+		 */
+		public static function undoLastPageHisotry():Boolean
+		{
+			if(lastPopedHistory!=null)
+			{
+				history = lastPopedHistory ;
+				return true ;
+			}
+			else
+			{
+				return false ;
 			}
 		}
 		

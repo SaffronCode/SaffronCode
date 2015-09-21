@@ -3,12 +3,14 @@
 	import appManager.animatedPages.pageManager.PageManager;
 	import appManager.event.AppEvent;
 	import appManager.event.AppEventContent;
+	import appManager.event.PageControllEvent;
 	
 	import contents.Contents;
 	import contents.ContentsEvent;
 	import contents.History;
 	import contents.PageData;
 	
+	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.geom.Rectangle;
 	
@@ -18,6 +20,12 @@
 	{
 		/**This is the contentManager rectangle size. it will generate from the content w and h on the home xml tag*/
 		private static var _contentRect:Rectangle = new Rectangle() ;
+		
+		/**Preventor variables*/
+		private var preventorFunction:Function,
+					preventorPage:DisplayObject,
+					preventedEvent:AppEvent,
+					prventedPageWasLastPage:Boolean;
 		
 		/**This is the contentManager rectangle size. it will generate from the content w and h on the home xml tag*/
 		public static function get contentRect():Rectangle
@@ -56,6 +64,63 @@
 			}
 			_contentRect = new Rectangle(0,0,homePageData.contentW,homePageData.contentH);
 			trace("Content page rectangle is ( You can change this value by adding w and h attributes to the home.content value on data.xml : "+_contentRect);
+			
+			this.addEventListener(PageControllEvent.PREVENT_PAGE_CHANGING,preventPageChanging);
+			this.addEventListener(PageControllEvent.LET_PAGE_CHANGE,letThePreventedAppEventRelease);
+		}
+		
+		
+		/**Permition from the pages released*/
+		protected function letThePreventedAppEventRelease(event:PageControllEvent):void
+		{
+			// TODO Auto-generated method stub
+			preventorFunction = null ;
+			preventorPage = null ;
+			var preventedEventCash:AppEvent = preventedEvent ;
+			preventedEvent = null ;
+			if(prventedPageWasLastPage)
+			{
+				History.lastPage();
+			}
+			prventedPageWasLastPage = false ;
+			
+			if(preventedEventCash!=null)
+			{
+				trace("Prevented page event is released");
+				managePages(preventedEventCash);
+			}
+			else
+			{
+				trace("No AppEvent was prevented to be release");
+			}
+		}
+		
+		/**Preventor set*/
+		protected function preventPageChanging(event:PageControllEvent):void
+		{
+			// TODO Auto-generated method stub
+			trace("Permition sat");
+			preventorFunction = event.permitionReceiver ;
+			preventorPage = event.preventerPage ;
+		}
+		
+		
+		/**Returns true if App need permition to change its page*/
+		private function haveToGetPermition(event:AppEvent):Boolean
+		{
+			preventedEvent = event ;
+			if(preventorFunction!=null && preventorPage!=null && preventorPage.stage !=null)
+			{
+				trace("The page changing needs a permition");
+				preventorFunction();
+				return true ;
+			}
+			//trace("No permition needed : "+preventorFunction+' , '+preventorPage+' , '+preventorPage.stage)
+			preventorFunction = null ;
+			preventorPage = null ;
+			preventedEvent = null ;
+			prventedPageWasLastPage = false ;
+			return false ;
 		}
 		
 		protected function activateStageManager(debugWidth:Number=0,debugHeight:Number=0,listenToStageRotation:Boolean=true):void
@@ -65,11 +130,17 @@
 		
 		override protected function managePages(event:AppEvent):Boolean
 		{
+			if(haveToGetPermition(event))
+			{
+				prventedPageWasLastPage = History.undoLastPageHisotry();
+				return false;
+			}
 			if(event is AppEventContent)
 			{
 				var event2:AppEventContent = event as AppEventContent ;
 				if(!event2.SkipHistory)
 				{
+					trace("History changed");
 					History.pushHistory((event as AppEventContent).linkData);
 				}
 			}

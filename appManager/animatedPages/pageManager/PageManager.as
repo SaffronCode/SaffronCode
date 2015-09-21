@@ -99,6 +99,12 @@ package appManager.animatedPages.pageManager
 				else
 				{
 					this.nextFrame();
+					animIsOver = (this.currentFrame == this.totalFrames)
+				}
+				
+				if(animIsOver)
+				{
+					pageContainer.dispatchPageReadyEventOnceForPage();
 				}
 			}
 		}

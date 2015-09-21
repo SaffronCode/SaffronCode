@@ -3,6 +3,7 @@ package appManager.animatedPages.pageManager
 {
 	import appManager.event.AppEvent;
 	import appManager.event.AppEventContent;
+	import appManager.event.PageControllEvent;
 	import appManager.mains.AppWithContent;
 	
 	import contents.PageData;
@@ -18,6 +19,8 @@ package appManager.animatedPages.pageManager
 		private var currentPage:MovieClip,
 					middleFrame:uint,
 					finishFrame:uint;
+					
+		private var pageReadyDispatched:Boolean ;
 					
 		private var scrollerMC:ScrollMT ;
 		
@@ -60,6 +63,7 @@ package appManager.animatedPages.pageManager
 				try
 				{
 					currentPage = new pageClassType();
+					pageReadyDispatched = false ;
 					var framesList:Array = currentPage.currentLabels;
 					if(framesList.length > 0)
 					{
@@ -172,6 +176,17 @@ package appManager.animatedPages.pageManager
 				}
 			}
 			return true;
+		}
+		
+		public function dispatchPageReadyEventOnceForPage():void
+		{
+			// TODO Auto Generated method stub
+			if(currentPage!=null && !pageReadyDispatched)
+			{
+				pageReadyDispatched = true ;
+				trace("Dispatch page ready event");
+				currentPage.dispatchEvent(new PageControllEvent(PageControllEvent.PAGE_ANIMATION_READY));
+			}
 		}
 	}
 }
