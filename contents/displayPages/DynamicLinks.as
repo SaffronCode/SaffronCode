@@ -30,6 +30,9 @@ package contents.displayPages
 	{
 		public static const UPDATE_LINKS_POSITION:String = "UPDATE_LINKS_POSITION" ;
 		
+		/**This will be the name of the MovieClip that will shows if no links available*/
+		private const noLinkInstanceName:String = "no_link_mc";
+		
 		/**←→ *** Change it befor super function*/
 		public var horizontalMenu:Boolean = false ;
 		
@@ -74,6 +77,7 @@ package contents.displayPages
 		public var acceptAnimation:Boolean = true;
 		
 		private var reverted:Boolean = false ;
+
 		
 		/**returns Y direction by reverted value*/
 		protected function get MenuDirection():int
@@ -100,7 +104,8 @@ package contents.displayPages
 			myDeltaX = deltaX ;
 			
 			//This will automaticaly removes at the last line
-			noLinksMC = Obj.get("no_link_mc",this);
+			
+			noLinksMC = Obj.get(noLinkInstanceName,this);
 			
 			areaRect = this.getBounds(this);
 			
