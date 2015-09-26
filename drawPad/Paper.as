@@ -1,7 +1,5 @@
-package drawPad
+﻿package drawPad
 {
-	
-	import com.greensock.layout.ScaleMode;
 	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
