@@ -12,14 +12,7 @@ package diagrams.instagram
 		{
 			Hval = Horizontal_value ;
 			Vval = VerticalValue ;
-			if(Name=='')
-			{
-				name = Vval.toString();
-			}
-			else
-			{
-				name = Name ;
-			}
+			name = Name ;
 		}
 		
 		public function toString():Number
