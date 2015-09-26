@@ -166,7 +166,8 @@ package diagrams.instagram
 			isChanged = true ;
 			
 			//Dont redray the diagram
-			//reDrawDiagram();
+			//Dont worry, It will prevent to redrawing if the diagram was lock
+			reDrawDiagram();
 		}
 		
 		
