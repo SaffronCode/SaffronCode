@@ -59,6 +59,11 @@ package contents
 		private static var pages:Vector.<PageData> = new Vector.<PageData>();
 		private static var myStage:Stage;
 		
+		/**Applicatin configuration manager*/
+		public static var config:Config;
+		
+		private static var configFile:String = "Data/config.xml";
+		
 		
 		/**returns true if data is ready*/
 		public static function get isReady():Boolean
@@ -76,9 +81,15 @@ package contents
 		/**From this version, content.xml will load instantly and there is no need to wail till onLoaded function calls.<br>
 		 * if your application is supporting multilanguages, you have to use language.xml standart near the content.xml file. and also 
 		 * you have to set application stage here for the Language class to help it to find added elements to stage.*/
-		public static function setUp(OnLoaded:Function=null,supportsMultiLanguage:Boolean=false,autoConvertFontsAndContentTextsByLanguage:Boolean=true,stage:Stage=null)
+		public static function setUp(OnLoaded:Function=null,supportsMultiLanguage:Boolean=false,autoConvertFontsAndContentTextsByLanguage:Boolean=true,stage:Stage=null,loadConfigFile:Boolean=false)
 		{
 			onLoaded = OnLoaded ;
+			
+			config = new Config();
+			if(loadConfigFile)
+			{
+				config.load(configFile);
+			}
 			
 			lang = new Language();
 			

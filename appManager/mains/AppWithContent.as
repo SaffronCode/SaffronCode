@@ -39,9 +39,10 @@
 		}
 		
 		/**AutoLanguageConvertion will enabled just when supportsMutilanguage was true*/
-		public function AppWithContent(supportsMultiLanguage:Boolean=false,autoLanguageConvertEnabled:Boolean=true,animagePageContents:Boolean=false,autoChangeMusics:Boolean=false)
+		public function AppWithContent(supportsMultiLanguage:Boolean=false,autoLanguageConvertEnabled:Boolean=true,animagePageContents:Boolean=false,autoChangeMusics:Boolean=false,manageStageManager:Boolean=false,loadConfig:Boolean=false)
 		{
 			super(autoChangeMusics);
+			
 			
 			if(animagePageContents)
 			{
@@ -50,8 +51,13 @@
 			
 			stopIntro();
 			//Multilanguage support added to current version.
-			Contents.setUp(startApp,supportsMultiLanguage,autoLanguageConvertEnabled,this.stage);
+			Contents.setUp(startApp,supportsMultiLanguage,autoLanguageConvertEnabled,this.stage,loadConfig);
 			
+			if(manageStageManager)
+			{
+				StageManager.setUp(stage);
+				Contents.config.stageRect = StageManager.stageRect ;
+			}
 			//Create the contentPage rectangle by contentW and contentH values on homePage data to use on scrolled pages
 			var homePageData:PageData = Contents.homePage ;
 			if(isNaN(homePageData.contentW))
