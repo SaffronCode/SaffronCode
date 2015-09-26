@@ -97,7 +97,7 @@ package diagrams.instagram
 				var currentVal:InstaDataValue = myDiagramVals.values[i] ;
 				Ys[i] = Height-(precent(currentVal.Vval,minVNumber,maxVNumber)*Height);
 				
-				cilcles[i].setTitle(myDiagramVals.values[i].Vval.toString());
+				cilcles[i].setTitle(myDiagramVals.values[i].name.toString());
 			}
 		}
 		
