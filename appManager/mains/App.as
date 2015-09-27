@@ -35,6 +35,9 @@ package appManager.mains
 		
 		private static var is_in_home:Boolean = true ;
 		
+		/**This will maka all animated paged to open without animation*/
+		public static var skipAnimations:Boolean ;
+		
 		
 		private static var AutoPlayThePageMusics:Boolean ;
 		
@@ -43,9 +46,11 @@ package appManager.mains
 			return is_in_home ;
 		}
 		
-		public function App(autoPlayThePageMusics:Boolean=false)
+		public function App(autoPlayThePageMusics:Boolean=false,skipAllAnimations:Boolean = false)
 		{
 			super();
+			
+			skipAnimations = skipAllAnimations ;
 			
 			AutoPlayThePageMusics = autoPlayThePageMusics ;
 			

@@ -2,6 +2,7 @@ package appManager.animatedPages
 {
 	
 	import appManager.event.AppEvent;
+	import appManager.mains.App;
 	
 	import flash.display.FrameLabel;
 	import flash.display.MovieClip;
@@ -39,6 +40,10 @@ package appManager.animatedPages
 		/**animate the frames*/
 		private function anim(e:Event)
 		{
+			if(App.skipAnimations)
+			{
+				this.gotoAndStop(currentPage);
+			}
 			if(this.currentFrame<currentPage)
 			{
 				this.nextFrame();

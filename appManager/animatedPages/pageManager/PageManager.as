@@ -2,6 +2,7 @@ package appManager.animatedPages.pageManager
 	//appManager.animatedPages.pageManager.PageManager
 {
 	import appManager.event.AppEvent;
+	import appManager.mains.App;
 	
 	import flash.display.MovieClip;
 	import flash.events.Event;
@@ -57,6 +58,10 @@ package appManager.animatedPages.pageManager
 				}
 				else
 				{
+					if(App.skipAnimations)
+					{
+						this.gotoAndStop(1);
+					}
 					this.prevFrame() ;
 					animIsOver = (this.currentFrame == 1) ;
 				}
@@ -98,6 +103,10 @@ package appManager.animatedPages.pageManager
 				}
 				else
 				{
+					if(App.skipAnimations)
+					{
+						this.gotoAndStop(this.totalFrames);
+					}
 					this.nextFrame();
 					animIsOver = (this.currentFrame == this.totalFrames)
 				}

@@ -4,6 +4,7 @@ package appManager.animatedPages.pageManager
 	import appManager.event.AppEvent;
 	import appManager.event.AppEventContent;
 	import appManager.event.PageControllEvent;
+	import appManager.mains.App;
 	import appManager.mains.AppWithContent;
 	
 	import contents.PageData;
@@ -127,6 +128,10 @@ package appManager.animatedPages.pageManager
 		{
 			if(currentPage)
 			{
+				if(App.skipAnimations)
+				{
+					currentPage.gotoAndStop(middleFrame);
+				}
 				if(currentPage.currentFrame<middleFrame)
 				{
 					currentPage.nextFrame();
@@ -152,6 +157,10 @@ package appManager.animatedPages.pageManager
 			{
 				if(middleFrame<finishFrame)
 				{
+					if(App.skipAnimations)
+					{
+						currentPage.gotoAndStop(finishFrame);
+					}
 					if(currentPage.currentFrame<finishFrame)
 					{
 						currentPage.nextFrame();
@@ -164,6 +173,10 @@ package appManager.animatedPages.pageManager
 				}
 				else
 				{
+					if(App.skipAnimations)
+					{
+						currentPage.gotoAndStop(1);
+					}
 					if(currentPage.currentFrame>1)
 					{
 						currentPage.prevFrame();
@@ -176,6 +189,31 @@ package appManager.animatedPages.pageManager
 				}
 			}
 			return true;
+		}
+		
+		
+		override public function get totalFrames():int
+		{
+			if(currentPage)
+			{
+				return currentPage.totalFrames;
+			}
+			else
+			{
+				return super.totalFrames;
+			}
+		}
+		
+		override public function gotoAndStop(frame:Object, scene:String=null):void
+		{
+			if(currentPage)
+			{
+				currentPage.gotoAndStop(frame);
+			}
+			else
+			{
+				super.gotoAndStop(frame,scene);
+			}
 		}
 		
 		public function dispatchPageReadyEventOnceForPage():void

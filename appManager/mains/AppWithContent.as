@@ -21,6 +21,8 @@
 		/**This is the contentManager rectangle size. it will generate from the content w and h on the home xml tag*/
 		private static var _contentRect:Rectangle = new Rectangle() ;
 		
+		private static var ME:AppWithContent ;
+		
 		/**Preventor variables*/
 		private var preventorFunction:Function,
 					preventorPage:DisplayObject,
@@ -39,10 +41,11 @@
 		}
 		
 		/**AutoLanguageConvertion will enabled just when supportsMutilanguage was true*/
-		public function AppWithContent(supportsMultiLanguage:Boolean=false,autoLanguageConvertEnabled:Boolean=true,animagePageContents:Boolean=false,autoChangeMusics:Boolean=false,manageStageManager:Boolean=false,loadConfig:Boolean=false)
+		public function AppWithContent(supportsMultiLanguage:Boolean=false,autoLanguageConvertEnabled:Boolean=true,animagePageContents:Boolean=false,autoChangeMusics:Boolean=false,skipAllAnimations:Boolean=false,manageStageManager:Boolean=false,loadConfig:Boolean=false)
 		{
-			super(autoChangeMusics);
+			super(autoChangeMusics,skipAllAnimations);
 			
+			ME = this ;
 			
 			if(animagePageContents)
 			{
@@ -115,7 +118,7 @@
 		private function haveToGetPermition(event:AppEvent):Boolean
 		{
 			preventedEvent = event ;
-			if(preventorFunction!=null && preventorPage!=null && preventorPage.stage !=null)
+			if(permitionRequiredToChangePage())
 			{
 				trace("The page changing needs a permition");
 				preventorFunction();
@@ -127,6 +130,12 @@
 			preventedEvent = null ;
 			prventedPageWasLastPage = false ;
 			return false ;
+		}
+		
+		/**Returns true if you have to get permition to change the page*/
+		public static function permitionRequiredToChangePage():Boolean
+		{
+			return ME.preventorFunction!=null && ME.preventorPage!=null && ME.preventorPage.stage !=null ;
 		}
 		
 		protected function activateStageManager(debugWidth:Number=0,debugHeight:Number=0,listenToStageRotation:Boolean=true):void
