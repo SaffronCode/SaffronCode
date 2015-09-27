@@ -1,0 +1,15 @@
+﻿<config>
+	<domain>http://daghi-pc:910/</domain>
+	<wsdl></wsdl>
+	
+	<maximomStageWidth>1400</maximomStageWidth>
+	<maximomStageHeight>768</maximomStageHeight>
+	
+	<debug1>false</debug1>
+	<debug2>false</debug2>
+	<debug3>false</debug3>
+	<debug4>false</debug4>
+	
+	<internal_menu_height_top>67</internal_menu_height_top>
+	<internal_menu_height_bottom>0</internal_menu_height_bottom>
+</config>
