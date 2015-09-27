@@ -24,6 +24,10 @@ package contents
 		
 		public var internal_menu_height_bottom:Number = 0 ;
 		
+		public var internal_menu_width_left:Number = 0 ;
+		
+		public var internal_menu_width_right:Number = 0 ;
+		
 		
 		//Reserved valuse
 		
@@ -49,7 +53,7 @@ package contents
 		/**Creats a page rectangle from the config file*/
 		public function get pageRect():Rectangle
 		{
-			return new Rectangle(0,internal_menu_height_top,_stageRect.width,_stageRect.height-(internal_menu_height_top+internal_menu_height_bottom));
+			return new Rectangle(internal_menu_width_left,internal_menu_height_top,_stageRect.width-(internal_menu_width_left+internal_menu_width_right),_stageRect.height-(internal_menu_height_top+internal_menu_height_bottom));
 		}
 
 		public function load(configURLFile:String):void
