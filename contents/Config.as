@@ -20,6 +20,9 @@ package contents
 					debug3:Boolean=false,
 					debug4:Boolean=false;
 		
+		public var debugStageHeight:Number = 0 ;
+		public var debugStageWidth:Number = 0 ;
+		
 		public var internal_menu_height_top:Number = 0 ;
 		
 		public var internal_menu_height_bottom:Number = 0 ;
@@ -107,6 +110,15 @@ package contents
 						this[varName] = String(varVal);
 					}
 				}
+			}
+			
+			if(isNaN(debugStageHeight))
+			{
+				debugStageHeight = 0 ;
+			}
+			if(isNaN(debugStageWidth))
+			{
+				debugStageWidth = 0 ;
 			}
 		}
 	}

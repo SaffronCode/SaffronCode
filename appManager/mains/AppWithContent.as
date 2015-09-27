@@ -58,7 +58,7 @@
 			
 			if(manageStageManager)
 			{
-				StageManager.setUp(stage);
+				StageManager.setUp(stage,Contents.config.debugStageWidth,Contents.config.debugStageHeight);
 				Contents.config.stageRect = StageManager.stageRect ;
 			}
 			//Create the contentPage rectangle by contentW and contentH values on homePage data to use on scrolled pages
