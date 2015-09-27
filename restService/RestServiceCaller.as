@@ -1,5 +1,7 @@
 ﻿package restService
 {
+	import com.mteamapp.JSONParser;
+	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IOErrorEvent;
@@ -174,6 +176,7 @@
 		
 		private function parsLoadedData(loadedData:*,alreadyLoadedFromCash:Boolean=false):void
 		{
+			new JSONParser();
 			parser = new RestFullJSONParser(loadedData,requestedData);
 			
 			if(parser.error)
