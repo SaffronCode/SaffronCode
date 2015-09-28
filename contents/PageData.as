@@ -29,9 +29,10 @@ package contents
 					contentY:Number=NaN,
 					contentW:Number=NaN,
 					contentH:Number=NaN;
-		
-		public var links1:Vector.<LinkData>,
-					links2:Vector.<LinkData>;
+		/**These links uses for direct buttons*/
+		public var links1:Vector.<LinkData>;
+		/**These links uses for un direct buttons those page will choose to open them or not and when to open them*/
+		public var links2:Vector.<LinkData>;
 					
 		public var images:Vector.<ImageData>;
 		
