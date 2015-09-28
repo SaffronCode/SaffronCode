@@ -1,4 +1,5 @@
 ﻿package popForm
+	//popForm.PopButton
 {
 	import flash.desktop.NativeApplication;
 	import flash.display.MovieClip;
@@ -137,8 +138,15 @@
 			
 			this.gotoAndStop(type);
 			
-			txtTF = Obj.get('txt_txt',Obj.get('txt_txt',this));
-			txtTF.dispatchEvent(new Event(Event.ADDED,true));
+			var txtContainer:MovieClip = Obj.get('txt_txt',this) ;
+			if(txtContainer!=null)
+			{
+				txtTF = Obj.get('txt_txt',Obj.get('txt_txt',this));
+				if(txtTF)
+				{
+					txtTF.dispatchEvent(new Event(Event.ADDED,true));
+				}
+			}
 			backMC = Obj.get('back_mc',this);
 			
 			ID = buttonID ;
@@ -147,16 +155,20 @@
 			
 			//trace('SAVE AND EXIT BUTTON : '+str);
 			
-			txtTF.text = '' ;
-			if(str!='')
+			if(txtTF)
 			{
-				if(txtTF.multiline)
+				txtTF.text = '' ;
+			
+				if(str!='')
 				{
-					TextPutter.onTextArea(txtTF,str,true,true,false);
-				}
-				else
-				{
-					TextPutter.OnButton(txtTF,str,true,true,false);
+					if(txtTF.multiline)
+					{
+						TextPutter.onTextArea(txtTF,str,true,true,false);
+					}
+					else
+					{
+						TextPutter.OnButton(txtTF,str,true,true,false);
+					}
 				}
 			}
 			/*if(colorTrans!=null)
