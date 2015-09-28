@@ -76,6 +76,11 @@
 			
 			this.addEventListener(PageControllEvent.PREVENT_PAGE_CHANGING,preventPageChanging);
 			this.addEventListener(PageControllEvent.LET_PAGE_CHANGE,letThePreventedAppEventRelease);
+			
+			if(skipAllAnimations)
+			{
+				skipIntro();
+			}
 		}
 		
 		
