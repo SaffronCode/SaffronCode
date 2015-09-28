@@ -188,6 +188,8 @@
 				{	
 					//this.dispatchEvent(new RestEvent(RestEvent.SERVER_ERROR,parser.msgs));
 					//RestService.eventDispatcher.dispatchEvent(new RestEvent(RestEvent.SERVER_ERROR,parser.msgs,parser.exceptionType));
+					//Update last puredata befor dispatching event
+					lastPureData = loadedData ;
 					dispatch(serverError);
 				}
 				else
@@ -209,6 +211,8 @@
 					if(lastPureData!=loadedData)
 					{
 						trace("* This update is new");
+						//I have to upste lastPureData befor dispatching the event
+						lastPureData = loadedData ;
 						dispatch(new RestEvent(RestEvent.SERVER_RESULT_UPDATE));
 						//this.dispatchEvent(new RestEvent(RestEvent.SERVER_RESULT_UPDATE));
 					}
@@ -220,6 +224,8 @@
 				else
 				{
 					//this.dispatchEvent(new RestEvent(RestEvent.SERVER_RESULT));
+					//I have to upste lastPureData befor dispatching the event
+					lastPureData = loadedData ;
 					dispatch(new RestEvent(RestEvent.SERVER_RESULT))
 				}
 			}
