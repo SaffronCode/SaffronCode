@@ -104,6 +104,7 @@ package restService
 				ServerDomain+='/';
 			}
 			serverDomain = ServerDomain ;
+			trace("Rest service is starts on : "+serverDomain);
 		}
 		
 		/**Feal these values from signInViewModel to make user knownAsLoged in*/
