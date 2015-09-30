@@ -15,6 +15,8 @@ package contents.displayElements
 		
 		protected var defaultLevel:int = 1 ;
 		
+		protected var refresh:Boolean = false ;
+		
 		public function ContentNameDispatcher()
 		{
 			super();
@@ -56,7 +58,7 @@ package contents.displayElements
 						link.id = controller ;
 				}
 					
-				ev = new AppEventContent(link,false);
+				ev = new AppEventContent(link,false,refresh);
 			}
 			
 			if(ev!=null)
