@@ -2,10 +2,10 @@
 	<domain></domain>
 	<wsdl></wsdl>
 	
-	<maximomStageWidth>1400</maximomStageWidth>
-	<maximomStageHeight>768</maximomStageHeight>
+	<maximomStageWidth>0</maximomStageWidth>
+	<maximomStageHeight>0</maximomStageHeight>
 	
-	<debugStageHeight>1024</debugStageHeight>
+	<debugStageHeight>0</debugStageHeight>
 	<debugStageWidth>0</debugStageWidth>
 	
 	<debug1>false</debug1>
