@@ -1,2 +1,2 @@
 // ActionScript file
-_____compilerValuesLocation = "D:\\Sepehr\\gitHub\\sepehrEngine\\SepehrEngin\\contents\\multiLanguage\\compilerValues.as";
+_____compilerValuesLocation = null;//Forget about this, this can make a variables that are reserved and makes compiler error//"D:\\Sepehr\\gitHub\\sepehrEngine\\SepehrEngin\\contents\\multiLanguage\\compilerValues.as";

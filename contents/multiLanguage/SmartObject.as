@@ -39,7 +39,10 @@ package contents.multiLanguage
 				return ;
 			}
 			var compilerValuesFile:File;
-			compilerValuesFile = new File(_____compilerValuesLocation);
+			if(_____compilerValuesLocation)
+			{
+				compilerValuesFile = new File(_____compilerValuesLocation);
+			}
 			//trace("compilerValuesFile : "+compilerValuesFile.url);
 			//trace("compilerValuesFile is exists? :"+compilerValuesFile.exists);
 			if(_____compilerValuesLocation!=null && compilerValuesFile!=null && compilerValuesFile.exists)
