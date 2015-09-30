@@ -353,14 +353,15 @@ package netManager.urlSaver
 		private function loadOflineFile():void
 		{
 			// TODO Auto Generated method stub
+			var fileTarger:File = new File(offlineURL);
+			
+			//I have to open the file to contrill the file size
 			if(!justOfflineURL)
 			{
 				//load byte array
 				if(myLoadedBytes == null || myLoadedBytes.length == 0)
 				{
 					var fileLoader:FileStream = new FileStream();
-					var fileTarger:File = new File(offlineURL);
-					fileLoader.open(fileTarger,FileMode.READ);
 					myLoadedBytes = new ByteArray();
 					fileLoader.readBytes(myLoadedBytes,0,fileLoader.bytesAvailable);
 				}
@@ -370,16 +371,16 @@ package netManager.urlSaver
 			{
 				myLoadedBytes = null ;
 			}
-			if(new File(offlineURL).exists)
+			if(fileTarger.exists && fileTarger.size!=0)
 			{
 				trace("offlineURL : "+offlineURL);
 				this.dispatchEvent(new URLSaverEvent(URLSaverEvent.LOAD_COMPLETE,1,myLoadedBytes,offlineURL));
 			}
 			else
 			{
-				trace("Offline url is not exists : "+offlineURL);
+				trace("Offline url is not exists : "+offlineURL+" available bytes are : "+fileTarger.size);
 				URLSaver.deletFileIfExists(onlineURL);
-				trace("So I have to download it again");
+				trace("So I have to download it again from "+onlineURL);
 				load(onlineURL);
 			}
 		}
@@ -430,7 +431,7 @@ package netManager.urlSaver
 			var localFileURL:String = storage.data[fileURL] ;
 			if(localFileURL == null)
 			{
-				//trace("i can not find your image");
+				trace("i can not find your image");
 				return false ;
 			}
 			else
@@ -438,13 +439,15 @@ package netManager.urlSaver
 				var fileChecker:File = new File(localFileURL);
 				if(fileChecker.exists)
 				{
-					//trace("this file is deleted : "+fileChecker.url);
+					trace("this file is deleted : "+fileChecker.url);
 					try
 					{
 						fileChecker.deleteFile();
-					}catch(e){};
+					}catch(e)
+					{
+						trace("this file is not deleted : "+fileChecker.url);
+					};
 				}
-				//trace("this file is not deleted : "+fileChecker.url);
 				
 				storage.data[fileURL] = undefined ;
 				datestorage.data[fileURL] = undefined ;
