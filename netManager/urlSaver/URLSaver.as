@@ -117,6 +117,7 @@ package netManager.urlSaver
 			if(localFileChecker!=null && localFileChecker.exists)
 			{
 				//This file is local already
+				//trace("The file is exists");
 				offlineURL = localFileChecker.url ;
 			}
 			else
@@ -161,14 +162,17 @@ package netManager.urlSaver
 				//trace('listen to download manager : '+onlineURL);
 					//DownloadManager.download(onlineURL);
 				//urlLoader.load(new URLRequest(onlineURL));
+				//trace("Load url");
 				reLoadUrlLoader();
 				
+				//trace("offlineURL : "+offlineURL);
 				if(offlineURL==null)
 				{
 					return false ;
 				}
 				else
 				{
+					//trace("Load the offline url");
 					loadOflineFile();
 					
 					return true ;
@@ -179,7 +183,7 @@ package netManager.urlSaver
 				//return itsByteArray
 				//Do not save online location again on shared objects
 					//SavedDatas.save(onlineURL,offlineURL);
-				
+				//trace("Load offline file2");
 				loadOflineFile();
 				
 				return true ;
@@ -191,6 +195,7 @@ package netManager.urlSaver
 		private function reLoadUrlLoader():void
 		{
 			clearTimeout(reloadTimeOutId);
+			//trace("Reload the url : "+onlineURL);
 			urlLoader.load(new URLRequest(onlineURL));
 		}
 		
@@ -204,9 +209,11 @@ package netManager.urlSaver
 			{
 				try
 				{
+					//trace("URL is closed for "+onlineURL);
 					urlLoader.close();
 				}catch(e){};
 			}
+			//trace("URI loaded is null for : "+onlineURL);
 			urlLoader = null ;
 			
 			//DownloadManager.stopDwonload(onlineURL);
@@ -219,9 +226,11 @@ package netManager.urlSaver
 		
 		protected function noInternetConnection(ev:IOErrorEvent/*DownloadManagerEvents*/):void
 		{
+			//trace("Connection error");
 			if(justDownlaodToUpdate)
 			{
 				//This image is dispatched befor
+				//trace("The image was dispatched befor");
 				return ;
 			}
 			// TODO Auto-generated method stub
@@ -238,6 +247,7 @@ package netManager.urlSaver
 					return ;
 				}
 			}
+			//trace("Reload download request for "+onlineURL+" for the next "+reloadTime+" miliseconds later");
 			reloadTimeOutId = setTimeout(reLoadUrlLoader,reloadTime);
 			return ;
 			//Do not dispatch NO_INTERNET ever!!
@@ -247,11 +257,13 @@ package netManager.urlSaver
 		
 		protected function downloadCompletes(ev:Event/*DownloadManagerEvents*/):void
 		{
+			//trace("URL file is downloaded : "+urlLoader+' ..... ');
 			// TODO Auto-generated method stub
 			/*if(ev.urlID == onlineURL)
 			{*/
-			if(urlLoader==null || urlLoader.data == null)
+			if(urlLoader==null || urlLoader.data == null || urlLoader.data.length==0)
 			{
+				//trace("No file loaded : "+onlineURL);
 				noInternetConnection(null);
 				return ;
 			}
@@ -262,11 +274,12 @@ package netManager.urlSaver
 				myLoadedBytes = urlLoader.data;
 				myLoadedBytes.position = 0 ;
 				
+				//trace("Downloaded bytes are : "+myLoadedBytes.length);
+				
 				saveLoadedBytes();
 				//DownloadManager.forgetWithDilay(onlineURL);
 				loadOflineFile();
 				
-				cansel();
 			/*}*/
 		}
 		
@@ -276,6 +289,7 @@ package netManager.urlSaver
 			// TODO Auto-generated method stub
 			/*if(ev.urlID == onlineURL)
 			{*/
+			//trace("Downloading");
 			if(urlLoader!=null)
 			{
 				this.dispatchEvent(new URLSaverEvent(URLSaverEvent.LOADING,urlLoader.bytesLoaded/urlLoader.bytesTotal/*ev.precent*/));
@@ -312,6 +326,7 @@ package netManager.urlSaver
 			var oflineFile:File = oflineFolder.resolvePath(offlineURLFileName);
 			offlineURL = oflineFile.url; 
 			//trace("Offline file is : "+oflineFile.nativePath);
+			//trace("Offline file url is "+offlineURL);
 			if(oflineFile.exists)
 			{
 				try
@@ -353,15 +368,24 @@ package netManager.urlSaver
 		private function loadOflineFile():void
 		{
 			// TODO Auto Generated method stub
-			var fileTarger:File = new File(offlineURL);
+			var fileTarger:File;
+			try
+			{
+				fileTarger = new File(offlineURL);
+			}
+			catch(e)
+			{
+				trace("I cannot find this offline file");
+			}
 			
 			//I have to open the file to contrill the file size
-			if(!justOfflineURL)
+			if(!justOfflineURL && fileTarger!=null && fileTarger.exists)
 			{
 				//load byte array
 				if(myLoadedBytes == null || myLoadedBytes.length == 0)
 				{
 					var fileLoader:FileStream = new FileStream();
+					fileLoader.open(fileTarger,FileMode.READ);
 					myLoadedBytes = new ByteArray();
 					fileLoader.readBytes(myLoadedBytes,0,fileLoader.bytesAvailable);
 				}
@@ -371,14 +395,18 @@ package netManager.urlSaver
 			{
 				myLoadedBytes = null ;
 			}
-			if(fileTarger.exists && fileTarger.size!=0)
+			//trace("File size : "+fileTarger.size+" urlLoader : "+urlLoader);
+			if(fileTarger!=null && fileTarger.exists && (fileTarger.size!=0 || (myLoadedBytes!=null && myLoadedBytes.length!=0) || (urlLoader!=null && urlLoader.data !=null && urlLoader.data.length!=0))) 
 			{
-				trace("offlineURL : "+offlineURL);
+				//trace("offlineURL : "+offlineURL);
+				
+				//Cansel the file aftre downloaded file contrilled
+				cansel();
 				this.dispatchEvent(new URLSaverEvent(URLSaverEvent.LOAD_COMPLETE,1,myLoadedBytes,offlineURL));
 			}
 			else
 			{
-				trace("Offline url is not exists : "+offlineURL+" available bytes are : "+fileTarger.size);
+				trace("Offline url is not exists : "+offlineURL);
 				URLSaver.deletFileIfExists(onlineURL);
 				trace("So I have to download it again from "+onlineURL);
 				load(onlineURL);
