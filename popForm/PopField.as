@@ -21,6 +21,8 @@
 		
 		private var radioButtonArray:Array ;
 		
+		private var nativeKeyBoard:FarsiInputCorrection ;
+		
 		
 		/**this will returns last inputed text to client*/
 		public function get text():String
@@ -145,7 +147,7 @@
 			//FarsiInputText.steKeyBord(myTXT,false);
 			if(editable)
 			{
-				FarsiInputCorrection.setUp(myTXT,KeyBordType,true,true,deleteDefautlText);
+				nativeKeyBoard = FarsiInputCorrection.setUp(myTXT,KeyBordType,true,true,deleteDefautlText);
 			}
 			else
 			{
@@ -187,6 +189,15 @@
 				this.mouseEnabled = true ;
 				this.buttonMode = true ;
 				this.addEventListener(MouseEvent.CLICK,switchRadioButton);
+			}
+		}
+		
+		/**Open the device key board*/
+		public function activateKeyBoard():void
+		{
+			if(nativeKeyBoard)
+			{
+				nativeKeyBoard.focuseOnStageText();
 			}
 		}
 		
