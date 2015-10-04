@@ -7,6 +7,8 @@
 	import flash.text.SoftKeyboardType;
 	import flash.text.TextField;
 	
+	/**Text field is changed*/
+	[Event(name="change", type="flash.events.Event")]
 	public class PopField extends PopFieldInterface
 	{
 		private var myTXT:TextField ;
@@ -112,6 +114,7 @@
 			
 			TextPutter.OnButton(tagNameTXT,tagName,true,false,true);
 			myTXT = Obj.get('txt_txt',this);
+			myTXT.addEventListener(Event.CHANGE,dispatchChangeForMeToo);
 			
 			myTXT.maxChars = maxChar ;
 			myTXT.borderColor = 0xD92C5C;
@@ -190,6 +193,13 @@
 				this.buttonMode = true ;
 				this.addEventListener(MouseEvent.CLICK,switchRadioButton);
 			}
+		}
+		
+		/**My input text is updated, so dispatch change event on my object*/
+		protected function dispatchChangeForMeToo(event:Event):void
+		{
+			// TODO Auto-generated method stub
+			this.dispatchEvent(new Event(Event.CHANGE));
 		}
 		
 		/**Open the device key board*/
