@@ -316,7 +316,7 @@
 		
 		private function dispatch(event:Event):void
 		{
-			trace("Dispatch : "+event.type);
+			this.dispatchEvent(event.clone());
 			this.dispatchEvent(event);
 			RestService.eventDispatcher.dispatchEvent(event);
 		}

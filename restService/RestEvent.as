@@ -60,5 +60,10 @@ package restService
 			errorCode = ErrorCode ;
 			super(type,false);
 		}
+		
+		override public function clone():Event
+		{
+			return new RestEvent(type,messages.concat(),errorCode);
+		}
 	}
 }
