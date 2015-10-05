@@ -178,6 +178,9 @@
 		{
 			new JSONParser();
 			parser = new RestFullJSONParser(loadedData,requestedData);
+			var oldPureData:String = lastPureData ;
+			lastPureData = loadedData ;
+			
 			
 			if(parser.error)
 			{
@@ -189,7 +192,6 @@
 					//this.dispatchEvent(new RestEvent(RestEvent.SERVER_ERROR,parser.msgs));
 					//RestService.eventDispatcher.dispatchEvent(new RestEvent(RestEvent.SERVER_ERROR,parser.msgs,parser.exceptionType));
 					//Update last puredata befor dispatching event
-					lastPureData = loadedData ;
 					dispatch(serverError);
 				}
 				else
@@ -208,11 +210,10 @@
 				trace("Data is ready to use");
 				if(onUpdateProccess)
 				{
-					if(lastPureData!=loadedData)
+					if(oldPureData!=loadedData)
 					{
 						trace("* This update is new");
 						//I have to upste lastPureData befor dispatching the event
-						lastPureData = loadedData ;
 						dispatch(new RestEvent(RestEvent.SERVER_RESULT_UPDATE));
 						//this.dispatchEvent(new RestEvent(RestEvent.SERVER_RESULT_UPDATE));
 					}
@@ -225,11 +226,10 @@
 				{
 					//this.dispatchEvent(new RestEvent(RestEvent.SERVER_RESULT));
 					//I have to upste lastPureData befor dispatching the event
-					lastPureData = loadedData ;
+					trace("Result event dispatching");
 					dispatch(new RestEvent(RestEvent.SERVER_RESULT))
 				}
 			}
-			lastPureData = loadedData ;
 		}
 		
 		/**Values are not case sencitive*/
@@ -317,7 +317,6 @@
 		private function dispatch(event:Event):void
 		{
 			this.dispatchEvent(event.clone());
-			this.dispatchEvent(event);
 			RestService.eventDispatcher.dispatchEvent(event);
 		}
 		
