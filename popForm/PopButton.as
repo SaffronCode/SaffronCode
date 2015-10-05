@@ -38,6 +38,7 @@
 			super();
 			me = this ;
 			this.buttonMode = true ;
+			this.mouseChildren = false ;
 			
 			//Bellow lines will used on setUp function ↓
 			/*if(completeButtonObject != null && completeButtonObject is PopButtonData)
