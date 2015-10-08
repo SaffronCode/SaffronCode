@@ -31,15 +31,37 @@ package contents
 		
 		public var internal_menu_width_right:Number = 0 ;
 		
+		public var skipAnimations:Boolean = false ;
+		
 		
 		//Reserved valuse
 		
 		private var _stageRect:Rectangle = new Rectangle() ;
 		
+		private var _stageOrgiginalRect:Rectangle = new Rectangle();
+		
 		
 		public function Config()
 		{
 			trace("Config starts");
+		}
+		
+		public function set stageOrgRect(value:Rectangle):void
+		{
+			if(_stageOrgiginalRect.width == 0)
+			{
+				trace("Staage size set on Config");
+				_stageOrgiginalRect = value.clone();
+			}
+			else
+			{
+				trace("Stage size cannot change on Config");
+			}
+		}
+		
+		public function get stageOrgRect():Rectangle
+		{
+			return _stageOrgiginalRect.clone();
 		}
 		
 		public function get stageRect():Rectangle
@@ -93,7 +115,8 @@ package contents
 				}
 				else
 				{
-					if(isNaN(Number(varVal)))
+					trace("Custom value is : "+varVal+" with the name of : "+varName);
+					if(!isNaN(Number(varVal)))
 					{
 						this[varName] = Number(varVal);
 					}

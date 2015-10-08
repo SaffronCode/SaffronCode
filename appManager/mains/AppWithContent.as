@@ -32,6 +32,8 @@
 		/**This is the contentManager rectangle size. it will generate from the content w and h on the home xml tag*/
 		public static function get contentRect():Rectangle
 		{
+			trace("AppWithContent.contentRect() >> Expired and moved to Config class");
+			
 			var contentResizedRect:Rectangle = _contentRect.clone();
 			contentResizedRect.height+=StageManager.stageDelta.height ;
 			contentResizedRect.width+=StageManager.stageDelta.width ;
@@ -56,10 +58,15 @@
 			//Multilanguage support added to current version.
 			Contents.setUp(startApp,supportsMultiLanguage,autoLanguageConvertEnabled,this.stage,loadConfig);
 			
+			
+			
 			if(manageStageManager)
 			{
+				trace("Contents.config.debugStageHeight : "+Contents.config.debugStageHeight);
 				StageManager.setUp(stage,Contents.config.debugStageWidth,Contents.config.debugStageHeight);
+				Contents.config.stageOrgRect = StageManager.stageOldRect ;
 				Contents.config.stageRect = StageManager.stageRect ;
+				trace("**** : "+StageManager.stageRect);
 			}
 			//Create the contentPage rectangle by contentW and contentH values on homePage data to use on scrolled pages
 			var homePageData:PageData = Contents.homePage ;
@@ -77,9 +84,10 @@
 			this.addEventListener(PageControllEvent.PREVENT_PAGE_CHANGING,preventPageChanging);
 			this.addEventListener(PageControllEvent.LET_PAGE_CHANGE,letThePreventedAppEventRelease);
 			
-			if(skipAllAnimations)
+			if(skipAllAnimations || Contents.config.skipAnimations)
 			{
 				skipIntro();
+				skipAnimations = true ;
 			}
 		}
 		

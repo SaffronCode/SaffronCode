@@ -17,4 +17,6 @@
 	<internal_menu_height_bottom>0</internal_menu_height_bottom>
 	<internal_menu_width_left>0</internal_menu_width_left>
 	<internal_menu_width_right>0</internal_menu_width_right>
+	
+	<skipAnimations>true</skipAnimations>
 </config>
