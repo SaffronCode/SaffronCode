@@ -1,4 +1,4 @@
-package contents
+﻿package contents
 {
 	import flash.filesystem.File;
 	import flash.geom.Rectangle;
@@ -57,6 +57,11 @@ package contents
 			{
 				trace("Stage size cannot change on Config");
 			}
+		}
+		
+		public function get deltaStageRect():Rectangle
+		{
+			return new Rectangle(0,0,_stageRect.width-_stageOrgiginalRect.width,_stageRect.height-_stageOrgiginalRect.height);
 		}
 		
 		public function get stageOrgRect():Rectangle
