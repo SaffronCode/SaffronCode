@@ -25,6 +25,8 @@ package popForm
 		
 		private static var myPreLoader:MovieClip = null;
 		
+		private static var onWaitClosedUserFunctoin:Function ;
+		
 		public static function get isOpen():Boolean
 		{
 			return PopMenu1.isOpen ;
@@ -96,12 +98,25 @@ package popForm
 			}
 			else
 			{
-				buttons = [Contents.lang.t[id_no_internet]] ;
+				buttons = [Contents.lang.t[id_back]] ;
 			}
+			onWaitClosedUserFunctoin = onClosed ;
 			trace("Contents.lang.t[id_please_wait] : "+Contents.lang.t[id_please_wait]);
 			var popText:PopMenuContent = new PopMenuContent(Contents.lang.t[id_please_wait],null,buttons,myPreLoader);
 			
-			PopMenu1.popUp('',null,popText,closeTime,onClosed);
+			PopMenu1.popUp('',null,popText,closeTime,onWaitClosed);
+		}
+		
+		private static function onWaitClosed(e:PopMenuEvent):void
+		{
+			if(onWaitClosedUserFunctoin.length==0)
+			{
+				onWaitClosedUserFunctoin();
+			}
+			else
+			{
+				onWaitClosedUserFunctoin(e);
+			}
 		}
 		
 		
