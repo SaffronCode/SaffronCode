@@ -69,9 +69,16 @@
 			return _stageOrgiginalRect.clone();
 		}
 		
+		/**This is absolute rectangle and the x and y are 0*/
 		public function get stageRect():Rectangle
 		{
 			return _stageRect.clone();
+		}
+		
+		/**You can repose the stage items by this rectangle. the x and y values shows how much you should move your item on the stage*/
+		public function get stageMovedRect():Rectangle
+		{
+			return new Rectangle((_stageRect.width-_stageOrgiginalRect.width)/-2,(_stageRect.height-_stageOrgiginalRect.height)/-2,_stageRect.width,_stageRect.height);
 		}
 
 		public function set stageRect(value:Rectangle):void

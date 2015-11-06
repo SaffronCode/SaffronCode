@@ -18,5 +18,5 @@
 	<internal_menu_width_left>0</internal_menu_width_left>
 	<internal_menu_width_right>0</internal_menu_width_right>
 	
-	<skipAnimations>true</skipAnimations>
+	<skipAnimations>false</skipAnimations>
 </config>
