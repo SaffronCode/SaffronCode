@@ -15,6 +15,9 @@
 		/**if level is -1 , it will add to curren page , if level is 0 , it is the page from main menu<br>
 		 * New Level defined: -2 means this page had to replace with current page on history*/
 		public var level:int;
+		
+		/**You can use them for icon size*/
+		public var w:Number,h:Number;
 					
 		/*<link level="" name="فعالیت های عملی" id="faaliathayeamali" icon="sf.jpg"/>*/
 		public function LinkData(linkXML:XML=null)
@@ -27,6 +30,8 @@
 			{
 				//trace('each link is : '+linkXML.@level+' - '+linkXML.@name);
 				name = linkXML.@name;
+				w = Number(linkXML.@w);
+				h = Number(linkXML.@h);
 				id = linkXML.@id ;
 				iconURL = linkXML.@icon ;
 				if(String(linkXML.@level) == '')
@@ -60,6 +65,8 @@
 			xml.@name = name ;
 			xml.@id = id;
 			xml.@icon = iconURL;
+			xml.@w = w;
+			xml.@h = h;
 			
 			for(var i = 0 ; i<subLinks.length ; i++)
 			{
@@ -89,6 +96,8 @@
 			newLinkData.iconURL = iconURL ;
 			newLinkData.level = level ;
 			newLinkData.dynamicData = dynamicData ;
+			newLinkData.w = w ;
+			newLinkData.h = h ;
 			
 			return newLinkData ;
 		}
