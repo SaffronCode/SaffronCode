@@ -5,6 +5,7 @@ package appManager.displayContentElemets
 	import flash.events.Event;
 	import flash.geom.Rectangle;
 	import flash.text.TextField;
+	import flash.text.TextFormat;
 	
 	public class TextParag extends MovieClip
 	{
@@ -54,6 +55,11 @@ package appManager.displayContentElemets
 		{
 			myTextTF.height = value ;
 			H = value;
+		}
+		
+		public function color(colorNum:uint):void
+		{
+			myTextTF.textColor = colorNum;
 		}
 		
 		public function setUp(myText:String,isArabic:Boolean = true,align:Boolean=true,knownAsHTML:Boolean=false,activateLinks:Boolean=false,useNativeText:Boolean=false,addScroller:Boolean=true,generateLinksForURLs:Boolean=false,scrollEffect:Boolean=true,userBitmap:Boolean=true):void

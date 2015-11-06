@@ -40,5 +40,12 @@ package appManager.displayContentElemets
 		{
 			setUp(string);
 		}
+		
+		public function color(colorNum:uint):void
+		{
+			trace("The color is : "+colorNum);
+			// TODO Auto Generated method stub
+			myText.textColor = colorNum ;
+		}
 	}
 }
