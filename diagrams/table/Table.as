@@ -18,11 +18,16 @@ package diagrams.table
 		public function Table(myAreaRectangle:Rectangle,
 							  titleValues:TableTitleValue,
 							  contentValue:TableContent,
-							  backGroundColor:uint = TableConstants.Color_backColor,
+							  backGroundColor:int = -1,
 							  rtl:Boolean=true,
 								transparent:Boolean=false)
 		{
 			super();
+			
+			if(backGroundColor==-1)
+			{
+				backGroundColor = TableConstants.Color_backColor ;
+			}
 			
 			RTL = rtl ;
 			

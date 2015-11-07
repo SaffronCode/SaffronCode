@@ -8,9 +8,27 @@ package diagrams.table
 	{
 		private var myFormat:TextFormat ;
 		
-		public function TableTextField(color:uint=TableConstants.Color_TitleText,size:Number=TableConstants.titleFontSize,Font:String = TableConstants.fontName,align:String = TextFormatAlign.CENTER , lineSpacing:Number = 0 )
+		public function TableTextField(color:int=-1,size:Number=-1,Font:String = '',align:String = '' , lineSpacing:Number = 0 )
 		{
 			super();
+
+			
+			if(align=='')
+			{
+				align = TextFormatAlign.CENTER ;
+			}
+			if(Font=='')
+			{
+				Font = TableConstants.fontName ;
+			}
+			if(color==-1)
+			{
+				color = TableConstants.Color_TitleText ;
+			}
+			if(size==-1)
+			{
+				TableConstants.titleFontSize
+			}
 			
 			//1 generate required textFormat
 			myFormat = this.getTextFormat() ;

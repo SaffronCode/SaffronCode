@@ -29,8 +29,12 @@ package diagrams.table
 			return hid ;
 		}
 		
-		public function TableBox(W:Number,H:Number,Color:uint,Vid:uint,Hid:uint,Text:String='',margin:Number = TableConstants.margin,isTitle:Boolean=false)
+		public function TableBox(W:Number,H:Number,Color:uint,Vid:uint,Hid:uint,Text:String='',margin:Number = -1,isTitle:Boolean=false)
 		{
+			if(margin==-1)
+			{
+				margin = TableConstants.margin ;
+			}
 			vid = Vid ;
 			hid = Hid ;
 			w = W ;
