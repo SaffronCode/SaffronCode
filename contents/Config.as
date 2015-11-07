@@ -128,6 +128,7 @@
 				else
 				{
 					trace("Custom value is : "+varVal+" with the name of : "+varName);
+					var val:Number;
 					if(!isNaN(Number(varVal)))
 					{
 						this[varName] = Number(varVal);
@@ -139,6 +140,10 @@
 					else if(String(varVal).toLowerCase() == 'false')
 					{
 						this[varName] = false ;
+					}
+					else if(String(varVal).indexOf('0x')==0 && !isNaN(val = parseInt(varVal,16)))
+					{
+						this[varName] = val ;
 					}
 					else
 					{
