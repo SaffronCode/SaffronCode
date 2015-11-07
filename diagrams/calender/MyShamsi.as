@@ -82,12 +82,16 @@ package diagrams.calender
 			return time;
 		}
 		
-		public function showStringFormat(showClock:Boolean=true):String
+		public function showStringFormat(showClock:Boolean=true,showSeconds:Boolean=true):String
 		{
 			var str:String = fullYear+'/'+(month+1)+'/'+date;
 			if(showClock)
 			{
-				str+='    '+hours+':'+minutes+':'+seconds;
+				str+='    '+hours+':'+minutes;//
+				if(showSeconds)
+				{
+					str+=':'+seconds;
+				}
 			}
 			return str ;
 		}
