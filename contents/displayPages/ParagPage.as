@@ -19,7 +19,7 @@ package contents.displayPages
 			fullImageShow = false ;
 		}
 		
-		public function setUpParag(maskRect:Rectangle,listOfParag:Vector.<ParagData>,activateHTMLlink:Boolean=false,linkColor:int=-1,createURLLinks:Boolean=true,alighn:Boolean=true):void
+		public function setUpParag(maskRect:Rectangle,listOfParag:Vector.<ParagData>,activateHTMLlink:Boolean=false,linkColor:int=-1,createURLLinks:Boolean=true,alighn:Boolean=true,useCash:Boolean=false):void
 		{
 			var i:int ;
 			
@@ -136,7 +136,7 @@ package contents.displayPages
 				//trace('----------------------');
 				//trace("Parag string is : • "+listOfParag[i].content+' • ');
 				contentsString+=listOfParag[i].content;
-				TextPutter.onTextArea(textTF,contentsString,true,false,false,0,alighn);
+				TextPutter.onTextArea(textTF,contentsString,true,false,useCash,0,alighn);
 				textY = textTF.textHeight;
 				//trace("ImageY : "+ImageY);
 				ImageY = textY ;
