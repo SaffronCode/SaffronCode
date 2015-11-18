@@ -2,10 +2,13 @@ package darkBox
 {
 	import appManager.displayContentElemets.TitleText;
 	
+	import flash.desktop.NativeApplication;
 	import flash.display.MovieClip;
 	import flash.events.Event;
+	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
+	import flash.ui.Keyboard;
 	import flash.utils.clearTimeout;
 	import flash.utils.setTimeout;
 	
@@ -44,6 +47,7 @@ package darkBox
 		private var timeOutId:uint;
 					
 		private static var saveButtonFunction:Function;
+		private static var showTitleInFullLine:Boolean;
 					
 		/**Get the current file*/
 		public static function get currentMedia():ImageFile
@@ -61,8 +65,9 @@ package darkBox
 		}
 					
 		/**Initialize the DarkBox area*/
-		public static function setUp(newSize:Rectangle,noNetHintText:String='No Internet Connection Available',noImageHereText:String='',downloadFunction:Function=null):void
+		public static function setUp(newSize:Rectangle,noNetHintText:String='No Internet Connection Available',noImageHereText:String='',downloadFunction:Function=null,titleInFullLine:Boolean=false):void
 		{
+			showTitleInFullLine = titleInFullLine ;
 			saveButtonFunction = downloadFunction ; 
 			noNetTitle = noNetHintText ;
 			noImageTitle = noImageHereText ;
@@ -118,6 +123,21 @@ package darkBox
 			hide();
 			//Video box will make a bug if hide function didn't call agin
 			setTimeout(hide,100);
+			
+			NativeApplication.nativeApplication.addEventListener(KeyboardEvent.KEY_DOWN,catchBackButton,false,100000);
+		}
+		
+		protected function catchBackButton(event:KeyboardEvent):void
+		{
+			// TODO Auto-generated method stub
+			if(this.visible)
+			{
+				if(event.keyCode == Keyboard.BACK || event.keyCode == Keyboard.HOME )
+				{
+					event.stopImmediatePropagation();
+					hide();
+				}
+			}
 		}
 		
 		protected function downloadCurrentMedia(event:MouseEvent):void
@@ -172,7 +192,14 @@ package darkBox
 			closeMC.x = newSize.width-closeMC.width ;
 			downloadMC.x = closeMC.x - downloadMC.width ;
 			downloadMC.visible = (saveButtonFunction!=null);
-			titleMC.x = prevMC.x + prevMC.width ;
+			if(showTitleInFullLine)
+			{
+				titleMC.x = 0 ;
+			}
+			else
+			{
+				titleMC.x = prevMC.x + prevMC.width ;
+			}
 			preLoderMC.x = imageSize.width/2;
 			preLoderMC.y = imageSize.y+imageSize.height/2;
 			precentMC.x = 0 ;
@@ -180,7 +207,14 @@ package darkBox
 			
 			backMC.width = newSize.width;
 			backMC.height = newSize.height ;
-			titleMC.width = newSize.width - (closeMC.width + prevMC.x + prevMC.width + downloadMC.width ) ;
+			if(showTitleInFullLine)
+			{
+				titleMC.width = newSize.width ;
+			}
+			else
+			{
+				titleMC.width = newSize.width - (closeMC.width + prevMC.x + prevMC.width + downloadMC.width ) ;
+			}
 			bannerMC.width = newSize.width ;
 			
 			box_flat.setUp(imageSize);
