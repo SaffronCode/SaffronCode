@@ -73,8 +73,14 @@
 			
 			checkStage();
 			
-			
-			setUp(str,buttonID,type,completeButtonObject);
+			if(str=='' && buttonID==0 && type==1 && completeButtonObject==null)
+			{
+				trace("It should be the default values for the button");
+			}
+			else
+			{
+				setUp(str,buttonID,type,completeButtonObject);
+			}
 		}
 		
 		
