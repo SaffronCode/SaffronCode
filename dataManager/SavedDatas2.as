@@ -167,7 +167,14 @@ package dataManager
 			}
 			catch(e)
 			{
-				sql.rollback();
+				try
+				{
+					sql.rollback();
+				}
+				catch(e)
+				{
+					trace(e);
+				}
 			}
 		}
 		
