@@ -349,12 +349,12 @@ package popForm
 				
 				//I am passing complete buttonData with current function to let it controll all state for it self
 				but = new buttonFieldType();
+				this.addChild(but);
 				but.setUp(content.buttonList[i]/*,color*/,i,content.buttonsInterface[i],content.buttonList[i]);
 				
 				Obj.setButton(but,buttonSelected);
 				
 				buttonList.push(but);
-				this.addChild(but);
 				
 				but.y = butY+but.height/2 ;
 				
