@@ -31,6 +31,9 @@
 		
 		private var me:PopButton ;
 		
+		
+		private var soundMC:MovieClip ;
+		
 		/**You can change the button type with entering its frame index.<br>
 		 * You can set full button data with ability to change selectable or button id by using PopButtonData object on completeButtonObject*/
 		public function PopButton(str:String=''/*,colorTrans:ColorTransform=null*/,buttonID:*=0,type:uint = 1,completeButtonObject:* = null )
@@ -39,6 +42,8 @@
 			me = this ;
 			this.buttonMode = true ;
 			this.mouseChildren = false ;
+			
+			soundMC = Obj.get("sound_mc",this);
 			
 			//Bellow lines will used on setUp function ↓
 			/*if(completeButtonObject != null && completeButtonObject is PopButtonData)
@@ -182,6 +187,16 @@
 			{
 				backMC.transform.colorTransform = colorTrans ;
 			}*/
+			if(soundMC)
+			{
+				this.addEventListener(MouseEvent.CLICK,playAsound);
+			}
+		}
+		
+		protected function playAsound(event:MouseEvent):void
+		{
+			// TODO Auto-generated method stub
+			soundMC.play();
 		}
 	}
 }
