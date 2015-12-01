@@ -5,6 +5,8 @@ package popForm
 	import diagrams.calender.MyShamsi;
 	
 	import flash.display.MovieClip;
+	import flash.events.Event;
+	import flash.events.EventDispatcher;
 	import flash.text.SoftKeyboardType;
 	import flash.text.TextField;
 	
@@ -26,10 +28,19 @@ package popForm
 			backMC.gotoAndStop(colorFrame);
 		}
 		
-		public function PopFieldDate(tagName:String,defaultDate:Date=null,isArabic:Boolean=false,languageFrame:uint=1,color:uint=1)
+		public function PopFieldDate(tagName:String=null,defaultDate:Date=null,isArabic:Boolean=false,languageFrame:uint=1,color:uint=1)
 		{
 			super();
 			
+			if(tagName!=null)
+			{
+				setUp(tagName,defaultDate,isArabic,languageFrame,color);
+			}
+		}
+		
+		public function setUp(tagName:String,defaultDate:Date=null,isArabic:Boolean=false,languageFrame:uint=1,color:uint=1):void
+		{
+			// TODO Auto Generated method stub
 			IsArabic = isArabic ;
 			
 			myTitle = tagName ;
@@ -53,7 +64,6 @@ package popForm
 			
 			
 			update(defaultDate);
-			
 		}
 		
 		override public function update(data:*):void
@@ -85,8 +95,17 @@ package popForm
 			}
 			
 			FarsiInputCorrection.setUp(yearTF,SoftKeyboardType.NUMBER,IsArabic,true,clearAfterSelects);
+			yearTF.addEventListener(Event.CHANGE,imUpdated);
 			FarsiInputCorrection.setUp(monthTF,SoftKeyboardType.NUMBER,IsArabic,true,clearAfterSelects);
+			monthTF.addEventListener(Event.CHANGE,imUpdated);
 			FarsiInputCorrection.setUp(dayTF,SoftKeyboardType.NUMBER,IsArabic,true,clearAfterSelects);
+			dayTF.addEventListener(Event.CHANGE,imUpdated);
+		}
+		
+		protected function imUpdated(event:Event):void
+		{
+			// TODO Auto-generated method stub
+			this.dispatchEvent(new Event(Event.CHANGE));
 		}
 		
 		override public function get title():String
