@@ -38,7 +38,7 @@ package contents.displayPages
 		
 		private static var scrollPosesObject:Object = {} ;
 		
-		private const backAlpha:Number = 0.0 ;
+		private const backAlpha:Number = 0 ;
 		
 		private const linkSensorDebug:Number = 0.0 ;
 		
@@ -462,7 +462,14 @@ package contents.displayPages
 					
 					linksContainer.graphics.clear();
 					linksContainer.graphics.beginFill(0,backAlpha) ;
-					linksContainer.graphics.drawRect(0,0,areaRect.width,linksSensor.y) ;
+					if(!horizontalMenu)
+					{
+						linksContainer.graphics.drawRect(0,0,areaRect.width,linksSensor.y) ;
+					}
+					else
+					{
+						linksContainer.graphics.drawRect(0,0,linksSensor.x,areaRect.height) ;
+					}
 					
 					lastGeneratedLinkIndes++ ;
 				}
