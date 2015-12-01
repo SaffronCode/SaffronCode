@@ -49,12 +49,16 @@ package appManager.displayContentElemets
 					backAlpha:Number;
 					
 		private var keepImageRatio:Boolean ;
+
+		private var newBitmap:Bitmap;
 		
 		public function LightImage(BackColor:uint=0x000000,BackAlpha:Number=0)
 		{
 			backColor = BackColor ;
 			backAlpha = BackAlpha ; 
 			super();
+			
+			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 		}
 		
 		override public function get height():Number
@@ -206,7 +210,8 @@ package appManager.displayContentElemets
 		protected function imageLoaded(event:Event):void
 		{
 			// TODO Auto-generated method stub
-			var newBitmap:Bitmap = (loader.content as Bitmap);
+			cleatTheBitmap();
+			newBitmap = (loader.content as Bitmap);
 			if(newBitmap==null)
 			{
 				trace("Image load faild on lightImage function imageLoaded");
@@ -241,13 +246,38 @@ package appManager.displayContentElemets
 			this.dispatchEvent(new Event(Event.COMPLETE));
 		}
 		
+		private function cleatTheBitmap():void
+		{
+			// TODO Auto Generated method stub
+			if(newBitmap!=null)
+			{
+				if(newBitmap.bitmapData!=null)
+				{
+					newBitmap.bitmapData.dispose() ;
+				}
+			}
+		}
+		
 		protected function unLoad(event:Event):void
 		{
 			// TODO Auto-generated method stub
 			clearTimeout(timeOutValue);
 			
-			urlSaver.removeEventListener(URLSaverEvent.LOAD_COMPLETE,imageSaved);
-			urlSaver.removeEventListener(URLSaverEvent.NO_INTERNET,imageNotFound);
+			if(loadedBytes!=null)
+			{
+				try
+				{
+					loadedBytes.clear();
+				}
+				catch(e){};
+			}
+			cleatTheBitmap();
+			
+			if(urlSaver!=null)
+			{
+				urlSaver.removeEventListener(URLSaverEvent.LOAD_COMPLETE,imageSaved);
+				urlSaver.removeEventListener(URLSaverEvent.NO_INTERNET,imageNotFound);
+			}
 			try
 			{
 				loader.close();
