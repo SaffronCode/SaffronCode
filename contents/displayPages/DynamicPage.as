@@ -148,7 +148,7 @@ package contents.displayPages
 					}
 					pageContent = StringFunctions.htmlCorrect(pageContent,linkColor);
 				}
-				TextPutter.onTextArea(textTF,pageContent,true,!activateHTMLLink,true,0,align);
+				TextPutter.onTextArea(textTF,pageContent,true,!activateHTMLLink,true,1,align);
 			}
 			//trace("Number of imates : "+currentPageData.images.length);
 			for(var i = 0 ; i<currentPageData.images.length ; i++)
