@@ -211,6 +211,11 @@ package appManager.displayContentElemets
 		{
 			// TODO Auto-generated method stub
 			cleatTheBitmap();
+			if(newBitmap)
+			{
+				newBitmap.bitmapData.dispose();
+				Obj.remove(newBitmap);
+			}
 			newBitmap = (loader.content as Bitmap);
 			if(newBitmap==null)
 			{
