@@ -77,6 +77,9 @@ package contents.displayPages
 		public var acceptAnimation:Boolean = true;
 		
 		private var reverted:Boolean = false ;
+		
+		/**Load all links togather without sensor*/
+		protected var loadAllLinksInstantly:Boolean ;
 
 		
 		/**returns Y direction by reverted value*/
@@ -205,7 +208,6 @@ package contents.displayPages
 		
 		public function setUp(pageData:PageData):void
 		{
-			
 			
 			saveLastPosition();
 			//new functions
@@ -401,8 +403,9 @@ package contents.displayPages
 		private function controllSensor(ev:Event=null)
 		{
 			var sens:Rectangle = linksSensor.getBounds(this);
-			if((!horizontalMenu && !reverted && sens.top<areaRect.bottom) || (!horizontalMenu && reverted && sens.bottom>areaRect.top)
-			|| (horizontalMenu && !reverted && sens.left<areaRect.right) || (horizontalMenu && reverted && sens.right>areaRect.left))
+			if(loadAllLinksInstantly ||
+				(!horizontalMenu && !reverted && sens.top<areaRect.bottom) || (!horizontalMenu && reverted && sens.bottom>areaRect.top)
+				|| (horizontalMenu && !reverted && sens.left<areaRect.right) || (horizontalMenu && reverted && sens.right>areaRect.left))
 			{
 				trace("Request more link");
 				var ifTherIs:Boolean = creatOneLink();
