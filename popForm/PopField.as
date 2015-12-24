@@ -143,8 +143,8 @@
 				myTXT.multiline = false ;
 				myTXT.wordWrap = false ;
 			}
-			
-			myTXT.text = (defaultText==null)?'': defaultText ;
+			defaultText = (defaultText==null)?'': defaultText ;
+			myTXT.text = defaultText;
 			
 			
 			//FarsiInputText.steKeyBord(myTXT,false);
