@@ -2,10 +2,12 @@ package appManager.mains
 {
 	import appManager.animatedPages.Intro;
 	import appManager.animatedPages.MainAnim;
+	import appManager.animatedPages.pageManager.MenuManager;
 	import appManager.animatedPages.pageManager.PageManager;
 	import appManager.animatedPages.pageManager.TitleManager;
 	import appManager.event.AppEvent;
 	import appManager.event.AppEventContent;
+	import appManager.event.MenuEvent;
 	import appManager.event.TitleEvent;
 	
 	import contents.LinkData;
@@ -13,6 +15,7 @@ package appManager.mains
 	import contents.soundControll.ContentSoundManager;
 	
 	import flash.desktop.NativeApplication;
+	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
@@ -25,6 +28,16 @@ package appManager.mains
 	public class App extends MovieClip
 	{
 		protected var pageManagerObject:PageManager ;
+		
+		protected var menuManagerObject:MenuManager ;
+		
+		/**Current menu in the menuManagerObject*/
+		private static var _currentMenu:DisplayObject = null ;
+		
+		public static function get currentMenu():DisplayObject
+		{
+			return _currentMenu;
+		}
 		
 		protected var titleManager:TitleManager ;
 		
@@ -55,6 +68,7 @@ package appManager.mains
 			AutoPlayThePageMusics = autoPlayThePageMusics ;
 			
 			pageManagerObject = Obj.findThisClass(PageManager,this,true) as PageManager;
+			menuManagerObject = Obj.findThisClass(MenuManager,this,true) as MenuManager;
 			titleManager = Obj.findThisClass(TitleManager,this,true) as TitleManager;
 			
 			introMC = Obj.findThisClass(Intro,this,true) as Intro;
@@ -84,7 +98,23 @@ package appManager.mains
 			//This will remind that first page of the application is HomePage
 			is_in_home = true ;
 			hopePageOppened(true);
+			
+			this.addEventListener(MenuEvent.MENU_READY,setTheCurrentMenu);
+			this.addEventListener(MenuEvent.MENU_DELETED,removeCurrentMenu);
 		}	
+		
+		protected function removeCurrentMenu(event:MenuEvent):void
+		{
+			// TODO Auto-generated method stub
+			_currentMenu = null ;
+		}
+		
+		protected function setTheCurrentMenu(event:MenuEvent):void
+		{
+			// TODO Auto-generated method stub
+			trace("New menu is ready");
+			_currentMenu = event.menuTarget ;
+		}
 		
 		protected function changeTheTitle(event:TitleEvent):void
 		{
@@ -193,7 +223,12 @@ package appManager.mains
 			if(mainAnim == null)
 			{
 				//do it if mainAnim doesent exists
+				_currentMenu = null ;
 				pageManagerObject.setUp(event);
+				if(menuManagerObject)
+				{
+					menuManagerObject.setUp(event);
+				}
 				if(titleManager!=null)
 				{
 					titleManager.setUp(event);
@@ -246,7 +281,12 @@ package appManager.mains
 		{
 			// TODO Auto-generated method stub
 			trace("Main anim is ready");
+			_currentMenu = null ;
 			pageManagerObject.setUp(currentAppEvent);
+			if(menuManagerObject)
+			{
+				menuManagerObject.setUp(currentAppEvent);
+			}
 			if(titleManager!=null)
 			{
 				titleManager.setUp(currentAppEvent);

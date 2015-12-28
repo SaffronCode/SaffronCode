@@ -3,6 +3,7 @@ package appManager.animatedPages.pageManager
 {
 	import appManager.event.AppEvent;
 	import appManager.event.AppEventContent;
+	import appManager.event.MenuEvent;
 	import appManager.event.PageControllEvent;
 	import appManager.mains.App;
 	import appManager.mains.AppWithContent;
@@ -12,6 +13,7 @@ package appManager.animatedPages.pageManager
 	
 	import flash.display.FrameLabel;
 	import flash.display.MovieClip;
+	import flash.events.Event;
 	import flash.geom.Rectangle;
 	import flash.system.System;
 	
@@ -47,6 +49,7 @@ package appManager.animatedPages.pageManager
 				finishFrame = 0 ;
 				System.gc();
 				System.gc();
+				(this.root).removeEventListener(MenuEvent.MENU_READY,menuIsReady);
 			}
 			if(myEvent == null)
 			{
@@ -114,7 +117,22 @@ package appManager.animatedPages.pageManager
 				{
 					trace("static application page");
 				}
+				
+				if(App.currentMenu!=null)
+				{
+					currentPage.dispatchEvent(new MenuEvent(MenuEvent,App.currentMenu));
+				}
+				else
+				{
+					(this.root).addEventListener(MenuEvent.MENU_READY,menuIsReady);
+				}
 			}
+		}
+		
+		protected function menuIsReady(event:Event):void
+		{
+			// TODO Auto-generated method stub
+			currentPage.dispatchEvent(new MenuEvent(MenuEvent,App.currentMenu));
 		}
 		
 		/**returns true if current MovieClip had its own animation*/
