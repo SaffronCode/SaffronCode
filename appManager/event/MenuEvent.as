@@ -14,9 +14,9 @@ package appManager.event
 		
 		public var menuTarget:DisplayObject ;
 		
-		public function MenuEvent(type:String,MenuTarget:DisplayObject)
+		public function MenuEvent(type:String,MenuTarget:DisplayObject,bubble:Boolean=false)
 		{
-			super(type,true);
+			super(type,bubble);
 			menuTarget = MenuTarget ;
 		}
 	}

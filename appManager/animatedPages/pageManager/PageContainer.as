@@ -120,7 +120,7 @@ package appManager.animatedPages.pageManager
 				
 				if(App.currentMenu!=null)
 				{
-					currentPage.dispatchEvent(new MenuEvent(MenuEvent,App.currentMenu));
+					currentPage.dispatchEvent(new MenuEvent(MenuEvent.MENU_READY,App.currentMenu));
 				}
 				else
 				{
@@ -132,7 +132,7 @@ package appManager.animatedPages.pageManager
 		protected function menuIsReady(event:Event):void
 		{
 			// TODO Auto-generated method stub
-			currentPage.dispatchEvent(new MenuEvent(MenuEvent,App.currentMenu));
+			currentPage.dispatchEvent(new MenuEvent(MenuEvent.MENU_READY,App.currentMenu));
 		}
 		
 		/**returns true if current MovieClip had its own animation*/

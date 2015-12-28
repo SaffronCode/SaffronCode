@@ -223,11 +223,10 @@ package appManager.mains
 			if(mainAnim == null)
 			{
 				//do it if mainAnim doesent exists
-				_currentMenu = null ;
 				pageManagerObject.setUp(event);
 				if(menuManagerObject)
 				{
-					menuManagerObject.setUp(event);
+					menuManagerObject.setUp(event as AppEventContent);
 				}
 				if(titleManager!=null)
 				{
@@ -281,11 +280,10 @@ package appManager.mains
 		{
 			// TODO Auto-generated method stub
 			trace("Main anim is ready");
-			_currentMenu = null ;
 			pageManagerObject.setUp(currentAppEvent);
 			if(menuManagerObject)
 			{
-				menuManagerObject.setUp(currentAppEvent);
+				menuManagerObject.setUp(currentAppEvent as AppEventContent);
 			}
 			if(titleManager!=null)
 			{

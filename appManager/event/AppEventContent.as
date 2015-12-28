@@ -28,7 +28,13 @@ package appManager.event
 				pageLink = new LinkData();
 				pageLink.id == refresh ;
 				skipHistory = true ;
+				pageData = new PageData();
 			}
+			else
+			{
+				pageData = Contents.getPage(pageLink.id);
+			}
+			
 			SkipHistory = skipHistory ;
 			
 			linkData = currentLink = pageLink.clone() ;
@@ -37,7 +43,6 @@ package appManager.event
 			{
 				pageLink.level = 0 ;
 			}
-			pageData = Contents.getPage(pageLink.id);
 			
 			
 			super(pageData.type, PAGE_CHANGES,pageLink.id,reload);

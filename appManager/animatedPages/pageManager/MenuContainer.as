@@ -53,7 +53,7 @@ package appManager.animatedPages.pageManager
 				System.gc();
 				System.gc();
 				
-				this.dispatchEvent(new MenuEvent(MenuEvent.MENU_DELETED,null));
+				this.dispatchEvent(new MenuEvent(MenuEvent.MENU_DELETED,null,true));
 			}
 			if(myEvent == null)
 			{
@@ -104,7 +104,7 @@ package appManager.animatedPages.pageManager
 					}
 					
 					//auto size detector on horizontal >< position had bug, if you set it true, the scroll will lock anyway
-					scrollerMC = new ScrollMT(currentMenu,AppWithContent.contentRect,targetArea,autoSizeDetector,false/*autoSizeDetector*/,currentPageData.scrollEffect,false);
+					scrollerMC = new ScrollMT(currentMenu,AppWithContent.contentRect,targetArea,autoSizeDetector,false,currentPageData.scrollEffect,false);
 				}*/
 				
 				if(myEvent is AppEventContent)
@@ -124,7 +124,7 @@ package appManager.animatedPages.pageManager
 					trace("static application menu");
 				}
 				
-				this.dispatchEvent(new MenuEvent(MenuEvent.MENU_READY,currentMenu));
+				this.dispatchEvent(new MenuEvent(MenuEvent.MENU_READY,currentMenu,true));
 			}
 			else
 			{

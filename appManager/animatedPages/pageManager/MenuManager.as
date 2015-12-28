@@ -2,6 +2,8 @@ package appManager.animatedPages.pageManager
 	//appManager.animatedPages.pageManager.MenuManager
 {
 	import appManager.event.AppEvent;
+	import appManager.event.AppEventContent;
+	import appManager.event.MenuEvent;
 	import appManager.mains.App;
 	
 	import flash.display.MovieClip;
@@ -18,9 +20,9 @@ package appManager.animatedPages.pageManager
 			animateInternalPages = true ;
 		}
 		
-		private var myCurrentEvent:AppEvent = new AppEvent() ;
+		private var myCurrentEvent:AppEventContent = new AppEventContent(null) ;
 		
-		public var toEvent:AppEvent = new AppEvent() ;
+		public var toEvent:AppEventContent = new AppEventContent(null) ;
 		
 		protected var menuContainer:MenuContainer ;
 		
@@ -35,17 +37,23 @@ package appManager.animatedPages.pageManager
 		
 		
 		/**change the page event*/
-		public function setUp(newEvent:AppEvent)
+		public function setUp(newEvent:AppEventContent)
 		{
 			toEvent = newEvent ;
+			if(toEvent==null)
+			{
+				toEvent = new AppEventContent(null);
+			}
 		}
 		
 		protected function anim(event:Event):void
 		{
 			// TODO Auto-generated method stub
 			var animIsOver:Boolean = false;
-			if(toEvent.myType == AppEvent.home || toEvent.myID!=myCurrentEvent.myID || toEvent.myType == AppEvent.refresh || toEvent.reload)
+			if(toEvent.myType == AppEvent.home || toEvent.pageData.menuType!=myCurrentEvent.pageData.menuType || toEvent.myType == AppEvent.refresh || toEvent.reload)
 			{
+				this.dispatchEvent(new MenuEvent(MenuEvent.MENU_DELETED,null,true));
+				
 				if(animateInternalPages && menuContainer.hadSelfAnim())
 				{
 					animIsOver = menuContainer.prev();
@@ -85,7 +93,6 @@ package appManager.animatedPages.pageManager
 						menuContainer.setUp(myCurrentEvent);
 					}
 				}
-				
 			}
 			else if(menuContainer.thisPageHasMenu)
 			{
