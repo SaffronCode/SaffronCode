@@ -1,5 +1,5 @@
 package appManager.animatedPages.pageManager
-	//appManager.animatedPages.pageManager.PageContainer
+	//appManager.animatedPages.pageManager.MenuContainer
 {
 	import appManager.event.AppEvent;
 	import appManager.event.AppEventContent;
@@ -13,43 +13,47 @@ package appManager.animatedPages.pageManager
 	
 	import flash.display.FrameLabel;
 	import flash.display.MovieClip;
-	import flash.events.Event;
 	import flash.geom.Rectangle;
 	import flash.system.System;
-	
-	public class PageContainer extends MovieClip
+
+	public class MenuContainer extends MovieClip
 	{
-		private var currentPage:MovieClip,
+		private var currentMenu:MovieClip,
 					middleFrame:uint,
 					finishFrame:uint;
-					
+		
 		private var pageReadyDispatched:Boolean ;
-					
+		
 		private var scrollerMC:ScrollMT ;
 		
-		public function PageContainer()
+		/**Controll this variable befor fadeIn the menu*/
+		internal var thisPageHasMenu:Boolean ;
+		
+		public function MenuContainer()
 		{
 			super();
 			stop();
 		}
 		
+		
 		public function setUp(myEvent:AppEvent=null)
 		{
-			if(currentPage != null)
+			if(currentMenu != null)
 			{
 				trace("delete current page");
-				this.removeChild(currentPage);
+				this.removeChild(currentMenu);
 				if(scrollerMC)
 				{
 					scrollerMC.unLoad();
 					scrollerMC = null ;
 				}
-				currentPage = null ;
+				currentMenu = null ;
 				middleFrame = 0 ;
 				finishFrame = 0 ;
 				System.gc();
 				System.gc();
-				(this.root).removeEventListener(MenuEvent.MENU_READY,menuIsReady);
+				
+				this.dispatchEvent(new MenuEvent(MenuEvent.MENU_DELETED,null,true));
 			}
 			if(myEvent == null)
 			{
@@ -57,37 +61,39 @@ package appManager.animatedPages.pageManager
 			}
 			var currentPageData:PageData = (myEvent as AppEventContent).pageData ;
 			var pageClassType:Class ;
-			pageClassType = Obj.generateClass(myEvent.myType);
+			pageClassType = Obj.generateClass(currentPageData.menuType);
 			
-			trace("myEvent.myType : "+myEvent.myType);
+			trace("Menu type : "+currentPageData.menuType+' >>>>> '+pageClassType);
 			
 			
 			if(pageClassType != null)
 			{
 				try
 				{
-					currentPage = new pageClassType();
+					currentMenu = new pageClassType();
 					pageReadyDispatched = false ;
-					var framesList:Array = currentPage.currentLabels;
+					var framesList:Array = currentMenu.currentLabels;
 					if(framesList.length > 0)
 					{
 						middleFrame = (framesList[0] as FrameLabel).frame ;
 					}
-					else if(currentPage.totalFrames>1)
+					else if(currentMenu.totalFrames>1)
 					{
-						middleFrame = currentPage.totalFrames ;
+						middleFrame = currentMenu.totalFrames ;
 					}
-					finishFrame = currentPage.totalFrames ;
+					finishFrame = currentMenu.totalFrames ;
+					thisPageHasMenu = true ;
 				}
 				catch(e)
 				{
 					trace("Page is not generated : "+e);
+					thisPageHasMenu = false ;
 					return;
 				}
 				trace("*** currentPage added to stage");
-				this.addChild(currentPage);
+				this.addChild(currentMenu);
 				
-				if(currentPageData.scrollAble)
+				/*if(currentPageData.scrollAble)
 				{
 					var targetArea:Rectangle ;
 					var autoSizeDetector:Boolean = true ;
@@ -98,41 +104,32 @@ package appManager.animatedPages.pageManager
 					}
 					
 					//auto size detector on horizontal >< position had bug, if you set it true, the scroll will lock anyway
-					scrollerMC = new ScrollMT(currentPage,AppWithContent.contentRect,targetArea,autoSizeDetector,false/*autoSizeDetector*/,currentPageData.scrollEffect,false);
-				}
+					scrollerMC = new ScrollMT(currentMenu,AppWithContent.contentRect,targetArea,autoSizeDetector,false,currentPageData.scrollEffect,false);
+				}*/
 				
 				if(myEvent is AppEventContent)
 				{
-					if(currentPage.hasOwnProperty('setUp'))
+					if(currentMenu.hasOwnProperty('setUp'))
 					{
-						trace("This page can get values");
-						(currentPage as DisplayPageInterface).setUp(currentPageData);
+						trace("This menu can get values");
+						(currentMenu as DisplayPageInterface).setUp(currentPageData);
 					}
 					else
 					{
-						trace("Static page calls");
+						trace("Static menu calls");
 					}
 				}
 				else
 				{
-					trace("static application page");
+					trace("static application menu");
 				}
 				
-				if(App.currentMenu!=null)
-				{
-					currentPage.dispatchEvent(new MenuEvent(MenuEvent.MENU_READY,App.currentMenu));
-				}
-				else
-				{
-					(this.root).addEventListener(MenuEvent.MENU_READY,menuIsReady);
-				}
+				this.dispatchEvent(new MenuEvent(MenuEvent.MENU_READY,currentMenu,true));
 			}
-		}
-		
-		protected function menuIsReady(event:Event):void
-		{
-			// TODO Auto-generated method stub
-			currentPage.dispatchEvent(new MenuEvent(MenuEvent.MENU_READY,App.currentMenu));
+			else
+			{
+				thisPageHasMenu = false ;
+			}
 		}
 		
 		/**returns true if current MovieClip had its own animation*/
@@ -144,20 +141,20 @@ package appManager.animatedPages.pageManager
 		/**returns true if the animation is over*/
 		public function next():Boolean
 		{
-			if(currentPage)
+			if(currentMenu)
 			{
 				if(App.skipAnimations)
 				{
-					currentPage.gotoAndStop(middleFrame);
+					currentMenu.gotoAndStop(middleFrame);
 				}
-				if(currentPage.currentFrame<middleFrame)
+				if(currentMenu.currentFrame<middleFrame)
 				{
-					currentPage.nextFrame();
+					currentMenu.nextFrame();
 					return false;
 				}
-				else if(currentPage.currentFrame>middleFrame)
+				else if(currentMenu.currentFrame>middleFrame)
 				{
-					currentPage.prevFrame();
+					currentMenu.prevFrame();
 					return false ;
 				}
 				else
@@ -171,17 +168,17 @@ package appManager.animatedPages.pageManager
 		/**returns true if the animation is over*/
 		public function prev():Boolean
 		{
-			if(currentPage)
+			if(currentMenu)
 			{
 				if(middleFrame<finishFrame)
 				{
 					if(App.skipAnimations)
 					{
-						currentPage.gotoAndStop(finishFrame);
+						currentMenu.gotoAndStop(finishFrame);
 					}
-					if(currentPage.currentFrame<finishFrame)
+					if(currentMenu.currentFrame<finishFrame)
 					{
-						currentPage.nextFrame();
+						currentMenu.nextFrame();
 						return false ;
 					}
 					else
@@ -193,11 +190,11 @@ package appManager.animatedPages.pageManager
 				{
 					if(App.skipAnimations)
 					{
-						currentPage.gotoAndStop(1);
+						currentMenu.gotoAndStop(1);
 					}
-					if(currentPage.currentFrame>1)
+					if(currentMenu.currentFrame>1)
 					{
-						currentPage.prevFrame();
+						currentMenu.prevFrame();
 						return false ;
 					}
 					else
@@ -212,9 +209,9 @@ package appManager.animatedPages.pageManager
 		
 		override public function get totalFrames():int
 		{
-			if(currentPage)
+			if(currentMenu)
 			{
-				return currentPage.totalFrames;
+				return currentMenu.totalFrames;
 			}
 			else
 			{
@@ -224,9 +221,9 @@ package appManager.animatedPages.pageManager
 		
 		override public function gotoAndStop(frame:Object, scene:String=null):void
 		{
-			if(currentPage)
+			if(currentMenu)
 			{
-				currentPage.gotoAndStop(frame);
+				currentMenu.gotoAndStop(frame);
 			}
 			else
 			{
@@ -237,11 +234,11 @@ package appManager.animatedPages.pageManager
 		public function dispatchPageReadyEventOnceForPage():void
 		{
 			// TODO Auto Generated method stub
-			if(currentPage!=null && !pageReadyDispatched)
+			if(currentMenu!=null && !pageReadyDispatched)
 			{
 				pageReadyDispatched = true ;
 				trace("Dispatch page ready event");
-				currentPage.dispatchEvent(new PageControllEvent(PageControllEvent.PAGE_ANIMATION_READY));
+				currentMenu.dispatchEvent(new PageControllEvent(PageControllEvent.PAGE_ANIMATION_READY));
 			}
 		}
 	}

@@ -20,6 +20,8 @@ package contents
 					imageTarget:String='',
 					content:String='';
 		
+		public var menuType:String = '' ;
+		
 		/**New atribute for music volume */
 		public var musicVolume:Number = 1 ;
 		
@@ -98,6 +100,7 @@ package contents
 			}
 			//trace("musicVolume : "+musicVolume);
 			type = inputXML.type ;
+			menuType = inputXML.menutype ;
 			title = inputXML.title ;
 			imageTarget = inputXML.image;
 			content = inputXML.content ;
@@ -204,6 +207,7 @@ package contents
 			xml.@id = id;
 			xml.music = musicURL ;
 			xml.type = type;
+			xml.menutype = menuType;
 			xml.title = title;
 			xml.image = imageTarget;
 			xml.content = content;
@@ -261,6 +265,7 @@ package contents
 			newPageData.id = id ;
 			newPageData.musicURL = musicURL ;
 			newPageData.type = type ;
+			newPageData.menuType = menuType ;
 			newPageData.title = title ;
 			newPageData.imageTarget = imageTarget ;
 			newPageData.content = content ;
