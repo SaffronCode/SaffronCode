@@ -135,6 +135,7 @@ package darkBox
 				if(event.keyCode == Keyboard.BACK || event.keyCode == Keyboard.HOME )
 				{
 					event.stopImmediatePropagation();
+					event.preventDefault();
 					hide();
 				}
 			}
