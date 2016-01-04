@@ -457,6 +457,7 @@ package contents.displayPages
 				{
 					var newLink:LinkItem = new linkClass() ;
 					linksContainer.addChild(newLink) ;
+					newLink.setSize(areaRect.width,areaRect.height);
 					newLink.setUp(myPageData.links1[lastGeneratedLinkIndes]) ;
 					
 					createLinkOn(newLink,linksSensor);

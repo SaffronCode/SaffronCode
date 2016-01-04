@@ -23,6 +23,8 @@ package contents.displayPages
 		
 		public var myLinkData:LinkData ;
 		
+		protected var myParentWidth:Number,myParentHeight:Number;
+		
 		public function LinkItem(mouseChildAccept:Boolean=false)
 		{
 			super();
@@ -42,6 +44,14 @@ package contents.displayPages
 			
 			this.mouseChildren = mouseChildAccept ;
 			this.addEventListener(MouseEvent.CLICK,imSelected);
+		}
+		
+		/**New function to change the link item size dynamicly*/
+		public function setSize(Width:Number, Height:Number):void
+		{
+			// TODO Auto Generated method stub
+			myParentWidth = Width;
+			myParentHeight = Height;
 		}
 		
 		/**Set up the page*/
