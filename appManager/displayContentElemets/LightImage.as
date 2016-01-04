@@ -93,7 +93,8 @@ package appManager.displayContentElemets
 		}
 		
 		
-		/**This class will resize the loaded image to its size to prevent gpu process and also it will crop the image to.*/
+		/**This class will resize the loaded image to its size to prevent gpu process and also it will crop the image to.<br>
+		 * pass -1 for each dimention to make the original value to use on that side*/
 		override public function setUp(imageURL:String, loadInThisArea:Boolean=false, imageW:Number=0, imageH:Number=0, X:Number=0, Y:Number=0,keepRatio:Boolean=true):*
 		{
 			//trace("Load this image : "+imageURL);
@@ -108,7 +109,11 @@ package appManager.displayContentElemets
 				return ;
 			}
 			URL = imageURL;
-			if(imageW!=0)
+			if(imageW==-1)
+			{
+				W = 0 ;
+			}
+			else if(imageW!=0)
 			{
 				W = imageW;
 			}
@@ -116,7 +121,12 @@ package appManager.displayContentElemets
 			{
 				W = super.width ;
 			}
-			if(imageH!=0)
+			
+			if(imageH==-1)
+			{
+				H = 0 ;
+			}
+			else if(imageH!=0)
 			{
 				H = imageH;
 			}
@@ -227,6 +237,14 @@ package appManager.displayContentElemets
 			if(W!=0 && H!=0)
 			{
 				newBitmapData = BitmapEffects.changeSize(bitmapData,W,H,keepImageRatio,LoadInThisArea);
+			}
+			else if(W!=0)
+			{
+				newBitmapData = BitmapEffects.changeSize(bitmapData,W,bitmapData.height*(W/bitmapData.width),keepImageRatio,LoadInThisArea);
+			}
+			else if(H!=0)
+			{
+				newBitmapData = BitmapEffects.changeSize(bitmapData,bitmapData.height*(H/bitmapData.height),H,keepImageRatio,LoadInThisArea);
 			}
 			else
 			{
