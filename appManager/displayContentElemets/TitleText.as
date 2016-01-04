@@ -47,5 +47,11 @@ package appManager.displayContentElemets
 			// TODO Auto Generated method stub
 			myText.textColor = colorNum ;
 		}
+		
+		public function setUpMultiline(content:String,arabicText:Boolean = true,resolution:uint=0):void
+		{
+			// TODO Auto Generated method stub
+			TextPutter.onTextArea(myText,content,arabicText,true,false,resolution);
+		}
 	}
 }
