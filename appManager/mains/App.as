@@ -223,15 +223,8 @@ package appManager.mains
 			if(mainAnim == null)
 			{
 				//do it if mainAnim doesent exists
-				pageManagerObject.setUp(event);
-				if(menuManagerObject)
-				{
-					menuManagerObject.setUp(event as AppEventContent);
-				}
-				if(titleManager!=null)
-				{
-					titleManager.setUp(event);
-				}
+				trace("*************** page change 1");
+				manageAllAnimatedPaged(event);
 			}
 			
 			if(event.myType == AppEvent.home)
@@ -276,20 +269,36 @@ package appManager.mains
 		}
 		
 		/**This function will call just when the mainAnim is exists*/
-		protected function changePage(event:AppEvent):void
+		protected function changePage(s:AppEvent):void
 		{
 			// TODO Auto-generated method stub
 			trace("Main anim is ready");
-			pageManagerObject.setUp(currentAppEvent);
+			manageAllAnimatedPaged(currentAppEvent);
+		}	
+		
+		private function manageAllAnimatedPaged(selectedEvent:AppEvent):void
+		{
+			/*pageManagerObject.setUp(selectedEvent);
 			if(menuManagerObject)
 			{
-				menuManagerObject.setUp(currentAppEvent as AppEventContent);
+				menuManagerObject.setUp(selectedEvent as AppEventContent);
 			}
 			if(titleManager!=null)
 			{
-				titleManager.setUp(currentAppEvent);
+				titleManager.setUp(selectedEvent);
+			}*/
+			
+		//////////////////////////////////////////////
+			pageManagerObject.setUp(selectedEvent);
+			if(menuManagerObject && !AppEvent.isRefereshEvent(selectedEvent))
+			{
+				menuManagerObject.setUp(selectedEvent as AppEventContent);
 			}
-		}	
+			if(titleManager!=null && !AppEvent.isRefereshEvent(selectedEvent))
+			{
+				titleManager.setUp(selectedEvent);
+			}
+		}
 		
 		
 	//Main anim manager

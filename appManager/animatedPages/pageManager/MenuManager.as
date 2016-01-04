@@ -44,13 +44,14 @@ package appManager.animatedPages.pageManager
 			{
 				toEvent = new AppEventContent(null);
 			}
+			anim(null);
 		}
 		
 		protected function anim(event:Event):void
 		{
 			// TODO Auto-generated method stub
 			var animIsOver:Boolean = false;
-			if(toEvent.myType == AppEvent.home || toEvent.pageData.menuType!=myCurrentEvent.pageData.menuType || toEvent.myType == AppEvent.refresh || toEvent.reload)
+			if(/*toEvent.myType == AppEvent.home || */toEvent.pageData.menuType!=myCurrentEvent.pageData.menuType /*|| toEvent.myType == AppEvent.refresh || toEvent.reload*/)
 			{
 				this.dispatchEvent(new MenuEvent(MenuEvent.MENU_DELETED,null,true));
 				

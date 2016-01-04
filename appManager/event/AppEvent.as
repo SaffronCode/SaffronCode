@@ -41,6 +41,12 @@ package appManager.event
 			return newAppEventContent;
 		}
 		
+		/**Returns true if the current event is a refresh event*/
+		public static function isRefereshEvent(event:AppEvent):Boolean
+		{
+			return event.myID == id_not_set || event.myType == refresh ;
+		}
+		
 		public function AppEvent(pageType:String=home,eventType:String=PAGE_CHANGES,pageID:String=id_not_set,reloadNeeded:Boolean=false)
 		{
 			myType = pageType ;
