@@ -21,9 +21,9 @@ package appManager.displayContentElemets
 			myText.text = '';
 		}
 		
-		public function setUp(title:String,arabicText:Boolean = true)
+		public function setUp(title:String,arabicText:Boolean = true,splitIfToLong:Boolean=false,resolution:uint=0)
 		{
-			TextPutter.OnButton(myText,title,arabicText,true,true);
+			TextPutter.OnButton(myText,title,arabicText,true,true,false,resolution,splitIfToLong);
 		}
 		
 		override public function set width(value:Number):void
