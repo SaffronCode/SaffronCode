@@ -32,9 +32,13 @@ package appManager.animatedPages.pageManager
 		}
 		
 		/**change the page event*/
-		public function setUp(newEvent:AppEvent)
+		public function setUp(newEvent:AppEvent,forceToRefresh:Boolean=false)
 		{
 			currentEvent = toEvent ;
+			if(forceToRefresh)
+			{
+				currentEvent.myID = newEvent.myID+'*';
+			}
 			toEvent = newEvent ;
 		}
 		

@@ -125,7 +125,7 @@ package appManager.mains
 				fakePageData.title = event.title;
 				var fakeAppEvent:AppEventContent = new AppEventContent(new LinkData(),true,true);
 				fakeAppEvent.pageData = fakePageData ;
-				titleManager.setUp(fakeAppEvent);
+				titleManager.setUp(fakeAppEvent,true);
 			}
 		}
 		
