@@ -6,8 +6,11 @@ package diagrams.table
 	{
 		public static const TABLE_SELECTED:String = "TABLE_SELECTED" ;
 		
-		public var 	Vid:uint,
-					Hid:uint;
+		/**↨ Y*/
+		public var 	Vid:uint;
+		
+		/**↔ X*/
+		public var Hid:uint;
 					
 		public var Value:String ;
 		
