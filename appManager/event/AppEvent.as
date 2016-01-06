@@ -64,5 +64,10 @@ package appManager.event
 			
 			super(eventType,true);
 		}
+		
+		override public function clone():Event
+		{
+			return new AppEvent(myType,type,myID,reload);
+		}
 	}
 }

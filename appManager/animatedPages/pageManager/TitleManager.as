@@ -34,7 +34,7 @@ package appManager.animatedPages.pageManager
 		/**change the page event*/
 		public function setUp(newEvent:AppEvent,forceToRefresh:Boolean=false)
 		{
-			currentEvent = toEvent ;
+			currentEvent = toEvent.clone() as AppEvent ;
 			if(forceToRefresh)
 			{
 				currentEvent.myID = newEvent.myID+'*';
