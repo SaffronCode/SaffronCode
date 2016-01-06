@@ -134,7 +134,14 @@
 			if(permitionRequiredToChangePage())
 			{
 				trace("The page changing needs a permition");
-				preventorFunction();
+				if(preventorFunction.length>0)
+				{
+					preventorFunction(preventedEvent);
+				}
+				else
+				{
+					preventorFunction();
+				}
 				return true ;
 			}
 			//trace("No permition needed : "+preventorFunction+' , '+preventorPage+' , '+preventorPage.stage)
