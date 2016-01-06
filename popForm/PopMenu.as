@@ -1,4 +1,5 @@
 ﻿package popForm
+	//popForm.PopMenu
 {
 	import avmplus.getQualifiedClassName;
 	
@@ -115,7 +116,10 @@
 			this.visible = false;
 			
 			titleCont = Obj.get('title_container',this);
-			titleTXT = Obj.get('title_txt',titleCont);
+			if(titleCont)
+			{
+				titleTXT = Obj.get('title_txt',titleCont);
+			}
 			titleBackMC = Obj.get('title_cont',this);
 			//titleMC = Obj.get('title_mc',titleBackMC);
 			
@@ -124,7 +128,11 @@
 			myContent = Obj.findThisClass(PopMenuContenDisplay,this,true);
 			myContent.addEventListener(PopMenuEvent.POP_BUTTON_SELECTED,popMenuitemsAreSelected);
 			
-			backMC = Obj.get('backGround_mc',Obj.get('backGround_mc',this));
+			var backContainer:MovieClip = Obj.get('backGround_mc',this) ;
+			if(backContainer)
+			{
+				backMC = Obj.get('backGround_mc',backContainer);
+			}
 			var mainBackMC:MovieClip ;
 			
 			var backGroundchilds:Array = Obj.getAllChilds('main_back_mc',this);
@@ -145,10 +153,16 @@
 			
 			NativeApplication.nativeApplication.addEventListener(KeyboardEvent.KEY_DOWN,checkBack);
 			
-			backMinH = backMC.height ;
+			if(backMC)
+			{
+				backMinH = backMC.height ;
+			}
 			
 			menuIconMC = Obj.get('icon_mc',this);
-			menuIconMC.stop();
+			if(menuIconMC)
+			{
+				menuIconMC.stop();
+			}
 		}
 		
 		
@@ -277,13 +291,18 @@
 			show = true ;
 			this.visible = true ;
 			
-			TextPutter.OnButton(titleTXT,title,true,true,false,false);
-			if( titleTXT.height > 600 )
+			if(titleTXT)
 			{
-				titleTXT.height = 600 ;
+				TextPutter.OnButton(titleTXT,title,true,true,false,false);
+				if( titleTXT.height > 600 )
+				{
+					titleTXT.height = 600 ;
+				}
 			}
-			
-			menuIconMC.gotoAndStop(type.frame) ;
+			if(menuIconMC)
+			{
+				menuIconMC.gotoAndStop(type.frame) ;
+			}
 			
 			//SoundManager.sound_popMenu_ba(type.soundID);
 			
@@ -295,7 +314,10 @@
 			//ME.y = Y0-(backMC.height-backMinH)/2;
 			
 			myContent.setUp(content/*,type.colorTransform*/);
-			backMC.height = Math.max(Math.min(myContent.height+50,backMaxH),backMinH) ;//backMinH+Math.floor(Math.random()*(backMaxH-backMinH));
+			if(backMC)
+			{
+				backMC.height = Math.max(Math.min(myContent.height+50,backMaxH),backMinH) ;//backMinH+Math.floor(Math.random()*(backMaxH-backMinH));
+			}
 			//trace("myContent.height : "+myContent.height + ' vs backMaxH : '+backMaxH+' vs backMinH : '+backMinH+' > '+backMC.height);
 			
 			if(cancelButton)
