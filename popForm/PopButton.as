@@ -39,6 +39,7 @@
 		public function PopButton(str:String=''/*,colorTrans:ColorTransform=null*/,buttonID:*=0,type:uint = 1,completeButtonObject:* = null )
 		{
 			super();
+			this.stop();
 			me = this ;
 			this.buttonMode = true ;
 			this.mouseChildren = false ;
