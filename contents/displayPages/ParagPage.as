@@ -119,7 +119,10 @@ package contents.displayPages
 				}
 				else if(i!=0)
 				{
-					contentsString+=singleEnter;
+					if(listOfParag[i].content!='')
+					{
+						contentsString+=singleEnter;
+					}
 					//textY+=paragH ;
 				}
 				
@@ -135,11 +138,14 @@ package contents.displayPages
 				}*/
 				//trace('----------------------');
 				//trace("Parag string is : • "+listOfParag[i].content+' • ');
-				contentsString+=listOfParag[i].content;
-				TextPutter.onTextArea(textTF,contentsString,true,false,useCash,0,alighn);
-				textY = textTF.textHeight;
+				if(listOfParag[i].content!='')
+				{
+					contentsString+=listOfParag[i].content;
+					TextPutter.onTextArea(textTF,contentsString,true,false,useCash,0,alighn);
+					textY = textTF.textHeight;
 				//trace("ImageY : "+ImageY);
-				ImageY = textY ;
+					ImageY = textY ;
+				}
 				//textY+=paragH;
 					
 				//TextPutter.onTextArea(textTF,currentPageData.content,true,true,true,0,alighn);
