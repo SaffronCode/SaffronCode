@@ -7,6 +7,12 @@ package appManager.displayContentElemets
 	{
 		protected var URL:String ;
 		
+		/**Returns the last light image url*/
+		public function get Url():String
+		{
+			return URL ;
+		}
+		
 		public function Image()
 		{
 			super();
