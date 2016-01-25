@@ -37,7 +37,14 @@ package appManager.displayContentElemets
 		
 		override public function get height():Number
 		{
-			return H ;
+			if(scrollMC==null)
+			{
+				return myTextTF.height ;
+			}
+			else
+			{
+				return H ;
+			}
 		}
 		
 		override public function get width():Number
