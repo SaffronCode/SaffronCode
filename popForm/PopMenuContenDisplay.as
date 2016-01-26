@@ -372,7 +372,7 @@ package popForm
 					else if(lastButFrame == but.currentFrame || butData.ignoreButtonFrameOnLining)
 					{
 						var butW:Number = but.width ;
-						var menuW:Number = this.width ;
+						var menuW:Number = maxAreaMC.width ;
 						var lineY:Number = buttonList[lastInLineButton].y ;
 						/**This value is allways more than 0*/
 						var inLineButtons:uint = i-lastInLineButton+1 ;

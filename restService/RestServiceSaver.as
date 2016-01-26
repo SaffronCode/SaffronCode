@@ -12,7 +12,7 @@ package restService
 		{
 			var valueName:String = generateID(id,jsonParam) ;
 			var cash:* = SavedDatas2.load(valueName) ;
-			trace("Load > "+valueName+' ○ '+cash+' ○');
+			//trace("Load > "+valueName+' ○ '+cash+' ○');
 			return cash;
 		}
 		
@@ -38,7 +38,7 @@ package restService
 			//trace("**Values saved");
 			var valueName:String = generateID(id,jsonParam);
 			trace("○ jsonParam is  :  "+jsonParam);
-			trace("Save > "+valueName+" ○ "+value+' ○');
+		//	trace("Save > "+valueName+" ○ "+value+' ○');
 			SavedDatas2.save(valueName,value);
 		}
 		
