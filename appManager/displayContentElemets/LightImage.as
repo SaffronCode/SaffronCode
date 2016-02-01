@@ -233,24 +233,24 @@ package appManager.displayContentElemets
 				return ;
 			}
 			var bitmapData:BitmapData = newBitmap.bitmapData ;
-			var newBitmapData:BitmapData ;
+			//var newBitmapData:BitmapData ;
 			if(W!=0 && H!=0)
 			{
-				newBitmapData = BitmapEffects.changeSize(bitmapData,W,H,keepImageRatio,LoadInThisArea);
+				bitmapData = BitmapEffects.changeSize(bitmapData,W,H,keepImageRatio,LoadInThisArea);
 			}
 			else if(W!=0)
 			{
-				newBitmapData = BitmapEffects.changeSize(bitmapData,W,bitmapData.height*(W/bitmapData.width),keepImageRatio,LoadInThisArea);
+				bitmapData = BitmapEffects.changeSize(bitmapData,W,bitmapData.height*(W/bitmapData.width),keepImageRatio,LoadInThisArea);
 			}
 			else if(H!=0)
 			{
-				newBitmapData = BitmapEffects.changeSize(bitmapData,bitmapData.height*(H/bitmapData.height),H,keepImageRatio,LoadInThisArea);
+				bitmapData = BitmapEffects.changeSize(bitmapData,bitmapData.height*(H/bitmapData.height),H,keepImageRatio,LoadInThisArea);
 			}
-			else
-			{
-				newBitmapData = bitmapData ;
-			}
-			newBitmap = new Bitmap(newBitmapData);
+			(loader.content as Bitmap).bitmapData.dispose();
+			loader.unloadAndStop();
+			loader.unload();
+			loader = null ;
+			newBitmap.bitmapData = bitmapData;
 			newBitmap.smoothing = true ;
 			//this.addChild(newBitmap);
 			
