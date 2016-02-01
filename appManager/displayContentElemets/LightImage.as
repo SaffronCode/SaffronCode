@@ -8,6 +8,9 @@ package appManager.displayContentElemets
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
+	import flash.filesystem.File;
+	import flash.filesystem.FileMode;
+	import flash.filesystem.FileStream;
 	import flash.net.URLRequest;
 	import flash.system.ApplicationDomain;
 	import flash.system.LoaderContext;
@@ -51,6 +54,8 @@ package appManager.displayContentElemets
 		private var keepImageRatio:Boolean ;
 
 		private var newBitmap:Bitmap;
+
+		private var fileStreamLoader:FileStream;
 		
 		public function LightImage(BackColor:uint=0x000000,BackAlpha:Number=0)
 		{
@@ -199,7 +204,23 @@ package appManager.displayContentElemets
 			loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR,imageNotFound);
 			if(event!=null)
 			{
-				loader.load(new URLRequest(event.offlineTarget),loaderContext);
+				if(fileStreamLoader)
+				{
+					fileStreamLoader.close();
+					fileStreamLoader = null ;
+				}
+				fileStreamLoader = new FileStream();
+				fileStreamLoader.addEventListener(Event.COMPLETE,fileLoaded);
+				try
+				{
+					fileStreamLoader.openAsync(new File(event.offlineTarget),FileMode.READ);
+				}
+				catch(e)
+				{
+					fileStreamLoader.close();
+					fileStreamLoader = null ;
+					loader.load(new URLRequest(event.offlineTarget),loaderContext);
+				}
 			}
 			else
 			{
@@ -207,6 +228,17 @@ package appManager.displayContentElemets
 				loaderContext.allowLoadBytesCodeExecution = true ;
 				loader.loadBytes(loadedBytes,loaderContext);
 			}
+		}
+		
+		protected function fileLoaded(event:Event):void
+		{
+			//trace("\t*\tImage loaded as file");
+			var loaderContext:LoaderContext = new LoaderContext(false,ApplicationDomain.currentDomain);
+			var bytes:ByteArray = new ByteArray();
+			fileStreamLoader.readBytes(bytes);
+			loader.loadBytes(bytes,loaderContext);
+			fileStreamLoader.close();
+			bytes.clear();
 		}
 		
 		protected function imageNotFound(event:*):void
@@ -285,6 +317,11 @@ package appManager.displayContentElemets
 		{
 			// TODO Auto-generated method stub
 			clearTimeout(timeOutValue);
+			
+			if(fileStreamLoader)
+			{
+				fileStreamLoader.close();
+			}
 			
 			if(loadedBytes!=null)
 			{
