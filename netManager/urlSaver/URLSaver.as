@@ -65,6 +65,15 @@ package netManager.urlSaver
 		/**The loader will not close till the image is loaded*/
 		private var reloadTimeOutId:uint,
 					reloadTime:uint = 10000;
+
+					/**Async file saver*/
+		private var fileSaver:FileStream;
+
+		/**File loader manager*/
+		private var fileLoader:FileStream;
+
+		/**File target manager*/
+		private var fileTarger:File;
 					
 		/**you have to call load() function to start file loading proccess<br>
 		 * if you set true in this value , it will not load byte array of your file and it will just return URL*/
@@ -203,7 +212,10 @@ package netManager.urlSaver
 		public function cansel()
 		{
 			//trace('Cansel donwload manager : '+onlineURL);
-			
+			if(fileSaver)
+			{
+				fileSaver.close();
+			}
 			clearTimeout(reloadTimeOutId);
 			if(urlLoader != null)
 			{
@@ -277,8 +289,8 @@ package netManager.urlSaver
 				//trace("Downloaded bytes are : "+myLoadedBytes.length);
 				
 				saveLoadedBytes();
-				//DownloadManager.forgetWithDilay(onlineURL);
-				loadOflineFile();
+				//Moved to the above function 
+				//loadOflineFile();
 				
 			/*}*/
 		}
@@ -343,17 +355,18 @@ package netManager.urlSaver
 			
 			//Now save loaded file on hard
 			myLoadedBytes.position = 0 ;
-			var fileSaver:FileStream = new FileStream();
-			try
+			if(fileSaver)
 			{
-				fileSaver.open(oflineFile,FileMode.WRITE);
-				fileSaver.writeBytes(myLoadedBytes,0,myLoadedBytes.bytesAvailable);
 				fileSaver.close();
+				fileSaver = null ;
 			}
-			catch(e)
-			{
-				trace("URL saver file is not write able. saveLoadedByte");
-			}
+			fileSaver = new FileStream();
+			fileSaver.addEventListener(Event.CLOSE,fileIsSaved);
+			fileSaver.addEventListener(IOErrorEvent.IO_ERROR,fileSaverError);
+			fileSaver.openAsync(oflineFile,FileMode.WRITE);
+			fileSaver.writeBytes(myLoadedBytes);
+			fileSaver.close();
+			trace("Save the imafe on device...................................... : "+oflineFile.url+' > '+myLoadedBytes.bytesAvailable);
 			
 			//SavedDatas.save(onlineURL,offlineURL);
 			//trace('offile file saved on : '+onlineURL);
@@ -364,12 +377,26 @@ package netManager.urlSaver
 			storage.flush();
 		}
 		
+		protected function fileSaverError(event:IOErrorEvent):void
+		{
+			// TODO Auto-generated method stub
+			trace("URL saver file is not write able. saveLoadedByte");
+			fileSaver.close();
+			loadOflineFile();
+		}
+		
+		protected function fileIsSaved(event:Event):void
+		{
+			trace("******************************** File is ready to save on the device ****************");
+			// TODO Auto-generated method stub
+			loadOflineFile();
+		}		
 		
 		/**load offline file as user wished*/
 		private function loadOflineFile():void
 		{
 			// TODO Auto Generated method stub
-			var fileTarger:File;
+			
 			try
 			{
 				fileTarger = new File(offlineURL);
@@ -378,18 +405,23 @@ package netManager.urlSaver
 			{
 				trace("I cannot find this offline file");
 			}
-			
+			var waitTillFileLoaded:Boolean = false ;
 			//I have to open the file to contrill the file size
 			if(!justOfflineURL && fileTarger!=null && fileTarger.exists)
 			{
 				//load byte array
 				if(myLoadedBytes == null || myLoadedBytes.length == 0)
 				{
-					var fileLoader:FileStream = new FileStream();
-					fileLoader.open(fileTarger,FileMode.READ);
-					myLoadedBytes = new ByteArray();
-					fileLoader.readBytes(myLoadedBytes,0,fileLoader.bytesAvailable);
-					fileLoader.close();
+					if(fileLoader)
+					{
+						fileLoader.close();
+						fileLoader = null ;
+					}
+					waitTillFileLoaded = true ;
+					fileLoader = new FileStream();
+					fileLoader.addEventListener(Event.COMPLETE,fileLoaded);
+					fileLoader.addEventListener(IOErrorEvent.IO_ERROR,fileCannotLoad);
+					fileLoader.openAsync(fileTarger,FileMode.READ);
 				}
 				myLoadedBytes.position = 0 ;
 			}
@@ -398,6 +430,14 @@ package netManager.urlSaver
 				myLoadedBytes = null ;
 			}
 			//trace("File size : "+fileTarger.size+" urlLoader : "+urlLoader);
+			if(!waitTillFileLoaded)
+			{
+				completeLoadRequestAndDispatchEvent();
+			}
+		}
+		
+		private function completeLoadRequestAndDispatchEvent():void
+		{
 			if(fileTarger!=null && fileTarger.exists && (fileTarger.size!=0 || (myLoadedBytes!=null && myLoadedBytes.length!=0) || (urlLoader!=null && urlLoader.data !=null && urlLoader.data.length!=0))) 
 			{
 				//trace("offlineURL : "+offlineURL);
@@ -415,6 +455,23 @@ package netManager.urlSaver
 			}
 		}
 		
+		protected function fileCannotLoad(event:IOErrorEvent):void
+		{
+			// TODO Auto-generated method stub
+			trace("Unable to load file");
+			fileLoader.close();
+			completeLoadRequestAndDispatchEvent();
+		}
+		
+		protected function fileLoaded(event:Event):void
+		{
+			// TODO Auto-generated method stub
+			trace("***********************************************File is ready to load***************");
+			myLoadedBytes = new ByteArray();
+			fileLoader.readBytes(myLoadedBytes,0,fileLoader.bytesAvailable);
+			fileLoader.close();
+			completeLoadRequestAndDispatchEvent();
+		}		
 		
 //////////////////////////////////////////////delete temporary
 		/**Delete images older than this date*/
