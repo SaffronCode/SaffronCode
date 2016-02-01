@@ -216,6 +216,10 @@ package netManager.urlSaver
 			{
 				fileSaver.close();
 			}
+			if(fileLoader)
+			{
+				fileLoader.close();
+			}
 			clearTimeout(reloadTimeOutId);
 			if(urlLoader != null)
 			{
@@ -366,7 +370,7 @@ package netManager.urlSaver
 			fileSaver.openAsync(oflineFile,FileMode.WRITE);
 			fileSaver.writeBytes(myLoadedBytes);
 			fileSaver.close();
-			trace("Save the imafe on device...................................... : "+oflineFile.url+' > '+myLoadedBytes.bytesAvailable);
+			//trace("Save the imafe on device...................................... : "+oflineFile.url+' > '+myLoadedBytes.bytesAvailable);
 			
 			//SavedDatas.save(onlineURL,offlineURL);
 			//trace('offile file saved on : '+onlineURL);
@@ -380,14 +384,14 @@ package netManager.urlSaver
 		protected function fileSaverError(event:IOErrorEvent):void
 		{
 			// TODO Auto-generated method stub
-			trace("URL saver file is not write able. saveLoadedByte");
+			//trace("URL saver file is not write able. saveLoadedByte");
 			fileSaver.close();
 			loadOflineFile();
 		}
 		
 		protected function fileIsSaved(event:Event):void
 		{
-			trace("******************************** File is ready to save on the device ****************");
+			//trace("******************************** File is ready to save on the device ****************");
 			// TODO Auto-generated method stub
 			loadOflineFile();
 		}		
@@ -466,7 +470,7 @@ package netManager.urlSaver
 		protected function fileLoaded(event:Event):void
 		{
 			// TODO Auto-generated method stub
-			trace("***********************************************File is ready to load***************");
+			//trace("***********************************************File is ready to load***************");
 			myLoadedBytes = new ByteArray();
 			fileLoader.readBytes(myLoadedBytes,0,fileLoader.bytesAvailable);
 			fileLoader.close();
