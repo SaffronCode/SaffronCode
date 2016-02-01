@@ -38,6 +38,9 @@ package appManager.displayContentElemets
 		/**You can cansel all animation by changing the static value activateAnimation*/
 		public var animated:Boolean = true ;
 		
+		/**0 to 1*/
+		public var animateSpeed:Number = 0 ;
+		
 		private var loader:Loader ,
 					urlSaver:URLSaver; 
 		
@@ -295,7 +298,7 @@ package appManager.displayContentElemets
 			{
 				this.alpha = 0 ;
 				//trace("make it come with animation : "+this);
-				AnimData.fadeIn(this);
+				AnimData.fadeIn(this,null,animateSpeed);
 			}
 			
 			this.dispatchEvent(new Event(Event.COMPLETE));
