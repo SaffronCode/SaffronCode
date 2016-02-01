@@ -1,11 +1,14 @@
 package photoEditor
 {
+	import flash.desktop.NativeApplication;
 	import flash.display.BitmapData;
 	import flash.display.MovieClip;
+	import flash.events.KeyboardEvent;
 	import flash.filesystem.File;
 	import flash.geom.Rectangle;
 	import flash.media.Camera;
 	import flash.media.CameraRoll;
+	import flash.ui.Keyboard;
 	import flash.utils.ByteArray;
 	
 	public class PhotoEdit extends MovieClip
@@ -61,8 +64,23 @@ package photoEditor
 			
 			editorButtons = Obj.get("button_mc",this);
 			backMC = Obj.get("back_mc",this);
+			
+			NativeApplication.nativeApplication.addEventListener(KeyboardEvent.KEY_DOWN,blockBack,false,1000000);
 		}
 		
+		protected function blockBack(event:KeyboardEvent):void
+		{
+			// TODO Auto-generated method stub
+			if(this.visible)
+			{
+				if(event.keyCode == Keyboard.BACK)
+				{
+					event.stopImmediatePropagation();
+					event.preventDefault();
+					close();
+				}
+			}
+		}		
 		
 		
 		public static function setUp(pageRectangle:Rectangle,autoSaveOnDevice:Boolean=true):void
