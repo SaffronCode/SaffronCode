@@ -348,6 +348,7 @@ package netManager.urlSaver
 			{
 				fileSaver.open(oflineFile,FileMode.WRITE);
 				fileSaver.writeBytes(myLoadedBytes,0,myLoadedBytes.bytesAvailable);
+				fileSaver.close();
 			}
 			catch(e)
 			{
@@ -388,6 +389,7 @@ package netManager.urlSaver
 					fileLoader.open(fileTarger,FileMode.READ);
 					myLoadedBytes = new ByteArray();
 					fileLoader.readBytes(myLoadedBytes,0,fileLoader.bytesAvailable);
+					fileLoader.close();
 				}
 				myLoadedBytes.position = 0 ;
 			}
