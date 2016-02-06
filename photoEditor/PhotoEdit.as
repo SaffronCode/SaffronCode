@@ -117,6 +117,7 @@ package photoEditor
 		private function disable(instanceDisabling:Boolean=false):void
 		{
 			this.mouseEnabled = this.mouseChildren = false ;
+			this.visible = false ;
 			if(instanceDisabling)
 			{
 				this.alpha = 0 ;
