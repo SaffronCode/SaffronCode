@@ -216,10 +216,19 @@ package appManager.displayContentElemets
 				fileStreamLoader.addEventListener(Event.COMPLETE,fileLoaded);
 				try
 				{
-					fileStreamLoader.openAsync(new File(event.offlineTarget),FileMode.READ);
+					trace("Try to load : "+event.offlineTarget);
+					var targetFile:File = new File(event.offlineTarget) ;
+					if(targetFile.exists)
+					{
+						fileStreamLoader.openAsync(targetFile,FileMode.READ);
+					}
+					else{
+						throw "The file is not exists" ;
+					}
 				}
 				catch(e)
 				{
+					trace("Light image async file loader errr : "+e);
 					fileStreamLoader.close();
 					fileStreamLoader = null ;
 					loader.load(new URLRequest(event.offlineTarget),loaderContext);
@@ -238,10 +247,17 @@ package appManager.displayContentElemets
 			//trace("\t*\tImage loaded as file");
 			var loaderContext:LoaderContext = new LoaderContext(false,ApplicationDomain.currentDomain);
 			var bytes:ByteArray = new ByteArray();
-			fileStreamLoader.readBytes(bytes);
-			loader.loadBytes(bytes,loaderContext);
-			fileStreamLoader.close();
-			bytes.clear();
+			try
+			{
+				fileStreamLoader.readBytes(bytes);
+				loader.loadBytes(bytes,loaderContext);
+				fileStreamLoader.close();
+				bytes.clear();
+			}
+			catch(e)
+			{
+				trace("Light image loading local file error : "+e);
+			}
 		}
 		
 		protected function imageNotFound(event:*):void
