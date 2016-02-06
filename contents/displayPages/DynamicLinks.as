@@ -512,7 +512,14 @@ package contents.displayPages
 			var i:int = 1;
 			for(i = 1 ; i<l ; i++)
 			{
-				linksInterfaceStorage[i].y = linksInterfaceStorage[i-1].y+(linksInterfaceStorage[i-1].height+myDeltaY)*MenuDirection;
+				if(MenuDirection>0)
+				{
+					linksInterfaceStorage[i].y = linksInterfaceStorage[i-1].y+(linksInterfaceStorage[i-1].height+myDeltaY);
+				}
+				else
+				{
+					linksInterfaceStorage[i].y = linksInterfaceStorage[i-1].y-(linksInterfaceStorage[i].height+myDeltaY);
+				}
 			}
 			var index:int = i-2;
 			if(l<2)
