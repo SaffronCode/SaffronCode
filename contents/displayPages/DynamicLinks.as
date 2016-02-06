@@ -80,6 +80,14 @@ package contents.displayPages
 		
 		/**Load all links togather without sensor*/
 		protected var loadAllLinksInstantly:Boolean ;
+		
+		protected var dynamicHeight:Boolean = false ;
+		
+		/**Make the dynamic link not scrollable and show all items instantly*/
+		public function set_dynamicHeigh(status:Boolean=true):void
+		{
+			dynamicHeight = loadAllLinksInstantly = status ;
+		}
 
 		
 		/**returns Y direction by reverted value*/
@@ -175,6 +183,10 @@ package contents.displayPages
 		
 		override public function get height():Number
 		{
+			if(dynamicHeight && linksContainer!=null)
+			{
+				return Math.max(linksContainer.height,areaRect.height);
+			}
 			if(areaRect == null )
 			{
 				return super.height;
@@ -331,30 +343,32 @@ package contents.displayPages
 				//linksContainer.y = scrollPosesObject[myPageData.id];
 			}*/
 			controllSensor();
-			
-			linkScroller = new ScrollMT(linksContainer,areaRect,/*areaRect*/null,!horizontalMenu,horizontalMenu,acceptAnimation&&!reverted,reverted);
-			if(myPageData.id!='' && scrollPosesObject[myPageData.id]!=null)
+			if(!dynamicHeight)
 			{
-				if(!horizontalMenu)
+				linkScroller = new ScrollMT(linksContainer,areaRect,/*areaRect*/null,!horizontalMenu,horizontalMenu,acceptAnimation&&!reverted,reverted);
+				if(myPageData.id!='' && scrollPosesObject[myPageData.id]!=null)
 				{
-					linksContainer.y = scrollPosesObject[myPageData.id];
-					if(scrollPosesObject[myPageData.id]<areaRect.y-1)
+					if(!horizontalMenu)
 					{
-						linkScroller.stopFloat();
+						linksContainer.y = scrollPosesObject[myPageData.id];
+						if(scrollPosesObject[myPageData.id]<areaRect.y-1)
+						{
+							linkScroller.stopFloat();
+						}
+						linkScroller.setAbsolutePose(areaRect.x,scrollPosesObject[myPageData.id]);
 					}
-					linkScroller.setAbsolutePose(areaRect.x,scrollPosesObject[myPageData.id]);
-				}
-				else
-				{
-					linksContainer.x = scrollPosesObject[myPageData.id];
-					if(scrollPosesObject[myPageData.id]<areaRect.x-1)
+					else
 					{
-						linkScroller.stopFloat();
+						linksContainer.x = scrollPosesObject[myPageData.id];
+						if(scrollPosesObject[myPageData.id]<areaRect.x-1)
+						{
+							linkScroller.stopFloat();
+						}
+						linkScroller.setAbsolutePose(scrollPosesObject[myPageData.id],areaRect.y);
 					}
-					linkScroller.setAbsolutePose(scrollPosesObject[myPageData.id],areaRect.y);
+					controllSensor();
+					linkScroller.lock(true);
 				}
-				controllSensor();
-				linkScroller.lock(true);
 			}
 			
 			this.addEventListener(Event.ENTER_FRAME,controllSensor);
