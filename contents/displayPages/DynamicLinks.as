@@ -185,7 +185,16 @@ package contents.displayPages
 		{
 			if(dynamicHeight && linksContainer!=null)
 			{
-				return Math.max(linksContainer.height,areaRect.height);
+				if(linksSensor)
+				{
+					linksContainer.removeChild(linksSensor);
+				}
+				var linkContainerHiegh:Number = linksContainer.height ;
+				if(linksSensor)
+				{
+					linksContainer.addChild(linksSensor);
+				}
+				return Math.max(linkContainerHiegh,areaRect.height);
 			}
 			if(areaRect == null )
 			{
