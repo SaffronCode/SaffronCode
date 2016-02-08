@@ -427,7 +427,7 @@ package netManager.urlSaver
 					fileLoader.addEventListener(IOErrorEvent.IO_ERROR,fileCannotLoad);
 					fileLoader.openAsync(fileTarger,FileMode.READ);
 				}
-				myLoadedBytes.position = 0 ;
+				//myLoadedBytes.position = 0 ;
 			}
 			else
 			{
