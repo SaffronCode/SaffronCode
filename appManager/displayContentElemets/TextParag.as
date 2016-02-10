@@ -93,7 +93,7 @@ package appManager.displayContentElemets
 				//trace("1 add parag on TextParag and its font is : "+myTextTF.defaultTextFormat.font+' added to textParag class')
 				//TextPutter.onTextArea(myTextTF,myText,isArabic,true,true,1,align,knownAsHTML) ;
 				//TextPutter.onTextArea(myTextTF,myText,isArabic,!activateLinks,false,0,align,knownAsHTML,-1);
-				TextPutter.onTextArea(myTextTF,myText,isArabic,userBitmap && !activateLinks,false,0,false,activateLinks,-1,generateLinksForURLs);
+				TextPutter.onTextArea(myTextTF,myText,isArabic,userBitmap && !activateLinks,false,0,align,activateLinks,-1,generateLinksForURLs);
 				//Debug line ↓
 				//TextPutter.onTextArea(myTextTF,myText,isArabic,false,false,1,true) ;
 				//	trace("2 add parag on TextParag and its font is : "+myTextTF.defaultTextFormat.font+' added to textParag class : '+myTextTF.text)
