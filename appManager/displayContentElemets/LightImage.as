@@ -50,6 +50,7 @@ package appManager.displayContentElemets
 		private var timeOutValue:uint ;
 		
 		private var loadedBytes:ByteArray ;
+		private var loadedBitmap:BitmapData ;
 		
 		private var backColor:uint,
 					backAlpha:Number;
@@ -94,10 +95,54 @@ package appManager.displayContentElemets
 		}
 		
 		/**You can show loaded image by this methode.*/
-		public function setUpBytes(imageBytes:ByteArray, loadInThisArea:Boolean=false, imageW:Number=0, imageH:Number=0, X:Number=0, Y:Number=0):void
+		public function setUpBytes(imageBytes:ByteArray, loadInThisArea:Boolean=false, imageW:Number=0, imageH:Number=0, X:Number=0, Y:Number=0,copyBytes:Boolean=false):void
 		{
-			loadedBytes = imageBytes ;
+			clearLastByte();
+			if(copyBytes)
+			{
+				loadedBytes = new ByteArray();
+				loadedBytes.writeBytes(imageBytes) ;
+			}
+			else
+			{
+				loadedBytes = imageBytes ;
+			}
+			clearLastBitmap();
 			setUp(null, loadInThisArea, imageW, imageH, X, Y);
+		}
+		
+		/**You can show loaded image by this methode.*/
+		public function setUpBitmapData(imageBitmap:BitmapData, loadInThisArea:Boolean=false, imageW:Number=0, imageH:Number=0, X:Number=0, Y:Number=0,copyBitmap:Boolean=false):void
+		{
+			clearLastByte();
+			clearLastBitmap();
+			if(copyBitmap)
+			{
+				loadedBitmap = imageBitmap.clone() ;
+			}
+			else
+			{
+				loadedBitmap = imageBitmap ;
+			}
+			setUp(null, loadInThisArea, imageW, imageH, X, Y);
+		}
+		
+		private function clearLastByte():void
+		{
+			if(loadedBytes)
+			{
+				loadedBytes.clear();
+				loadedBytes = null ;
+			}
+		}
+		
+		private function clearLastBitmap():void
+		{
+			if(loadedBitmap!=null)
+			{
+				loadedBitmap.dispose();
+				loadedBitmap = null ;
+			}
 		}
 		
 		
@@ -111,10 +156,15 @@ package appManager.displayContentElemets
 				trace("current image is same as old image on lightImage");
 				return ;
 			}
-			if(imageURL==null && loadedBytes==null)
+			if(imageURL==null && loadedBytes==null && loadedBitmap==null)
 			{
 				trace("No URL and no LoadedBytes defined yet");
 				return ;
+			}
+			if(imageURL!=null)
+			{
+				clearLastByte();
+				clearLastBitmap();
 			}
 			URL = imageURL;
 			if(imageW==-1)
@@ -189,10 +239,14 @@ package appManager.displayContentElemets
 				urlSaver.addEventListener(URLSaverEvent.NO_INTERNET,imageNotFound);
 				urlSaver.load(URL);
 			}
-			else
+			else if(loadedBytes!=null)
 			{
 				//The byte array should loaded befor
 				imageSaved();	
+			}
+			else if(loadedBitmap!=null)
+			{
+				imageLoaded();
 			}
 		}
 		
@@ -268,16 +322,28 @@ package appManager.displayContentElemets
 			timeOutValue = setTimeout(startWork,10000);
 		}
 		
-		protected function imageLoaded(event:Event):void
+		protected function imageLoaded(event:Event=null):void
 		{
 			// TODO Auto-generated method stub
 			cleatTheBitmap();
+			if(loader==null && loadedBitmap==null)
+			{
+				trace("*************************why the loader is null???"+loader);
+				return;
+			}
 			if(newBitmap)
 			{
 				newBitmap.bitmapData.dispose();
 				Obj.remove(newBitmap);
 			}
-			newBitmap = (loader.content as Bitmap);
+			if(loadedBitmap!=null)
+			{
+				newBitmap = new Bitmap(loadedBitmap);
+			}
+			else
+			{
+				newBitmap = (loader.content as Bitmap);
+			}
 			if(newBitmap==null)
 			{
 				trace("Image load faild on lightImage function imageLoaded");
@@ -297,10 +363,13 @@ package appManager.displayContentElemets
 			{
 				bitmapData = BitmapEffects.changeSize(bitmapData,bitmapData.height*(H/bitmapData.height),H,keepImageRatio,LoadInThisArea);
 			}
-			(loader.content as Bitmap).bitmapData.dispose();
-			loader.unloadAndStop();
-			loader.unload();
-			loader = null ;
+			if(loader)
+			{
+				(loader.content as Bitmap).bitmapData.dispose();
+				loader.unloadAndStop();
+				loader.unload();
+				loader = null ;
+			}
 			newBitmap.bitmapData = bitmapData;
 			newBitmap.smoothing = true ;
 			//this.addChild(newBitmap);
