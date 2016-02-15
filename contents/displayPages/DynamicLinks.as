@@ -377,6 +377,7 @@ package contents.displayPages
 					}
 					controllSensor();
 					linkScroller.lock(true);
+					linkScroller.unLock();
 				}
 			}
 			
