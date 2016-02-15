@@ -185,7 +185,7 @@ package contents.displayPages
 		{
 			if(dynamicHeight && linksContainer!=null)
 			{
-				if(linksSensor)
+				if(linksSensor!=null && linksSensor.parent!=null)
 				{
 					linksContainer.removeChild(linksSensor);
 				}
@@ -436,6 +436,10 @@ package contents.displayPages
 				{
 					requestPreLoader.visible = false ;
 					//Call this recursive function after preloader is invisible
+					if(linksSensor.parent==null)
+					{
+						linksContainer.addChild(linksSensor);
+					}
 					controllSensor();
 				}
 				else
@@ -453,6 +457,10 @@ package contents.displayPages
 						requestPreLoader.y = areaRect.height/2 ;
 					}
 					requestPreLoader.visible = true ;
+					if(linksSensor.parent!=null)
+					{
+						linksContainer.removeChild(linksSensor);
+					}
 					//Call below function after preloader added.
 					requestMore();
 				}
@@ -487,16 +495,7 @@ package contents.displayPages
 					
 					linksInterfaceStorage.push(newLink);
 					
-					linksContainer.graphics.clear();
-					linksContainer.graphics.beginFill(0,backAlpha) ;
-					if(!horizontalMenu)
-					{
-						linksContainer.graphics.drawRect(0,0,areaRect.width,linksSensor.y) ;
-					}
-					else
-					{
-						linksContainer.graphics.drawRect(0,0,linksSensor.x,areaRect.height) ;
-					}
+					updateDynamicLinsBackGround();
 					
 					lastGeneratedLinkIndes++ ;
 				}
@@ -519,6 +518,10 @@ package contents.displayPages
 			var l:uint = linksInterfaceStorage.length ;
 			//var Y:Number = myDeltaY*Ydirection ;
 			var i:int = 1;
+			if(MenuDirection<0 && l>0)
+			{
+				linksInterfaceStorage[0].y = linksInterfaceStorage[0].height*-1;
+			}
 			for(i = 1 ; i<l ; i++)
 			{
 				if(MenuDirection>0)
@@ -535,9 +538,34 @@ package contents.displayPages
 			{
 				index = 0 ;
 			}
-			linksSensor.y = linksInterfaceStorage[index].y+(linksInterfaceStorage[index].height+myDeltaY)*MenuDirection;
+			
+			
+			if(MenuDirection>0)
+			{
+				linksSensor.y = linksInterfaceStorage[index].y+linksInterfaceStorage[index].height+myDeltaY;
+			}
+			else
+			{
+				linksSensor.y = linksInterfaceStorage[index].y-myDeltaY;
+			}
+			trace("linksSensor : "+linksSensor.y);
+			updateDynamicLinsBackGround();
 		}
 		
+		private function updateDynamicLinsBackGround():void
+		{
+			// TODO Auto Generated method stub
+			linksContainer.graphics.clear();
+			linksContainer.graphics.beginFill(0,backAlpha) ;
+			if(!horizontalMenu)
+			{
+				linksContainer.graphics.drawRect(0,0,areaRect.width,linksSensor.y) ;
+			}
+			else
+			{
+				linksContainer.graphics.drawRect(0,0,linksSensor.x,areaRect.height) ;
+			}
+		}		
 		
 		/**Return the number of generated links for each lik generation*/
 		protected function get howManyLinksGenerates():uint
