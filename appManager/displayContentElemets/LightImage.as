@@ -60,6 +60,9 @@ package appManager.displayContentElemets
 
 		private var fileStreamLoader:FileStream;
 		
+		
+		private static var watermarkBitmapData:BitmapData ;
+		
 		public function LightImage(BackColor:uint=0x000000,BackAlpha:Number=0)
 		{
 			backColor = BackColor ;
@@ -301,6 +304,14 @@ package appManager.displayContentElemets
 			loader.unloadAndStop();
 			loader.unload();
 			loader = null ;
+			
+			if(watermarkBitmapData!=null)
+			{
+				var myWatermark:BitmapData = BitmapEffects.changeSize(watermarkBitmapData,bitmapData.width,bitmapData.height,true,true,true);
+				bitmapData.draw(myWatermark);
+				myWatermark.dispose();
+			}
+			
 			newBitmap.bitmapData = bitmapData;
 			newBitmap.smoothing = true ;
 			//this.addChild(newBitmap);
@@ -366,5 +377,16 @@ package appManager.displayContentElemets
 				//trace("LightImage problem : "+e);
 			}
 		}
+		
+		public static function addWaterMark(watermarkTarget:File):void
+		{
+			// TODO Auto Generated method stub
+			DeviceImage.loadFile(onWatermarkLoaded,watermarkTarget)
+		}
+		
+			private static function onWatermarkLoaded():void
+			{
+				watermarkBitmapData = DeviceImage.imageBitmapData ;
+			}
 	}
 }
