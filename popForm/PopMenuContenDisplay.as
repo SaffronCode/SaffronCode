@@ -199,6 +199,7 @@ package popForm
 			{
 				myDisplay = content.displayObject ;
 				myDisplay.y = Y ;
+				myDisplay.x = 0 ;
 				this.addChild(myDisplay);
 				Y+=myDisplay.height+10 ;
 			}
