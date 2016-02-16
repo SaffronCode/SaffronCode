@@ -366,7 +366,6 @@ package appManager.displayContentElemets
 			{
 				bitmapData = BitmapEffects.changeSize(bitmapData,bitmapData.height*(H/bitmapData.height),H,keepImageRatio,LoadInThisArea);
 			}
-<<<<<<< HEAD
 			
 			if(loader)
 			{
@@ -382,7 +381,6 @@ package appManager.displayContentElemets
 				bitmapData.draw(myWatermark);
 				myWatermark.dispose();
 			}
->>>>>>> bb92d7b81a08fe9161ea577c0efcf9f988d58871
 			newBitmap.bitmapData = bitmapData;
 			newBitmap.smoothing = true ;
 			//this.addChild(newBitmap);
