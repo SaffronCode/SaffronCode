@@ -39,6 +39,8 @@ package darkBox
 					preLoderMC:MovieClip,
 					closeMC:MovieClip;
 					
+		private var _Watermarkdark_mc:MovieClip
+					
 		//private var maskMC:MovieClip ;
 					
 					
@@ -86,6 +88,7 @@ package darkBox
 			/*initMask();*/
 			ME = this ;
 			
+			_Watermarkdark_mc = Obj.get("Watermarkdark_mc",this);
 			bannerMC = Obj.get("banner_mc",this);
 			precentMC = Obj.get("percent_mc",this);
 			backMC = Obj.get("back_mc",this);
@@ -100,6 +103,11 @@ package darkBox
 			preLoderMC.visible = false ;
 			precentMC.visible = false;
 			
+			if(_Watermarkdark_mc !== null){
+				_Watermarkdark_mc.mouseChildren = false
+				_Watermarkdark_mc.mouseEnabled = false
+			}
+			
 			prevMC.buttonMode = nextMC.buttonMode = closeMC.buttonMode = true ;
 			
 			closeMC.addEventListener(MouseEvent.CLICK,closeMe);
@@ -112,7 +120,6 @@ package darkBox
 			box_binary = Obj.findThisClass(BinaryFile,this);
 			box_vid = Obj.findThisClass(VideoImage,this);
 				
-			
 			/*box_flat.mask = box_pano.mask = box_shp.mask = box_vid.mask = maskMC ;
 			box_shp.mask = maskMC ;
 			box_vid.mask = maskMC ;*/
