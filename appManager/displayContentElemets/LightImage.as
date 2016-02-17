@@ -64,6 +64,10 @@ package appManager.displayContentElemets
 		
 		private static var watermarkBitmapData:BitmapData ;
 		
+		
+		private var _watermark:Boolean = true ;
+		
+		
 		public function LightImage(BackColor:uint=0x000000,BackAlpha:Number=0)
 		{
 			backColor = BackColor ;
@@ -71,6 +75,18 @@ package appManager.displayContentElemets
 			super();
 			
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
+		}
+		
+		/**Returns true if this light image can get watermark*/
+		private function isWatermarkEnabled():Boolean
+		{
+			return watermarkBitmapData!=null && _watermark ;
+		}
+		
+		/**Change the watermark status*/
+		public function set watermark(value:Boolean):void
+		{
+			_watermark = value ;
 		}
 		
 		override public function get height():Number
@@ -375,7 +391,7 @@ package appManager.displayContentElemets
 				loader = null ;
 			}
 			
-			if(watermarkBitmapData!=null)
+			if(isWatermarkEnabled())
 			{
 				var myWatermark:BitmapData = BitmapEffects.changeSize(watermarkBitmapData,bitmapData.width,bitmapData.height,true,true,true);
 				bitmapData.draw(myWatermark);
