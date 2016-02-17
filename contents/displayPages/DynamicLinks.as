@@ -54,6 +54,8 @@ package contents.displayPages
 						
 		/**This is the list of creted linkItems on the stage.*/
 		private var linksInterfaceStorage:Vector.<LinkItem> ;
+		
+		private var lastVisibleItem:uint = 0 ;
 					
 		protected var lastGeneratedLinkIndes:uint ;
 		
@@ -243,6 +245,7 @@ package contents.displayPages
 			
 			//reset cashed list
 			linksInterfaceStorage = new  Vector.<LinkItem>();
+			lastVisibleItem= 0 ;
 			
 			//trace("current page data is : "+pageData.export());
 			this.removeChildren();
@@ -427,6 +430,56 @@ package contents.displayPages
 		private function controllSensor(ev:Event=null)
 		{
 			var sens:Rectangle = linksSensor.getBounds(this);
+			
+			if(false && linksInterfaceStorage.length>0)
+			{
+				var visibleItem:LinkItem = linksInterfaceStorage[lastVisibleItem] ;
+				var inVisibleItem:LinkItem = linksInterfaceStorage[Math.max(0,lastVisibleItem-1)] ;
+				do
+				{
+					if(!horizontalMenu)
+					{
+						if(!reverted)
+						{
+							if(visibleItem.y+linksContainer.y+visibleItem.height<0)
+							{
+								if(visibleItem.visible)
+								{
+									visibleItem.visible=false;
+									lastVisibleItem = Math.min(linksInterfaceStorage.length-1,lastVisibleItem+1);
+									continue;
+								}
+							}
+							if(lastVisibleItem>0 && inVisibleItem.y+inVisibleItem.y+inVisibleItem.height>=0)
+							{
+								if(!inVisibleItem.visible)
+								{
+									inVisibleItem.visible=true;
+									lastVisibleItem = Math.max(0,lastVisibleItem-1);
+									continue;
+								}
+							}
+						}
+						else
+						{
+							trace("?");
+						}
+					}
+					else
+					{
+						if(!reverted)
+						{
+							trace("?");
+						}
+						else
+						{
+							trace("?");
+						}
+					}
+					break;
+				}while(true);
+			}
+			
 			if(loadAllLinksInstantly ||
 				(!horizontalMenu && !reverted && sens.top<areaRect.bottom) || (!horizontalMenu && reverted && sens.bottom>areaRect.top)
 				|| (horizontalMenu && !reverted && sens.left<areaRect.right) || (horizontalMenu && reverted && sens.right>areaRect.left))
