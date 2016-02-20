@@ -66,6 +66,7 @@ package appManager.displayContentElemets
 		
 		
 		private var _watermark:Boolean = true ;
+		private var IsLoading:Boolean;
 		
 		
 		public function LightImage(BackColor:uint=0x000000,BackAlpha:Number=0)
@@ -75,6 +76,12 @@ package appManager.displayContentElemets
 			super();
 			
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
+		}
+		
+		/**Returns true if it is in the loading progress*/
+		public function isLoading():Boolean
+		{
+			return IsLoading ;
 		}
 		
 		/**Returns true if this light image can get watermark*/
@@ -180,6 +187,7 @@ package appManager.displayContentElemets
 				trace("No URL and no LoadedBytes defined yet");
 				return ;
 			}
+			IsLoading = true ;
 			if(imageURL!=null)
 			{
 				clearLastByte();
@@ -376,11 +384,17 @@ package appManager.displayContentElemets
 			}
 			else if(W!=0)
 			{
+				//trace("• I whant to change the bitmap width to : "+W);
+				//trace("And the height will be "+bitmapData.height*(W/bitmapData.width));
 				bitmapData = BitmapEffects.changeSize(bitmapData,W,bitmapData.height*(W/bitmapData.width),keepImageRatio,LoadInThisArea);
+				H = bitmapData.height;
 			}
 			else if(H!=0)
 			{
-				bitmapData = BitmapEffects.changeSize(bitmapData,bitmapData.height*(H/bitmapData.height),H,keepImageRatio,LoadInThisArea);
+				//trace("• I whant to change the bitmap height to : "+H);
+				//trace("And the width will be "+bitmapData.width*(H/bitmapData.height));
+				bitmapData = BitmapEffects.changeSize(bitmapData,bitmapData.width*(H/bitmapData.height),H,keepImageRatio,LoadInThisArea);
+				W = bitmapData.width;
 			}
 			
 			if(loader)
@@ -413,6 +427,7 @@ package appManager.displayContentElemets
 				AnimData.fadeIn(this,null,animateSpeed);
 			}
 			
+			IsLoading = false;
 			this.dispatchEvent(new Event(Event.COMPLETE));
 		}
 		
