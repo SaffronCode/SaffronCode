@@ -1,6 +1,8 @@
 ﻿package popForm
 	//popForm.PopButton
 {
+	import appManager.displayContentElemets.LightImage;
+	
 	import flash.desktop.NativeApplication;
 	import flash.display.MovieClip;
 	import flash.events.Event;
@@ -138,8 +140,9 @@
 			}
 		}
 		
-		/**From now , buttonID can be both string or uint*/
-		public function setUp(str:String/*,colorTrans:ColorTransform=null*/,buttonID:*=0,type:uint = 1,completeButtonObject:* = null )
+		/**From now , buttonID can be both string or uint<br>
+		 * You can set the button image if it has LighiImage on its frame*/
+		public function setUp(str:String/*,colorTrans:ColorTransform=null*/,buttonID:*=0,type:uint = 1,completeButtonObject:* = null,buttonImage:String=null)
 		{
 			if(completeButtonObject != null && completeButtonObject is PopButtonData)
 			{
@@ -150,6 +153,16 @@
 			}
 			
 			this.gotoAndStop(type);
+			
+			if(buttonImage!=null)
+			{
+				trace("♠ the button image is not null : "+buttonImage);
+				var myLightImage:LightImage = Obj.findAllClass(LightImage,this)[0];
+				if(myLightImage!=null)
+				{
+					myLightImage.setUp(buttonImage,true);
+				}
+			}
 			
 			var txtContainer:MovieClip = Obj.get('txt_txt',this) ;
 			if(txtContainer!=null)
