@@ -27,6 +27,8 @@ package appManager.mains
 	 * add Intro and PageManger DisplayObject Classes to stage*/
 	public class App extends MovieClip
 	{
+		private static var ME:App ;
+		
 		protected var pageManagerObject:PageManager ;
 		
 		protected var menuManagerObject:MenuManager ;
@@ -62,6 +64,8 @@ package appManager.mains
 		public function App(autoPlayThePageMusics:Boolean=false,skipAllAnimations:Boolean = false)
 		{
 			super();
+			
+			ME = this ;
 			
 			skipAnimations = skipAllAnimations ;
 			
@@ -191,6 +195,12 @@ package appManager.mains
 			this.dispatchEvent(new AppEvent(null,AppEvent.APP_STARTS));
 			currentAppEvent = new AppEvent();
 			backToHomePage();
+		}
+		
+		/**Refresh te current page */
+		public static function refresh():void
+		{
+			ME.dispatchEvent(AppEvent.refreshEvent());
 		}
 		
 		/**Returnd true if the current page is not same as the last page*/
