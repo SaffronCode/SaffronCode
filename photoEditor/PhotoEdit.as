@@ -86,7 +86,20 @@ package photoEditor
 		public static function setUp(pageRectangle:Rectangle,autoSaveOnDevice:Boolean=true):void
 		{
 			AutoSaveOnDevice = autoSaveOnDevice ;
-			ME.setUp(pageRectangle);
+			if(ME)
+			{
+				ME.setUp(pageRectangle);
+			}
+			else
+			{
+				trace("PHOTO EDIT IS NOT EXISTS!!!!");
+				trace("PHOTO EDIT IS NOT EXISTS!!!!");
+				trace("PHOTO EDIT IS NOT EXISTS!!!!");
+				trace("PHOTO EDIT IS NOT EXISTS!!!!");
+				trace("PHOTO EDIT IS NOT EXISTS!!!!");
+				trace("PHOTO EDIT IS NOT EXISTS!!!!");
+				trace("PHOTO EDIT IS NOT EXISTS!!!!");
+			}
 		}
 		
 		private function setUp(pageRectangle:Rectangle):void
