@@ -52,6 +52,10 @@ package componentStatic
 			{
 				_obj[_page][Name_p] = Value
 			}
+			if(Value is Array && _catcherObject!=null)
+			{
+				_catcherObject[Name_p] = new Array()
+			}
 			setCatacher()
 			
 			var _selectFieldData:Object;
