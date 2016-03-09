@@ -16,7 +16,7 @@ package componentStatic
 			// TODO Auto-generated method stub
 			update()
 		}
-		private function update():void
+		public function update():void
 		{
 			var value:String  = ''
 			if(getObj(this.name)!=null)

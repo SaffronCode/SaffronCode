@@ -4,7 +4,10 @@ package componentStatic
 	
 	public class ComponentManagerEvent extends Event
 	{
+		/**chang fidle value*/
 		public static const CHANG:String = "CHANG";
+		
+		
 		public static const UPDATE:String = "UPDATE";
 		private var _componentName:String;
 		public function get componentName():String

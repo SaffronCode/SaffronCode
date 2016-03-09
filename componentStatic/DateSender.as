@@ -34,7 +34,7 @@ package componentStatic
 			update()
 		}
 		
-		private function update():void
+		public function update():void
 		{
 			var value:String  = ''
 			_date = null

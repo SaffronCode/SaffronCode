@@ -48,7 +48,7 @@ package componentStatic
 			var _error:Vector.<ErrorItem> = new Vector.<ErrorItem>()
 			for(var index in errorObj)
 			{
-				trace(index+':::::::::::::::::::::::::::::::::::',errorObj[index])
+				//trace(index+':::::::::::::::::::::::::::::::::::',errorObj[index])
 				if(errorObj[index]!=noErrorId)
 				{
 					var item:ErrorItem = new ErrorItem()
@@ -66,7 +66,7 @@ package componentStatic
 		}
 		public function chekError(CatcherObject_p:Object,Name_p:String,Type_p:String):Boolean
 		{	
-			trace('chek errorrrrrrrrrrrrrrrrrrrrrrr :',Name_p)
+			//trace('chek errorrrrrrrrrrrrrrrrrrrrrrr :',Name_p)
 			errorObj[Name_p] = noErrorId
 			if(CatcherObject_p==null || String(CatcherObject_p[Name_p])=='' || CatcherObject_p[Name_p]==null || CatcherObject_p[Name_p]==undefined )
 			{
