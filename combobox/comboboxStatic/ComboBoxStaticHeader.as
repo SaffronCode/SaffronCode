@@ -17,7 +17,7 @@ package combobox.comboboxStatic
 			_id = this.name.split('_')[1]
 			if(ComboBoxStaticManager.defalutLable(_id)!=null)
 			{
-				gotoAndStop(ComboBoxStaticManager.defalutLable(_id))
+				gotoLable(ComboBoxStaticManager.defalutLable(_id))
 			}
 			this.addEventListener(MouseEvent.CLICK,menu)
 			ComboBoxStaticManager.evt.addEventListener(ComboBoxStaticEvents.SELECT,changIcon)
@@ -43,9 +43,20 @@ package combobox.comboboxStatic
 		
 			if(_id == event.comboBoxId)
 			{	
-				gotoAndStop(event.id)
+				gotoLable(event.id)
 				_status = true
 				ComboBoxStaticManager.evt.dispatchEvent(new ComboBoxStaticEvents(ComboBoxStaticEvents.CLOSE,null,_id))
+			}
+		}
+		private function gotoLable(Lable_p:String):void
+		{
+			try
+			{
+				gotoAndStop(Lable_p)
+			}
+			catch(e:Error)
+			{
+				trace('no fond '+Lable_p)
 			}
 		}
 	}
