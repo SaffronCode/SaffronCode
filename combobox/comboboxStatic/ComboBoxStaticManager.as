@@ -19,7 +19,7 @@ package combobox.comboboxStatic
 		{
 			evt = new ComboBoxStaticManager()
 		}
-		public static function addDefaultItem(ComboBoxId_p:String,DefaultLabe_p:String):void
+		public static function setDefaultItem(ComboBoxId_p:String,DefaultLabe_p:String):void
 		{
 			defaultLable[ComboBoxId_p] = DefaultLabe_p
 		}
