@@ -1,5 +1,7 @@
 package combobox.comboboxStatic
 {
+	import contents.LinkData;
+	
 	import flash.events.Event;
 	
 	public class ComboBoxStaticEvents extends Event
@@ -27,11 +29,17 @@ package combobox.comboboxStatic
 			return _comboBoxId
 		}
 		
-		public function ComboBoxStaticEvents(type:String,id:String=null,comboBoxId:String=null, bubbles:Boolean=false, cancelable:Boolean=false)
+		private var _linkData:LinkData;
+		public function get linkData():LinkData
+		{
+			return _linkData
+		}
+		public function ComboBoxStaticEvents(type:String,id:String=null,comboBoxId:String=null,linkData:LinkData=null, bubbles:Boolean=false, cancelable:Boolean=false)
 		{
 			super(type, bubbles, cancelable);
 			_id = id
 			_comboBoxId = comboBoxId
+			_linkData = linkData	
 		}
 	}
 }

@@ -1,5 +1,7 @@
 package combobox.comboboxStatic
 {//combobox.comboboxStatic.ComboBoxStaticHeader
+	import appManager.displayContentElemets.TitleText;
+	
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -8,11 +10,12 @@ package combobox.comboboxStatic
 	{
 		private var _status:Boolean
 		private var _id:String
+		private var _title:TitleText;
 		public function ComboBoxStaticHeader()
 		{
 			super();
 			
-			
+			_title = Obj.findThisClass(TitleText,this)
 			_status = true
 			_id = this.name.split('_')[1]
 			if(ComboBoxStaticManager.defalutLable(_id)!=null)
@@ -49,6 +52,10 @@ package combobox.comboboxStatic
 		
 			if(_id == event.comboBoxId)
 			{	
+				if(_title!=null)
+				{
+					_title.setUp(event.linkData.name)
+				}
 				gotoLable(event.id)
 				ComboBoxStaticManager.setStatus(_id,_status)
 				_status = true
