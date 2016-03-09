@@ -10,7 +10,8 @@ package combobox.comboboxStatic
 	{
 		public static var evt:ComboBoxStaticManager
 		public static var scrolSplit:String="h"
-		private static var defaultLable:Object = new Object()	
+		private static var _defaultLable:Object = new Object()	
+		private static var _comboboxStatus:Object = new Object()	
 		public function ComboBoxStaticManager()
 		{
 			super()
@@ -21,12 +22,30 @@ package combobox.comboboxStatic
 		}
 		public static function setDefaultItem(ComboBoxId_p:String,DefaultLabe_p:String):void
 		{
-			defaultLable[ComboBoxId_p] = DefaultLabe_p
+			_defaultLable[ComboBoxId_p] = DefaultLabe_p
 		}
 		
 		public static function  defalutLable(ComboBoxId_p:String):String
 		{
-			return defaultLable[ComboBoxId_p]
+			return _defaultLable[ComboBoxId_p]
+		}
+		
+		internal static function setStatus(ComboBoxId_p:String,Status:Boolean):void
+		{
+			_comboboxStatus[ComboBoxId_p] = Status
+		}
+		
+		public static function AllComboBoxClosed():Boolean
+		{
+			var _status:Boolean = true
+			for(var objName:String in _comboboxStatus)
+			{
+				if(_comboboxStatus[objName])
+				{
+					_status = false
+				}
+			}
+			return _status
 		}
 		
 	}
