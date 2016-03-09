@@ -11,8 +11,14 @@ package combobox.comboboxStatic
 		public function ComboBoxStaticHeader()
 		{
 			super();
+			
+			
 			_status = true
-			_id = this.name.split('_')[1]	
+			_id = this.name.split('_')[1]
+			if(ComboBoxStaticManager.defalutLable(_id)!=null)
+			{
+				gotoAndStop(ComboBoxStaticManager.defalutLable(_id))
+			}
 			this.addEventListener(MouseEvent.CLICK,menu)
 			ComboBoxStaticManager.evt.addEventListener(ComboBoxStaticEvents.SELECT,changIcon)
 		}
