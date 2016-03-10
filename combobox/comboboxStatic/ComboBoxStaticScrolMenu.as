@@ -43,7 +43,7 @@ package combobox.comboboxStatic
 						this.addChild(_item)
 						_item.addItem(PageData_p.links1[i])
 							_item.y = _y
-							_y+=_item.height	
+							_y+=_item.height+ComboBoxStaticManager.dynamicLinkY	
 				}				
 			}
 			setScrol()

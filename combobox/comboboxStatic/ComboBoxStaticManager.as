@@ -12,6 +12,7 @@ package combobox.comboboxStatic
 		public static var scrolSplit:String="h"
 		private static var _defaultLable:Object = new Object()	
 		private static var _comboboxStatus:Object = new Object()	
+		public static var dynamicLinkY:Number = 0	
 		public function ComboBoxStaticManager()
 		{
 			super()
@@ -20,6 +21,7 @@ package combobox.comboboxStatic
 		{
 			evt = new ComboBoxStaticManager()
 		}
+		/** DefaultLable_p : for static combobox list inserts fram lable and for dynamic combobox list inserts string title */
 		public static function setDefaultItem(ComboBoxId_p:String,DefaultLabe_p:String):void
 		{
 			_defaultLable[ComboBoxId_p] = DefaultLabe_p

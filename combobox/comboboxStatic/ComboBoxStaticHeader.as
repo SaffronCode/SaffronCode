@@ -22,6 +22,10 @@ package combobox.comboboxStatic
 			{
 				gotoLable(ComboBoxStaticManager.defalutLable(_id))
 			}
+			if(_title!=null)
+			{
+				_title.setUp(ComboBoxStaticManager.defalutLable(_id))
+			}
 			this.addEventListener(MouseEvent.CLICK,menu)
 			ComboBoxStaticManager.evt.addEventListener(ComboBoxStaticEvents.SELECT,changIcon)
 			
