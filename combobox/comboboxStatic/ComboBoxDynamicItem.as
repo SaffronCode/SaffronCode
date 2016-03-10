@@ -10,7 +10,7 @@ package combobox.comboboxStatic
 	{
 		private var _title:TitleText;
 		private var _linkData:LinkData;
-		public function ComboBoxDynamicItem(Menu_p:Boolean=true)
+		public function ComboBoxDynamicItem(Menu_p:Boolean=false)
 		{
 			super(Menu_p);
 			_title = Obj.findThisClass(TitleText,this)

@@ -16,6 +16,9 @@ package combobox.comboboxStatic
 		/**close menu event*/
 		public static const CLOSE:String = "CLOSE";
 		
+		/**just internal select itame*/
+		public static const ITEM_CLICK:String = "ITEM_CLICK";
+		
 		
 		private var _id:String;
 		public function get id():String
@@ -34,12 +37,19 @@ package combobox.comboboxStatic
 		{
 			return _linkData
 		}
-		public function ComboBoxStaticEvents(type:String,id:String=null,comboBoxId:String=null,linkData:LinkData=null, bubbles:Boolean=false, cancelable:Boolean=false)
+		
+		private var _closeAllComboBox:Boolean;
+		public function get closeAllComboBox():Boolean
+		{
+			return _closeAllComboBox
+		}
+		public function ComboBoxStaticEvents(type:String,id:String=null,comboBoxId:String=null,linkData:LinkData=null,closeAllComboBox:Boolean=false, bubbles:Boolean=false, cancelable:Boolean=false)
 		{
 			super(type, bubbles, cancelable);
 			_id = id
 			_comboBoxId = comboBoxId
 			_linkData = linkData	
+			_closeAllComboBox = closeAllComboBox	
 		}
 	}
 }

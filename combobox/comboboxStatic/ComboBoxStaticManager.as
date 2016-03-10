@@ -6,6 +6,8 @@ package combobox.comboboxStatic
 [Event(name="SELECT", type="combobox.comboboxStatic.ComboBoxStaticEvents")]
 [Event(name="OPEN", type="combobox.comboboxStatic.ComboBoxStaticEvents")]
 [Event(name="CLOSE", type="combobox.comboboxStatic.ComboBoxStaticEvents")]
+[Event(name="ITEM_CLICK", type="combobox.comboboxStatic.ComboBoxStaticEvents")]
+
 	public class ComboBoxStaticManager extends EventDispatcher
 	{
 		public static var evt:ComboBoxStaticManager

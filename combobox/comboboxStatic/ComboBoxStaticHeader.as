@@ -30,13 +30,28 @@ package combobox.comboboxStatic
 			ComboBoxStaticManager.evt.addEventListener(ComboBoxStaticEvents.SELECT,changIcon)
 			
 			ComboBoxStaticManager.setStatus(_id,_status)
+			ComboBoxStaticManager.evt.addEventListener(ComboBoxStaticEvents.CLOSE,close)
+			ComboBoxStaticManager.evt.addEventListener(ComboBoxStaticEvents.OPEN,open)
 				
-				
+		}
+		
+		protected function open(event:Event):void
+		{
+			// TODO Auto-generated method stub
+			_status = false
+		}
+		
+		protected function close(event:Event):void
+		{
+			// TODO Auto-generated method stub
+			_status = true
 		}
 		
 		protected function menu(event:MouseEvent):void
 		{
 			// TODO Auto-generated method stub
+
+			ComboBoxStaticManager.evt.dispatchEvent(new ComboBoxStaticEvents(ComboBoxStaticEvents.CLOSE,null,null,null,true))
 			ComboBoxStaticManager.setStatus(_id,_status)
 			if(_status)
 			{
@@ -46,7 +61,6 @@ package combobox.comboboxStatic
 			{
 				ComboBoxStaticManager.evt.dispatchEvent(new ComboBoxStaticEvents(ComboBoxStaticEvents.CLOSE,null,_id))
 			}
-			_status = !_status
 			
 		}
 		
@@ -56,7 +70,7 @@ package combobox.comboboxStatic
 		
 			if(_id == event.comboBoxId)
 			{	
-				if(_title!=null)
+				if(_title!=null && event.linkData!=null)
 				{
 					_title.setUp(event.linkData.name)
 				}

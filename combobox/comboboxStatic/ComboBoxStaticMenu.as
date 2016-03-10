@@ -11,11 +11,13 @@ package combobox.comboboxStatic
 	{
 		private var _comboBoxId:String;
 		private var _scrolMenu:ComboBoxStaticScrolMenu;
+		private var _menu:Boolean;
 		public function ComboBoxStaticMenu(Menu_p:Boolean=true)
 		{
 			super()
+			_menu = Menu_p
 			_scrolMenu = Obj.findThisClass(ComboBoxStaticScrolMenu,this,true)
-			if(Menu_p)
+			if(_menu)
 			{			
 				_comboBoxId = this.name.split('_')[1]
 				ComboBoxStaticManager.evt.addEventListener(ComboBoxStaticEvents.OPEN,open)
@@ -32,7 +34,7 @@ package combobox.comboboxStatic
 		protected function close(event:ComboBoxStaticEvents):void
 		{
 			// TODO Auto-generated method stub
-			if(_comboBoxId==event.comboBoxId)
+			if(_menu && this.currentFrame!=1  &&( _comboBoxId==event.comboBoxId || event.closeAllComboBox ))
 			{
 				gotoAndPlay(ComboBoxStaticEvents.CLOSE)
 				this.mouseChildren = false
