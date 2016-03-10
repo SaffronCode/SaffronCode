@@ -1,32 +1,45 @@
 package combobox.comboboxStatic
 {//combobox.comboboxStatic.ComboBoxStaticScrolMenu
+	import avmplus.getQualifiedClassName;
+	
 	import contents.PageData;
 	
 	import flash.display.MovieClip;
 	import flash.geom.Rectangle;
+	import flash.utils.getDefinitionByName;
 	
 	public class ComboBoxStaticScrolMenu extends MovieClip
 	{
 		private var _comboBoxDynamicItem:ComboBoxDynamicItem;
 		private var _y:Number = 0
+			
+		private var _linkClass:Class;	
 		public function ComboBoxStaticScrolMenu()
 		{
 			super();
 			_comboBoxDynamicItem = Obj.findThisClass(ComboBoxDynamicItem,this)
+					
 			if(_comboBoxDynamicItem!=null)
 			{
 				_comboBoxDynamicItem.visible = false
+				_linkClass = getDefinitionByName(getQualifiedClassName(_comboBoxDynamicItem)) as Class;
 			}
+			else if(_comboBoxDynamicItem==null)
+			{
+				trace("Dynamic manu class shouldent be empty of linkItem!");
+			}
+			
 			setScrol()
 		}
 		public function setup(PageData_p:PageData=null):void
 		{
-			if(PageData_p!=null)
+
+			if(PageData_p!=null && _comboBoxDynamicItem!=null)
 			{			
 				for(var i:int=0;i<PageData_p.links1.length;i++)
 				{		
 					
-					var _item:ComboBoxDynamicItem = new ComboBoxDynamicItem()
+					var _item:ComboBoxDynamicItem = new _linkClass()
 						this.addChild(_item)
 						_item.addItem(PageData_p.links1[i])
 							_item.y = _y
