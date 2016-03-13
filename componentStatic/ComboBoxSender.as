@@ -15,7 +15,7 @@ package componentStatic
 	
 	public class ComboBoxSender extends ComponentManager
 	{
-		private var _titleMc:TitleText
+		protected var _titleMc:TitleText
 		protected var upLoadDate:Date;
 		private var _fun:Function;
 		private var _data:*;
@@ -83,10 +83,16 @@ package componentStatic
 				_data.reLoad()
 			}
 		}
-		private function OpenList(event:MouseEvent):void
+		protected function OpenList(event:MouseEvent=null):void
 		{
 			// TODO Auto Generated method stub
-			Hints.selector(_data.title(),'',_data.buttonArray(),selector)	
+			Hints.selector(_data.title(),'',_data.buttonArray(),selector,null,1,2,onBackFun)	
+		}
+		
+		protected function onBackFun():void
+		{
+			// TODO Auto Generated method stub
+			
 		}
 		protected function selector(event:PopMenuEvent):void
 		{
