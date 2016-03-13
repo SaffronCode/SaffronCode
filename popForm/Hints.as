@@ -123,12 +123,13 @@ package popForm
 	///////////////////////////////////////////////////////////////////////////////
 		
 		private static var onSearched:Function,
-							onSelected:Function;
+							onSelected:Function,
+							onBacked:Function;
 		
 		/**Select something from these buttons, but if the onSearchButtn function was not null, it will add search input to<br>
 		 * onButtonSelected : function(e:PopMenuEvent);<br>
 		 * onSearchButton : function(searchParam:String);*/
-		public static function selector(title:String,text:String,buttonsList:Array,onButtonSelected:Function,onSearchButton:Function=null,defButtonFrame:uint=1,itemFrame:uint=2):void
+		public static function selector(title:String,text:String,buttonsList:Array,onButtonSelected:Function,onSearchButton:Function=null,defButtonFrame:uint=1,itemFrame:uint=2,onBackFUnction:Function = null):void
 		{
 			var moreHint:String = '' ;
 			var namesArray:Array ;
@@ -136,6 +137,7 @@ package popForm
 			
 			onSearched = onSearchButton ;
 			onSelected = onButtonSelected ;
+			onBacked = onBackFUnction ;
 			
 			if( onSearched != null )
 			{
@@ -166,6 +168,10 @@ package popForm
 			if(e.buttonTitle == Contents.lang.t[id_back])
 			{
 				trace("let this menu close");
+				if(onBacked!=null)
+				{
+					onBacked();
+				}
 			}
 			else if(e.buttonTitle == Contents.lang.t[id_search])
 			{
