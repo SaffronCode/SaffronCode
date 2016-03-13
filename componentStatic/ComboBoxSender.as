@@ -23,6 +23,7 @@ package componentStatic
 		public function ComboBoxSender()
 		{
 			super();
+			_titleMc = Obj.get('title_mc',this)	
 			ComponentManager.evt.addEventListener(ComponentManagerEvent.UPDATE,getUpdate)
 		}
 		
@@ -41,7 +42,6 @@ package componentStatic
 			
 			upLoadDate = new Date()
 			upLoadDate.date-=7	
-			_titleMc = Obj.get('title_mc',this)	
 			if(_titleMc!=null)
 			{
 				_titleMc.text = ''	
