@@ -213,6 +213,7 @@ package webService.webCallers
 		private function loaded(e:WebEvent)
 		{
 			//TODO: implement function
+			trace('pur pur pur data :>>>',e.pureData)
 			if(myToken == e.token)
 			{
 				connected = true ;

@@ -88,7 +88,7 @@ package componentStatic
 			// TODO Auto Generated method stub
 			Hints.selector(_data.title(),'',_data.buttonArray(),selector)	
 		}
-		private function selector(event:PopMenuEvent):void
+		protected function selector(event:PopMenuEvent):void
 		{
 			// TODO Auto Generated method stub
 			_titleMc.setUp(event.buttonTitle)
