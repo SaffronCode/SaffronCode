@@ -1,6 +1,7 @@
 package diagrams.table
 {
 	import flash.display.Sprite;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 
 	public class TableBox extends Sprite
@@ -86,6 +87,21 @@ package diagrams.table
 			tf.height = Math.min(tf.textHeight+2,maxTextH);
 			//trace("tf.height : "+tf.height);
 			tf.y = textY+(maxTextH-tf.height)/2;
+			
+			if(this.stage == null)
+			{
+				this.addEventListener(Event.ADDED_TO_STAGE,imAddedToStage,false,1000,false);
+			}
+		}
+		
+		/**Update the text after its added to stage*/
+		protected function imAddedToStage(event:Event):void
+		{
+			this.removeEventListener(Event.ADDED_TO_STAGE,imAddedToStage);
+			trace("○○◘○• 1 : Font is : "+tf.getTextFormat().font);
+			tf.dispatchEvent(new Event(Event.ADDED,true));
+			trace("○○◘○• 2 : Font is : "+tf.getTextFormat().font);
+			tf.text = tf.text ;
 		}
 	}
 }
