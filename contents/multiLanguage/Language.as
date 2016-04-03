@@ -290,7 +290,7 @@
 				targ = e ;
 			}
 			
-			trace('some thing added : '+targ+' > '+(targ as DisplayObject).getBounds(myStage));
+			//trace('some thing added : '+targ+' > '+(targ as DisplayObject).getBounds(myStage));
 			//trace('some thing added : '+targ.parent.name);
 			if(targ is MovieClip)
 			{
@@ -310,7 +310,7 @@
 			{
 				if(addedItems.indexOf(targ)==-1)
 				{
-					trace("Manage this text : "+(targ as TextField).getBounds(myStage)+' : '+(targ as TextField).text);
+					//trace("Manage this text : "+(targ as TextField).getBounds(myStage)+' : '+(targ as TextField).text);
 					//var tf:TextFormat = (targ as TextField).defaultTextFormat ;
 					//Upgraded line ↓
 					var tf:TextFormat = TextManager.addThis(targ as TextField).format ;
@@ -397,7 +397,6 @@
 					//trace("*** final font is : "+(targ as TextField).defaultTextFormat.font+' > '+(targ as TextField).text);
 					(targ as DisplayObject).dispatchEvent(new Event(EVENT_TEXT_RESIZED));
 				}
-				trace("Text changed");
 			}
 			
 		}

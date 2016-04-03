@@ -98,9 +98,9 @@ package diagrams.table
 		protected function imAddedToStage(event:Event):void
 		{
 			this.removeEventListener(Event.ADDED_TO_STAGE,imAddedToStage);
-			trace("○○◘○• 1 : Font is : "+tf.getTextFormat().font);
+			//trace("○○◘○• 1 : Font is : "+tf.getTextFormat().font);
 			tf.dispatchEvent(new Event(Event.ADDED,true));
-			trace("○○◘○• 2 : Font is : "+tf.getTextFormat().font);
+			//trace("○○◘○• 2 : Font is : "+tf.getTextFormat().font);
 			tf.text = tf.text ;
 		}
 	}
