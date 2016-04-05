@@ -19,6 +19,10 @@ package sliderMenu
 							LEFT_MENU:String = "leftMenu",
 							RIGHT_MENU:String = "rightMenu";
 		
+		/**private static var tdMenu:Boolean;
+		-1 means left side menu, 1 means right side menu
+		private static var _menuDirectioni:int ;*/
+		
 		private static var allPose:Array;
 		
 	/////////////////////////////dispay object variables	
@@ -138,11 +142,57 @@ package sliderMenu
 				return ;
 			}
 			mouseFirstPose = new Point(myStage.mouseX,myStage.mouseY);
-			if(slider_l!=null && ((moveStage && ((currentDraggingPose!=LEFT_MENU && myRoot.mouseX<resolution) || (currentDraggingPose==LEFT_MENU && myRoot.mouseX>0))) || (!moveStage && myStage.mouseX>slider_l.x )))// && currentDraggingPose!=LEFT_MENU
+			if(slider_l!=null 
+				&& 
+				(
+					(
+						moveStage 
+						&& 
+						(
+							(
+								currentDraggingPose!=LEFT_MENU 
+								&& 
+								myRoot.mouseX<resolution
+							) 
+							|| 
+							(
+								currentDraggingPose==LEFT_MENU 
+								&& 
+								myRoot.mouseX>0
+							)
+						)
+					) 
+					|| 
+					(
+						!moveStage
+						&&
+						(
+							(
+								currentDraggingPose!=LEFT_MENU 
+								&& 
+								myStage.mouseX<resolution
+							)
+							||
+							(
+								currentDraggingPose==LEFT_MENU 
+								&& 
+								myStage.mouseX>slider_l.x
+							)
+						)
+					)
+				)
+			)// && currentDraggingPose!=LEFT_MENU
 			{
 				if(currentDraggingPose==LEFT_MENU)
 				{
-					mouseFirstPose.x-=myRoot.x;
+					if(moveStage)
+					{
+						mouseFirstPose.x-=myRoot.x;
+					}
+					else
+					{
+						mouseFirstPose.x-=slider_l.x;
+					}
 				}
 				currentDraggingPose = LEFT_MENU;
 			}
