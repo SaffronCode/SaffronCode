@@ -246,7 +246,7 @@ package sliderMenu
 					}
 					else
 					{
-						mouseFirstPose.x-=slider_r.x;
+						mouseFirstPose.x+=addGetSlider(currentDraggingPose);
 					}
 				}
 				currentDraggingPose = RIGHT_MENU;
