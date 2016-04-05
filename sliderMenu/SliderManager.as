@@ -181,7 +181,7 @@ package sliderMenu
 						)
 					)
 				)
-			)// && currentDraggingPose!=LEFT_MENU
+			)
 			{
 				if(currentDraggingPose==LEFT_MENU)
 				{
@@ -196,8 +196,59 @@ package sliderMenu
 				}
 				currentDraggingPose = LEFT_MENU;
 			}
-			else if(slider_r!=null && myStage.mouseX>slider_r.x-resolution && currentDraggingPose != RIGHT_MENU)
+			else if//(slider_r!=null && myStage.mouseX>slider_r.x-resolution && currentDraggingPose != RIGHT_MENU)
+				(slider_r!=null 
+					&& 
+					(
+						(
+							moveStage 
+							&& 
+							(
+								(
+									currentDraggingPose!=RIGHT_MENU 
+									&& 
+									myRoot.mouseX>slider_r.x-resolution
+								) 
+								|| 
+								(
+									currentDraggingPose==RIGHT_MENU 
+									&& 
+									myRoot.mouseX<slider_r.x
+								)
+							)
+						) 
+						|| 
+						(
+							!moveStage
+							&&
+							(
+								(
+									currentDraggingPose!=RIGHT_MENU 
+									&& 
+									myStage.mouseX>slider_r.x-resolution
+								)
+								||
+								(
+									currentDraggingPose==RIGHT_MENU 
+									&& 
+									myStage.mouseX<slider_r.x
+								)
+							)
+						)
+					)
+				)
 			{
+				if(currentDraggingPose==RIGHT_MENU)
+				{
+					if(moveStage)
+					{
+						mouseFirstPose.x-=myRoot.x;
+					}
+					else
+					{
+						mouseFirstPose.x-=slider_r.x;
+					}
+				}
 				currentDraggingPose = RIGHT_MENU;
 			}
 			else if(slider_t!=null && myStage.mouseY<resolution && currentDraggingPose != TOP_MENU)
@@ -235,7 +286,7 @@ package sliderMenu
 					{
 						currentDraggingPose = '' ;
 					}
-					else if(currentDraggingPose == RIGHT_MENU && myStage.mouseX-mouseFirstPose.x>deltaPoseNumber/2)
+					else if(currentDraggingPose == RIGHT_MENU && myStage.mouseX-mouseFirstPose.x>deltaPoseNumber/-2)
 					{
 						currentDraggingPose = '' ;
 					}
