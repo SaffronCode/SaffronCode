@@ -29,7 +29,8 @@ package contents.displayPages
 	{
 		public static const UPDATE_LINKS_POSITION:String = "UPDATE_LINKS_POSITION" ;
 		
-		public var showStepByStep:Boolean = true ;
+		/**Change it befor setup function. it makes items to lock on the left side of the list after release.*/
+		public var showStepByStep:Boolean = false ;
 		
 		/**This will be the name of the MovieClip that will shows if no links available*/
 		private const noLinkInstanceName:String = "no_link_mc";
