@@ -4,7 +4,6 @@ package contents.displayPages
 	import appManager.displayContentElemets.Image;
 	import appManager.displayContentElemets.TextParag;
 	import appManager.displayContentElemets.TitleText;
-	import appManager.event.AppEvent;
 	import appManager.event.AppEventContent;
 	
 	import contents.LinkData;

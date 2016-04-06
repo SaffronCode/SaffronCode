@@ -18,7 +18,6 @@ package contents.displayPages
 	import contents.PageData;
 	import contents.interFace.DisplayPageInterface;
 	
-	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -29,6 +28,8 @@ package contents.displayPages
 	public class DynamicLinks extends MovieClip implements DisplayPageInterface
 	{
 		public static const UPDATE_LINKS_POSITION:String = "UPDATE_LINKS_POSITION" ;
+		
+		public var showStepByStep:Boolean = true ;
 		
 		/**This will be the name of the MovieClip that will shows if no links available*/
 		private const noLinkInstanceName:String = "no_link_mc";
@@ -337,12 +338,15 @@ package contents.displayPages
 				linksSensor.x = myDeltaX*MenuDirection ;
 			}
 			linksSensor.graphics.beginFill(0xff0000,linkSensorDebug);
+			var stepSize:Number = 0 ;
 			if(!horizontalMenu)
 			{
+				stepSize = sampleLink.width+deltaX ;
 				linksSensor.graphics.drawRect(0,0,areaRect.width,areaRect.height/2*MenuDirection);
 			}
 			else
 			{
+				stepSize = sampleLink.height+deltaY ;
 				linksSensor.graphics.drawRect(0,0,areaRect.width/2*MenuDirection,areaRect.height);
 			}
 			linksSensor.mouseChildren = false ;
@@ -357,7 +361,7 @@ package contents.displayPages
 			controllSensor();
 			if(!dynamicHeight)
 			{
-				linkScroller = new ScrollMT(linksContainer,areaRect,/*areaRect*/null,!horizontalMenu,horizontalMenu,acceptAnimation&&!reverted,reverted);
+				linkScroller = new ScrollMT(linksContainer,areaRect,/*areaRect*/null,!horizontalMenu,horizontalMenu,acceptAnimation&&!reverted,reverted,false,stepSize);
 				if(myPageData.id!='' && scrollPosesObject[myPageData.id]!=null)
 				{
 					if(!horizontalMenu)
