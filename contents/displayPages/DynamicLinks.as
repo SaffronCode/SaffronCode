@@ -342,12 +342,18 @@ package contents.displayPages
 			var stepSize:Number = 0 ;
 			if(!horizontalMenu)
 			{
-				stepSize = sampleLink.width+deltaX ;
+				if(showStepByStep)
+				{
+					stepSize = sampleLink.height+deltaY ;
+				}
 				linksSensor.graphics.drawRect(0,0,areaRect.width,areaRect.height/2*MenuDirection);
 			}
 			else
 			{
-				stepSize = sampleLink.height+deltaY ;
+				if(showStepByStep)
+				{
+					stepSize = sampleLink.width+deltaX ;
+				}
 				linksSensor.graphics.drawRect(0,0,areaRect.width/2*MenuDirection,areaRect.height);
 			}
 			linksSensor.mouseChildren = false ;
