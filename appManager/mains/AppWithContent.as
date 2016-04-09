@@ -14,6 +14,8 @@
 	import flash.display.MovieClip;
 	import flash.geom.Rectangle;
 	
+	import sliderMenu.SliderManager;
+	
 	import stageManager.StageManager;
 	
 	public class AppWithContent extends App
@@ -165,6 +167,7 @@
 		
 		override protected function managePages(event:AppEvent):Boolean
 		{
+			SliderManager.hide();
 			if(haveToGetPermition(event))
 			{
 				prventedPageWasLastPage = History.undoLastPageHisotry();
