@@ -18,6 +18,17 @@ package combobox.comboboxStatic
 			_title = Obj.findThisClass(TitleText,this)
 			_status = true
 			_id = this.name.split('_')[1]
+			setTitle()
+			this.addEventListener(MouseEvent.CLICK,menu)
+			ComboBoxStaticManager.evt.addEventListener(ComboBoxStaticEvents.SELECT,changIcon)
+			
+			ComboBoxStaticManager.setStatus(_id,_status)
+			ComboBoxStaticManager.evt.addEventListener(ComboBoxStaticEvents.CLOSE,close)
+			ComboBoxStaticManager.evt.addEventListener(ComboBoxStaticEvents.OPEN,open)
+				
+		}
+		public function setTitle():void
+		{
 			if(ComboBoxStaticManager.defalutLable(_id)!=null)
 			{
 				gotoLable(ComboBoxStaticManager.defalutLable(_id))
@@ -26,13 +37,6 @@ package combobox.comboboxStatic
 			{
 				_title.setUp(ComboBoxStaticManager.defalutLable(_id))
 			}
-			this.addEventListener(MouseEvent.CLICK,menu)
-			ComboBoxStaticManager.evt.addEventListener(ComboBoxStaticEvents.SELECT,changIcon)
-			
-			ComboBoxStaticManager.setStatus(_id,_status)
-			ComboBoxStaticManager.evt.addEventListener(ComboBoxStaticEvents.CLOSE,close)
-			ComboBoxStaticManager.evt.addEventListener(ComboBoxStaticEvents.OPEN,open)
-				
 		}
 		
 		protected function open(event:Event):void
