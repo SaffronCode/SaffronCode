@@ -22,6 +22,8 @@ package combobox.comboboxStatic
 				_comboBoxId = this.name.split('_')[1]
 				ComboBoxStaticManager.evt.addEventListener(ComboBoxStaticEvents.OPEN,open)
 				ComboBoxStaticManager.evt.addEventListener(ComboBoxStaticEvents.CLOSE,close)	
+				this.mouseChildren = false
+				this.mouseEnabled = false	
 			}
 		}
 		public function setup(PageData_p:PageData):void
@@ -39,6 +41,7 @@ package combobox.comboboxStatic
 				gotoAndPlay(ComboBoxStaticEvents.CLOSE)
 				this.mouseChildren = false
 				this.mouseEnabled = false	
+				trace('closeeeeeeeeeeeeeeeeeeeeeeeeeeeeee :','_comboBoxId :',_comboBoxId,'event.comboBoxId :',event.comboBoxId)	
 			}
 		}
 		
@@ -50,6 +53,7 @@ package combobox.comboboxStatic
 				gotoAndPlay(ComboBoxStaticEvents.OPEN)
 				this.mouseChildren = true
 				this.mouseEnabled = true	
+				trace('opeeeeeeeeeeeeeeeeeeeeeeeen :','_comboBoxId :',_comboBoxId,'event.comboBoxId :',event.comboBoxId)		
 			}
 		}
 		protected function select(Id_p:String,ComboBoxId_p:String,linkData_p:LinkData=null):void
