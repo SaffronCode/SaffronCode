@@ -1,13 +1,12 @@
 package componentStatic
 {//componentStatic.TextBoxSender
 	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.text.SoftKeyboardType;
 	
 	public class TextBoxSender extends ComponentManager
 	{
-		public var title:String=null
-
-		private var _textbox:TextBox;	
+		private var _textbox:TextBox;
 		public function TextBoxSender()
 		{
 			update()
@@ -22,16 +21,13 @@ package componentStatic
 		public function update():void
 		{
 			var value:String  = ''
+			var oldValue:String	
 			if(getObj(this.name)!=null && getObj(this.name)!='')
 			{
 				value = getObj(this.name)
-			}
-			else if(title!=null)
-			{
-				value = title
-			}	
-
-			_textbox = new TextBox(this,value,SoftKeyboardType.DEFAULT,(title!=null && value==''))
+				oldValue = value	
+			}		
+			_textbox = new TextBox(this,value,SoftKeyboardType.DEFAULT)
 			_textbox.addEventListener(TextBoxEvent.TEXT,textBoxEvent_fun)
 			setObj(this.name,value)
 		}
@@ -39,11 +35,6 @@ package componentStatic
 		{
 			// TODO Auto-generated method stub
 			setObj(this.name,event.text)
-			if(event.text=='')
-			{
-				//update()
-			}
 		}
-		
 	}
 }

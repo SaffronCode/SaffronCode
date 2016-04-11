@@ -40,8 +40,7 @@ package combobox.comboboxStatic
 			{
 				gotoAndPlay(ComboBoxStaticEvents.CLOSE)
 				this.mouseChildren = false
-				this.mouseEnabled = false	
-				trace('closeeeeeeeeeeeeeeeeeeeeeeeeeeeeee :','_comboBoxId :',_comboBoxId,'event.comboBoxId :',event.comboBoxId)	
+				this.mouseEnabled = false		
 			}
 		}
 		
