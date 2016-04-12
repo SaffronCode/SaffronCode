@@ -50,7 +50,7 @@ package sliderMenu
 							
 	/////////////////////////////////// numerical variables↓
 		/**this variable tells the number of the accepted pixel from the stage */
-		private static var resolution:Number=25;
+		private static var resolution:Number=35;
 		
 		
 		/**stage pose variables
@@ -213,7 +213,7 @@ package sliderMenu
 								(
 									currentDraggingPose==RIGHT_MENU 
 									&& 
-									myRoot.mouseX<slider_r.x
+									myRoot.mouseX<slider_r.x+resolution
 								)
 							)
 						) 
@@ -231,7 +231,7 @@ package sliderMenu
 								(
 									currentDraggingPose==RIGHT_MENU 
 									&& 
-									myStage.mouseX<slider_r.x
+									myStage.mouseX<slider_r.x+resolution
 								)
 							)
 						)
