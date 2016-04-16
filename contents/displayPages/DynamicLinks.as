@@ -21,6 +21,7 @@ package contents.displayPages
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
@@ -49,9 +50,18 @@ package contents.displayPages
 		protected var sampleLink:LinkItem,
 					linkClass:Class;
 					
+		protected var sampleLinkButton:LinkItemButtons,
+					linkButtonClass,
+					activeSlideButtons:Boolean = false,
+					draggableLinkItem:LinkItem,
+					mouseFirstPose:Number,
+					mouseDeltaToSlide:Number=50,
+					linkItemButtonsWidth:Number;
+					
 		protected var 	linkScroller:ScrollMT,
 						areaRect:Rectangle,
 						linksContainer:Sprite,
+						buttonsContainer:Sprite,
 						linksSensor:Sprite ;
 						
 		/**This is the list of creted linkItems on the stage.*/
@@ -130,6 +140,14 @@ package contents.displayPages
 				throw "Dynamic manu class shouldent be empty of linkItem!";
 			}
 			
+			sampleLinkButton = Obj.findThisClass(LinkItemButtons,this,true);
+			if(sampleLinkButton)
+			{
+				linkItemButtonsWidth = sampleLinkButton.width ;
+				linkButtonClass = getDefinitionByName(getQualifiedClassName(sampleLinkButton)) as Class;
+				activeSlideButtons = true ;
+			}
+			
 			linkClass = getDefinitionByName(getQualifiedClassName(sampleLink)) as Class;
 			trace('link class is : '+linkClass);
 			
@@ -152,7 +170,93 @@ package contents.displayPages
 			}
 			
 			this.removeChildren();
+			
+			if(activeSlideButtons)
+			{
+				this.addEventListener(MouseEvent.MOUSE_DOWN,controllMouseSlide);
+			}
 		}
+		
+		
+		
+		
+		
+		/**Start controlling mouse down*/
+		protected function controllMouseSlide(event:MouseEvent):void
+		{
+			trace("Mouse clicked");
+			var itemY:Number ; 
+			var currentLinkItem:LinkItem ;
+			for(var i = 0 ; linksInterfaceStorage!=null && i<linksInterfaceStorage.length ; i++)
+			{
+				currentLinkItem = linksInterfaceStorage[i]; 
+				if(!horizontalMenu)
+				{
+					itemY = currentLinkItem.y ;
+					if( linksContainer.mouseY>itemY && linksContainer.mouseY < itemY+currentLinkItem.height )
+					{
+						mouseFirstPose = linksContainer.mouseX;
+						draggableLinkItem = currentLinkItem ;
+						addLintItemButton(currentLinkItem);
+						this.stage.addEventListener(MouseEvent.MOUSE_MOVE,controllsliding);
+						this.stage.addEventListener(MouseEvent.MOUSE_UP,canselSliding);
+						trace("Item founded");
+					}
+					else
+					{
+						currentLinkItem.slideHorizontal(0,0,true)
+					}
+				}
+			}
+		}		
+		
+		/**Add link item button*/
+		private function addLintItemButton(linkItem:LinkItem):void
+		{
+			if(linkItem.myButtons==null)
+			{
+				linkItem.myButtons = new linkButtonClass() ;
+				buttonsContainer.addChild(linkItem.myButtons) ;
+				if(!horizontalMenu)
+				{
+					linkItem.myButtons.y = linkItem.Y0 ;
+					linkItem.myButtons.x = linkItem.X0+linkItem.width-linkItemButtonsWidth ;
+				}
+				else
+				{
+					throw "Not set yet";
+				}
+			}
+		}
+		
+			/**Cansel sliding proccess*/
+			protected function canselSliding(event:MouseEvent):void
+			{
+				this.stage.removeEventListener(MouseEvent.MOUSE_MOVE,controllsliding);
+				this.stage.removeEventListener(MouseEvent.MOUSE_UP,canselSliding);
+				mouseFirstPose = NaN ;
+				draggableLinkItem = null ;
+				trace("Controll the button pose and cansel animation");
+			}
+			
+			/**Contrlolll slide process*/
+			protected function controllsliding(event:MouseEvent):void
+			{
+				if(linksContainer.mouseX<mouseFirstPose-mouseDeltaToSlide)
+				{
+					draggableLinkItem.slideHorizontal((linksContainer.mouseX-mouseFirstPose+mouseDeltaToSlide)/linkItemButtonsWidth,linkItemButtonsWidth) ;
+					event.updateAfterEvent();
+					trace("Deative scroll and other buttons");
+					linkScroller.lock(true);
+				}
+				else
+				{
+					//reset the link item position
+					//Dont unlock the slider. 
+					draggableLinkItem.slideHorizontal(0,0,true);
+				}
+			}		
+		
 		
 		
 		/**This will change the scroll area value but you have to call setUp after this functin*/
@@ -301,6 +405,9 @@ package contents.displayPages
 			
 			linksContainer = new Sprite();
 			linksContainer.x = areaRect.x ;
+			
+			/**Button container*/
+			buttonsContainer = new Sprite();
 			if(reverted)
 			{
 				if(!horizontalMenu)
@@ -327,6 +434,7 @@ package contents.displayPages
 			linksContainer.graphics.drawRect(0,0,areaRect.width*MenuDirection,areaRect.height*MenuDirection) ;
 			
 			this.addChild(linksContainer);
+			linksContainer.addChild(buttonsContainer);
 		
 			
 			linksSensor = new Sprite();

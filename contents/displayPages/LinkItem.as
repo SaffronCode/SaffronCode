@@ -9,6 +9,7 @@ package contents.displayPages
 	import contents.LinkData;
 	
 	import flash.display.MovieClip;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
 	/**You can trigger me by calling imSelected function*/
@@ -23,6 +24,15 @@ package contents.displayPages
 		public var myLinkData:LinkData ;
 		
 		protected var myParentWidth:Number,myParentHeight:Number;
+		
+		internal var X0:Number,Y0:Number;
+		
+		internal var Xn:Number,Yn:Number;
+		
+		internal var myButtons:LinkItemButtons ;
+		
+		/**It changes to true if enter_frame animation activated*/
+		protected var animatorActivated:Boolean = false ;
 		
 		public function LinkItem(mouseChildAccept:Boolean=false)
 		{
@@ -43,6 +53,64 @@ package contents.displayPages
 			
 			this.mouseChildren = mouseChildAccept ;
 			this.addEventListener(MouseEvent.CLICK,imSelected);
+		}
+		
+		/**→←Move the button to left or right. pass positive value to precent to move it to right and negative to move it to left.<br>
+		 * The deltaW is the max delta positioning for the item*/
+		public function slideHorizontal(precent:Number=0,deltaW:Number=0,animateIt:Boolean=false):void
+		{
+			trace("precent : "+precent);
+			trace("deltaW : "+deltaW);
+			Xn = X0+Math.max(-1,Math.min(1,precent))*deltaW;
+			if(animateIt)
+			{
+				if(!animatorActivated)
+				{
+					animatorActivated = true ;
+					this.addEventListener(Event.ENTER_FRAME,animateSliding);
+				}
+			}
+			else
+			{
+				super.x = Xn ;
+			}
+		}
+		
+		
+		/**↓↑Move the button to up or downt. pass positive value to precent to move it to down and negative to move it to up.<br>
+		 * The deltaH is the max delta positioning for the item*/
+		public function slideVertical(precent:Number,deltaH:Number=0):void
+		{
+			throw "Not completed yet";
+		}
+		
+			/**Animate sliding*/
+			protected function animateSliding(event:Event):void
+			{
+				super.x = super.x+(Xn-super.x)/5;
+				super.y = super.y+(Yn-super.y)/5;
+			}
+			
+		/**Get the Y0*/
+		override public function set y(value:Number):void
+		{
+			if(isNaN(Y0))
+			{
+				Y0 = value ;
+			}
+			Yn = value ;
+			super.y = value ;
+		}
+		
+		/**Get the X0*/
+		override public function set x(value:Number):void
+		{
+			if(isNaN(X0))
+			{
+				X0 = value ;
+			}
+			Xn = value ;
+			super.x = value ;
 		}
 		
 		/**New function to change the link item size dynamicly*/
