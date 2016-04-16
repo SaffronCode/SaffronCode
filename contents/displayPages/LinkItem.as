@@ -61,6 +61,10 @@ package contents.displayPages
 		{
 			trace("precent : "+precent);
 			trace("deltaW : "+deltaW);
+			if(myButtons)
+			{
+				myButtons.setAnimate(precent);
+			}
 			Xn = X0+Math.max(-1,Math.min(1,precent))*deltaW;
 			if(animateIt)
 			{

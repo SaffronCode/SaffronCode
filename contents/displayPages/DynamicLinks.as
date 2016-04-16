@@ -197,7 +197,7 @@ package contents.displayPages
 					{
 						mouseFirstPose = linksContainer.mouseX;
 						draggableLinkItem = currentLinkItem ;
-						addLintItemButton(currentLinkItem);
+						addLintItemButton(currentLinkItem,i);
 						this.stage.addEventListener(MouseEvent.MOUSE_MOVE,controllsliding);
 						this.stage.addEventListener(MouseEvent.MOUSE_UP,canselSliding);
 						trace("Item founded");
@@ -211,11 +211,12 @@ package contents.displayPages
 		}		
 		
 		/**Add link item button*/
-		private function addLintItemButton(linkItem:LinkItem):void
+		private function addLintItemButton(linkItem:LinkItem,linkIndex:uint):void
 		{
 			if(linkItem.myButtons==null)
 			{
 				linkItem.myButtons = new linkButtonClass() ;
+				linkItem.myButtons.setUp(myPageData.links1[linkIndex]);
 				buttonsContainer.addChild(linkItem.myButtons) ;
 				if(!horizontalMenu)
 				{
@@ -234,9 +235,18 @@ package contents.displayPages
 			{
 				this.stage.removeEventListener(MouseEvent.MOUSE_MOVE,controllsliding);
 				this.stage.removeEventListener(MouseEvent.MOUSE_UP,canselSliding);
+				
+				if(linksContainer.mouseX-mouseFirstPose+mouseDeltaToSlide<-mouseDeltaToSlide)
+				{
+					draggableLinkItem.slideHorizontal(-1,linkItemButtonsWidth,true);
+				}
+				else
+				{
+					draggableLinkItem.slideHorizontal(0,0,true);
+				}
+				
 				mouseFirstPose = NaN ;
 				draggableLinkItem = null ;
-				trace("Controll the button pose and cansel animation");
 			}
 			
 			/**Contrlolll slide process*/
