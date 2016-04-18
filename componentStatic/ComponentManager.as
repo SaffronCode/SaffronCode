@@ -3,15 +3,16 @@ package componentStatic
 	import com.mteamapp.JSONParser;
 	
 	import flash.display.MovieClip;
-
+	
+	
 	public class ComponentManager extends MovieClip
 	{
-		private static var _catcherObject:*;
+		private static var _catcherObject:Object = new Object();
 		private static var _obj:Object= new Object();
-		private static var _page:String;
 		public static var evt:ComponentManager;
 
 			
+		private static var _page:String;
 		private var errorManager:ErrorManager;
 		
 		protected var filedCorrectMc:MovieClip;
@@ -24,8 +25,8 @@ package componentStatic
 		{
 			evt = this
 			errorManager.setup()
-			_catcherObject = CatcherObject
 			_page = Page_p
+			_catcherObject[_page] = CatcherObject
 			if(IgnoreList_p!=null)
 			{
 				ErrorManager.ignoreList = IgnoreList_p
@@ -52,9 +53,9 @@ package componentStatic
 			{
 				_obj[_page][Name_p] = Value
 			}
-			if(Value is Array && _catcherObject!=null)
+			if(Value is Array && _catcherObject[_page]!=null)
 			{
-				_catcherObject[Name_p] = new Array()
+				_catcherObject[_page][Name_p] = new Array()
 			}
 			setCatacher()
 			
@@ -62,9 +63,9 @@ package componentStatic
 			
 			
 			
-			if(_catcherObject!=null)
+			if(_catcherObject[_page]!=null)
 			{
-				_selectFieldData = JSON.parse(JSON.stringify(_catcherObject))
+				_selectFieldData = JSON.parse(JSON.stringify(_catcherObject[_page]))
 			}
 			else
 			{
@@ -75,7 +76,7 @@ package componentStatic
 		}
 		private function setCatacher():void
 		{
-			JSONParser.parse(JSONParser.stringify(_obj[_page]),_catcherObject)		
+			JSONParser.parse(JSONParser.stringify(_obj[_page]),_catcherObject[_page])		
 		}
 		protected function getObj(Name_p:String):*
 		{	if(_obj[_page]!=null)
@@ -87,7 +88,7 @@ package componentStatic
 		}
 		public function obj():*
 		{
-			return _catcherObject
+			return _catcherObject[_page]
 		}
 		protected function error(Error_p:Boolean):void
 		{
