@@ -18,21 +18,20 @@ package contents.displayPages
 			stop();
 			visibleFrame = 1 ;
 			this.addEventListener(Event.ENTER_FRAME,animTimeLine);
+			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
+		}
+		
+		/**Cansel the listeners*/
+		protected function unLoad(event:Event):void
+		{
+			this.removeEventListener(Event.ENTER_FRAME,animTimeLine);
+			this.removeEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 		}
 		
 		/**Animate the timeline*/
 		protected function animTimeLine(event:Event):void
 		{
-			// TODO Auto-generated method stub
-			/*if(this.currentFrame>visibleFrame)
-			{
-				this.prevFrame();
-			}
-			else if(this.currentFrame<visibleFrame)
-			{
-				this.nextFrame();
-			}*/
-			this.gotoAndStop(Math.floor(this.currentFrame+(visibleFrame-this.currentFrame)/4)+1);
+			this.gotoAndStop(Math.floor(this.currentFrame+(visibleFrame-this.currentFrame)/4));
 		}
 		
 		public function setUp(linkData:LinkData):void
@@ -43,7 +42,7 @@ package contents.displayPages
 		internal function setAnimate(precent:Number):void
 		{
 			trace("precent : "+precent);
-			visibleFrame = Math.floor(Math.min(1,Math.abs(precent))*this.totalFrames)+1
+			visibleFrame = Math.floor(Math.min(1,Math.abs(precent))*this.totalFrames)+1;
 		}
 	}
 }

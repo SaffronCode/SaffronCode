@@ -34,6 +34,10 @@ package contents.displayPages
 		/**It changes to true if enter_frame animation activated*/
 		protected var animatorActivated:Boolean = false ;
 		
+		/**This is the selected frame to show*/
+		private var visibleFrame:uint = 1,
+					slideAnimationActivated:Boolean=false ; 
+		
 		public function LinkItem(mouseChildAccept:Boolean=false)
 		{
 			super();
@@ -53,6 +57,7 @@ package contents.displayPages
 			
 			this.mouseChildren = mouseChildAccept ;
 			this.addEventListener(MouseEvent.CLICK,imSelected);
+			this.stop();
 		}
 		
 		/**→←Move the button to left or right. pass positive value to precent to move it to right and negative to move it to left.<br>
@@ -65,6 +70,7 @@ package contents.displayPages
 			{
 				myButtons.setAnimate(precent);
 			}
+			setAnim(precent);
 			Xn = X0+Math.max(-1,Math.min(1,precent))*deltaW;
 			if(animateIt)
 			{
@@ -80,6 +86,29 @@ package contents.displayPages
 			}
 		}
 		
+		protected function setAnim(percent:Number):void
+		{
+			visibleFrame = Math.floor(Math.min(1,Math.abs(percent))*this.totalFrames)+1;
+			if(!slideAnimationActivated && this.totalFrames>1)
+			{
+				slideAnimationActivated = true ;
+				this.addEventListener(Event.ENTER_FRAME,animate);
+				this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
+			}
+		}
+		
+			/**Remove the enter frame event*/
+			protected function unLoad(event:Event):void
+			{
+				this.removeEventListener(Event.ENTER_FRAME,animate);
+				this.removeEventListener(Event.REMOVED_FROM_STAGE,unLoad);
+			}
+		
+			/**Anmmate the frames*/
+			protected function animate(event:Event):void
+			{
+				this.gotoAndStop(Math.floor(this.currentFrame+(visibleFrame-this.currentFrame)/4));
+			}		
 		
 		/**↓↑Move the button to up or downt. pass positive value to precent to move it to down and negative to move it to up.<br>
 		 * The deltaH is the max delta positioning for the item*/
