@@ -36,7 +36,7 @@ package componentStatic
 			{
 				titleText.mouseEnabled = false	
 			}
-			var _textbox:TextBox = new TextBox(this,value,SoftKeyboardType.DEFAULT)
+			var _textbox:TextBox = new TextBox(this,value,SoftKeyboardType.DEFAULT,false,false,false)
 			_textbox.addEventListener(TextBoxEvent.TEXT,textBoxEvent_fun)
 			this.addEventListener(MouseEvent.CLICK,selectFild)
 			setObj(this.name,value)	
