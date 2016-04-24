@@ -12,11 +12,13 @@ package contents.displayPages
 		
 		protected var visibleFrame:uint ;
 		
+		private var frameHandler:Number ;
+		
 		public function LinkItemButtons()
 		{
 			super();
 			stop();
-			visibleFrame = 1 ;
+			frameHandler = visibleFrame = 1 ;
 			this.addEventListener(Event.ENTER_FRAME,animTimeLine);
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 		}
@@ -31,7 +33,8 @@ package contents.displayPages
 		/**Animate the timeline*/
 		protected function animTimeLine(event:Event):void
 		{
-			this.gotoAndStop(Math.floor(this.currentFrame+(visibleFrame-this.currentFrame)/4));
+			frameHandler+=(visibleFrame-frameHandler)/4;
+			this.gotoAndStop(Math.round(frameHandler));
 		}
 		
 		public function setUp(linkData:LinkData):void
@@ -41,8 +44,9 @@ package contents.displayPages
 		
 		internal function setAnimate(precent:Number):void
 		{
-			trace("precent : "+precent);
-			visibleFrame = Math.floor(Math.min(1,Math.abs(precent))*this.totalFrames)+1;
+			precent = Math.max(-1,Math.min(1,precent));
+			visibleFrame = Math.floor(Math.min(1,Math.abs(precent))*(this.totalFrames-1))+1;
+			//trace("*precent : "+precent+' : '+visibleFrame);
 		}
 	}
 }

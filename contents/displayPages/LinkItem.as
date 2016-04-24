@@ -36,6 +36,7 @@ package contents.displayPages
 		
 		/**This is the selected frame to show*/
 		private var visibleFrame:uint = 1,
+					frameHandler:Number ,
 					slideAnimationActivated:Boolean=false ; 
 		
 		public function LinkItem(mouseChildAccept:Boolean=false)
@@ -55,6 +56,8 @@ package contents.displayPages
 			//trace("founded text title is : "+myTitle)
 			myParag = Obj.findThisClass(TextParag,this);
 			
+			frameHandler = visibleFrame = 1 ;
+			
 			this.mouseChildren = mouseChildAccept ;
 			this.addEventListener(MouseEvent.CLICK,imSelected);
 			this.stop();
@@ -64,8 +67,8 @@ package contents.displayPages
 		 * The deltaW is the max delta positioning for the item*/
 		public function slideHorizontal(precent:Number=0,deltaW:Number=0,animateIt:Boolean=false):void
 		{
-			trace("precent : "+precent);
-			trace("deltaW : "+deltaW);
+			//trace("precent : "+precent);
+			//trace("deltaW : "+deltaW);
 			if(myButtons)
 			{
 				myButtons.setAnimate(precent);
@@ -86,9 +89,9 @@ package contents.displayPages
 			}
 		}
 		
-		protected function setAnim(percent:Number):void
+		protected function setAnim(precent:Number):void
 		{
-			visibleFrame = Math.floor(Math.min(1,Math.abs(percent))*this.totalFrames)+1;
+			visibleFrame = Math.floor(Math.min(1,Math.abs(precent))*(this.totalFrames-1))+1;
 			if(!slideAnimationActivated && this.totalFrames>1)
 			{
 				slideAnimationActivated = true ;
@@ -107,7 +110,8 @@ package contents.displayPages
 			/**Anmmate the frames*/
 			protected function animate(event:Event):void
 			{
-				this.gotoAndStop(Math.floor(this.currentFrame+(visibleFrame-this.currentFrame)/4));
+				frameHandler+=(visibleFrame-frameHandler)/4;
+				this.gotoAndStop(Math.round(frameHandler));
 			}		
 		
 		/**↓↑Move the button to up or downt. pass positive value to precent to move it to down and negative to move it to up.<br>
