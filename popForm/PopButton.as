@@ -9,6 +9,7 @@
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.geom.ColorTransform;
+	import flash.geom.Point;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import flash.ui.Keyboard;
@@ -35,6 +36,12 @@
 		
 		
 		private var soundMC:MovieClip ;
+		
+		/**This value will use on title*/
+		public var myTitle:String,
+					buttonImageURL:String;
+
+		private var myLightImage:LightImage;
 		
 		/**You can change the button type with entering its frame index.<br>
 		 * You can set full button data with ability to change selectable or button id by using PopButtonData object on completeButtonObject*/
@@ -118,6 +125,7 @@
 		protected function unLoad(event:Event):void
 		{
 			// TODO Auto-generated method stub
+			this.removeEventListener(Event.ENTER_FRAME,controllPosition2);
 			NativeApplication.nativeApplication.removeEventListener(KeyboardEvent.KEY_DOWN,checkBack);
 		}
 		
@@ -152,16 +160,17 @@
 				this.mouseEnabled = completeButtonObject.selectable;
 			}
 			
+			buttonImageURL = buttonImage ;
+			
 			this.gotoAndStop(type);
+			
+			var controllStage:Boolean = false ;
 			
 			if(buttonImage!=null)
 			{
 				trace("♠ the button image is not null : "+buttonImage);
-				var myLightImage:LightImage = Obj.findAllClass(LightImage,this)[0];
-				if(myLightImage!=null)
-				{
-					myLightImage.setUp(buttonImage,true);
-				}
+				myLightImage = Obj.findAllClass(LightImage,this)[0];
+				controllStage = true ;
 			}
 			
 			var txtContainer:MovieClip = Obj.get('txt_txt',this) ;
@@ -187,25 +196,82 @@
 			
 				if(str!='')
 				{
-					if(txtTF.multiline)
-					{
-						TextPutter.onTextArea(txtTF,str,true,true,false);
-					}
-					else
-					{
-						TextPutter.OnButton(txtTF,str,true,true,false);
-					}
+					myTitle = str ;
+					controllStage = true;
 				}
 			}
 			/*if(colorTrans!=null)
 			{
 				backMC.transform.colorTransform = colorTrans ;
 			}*/
+			
+			if(controllStage)
+			{
+				controllTextOnStage();
+			}
+			
 			if(soundMC)
 			{
 				this.addEventListener(MouseEvent.CLICK,playAsound);
 			}
 		}
+		
+			/**Check when the button added to stage*/
+			private function controllTextOnStage():void
+			{
+				this.removeEventListener(Event.ADDED_TO_STAGE,controllPosition);
+				if(this.stage!=null)
+				{
+					controllPosition();
+				}
+				else
+				{
+					this.addEventListener(Event.ADDED_TO_STAGE,controllPosition);
+				}
+			}
+			
+				/**Contrll the button position*/
+				protected function controllPosition(event:Event=null):void
+				{
+					if(this.localToGlobal(new Point()).y<1400)
+					{
+						createElements();
+					}
+					else
+					{
+						this.addEventListener(Event.ENTER_FRAME,controllPosition2);
+						this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
+					}
+				}
+				
+					/**Controll the button y after enter frame*/
+					protected function controllPosition2(event:Event):void
+					{
+						if(this.localToGlobal(new Point()).y<1400)
+						{
+							this.removeEventListener(Event.ENTER_FRAME,controllPosition2);
+							createElements();
+						}
+					}
+				
+						/**Create the interface now*/
+						private function createElements():void
+						{
+							//trace("Create the elemets");
+							if(myLightImage!=null)
+							{
+								myLightImage.setUp(buttonImageURL,true);
+							}
+							
+							if(txtTF.multiline)
+							{
+								TextPutter.onTextArea(txtTF,myTitle,true,true,false);
+							}
+							else
+							{
+								TextPutter.OnButton(txtTF,myTitle,true,true,false);
+							}
+						}
 		
 		protected function playAsound(event:MouseEvent):void
 		{
