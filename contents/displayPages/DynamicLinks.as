@@ -197,10 +197,17 @@ package contents.displayPages
 					{
 						mouseFirstPose = linksContainer.mouseX;
 						draggableLinkItem = currentLinkItem ;
-						addLintItemButton(currentLinkItem,i);
-						this.stage.addEventListener(MouseEvent.MOUSE_MOVE,controllsliding);
-						this.stage.addEventListener(MouseEvent.MOUSE_UP,canselSliding);
-						trace("Item founded");
+						if(linksContainer.mouseX>draggableLinkItem.x && draggableLinkItem.x+draggableLinkItem.width>linksContainer.mouseX)
+						{
+							addLintItemButton(currentLinkItem,i);
+							this.stage.addEventListener(MouseEvent.MOUSE_MOVE,controllsliding);
+							this.stage.addEventListener(MouseEvent.MOUSE_UP,canselSliding);
+							trace("Item founded");
+						}
+						else
+						{
+							trace("Item si already open");
+						}
 					}
 					else
 					{
