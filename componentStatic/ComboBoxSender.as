@@ -20,6 +20,11 @@ package componentStatic
 		private var _fun:Function;
 		private var _data:*;
 		private var _timerId:uint;
+		
+		public function get data():*
+		{
+			return _data
+		}
 		public function ComboBoxSender()
 		{
 			super();
@@ -86,7 +91,12 @@ package componentStatic
 		protected function OpenList(event:MouseEvent=null):void
 		{
 			// TODO Auto Generated method stub
-			Hints.selector(_data.title(),'',_data.buttonArray(),selector,null,1,2,onBackFun)	
+			openListPopUp()
+		}
+		
+		public function openListPopUp():void
+		{
+			Hints.selector(_data.title(),'',_data.buttonArray(),selector,null,1,2,onBackFun)
 		}
 		
 		protected function onBackFun():void
