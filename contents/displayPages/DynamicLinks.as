@@ -26,9 +26,13 @@ package contents.displayPages
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
 	
+	/**Reload required*/
+	[Event(name="RELOAD_REQUIRED", type="contents.displayPages.DynamicLinksEvent")]
 	public class DynamicLinks extends MovieClip implements DisplayPageInterface
 	{
-		public static const UPDATE_LINKS_POSITION:String = "UPDATE_LINKS_POSITION" ;
+		public static const UPDATE_LINKS_POSITION:String = DynamicLinksEvent.UPDATE_LINKS_POSITION ;
+		
+		public static const RELOAD_REQUIRED:String = DynamicLinksEvent.RELOAD_REQUIRED ;
 		
 		/**Change it befor setup function. it makes items to lock on the left side of the list after release.*/
 		public var showStepByStep:Boolean = false ;
@@ -49,6 +53,10 @@ package contents.displayPages
 		
 		protected var sampleLink:LinkItem,
 					linkClass:Class;
+					
+		/**This is the reload item. it will add to the top of the list and when you scroll it more than defautl, it will apear.*/
+		protected var reloaderMC:MovieClip,
+						reloaderMCFrame:Number;
 					
 		protected var sampleLinkButton:LinkItemButtons,
 					linkButtonClass,
@@ -564,13 +572,61 @@ package contents.displayPages
 		
 		private function unLoad(ev:Event=null)
 		{
+			this.stage.removeEventListener(MouseEvent.MOUSE_UP,reloadRequired);
 			this.removeEventListener(Event.ENTER_FRAME,controllSensor) ;
 			this.removeEventListener(Event.REMOVED_FROM_STAGE,unLoad) ;
+		}
+		
+		/**Reload required*/
+		protected function reloadRequired(event:MouseEvent):void
+		{
+			this.dispatchEvent(new Event(RELOAD_REQUIRED));
 		}
 		
 		private function controllSensor(ev:Event=null)
 		{
 			var sens:Rectangle = linksSensor.getBounds(this);
+			
+			if(reloaderMC)
+			{
+				var precent:Number = 0 ;
+				if(horizontalMenu)
+				{
+					trace("reloader ?");
+				}
+				else
+				{
+					if(reverted)
+					{
+						trace("Reloader on non horizontal but reverted menu");
+					}
+					else
+					{
+						precent = Math.max(0,Math.min(2,(linksContainer.y)/reloaderMC.height));
+						//trace("linksContainer.y : "+linksContainer.y);
+						if(precent>0)
+						{
+							reloaderMCFrame += ((1+Math.floor(precent*reloaderMC.totalFrames)-reloaderMCFrame))/4;
+							reloaderMC.gotoAndStop(Math.floor(reloaderMCFrame));
+							//reloaderMC.play();
+							
+							if(precent>=1)
+							{
+								stage.addEventListener(MouseEvent.MOUSE_UP,reloadRequired);
+							}
+							else
+							{
+								stage.removeEventListener(MouseEvent.MOUSE_UP,reloadRequired);
+							}
+						}
+						else
+						{
+							reloaderMCFrame = 1 ;
+							reloaderMC.gotoAndStop(1);
+						}
+					}
+				}
+			}
 			
 			if(false && linksInterfaceStorage.length>0)
 			{
@@ -802,6 +858,32 @@ package contents.displayPages
 				}
 				linksSensor.x += (newLink.width+myDeltaX)*MenuDirection ;
 			}
+		}
+		
+	///////////////////////////
+		
+		/**This will make the drag reload event activationg. you have to pass an animated MovieCllip to use it as reloader*/
+		public function addReloadFeature(reloadMC:MovieClip):void
+		{
+			linksContainer.addChild(reloadMC);
+			reloadMC.stop();
+			if(horizontalMenu)
+			{
+				trace("?");
+			}
+			else
+			{
+				reloadMC.x = areaRect.width/2;
+				if(reverted)
+				{
+					reloadMC.y = reloadMC.height/2;
+				}
+				else
+				{
+					reloadMC.y = reloadMC.height/-2;
+				}
+			}
+			reloaderMC = reloadMC ;
 		}
 	}
 }
