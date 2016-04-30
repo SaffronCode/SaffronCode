@@ -184,6 +184,7 @@ package contents.displayPages
 		/**Start controlling mouse down*/
 		protected function controllMouseSlide(event:MouseEvent):void
 		{
+			linkScroller.isInRange();
 			trace("Mouse clicked");
 			var itemY:Number ; 
 			var currentLinkItem:LinkItem ;
@@ -199,6 +200,7 @@ package contents.displayPages
 						draggableLinkItem = currentLinkItem ;
 						if(linksContainer.mouseX>draggableLinkItem.x && draggableLinkItem.x+draggableLinkItem.width>linksContainer.mouseX)
 						{
+							
 							addLintItemButton(currentLinkItem,i);
 							this.stage.addEventListener(MouseEvent.MOUSE_MOVE,controllsliding);
 							this.stage.addEventListener(MouseEvent.MOUSE_UP,canselSliding);
@@ -261,10 +263,13 @@ package contents.displayPages
 			{
 				if(linksContainer.mouseX<mouseFirstPose-mouseDeltaToSlide)
 				{
-					draggableLinkItem.slideHorizontal((linksContainer.mouseX-mouseFirstPose+mouseDeltaToSlide)/linkItemButtonsWidth,linkItemButtonsWidth) ;
-					event.updateAfterEvent();
-					trace("Deative scroll and other buttons");
-					linkScroller.lock(true);
+					if(linkScroller.isInRange())
+					{
+						draggableLinkItem.slideHorizontal((linksContainer.mouseX-mouseFirstPose+mouseDeltaToSlide)/linkItemButtonsWidth,linkItemButtonsWidth) ;
+						event.updateAfterEvent();
+						//trace("Deative scroll and other buttons");
+						linkScroller.lock(true);
+					}
 				}
 				else
 				{
