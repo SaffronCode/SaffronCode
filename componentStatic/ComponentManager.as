@@ -30,6 +30,7 @@ package componentStatic
 			if(IgnoreList_p!=null)
 			{
 				ErrorManager.ignoreList = IgnoreList_p
+				trace('ingnoreList :',JSON.stringify(ErrorManager.ignoreList))	
 			}
 			else
 			{

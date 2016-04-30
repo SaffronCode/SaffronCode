@@ -52,6 +52,10 @@ package componentStatic
 
 			setValueText_fun()
 		}
+		public function setText(Value_p:String):void
+		{
+			target.valueText.text = Value_p
+		}
 		private function changeTextBox_Fun(evt:Event):void
 		{
 			if(priceMode)

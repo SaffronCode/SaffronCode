@@ -62,6 +62,7 @@ package componentStatic
 		private function ignore(Index_p:String):Boolean
 		{
 			var value:Boolean = ignoreList.indexOf(Index_p)>-1
+			//trace('index name :',Index_p,' value :',value)	
 			return value	
 		}
 		public function chekError(CatcherObject_p:Object,Name_p:String,Type_p:String):Boolean
@@ -80,33 +81,33 @@ package componentStatic
 			switch(Type_p)
 			{
 				case MOBILE:
-					if(!ignore(Name_p) && isNaN(Number(CatcherObject_p[Name_p]))){				
+					if(isNaN(Number(CatcherObject_p[Name_p]))){				
 						errorObj[Name_p] = mobileId		
 						return true
 					}
 				break;
 				case EMAIL:
-					if(!ignore(Name_p) && !EmailValidation.check(CatcherObject_p[Name_p])){
+					if(!EmailValidation.check(CatcherObject_p[Name_p])){
 						
 						errorObj[Name_p] = emailId
 						return true
 					}
 				break;
 				case TEL: 
-					if(!ignore(Name_p) && isNaN(Number(CatcherObject_p[Name_p]))){
+					if(isNaN(Number(CatcherObject_p[Name_p]))){
 						errorObj[Name_p] = telId
 						return true
 					}
 				break;	
 				case PRICE: 
-					if(!ignore(Name_p) && isNaN(Number(CatcherObject_p[Name_p]))){
+					if(isNaN(Number(CatcherObject_p[Name_p]))){
 						errorObj[Name_p] = priceId
 						return true
 					}
 					break;
 				case DATE:
 
-					if(!ignore(Name_p) && chekDate(String(CatcherObject_p[Name_p]))){
+					if(chekDate(String(CatcherObject_p[Name_p]))){
 						errorObj[Name_p] = dateId
 						return true
 					}

@@ -21,6 +21,10 @@ package componentStatic
 		private var _date:Date,
 					_shamsiDate:MyShamsi,
 					_shamsi:Boolean;
+
+					private var _yy:TextBox,
+								_mm:TextBox,
+								_dd:TextBox;
 		public function DateSender(Shamsi_p:Boolean=true)
 		{
 			super();
@@ -54,19 +58,19 @@ package componentStatic
 			if(yMc!=null)
 			{
 				_yyStr = getFiledDate(_date,YYYY)
-				var _yy:TextBox = new TextBox(yMc,_yyStr,SoftKeyboardType.NUMBER,true)
+				_yy = new TextBox(yMc,_yyStr,SoftKeyboardType.NUMBER,true)
 				_yy.addEventListener(TextBoxEvent.TEXT,yy_fun)	
 			}
 			if(mMc!=null)
 			{
 				_mmStr = getFiledDate(_date,MM)
-				var _mm:TextBox = new TextBox(mMc,_mmStr,SoftKeyboardType.NUMBER,true)
+				_mm = new TextBox(mMc,_mmStr,SoftKeyboardType.NUMBER,true)
 				_mm.addEventListener(TextBoxEvent.TEXT,mm_fun)
 			}
 			if(dMc!=null)
 			{
 				_ddStr = getFiledDate(_date,DD)
-				var _dd:TextBox = new TextBox(dMc,_ddStr,SoftKeyboardType.NUMBER,true)
+				_dd = new TextBox(dMc,_ddStr,SoftKeyboardType.NUMBER,true)
 				_dd.addEventListener(TextBoxEvent.TEXT,dd_fun)
 			}
 			if(_date==null)
@@ -89,15 +93,30 @@ package componentStatic
 		protected function dd_fun(event:TextBoxEvent):void
 		{
 			// TODO Auto-generated method stub
-			_ddStr = event.text
+			if(event.text!='')
+			{
+				_ddStr = event.text
+			}
+			else
+			{
+				_dd.setText(DD)
+				_ddStr = DD	
+			}
 			sentValue()	
 		}
 		
 		protected function mm_fun(event:TextBoxEvent):void
 		{
 			// TODO Auto-generated method stub
-	
-				_mmStr = event.text
+				if(event.text!='')
+				{
+					_mmStr = event.text
+				}
+				else
+				{
+					_mm.setText(MM)
+					_mmStr = MM
+				}
 				sentValue()
 		}
 		
@@ -105,8 +124,16 @@ package componentStatic
 		{
 			// TODO Auto-generated method stub
 		
-				_yyStr = event.text
-				sentValue()				
+				if(event.text!='')
+				{	
+					_yyStr = event.text			
+				}
+				else
+				{					
+					_yy.setText(YYYY)
+					_yyStr = YYYY
+				}
+				sentValue()	
 		}
 		
 		private function getFiledDate(Date_p:Date,Status_p:String):String
@@ -157,17 +184,24 @@ package componentStatic
 					
 				_date.fullYear = int(_yyStr)
 				_shamsiDate.fullYear = int(_yyStr)
-					
-				if(_shamsi)
+				
+				var _dataValue:String	
+				if(_yyStr == YYYY && _mmStr == MM && _ddStr == DD)
 				{
-					setObj(this.name,MyShamsi.shamsiToMiladi(_shamsiDate).time.toString(),ErrorManager.DATE)
-					trace('shamsiiiiiiiiiiiiiii****************')
+					_dataValue = null
+					trace('Date is null')	
+				}
+				else if(_shamsi)		
+				{
+					_dataValue = MyShamsi.shamsiToMiladi(_shamsiDate).time.toString()
+					trace('Date is Shamsi')
 				}
 				else
 				{
-					setObj(this.name,_date.time.toString(),ErrorManager.DATE)
-					trace('miladiiiiiii***************************** :')
+					_dataValue = _date.time.toString()
+					trace('Date is miladi:')
 				}
+				setObj(this.name,_dataValue,ErrorManager.DATE)
 			}
 			else
 			{
@@ -179,6 +213,11 @@ package componentStatic
 		}
 		public function chekError():Boolean
 		{
+			
+			if(_yyStr == YYYY && _mmStr == MM && _ddStr == DD)
+			{
+				return true
+			}
 			var _yyStatus:Boolean = false
 			var _mmStatus:Boolean = false
 			var _ddStatus:Boolean = false	
