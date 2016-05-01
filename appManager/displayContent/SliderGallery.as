@@ -55,6 +55,8 @@ package appManager.displayContent
 		{
 			super();
 			
+			totalImages = 0 ;
+			
 			W = super.width;
 			H = super.height ;
 			
@@ -106,6 +108,10 @@ package appManager.displayContent
 			
 			protected function animate(event:Event=null):void
 			{
+				if(totalImages<=1)
+				{
+					return ;
+				}
 				if(isDragging)
 				{
 					
@@ -204,6 +210,10 @@ package appManager.displayContent
 				/**Start dragging the top Image*/
 				protected function startDragging(event:MouseEvent):void
 				{
+					if(totalImages==1)
+					{
+						return ;
+					}
 					if(mustSwitch)
 					{
 						swtichImages();
@@ -274,6 +284,9 @@ package appManager.displayContent
 		
 		public function setUp(images:Vector.<SliderImageItem>,currentIndex:uint=0):void
 		{
+			stage.removeEventListener(MouseEvent.MOUSE_DOWN,startDragging);
+			stage.removeEventListener(MouseEvent.MOUSE_MOVE,startSliding);
+			
 			nextPrevController = 0 ;
 			mustSwitch = false ;
 			switchToNext = false ;
