@@ -4,7 +4,9 @@ package appManager.displayContentElemets
 	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.display.DisplayObject;
 	import flash.display.Loader;
+	import flash.display.LoaderInfo;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
@@ -353,10 +355,12 @@ package appManager.displayContentElemets
 		{
 			// TODO Auto-generated method stub
 			cleatTheBitmap();
+			var loadedContent:DisplayObject ;
 			if(loader==null && loadedBitmap==null)
 			{
-				trace("*************************why the loader is null???"+loader);
-				return;
+				trace("*************************why the loader is null???"+loader+' > '+event+'  >>  '+(event.target as LoaderInfo)+'  >>>  '+event.currentTarget);
+				loadedContent = (event.target as LoaderInfo).content;
+				//return;
 			}
 			if(newBitmap)
 			{
@@ -369,7 +373,14 @@ package appManager.displayContentElemets
 			}
 			else
 			{
-				newBitmap = (loader.content as Bitmap);
+				if(loadedContent)
+				{
+					newBitmap = loadedContent as Bitmap ;
+				}
+				else
+				{
+					newBitmap = (loader.content as Bitmap);
+				}
 			}
 			if(newBitmap==null)
 			{
@@ -399,6 +410,8 @@ package appManager.displayContentElemets
 			
 			if(loader)
 			{
+				loader.contentLoaderInfo.removeEventListener(Event.COMPLETE,imageLoaded);
+				loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR,imageNotFound);
 				(loader.content as Bitmap).bitmapData.dispose();
 				loader.unloadAndStop();
 				loader.unload();
