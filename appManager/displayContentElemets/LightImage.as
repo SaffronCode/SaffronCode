@@ -121,7 +121,7 @@ package appManager.displayContentElemets
 		}
 		
 		/**You can show loaded image by this methode.*/
-		public function setUpBytes(imageBytes:ByteArray, loadInThisArea:Boolean=false, imageW:Number=0, imageH:Number=0, X:Number=0, Y:Number=0,copyBytes:Boolean=false):void
+		public function setUpBytes(imageBytes:ByteArray, loadInThisArea:Boolean=false, imageW:Number=0, imageH:Number=0, X:Number=0, Y:Number=0,copyBytes:Boolean=false,keepRatio:Boolean=true):void
 		{
 			clearLastByte();
 			if(copyBytes)
@@ -134,11 +134,11 @@ package appManager.displayContentElemets
 				loadedBytes = imageBytes ;
 			}
 			clearLastBitmap();
-			setUp(null, loadInThisArea, imageW, imageH, X, Y);
+			setUp(null, loadInThisArea, imageW, imageH, X, Y,keepRatio);
 		}
 		
 		/**You can show loaded image by this methode.*/
-		public function setUpBitmapData(imageBitmap:BitmapData, loadInThisArea:Boolean=false, imageW:Number=0, imageH:Number=0, X:Number=0, Y:Number=0,copyBitmap:Boolean=false):void
+		public function setUpBitmapData(imageBitmap:BitmapData, loadInThisArea:Boolean=false, imageW:Number=0, imageH:Number=0, X:Number=0, Y:Number=0,copyBitmap:Boolean=false,keepRatio:Boolean = true ):void
 		{
 			clearLastByte();
 			clearLastBitmap();
@@ -150,7 +150,7 @@ package appManager.displayContentElemets
 			{
 				loadedBitmap = imageBitmap ;
 			}
-			setUp(null, loadInThisArea, imageW, imageH, X, Y);
+			setUp(null, loadInThisArea, imageW, imageH, X, Y,keepRatio);
 		}
 		
 		private function clearLastByte():void
