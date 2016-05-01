@@ -7,6 +7,8 @@ package appManager.displayContent
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
+	import flash.utils.clearInterval;
+	import flash.utils.setInterval;
 	
 	/**When an image changed*/
 	[Event(name="change", type="flash.events.Event")]
@@ -49,6 +51,11 @@ package appManager.displayContent
 		
 		/**This is the dragging speed*/
 		private var speed:Number ;
+		
+		
+		/**This is animating interval timer*/
+		private var animInterval:uint ;
+		private var intervalId:uint;
 		
 		
 		public function SliderGallery()
@@ -100,6 +107,7 @@ package appManager.displayContent
 		
 			protected function unLoad(event:Event):void
 			{
+				stopAnimation();
 				stage.removeEventListener(MouseEvent.MOUSE_DOWN,startDragging);
 				stage.removeEventListener(MouseEvent.MOUSE_MOVE,startSliding);
 				this.removeEventListener(Event.REMOVED_FROM_STAGE,unLoad);
@@ -210,6 +218,8 @@ package appManager.displayContent
 				/**Start dragging the top Image*/
 				protected function startDragging(event:MouseEvent):void
 				{
+					stopAnimation();
+					
 					if(totalImages==1)
 					{
 						return ;
@@ -218,6 +228,7 @@ package appManager.displayContent
 					{
 						swtichImages();
 					}
+					
 					
 					speed = 0 ;
 					mouseLastX = mouseX0 = this.mouseX;
@@ -244,6 +255,8 @@ package appManager.displayContent
 					{
 						next();
 					}
+					
+					setAnimation();
 				}
 				
 					protected function startSliding(event:MouseEvent):void
@@ -282,7 +295,7 @@ package appManager.displayContent
 			}
 		}
 		
-		public function setUp(images:Vector.<SliderImageItem>,currentIndex:uint=0):void
+		public function setUp(images:Vector.<SliderImageItem>,currentIndex:uint=0,animateTimer:uint = 10000):void
 		{
 			stage.removeEventListener(MouseEvent.MOUSE_DOWN,startDragging);
 			stage.removeEventListener(MouseEvent.MOUSE_MOVE,startSliding);
@@ -294,6 +307,26 @@ package appManager.displayContent
 			imagesList = images ;
 			totalImages = imagesList.length ;
 			getImageUp().load(images[imageIndex]);
+			
+			animInterval = animateTimer ;
+			
+			setAnimation();
+		}
+		
+		/**Start animation timer*/
+		private function setAnimation():void
+		{
+			stopAnimation();
+			if(animInterval>0)
+			{
+				intervalId = setInterval(next,animInterval);
+			}
+		}
+		
+		/**Stop the animation timer*/
+		private function stopAnimation():void
+		{
+			clearInterval(intervalId);
 		}
 		
 		public function preve():void
