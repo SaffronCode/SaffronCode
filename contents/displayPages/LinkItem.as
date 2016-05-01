@@ -96,15 +96,15 @@ package contents.displayPages
 			{
 				slideAnimationActivated = true ;
 				this.addEventListener(Event.ENTER_FRAME,animate);
-				this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
+				this.addEventListener(Event.REMOVED_FROM_STAGE,unLoadTheAnimation);
 			}
 		}
 		
 			/**Remove the enter frame event*/
-			protected function unLoad(event:Event):void
+			protected function unLoadTheAnimation(event:Event):void
 			{
 				this.removeEventListener(Event.ENTER_FRAME,animate);
-				this.removeEventListener(Event.REMOVED_FROM_STAGE,unLoad);
+				this.removeEventListener(Event.REMOVED_FROM_STAGE,unLoadTheAnimation);
 			}
 		
 			/**Anmmate the frames*/
