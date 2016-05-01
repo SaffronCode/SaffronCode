@@ -8,6 +8,8 @@ package appManager.displayContent
 	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
 	
+	/**When an image changed*/
+	[Event(name="change", type="flash.events.Event")]
 	public class SliderGallery extends MovieClip
 	{
 		private var index:uint ;
@@ -19,7 +21,8 @@ package appManager.displayContent
 					
 		private var selectedImge:uint = 0 ;
 		/**If this was true, after mouse clicked or item animated, the selected images must switch*/
-		private var mustSwitch:Boolean = false ;
+		private var mustSwitch:Boolean = false,
+					switchToNext:Boolean;
 		
 		/**This is the index of showing image*/
 		private var imageIndex:uint ;
@@ -38,6 +41,14 @@ package appManager.displayContent
 		private var myMask:Sprite ;
 		
 		private const backAnimSpeed:Number = 4 ;
+		
+		private var nextPrevController:int = 0 ;
+		
+		
+		private const userMinSpeed:Number = 1 ;
+		
+		/**This is the dragging speed*/
+		private var speed:Number ;
 		
 		
 		public function SliderGallery()
@@ -68,6 +79,11 @@ package appManager.displayContent
 			controllStage();
 		}
 		
+		public function getCurrentSelectedImage():uint
+		{
+			return imageIndex%totalImages;
+		}
+		
 		private function controllStage():void
 		{
 			if(this.stage != null)
@@ -96,15 +112,17 @@ package appManager.displayContent
 				}
 				else
 				{
-					if(getImageUp().x<W/-2)
+					if(getImageUp().x<W/-2 || nextPrevController>0)
 					{
 						getImageUp().x += (-W-getImageUp().x)/backAnimSpeed;
+						switchToNext = true ;
 						mustSwitch = true ;
 					}
-					else if(getImageUp().x>W/2)
+					else if(getImageUp().x>W/2 || nextPrevController<0)
 					{
 						getImageUp().x += (W-getImageUp().x)/backAnimSpeed;
 						mustSwitch = true ;
+						switchToNext = false ;
 					}
 					else
 					{
@@ -130,15 +148,36 @@ package appManager.displayContent
 					getImageDown().load(prevImage());
 					getImageDown().x = (getImageUp().x-getImageUp().width)/10;
 				}
+				speed*=0.5;
 			}
 			
 			
 			
 			private function swtichImages():void
 			{
+				if(nextPrevController!=0)
+				{
+					imageIndex+=nextPrevController;
+					nextPrevController = 0 ;
+				}
+				else
+				{
+					if(switchToNext)
+					{
+						imageIndex++;
+					}
+					else
+					{
+						imageIndex--;
+					}
+				}
+				
+
 				mustSwitch = false ;
 				selectedImge = (selectedImge+1)%2 ;
 				imageContainer.addChild(getImageUp());
+				
+				this.dispatchEvent(new Event(Event.CHANGE));
 			}
 			
 			/**Returns the next image*/
@@ -170,6 +209,7 @@ package appManager.displayContent
 						swtichImages();
 					}
 					
+					speed = 0 ;
 					mouseLastX = mouseX0 = this.mouseX;
 					isDragging = true ;
 					
@@ -183,12 +223,24 @@ package appManager.displayContent
 					isDragging = false ;
 					stage.removeEventListener(MouseEvent.MOUSE_MOVE,startSliding);
 					stage.removeEventListener(MouseEvent.MOUSE_UP,canselDragging);
+					
+					trace("speed : "+(speed));
+					
+					if(speed<-userMinSpeed)
+					{
+						preve();
+					}
+					else if(speed>userMinSpeed)
+					{
+						next();
+					}
 				}
 				
 					protected function startSliding(event:MouseEvent):void
 					{
 						getImageUp().x += this.mouseX-mouseLastX ;
 						getImageUp().x = Math.min(W,Math.max(-W,getImageUp().x));
+						speed += mouseLastX-this.mouseX;
 						mouseLastX = this.mouseX;
 						animate();
 						event.updateAfterEvent();
@@ -222,10 +274,31 @@ package appManager.displayContent
 		
 		public function setUp(images:Vector.<SliderImageItem>,currentIndex:uint=0):void
 		{
+			nextPrevController = 0 ;
+			mustSwitch = false ;
+			switchToNext = false ;
 			imageIndex = currentIndex ;
 			imagesList = images ;
 			totalImages = imagesList.length ;
 			getImageUp().load(images[imageIndex]);
+		}
+		
+		public function preve():void
+		{
+			if(nextPrevController!=0)
+			{
+				swtichImages();
+			}
+			nextPrevController--;
+		}
+		
+		public function next():void
+		{
+			if(nextPrevController!=0)
+			{
+				swtichImages();
+			}
+			nextPrevController++;
 		}
 	}
 }
