@@ -572,7 +572,10 @@ package contents.displayPages
 		
 		private function unLoad(ev:Event=null)
 		{
-			this.stage.removeEventListener(MouseEvent.MOUSE_UP,reloadRequired);
+			if(this.stage!=null)
+			{
+				this.stage.removeEventListener(MouseEvent.MOUSE_UP,reloadRequired);
+			}
 			this.removeEventListener(Event.ENTER_FRAME,controllSensor) ;
 			this.removeEventListener(Event.REMOVED_FROM_STAGE,unLoad) ;
 		}
