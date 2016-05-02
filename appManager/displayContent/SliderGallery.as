@@ -8,10 +8,13 @@ package appManager.displayContent
 	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
 	import flash.utils.clearInterval;
+	import flash.utils.getTimer;
 	import flash.utils.setInterval;
 	
 	/**When an image changed*/
 	[Event(name="change", type="flash.events.Event")]
+	/**The click event upgraded for this Class*/
+	[Event(name="click", type="flash.events.MouseEvent")]
 	public class SliderGallery extends MovieClip
 	{
 		private var index:uint ;
@@ -57,10 +60,14 @@ package appManager.displayContent
 		private var animInterval:uint ;
 		private var intervalId:uint;
 		
+		/**This is a time when the mouse is down and this value will controll to dispatches CLICK event*/
+		private var mouseDownTime:uint;
 		
 		public function SliderGallery()
 		{
 			super();
+			
+			this.addEventListener(MouseEvent.CLICK,preventDefaultClick,false,1000);
 			
 			totalImages = 0 ;
 			
@@ -86,6 +93,11 @@ package appManager.displayContent
 			imageContainer.mask = myMask ;
 			
 			controllStage();
+		}
+		
+		protected function preventDefaultClick(event:MouseEvent):void
+		{
+			event.stopImmediatePropagation();
 		}
 		
 		public function getCurrentSelectedImage():uint
@@ -234,6 +246,8 @@ package appManager.displayContent
 					mouseLastX = mouseX0 = this.mouseX;
 					isDragging = true ;
 					
+					mouseDownTime = getTimer();
+					
 					stage.addEventListener(MouseEvent.MOUSE_MOVE,startSliding);
 					stage.addEventListener(MouseEvent.MOUSE_UP,canselDragging);
 				}
@@ -254,6 +268,13 @@ package appManager.displayContent
 					else if(speed>userMinSpeed)
 					{
 						next();
+					}
+					
+					if(myMask.hitTestPoint(stage.mouseX,stage.mouseY) && (getTimer()-mouseDownTime)<150)
+					{
+						this.removeEventListener(MouseEvent.CLICK,preventDefaultClick,false);
+						this.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+						this.addEventListener(MouseEvent.CLICK,preventDefaultClick,false,1000);
 					}
 					
 					setAnimation();
