@@ -813,11 +813,11 @@ package contents.displayPages
 			linksContainer.graphics.beginFill(0,backAlpha) ;
 			if(!horizontalMenu)
 			{
-				linksContainer.graphics.drawRect(0,0,areaRect.width+(myPageData.links1.length-lastGeneratedLinkIndes)*(sampleLink.width+deltaX),linksSensor.y) ;
+				linksContainer.graphics.drawRect(0,0,areaRect.width,linksSensor.y+(myPageData.links1.length-lastGeneratedLinkIndes)*(sampleLink.height+deltaY)) ;
 			}
 			else
 			{
-				linksContainer.graphics.drawRect(0,0,linksSensor.x,areaRect.height+(myPageData.links1.length-lastGeneratedLinkIndes)*(sampleLink.height+deltaY)) ;
+				linksContainer.graphics.drawRect(0,0,linksSensor.x+(myPageData.links1.length-lastGeneratedLinkIndes)*(sampleLink.width+deltaX),areaRect.height) ;
 			}
 		}		
 		
