@@ -65,6 +65,7 @@ package contents
 		private static var configFile:String = "Data/config.xml";
 		
 		
+		
 		/**returns true if data is ready*/
 		public static function get isReady():Boolean
 		{

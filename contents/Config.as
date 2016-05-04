@@ -33,6 +33,8 @@
 		
 		public var skipAnimations:Boolean = false ;
 		
+		public var version_controll_url:String = "http://versioncontrol.mteamapps.ir/"
+		
 		
 		//Reserved valuse
 		

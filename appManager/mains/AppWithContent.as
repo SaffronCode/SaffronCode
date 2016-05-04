@@ -5,6 +5,8 @@
 	import appManager.event.AppEventContent;
 	import appManager.event.PageControllEvent;
 	
+	import com.mteamapp.VersionController;
+	
 	import contents.Contents;
 	import contents.ContentsEvent;
 	import contents.History;
@@ -12,7 +14,10 @@
 	
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
+	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
+	import flash.net.URLRequest;
+	import flash.net.navigateToURL;
 	
 	import sliderMenu.SliderManager;
 	
@@ -30,6 +35,9 @@
 					preventorPage:DisplayObject,
 					preventedEvent:AppEvent,
 					prventedPageWasLastPage:Boolean;
+					
+					
+		private var activeVersionControll:Boolean = false ;
 		
 		/**This is the contentManager rectangle size. it will generate from the content w and h on the home xml tag*/
 		public static function get contentRect():Rectangle
@@ -45,9 +53,10 @@
 		}
 		
 		/**AutoLanguageConvertion will enabled just when supportsMutilanguage was true*/
-		public function AppWithContent(supportsMultiLanguage:Boolean=false,autoLanguageConvertEnabled:Boolean=true,animagePageContents:Boolean=false,autoChangeMusics:Boolean=false,skipAllAnimations:Boolean=false,manageStageManager:Boolean=false,loadConfig:Boolean=false)
+		public function AppWithContent(supportsMultiLanguage:Boolean=false,autoLanguageConvertEnabled:Boolean=true,animagePageContents:Boolean=false,autoChangeMusics:Boolean=false,skipAllAnimations:Boolean=false,manageStageManager:Boolean=false,loadConfig:Boolean=false,addVersionControll:Boolean=true)
 		{
 			super(autoChangeMusics,skipAllAnimations);
+			activeVersionControll = addVersionControll ;
 			
 			ME = this ;
 			
@@ -88,6 +97,7 @@
 			
 			if(skipAllAnimations || Contents.config.skipAnimations)
 			{
+				activeVersionControll = false ;
 				skipIntro();
 				skipAnimations = true ;
 			}
@@ -189,7 +199,41 @@
 		protected function startApp()
 		{
 			stage.dispatchEvent(new ContentsEvent());
-			playIntro();
+			if(skipAnimations || Contents.config.skipAnimations || !activeVersionControll)
+			{
+				playIntro();
+			}
+			else
+			{
+				var appName:String = DevicePrefrence.appID ;
+				appName = appName.substring(appName.lastIndexOf('.')+1);
+				var versionContrllURL:String = Contents.config.version_controll_url+''+appName+'.xml' ;
+				trace("Version controll : "+versionContrllURL);
+				VersionController.controllVersion(playIntro,stopThisVersion,new URLRequest(versionContrllURL),DevicePrefrence.appVersion);
+			}
 		}
+		
+		/**The application is expired*/
+		private function stopThisVersion():void
+		{
+			if(isExpired(VersionController.hintText,VersionController.appStoreURL))
+			{
+				trace("Switch to the download url instantly");
+				stage.addEventListener(MouseEvent.CLICK,openDownloadLink);
+				openDownloadLink(null);
+			}
+		}
+		
+			/**Open thie update link*/
+			protected function openDownloadLink(event:MouseEvent):void
+			{
+				navigateToURL(new URLRequest(VersionController.appStoreURL));
+			}
+			
+			/**Returns true if there is no listener on this function, so the application have to redirect to the server*/
+			protected function isExpired(hint:String,link:String):Boolean
+			{
+				return true ;
+			}
 	}
 }
