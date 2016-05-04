@@ -22,7 +22,7 @@ package componentStatic
 		private var softKeyFormat:String,
 					priceMode:Boolean;
 		
-		public function TextBox(target_p:MovieClip,value_p:String="",SoftKeyFormat_p:String = SoftKeyboardType.DEFAULT,clearAfterClicked_p:Boolean=false,PriceMode_p=false,ConvertArabic_p:Boolean=true,CorrectingArabicNumbers_p:Boolean=true)
+		public function TextBox(target_p:MovieClip,value_p:String="",SoftKeyFormat_p:String = SoftKeyboardType.DEFAULT,clearAfterClicked_p:Boolean=false,PriceMode_p=false,ConvertArabic_p:Boolean=true,CorrectingArabicNumbers_p:Boolean=true,JustShowNativeText_p:Boolean=false)
 		{
 			target = target_p
 			value = value_p
@@ -31,7 +31,7 @@ package componentStatic
 			target.valueText.addEventListener(Event.CHANGE,changeTextBox_Fun);
 			FarsiInputCorrection.clear(target.valueText)
 			target.valueText.text = value
-			FarsiInputCorrection.setUp(target.valueText,softKeyFormat,ConvertArabic_p,CorrectingArabicNumbers_p,clearAfterClicked_p)
+			FarsiInputCorrection.setUp(target.valueText,softKeyFormat,ConvertArabic_p,CorrectingArabicNumbers_p,clearAfterClicked_p,JustShowNativeText_p)
 
 		}
 		private function setValueText_fun():void
