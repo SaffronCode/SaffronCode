@@ -199,30 +199,34 @@
 		protected function startApp()
 		{
 			stage.dispatchEvent(new ContentsEvent());
-			if(skipAnimations || Contents.config.skipAnimations || !activeVersionControll)
-			{
-				playIntro();
-			}
-			else
+			playIntro();
+			if(!(skipAnimations || Contents.config.skipAnimations || !activeVersionControll))
 			{
 				var appName:String = DevicePrefrence.appID ;
 				appName = appName.substring(appName.lastIndexOf('.')+1);
 				var versionContrllURL:String = Contents.config.version_controll_url+''+appName+'.xml' ;
 				trace("Version controll : "+versionContrllURL);
-				VersionController.controllVersion(playIntro,stopThisVersion,new URLRequest(versionContrllURL),DevicePrefrence.appVersion);
+				VersionController.controllVersion(currentVersionIsOk,stopThisVersion,new URLRequest(versionContrllURL),DevicePrefrence.appVersion);
 			}
 		}
 		
-		/**The application is expired*/
-		private function stopThisVersion():void
-		{
-			if(isExpired(VersionController.hintText,VersionController.appStoreURL))
+			/**The application version is ok*/
+			private function currentVersionIsOk():void
 			{
-				trace("Switch to the download url instantly");
-				stage.addEventListener(MouseEvent.CLICK,openDownloadLink);
-				openDownloadLink(null);
+				trace("*** The versions are ok ***");
 			}
-		}
+		
+			/**The application is expired*/
+			private function stopThisVersion():void
+			{
+				if(isExpired(VersionController.hintText,VersionController.appStoreURL))
+				{
+					trace("Switch to the download url instantly");
+					resetIntro();
+					stage.addEventListener(MouseEvent.CLICK,openDownloadLink);
+					openDownloadLink(null);
+				}
+			}
 		
 			/**Open thie update link*/
 			protected function openDownloadLink(event:MouseEvent):void

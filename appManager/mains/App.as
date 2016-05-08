@@ -158,6 +158,21 @@ package appManager.mains
 			}
 		}
 		
+		/**Returns the intro animation to the stage and goto first frame*/
+		public function resetIntro():void
+		{
+			if(introMC!=null)
+			{
+				if(introMC.parent==null)
+				{
+					introMC.alpha = 0 ;
+				}
+				this.addChild(introMC);
+				AnimData.rewind(introMC);
+				AnimData.fadeIn(introMC);
+			}
+		}
+		
 		/**Start to play intro*/
 		public function playIntro()
 		{
@@ -184,7 +199,7 @@ package appManager.mains
 		protected function intoIsOver(e=null)
 		{
 			Obj.remove(introMC);
-			introMC = null ;
+			//introMC = null ;
 			appIsStarts();
 		}
 		
