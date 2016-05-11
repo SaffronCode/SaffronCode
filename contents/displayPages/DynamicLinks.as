@@ -82,6 +82,10 @@ package contents.displayPages
 		public static var deltaY:Number = 20,
 							deltaX:Number = 20;
 		
+		
+		/**1 makes the first link to move down and 0 make it stay at the position 0*/
+		public static var menuFirstPosition:uint = 1;
+		
 		public var myDeltaY:Number ;
 		
 		/**Only uses on horizontal menu*/
@@ -470,11 +474,11 @@ package contents.displayPages
 			linksSensor = new Sprite();
 			if(!horizontalMenu)
 			{
-				linksSensor.y = myDeltaY*MenuDirection ;
+				linksSensor.y = myDeltaY*MenuDirection*menuFirstPosition ;
 			}
 			else
 			{
-				linksSensor.x = myDeltaX*MenuDirection ;
+				linksSensor.x = myDeltaX*MenuDirection*menuFirstPosition ;
 			}
 			linksSensor.graphics.beginFill(0xff0000,linkSensorDebug);
 			var stepSize:Number = 0 ;
