@@ -13,7 +13,8 @@ package combobox.comboboxStatic
 		private var _comboBoxDynamicItem:ComboBoxDynamicItem;
 		private var _y:Number = 0
 			
-		private var _linkClass:Class;	
+		private var _linkClass:Class;
+		private var removeArray:Array = new Array()
 		public function ComboBoxStaticScrolMenu()
 		{
 			super();
@@ -34,6 +35,7 @@ package combobox.comboboxStatic
 		public function setup(PageData_p:PageData=null):void
 		{
 
+			removeList()
 			if(PageData_p!=null && _comboBoxDynamicItem!=null)
 			{			
 				for(var i:int=0;i<PageData_p.links1.length;i++)
@@ -41,6 +43,7 @@ package combobox.comboboxStatic
 					
 					var _item:ComboBoxDynamicItem = new _linkClass()
 						this.addChild(_item)
+						removeArray.push(_item)	
 						_item.addItem(PageData_p.links1[i])
 							_item.y = _y
 							_y+=_item.height+ComboBoxStaticManager.dynamicLinkY	
@@ -58,6 +61,15 @@ package combobox.comboboxStatic
 				var _rec2:Rectangle = new Rectangle(0,0,this.width,this.height)
 				var scrol:ScrollMT = new ScrollMT(this,_rec1,_rec2)
 			}
+		}
+		private function removeList():void
+		{
+			for(var i:int=0;i<removeArray.length;i++)
+			{
+				this.removeChild(removeArray[i])
+			}
+			removeArray = new Array()
+			_y = 0	
 		}
 	}
 }
