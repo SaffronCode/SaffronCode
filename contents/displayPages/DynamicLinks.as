@@ -390,6 +390,9 @@ package contents.displayPages
 			//trace("current page data is : "+pageData.export());
 			this.removeChildren();
 			myPageData = pageData;
+			{
+				linksContainer = new Sprite();
+			}
 			if(pageData.links1.length == 0 && noLinksMC!=null)
 			{
 				this.addChild(noLinksMC);
@@ -437,7 +440,7 @@ package contents.displayPages
 			}	*/
 			
 			
-			linksContainer = new Sprite();
+			
 			linksContainer.x = areaRect.x ;
 			
 			/**Button container*/
