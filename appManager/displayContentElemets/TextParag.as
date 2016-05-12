@@ -1,4 +1,4 @@
-package appManager.displayContentElemets
+﻿package appManager.displayContentElemets
 	//appManager.displayContentElemets.TextParag
 {
 	import flash.display.MovieClip;
@@ -7,7 +7,7 @@ package appManager.displayContentElemets
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
-	import picContest.PicConst;
+
 	
 	public class TextParag extends MovieClip
 	{
