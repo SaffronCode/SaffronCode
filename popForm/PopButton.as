@@ -263,13 +263,16 @@
 								myLightImage.setUp(buttonImageURL,true);
 							}
 							
-							if(txtTF.multiline)
+							if(txtTF)
 							{
-								TextPutter.onTextArea(txtTF,myTitle,true,true,false);
-							}
-							else
-							{
-								TextPutter.OnButton(txtTF,myTitle,true,true,false);
+								if(txtTF.multiline)
+								{
+									TextPutter.onTextArea(txtTF,myTitle,true,true,false);
+								}
+								else
+								{
+									TextPutter.OnButton(txtTF,myTitle,true,true,false);
+								}
 							}
 						}
 		
