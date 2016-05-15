@@ -85,6 +85,7 @@ package mp3Player
 				mainColor = MainColor;
 			}
 			
+			sliderMC.y = 0 ;
 			sliderMC.setUp(mainColor,backColor,onPrecentChanged);
 			
 			autoPlay = AutoPlay ;
