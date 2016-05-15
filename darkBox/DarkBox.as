@@ -96,8 +96,6 @@ package darkBox
 			bannerMC = Obj.get("banner_mc",this);
 			precentMC = Obj.get("percent_mc",this);
 			backMC = Obj.get("back_mc",this);
-			nextMC = Obj.get("next_mc",this);
-			prevMC = Obj.get("prev_mc",this);
 			closeMC = Obj.get("close_mc",this);
 			titleMC = Obj.get("title_mc",this);
 			preLoderMC = Obj.get("wait_mc",this);
@@ -112,11 +110,7 @@ package darkBox
 				_Watermarkdark_mc.mouseEnabled = false
 			}
 			
-			prevMC.buttonMode = nextMC.buttonMode = closeMC.buttonMode = true ;
-			
 			closeMC.addEventListener(MouseEvent.CLICK,closeMe);
-			nextMC.addEventListener(MouseEvent.CLICK,nextImage);
-			prevMC.addEventListener(MouseEvent.CLICK,prevImage);
 			
 			box_flat = Obj.findThisClass(FlatImage,this);
 			box_pano = Obj.findThisClass(PanoramaImage,this);
@@ -193,6 +187,28 @@ package darkBox
 			/*initMask();
 			maskMC.graphics.beginFill(0);
 			maskMC.graphics.drawRect(0,0,newSize.width,newSize.height);*/
+			
+			if(nextMC)
+			{
+				nextMC.removeEventListener(MouseEvent.CLICK,nextImage);
+				prevMC.removeEventListener(MouseEvent.CLICK,prevImage);
+			}
+			
+			if(rtf)
+			{
+				nextMC = Obj.get("next_mc",this);
+				prevMC = Obj.get("prev_mc",this);
+			}
+			else
+			{
+				nextMC = Obj.get("prev_mc",this);
+				prevMC = Obj.get("next_mc",this);
+			}
+			
+			prevMC.buttonMode = nextMC.buttonMode = closeMC.buttonMode = true ;
+			
+			nextMC.addEventListener(MouseEvent.CLICK,nextImage);
+			prevMC.addEventListener(MouseEvent.CLICK,prevImage);
 				
 			this.x = newSize.x;
 			this.y = newSize.y;
@@ -316,26 +332,12 @@ package darkBox
 		
 		protected function prevImage(event:MouseEvent):void
 		{
-			if(rtf)
-			{
-				manageCurrentImage(currentImage-1);
-			}
-			else
-			{
-				nextImage(event);
-			}
+			manageCurrentImage(currentImage-1);
 		}
 		
 		protected function nextImage(event:MouseEvent):void
 		{
-			if(rtf)
-			{
-				manageCurrentImage(currentImage+1);
-			}
-			else
-			{
-				prevImage(event);
-			}
+			manageCurrentImage(currentImage+1);
 		}
 		
 		private function manageCurrentImage(imageIndex:int=-1):void
