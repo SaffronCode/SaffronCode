@@ -39,7 +39,10 @@ package darkBox
 					preLoderMC:MovieClip,
 					closeMC:MovieClip;
 					
-		private var _Watermarkdark_mc:MovieClip
+		private var _Watermarkdark_mc:MovieClip;
+		
+		
+		private static var rtf:Boolean ; 
 					
 		//private var maskMC:MovieClip ;
 					
@@ -67,8 +70,9 @@ package darkBox
 		}
 					
 		/**Initialize the DarkBox area*/
-		public static function setUp(newSize:Rectangle,noNetHintText:String='No Internet Connection Available',noImageHereText:String='',downloadFunction:Function=null,titleInFullLine:Boolean=false):void
+		public static function setUp(newSize:Rectangle,noNetHintText:String='No Internet Connection Available',noImageHereText:String='',downloadFunction:Function=null,titleInFullLine:Boolean=false,RightToLeft:Boolean=true):void
 		{
+			rtf = RightToLeft ;
 			showTitleInFullLine = titleInFullLine ;
 			saveButtonFunction = downloadFunction ; 
 			noNetTitle = noNetHintText ;
@@ -235,7 +239,14 @@ package darkBox
 			
 			MouseDrag.setUp(stage);
 			
-			MouseDrag.addFunctions(mouseDragedRight,mouseDraggedLeft,newSize);
+			if(rtf)
+			{
+				MouseDrag.addFunctions(mouseDragedRight,mouseDraggedLeft,newSize);
+			}
+			else
+			{
+				MouseDrag.addFunctions(mouseDraggedLeft,mouseDragedRight,newSize);
+			}
 		}
 		
 		private function mouseDraggedLeft()
@@ -305,14 +316,26 @@ package darkBox
 		
 		protected function prevImage(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
-			manageCurrentImage(currentImage-1);
+			if(rtf)
+			{
+				manageCurrentImage(currentImage-1);
+			}
+			else
+			{
+				nextImage(event);
+			}
 		}
 		
 		protected function nextImage(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
-			manageCurrentImage(currentImage+1);
+			if(rtf)
+			{
+				manageCurrentImage(currentImage+1);
+			}
+			else
+			{
+				prevImage(event);
+			}
 		}
 		
 		private function manageCurrentImage(imageIndex:int=-1):void
