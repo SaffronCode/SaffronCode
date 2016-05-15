@@ -27,17 +27,20 @@ package appManager.displayContent
 		
 		private const F:Number = 5,
 					Mu:Number = 0.9,
-					MuStop:Number=0.5 ;
+					MuStop:Number=0.7 ;
 		
 		private const acceptableDelta:Number = 5 ;
 		
-		private var isDragging:Boolean ; 
+		private var isDragging:Boolean ;
+		
+		private var isLock:Boolean = false ;
 		
 		public function FullAnimatedScroller()
 		{
 			super();
 			this.stop();
 			_currentFrame = 1 ;
+			isLock = false ;
 			
 			var speeds:Array = this.name.split('_');
 			if(speeds.length<2)
@@ -47,6 +50,7 @@ package appManager.displayContent
 			xSpeed = uint(speeds[1])/100;
 			ySpeed = uint(speeds[2])/100;
 			areaMC = Obj.get("area_mc",this);
+			areaMC.visible = false ;
 			if(areaMC==null)
 			{
 				throw "You have to add an object named   \"area_mc\" on the FullAnimated Class to defin the scroll area"
@@ -56,8 +60,20 @@ package appManager.displayContent
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 			this.addEventListener(MouseEvent.MOUSE_WHEEL,startDraggingWill);
 			this.addEventListener(Event.ENTER_FRAME,animate);
+			this.addEventListener(ScrollMT.LOCK_SCROLL_TILL_MOUSE_UP,lockMeTillMouseUp);
 		}
 		
+		protected function lockMeTillMouseUp(event:Event):void
+		{
+			stopDragging(null);
+			isLock = true ;
+			stage.addEventListener(MouseEvent.MOUSE_UP,unLockMe);
+		}		
+		
+		protected function unLockMe(event:MouseEvent):void
+		{
+			isLock = false ;
+		}
 		
 		protected function unLoad(event:Event):void
 		{
@@ -67,7 +83,7 @@ package appManager.displayContent
 		
 			protected function startScroll(event:MouseEvent):void
 			{
-				if(thisIsOnArea())
+				if(thisIsOnArea() && !isLock)
 				{
 					isDragging = true ;
 					firstX = stage.mouseX;
