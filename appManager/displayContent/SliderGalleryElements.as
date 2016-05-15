@@ -20,8 +20,10 @@ package appManager.displayContent
 			super();
 			myArea = rect.clone() ;
 			lightImage = new LightImage();
-			lightImage.animated = false ;
+			//lightImage.animated = false ;
 			this.addChild(lightImage);
+			//this.graphics.beginFill(0x000000,0.5);
+			//this.graphics.drawRect(0,0,rect.width,rect.height);
 		}
 		
 		public function load(image:SliderImageItem):void

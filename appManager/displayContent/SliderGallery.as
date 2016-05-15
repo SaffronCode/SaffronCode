@@ -38,6 +38,8 @@ package appManager.displayContent
 					H:Number;
 					
 		private var mouseX0:Number;
+		
+		private var moveingStarts:Boolean ;
 					
 		private var mouseLastX:Number;
 		
@@ -62,6 +64,8 @@ package appManager.displayContent
 		
 		/**This is a time when the mouse is down and this value will controll to dispatches CLICK event*/
 		private var mouseDownTime:uint;
+		
+		private var minMoveToSpeed:Number = 15;
 		
 		public function SliderGallery()
 		{
@@ -124,6 +128,8 @@ package appManager.displayContent
 				stage.removeEventListener(MouseEvent.MOUSE_MOVE,startSliding);
 				this.removeEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 				this.removeEventListener(Event.ENTER_FRAME,animate);
+				stage.removeEventListener(MouseEvent.MOUSE_MOVE,startSliding);
+				stage.removeEventListener(MouseEvent.MOUSE_UP,canselDragging);
 			}
 			
 			protected function animate(event:Event=null):void
@@ -244,6 +250,7 @@ package appManager.displayContent
 					
 					speed = 0 ;
 					mouseLastX = mouseX0 = this.mouseX;
+					moveingStarts = false ;
 					isDragging = true ;
 					
 					mouseDownTime = getTimer();
@@ -282,6 +289,19 @@ package appManager.displayContent
 				
 					protected function startSliding(event:MouseEvent):void
 					{
+						if(!moveingStarts)
+						{
+							if(Math.abs(this.mouseX-mouseX0)>minMoveToSpeed)
+							{
+								moveingStarts = true ;
+								mouseLastX = this.mouseX ;
+								this.dispatchEvent(new Event(ScrollMT.LOCK_SCROLL_TILL_MOUSE_UP,true));
+							}
+							else
+							{
+								return ;
+							}
+						}
 						getImageUp().x += this.mouseX-mouseLastX ;
 						getImageUp().x = Math.min(W,Math.max(-W,getImageUp().x));
 						speed += mouseLastX-this.mouseX;
