@@ -184,7 +184,7 @@ package contents.displayPages
 		public function imSelected(event:MouseEvent=null):void
 		{
 			// TODO Auto-generated method stub
-			if(myLinkData!=null && Xn == X0)
+			if(myLinkData!=null && (Xn == X0 || isNaN(Xn) || isNaN(X0)))
 			{
 				this.dispatchEvent(new AppEventContent(myLinkData));
 			}
