@@ -102,3 +102,8 @@ $RECYCLE.BIN/
 *.xlsx
 *.mobileprovision
 *.ttf
+
+*META-INF*
+*.app
+*.gif
+*.epd
