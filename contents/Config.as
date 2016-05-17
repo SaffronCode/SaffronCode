@@ -33,7 +33,7 @@
 		
 		public var skipAnimations:Boolean = false ;
 		
-		public var version_controll_url:String = "http://versioncontrol.mteamapps.ir/"
+		public var version_controll_url:String = "http://sarkandi.com/versionControl/"
 		
 		
 		//Reserved valuse
