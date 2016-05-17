@@ -390,10 +390,7 @@ package contents.displayPages
 			//trace("current page data is : "+pageData.export());
 			this.removeChildren();
 			myPageData = pageData;
-			if(linksContainer==null)
-			{
-				linksContainer = new Sprite();
-			}
+			linksContainer = new Sprite();
 			if(pageData.links1.length == 0 && noLinksMC!=null)
 			{
 				this.addChild(noLinksMC);
