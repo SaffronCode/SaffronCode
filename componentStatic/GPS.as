@@ -10,7 +10,7 @@ package componentStatic
 	import flash.utils.setTimeout;
 	
 	import map.AddMarker;
-	import map.DisplayMapWindow;
+	import map.DisplayMapOption;
 	import map.GeoLocation;
 	import map.MapEvent;
 	import map.Marker;
@@ -91,7 +91,7 @@ package componentStatic
 			markerList.push(Marker_p)
 			mapAreaMc.visible = false
 			addmarker = new AddMarker(markerList)
-			var displayMap:DisplayMapWindow = new DisplayMapWindow()
+			var displayMap:DisplayMapOption = new DisplayMapOption()
 			displayMap.marker = true
 			displayMap.area = mapAreaMc.getBounds(this.stage)	
 			displayMap.markerAndPanTo = true
