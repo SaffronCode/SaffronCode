@@ -56,7 +56,7 @@ package contents.displayPages
 					
 		/**This is the reload item. it will add to the top of the list and when you scroll it more than defautl, it will apear.*/
 		protected var reloaderMC:MovieClip,
-						reloaderMCFrame:Number;
+						reloaderMCFrame:Number = 1;
 					
 		protected var sampleLinkButton:LinkItemButtons,
 					linkButtonClass,
