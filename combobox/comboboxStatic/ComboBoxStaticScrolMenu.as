@@ -30,7 +30,7 @@ package combobox.comboboxStatic
 				trace("Dynamic manu class shouldent be empty of linkItem!");
 			}
 			
-			setScrol()
+		//	setScrol()
 		}
 		public function setup(PageData_p:PageData=null):void
 		{
