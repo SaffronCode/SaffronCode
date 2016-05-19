@@ -27,6 +27,8 @@ package webService.webCallers
 	/**This event dispatches when an update happend whe you used ofline datas. for example you called and service and requseted offline datas and ofline data was available and it was dispatched with COMPLETE event. then web service will try to load the server datas again and the cahnes between last data and new one is discovered. so it will update the data vlue then this event dispatches.*/
 	[Event(name="change", type="flash.events.Event")]
 	
+	/**Server response received*/
+	[Event(name="connect", type="flash.events.Event")]
 	
 	public class WebServiceCaller extends EventDispatcher
 	{
@@ -213,6 +215,7 @@ package webService.webCallers
 		private function loaded(e:WebEvent)
 		{
 			//TODO: implement function
+			this.dispatchEvent(new Event(Event.CONNECT));
 			trace('pur pur pur data :>>>',e.pureData)
 			if(myToken == e.token)
 			{
