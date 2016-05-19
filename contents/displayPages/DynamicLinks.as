@@ -716,7 +716,7 @@ package contents.displayPages
 						requestPreLoader.y = areaRect.height/2 ;
 					}
 					requestPreLoader.visible = true ;
-					if(linksSensor.parent!=null)
+					if(linksSensor.parent==linksContainer)
 					{
 						linksContainer.removeChild(linksSensor);
 					}
