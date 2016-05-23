@@ -703,7 +703,7 @@ package contents.displayPages
 				}
 				else
 				{
-					//unLoad();
+					unLoad();
 					linksContainer.addChild(requestPreLoader);
 					if(!horizontalMenu)
 					{
