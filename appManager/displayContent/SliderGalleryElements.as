@@ -15,6 +15,10 @@ package appManager.displayContent
 		
 		private var lastImage:SliderImageItem ;
 		
+		private var lastImageLoaded:String ;
+		
+		private var H:Number;
+		
 		public function SliderGalleryElements(rect:Rectangle)
 		{
 			super();
@@ -26,10 +30,28 @@ package appManager.displayContent
 			//this.graphics.drawRect(0,0,rect.width,rect.height);
 		}
 		
-		public function load(image:SliderImageItem):void
+		override public function set height(value:Number):void
 		{
-			if(image!=lastImage)
+			myArea.height = value ;
+			Obj.remove(lightImage);
+			lightImage = new LightImage();
+			this.addChild(lightImage);
+			load();
+		}
+		
+		override public function get height():Number
+		{
+			return myArea.height ;
+		}
+		
+		public function load(image:SliderImageItem=null):void
+		{
+			if((image==null && lastImage!=null) || image!=lastImage)
 			{
+				if(image==null)
+				{
+					image = lastImage ;
+				}
 				if(image.image is BitmapData)
 				{
 					lightImage.setUpBitmapData(image.image,false,myArea.width,myArea.height,0,0,true);
@@ -42,8 +64,8 @@ package appManager.displayContent
 				{
 					lightImage.setUp(image.image,false,myArea.width,myArea.height,0,0,true);
 				}
+				lastImage = image ;
 			}
-			lastImage = image ;
 		}
 	}
 }

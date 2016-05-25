@@ -83,7 +83,7 @@ package appManager.displayContent
 			myMask.graphics.drawRect(0,0,W,H);
 			
 			
-			imageContainer = new Sprite
+			imageContainer = new Sprite();
 			image1 = new SliderGalleryElements(new Rectangle(0,0,W,H));
 			image2 = new SliderGalleryElements(new Rectangle(0,0,W,H));
 			
@@ -97,6 +97,32 @@ package appManager.displayContent
 			imageContainer.mask = myMask ;
 			
 			controllStage();
+		}
+		
+		override public function get height():Number
+		{
+			return H ;
+		}
+		
+		override public function set height(value:Number):void
+		{
+			trace("Old H was : "+H);
+			H = value ;
+			trace("Nw H is : "+H);
+			
+			if(myMask)
+			{
+				myMask.graphics.clear();
+				myMask.graphics.beginFill(0xff0000,1);
+				myMask.graphics.drawRect(0,0,W,H);
+				imageContainer.mask = myMask ;
+			}
+			if(image1)
+			{
+				image1.height = H ;
+				image2.height = H ;
+			}
+			
 		}
 		
 		protected function preventDefaultClick(event:MouseEvent):void
