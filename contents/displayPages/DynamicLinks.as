@@ -588,6 +588,7 @@ package contents.displayPages
 		/**Reload required*/
 		protected function reloadRequired(event:MouseEvent):void
 		{
+			stage.removeEventListener(MouseEvent.MOUSE_UP,reloadRequired);
 			this.dispatchEvent(new Event(RELOAD_REQUIRED));
 		}
 		
