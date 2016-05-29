@@ -53,11 +53,17 @@ package darkBox
 					
 		private static var saveButtonFunction:Function;
 		private static var showTitleInFullLine:Boolean;
+		private var closeFunction:Function;
 					
 		/**Get the current file*/
 		public static function get currentMedia():ImageFile
 		{
 			return ME.currentMedia();
+		}
+		
+		public static function getCurrentImageIndex():uint
+		{
+			return ME.currentImage ;
 		}
 		
 		public function currentMedia():ImageFile
@@ -80,9 +86,9 @@ package darkBox
 			ME.setUp(newSize);
 		}
 		
-		public static function show(Images:Vector.<ImageFile>,currentIndex:uint=0):void
+		public static function show(Images:Vector.<ImageFile>,currentIndex:uint=0,onClosed:Function=null):void
 		{
-			ME.show(Images,currentIndex);
+			ME.show(Images,currentIndex,onClosed);
 		}
 		
 		public function DarkBox()
@@ -294,6 +300,10 @@ package darkBox
 		
 		public function hide():void
 		{
+			if(closeFunction!=null)
+			{
+				closeFunction();
+			}
 			clearTimeout(timeOutId);
 			hideAll();
 			
@@ -311,9 +321,9 @@ package darkBox
 				this.visible = false ;
 			}
 		
-		public function show(Images:Vector.<ImageFile>,index:uint=0):void
+		public function show(Images:Vector.<ImageFile>,index:uint=0,onClosed:Function=null):void
 		{
-			
+			closeFunction = onClosed ;
 			images = Images.concat() ;
 			if(images.length == 0)
 			{
