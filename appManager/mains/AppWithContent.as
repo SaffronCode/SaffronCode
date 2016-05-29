@@ -183,7 +183,10 @@
 				prventedPageWasLastPage = History.undoLastPageHisotry();
 				return false;
 			}
-			if(event is AppEventContent)
+			var duplicatePageController:Boolean = super.managePages(event);
+			
+			
+			if(duplicatePageController && event is AppEventContent)
 			{
 				var event2:AppEventContent = event as AppEventContent ;
 				if(!event2.SkipHistory)
@@ -192,7 +195,8 @@
 					History.pushHistory((event as AppEventContent).linkData);
 				}
 			}
-			return super.managePages(event);
+			
+			return duplicatePageController ;
 		}
 		
 		/**Contents are load now*/
