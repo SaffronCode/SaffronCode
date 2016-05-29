@@ -87,7 +87,7 @@ package componentStatic
 					}
 				break;
 				case EMAIL:
-					if(!EmailValidation.check(CatcherObject_p[Name_p])){
+					if(!EmailValidation.check(CatcherObject_p[Name_p],true)){
 						
 						errorObj[Name_p] = emailId
 						return true
