@@ -73,9 +73,9 @@ package contents.displayPages
 						linksSensor:Sprite ;
 						
 		/**This is the list of creted linkItems on the stage.*/
-		private var linksInterfaceStorage:Vector.<LinkItem> ;
+		private var linksInterfaceStorage:Vector.<LinkItem>;
 		
-		private var lastVisibleItem:uint = 0 ;
+		private var lastInVisibleItem:int = 0 ;
 					
 		protected var lastGeneratedLinkIndes:uint ;
 		
@@ -212,7 +212,6 @@ package contents.displayPages
 						draggableLinkItem = currentLinkItem ;
 						if(linksContainer.mouseX>draggableLinkItem.x && draggableLinkItem.x+draggableLinkItem.width>linksContainer.mouseX)
 						{
-							
 							addLintItemButton(currentLinkItem,i);
 							this.stage.addEventListener(MouseEvent.MOUSE_MOVE,controllsliding);
 							this.stage.addEventListener(MouseEvent.MOUSE_UP,canselSliding);
@@ -385,7 +384,7 @@ package contents.displayPages
 			
 			//reset cashed list
 			linksInterfaceStorage = new  Vector.<LinkItem>();
-			lastVisibleItem= 0 ;
+			lastInVisibleItem = -1 ;
 			
 			//trace("current page data is : "+pageData.export());
 			this.removeChildren();
@@ -637,32 +636,50 @@ package contents.displayPages
 				}
 			}
 			
-			if(false && linksInterfaceStorage.length>0)
+			if(linksInterfaceStorage.length>0)
 			{
-				var visibleItem:LinkItem = linksInterfaceStorage[lastVisibleItem] ;
-				var inVisibleItem:LinkItem = linksInterfaceStorage[Math.max(0,lastVisibleItem-1)] ;
+				var visibleItem:LinkItem ;
+				var inVisibleItem:LinkItem ;
+				var haveToLoop:Boolean ;
+				
 				do
 				{
+					haveToLoop = false ;
+					if(lastInVisibleItem<linksInterfaceStorage.length-1)
+					{
+						visibleItem = linksInterfaceStorage[lastInVisibleItem+1];
+					}
+					if(lastInVisibleItem>=0)
+					{
+						inVisibleItem = linksInterfaceStorage[lastInVisibleItem];
+					}
 					if(!horizontalMenu)
 					{
 						if(!reverted)
 						{
-							if(visibleItem.y+linksContainer.y+visibleItem.height<0)
+							if(inVisibleItem!=null && inVisibleItem.y+inVisibleItem.y+inVisibleItem.height>=0)
+							{
+								if(!inVisibleItem.visible)
+								{
+									inVisibleItem.visible = true;
+									if(visibleItem.myButtons)
+									{
+										visibleItem.myButtons.visible = true ;
+									}
+									lastInVisibleItem--;
+									haveToLoop = true ;
+								}
+							}else if(visibleItem!=null && visibleItem.y+linksContainer.y+visibleItem.height<0)
 							{
 								if(visibleItem.visible)
 								{
 									visibleItem.visible=false;
-									lastVisibleItem = Math.min(linksInterfaceStorage.length-1,lastVisibleItem+1);
-									continue;
-								}
-							}
-							if(lastVisibleItem>0 && inVisibleItem.y+inVisibleItem.y+inVisibleItem.height>=0)
-							{
-								if(!inVisibleItem.visible)
-								{
-									inVisibleItem.visible=true;
-									lastVisibleItem = Math.max(0,lastVisibleItem-1);
-									continue;
+									if(visibleItem.myButtons)
+									{
+										visibleItem.myButtons.visible = false ;
+									}
+									lastInVisibleItem++;
+									haveToLoop = true ;
 								}
 							}
 						}
@@ -682,7 +699,10 @@ package contents.displayPages
 							trace("?");
 						}
 					}
-					break;
+					if(!haveToLoop)
+					{
+						break;
+					}
 				}while(true);
 			}
 			
