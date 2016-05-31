@@ -659,25 +659,15 @@ package contents.displayPages
 						{
 							if(inVisibleItem!=null && inVisibleItem.y+inVisibleItem.y+inVisibleItem.height>=0)
 							{
-								if(!inVisibleItem.visible)
+								if(showThempRemovedLink(inVisibleItem))
 								{
-									inVisibleItem.visible = true;
-									if(visibleItem.myButtons)
-									{
-										visibleItem.myButtons.visible = true ;
-									}
 									lastInVisibleItem--;
 									haveToLoop = true ;
 								}
 							}else if(visibleItem!=null && visibleItem.y+linksContainer.y+visibleItem.height<0)
 							{
-								if(visibleItem.visible)
+								if(thempRemoveLink(visibleItem))
 								{
-									visibleItem.visible=false;
-									if(visibleItem.myButtons)
-									{
-										visibleItem.myButtons.visible = false ;
-									}
 									lastInVisibleItem++;
 									haveToLoop = true ;
 								}
@@ -745,6 +735,49 @@ package contents.displayPages
 					requestMore();
 				}
 			}
+		}
+		
+		/**Returns true if the linkItem was visible*/
+		private function thempRemoveLink(realLinkItem:LinkItem):Boolean
+		{
+			if(realLinkItem.visible)
+			{
+				realLinkItem.visible = false ;
+				if(realLinkItem.myButtons)
+				{
+					Obj.remove(realLinkItem.myButtons);
+				}
+				Obj.remove(realLinkItem);
+				return true ;
+			}
+			return false ;
+		}
+		
+		
+		/**Returns true if the linkItem was not in the stage**/
+		public function showThempRemovedLink(removedLinkItem:LinkItem):Boolean
+		{
+			if(!removedLinkItem.visible)
+			{
+				removedLinkItem.visible = true;
+				
+				var removedLinkIndex:uint = linksInterfaceStorage.indexOf(removedLinkItem);
+				
+				
+				var newLink:LinkItem = new linkClass() ;
+				linksContainer.addChild(newLink) ;
+				newLink.setSize(areaRect.width,areaRect.height);
+				newLink.x = removedLinkItem.x;
+				newLink.y = removedLinkItem.y;
+				newLink.setUp(removedLinkItem.myLinkData) ;
+				
+				linksInterfaceStorage.splice(removedLinkIndex,1,newLink);
+				
+				removedLinkItem = null ;
+				
+				return true ;
+			}
+			return false ;
 		}
 		
 		/**This will just remove preloader from list*/
