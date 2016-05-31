@@ -25,6 +25,7 @@ package contents.displayPages
 	import flash.geom.Rectangle;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
+	import flash.utils.getTimer;
 	
 	/**Reload required*/
 	[Event(name="RELOAD_REQUIRED", type="contents.displayPages.DynamicLinksEvent")]
@@ -650,54 +651,50 @@ package contents.displayPages
 			if(linksInterfaceStorage.length>0)
 			{
 				var visibleItem:LinkItem ;
-				var inVisibleItem:LinkItem ;
-				var haveToLoop:Boolean ;
-				
-				do
+				//var inVisibleItem:LinkItem ;
+				//var haveToLoop:Boolean ;
+				var l:uint = linksInterfaceStorage.length ;
+				var tim:Number = getTimer();
+				for(var i:int=0 ; i<l ; i++)
 				{
-					haveToLoop = false ;
-					if(lastInVisibleItem<linksInterfaceStorage.length-1)
-					{
-						visibleItem = linksInterfaceStorage[lastInVisibleItem+1];
-					}
-					if(lastInVisibleItem>=0)
-					{
-						inVisibleItem = linksInterfaceStorage[lastInVisibleItem];
-					}
+					visibleItem = linksInterfaceStorage[i];
 					if(!horizontalMenu)
 					{
 						if(!reverted)
 						{
-							if(inVisibleItem!=null 
-								&& 
-								(
-									inVisibleItem.y+linksContainer.y+inVisibleItem.height>=inVisibleItem.height*-3
-									&&
-									inVisibleItem.y+linksContainer.y<areaRect.height+inVisibleItem.height*3
-								)
+							//trace("inVisibleItem.y : "+inVisibleItem.y);
+							if(
+								visibleItem.y+linksContainer.y+visibleItem.height>=visibleItem.height*-3
+								&&
+								visibleItem.y+linksContainer.y<areaRect.height+visibleItem.height*3
 							)
 							{
-								if(showThempRemovedLink(inVisibleItem))
+								if(showThempRemovedLink(visibleItem))
 								{
-									trace("Backed link : "+lastInVisibleItem);
-									lastInVisibleItem--;
-									haveToLoop = true ;
+									trace("Backed link : "+i);
+									//lastInVisibleItem--;
+									//haveToLoop = true ;
 								}
-							}else if(visibleItem!=null 
-								&& 
-								(
-									visibleItem.y+linksContainer.y+visibleItem.height<-maxVisibleDistance
-									||
-									visibleItem.y>areaRect+maxVisibleDistance
-								)
+								/*else
+								{
+									trace("Item "+i+" is in range already");
+								}*/
+							}else if(
+								visibleItem.y+linksContainer.y+visibleItem.height<-maxVisibleDistance
+								||
+								visibleItem.y>areaRect.height+maxVisibleDistance
 							)
 							{
 								if(thempRemoveLink(visibleItem))
 								{
-									trace("RemovedLink : "+(lastInVisibleItem+1));
-									lastInVisibleItem++;
-									haveToLoop = true ;
+									trace("RemovedLink : "+(i));
+									//lastInVisibleItem++;
+									//haveToLoop = true ;
 								}
+								/*else
+								{
+									trace("Item "+i+" is removved olready");
+								}*/
 							}
 						}
 						else
@@ -716,11 +713,9 @@ package contents.displayPages
 							trace("?");
 						}
 					}
-					if(!haveToLoop)
-					{
-						break;
-					}
-				}while(true);
+				}
+				
+				//trace("****************************** it takes : "+(getTimer()-tim));
 			}
 			
 			if(!addingLinksOver
