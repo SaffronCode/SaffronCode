@@ -83,6 +83,10 @@ package contents.displayPages
 							deltaX:Number = 20;
 		
 		
+		private static const maxVisibleDistance:Number = 2000,
+							minVisibleDistance:Number=500;
+		
+		
 		/**1 makes the first link to move down and 0 make it stay at the position 0*/
 		public static var menuFirstPosition:uint = 1;
 		
@@ -664,7 +668,14 @@ package contents.displayPages
 					{
 						if(!reverted)
 						{
-							if(inVisibleItem!=null && inVisibleItem.y+linksContainer.y+inVisibleItem.height>=inVisibleItem.height*-3)
+							if(inVisibleItem!=null 
+								&& 
+								(
+									inVisibleItem.y+linksContainer.y+inVisibleItem.height>=inVisibleItem.height*-3
+									&&
+									inVisibleItem.y+linksContainer.y<areaRect.height+inVisibleItem.height*3
+								)
+							)
 							{
 								if(showThempRemovedLink(inVisibleItem))
 								{
@@ -672,7 +683,14 @@ package contents.displayPages
 									lastInVisibleItem--;
 									haveToLoop = true ;
 								}
-							}else if(visibleItem!=null && visibleItem.y+linksContainer.y+visibleItem.height<-2000)
+							}else if(visibleItem!=null 
+								&& 
+								(
+									visibleItem.y+linksContainer.y+visibleItem.height<-maxVisibleDistance
+									||
+									visibleItem.y>areaRect+maxVisibleDistance
+								)
+							)
 							{
 								if(thempRemoveLink(visibleItem))
 								{
