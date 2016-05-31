@@ -109,6 +109,9 @@ package contents.displayPages
 		
 		protected var dynamicHeight:Boolean = false ;
 		
+		/**If this variable was true, no more link addink proccess will call*/
+		private var addingLinksOver:Boolean ;
+		
 		/**Make the dynamic link not scrollable and show all items instantly*/
 		public function set_dynamicHeigh(status:Boolean=true):void
 		{
@@ -537,6 +540,10 @@ package contents.displayPages
 				}
 			}
 			
+			addingLinksOver = false ;
+			this.removeEventListener(Event.ENTER_FRAME,controllSensor);
+			this.removeEventListener(Event.REMOVED_FROM_STAGE,unLoad);
+			
 			this.addEventListener(Event.ENTER_FRAME,controllSensor);
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 		}
@@ -661,7 +668,7 @@ package contents.displayPages
 							{
 								if(showThempRemovedLink(inVisibleItem))
 								{
-									trace("Backed link : "+(lastInVisibleItem+1));
+									trace("Backed link : "+lastInVisibleItem);
 									lastInVisibleItem--;
 									haveToLoop = true ;
 								}
@@ -669,7 +676,7 @@ package contents.displayPages
 							{
 								if(thempRemoveLink(visibleItem))
 								{
-									trace("RemovedLink : "+lastInVisibleItem);
+									trace("RemovedLink : "+(lastInVisibleItem+1));
 									lastInVisibleItem++;
 									haveToLoop = true ;
 								}
@@ -698,9 +705,12 @@ package contents.displayPages
 				}while(true);
 			}
 			
-			if(loadAllLinksInstantly ||
+			if(!addingLinksOver
+				&&
+				(loadAllLinksInstantly ||
 				(!horizontalMenu && !reverted && sens.top<areaRect.bottom) || (!horizontalMenu && reverted && sens.bottom>areaRect.top)
 				|| (horizontalMenu && !reverted && sens.left<areaRect.right) || (horizontalMenu && reverted && sens.right>areaRect.left))
+			)
 			{
 				trace("Request more link");
 				var ifTherIs:Boolean = creatOneLink();
@@ -716,7 +726,9 @@ package contents.displayPages
 				}
 				else
 				{
-					unLoad();
+					//unLoad();
+					addingLinksOver = true ;
+					
 					linksContainer.addChild(requestPreLoader);
 					if(!horizontalMenu)
 					{
