@@ -657,17 +657,19 @@ package contents.displayPages
 					{
 						if(!reverted)
 						{
-							if(inVisibleItem!=null && inVisibleItem.y+inVisibleItem.y+inVisibleItem.height>=0)
+							if(inVisibleItem!=null && inVisibleItem.y+linksContainer.y+inVisibleItem.height>=inVisibleItem.height*-3)
 							{
 								if(showThempRemovedLink(inVisibleItem))
 								{
+									trace("Backed link : "+(lastInVisibleItem+1));
 									lastInVisibleItem--;
 									haveToLoop = true ;
 								}
-							}else if(visibleItem!=null && visibleItem.y+linksContainer.y+visibleItem.height<0)
+							}else if(visibleItem!=null && visibleItem.y+linksContainer.y+visibleItem.height<-2000)
 							{
 								if(thempRemoveLink(visibleItem))
 								{
+									trace("RemovedLink : "+lastInVisibleItem);
 									lastInVisibleItem++;
 									haveToLoop = true ;
 								}
