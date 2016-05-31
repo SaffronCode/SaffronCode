@@ -84,7 +84,7 @@ package contents.displayPages
 							deltaX:Number = 20;
 		
 		
-		private static const maxVisibleDistance:Number = 2000,
+		private static const maxVisibleDistance:Number = 4000,
 							minVisibleDistance:Number=500;
 		
 		
