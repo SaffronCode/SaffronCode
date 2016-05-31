@@ -39,6 +39,9 @@ package contents.displayPages
 					frameHandler:Number ,
 					slideAnimationActivated:Boolean=false ; 
 		
+		/**This is the link item index*/
+		internal var myIndex:uint ;
+		
 		public function LinkItem(mouseChildAccept:Boolean=false)
 		{
 			super();
@@ -156,6 +159,12 @@ package contents.displayPages
 			// TODO Auto Generated method stub
 			myParentWidth = Width;
 			myParentHeight = Height;
+		}
+		
+		/**Set the linkItem index*/
+		public function setIndex(index:uint):void
+		{
+			myIndex = index ;
 		}
 		
 		/**Set up the page*/

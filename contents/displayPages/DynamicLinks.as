@@ -654,7 +654,7 @@ package contents.displayPages
 				//var inVisibleItem:LinkItem ;
 				//var haveToLoop:Boolean ;
 				var l:uint = linksInterfaceStorage.length ;
-				var tim:Number = getTimer();
+				//var tim:Number = getTimer();
 				for(var i:int=0 ; i<l ; i++)
 				{
 					visibleItem = linksInterfaceStorage[i];
@@ -794,6 +794,7 @@ package contents.displayPages
 				var newLink:LinkItem = new linkClass() ;
 				linksContainer.addChild(newLink) ;
 				newLink.setSize(areaRect.width,areaRect.height);
+				newLink.setIndex(removedLinkItem.myIndex);
 				newLink.x = removedLinkItem.x;
 				newLink.y = removedLinkItem.y;
 				newLink.setUp(removedLinkItem.myLinkData) ;
@@ -829,6 +830,7 @@ package contents.displayPages
 					var newLink:LinkItem = new linkClass() ;
 					linksContainer.addChild(newLink) ;
 					newLink.setSize(areaRect.width,areaRect.height);
+					newLink.setIndex(lastGeneratedLinkIndes);
 					newLink.setUp(myPageData.links1[lastGeneratedLinkIndes]) ;
 					
 					createLinkOn(newLink,linksSensor);
