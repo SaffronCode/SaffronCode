@@ -44,7 +44,7 @@ package webService.webCallers
 		//public var data:Vector.<GetPhotos>;
 		
 		//#0
-		private var justLoadOffline:Boolean,
+		public var justLoadOffline:Boolean,
 					offlineDataIsOK:Boolean;
 					
 		//private var myServiceFunction:Function ;
