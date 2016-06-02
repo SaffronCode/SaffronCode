@@ -42,23 +42,25 @@ package contents.displayPages
 		/**This is the link item index*/
 		internal var myIndex:uint ;
 		
-		public function LinkItem(mouseChildAccept:Boolean=false)
+		public function LinkItem(mouseChildAccept:Boolean=false,searchForElements:Boolean=true)
 		{
 			super();
-			
-			var images:Array = Obj.findAllClass(Image,this);
-			if(images.length>1)
+			if(searchForElements)
 			{
-				myImage = Obj.findThisClass(Image,this) as Image;
+				var images:Array = Obj.findAllClass(Image,this);
+				if(images.length>1)
+				{
+					myImage = Obj.findThisClass(Image,this) as Image;
+				}
+				else if(images.length!=0)
+				{
+					myImage = images[0];
+				}
+				myTitle = Obj.findThisClass(TitleText,this) as TitleText;
+				//trace("founded text title is : "+myTitle)
+				myParag = Obj.findThisClass(TextParag,this);
 			}
-			else if(images.length!=0)
-			{
-				myImage = images[0];
-			}
-			myTitle = Obj.findThisClass(TitleText,this) as TitleText;
-			//trace("founded text title is : "+myTitle)
-			myParag = Obj.findThisClass(TextParag,this);
-			
+				
 			frameHandler = visibleFrame = 1 ;
 			
 			this.mouseChildren = mouseChildAccept ;

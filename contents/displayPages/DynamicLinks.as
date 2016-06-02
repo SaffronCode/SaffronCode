@@ -117,6 +117,9 @@ package contents.displayPages
 		/**If this variable was true, no more link addink proccess will call*/
 		private var addingLinksOver:Boolean ;
 		
+		/**This is the number of icons per each line*/
+		public var iconsPerLine:uint = 1 ;
+		
 		/**Make the dynamic link not scrollable and show all items instantly*/
 		public function set_dynamicHeigh(status:Boolean=true):void
 		{
@@ -912,7 +915,7 @@ package contents.displayPages
 		/**Return the number of generated links for each lik generation*/
 		protected function get howManyLinksGenerates():uint
 		{
-			return 1 ;
+			return iconsPerLine ;
 		}
 		
 		/**use currentLinksSensor to move it down and use its position and to know menuWidth from currentLinksSensor.width<br>
