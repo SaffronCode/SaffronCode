@@ -5,7 +5,7 @@ package contents.displayPages
 	{
 		public function DynamicLinksLR()
 		{
-			horizontalMenu = true ;
+			horizontalMenu = false ;
 			super();
 		}
 	}
