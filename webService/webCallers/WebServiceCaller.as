@@ -215,7 +215,6 @@ package webService.webCallers
 		private function loaded(e:WebEvent)
 		{
 			//TODO: implement function
-			this.dispatchEvent(new Event(Event.CONNECT));
 			trace('pur pur pur data :>>>',e.pureData)
 			if(myToken == e.token)
 			{
@@ -223,6 +222,7 @@ package webService.webCallers
 				cansel();
 				generateDataAndDispatchEvent(e.pureData);
 			}
+			this.dispatchEvent(new Event(Event.CONNECT));
 		}
 		
 		private function generateDataAndDispatchEvent(pureData:String,dontSaveItAgain:Boolean = false ):void
