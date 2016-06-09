@@ -12,9 +12,11 @@ package tabMenu
 		private var _group:String,
 					_bg:MovieClip,
 					_name:String,
-					_defaultTabe:String;
+					_defaultTabe:String,
+					_selected:Boolean;
 					
-		private var _timerId:uint;			
+		private var _timerId:uint;	
+		
 		public function TabItemBass(GroupName_p:String=null)
 		{
 			super();
@@ -59,11 +61,15 @@ package tabMenu
 			{
 				if(event.name == _name && _bg!=null)
 				{
-					_bg.gotoAndStop(2)	
+					_selected = true
 				}
 				else if(_bg!=null)
 				{
-					_bg.gotoAndStop(1)
+					_selected = false
+				}
+				if(_bg!=null)
+				{		
+					_bg.gotoAndStop(_selected)
 				}
 			}
 		}
@@ -71,7 +77,10 @@ package tabMenu
 		protected function click_fun(event:MouseEvent):void
 		{
 			// TODO Auto-generated method stub
-			sendEvent()
+			if(!_selected)
+			{			
+				sendEvent()
+			}
 		}
 		protected function sendEvent():void
 		{
