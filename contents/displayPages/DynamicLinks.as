@@ -570,7 +570,8 @@ package contents.displayPages
 		/**Adds more links to links list. but if there is no link any more, you have to call noMoreLinks() funcion to remove preloader*/
 		public function addLink(listOfLinks:Vector.<LinkData>):void
 		{
-			trace("controll again");
+			addingLinksOver = false ;
+			trace("extra links are : "+listOfLinks.length);
 			myPageData.links1 = myPageData.links1.concat(listOfLinks);
 			
 			this.addEventListener(Event.ENTER_FRAME,controllSensor);
@@ -757,10 +758,6 @@ package contents.displayPages
 						requestPreLoader.y = areaRect.height/2 ;
 					}
 					requestPreLoader.visible = true ;
-					if(linksSensor.parent==linksContainer)
-					{
-						linksContainer.removeChild(linksSensor);
-					}
 					//Call below function after preloader added.
 					requestMore();
 				}
