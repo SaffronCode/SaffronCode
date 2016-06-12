@@ -11,6 +11,7 @@ package contents.displayPages
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.utils.setTimeout;
 	
 	/**You can trigger me by calling imSelected function*/
 	public class LinkItem extends MovieClip
@@ -64,8 +65,32 @@ package contents.displayPages
 			frameHandler = visibleFrame = 1 ;
 			
 			this.mouseChildren = mouseChildAccept ;
-			this.addEventListener(MouseEvent.CLICK,imSelected);
+			activateSelectorAgainAfterScroll();
+			this.addEventListener(ScrollMT.LOCK_SCROLL_TILL_MOUSE_UP,stopClickAcceptingAfterScroll);
 			this.stop();
+		}
+		
+		/**Dont accept click*/
+		protected function stopClickAcceptingAfterScroll(event:Event):void
+		{
+			if(this.stage!=null)
+			{
+				this.removeEventListener(MouseEvent.CLICK,imSelected);
+				stage.addEventListener(MouseEvent.MOUSE_UP,startClckAcceptingAfterScroll);
+			}
+		}
+		
+		/**Accept click from now*/
+		protected function startClckAcceptingAfterScroll(e:Event):void
+		{
+			stage.removeEventListener(MouseEvent.MOUSE_UP,startClckAcceptingAfterScroll);
+			setTimeout(activateSelectorAgainAfterScroll,0);
+		}
+		
+		/**add scroll event again*/
+		private function activateSelectorAgainAfterScroll():void
+		{
+			this.addEventListener(MouseEvent.CLICK,imSelected);
 		}
 		
 		/**→←Move the button to left or right. pass positive value to precent to move it to right and negative to move it to left.<br>
