@@ -453,7 +453,7 @@ package darkBox
 					box_shp.show(image.target);
 					break;
 				case ImageFile.TYPE_VIDEO:
-					if(DevicePrefrence.isIOS())
+					if(DevicePrefrence.isIOS() || DevicePrefrence.isAndroid())
 					{						
 						stageVideo = new StageVideo(imageSize.width,imageSize.height)	
 						this.addChild(stageVideo)
