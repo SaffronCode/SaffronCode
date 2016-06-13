@@ -13,7 +13,7 @@ package darkBox
 		{
 			this.x = newSize.x;
 			this.y = newSize.y;
-			rect = newSize;
+			rect = newSize.clone();
 			rect.x = 0 ;
 			rect.y = 0 ;
 		}
