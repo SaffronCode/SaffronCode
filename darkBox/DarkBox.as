@@ -14,12 +14,21 @@ package darkBox
 	
 	import netManager.urlSaver.URLSaverEvent;
 	
+	import videoShow.StageVideo;
+	import videoShow.VideoEvents;
+	
 	public class DarkBox extends MovieClip
 	{
+		
+		
 		private static var ME:DarkBox ;
 		
 		private static var noNetTitle:String,
 							noImageTitle:String;
+							
+							
+		private var stageVideo:StageVideo;
+
 		
 		private var images:Vector.<ImageFile> ;
 		
@@ -54,6 +63,8 @@ package darkBox
 		private static var saveButtonFunction:Function;
 		private static var showTitleInFullLine:Boolean;
 		private var closeFunction:Function;
+
+		private var imageSize:Rectangle;
 					
 		/**Get the current file*/
 		public static function get currentMedia():ImageFile
@@ -219,7 +230,7 @@ package darkBox
 			this.x = newSize.x;
 			this.y = newSize.y;
 			
-			var imageSize:Rectangle = new Rectangle(0,bannerMC.height,newSize.width,newSize.height-bannerMC.height);
+			imageSize = new Rectangle(0,bannerMC.height,newSize.width,newSize.height-bannerMC.height);
 			
 			bannerMC.x = 0 ;
 			//closeMC.y = nextMC.y = prevMC.y = bannerMC.y = titleMC.y = 0 ;
@@ -315,6 +326,11 @@ package darkBox
 			this.mouseChildren = false ;
 			this.mouseEnabled =false ;
 			AnimData.fadeOut(this,onHide);
+			
+			if(stageVideo!=null)
+			{
+				stageVideo.unLoad()
+			}
 		}
 			private function onHide():void
 			{
@@ -437,8 +453,21 @@ package darkBox
 					box_shp.show(image.target);
 					break;
 				case ImageFile.TYPE_VIDEO:
-					if(box_vid)
+					if(DevicePrefrence.isIOS())
+					{						
+						stageVideo = new StageVideo(imageSize.width,imageSize.height)	
+						this.addChild(stageVideo)
+						stageVideo.x = imageSize.x
+						stageVideo.y =imageSize.y	
+							
+						stageVideo.addEventListener(VideoEvents.VIDEO_LOADED,locStageVideo)
+						stageVideo.loadThiwVideo(image.target)
+					}
+					else if(box_vid)
+					{
+						box_vid.setUp(imageSize);
 						box_vid.show(image.target);
+					}
 					break;
 				case ImageFile.TYPE_BINARY:
 					box_binary.show(image.target);
@@ -448,6 +477,12 @@ package darkBox
 					trace("This image is unknown");
 					break;
 			}
+		}
+		
+		protected function locStageVideo(event:Event):void
+		{
+			// TODO Auto-generated method stub
+			stageVideo.play()
 		}
 	}
 }
