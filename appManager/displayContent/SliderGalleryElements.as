@@ -40,9 +40,9 @@ package appManager.displayContent
 			lightImageLinks = new Vector.<String>();
 			
 			myArea = rect.clone() ;
-			lightImage = new LightImage();
+			//lightImage = new LightImage();
 			//lightImage.animated = false ;
-			this.addChild(lightImage);
+			//this.addChild(lightImage);
 			//this.graphics.beginFill(0x000000,0.5);
 			//this.graphics.drawRect(0,0,rect.width,rect.height);
 			
@@ -81,9 +81,9 @@ package appManager.displayContent
 			{
 				myPreloader.y = myArea.height/2;
 			}
-			Obj.remove(lightImage);
-			lightImage = new LightImage();
-			this.addChild(lightImage);
+			//Obj.remove(lightImage);
+			//lightImage = new LightImage();
+			//this.addChild(lightImage);
 			drawBackGround();
 			load();
 		}
@@ -103,18 +103,23 @@ package appManager.displayContent
 					image = lastImage ;
 				}
 				
-				lightImage.removeEventListener(Event.COMPLETE,imageLoaded);
+				if(lightImage)
+				{
+					lightImage.removeEventListener(Event.COMPLETE,imageLoaded);
+				}
 				
 				var imageWasLoadedBefor:Boolean = false ;
 				
-				if(false && image.image is String)
+				if(image.image is String)
 				{
-					trace("Damaging");
 					for(var i = 0 ; i<lightImageHistory.length ; i++)
 					{
 						if(lightImageLinks[i] == image.image )
 						{
-							lightImage.visible = false ;
+							if(lightImage)
+							{
+								lightImage.visible = false ;
+							}
 							lightImage = lightImageHistory[i];
 							lightImage.visible = true ;
 							imageWasLoadedBefor = true ;
@@ -125,6 +130,12 @@ package appManager.displayContent
 				
 				if(!imageWasLoadedBefor)
 				{
+					if(lightImage)
+					{
+						lightImage.visible = false ;
+					}
+					lightImage = new LightImage();
+					this.addChild(lightImage);
 					lightImage.addEventListener(Event.COMPLETE,imageLoaded);
 					
 					if(myPreloader)
