@@ -67,6 +67,14 @@ package appManager.displayContent
 		
 		private var minMoveToSpeed:Number = 15;
 		
+		
+		internal static var preloaderClass:Class ;
+		
+		internal static var imageBackGroundColor:int=-1 ;
+		
+		internal static var imageBackAlpha:Number=0 ;
+		
+		
 		public function SliderGallery()
 		{
 			super();
@@ -97,6 +105,16 @@ package appManager.displayContent
 			imageContainer.mask = myMask ;
 			
 			controllStage();
+		}
+		
+		
+		public static function setPreLoader(PreloaderClass:Class,imageBackGrounds:uint,imageBackgroundAlpha:Number=1)
+		{
+			preloaderClass = PreloaderClass ;
+			
+			imageBackGroundColor = imageBackGrounds ;
+			
+			imageBackAlpha = imageBackgroundAlpha ;
 		}
 		
 		override public function get height():Number
