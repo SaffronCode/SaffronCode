@@ -26,11 +26,19 @@ package appManager.displayContent
 		private var myPreloader:MovieClip ;
 		private var preLoaderShowerTimeOutId:uint;
 		
-		
+		/**All light images will store here*/
+		private var lightImageHistory:Vector.<LightImage>,
+					lightImageLinks:Vector.<String> ;
+					
+		private var maxHistory:uint = 5 ;
 		
 		public function SliderGalleryElements(rect:Rectangle)
 		{
 			super();
+			
+			lightImageHistory = new Vector.<LightImage>();
+			lightImageLinks = new Vector.<String>();
+			
 			myArea = rect.clone() ;
 			lightImage = new LightImage();
 			//lightImage.animated = false ;
@@ -96,27 +104,64 @@ package appManager.displayContent
 				}
 				
 				lightImage.removeEventListener(Event.COMPLETE,imageLoaded);
-				lightImage.addEventListener(Event.COMPLETE,imageLoaded);
 				
-				if(myPreloader)
+				var imageWasLoadedBefor:Boolean = false ;
+				
+				if(false && image.image is String)
 				{
-					preLoaderShowerTimeOutId = setTimeout(showPreLoader,5);
+					trace("Damaging");
+					for(var i = 0 ; i<lightImageHistory.length ; i++)
+					{
+						if(lightImageLinks[i] == image.image )
+						{
+							lightImage.visible = false ;
+							lightImage = lightImageHistory[i];
+							lightImage.visible = true ;
+							imageWasLoadedBefor = true ;
+							break;
+						}
+					}
 				}
 				
+				if(!imageWasLoadedBefor)
+				{
+					lightImage.addEventListener(Event.COMPLETE,imageLoaded);
+					
+					if(myPreloader)
+					{
+						preLoaderShowerTimeOutId = setTimeout(showPreLoader,5);
+					}
+					
+					
+					if(image.image is BitmapData)
+					{
+						lightImage.setUpBitmapData(image.image,false,myArea.width,myArea.height,0,0,true);
+					}
+					else if(image.image is ByteArray)
+					{
+						lightImage.setUpBytes(image.image,false,myArea.width,myArea.height,0,0,true);
+					}
+					else if(image.image is String)
+					{
+						lightImage.setUp(image.image,false,myArea.width,myArea.height,0,0,true);
+					}
+					
+					if(image.image is String)
+					{
+						lightImageHistory.push(lightImage);
+						lightImageLinks.push(image.image);
+					}
+				}
 				
-				if(image.image is BitmapData)
-				{
-					lightImage.setUpBitmapData(image.image,false,myArea.width,myArea.height,0,0,true);
-				}
-				else if(image.image is ByteArray)
-				{
-					lightImage.setUpBytes(image.image,false,myArea.width,myArea.height,0,0,true);
-				}
-				else if(image.image is String)
-				{
-					lightImage.setUp(image.image,false,myArea.width,myArea.height,0,0,true);
-				}
 				lastImage = image ;
+				
+				
+				if(lightImageHistory.length>maxHistory)
+				{
+					var lightOne:LightImage = lightImageHistory.shift();
+					lightImageLinks.shift();
+					Obj.remove(lightOne);
+				}
 			}
 		}
 		
@@ -134,6 +179,7 @@ package appManager.displayContent
 		private function showPreLoader():void
 		{
 			myPreloader.visible = true ;
+			this.addChild(myPreloader);
 		}
 	}
 }
