@@ -79,7 +79,6 @@ package appManager.displayContent
 		{
 			super();
 			
-			this.addEventListener(MouseEvent.CLICK,preventDefaultClick,false,1000);
 			
 			totalImages = 0 ;
 			
@@ -385,6 +384,7 @@ package appManager.displayContent
 			stage.removeEventListener(MouseEvent.MOUSE_DOWN,startDragging);
 			stage.removeEventListener(MouseEvent.MOUSE_MOVE,startSliding);
 			
+			
 			nextPrevController = 0 ;
 			mustSwitch = false ;
 			switchToNext = false ;
@@ -393,7 +393,17 @@ package appManager.displayContent
 			totalImages = imagesList.length ;
 			getImageUp().load(images[imageIndex]);
 			
-			animInterval = animateTimer ;
+			if(totalImages<=1)
+			{
+				this.removeEventListener(MouseEvent.CLICK,preventDefaultClick);
+				animInterval = 0 ;
+			}
+			else
+			{
+				this.addEventListener(MouseEvent.CLICK,preventDefaultClick,false,1000);
+				animInterval = animateTimer ;
+			}
+			
 			
 			setAnimation();
 		}
