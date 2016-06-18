@@ -154,6 +154,10 @@ package contents.displayPages
 			//This will automaticaly removes at the last line
 			
 			noLinksMC = Obj.get(noLinkInstanceName,this);
+			if(noLinksMC==null)
+			{
+				noLinksMC = Obj.findThisClass(DynamicLinksNoList,this,true) ;
+			}
 			
 			areaRect = this.getBounds(this);
 			
