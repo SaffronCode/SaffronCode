@@ -107,8 +107,9 @@ package mp3Player
 		protected function Loading(event:URLSaverEvent):void
 		{
 			// TODO Auto-generated method stub
-			trace("Im downloading..");
-			precentTF.text = event.precent+'%';
+			trace("Im downloading..1:"+event.precent );
+			trace("Im downloading..2:"+  String( event.precent*100 ).substr(0,3)  ); 
+			precentTF.text = Math.round(Number(String( event.precent*100 ).substr(0,3))) +' %';
 		}
 		
 		protected function SoundIsReady(event:URLSaverEvent):void
