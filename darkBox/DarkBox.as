@@ -15,7 +15,6 @@ package darkBox
 	import netManager.urlSaver.URLSaverEvent;
 	
 	import videoShow.StageVideo;
-	import videoShow.VideoEvents;
 	
 	public class DarkBox extends MovieClip
 	{
@@ -453,14 +452,13 @@ package darkBox
 					box_shp.show(image.target);
 					break;
 				case ImageFile.TYPE_VIDEO:
-					if(DevicePrefrence.isIOS() || DevicePrefrence.isAndroid())
+					if(true || DevicePrefrence.isIOS() || DevicePrefrence.isAndroid())
 					{						
 						stageVideo = new StageVideo(imageSize.width,imageSize.height)	
 						this.addChild(stageVideo)
 						stageVideo.x = imageSize.x
 						stageVideo.y =imageSize.y	
 							
-						stageVideo.addEventListener(VideoEvents.VIDEO_LOADED,locStageVideo)
 						stageVideo.loadThiwVideo(image.target)
 					}
 					else if(box_vid)
@@ -479,10 +477,5 @@ package darkBox
 			}
 		}
 		
-		protected function locStageVideo(event:Event):void
-		{
-			// TODO Auto-generated method stub
-			stageVideo.play()
-		}
 	}
 }
