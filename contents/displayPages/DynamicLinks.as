@@ -620,7 +620,7 @@ package contents.displayPages
 				var precent:Number = 0 ;
 				if(horizontalMenu)
 				{
-					trace("reloader ?");
+					trace("reloader on horizontalMenu");
 				}
 				else
 				{
@@ -668,58 +668,66 @@ package contents.displayPages
 					visibleItem = linksInterfaceStorage[i];
 					if(!horizontalMenu)
 					{
-						if(!reverted)
-						{
+						/*if(!reverted)
+						{*/
 							//trace("inVisibleItem.y : "+inVisibleItem.y);
-							if(
-								visibleItem.y+linksContainer.y+visibleItem.height>=visibleItem.height*-3
-								&&
-								visibleItem.y+linksContainer.y<areaRect.height+visibleItem.height*3
-							)
+						if(
+							visibleItem.y+linksContainer.y+visibleItem.height>=visibleItem.height*-3
+							&&
+							visibleItem.y+linksContainer.y<areaRect.height+visibleItem.height*3
+						)
+						{
+							if(showThempRemovedLink(visibleItem))
 							{
-								if(showThempRemovedLink(visibleItem))
-								{
-									trace("Backed link : "+i);
-									//lastInVisibleItem--;
-									//haveToLoop = true ;
-								}
-								/*else
-								{
-									trace("Item "+i+" is in range already");
-								}*/
-							}else if(
-								visibleItem.y+linksContainer.y+visibleItem.height<-maxVisibleDistance
-								||
-								visibleItem.y>areaRect.height+maxVisibleDistance
-							)
+								trace("Backed link : "+i);
+							}
+						}else if(
+							visibleItem.y+linksContainer.y+visibleItem.height<-maxVisibleDistance
+							||
+							visibleItem.y>areaRect.height+maxVisibleDistance
+						)
+						{
+							if(thempRemoveLink(visibleItem))
 							{
-								if(thempRemoveLink(visibleItem))
-								{
-									trace("RemovedLink : "+(i));
-									//lastInVisibleItem++;
-									//haveToLoop = true ;
-								}
-								/*else
-								{
-									trace("Item "+i+" is removved olready");
-								}*/
+								trace("RemovedLink : "+(i));
 							}
 						}
+						/*}
 						else
 						{
-							trace("?");
-						}
+							trace("reverted dynamic link");
+						}*/
 					}
 					else
 					{
-						if(!reverted)
+						/*if(!reverted)
+						{*/
+						if(
+							visibleItem.x+linksContainer.x+visibleItem.width>=visibleItem.width*-3
+							&&
+							visibleItem.x+linksContainer.x<areaRect.width+visibleItem.width*3
+						)
 						{
-							trace("?");
+							if(showThempRemovedLink(visibleItem))
+							{
+								trace("Backed link : "+i);
+							}
+						}else if(
+							visibleItem.x+linksContainer.x+visibleItem.width<-maxVisibleDistance
+							||
+							visibleItem.x>areaRect.width+maxVisibleDistance
+						)
+						{
+							if(thempRemoveLink(visibleItem))
+							{
+								trace("RemovedLink : "+(i));
+							}
 						}
+						/*}
 						else
 						{
-							trace("?");
-						}
+							trace("horizontalMenu reverted dynamic link");
+						}*/
 					}
 				}
 				
@@ -964,7 +972,7 @@ package contents.displayPages
 			reloadMC.stop();
 			if(horizontalMenu)
 			{
-				trace("?");
+				trace("horizontalMenu menu on addReloader feature");
 			}
 			else
 			{
