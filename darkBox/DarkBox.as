@@ -97,7 +97,7 @@ package darkBox
 			
 			if(DevicePrefrence.isItPC && DevicePrefrence.appDescriptor.toString().indexOf("<android>")!=-1 &&  DevicePrefrence.appDescriptor.toString().indexOf('android:hardwareAccelerated="true')==-1)
 			{
-				throw 'You have to add below permition to Android manifest to make StageVideo works:\n<application android:enabled="true" android:hardwareAccelerated="true"/>'
+				throw 'You have to add below permition to Android manifest to make StageVideo works:\n<application android:enabled="true" android:hardwareAccelerated="true"/>\n\nor\n\n<application android:enabled="true" android:hardwareAccelerated="true">'
 			}
 		}
 		
