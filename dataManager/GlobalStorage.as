@@ -51,7 +51,23 @@ package dataManager
 			trace("jsonObject : "+jsonObject);
 			return JSONParser.parse(jsonObject,catcherObject);
 		}
-		
+		public static function loadObject2(id:String):Vector.<uint>
+		{
+			var jsonObject:String = load(id);
+			if(jsonObject==null)
+			{
+				return null ;
+			}
+			trace('jsonObject :',jsonObject)
+			var obj:Object = JSON.parse(jsonObject);
+			var _list:Vector.<uint> = new Vector.<uint>
+			for each(var value:uint in obj)
+			{
+				_list.push(value)
+			}
+			return _list
+		}
+
 		public static function saveObject(id:String,saverObject:*,flush:Boolean=true):void
 		{
 			var jsonString:String = JSONParser.stringify(saverObject);

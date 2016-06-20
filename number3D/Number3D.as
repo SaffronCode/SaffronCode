@@ -1,7 +1,6 @@
-﻿package  {
+﻿package number3D
+{	
 	import com.adobe.utils.IntUtil;
-	
-	import eventMovie.ThumbnailEvent;
 	
 	import fl.transitions.Tween;
 	import fl.transitions.easing.Regular;
@@ -186,7 +185,7 @@
 			if(num!=numberValue)
 			{
 				numberValue = num
-				this.dispatchEvent(new ThumbnailEvent(ThumbnailEvent.THUMB_CLICKED,this))
+				this.dispatchEvent(new Number3DEvent(Number3DEvent.CHANGE,this))
 			}
 			
 			
