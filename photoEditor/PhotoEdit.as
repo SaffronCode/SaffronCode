@@ -9,6 +9,8 @@ package photoEditor
 	import flash.media.Camera;
 	import flash.media.CameraRoll;
 	import flash.ui.Keyboard;
+	import flash.ui.Multitouch;
+	import flash.ui.MultitouchInputMode;
 	import flash.utils.ByteArray;
 	
 	public class PhotoEdit extends MovieClip
@@ -132,6 +134,7 @@ package photoEditor
 		/**Show the editor*/
 		private function enable():void
 		{
+			Multitouch.inputMode = MultitouchInputMode.GESTURE ;
 			this.visible = true ;
 			this.mouseEnabled = this.mouseChildren = true ;
 			AnimData.fadeIn(this);
@@ -154,6 +157,7 @@ package photoEditor
 		
 		private function inVisibleMe():void
 		{
+			Multitouch.inputMode = MultitouchInputMode.NONE ;
 			this.visible = false;
 		}
 		
