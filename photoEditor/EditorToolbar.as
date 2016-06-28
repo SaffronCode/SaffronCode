@@ -21,6 +21,9 @@ package photoEditor
 					button_redo:MovieClip,
 					button_pen:MovieClip,
 					button_rotate:MovieClip,
+					
+					button_stamp:MovieClip,
+					
 					button_rotate_left:MovieClip;
 
 		private var H:Number;
@@ -53,6 +56,7 @@ package photoEditor
 			button_undo = Obj.get("undo_mc",toolsContainerMC);
 			button_redo = Obj.get("redo_mc",toolsContainerMC);
 			button_crop = Obj.get("crop_mc",toolsContainerMC);
+			button_stamp = Obj.get("stamp_tools_mc",toolsContainerMC);
 			
 			button_exit.addEventListener(MouseEvent.CLICK,close);
 			button_save.addEventListener(MouseEvent.CLICK,save);
@@ -61,6 +65,11 @@ package photoEditor
 			
 			button_crop.addEventListener(MouseEvent.CLICK,openCropEditor);
 			button_pen.addEventListener(MouseEvent.CLICK,openPencilArchive);
+			if(button_stamp)
+			{
+				button_stamp.addEventListener(MouseEvent.CLICK,openStampList);
+			}
+			
 			
 			button_rotate.addEventListener(MouseEvent.CLICK,rotateImage);
 			button_rotate_left.addEventListener(MouseEvent.CLICK,rotateLeftImage);
@@ -116,6 +125,14 @@ package photoEditor
 			{
 				PhotoEdit.close(e);
 			}
+		}
+		
+		
+		
+		private function openStampList(event:MouseEvent):void
+		{
+			trace("Add stamp list");
+			addEditorToStage(new StampList());
 		}
 		
 		private function openPencilArchive(e:MouseEvent):void

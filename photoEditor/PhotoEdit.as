@@ -23,7 +23,11 @@ package photoEditor
 		
 		private static var imageIndex:uint ;
 		
+		/**Image area rectangle*/
 		private static var _mainRectangle:Rectangle ;
+		
+		/**Full screen page rectangle*/
+		private static var _pageRectangle:Rectangle;
 		
 		private static var imageHistory:Vector.<BitmapData>;
 		
@@ -40,6 +44,11 @@ package photoEditor
 		internal static function get mainRectangle():Rectangle
 		{
 			return _mainRectangle.clone();
+		}
+		
+		internal static function get PageRectangle():Rectangle
+		{
+			return _pageRectangle.clone() ;
 		}
 		
 		public static function get image():BitmapData
@@ -113,7 +122,9 @@ package photoEditor
 			editorButtons.x = 0 ;
 			
 			
-			_mainRectangle = new Rectangle(0,0,pageRectangle.width,pageRectangle.height-editorButtons.height); ;
+			_mainRectangle = new Rectangle(0,0,pageRectangle.width,pageRectangle.height-editorButtons.height);
+			
+			_pageRectangle = pageRectangle ;
 			
 			editorButtons.setUp(_mainRectangle.clone());
 		}
@@ -315,6 +326,11 @@ package photoEditor
 				return previewPage.crop(rs);
 			}
 			return null;
+		}
+		
+		public static function addStamps(stampFiles:Vector.<File>):void
+		{
+			StampList.addStamps(stampFiles);
 		}
 	}
 }

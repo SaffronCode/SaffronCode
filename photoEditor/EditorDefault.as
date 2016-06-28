@@ -11,17 +11,22 @@ package photoEditor
 		
 		protected var imageRect:Rectangle ; 
 		
-		protected var fullScreenRect:Rectangle ;
+		/**This is the full image rectange*/
+		protected var fullImageAreaRect:Rectangle ;
 		
 		protected var toolbarRect:Rectangle ;
 		
+		/**This is the full screen rectangle*/
+		protected var fullScreenAreaRect:Rectangle ;
+		
 		public function EditorDefault()
 		{
-			fullScreenRect = PhotoEdit.mainRectangle.clone();
+			fullImageAreaRect = PhotoEdit.mainRectangle;
 			imageFullBitmapData = PhotoEdit.image ;
 			imageRect = PhotoEdit.imageAreaRectangle().clone();
 			toolbarRect = EditorToolbar.toolbarRectArea() ;
-			toolbarRect.y+=fullScreenRect.height+toolbarRect.height;
+			toolbarRect.y+=fullImageAreaRect.height+toolbarRect.height;
+			fullScreenAreaRect = PhotoEdit.PageRectangle ;
 			
 			super();
 		}
