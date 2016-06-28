@@ -2,6 +2,7 @@ package photoEditor
 	//photoEditor.StampList
 {
 	import flash.display.Bitmap;
+	import flash.display.BitmapData;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -44,8 +45,6 @@ package photoEditor
 			stampContainer.removeChildren();
 			
 			stampInnerContainer = new Sprite();
-			stampInnerContainer.graphics.beginFill(0xff0000,0.5);
-			stampInnerContainer.graphics.drawRect(0,0,400,400);
 			
 			for(var i = 0 ; i<stampFile.length ; i++)
 			{
@@ -84,14 +83,24 @@ package photoEditor
 			stampContainer.y = (fullImageAreaRect.height-stampContainer.height)/2;
 			
 			stampInnerContainer.mouseEnabled = false ;
-			stampInnerContainer.addEventListener(TransformGestureEvent.GESTURE_PAN,panThem);
-			stampInnerContainer.addEventListener(TransformGestureEvent.GESTURE_ROTATE,panThem);
-			stampInnerContainer.addEventListener(TransformGestureEvent.GESTURE_ZOOM,panThem);
+			resetGestures();
 			stampInnerContainer.addEventListener(MouseEvent.MOUSE_DOWN,startDragStamp);
 			controllStage();
 			
 			
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
+		}
+		
+		private function resetGestures():void
+		{
+			trace("Reset");
+			stampInnerContainer.removeEventListener(TransformGestureEvent.GESTURE_PAN,panThem);
+			stampInnerContainer.removeEventListener(TransformGestureEvent.GESTURE_ROTATE,panThem);
+			stampInnerContainer.removeEventListener(TransformGestureEvent.GESTURE_ZOOM,panThem);
+			
+			stampInnerContainer.addEventListener(TransformGestureEvent.GESTURE_PAN,panThem);
+			stampInnerContainer.addEventListener(TransformGestureEvent.GESTURE_ROTATE,panThem);
+			stampInnerContainer.addEventListener(TransformGestureEvent.GESTURE_ZOOM,panThem);
 		}
 		
 		/**Nothing to do*/
@@ -164,11 +173,16 @@ package photoEditor
 		protected function panThem(event:TransformGestureEvent):void
 		{
 			var targ:StampItem = event.target as StampItem ;
+			//var touchPoint:Point = targ.localToGlobal(new Point(event.localX,event.localY));
+			
+			//targ = stampInnerContainer.getObjectsUnderPoint(touchPoint) as StampItem;
+			
 			if(targ!=stampContainer)
 			{
 				if(event.phase == GesturePhase.BEGIN)
 				{
 					targ.firstPoint = new Point(event.localX,event.localY);
+					stopDragAll(null);
 				}
 				var newPoint:Point = targ.localToGlobal(new Point(event.localX-targ.firstPoint.x,event.localY-targ.firstPoint.y));
 				newPoint = stampInnerContainer.globalToLocal(newPoint);
@@ -179,6 +193,11 @@ package photoEditor
 				targ.scaleY = targ.scaleX ;
 				
 				event.updateAfterEvent();
+				
+				if(event.phase == GesturePhase.END)
+				{
+					resetGestures();
+				}
 			}
 		}
 		
@@ -202,6 +221,19 @@ package photoEditor
 		public static function addStamps(stampFiles:Vector.<File>):void
 		{
 			stampFile = stampFiles ;
+		}
+		
+		
+	///////////////////////////////////
+		
+		override internal function saveAndClose():void
+		{
+			//myPaper.exportBitmap(true,true,1);
+			stampContainer.scaleX = stampContainer.scaleY = 1 ;
+			var newBitmap:BitmapData = new BitmapData(stampContainer.width,stampContainer.height);
+			newBitmap.draw(stampContainer);
+			PhotoEdit.updateImage(newBitmap);
+			super.saveAndClose();
 		}
 	}
 }
