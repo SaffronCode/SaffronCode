@@ -37,7 +37,7 @@ package photoEditor
 			maskAreaMC = new MovieClip();
 			this.addChild(maskAreaMC);
 			
-			rf = fullScreenRect.clone();
+			rf = fullImageAreaRect.clone();
 			drawEditor(imageRect);
 			
 			controllStage();

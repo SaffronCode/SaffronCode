@@ -57,9 +57,11 @@ package photoEditor
 			
 			trace("toolbarRect : "+toolbarRect);
 			
-			secondToolbarRect = new Rectangle(0,toolbarRect.y-toolbarRect.height,fullScreenRect.width,toolbarContainer2.height);
+			secondToolbarRect = new Rectangle(0,fullScreenAreaRect.height-this.height,fullImageAreaRect.width,toolbarContainer2.height);
 			
-			fullScreenRect.height-=secondToolbarRect.height ;
+			trace("secondToolbarRect : "+secondToolbarRect);
+			
+			fullImageAreaRect.height-=secondToolbarRect.height ;
 			//Debug lines 
 				//fullScreenRect.height = 50 ;
 			
@@ -73,11 +75,11 @@ package photoEditor
 			
 			
 			
-			if(imageRect.height>fullScreenRect.height)
+			if(imageRect.height>fullImageAreaRect.height)
 			{
 				trace("imageRect.x was : "+imageRect.x);
-				imageRect.x=(fullScreenRect.width-((fullScreenRect.height/imageRect.height)*imageRect.width))/2;
-				imageRect.height = fullScreenRect.height ;
+				imageRect.x=(fullImageAreaRect.width-((fullImageAreaRect.height/imageRect.height)*imageRect.width))/2;
+				imageRect.height = fullImageAreaRect.height ;
 				trace("imageRect.x is : "+imageRect.x);
 				PhotoEdit.removePhotoPrevew();
 			}
