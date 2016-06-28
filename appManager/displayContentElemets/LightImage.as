@@ -407,6 +407,13 @@ package appManager.displayContentElemets
 				bitmapData = BitmapEffects.changeSize(bitmapData,bitmapData.width*(H/bitmapData.height),H,keepImageRatio,LoadInThisArea);
 				W = bitmapData.width;
 			}
+			else//(Both H and W are 0)
+			{
+				bitmapData = bitmapData.clone();
+				W = bitmapData.width;
+				H = bitmapData.height;
+			}
+			
 			
 			if(loader)
 			{

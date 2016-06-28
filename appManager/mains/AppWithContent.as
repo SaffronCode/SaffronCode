@@ -22,6 +22,7 @@
 	import sliderMenu.SliderManager;
 	
 	import stageManager.StageManager;
+	import stageManager.StageManagerEvent;
 	
 	public class AppWithContent extends App
 	{
@@ -75,8 +76,8 @@
 			{
 				trace("Contents.config.debugStageHeight : "+Contents.config.debugStageHeight);
 				StageManager.setUp(stage,Contents.config.debugStageWidth,Contents.config.debugStageHeight);
-				Contents.config.stageOrgRect = StageManager.stageOldRect ;
-				Contents.config.stageRect = StageManager.stageRect ;
+				StageManager.eventDispatcher.addEventListener(StageManagerEvent.STAGE_RESIZED,updateConfigRects);
+				updateConfigRects();
 				trace("**** : "+StageManager.stageRect);
 			}
 			//Create the contentPage rectangle by contentW and contentH values on homePage data to use on scrolled pages
@@ -108,6 +109,11 @@
 			}
 		}
 		
+		private function updateConfigRects(e:*=null):void
+		{
+			Contents.config.stageOrgRect = StageManager.stageOldRect ;
+			Contents.config.stageRect = StageManager.stageRect ;
+		}		
 		
 		/**Permition from the pages released*/
 		protected function letThePreventedAppEventRelease(event:PageControllEvent):void
