@@ -14,7 +14,7 @@ package photoEditor
 		
 		private var scrollerMC:ScrollMT ;
 		
-		private var button_exit:MovieClip,
+		internal var button_exit:MovieClip,
 					button_save:MovieClip,
 					button_undo:MovieClip,
 					button_crop:MovieClip,
@@ -68,6 +68,7 @@ package photoEditor
 			if(button_stamp)
 			{
 				button_stamp.addEventListener(MouseEvent.CLICK,openStampList);
+				button_stamp.visible = false ;
 			}
 			
 			

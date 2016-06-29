@@ -33,7 +33,7 @@ package photoEditor
 		
 		private static var imageHistory:Vector.<BitmapData>;
 		
-		private var editorButtons:EditorToolbar ;
+		private static var editorButtons:EditorToolbar ;
 		
 		/**PreviewImages*/
 		private static var previewPage:PhotoPrevew ;
@@ -335,6 +335,7 @@ package photoEditor
 		public static function addStamps(stampFiles:Vector.<File>):void
 		{
 			StampList.addStamps(stampFiles);
+			editorButtons.button_stamp.visible = true ;
 		}
 	}
 }
