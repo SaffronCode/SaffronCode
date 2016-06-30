@@ -618,40 +618,40 @@ package contents.displayPages
 			if(reloaderMC)
 			{
 				var precent:Number = 0 ;
-				if(horizontalMenu)
+				if(reverted)
 				{
-					trace("reloader on horizontalMenu");
+					trace("Reloader on non horizontal but reverted menu");
 				}
 				else
 				{
-					if(reverted)
+					if(horizontalMenu)
 					{
-						trace("Reloader on non horizontal but reverted menu");
+						precent = Math.max(0,Math.min(2,(linksContainer.x)/reloaderMC.width));
 					}
 					else
 					{
 						precent = Math.max(0,Math.min(2,(linksContainer.y)/reloaderMC.height));
-						//trace("linksContainer.y : "+linksContainer.y);
-						if(precent>0)
+					}
+					//trace("linksContainer.y : "+linksContainer.y);
+					if(precent>0)
+					{
+						reloaderMCFrame += ((1+Math.floor(precent*reloaderMC.totalFrames)-reloaderMCFrame))/4;
+						reloaderMC.gotoAndStop(Math.floor(reloaderMCFrame));
+						//reloaderMC.play();
+						
+						if(precent>=1)
 						{
-							reloaderMCFrame += ((1+Math.floor(precent*reloaderMC.totalFrames)-reloaderMCFrame))/4;
-							reloaderMC.gotoAndStop(Math.floor(reloaderMCFrame));
-							//reloaderMC.play();
-							
-							if(precent>=1)
-							{
-								stage.addEventListener(MouseEvent.MOUSE_UP,reloadRequired);
-							}
-							else
-							{
-								stage.removeEventListener(MouseEvent.MOUSE_UP,reloadRequired);
-							}
+							stage.addEventListener(MouseEvent.MOUSE_UP,reloadRequired);
 						}
 						else
 						{
-							reloaderMCFrame = 1 ;
-							reloaderMC.gotoAndStop(1);
+							stage.removeEventListener(MouseEvent.MOUSE_UP,reloadRequired);
 						}
+					}
+					else
+					{
+						reloaderMCFrame = 1 ;
+						reloaderMC.gotoAndStop(1);
 					}
 				}
 			}
@@ -972,7 +972,15 @@ package contents.displayPages
 			reloadMC.stop();
 			if(horizontalMenu)
 			{
-				trace("horizontalMenu menu on addReloader feature");
+				reloadMC.y = areaRect.height/2;
+				if(reverted)
+				{
+					reloadMC.x = reloadMC.width/2;
+				}
+				else
+				{
+					reloadMC.x = reloadMC.width/-2;
+				}
 			}
 			else
 			{
