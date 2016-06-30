@@ -1,5 +1,5 @@
 package contents.displayPages
-	//contents.displayPages.DynamikLinksNoList
+	//contents.displayPages.DynamicLinksNoList
 {
 	import flash.display.MovieClip;
 	
