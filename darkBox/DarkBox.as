@@ -132,6 +132,7 @@ package darkBox
 			}
 			
 			closeMC.addEventListener(MouseEvent.CLICK,closeMe);
+			backMC.addEventListener(MouseEvent.CLICK,closeMe);
 			
 			box_flat = Obj.findThisClass(FlatImage,this);
 			box_pano = Obj.findThisClass(PanoramaImage,this);
