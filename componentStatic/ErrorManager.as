@@ -35,7 +35,7 @@ package componentStatic
 			messageTitle[telId] = 'شماره تلفن وارد شده صحیح نمی باشد';
 			messageTitle[priceId] = 'مبلغ وارد شده صحیح نمی باشد';
 			messageTitle[dateId] = 'تاریخ وارد شده صحیح نمی باشد';
-			messageTitle[filedEmptyId]='لطفا تمام موارد خاسته شده را تکمیل نمایید';
+			messageTitle[filedEmptyId]='لطفا موارد خواسته شده را تکمیل نمایید';
 			
 		}
 		public function setup():void
