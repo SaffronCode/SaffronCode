@@ -49,6 +49,8 @@ package contents.displayPages
 		
 		private var scrollAbleObject:MovieClip ;
 		
+		private static var addWatermark:Boolean = true ;
+		
 		public function DynamicPage()
 		{
 			super();
@@ -166,6 +168,7 @@ package contents.displayPages
 					H = imageData.height ;
 				}
 				var oneImage:LightImage = new LightImage();
+				oneImage.watermark = addWatermark ;
 				oneImage.setUp(imageData.targURL,fullImageShow,W,H,imageData.x,imageData.y);
 				//trace(i+"imageData.y : "+imageData.y);
 				//oneImage.x = imageData.x;
@@ -174,6 +177,11 @@ package contents.displayPages
 			}
 			scrollMC = new ScrollMT(scrollAbleObject,maskArea,new Rectangle(0,0,maskArea.width,maskArea.height),true);
 			
+		}
+		
+		public static function dontAddWaterMarks():void
+		{
+			addWatermark = false ;
 		}
 	}
 }
