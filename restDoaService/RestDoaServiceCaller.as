@@ -69,7 +69,7 @@
 		
 		/**Do not pass null value as RequestedData, it will cause an Error!!<br>
 		 * Integer or numeric values will loose*/
-		public function RestDoaServiceCaller(myWebServiceLocation:String,RequestedData:Object,offlineDataIsOK_v:Boolean=true,instantOfflineData_v:Boolean=false,maximomOfflineData:Date = null,useGetMethod:Boolean=true)
+		public function RestDoaServiceCaller(myWebServiceLocation:String,RequestedData:Object,offlineDataIsOK_v:Boolean=true,instantOfflineData_v:Boolean=false,maximomOfflineData:Date = null,useGetMethod:Boolean=false)
 		{
 			if(maximomOfflineData==null)
 			{
