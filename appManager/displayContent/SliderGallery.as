@@ -152,6 +152,11 @@ package appManager.displayContent
 			return imageIndex%totalImages;
 		}
 		
+		public function get currentImageIndex():uint
+		{
+			return getCurrentSelectedImage() ;
+		}
+		
 		private function controllStage():void
 		{
 			if(this.stage != null)
