@@ -458,7 +458,7 @@ package darkBox
 					box_shp.show(image.target);
 					break;
 				case ImageFile.TYPE_VIDEO:
-					if(true || DevicePrefrence.isIOS() || DevicePrefrence.isAndroid())
+					if(image.target.toLocaleLowerCase().indexOf('.flv')==-1)
 					{						
 						stageVideo = new StageVideo(imageSize.width,imageSize.height)	
 						this.addChild(stageVideo)
