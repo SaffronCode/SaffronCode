@@ -10,6 +10,7 @@ package darkBox
 	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
 	import flash.utils.clearTimeout;
+	import flash.utils.getTimer;
 	import flash.utils.setTimeout;
 	
 	import netManager.urlSaver.URLSaverEvent;
@@ -51,6 +52,10 @@ package darkBox
 		
 		
 		private static var rtf:Boolean ; 
+		
+		/**Control this on mouse up*/
+		private var mouseDownTime:Number;
+		private const mouseUpMinimomTime:uint=100;
 					
 		//private var maskMC:MovieClip ;
 					
@@ -132,7 +137,8 @@ package darkBox
 			}
 			
 			closeMC.addEventListener(MouseEvent.CLICK,closeMe);
-			backMC.addEventListener(MouseEvent.CLICK,closeMe);
+			backMC.addEventListener(MouseEvent.MOUSE_DOWN,startCloseTimer);
+			backMC.addEventListener(MouseEvent.MOUSE_UP,mouseUpEventControll);
 			
 			box_flat = Obj.findThisClass(FlatImage,this);
 			box_pano = Obj.findThisClass(PanoramaImage,this);
@@ -152,6 +158,21 @@ package darkBox
 			setTimeout(hide,100);
 			
 			NativeApplication.nativeApplication.addEventListener(KeyboardEvent.KEY_DOWN,catchBackButton,false,100000);
+		}
+		
+		/**Controll mouse up on back ground*/
+		protected function mouseUpEventControll(event:MouseEvent):void
+		{
+			if(getTimer()-mouseDownTime<mouseUpMinimomTime)
+			{
+				closeMe(event);
+			}
+		}
+		
+		/**Set the current time on mouse down*/
+		protected function startCloseTimer(event:MouseEvent):void
+		{
+			mouseDownTime = getTimer();
 		}
 		
 		protected function catchBackButton(event:KeyboardEvent):void
