@@ -312,10 +312,8 @@
 			trace("instantOfflineData : "+instantOfflineData);
 			if(instantOfflineData)
 			{
-				TimeTracer.tr(1.3);
 				var expired:Boolean = RestServiceSaver.isExpired(myId,myParams,offlineDate);
 				var savedData:* = RestServiceSaver.lastLoadedData ;
-				TimeTracer.tr(1.4);
 				if(savedData != null)
 				{
 					if(RestDoaService.debug_show_results)
