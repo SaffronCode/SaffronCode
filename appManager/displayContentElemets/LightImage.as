@@ -278,7 +278,10 @@ package appManager.displayContentElemets
 		private function startLoading(e:*=null):void
 		{
 			clearTimeout(imageLoaderTimeOutId);
-			CPUController.eventDispatcher.removeEventListener(CPUEvents.PERVECT_CPU,startLoading);
+			if(CPUController.isSatUp)
+			{
+				CPUController.eventDispatcher.removeEventListener(CPUEvents.PERVECT_CPU,startLoading);
+			}
 			urlSaver = new URLSaver(true);
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 			if(URL!=null)
