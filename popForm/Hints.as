@@ -21,7 +21,8 @@ package popForm
 		
 		private static const showTimer:uint = 3000 ;
 		
-		private static var onQuestionAccepted:Function ;
+		private static var onQuestionAccepted:Function,
+							onNotAccepted:Function;
 		
 		private static var myPreLoader:MovieClip = null;
 		
@@ -32,9 +33,10 @@ package popForm
 			return PopMenu1.isOpen ;
 		}
 		
-		public static function ask(title:String,question:String,onDone:Function,innerDisplayObject:DisplayObject=null):void
+		public static function ask(title:String,question:String,onDone:Function,innerDisplayObject:DisplayObject=null,OnNotAccepted:Function=null):void
 		{
 			onQuestionAccepted = onDone ;
+			onNotAccepted = OnNotAccepted ;
 			
 			var buttons:Array = [new PopButtonData(Contents.lang.t[id_yes],1,null,true,true)
 				,new PopButtonData(Contents.lang.t[id_no],1,null,true,true)] ;
@@ -47,6 +49,13 @@ package popForm
 			if(e.buttonTitle == Contents.lang.t[id_yes])
 			{
 				onQuestionAccepted();
+			}
+			else
+			{
+				if(onNotAccepted!=null)
+				{
+					onNotAccepted();
+				}
 			}
 		}
 		
