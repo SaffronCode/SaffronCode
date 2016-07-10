@@ -22,6 +22,9 @@ package appManager.displayContentElemets
 	
 	import netManager.urlSaver.URLSaver;
 	import netManager.urlSaver.URLSaverEvent;
+	
+	import utils.CPUController;
+	import utils.CPUEvents;
 
 	/**Image loading completed*/
 	[Event(name="complete", type="flash.events.Event")]
@@ -69,6 +72,7 @@ package appManager.displayContentElemets
 		
 		private var _watermark:Boolean = true ;
 		private var IsLoading:Boolean;
+		private var imageLoaderTimeOutId:uint;
 		
 		
 		public function LightImage(BackColor:uint=0x000000,BackAlpha:Number=0)
@@ -259,7 +263,22 @@ package appManager.displayContentElemets
 		protected function startWork(event:Event=null):void
 		{
 			//trace("Start to load");
-			// TODO Auto-generated method stub
+			if(CPUController.isSatUp)
+			{
+				CPUController.eventDispatcher.addEventListener(CPUEvents.PERVECT_CPU,startLoading);
+				imageLoaderTimeOutId = setTimeout(startLoading,2000);
+			}
+			else
+			{
+				startLoading();
+			}
+		}
+		
+		/**This will make images to load*/
+		private function startLoading(e:*=null):void
+		{
+			clearTimeout(imageLoaderTimeOutId);
+			CPUController.eventDispatcher.removeEventListener(CPUEvents.PERVECT_CPU,startLoading);
 			urlSaver = new URLSaver(true);
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 			if(URL!=null)
@@ -466,7 +485,12 @@ package appManager.displayContentElemets
 		protected function unLoad(event:Event):void
 		{
 			// TODO Auto-generated method stub
+			clearTimeout(imageLoaderTimeOutId);
 			clearTimeout(timeOutValue);
+			if(CPUController.isSatUp)
+			{
+				CPUController.eventDispatcher.removeEventListener(CPUEvents.PERVECT_CPU,startLoading);
+			}
 			
 			if(fileStreamLoader)
 			{
