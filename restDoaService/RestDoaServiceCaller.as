@@ -279,10 +279,10 @@
 			if(obj!=null)
 			{
 				var urlVars:URLVariables;
-				trace("Send this data : "+JSON.stringify(myParams,null,'\t'));
+				//trace("Send this data : "+JSON.stringify(myParams,null,'\t'));
 				if(isGet)
 				{
-					myParams = RestFullJSONParser.stringify(obj) ;
+					myParams = JSONParser.stringify(obj) ;
 					var readableObject:Object = Obj.createReadAbleObject(obj);// .myParams ; 
 					urlVars = new URLVariables();
 					
@@ -312,10 +312,12 @@
 			trace("instantOfflineData : "+instantOfflineData);
 			if(instantOfflineData)
 			{
-				var savedData:* = RestServiceSaver.load(myId,myParams);
+				TimeTracer.tr(1.3);
+				var expired:Boolean = RestServiceSaver.isExpired(myId,myParams,offlineDate);
+				var savedData:* = RestServiceSaver.lastLoadedData ;
+				TimeTracer.tr(1.4);
 				if(savedData != null)
 				{
-					var expired:Boolean = RestServiceSaver.isExpired(myId,myParams,offlineDate);
 					if(RestDoaService.debug_show_results)
 					{
 						trace("* instant cashed data for "+myId+" : "+savedData);
