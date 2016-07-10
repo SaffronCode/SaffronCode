@@ -13,7 +13,9 @@ package dataManager
 	public class SavedDatas2
 	{
 		private static var  sql:SQLConnection ,
-		query:SQLStatement;
+							asyncSql:SQLConnection,
+							query:SQLStatement,
+							asyncQuery:SQLStatement;
 		
 		private static const tableBaseName:String = "SAVED_DATA";
 		
@@ -83,11 +85,15 @@ package dataManager
 				sql = new SQLConnection();
 				sql.open(sqlFile,SQLMode.CREATE);
 				
+				asyncSql = new SQLConnection();
+				asyncSql.openAsync(sqlFile,SQLMode.UPDATE);
+				asyncSql.addEventListener(SQLErrorEvent.ERROR,rollBaskAsyncSQL);
+				
 				query = new SQLStatement();
-				
-				
-				
 				query.sqlConnection = sql ;
+				
+				asyncQuery = new SQLStatement();
+				asyncQuery.sqlConnection = asyncSql ;
 				
 			}
 			if(checkTable)
@@ -116,11 +122,19 @@ package dataManager
 			}
 		}
 		
+		protected static function rollBaskAsyncSQL(event:SQLErrorEvent):void
+		{
+			asyncSql.rollback();
+		}		
 		
 		/**save stringifi value for this id on data base*/
 		public static function save(id:String,data:*):void
 		{
 			setUp();
+			if(asyncQuery.executing)
+			{
+				return ;
+			}
 			//trace("save this data : "+data);
 			//hint : if data is nul , it will cause to skip this function ,at the bigining of the app job , all temporaryObject variables are null
 			var dateNum:Number = new Date().time;
@@ -145,87 +159,36 @@ package dataManager
 			/*temporaryObject[id] = {} ;
 			temporaryObject[id].data = data ;
 			temporaryObject[id].time = dateNum ;*/
-			sql.begin();
-			query.clearParameters();
-			query.text = "delete from "+tableName+" where "+field_id+" == '"+id+"'" ;
-			try
-			{
-				query.execute();
-			}
-			catch(e){}
-			//( "+field_id+" , "+field_value+" , "+field_date+" )
-			query.text = "insert into "+tableName+"  values( @"+field_id+" , @"+field_value+" , "+dateNum+" )";
-			query.parameters["@"+field_id] =  id ;
-			query.parameters["@"+field_value] =  data ;
+			//asyncSql.begin();
+			asyncQuery.clearParameters();
+			asyncQuery.text = "delete from "+tableName+" where "+field_id+" == '"+id+"'" ;
 			
-			//trace("query.text : "+query.text);
-			try
-			{
-				query.execute();
-				sql.commit();
+			
+				asyncQuery.addEventListener(SQLEvent.RESULT,continueSaving);
+				asyncQuery.execute();
+			
+				function continueSaving(e:*=null)
+				{
+					trace("************Query executed");
+					asyncQuery.removeEventListener(SQLEvent.RESULT,continueSaving);
+				//( "+field_id+" , "+field_value+" , "+field_date+" )
+				asyncQuery.text = "insert into "+tableName+"  values( @"+field_id+" , @"+field_value+" , "+dateNum+" )";
+				asyncQuery.parameters["@"+field_id] =  id ;
+				asyncQuery.parameters["@"+field_value] =  data ;
+				
+				//trace("query.text : "+query.text);
+				
+					asyncQuery.execute();
+					//asyncSql.commit();
+				}
 				//trace(data+" saved");
-			}
-			catch(e)
-			{
-				try
-				{
-					sql.rollback();
-				}
-				catch(e)
-				{
-					trace(e);
-				}
-			}
+			
 		}
 		
 		/**load the value if the value is new on data base*/
 		public static function loadIfNewer(id,lastDate:Date=null):*
 		{
 			return load(id,lastDate);
-			
-			//setUp();
-			//var check:Object = temporaryObject[id];
-			/*if(check!=null && maxOfflineDate(check.time,lastDate))
-			{
-			return check.data;
-			}*/
-			
-			//trace("it have to send query to db to detect the data");
-			
-			/*var dateTime:uint = lastDate.time ;
-			
-			query.text = "select "+field_value+" from "+tableName+" where "+field_id+" == @"+field_id;
-			query.parameters["@"+field_id] = id ;
-			try
-			{
-			query.execute();
-			var result:SQLResult = query.getResult() ;
-			if(result.data == null)
-			{
-			return null ;
-			}
-			else
-			{
-			//trace('result on query is : '+(result.data[0][field_value]==null)+' > check string : '+(result.data[0][field_value]=='null'));
-			var res:* = result.data[0][field_value] ;
-			if(res == 'null')
-			{
-			res = null ;
-			}
-			
-			if(maxOfflineDate(result.data[0][field_date],lastDate))
-			{
-			return res ;
-			}
-			else
-			{
-			trace('saved Data is too old');
-			return null ;
-			}
-			}
-			}
-			catch(e){}
-			return null ;*/
 		}
 		
 		
