@@ -16,6 +16,9 @@ package dataManager
 							asyncSql:SQLConnection,
 							query:SQLStatement,
 							asyncQuery:SQLStatement;
+							
+							
+		private static var asyncQue:Vector.<SavedDataQueeItem> = new Vector.<SavedDataQueeItem>();;
 		
 		private static const tableBaseName:String = "SAVED_DATA";
 		
@@ -131,46 +134,41 @@ package dataManager
 		public static function save(id:String,data:*):void
 		{
 			setUp();
+			asyncQue.push(new SavedDataQueeItem(id,data));
 			if(asyncQuery.executing)
 			{
 				return ;
 			}
-			//trace("save this data : "+data);
-			//hint : if data is nul , it will cause to skip this function ,at the bigining of the app job , all temporaryObject variables are null
-			var dateNum:Number = new Date().time;
-			/*if(data!= null && temporaryObject[id]!=undefined && temporaryObject[id].data == data)
+			
+			saveTheQuee();
+			
+		}
+		
+		private static function saveTheQuee():void
+		{
+			if(asyncQue.length==0)
 			{
-			sql.begin();
-			query.text = "update "+tableName+" set "+field_date+" = "+dateNum+" where "+field_id+" == "+id;
-			try
-			{
-			query.execute();
-			sql.commit();
-			//trace(data+" saved");
+				return ;
 			}
-			catch(e)
-			{
-			sql.rollback();
-			}
-			//trace("temporaryObject[id] is : "+temporaryObject[id]);
-			return ;
-			}*/
-			//trace("save this data2 : "+temporaryObject[id]);
-			/*temporaryObject[id] = {} ;
-			temporaryObject[id].data = data ;
-			temporaryObject[id].time = dateNum ;*/
-			//asyncSql.begin();
+			var id:String = asyncQue[0].id ;
+			var data:* = asyncQue[0].data ;
+
+			
 			asyncQuery.clearParameters();
 			asyncQuery.text = "delete from "+tableName+" where "+field_id+" == '"+id+"'" ;
 			
 			
-				asyncQuery.addEventListener(SQLEvent.RESULT,continueSaving);
-				asyncQuery.execute();
-			
-				function continueSaving(e:*=null)
-				{
-					trace("************Query executed");
-					asyncQuery.removeEventListener(SQLEvent.RESULT,continueSaving);
+			asyncQuery.addEventListener(SQLEvent.RESULT,continueSaving);
+			asyncQuery.execute();
+		}
+		
+			private static function continueSaving(e:*=null)
+			{
+				var dateNum:Number = new Date().time;
+				var id:String = asyncQue[0].id ;
+				var data:* = asyncQue[0].data ;
+				trace("************Query executed");
+				asyncQuery.removeEventListener(SQLEvent.RESULT,continueSaving);
 				//( "+field_id+" , "+field_value+" , "+field_date+" )
 				asyncQuery.text = "insert into "+tableName+"  values( @"+field_id+" , @"+field_value+" , "+dateNum+" )";
 				asyncQuery.parameters["@"+field_id] =  id ;
@@ -178,12 +176,17 @@ package dataManager
 				
 				//trace("query.text : "+query.text);
 				
-					asyncQuery.execute();
-					//asyncSql.commit();
-				}
-				//trace(data+" saved");
+				asyncQuery.addEventListener(SQLEvent.RESULT,savingCompleted);
+				asyncQuery.execute();
+				//asyncSql.commit();
+			}
 			
-		}
+				protected static function savingCompleted(event:SQLEvent):void
+				{
+					asyncQuery.removeEventListener(SQLEvent.RESULT,savingCompleted);
+					asyncQue.shift();
+					saveTheQuee();
+				}
 		
 		/**load the value if the value is new on data base*/
 		public static function loadIfNewer(id,lastDate:Date=null):*
@@ -197,6 +200,15 @@ package dataManager
 		public static function load(id:String,lastAcceptableDate:Date=null):*
 		{
 			setUp();
+			
+			var l:uint = asyncQue.length ;
+			for(var i = 0 ; i<l ; i++)
+			{
+				if(asyncQue[i].id == id)
+				{
+					return asyncQue[i].data ;
+				}
+			}
 			
 			var dateControllQuery:String = '' ;
 			if(lastAcceptableDate != null)

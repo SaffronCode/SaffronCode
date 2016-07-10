@@ -1,10 +1,6 @@
 package restDoaService
 {
-	import com.adobe.crypto.MD5Stream;
-	
 	import dataManager.SavedDatas2;
-	
-	import flash.utils.getQualifiedClassName;
 
 	internal class RestServiceSaver
 	{
@@ -52,7 +48,9 @@ package restDoaService
 				Parameters = '';
 			}
 			
-			Parameters = Parameters.split('"').join('').split("{").join('').split("}").join('').split("[").join('').split("]").join('');
+			var ParametersArray:Array = Parameters.split('"').join('').split("{").join('').split("}").join('').split("[").join('').split("]").join('').split(',');
+			ParametersArray.sort();
+			Parameters = ParametersArray.join(',');
 			//trace("Storage id is :    "+Parameters+':'+Classid)
 			return Classid+':'+Parameters+':'+RestDoaService.serverDomain;
 		}
