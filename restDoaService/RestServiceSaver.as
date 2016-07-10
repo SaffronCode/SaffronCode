@@ -8,6 +8,8 @@ package restDoaService
 
 	internal class RestServiceSaver
 	{
+		public static var lastLoadedData:String ;
+		
 		public static function load(id:String,jsonParam:String):*
 		{
 			var valueName:String = generateID(id,jsonParam) ;
@@ -20,8 +22,8 @@ package restDoaService
 		public static function isExpired(id:String,jsonParam:String,lastAcceptableDate:Date):Boolean
 		{
 			var valueName:String = generateID(id,jsonParam) ;
-			var cash:String = SavedDatas2.loadIfNewer(valueName,lastAcceptableDate);
-			if(cash!=null)
+			lastLoadedData = SavedDatas2.loadIfNewer(valueName,lastAcceptableDate);
+			if(lastLoadedData!=null)
 			{
 				return false ;
 			}
