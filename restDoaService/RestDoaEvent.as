@@ -43,7 +43,7 @@ package restDoaService
 		<br>
 		MobileIsNotValid:int = 11 ;*/
 		public var errorCode:int ;
-		public static var SERVER_RESULT_puInquiry_fun:String;
+		//public static var SERVER_RESULT_puInquiry_fun:String;
 		
 		public function RestDoaEvent(type:String,ErrorCode:int=ErrorEnum.noError)
 		{
