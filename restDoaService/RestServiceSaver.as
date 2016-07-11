@@ -6,10 +6,13 @@ package restDoaService
 	{
 		public static var lastLoadedData:String ;
 		
+		public static var lastCashDate:uint ;
+		
 		public static function load(id:String,jsonParam:String):*
 		{
 			var valueName:String = generateID(id,jsonParam) ;
 			var cash:* = SavedDatas2.load(valueName) ;
+			lastCashDate = SavedDatas2.savedDate ;
 			trace("Load > "+valueName+' ○ '+cash+' ○');
 			return cash;
 		}

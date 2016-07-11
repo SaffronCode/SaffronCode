@@ -35,7 +35,8 @@ package dataManager
 		 * {{data:-,time:-},{data:-,time:-}}*/
 		//private static var temporaryObject:Object ;
 		
-		
+		/**This is a date that the last cash was saved*/
+		public static var savedDate:uint ;
 		
 		
 		/**return true if the offline date number is not old*/
@@ -243,6 +244,7 @@ package dataManager
 					//trace("data founds : "+result.data[0]);
 					//trace('result on query is : '+(result.data[0][field_value]==null)+' > check string : '+(result.data[0][field_value]=='null'));
 					var res:* = result.data[0][field_value] ;
+					savedDate = result.data[0][field_date] ;
 					return res ;
 				}
 			}

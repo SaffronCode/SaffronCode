@@ -312,10 +312,10 @@
 			trace("instantOfflineData : "+instantOfflineData);
 			if(instantOfflineData)
 			{
-				var expired:Boolean = RestServiceSaver.isExpired(myId,myParams,offlineDate);
-				var savedData:* = RestServiceSaver.lastLoadedData ;
+				var savedData:* = RestServiceSaver.load(myId,myParams) ;
 				if(savedData != null)
 				{
+					var expired:Boolean = offlineDate.time>RestServiceSaver.lastCashDate;//RestServiceSaver.isExpired(myId,myParams,offlineDate);
 					if(RestDoaService.debug_show_results)
 					{
 						trace("* instant cashed data for "+myId+" : "+savedData);
