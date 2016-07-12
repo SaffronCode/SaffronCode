@@ -346,6 +346,11 @@ package popForm
 				if(content.buttonList[i] is PopButtonData)
 				{
 					butData = content.buttonList[i] as PopButtonData;
+					if(butData.buttonFrame==0)
+					{
+						buttonList.push(null);
+						continue;
+					}
 				}
 				
 				//I am passing complete buttonData with current function to let it controll all state for it self

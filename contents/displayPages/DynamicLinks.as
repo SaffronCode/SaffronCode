@@ -38,7 +38,8 @@ package contents.displayPages
 		/**Change it befor setup function. it makes items to lock on the left side of the list after release.*/
 		public var showStepByStep:Boolean = false ;
 		
-		/**This will be the name of the MovieClip that will shows if no links available*/
+		/**This will be the name of the MovieClip that will shows if no links available.<br>
+		 * Or set this class to it : contents.displayPages.DynamicLinksNoList*/
 		private const noLinkInstanceName:String = "no_link_mc";
 		
 		/**←→ *** Change it befor super function*/
@@ -837,6 +838,7 @@ package contents.displayPages
 			// TODO Auto Generated method stub
 			if(lastGeneratedLinkIndes<myPageData.links1.length)
 			{
+				trace(":::::howManyLinksGenerates : "+howManyLinksGenerates);
 				for(var i = 0 ; i<howManyLinksGenerates && lastGeneratedLinkIndes<myPageData.links1.length ; i++)
 				{
 					var newLink:LinkItem = new linkClass() ;
@@ -845,7 +847,7 @@ package contents.displayPages
 					newLink.setIndex(lastGeneratedLinkIndes);
 					newLink.setUp(myPageData.links1[lastGeneratedLinkIndes]) ;
 					
-					createLinkOn(newLink,linksSensor);
+					createLinkOn(newLink,linksSensor,lastGeneratedLinkIndes,howManyLinksGenerates);
 					
 					linksInterfaceStorage.push(newLink);
 					
@@ -932,11 +934,12 @@ package contents.displayPages
 		 *  newLink.x = (areaRect.width-newLink.width)/2 ;<br>
 			newLink.y = linksSensor.y ;<br>
 			linksSensor.y += newLink.height+deltaY ;<br>*/
-		protected function createLinkOn(newLink:LinkItem,currentLinksSensor:Sprite):void
+		protected function createLinkOn(newLink:LinkItem,currentLinksSensor:Sprite,linkIndex:uint,linkPerLine:uint):void
 		{
+			var linkIndexPerLine:uint = linkIndex%linkPerLine ;
 			if(!horizontalMenu)
 			{
-				newLink.x = (areaRect.width-newLink.width)/2 ;
+				newLink.x = ((areaRect.width-newLink.width*linkPerLine)/(linkPerLine+1))*(1+linkIndexPerLine)+newLink.width*linkIndexPerLine ;
 				if(reverted)
 				{
 					newLink.y = linksSensor.y-newLink.height ;
@@ -945,12 +948,15 @@ package contents.displayPages
 				{
 					newLink.y = linksSensor.y ;
 				}
-				linksSensor.y += (newLink.height+myDeltaY)*MenuDirection ;
+				if((linkIndex+1)%linkPerLine==0)
+				{
+					linksSensor.y += (newLink.height+myDeltaY)*MenuDirection ;
+				}
 				//trace(" linksSensor.y : "+linksSensor.y) ;
 			}
 			else
 			{
-				newLink.y = (areaRect.height-newLink.height)/2 ;
+				newLink.y = ((areaRect.height-newLink.height*linkPerLine)/(linkPerLine+1))*(1+linkIndexPerLine)+newLink.height*linkIndexPerLine ;
 				if(reverted)
 				{
 					newLink.x = linksSensor.x-newLink.width ;
@@ -959,7 +965,10 @@ package contents.displayPages
 				{
 					newLink.x = linksSensor.x ;
 				}
-				linksSensor.x += (newLink.width+myDeltaX)*MenuDirection ;
+				if((linkIndex+1)%linkPerLine==0)
+				{
+					linksSensor.x += (newLink.width+myDeltaX)*MenuDirection ;
+				}
 			}
 		}
 		

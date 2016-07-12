@@ -69,7 +69,7 @@
 		
 		/**Do not pass null value as RequestedData, it will cause an Error!!<br>
 		 * Integer or numeric values will loose*/
-		public function RestDoaServiceCaller(myWebServiceLocation:String,RequestedData:Object,offlineDataIsOK_v:Boolean=true,instantOfflineData_v:Boolean=false,maximomOfflineData:Date = null,useGetMethod:Boolean=true)
+		public function RestDoaServiceCaller(myWebServiceLocation:String,RequestedData:Object,offlineDataIsOK_v:Boolean=true,instantOfflineData_v:Boolean=false,maximomOfflineData:Date = null,useGetMethod:Boolean=false)
 		{
 			if(maximomOfflineData==null)
 			{
@@ -279,10 +279,10 @@
 			if(obj!=null)
 			{
 				var urlVars:URLVariables;
-				trace("Send this data : "+JSON.stringify(myParams,null,'\t'));
+				//trace("Send this data : "+JSON.stringify(myParams,null,'\t'));
 				if(isGet)
 				{
-					myParams = RestFullJSONParser.stringify(obj) ;
+					myParams = JSONParser.stringify(obj) ;
 					var readableObject:Object = Obj.createReadAbleObject(obj);// .myParams ; 
 					urlVars = new URLVariables();
 					
@@ -312,10 +312,10 @@
 			trace("instantOfflineData : "+instantOfflineData);
 			if(instantOfflineData)
 			{
-				var savedData:* = RestServiceSaver.load(myId,myParams);
+				var savedData:* = RestServiceSaver.load(myId,myParams) ;
 				if(savedData != null)
 				{
-					var expired:Boolean = RestServiceSaver.isExpired(myId,myParams,offlineDate);
+					var expired:Boolean = offlineDate.time>RestServiceSaver.lastCashDate;//RestServiceSaver.isExpired(myId,myParams,offlineDate);
 					if(RestDoaService.debug_show_results)
 					{
 						trace("* instant cashed data for "+myId+" : "+savedData);

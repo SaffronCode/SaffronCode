@@ -152,6 +152,11 @@ package appManager.displayContent
 			return imageIndex%totalImages;
 		}
 		
+		public function get currentImageIndex():uint
+		{
+			return getCurrentSelectedImage() ;
+		}
+		
 		private function controllStage():void
 		{
 			if(this.stage != null)
@@ -332,6 +337,11 @@ package appManager.displayContent
 				
 					protected function startSliding(event:MouseEvent):void
 					{
+						if(!Obj.isAccesibleByMouse(this))
+						{
+							canselDragging(event);
+							return ;
+						}
 						if(!moveingStarts)
 						{
 							if(Math.abs(this.mouseX-mouseX0)>minMoveToSpeed)

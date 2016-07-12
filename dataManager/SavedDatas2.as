@@ -13,7 +13,12 @@ package dataManager
 	public class SavedDatas2
 	{
 		private static var  sql:SQLConnection ,
-		query:SQLStatement;
+							asyncSql:SQLConnection,
+							query:SQLStatement,
+							asyncQuery:SQLStatement;
+							
+							
+		private static var asyncQue:Vector.<SavedDataQueeItem> = new Vector.<SavedDataQueeItem>();;
 		
 		private static const tableBaseName:String = "SAVED_DATA";
 		
@@ -30,7 +35,8 @@ package dataManager
 		 * {{data:-,time:-},{data:-,time:-}}*/
 		//private static var temporaryObject:Object ;
 		
-		
+		/**This is a date that the last cash was saved*/
+		public static var savedDate:uint ;
 		
 		
 		/**return true if the offline date number is not old*/
@@ -83,11 +89,15 @@ package dataManager
 				sql = new SQLConnection();
 				sql.open(sqlFile,SQLMode.CREATE);
 				
+				asyncSql = new SQLConnection();
+				asyncSql.openAsync(sqlFile,SQLMode.UPDATE);
+				asyncSql.addEventListener(SQLErrorEvent.ERROR,rollBaskAsyncSQL);
+				
 				query = new SQLStatement();
-				
-				
-				
 				query.sqlConnection = sql ;
+				
+				asyncQuery = new SQLStatement();
+				asyncQuery.sqlConnection = asyncSql ;
 				
 			}
 			if(checkTable)
@@ -116,116 +126,73 @@ package dataManager
 			}
 		}
 		
+		protected static function rollBaskAsyncSQL(event:SQLErrorEvent):void
+		{
+			asyncSql.rollback();
+		}		
 		
 		/**save stringifi value for this id on data base*/
 		public static function save(id:String,data:*):void
 		{
 			setUp();
-			//trace("save this data : "+data);
-			//hint : if data is nul , it will cause to skip this function ,at the bigining of the app job , all temporaryObject variables are null
-			var dateNum:Number = new Date().time;
-			/*if(data!= null && temporaryObject[id]!=undefined && temporaryObject[id].data == data)
+			asyncQue.push(new SavedDataQueeItem(id,data));
+			if(asyncQuery.executing)
 			{
-			sql.begin();
-			query.text = "update "+tableName+" set "+field_date+" = "+dateNum+" where "+field_id+" == "+id;
-			try
-			{
-			query.execute();
-			sql.commit();
-			//trace(data+" saved");
+				return ;
 			}
-			catch(e)
-			{
-			sql.rollback();
-			}
-			//trace("temporaryObject[id] is : "+temporaryObject[id]);
-			return ;
-			}*/
-			//trace("save this data2 : "+temporaryObject[id]);
-			/*temporaryObject[id] = {} ;
-			temporaryObject[id].data = data ;
-			temporaryObject[id].time = dateNum ;*/
-			sql.begin();
-			query.clearParameters();
-			query.text = "delete from "+tableName+" where "+field_id+" == '"+id+"'" ;
-			try
-			{
-				query.execute();
-			}
-			catch(e){}
-			//( "+field_id+" , "+field_value+" , "+field_date+" )
-			query.text = "insert into "+tableName+"  values( @"+field_id+" , @"+field_value+" , "+dateNum+" )";
-			query.parameters["@"+field_id] =  id ;
-			query.parameters["@"+field_value] =  data ;
 			
-			//trace("query.text : "+query.text);
-			try
-			{
-				query.execute();
-				sql.commit();
-				//trace(data+" saved");
-			}
-			catch(e)
-			{
-				try
-				{
-					sql.rollback();
-				}
-				catch(e)
-				{
-					trace(e);
-				}
-			}
+			saveTheQuee();
+			
 		}
+		
+		private static function saveTheQuee():void
+		{
+			if(asyncQue.length==0)
+			{
+				return ;
+			}
+			var id:String = asyncQue[0].id ;
+			var data:* = asyncQue[0].data ;
+
+			
+			asyncQuery.clearParameters();
+			asyncQuery.text = "delete from "+tableName+" where "+field_id+" == '"+id+"'" ;
+			
+			
+			asyncQuery.addEventListener(SQLEvent.RESULT,continueSaving);
+			asyncQuery.execute();
+		}
+		
+			private static function continueSaving(e:*=null)
+			{
+				var dateNum:Number = new Date().time;
+				var id:String = asyncQue[0].id ;
+				var data:* = asyncQue[0].data ;
+				trace("************Query executed");
+				asyncQuery.removeEventListener(SQLEvent.RESULT,continueSaving);
+				//( "+field_id+" , "+field_value+" , "+field_date+" )
+				asyncQuery.text = "insert into "+tableName+"  values( @"+field_id+" , @"+field_value+" , "+dateNum+" )";
+				asyncQuery.parameters["@"+field_id] =  id ;
+				asyncQuery.parameters["@"+field_value] =  data ;
+				
+				//trace("query.text : "+query.text);
+				
+				asyncQuery.addEventListener(SQLEvent.RESULT,savingCompleted);
+				asyncQuery.execute();
+				//asyncSql.commit();
+			}
+			
+				protected static function savingCompleted(event:SQLEvent):void
+				{
+					asyncQuery.removeEventListener(SQLEvent.RESULT,savingCompleted);
+					asyncQue.shift();
+					saveTheQuee();
+				}
 		
 		/**load the value if the value is new on data base*/
 		public static function loadIfNewer(id,lastDate:Date=null):*
 		{
 			return load(id,lastDate);
-			
-			//setUp();
-			//var check:Object = temporaryObject[id];
-			/*if(check!=null && maxOfflineDate(check.time,lastDate))
-			{
-			return check.data;
-			}*/
-			
-			//trace("it have to send query to db to detect the data");
-			
-			/*var dateTime:uint = lastDate.time ;
-			
-			query.text = "select "+field_value+" from "+tableName+" where "+field_id+" == @"+field_id;
-			query.parameters["@"+field_id] = id ;
-			try
-			{
-			query.execute();
-			var result:SQLResult = query.getResult() ;
-			if(result.data == null)
-			{
-			return null ;
-			}
-			else
-			{
-			//trace('result on query is : '+(result.data[0][field_value]==null)+' > check string : '+(result.data[0][field_value]=='null'));
-			var res:* = result.data[0][field_value] ;
-			if(res == 'null')
-			{
-			res = null ;
-			}
-			
-			if(maxOfflineDate(result.data[0][field_date],lastDate))
-			{
-			return res ;
-			}
-			else
-			{
-			trace('saved Data is too old');
-			return null ;
-			}
-			}
-			}
-			catch(e){}
-			return null ;*/
 		}
 		
 		
@@ -234,6 +201,15 @@ package dataManager
 		public static function load(id:String,lastAcceptableDate:Date=null):*
 		{
 			setUp();
+			
+			var l:uint = asyncQue.length ;
+			for(var i = 0 ; i<l ; i++)
+			{
+				if(asyncQue[i].id == id)
+				{
+					return asyncQue[i].data ;
+				}
+			}
 			
 			var dateControllQuery:String = '' ;
 			if(lastAcceptableDate != null)
@@ -268,6 +244,7 @@ package dataManager
 					//trace("data founds : "+result.data[0]);
 					//trace('result on query is : '+(result.data[0][field_value]==null)+' > check string : '+(result.data[0][field_value]=='null'));
 					var res:* = result.data[0][field_value] ;
+					savedDate = result.data[0][field_date] ;
 					return res ;
 				}
 			}

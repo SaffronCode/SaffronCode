@@ -1,18 +1,23 @@
 package restDoaService
 {
-	import com.adobe.crypto.MD5Stream;
-	
 	import dataManager.SavedDatas2;
-	
-	import flash.utils.getQualifiedClassName;
 
 	internal class RestServiceSaver
 	{
+		public static var lastLoadedData:String ;
+		
+		public static var lastCashDate:uint ;
+		
 		public static function load(id:String,jsonParam:String):*
 		{
 			var valueName:String = generateID(id,jsonParam) ;
 			var cash:* = SavedDatas2.load(valueName) ;
+<<<<<<< HEAD
 		//	trace("Load > "+valueName+' ○ '+cash+' ○');
+=======
+			lastCashDate = SavedDatas2.savedDate ;
+			trace("Load > "+valueName+' ○ '+cash+' ○');
+>>>>>>> origin/master
 			return cash;
 		}
 		
@@ -20,8 +25,8 @@ package restDoaService
 		public static function isExpired(id:String,jsonParam:String,lastAcceptableDate:Date):Boolean
 		{
 			var valueName:String = generateID(id,jsonParam) ;
-			var cash:String = SavedDatas2.loadIfNewer(valueName,lastAcceptableDate);
-			if(cash!=null)
+			lastLoadedData = SavedDatas2.loadIfNewer(valueName,lastAcceptableDate);
+			if(lastLoadedData!=null)
 			{
 				return false ;
 			}
@@ -50,7 +55,9 @@ package restDoaService
 				Parameters = '';
 			}
 			
-			Parameters = Parameters.split('"').join('').split("{").join('').split("}").join('').split("[").join('').split("]").join('');
+			var ParametersArray:Array = Parameters.split('"').join('').split("{").join('').split("}").join('').split("[").join('').split("]").join('').split(',');
+			ParametersArray.sort();
+			Parameters = ParametersArray.join(',');
 			//trace("Storage id is :    "+Parameters+':'+Classid)
 			return Classid+':'+Parameters+':'+RestDoaService.serverDomain;
 		}

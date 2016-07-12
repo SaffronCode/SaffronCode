@@ -103,9 +103,19 @@
 				skipAnimations = true ;
 			}
 			
+			var errorThrower:String = '' ;
+			
 			if(!DevicePrefrence.isAndroid() && String(DevicePrefrence.appDescriptor).indexOf("NSAllowsArbitraryLoads")==-1)
 			{
-				throw "Add xml below to \"<iPhone><InfoAdditions><![CDATA[... \" make iOS version able to connect the internet:\n\n<key>NSAppTransportSecurity</key>\n<dict>\n\t<key>NSAllowsArbitraryLoads</key><true/>\n</dict>"
+				errorThrower += "Add xml below to \"<iPhone><InfoAdditions><![CDATA[... \" make iOS version able to connect the internet:\n\n<key>NSAppTransportSecurity</key>\n<dict>\n\t<key>NSAllowsArbitraryLoads</key><true/>\n</dict>\n\n"
+			}
+			if(DevicePrefrence.isItPC && String(DevicePrefrence.appDescriptor).indexOf("<requestedDisplayResolution>high</requestedDisplayResolution>")==-1)
+			{
+				errorThrower += "Add below code to the manifest xml in the <iPhone> tag to prevent bad resolution on iPhone:\n\t<requestedDisplayResolution>high</requestedDisplayResolution>\n\n";
+			}
+			if(errorThrower!='')
+			{
+				throw errorThrower ;
 			}
 		}
 		
