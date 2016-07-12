@@ -17,6 +17,8 @@ package dataManager
 							query:SQLStatement,
 							asyncQuery:SQLStatement;
 							
+		private static var asyncSQLisOpened:Boolean = false ;
+							
 							
 		private static var asyncQue:Vector.<SavedDataQueeItem> = new Vector.<SavedDataQueeItem>();;
 		
@@ -90,6 +92,7 @@ package dataManager
 				sql.open(sqlFile,SQLMode.CREATE);
 				
 				asyncSql = new SQLConnection();
+				asyncSql.addEventListener(SQLEvent.OPEN,asincSQLisReady);
 				asyncSql.openAsync(sqlFile,SQLMode.UPDATE);
 				asyncSql.addEventListener(SQLErrorEvent.ERROR,rollBaskAsyncSQL);
 				
@@ -126,6 +129,13 @@ package dataManager
 			}
 		}
 		
+		/**SQL is opened*/
+		protected static function asincSQLisReady(event:SQLEvent):void
+		{
+			trace("****SQL is open****");
+			asyncSQLisOpened = true ;
+		}
+		
 		protected static function rollBaskAsyncSQL(event:SQLErrorEvent):void
 		{
 			asyncSql.rollback();
@@ -136,7 +146,7 @@ package dataManager
 		{
 			setUp();
 			asyncQue.push(new SavedDataQueeItem(id,data));
-			if(asyncQuery.executing)
+			if(asyncQuery.executing || !asyncSQLisOpened)
 			{
 				return ;
 			}
