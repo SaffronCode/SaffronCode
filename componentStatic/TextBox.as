@@ -44,6 +44,7 @@ package componentStatic
 			target.valueText.text=""
 			setValueText_fun()
 		}
+		
 		public function setValueTextByeCod_fun(Value_p:String):void
 		{			
 			FarsiInputCorrection.clear(target.valueText)
@@ -52,6 +53,7 @@ package componentStatic
 
 			setValueText_fun()
 		}
+
 		public function setText(Value_p:String):void
 		{
 			target.valueText.text = Value_p

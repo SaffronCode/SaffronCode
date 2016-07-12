@@ -36,5 +36,10 @@ package componentStatic
 			// TODO Auto-generated method stub
 			setObj(this.name,event.text)
 		}
+		public function rest()
+		{
+			//_textbox.setText('')
+			_textbox.setValueTextByeCod_fun('')
+		}
 	}
 }
