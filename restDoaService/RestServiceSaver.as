@@ -12,7 +12,7 @@ package restDoaService
 		{
 			var valueName:String = generateID(id,jsonParam) ;
 			var cash:* = SavedDatas2.load(valueName) ;
-			trace("Load > "+valueName+' ○ '+cash+' ○');
+		//	trace("Load > "+valueName+' ○ '+cash+' ○');
 			return cash;
 		}
 		
