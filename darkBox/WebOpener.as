@@ -26,13 +26,13 @@ package darkBox
 		
 		override public function hide():void
 		{
-			stageVewIsOpened = false ;
 			super.hide();
-			if(myStageWeb!=null  && myStageWeb.stage!=null)
+			if(stageVewIsOpened)
 			{
-				myStageWeb.stage = null ;
 				myStageWeb.dispose();
 			}
+			myStageWeb.stage = null ;
+			stageVewIsOpened = false ;
 			this.visible = false ;
 			this.addEventListener(MouseEvent.CLICK,openPDF);
 			this.addEventListener(Event.ENTER_FRAME,controllStage);
