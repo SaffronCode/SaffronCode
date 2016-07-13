@@ -112,19 +112,22 @@ package netManager.urlSaver
 			
 			//trace("Requested image url is : "+onlineURL);
 			var localFileChecker:File;
-			try
-			{
-				localFileChecker = new File(onlineURL);
-			}
-			catch(e)
+			if(onlineURL.indexOf('http')!=0)
 			{
 				try
 				{
-					localFileChecker = File.applicationDirectory.resolvePath(onlineURL);
+					localFileChecker = new File(onlineURL);
 				}
 				catch(e)
 				{
-					localFileChecker = null ;
+					try
+					{
+						localFileChecker = File.applicationDirectory.resolvePath(onlineURL);
+					}
+					catch(e)
+					{
+						localFileChecker = null ;
+					}
 				}
 			}
 			
