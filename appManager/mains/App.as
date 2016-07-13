@@ -232,7 +232,9 @@ package appManager.mains
 				return false;
 			}
 			//Moved from top↑•
-			if(event.myType == AppEvent.refresh && currentAppEvent.myType == AppEvent.home)
+			trace("currentAppEvent : "+currentAppEvent);
+			trace("event : "+event);
+			if(event.myType == AppEvent.refresh && (currentAppEvent == null || currentAppEvent.myType == AppEvent.home))
 			{
 				trace("refresh is not works on home page");
 				return false ;
