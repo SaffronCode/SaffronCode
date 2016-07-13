@@ -360,7 +360,7 @@ package netManager.urlSaver
 			
 			var offlineFileNameWithExtention:String ;
 			
-			if(false && fileNameOnStorage!=null)
+			if(fileNameOnStorage!=null)
 			{
 				offlineFileNameWithExtention = fileNameOnStorage;
 			}

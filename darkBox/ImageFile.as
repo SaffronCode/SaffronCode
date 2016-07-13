@@ -118,14 +118,12 @@ package darkBox
 				saver.addEventListener(URLSaverEvent.LOADING,loadingProcess);
 				
 				var extention:String ;
-				var fileName:String ;
 				if(type == TYPE_PDF)
 				{
 					extention = ".pdf";
-					fileName = title ;
 				}
 				
-				saver.load(onlineTarget,null,extention,fileName);
+				saver.load(onlineTarget,null,extention);
 			}
 			else
 			{
