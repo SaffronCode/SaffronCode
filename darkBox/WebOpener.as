@@ -28,7 +28,7 @@ package darkBox
 		{
 			stageVewIsOpened = false ;
 			super.hide();
-			if(myStageWeb && myStageWeb.stage!=null)
+			if(myStageWeb!=null  && myStageWeb.stage!=null)
 			{
 				myStageWeb.stage = null ;
 				myStageWeb.dispose();
@@ -107,14 +107,7 @@ package darkBox
 				stageVewIsOpened = true ;
 				myStageWeb.stage = stage ;
 				trace("PDF path : "+pdftarget.nativePath);
-				if(DevicePrefrence.isItPC)
-				{
-					myStageWeb.loadURL(pdftarget.nativePath);
-				}
-				else
-				{
-					myStageWeb.loadURL(pdftarget.url);
-				}
+				myStageWeb.loadURL(pdftarget.url);
 			}
 		}
 	}
