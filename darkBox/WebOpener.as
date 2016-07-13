@@ -31,7 +31,10 @@ package darkBox
 			{
 				myStageWeb.dispose();
 			}
-			myStageWeb.stage = null ;
+			try
+			{
+				myStageWeb.stage = null ;
+			}catch(e){};
 			stageVewIsOpened = false ;
 			this.visible = false ;
 			this.addEventListener(MouseEvent.CLICK,openPDF);
