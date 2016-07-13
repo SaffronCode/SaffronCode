@@ -7,7 +7,11 @@ package darkBox
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
+	import flash.filesystem.File;
 	import flash.geom.Rectangle;
+	import flash.media.StageWebView;
+	import flash.net.URLRequest;
+	import flash.net.navigateToURL;
 	import flash.ui.Keyboard;
 	import flash.utils.clearTimeout;
 	import flash.utils.getTimer;
@@ -36,6 +40,7 @@ package darkBox
 					box_pano:PanoramaImage,
 					box_shp:SphereImage,
 					box_binary:BinaryFile,
+					box_stageWeb:WebOpener,
 					box_vid:VideoImage;
 					
 		private var bannerMC:MovieClip,
@@ -145,6 +150,9 @@ package darkBox
 			box_shp = Obj.findThisClass(SphereImage,this);
 			box_binary = Obj.findThisClass(BinaryFile,this);
 			box_vid = Obj.findThisClass(VideoImage,this);
+			box_stageWeb = new WebOpener();
+			this.addChild(box_stageWeb);
+			
 				
 			/*box_flat.mask = box_pano.mask = box_shp.mask = box_vid.mask = maskMC ;
 			box_shp.mask = maskMC ;
@@ -208,9 +216,14 @@ package darkBox
 		/**Hide all boxes*/
 		private function hideAll():void
 		{
+			for(var i = 0 ; images!=null && i<images.length ; i++)
+			{
+				images[i].cansel();
+			}
 			box_flat.hide();
 			box_pano.hide();
 			box_binary.hide();
+			box_stageWeb.hide();
 			box_shp.hide();
 			if(box_vid)
 				box_vid.hide();
@@ -291,6 +304,7 @@ package darkBox
 			box_flat.setUp(imageSize);
 			box_pano.setUp(imageSize);
 			box_binary.setUp(imageSize);
+			box_stageWeb.setUp(imageSize);
 			box_shp.setUp(imageSize);
 			if(box_vid)
 				box_vid.setUp(imageSize);
@@ -496,6 +510,9 @@ package darkBox
 					break;
 				case ImageFile.TYPE_BINARY:
 					box_binary.show(image.target);
+					break;
+				case ImageFile.TYPE_PDF:
+					box_stageWeb.show(image.target);
 					break;
 					
 				default:

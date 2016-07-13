@@ -27,6 +27,8 @@ package netManager.urlSaver
 	import flash.utils.clearTimeout;
 	import flash.utils.setTimeout;
 	
+	import mx.utils.Base64Encoder;
+	
 	
 	[Event(name="LOADING", type="netManager.urlSaver.URLSaverEvent")]
 	[Event(name="NO_INTERNET", type="netManager.urlSaver.URLSaverEvent")]
@@ -48,7 +50,9 @@ package netManager.urlSaver
 		private static const offlineFolderName:String = "offlines";
 		
 		public var onlineURL:String ,
-					offlineURL:String ;
+					offlineURL:String,
+					fileExtention:String,
+					fileNameOnStorage:String;
 					
 		private var myLoadedBytes:ByteArray ;
 		/**if this variable was false , load the image in byte array and pass it on event , else , just pass the ofline url*/
@@ -84,10 +88,12 @@ package netManager.urlSaver
 		
 		/**Start to load my file<br>
 		 * this function will return true if image was offline*/
-		public function load(url:String,myAcceptableDate:Date=null):Boolean
+		public function load(url:String,myAcceptableDate:Date=null,extention:String=null,fileName:String=null):Boolean
 		{
 			onlineURL = url ;
 			offlineURL = null ;
+			fileExtention = extention ;
+			fileNameOnStorage = fileName ;
 			
 			if(url=='')
 			{
@@ -328,7 +334,15 @@ package netManager.urlSaver
 		private function saveLoadedBytes():void
 		{
 			// TODO Auto Generated method stub
-			var oflineFolder:File = File.applicationStorageDirectory.resolvePath(offlineFolderName);
+			var oflineFolder:File;
+			if(fileExtention!=null && fileExtention.toLowerCase().indexOf('pdf')!=-1)
+			{
+				oflineFolder = File.documentsDirectory.resolvePath(offlineFolderName);			
+			}
+			else
+			{
+				oflineFolder = File.applicationStorageDirectory.resolvePath(offlineFolderName);
+			}
 			if(!oflineFolder.exists)
 			{
 				oflineFolder.createDirectory();
@@ -338,8 +352,27 @@ package netManager.urlSaver
 			var offlineURLFileName:String = nameCash.substring(nameCash.indexOf('/')+1);
 			offlineURLFileName = offlineURLFileName.split('?').join('Q').split('/').join('').split('=').join('').split(':').join('');
 			offlineURLFileName = offlineURLFileName.substr(offlineURLFileName.length-Math.min(maxNameLength,offlineURLFileName.length),offlineURLFileName.length);
+			//offlineURLFileName = Base64.Encode(offlineURLFileName);
 			//trace("offlineURLFileName : "+offlineURLFileName);
-			var oflineFile:File = oflineFolder.resolvePath(offlineURLFileName);
+			
+			var offlineFileNameWithExtention:String ;
+			
+			if(false && fileNameOnStorage!=null)
+			{
+				offlineFileNameWithExtention = fileNameOnStorage;
+			}
+			else
+			{
+				offlineFileNameWithExtention = offlineURLFileName;
+			}
+			
+			if(fileExtention!=null)
+			{
+				offlineFileNameWithExtention+=fileExtention;
+			}
+			
+			
+			var oflineFile:File = oflineFolder.resolvePath(offlineFileNameWithExtention);
 			offlineURL = oflineFile.url; 
 			//trace("Offline file is : "+oflineFile.nativePath);
 			//trace("Offline file url is "+offlineURL);

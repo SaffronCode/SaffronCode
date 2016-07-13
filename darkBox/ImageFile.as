@@ -38,7 +38,8 @@ package darkBox
 		/**TYPE_FLAT:int = 1,
 							TYPE_PANORAMA:int = 2,
 							TYPE_SPHERE:int = 3,
-							TYPE_VIDEO:int = 4*/
+							TYPE_VIDEO:int = 4
+							TYPE_PDF:int = 5*/
 		public var type:int ;
 		
 		/**You have to save this file for offline usage*/
@@ -69,6 +70,7 @@ package darkBox
 							TYPE_PANORAMA:int = 2,
 							TYPE_SPHERE:int = 3,
 							TYPE_VIDEO:int = 4
+							TYPE_PDF:int = 5
 		 * 
 		 * @see darkBox.ImageFile*/
 		public function ImageFile(Target:String='',Title:String='',Type:int=0,StoreOffline:Boolean=true)
@@ -76,7 +78,14 @@ package darkBox
 			target = Target ;
 			title = Title ;
 			type = Type ;
-			storeOffline = StoreOffline ;
+			if(type == TYPE_PDF)
+			{
+				storeOffline = true ;
+			}
+			else
+			{
+				storeOffline = StoreOffline ;
+			}
 		}
 		
 		public function download(timeOut:uint=0):void
@@ -107,7 +116,16 @@ package darkBox
 				saver.addEventListener(URLSaverEvent.LOAD_COMPLETE,onImageFileSaved);
 				saver.addEventListener(URLSaverEvent.NO_INTERNET,noNet);
 				saver.addEventListener(URLSaverEvent.LOADING,loadingProcess);
-				saver.load(onlineTarget);
+				
+				var extention:String ;
+				var fileName:String ;
+				if(type == TYPE_PDF)
+				{
+					extention = ".pdf";
+					fileName = title ;
+				}
+				
+				saver.load(onlineTarget,null,extention,fileName);
 			}
 			else
 			{
