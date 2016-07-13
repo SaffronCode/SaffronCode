@@ -93,7 +93,7 @@ package dataManager
 				
 				asyncSql = new SQLConnection();
 				asyncSql.addEventListener(SQLEvent.OPEN,asincSQLisReady);
-				asyncSql.openAsync(sqlFile,SQLMode.UPDATE);
+				asyncSql.open(sqlFile,SQLMode.UPDATE);
 				asyncSql.addEventListener(SQLErrorEvent.ERROR,rollBaskAsyncSQL);
 				
 				query = new SQLStatement();
