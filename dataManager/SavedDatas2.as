@@ -20,12 +20,14 @@ package dataManager
 		private static var asyncSQLisOpened:Boolean = false ;
 							
 							
-		private static var asyncQue:Vector.<SavedDataQueeItem> = new Vector.<SavedDataQueeItem>();;
+		private static var asyncQue:Vector.<SavedDataQueeItem> = new Vector.<SavedDataQueeItem>(),
+							asyncSaved:Vector.<SavedDataQueeItem> = new Vector.<SavedDataQueeItem>();
 		
 		private static const tableBaseName:String = "SAVED_DATA";
 		
 		private static var 	dbFolder:String = "DB",
 			dbName:String = "saves2",
+			dbUpdatedName:String = "updatedSaves",
 			tableName:String = tableBaseName,
 			field_id:String = "ID",
 			field_value:String = "VALUE",
@@ -74,26 +76,38 @@ package dataManager
 		
 		public static function setUp(checkTable:Boolean = false)
 		{
+			var needToUpdate:Boolean = false ;
 			if(sql == null)
 			{
+				needToUpdate = true ;
 				checkTable = true ;
 				//temporaryObject = {};
 				var sqlFile:File = File.applicationStorageDirectory.resolvePath(dbFolder);
+				var updatedFile:File = sqlFile.clone();
 				if(!sqlFile.exists)
 				{
 					sqlFile.createDirectory() ;
 				}
 				sqlFile = sqlFile.resolvePath(dbName);
+				updatedFile = updatedFile.resolvePath(dbUpdatedName);
+				if(updatedFile.exists)
+				{
+					try
+					{
+						updatedFile.copyTo(sqlFile,true);
+					}
+					catch(e){trace("SavedData2 SetUp error : "+e)}
+				}
 				
 				/*var encrypt:ByteArray = new ByteArray();
 				encrypt.writeUTFBytes(setOrGetDeviceCode().substring(0,16));*/
 				
 				sql = new SQLConnection();
 				sql.open(sqlFile,SQLMode.CREATE);
+
 				
 				asyncSql = new SQLConnection();
 				asyncSql.addEventListener(SQLEvent.OPEN,asincSQLisReady);
-				asyncSql.open(sqlFile,SQLMode.UPDATE);
 				asyncSql.addEventListener(SQLErrorEvent.ERROR,rollBaskAsyncSQL);
 				
 				query = new SQLStatement();
@@ -127,6 +141,17 @@ package dataManager
 					trace('Create index problem') ;
 				}
 			}
+			
+			if(needToUpdate)
+			{
+				trace("sqlFile : "+sqlFile.nativePath);
+				trace("updatedFile : "+updatedFile.nativePath);
+				if(!updatedFile.exists)
+				{
+					sqlFile.copyTo(updatedFile);
+				}
+				asyncSql.openAsync(updatedFile,SQLMode.UPDATE);
+			}
 		}
 		
 		/**SQL is opened*/
@@ -134,6 +159,10 @@ package dataManager
 		{
 			trace("****SQL is open****");
 			asyncSQLisOpened = true ;
+			if(!asyncQuery.executing)
+			{
+				saveTheQuee();
+			}
 		}
 		
 		protected static function rollBaskAsyncSQL(event:SQLErrorEvent):void
@@ -145,9 +174,14 @@ package dataManager
 		public static function save(id:String,data:*):void
 		{
 			setUp();
-			asyncQue.push(new SavedDataQueeItem(id,data));
+			trace("Save !!");
+			var dateNum:Number = new Date().time;
+			asyncQue.push(new SavedDataQueeItem(id,data,dateNum));
+			trace("asyncSQLisOpened : "+asyncSQLisOpened);
+			trace("asyncQuery.executing : "+asyncQuery.executing);
 			if(asyncQuery.executing || !asyncSQLisOpened)
 			{
+				trace("**Async db is bussy right now ...");
 				return ;
 			}
 			
@@ -175,13 +209,13 @@ package dataManager
 		
 			private static function continueSaving(e:*=null)
 			{
-				var dateNum:Number = new Date().time;
 				var id:String = asyncQue[0].id ;
 				var data:* = asyncQue[0].data ;
+				var date:uint = asyncQue[0].date ;
 				trace("************Query executed");
 				asyncQuery.removeEventListener(SQLEvent.RESULT,continueSaving);
 				//( "+field_id+" , "+field_value+" , "+field_date+" )
-				asyncQuery.text = "insert into "+tableName+"  values( @"+field_id+" , @"+field_value+" , "+dateNum+" )";
+				asyncQuery.text = "insert into "+tableName+"  values( @"+field_id+" , @"+field_value+" , "+date+" )";
 				asyncQuery.parameters["@"+field_id] =  id ;
 				asyncQuery.parameters["@"+field_value] =  data ;
 				
@@ -195,7 +229,7 @@ package dataManager
 				protected static function savingCompleted(event:SQLEvent):void
 				{
 					asyncQuery.removeEventListener(SQLEvent.RESULT,savingCompleted);
-					asyncQue.shift();
+					asyncSaved.push(asyncQue.shift());
 					saveTheQuee();
 				}
 		
@@ -210,14 +244,32 @@ package dataManager
 		 * if no value founds , it will return null instead of some Stringifi data*/
 		public static function load(id:String,lastAcceptableDate:Date=null):*
 		{
+			TimeTracer.tr("get "+id);
 			setUp();
 			
 			var l:uint = asyncQue.length ;
-			for(var i = 0 ; i<l ; i++)
+			var l2:uint = asyncSaved.length ;
+			for(var i = l-1 ; i>=0 ; i--)
 			{
 				if(asyncQue[i].id == id)
 				{
+					TimeTracer.tr("founded "+id);
 					return asyncQue[i].data ;
+				}
+			}
+			for(i = l2-1 ; i>=0 ; i--)
+			{
+				if(asyncSaved[i].id == id)
+				{
+					if(lastAcceptableDate===null || asyncSaved[i].date>lastAcceptableDate.time)
+					{
+						TimeTracer.tr("founded "+id);
+						return asyncSaved[i].data ;
+					}
+					else
+					{
+						return null ;
+					}
 				}
 			}
 			
@@ -255,6 +307,7 @@ package dataManager
 					//trace('result on query is : '+(result.data[0][field_value]==null)+' > check string : '+(result.data[0][field_value]=='null'));
 					var res:* = result.data[0][field_value] ;
 					savedDate = result.data[0][field_date] ;
+					TimeTracer.tr("founded on db "+id);
 					return res ;
 				}
 			}

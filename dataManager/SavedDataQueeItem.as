@@ -6,10 +6,14 @@ package dataManager
 		
 		public var data:* ;
 		
-		public function SavedDataQueeItem(Id:String,Data:*)
+		public var date:uint ;
+		
+		public function SavedDataQueeItem(Id:String,Data:*,DateVal:uint)
 		{
 			id = Id ;
 			data = Data ;
+			date = DateVal ;
 		}
+
 	}
 }
