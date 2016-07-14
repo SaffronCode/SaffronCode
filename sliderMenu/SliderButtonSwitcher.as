@@ -1,6 +1,6 @@
 package sliderMenu
-	//sliderMenu.SliderButtonSwitcher
-{
+{//sliderMenu.SliderButtonSwitcher
+	
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
 	
