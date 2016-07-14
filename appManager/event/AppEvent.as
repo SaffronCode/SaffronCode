@@ -15,6 +15,10 @@ package appManager.event
 		/**Intro is over and now main menu is available*/
 		public static const APP_STARTS:String = "APP_STARTS" ; 
 		
+		
+		/**Home page is ready to call other pages*/
+		public static const HOME_IS_READY:String = "HOME_IS_READY" ; 
+		
 		public static const MAIN_ANIM_IS_READY:String = "MAIN_ANIM_IS_READY" ;
 		
 		/**app event types , PageManager will listtening tho these variable*/

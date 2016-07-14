@@ -210,6 +210,7 @@ package appManager.mains
 			this.dispatchEvent(new AppEvent(null,AppEvent.APP_STARTS));
 			currentAppEvent = new AppEvent();
 			backToHomePage();
+			this.dispatchEvent(new AppEvent(null,AppEvent.HOME_IS_READY));
 		}
 		
 		/**Refresh te current page */
