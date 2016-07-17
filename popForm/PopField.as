@@ -4,6 +4,7 @@
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
+	import flash.text.ReturnKeyLabel;
 	import flash.text.SoftKeyboardType;
 	import flash.text.TextField;
 	
@@ -15,6 +16,9 @@
 		
 		private var tagNameTXT:TextField ;
 		
+		/**This will make this popField run as switcher*/
+		private var activeRadioMode:Boolean ;
+		
 		private var backMC:MovieClip ;
 		private var myTitle:String;
 		
@@ -24,6 +28,12 @@
 		private var radioButtonArray:Array ;
 		
 		private var nativeKeyBoard:FarsiInputCorrection ;
+		
+		
+		public function get textField():TextField
+		{
+			return myTXT ;
+		}
 		
 		
 		/**this will returns last inputed text to client*/
@@ -86,7 +96,7 @@
 			changeColor(colorFrame);
 		}
 		
-		public function setUp(tagName:String,defaultText:String,KeyBordType:String = SoftKeyboardType.DEFAULT,isPass:Boolean = false,editable:Boolean = true,isAraic:Boolean=true,numLines:uint = 1,color:uint=1,frame:uint=1,maxChar:uint=0,otherOptions:Array=null,deleteDefautlText:Boolean=false,activateRadioSwitcher:Boolean=false):void
+		public function setUp(tagName:String,defaultText:String,KeyBordType:String = SoftKeyboardType.DEFAULT,isPass:Boolean = false,editable:Boolean = true,isAraic:Boolean=true,numLines:uint = 1,color:uint=1,frame:uint=1,maxChar:uint=0,otherOptions:Array=null,deleteDefautlText:Boolean=false,activateRadioSwitcher:Boolean=false,returnKey:String=ReturnKeyLabel.DEFAULT,onTypedFunction:Function=null):void
 		{
 			var Y0:Number ;
 			var Y1:Number ;
@@ -98,6 +108,8 @@
 				trace("You cant have dynamic field size on editable texts");
 				numLines = 1 ;
 			}
+			
+			activeRadioMode = activateRadioSwitcher ;
 			
 			//New lines to manage language style ( like rtl and ltr )
 			this.gotoAndStop(frame);
@@ -150,7 +162,7 @@
 			//FarsiInputText.steKeyBord(myTXT,false);
 			if(editable)
 			{
-				nativeKeyBoard = FarsiInputCorrection.setUp(myTXT,KeyBordType,true,true,deleteDefautlText);
+				nativeKeyBoard = FarsiInputCorrection.setUp(myTXT,KeyBordType,true,true,deleteDefautlText,false,true,true,returnKey,onTypedFunction);
 			}
 			else
 			{
@@ -205,7 +217,7 @@
 		/**Open the device key board*/
 		public function activateKeyBoard():void
 		{
-			if(nativeKeyBoard)
+			if(nativeKeyBoard && myTXT.mouseEnabled && !activeRadioMode)
 			{
 				nativeKeyBoard.focuseOnStageText();
 			}
