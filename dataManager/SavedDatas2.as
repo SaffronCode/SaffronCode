@@ -150,7 +150,7 @@ package dataManager
 				{
 					sqlFile.copyTo(updatedFile);
 				}
-				asyncSql.openAsync(updatedFile,SQLMode.UPDATE);
+				asyncSql.openAsync(updatedFile,SQLMode.CREATE);
 			}
 		}
 		
@@ -159,6 +159,7 @@ package dataManager
 		{
 			trace("****SQL is open****");
 			asyncSQLisOpened = true ;
+			asyncSql.removeEventListener(SQLEvent.OPEN,asincSQLisReady);
 			if(!asyncQuery.executing)
 			{
 				saveTheQuee();
