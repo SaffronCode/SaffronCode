@@ -106,6 +106,7 @@ package darkBox
 			if(DevicePrefrence.isAndroid())
 			{
 				openPDF();
+				//On android, the pdf reader can share,save and do any thing that user need to do. so close the DarkBox
 				DarkBox.hide();
 			}
 			else
