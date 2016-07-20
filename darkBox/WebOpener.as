@@ -27,9 +27,11 @@ package darkBox
 		override public function hide():void
 		{
 			super.hide();
-			if(stageVewIsOpened)
+			if(stageVewIsOpened && this.stage!=null)
 			{
 				myStageWeb.dispose();
+				myStageWeb = new StageWebView();
+				myStageWeb.viewPort = this.getBounds(stage);
 			}
 			try
 			{
@@ -104,6 +106,7 @@ package darkBox
 			if(DevicePrefrence.isAndroid())
 			{
 				openPDF();
+				DarkBox.hide();
 			}
 			else
 			{
