@@ -263,7 +263,7 @@ package appManager.displayContentElemets
 		protected function startWork(event:Event=null):void
 		{
 			//trace("Start to load");
-			if(CPUController.isSatUp)
+			if(CPUController.isSatUp && animated)
 			{
 				CPUController.eventDispatcher.addEventListener(CPUEvents.PERVECT_CPU,startLoading);
 				imageLoaderTimeOutId = setTimeout(startLoading,2000);
