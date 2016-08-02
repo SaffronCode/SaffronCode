@@ -71,7 +71,7 @@
 			myTextTF.textColor = colorNum;
 		}
 		
-		public function setUp(myText:String,isArabic:Boolean = true,align:Boolean=true,knownAsHTML:Boolean=false,activateLinks:Boolean=false,useNativeText:Boolean=false,addScroller:Boolean=true,generateLinksForURLs:Boolean=false,scrollEffect:Boolean=true,userBitmap:Boolean=true,VerticalAlign:Boolean=false,useCash:Boolean=false):void
+		public function setUp(myText:String,isArabic:Boolean = true,align:Boolean=true,knownAsHTML:Boolean=false,activateLinks:Boolean=false,useNativeText:Boolean=false,addScroller:Boolean=true,generateLinksForURLs:Boolean=false,scrollEffect:Boolean=true,userBitmap:Boolean=true,VerticalAlign:Boolean=false,useCash:Boolean=false,captureResolution:uint=0):void
 		{
 			//This event dispatches to remove old scrollMC class
 			this.dispatchEvent(new Event(Event.REMOVED_FROM_STAGE)) ;
@@ -100,7 +100,7 @@
 				{
 					verticalHeight = H ;
 				}
-				TextPutter.onTextArea(myTextTF,myText,isArabic,userBitmap && !activateLinks,useCash,0,align,activateLinks,-1,generateLinksForURLs,verticalHeight);
+				TextPutter.onTextArea(myTextTF,myText,isArabic,userBitmap && !activateLinks,useCash,captureResolution,align,activateLinks,-1,generateLinksForURLs,verticalHeight);
 				//Debug line ↓
 				//TextPutter.onTextArea(myTextTF,myText,isArabic,false,false,1,true) ;
 				//	trace("2 add parag on TextParag and its font is : "+myTextTF.defaultTextFormat.font+' added to textParag class : '+myTextTF.text)
