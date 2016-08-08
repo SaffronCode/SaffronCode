@@ -561,6 +561,13 @@ package contents.displayPages
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 		}
 		
+		
+		/**Set absolute pose to this scroller*/
+		public function setAbsolutePose(X:Number=NaN,Y:Number=NaN):void
+		{
+			linkScroller.setAbsolutePose(X,Y);
+		}
+		
 		public function lockScroll(X:Number=0,Y:Number=0):void
 		{
 			linkScroller.setPose(X,Y);
