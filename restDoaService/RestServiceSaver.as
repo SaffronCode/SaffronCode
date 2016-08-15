@@ -12,12 +12,9 @@ package restDoaService
 		{
 			var valueName:String = generateID(id,jsonParam) ;
 			var cash:* = SavedDatas2.load(valueName) ;
-<<<<<<< HEAD
-		//	trace("Load > "+valueName+' ○ '+cash+' ○');
-=======
+
 			lastCashDate = SavedDatas2.savedDate ;
 			trace("Load > "+valueName+' ○ '+cash+' ○');
->>>>>>> origin/master
 			return cash;
 		}
 		
