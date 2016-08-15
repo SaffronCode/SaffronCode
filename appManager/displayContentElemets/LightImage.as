@@ -376,7 +376,7 @@ package appManager.displayContentElemets
 		protected function imageLoaded(event:Event=null):void
 		{
 			// TODO Auto-generated method stub
-			cleatTheBitmap();
+			clearTheBitmap();
 			var loadedContent:DisplayObject ;
 			if(loader==null && loadedBitmap==null)
 			{
@@ -473,7 +473,7 @@ package appManager.displayContentElemets
 			this.dispatchEvent(new Event(Event.COMPLETE));
 		}
 		
-		private function cleatTheBitmap():void
+		protected function clearTheBitmap():void
 		{
 			// TODO Auto Generated method stub
 			if(newBitmap!=null)
@@ -508,7 +508,7 @@ package appManager.displayContentElemets
 				}
 				catch(e){};
 			}
-			cleatTheBitmap();
+			clearTheBitmap();
 			
 			if(urlSaver!=null)
 			{
