@@ -43,6 +43,8 @@ package appManager.displayContentElemets
 		/**You can cansel all animation by changing the static value activateAnimation*/
 		public var animated:Boolean = true ;
 		
+		public var grayScaledImage:Boolean = false ;
+		
 		/**0 to 1*/
 		public var animateSpeed:Number = 0 ;
 		
@@ -452,6 +454,11 @@ package appManager.displayContentElemets
 				var myWatermark:BitmapData = BitmapEffects.changeSize(watermarkBitmapData,bitmapData.width,bitmapData.height,true,true,true);
 				bitmapData.draw(myWatermark);
 				myWatermark.dispose();
+			}
+			
+			if(grayScaledImage)
+			{
+				bitmapData = BitmapEffects.setGrayScale(bitmapData);
 			}
 			newBitmap.bitmapData = bitmapData;
 			newBitmap.smoothing = true ;
