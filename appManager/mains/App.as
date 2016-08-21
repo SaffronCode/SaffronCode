@@ -260,11 +260,11 @@ package appManager.mains
 				trace("show homw page")
 				backToHomePage();
 				
+				is_in_home = true ;//This value moved up
 				//I forgot to write this line of code here ↓
 				changePage(event);
 				//It will close PageManger instantly
 				//This function calls with true when the home page oppened:
-				is_in_home = true ;
 				hopePageOppened(true);
 			}
 			else
