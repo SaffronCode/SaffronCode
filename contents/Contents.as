@@ -25,6 +25,9 @@ package contents
 		
 		public static var homeID:String = AppEvent.home ;
 		
+		/**This is an other reserved page id that will make develoer page to open and the developer page is a static page that contains the application link and the developer web site*/
+		public static var developer_static_page:String = AppEvent.developer_static_pageid ;
+		
 		/**The only cause that these values are staing here is the old applications that used them from here.*/
 		public static var 	id_music:uint = ContentSoundManager.MusicID,
 							id_music2:uint = ContentSoundManager.MusicID2,

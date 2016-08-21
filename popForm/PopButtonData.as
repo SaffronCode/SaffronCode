@@ -19,7 +19,7 @@ package popForm
 		
 		/**The ignore button type will prevent button frame controll and all buttons will stay on one line if addInSingleLine was true<br>
 		 * You can pass the image url and the button should have a lightImage in it to be able to show button image<br>
-		 * ButtonFram0 means invisible button*/
+		 * ButtonFram 0 means invisible button*/
 		public function PopButtonData(Title:String,ButtonFrame:uint=1,Id:* = null,Selectable:Boolean = true,addInSingleLine:Boolean=false,ignoreButtonTypesForLining:Boolean=true,imageURL:String='')
 		{
 			buttonImage = imageURL;
