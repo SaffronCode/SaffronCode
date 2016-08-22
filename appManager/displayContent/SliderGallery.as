@@ -31,7 +31,7 @@ package appManager.displayContent
 		
 		/**This is the index of showing image*/
 		private var imageIndex:uint ;
-		private var totalImages:uint ;
+		private var _totalImages:uint ;
 		private var imagesList:Vector.<SliderImageItem> ;
 					
 		private var W:Number,
@@ -80,7 +80,7 @@ package appManager.displayContent
 			super();
 			
 			
-			totalImages = 0 ;
+			_totalImages = 0 ;
 			
 			W = super.width;
 			H = super.height ;
@@ -149,7 +149,12 @@ package appManager.displayContent
 		
 		public function getCurrentSelectedImage():uint
 		{
-			return imageIndex%totalImages;
+			return imageIndex%_totalImages;
+		}
+		
+		public function totalImages():uint
+		{
+			return _totalImages ;
 		}
 		
 		public function get currentImageIndex():uint
@@ -182,7 +187,7 @@ package appManager.displayContent
 			
 			protected function animate(event:Event=null):void
 			{
-				if(totalImages<=1)
+				if(_totalImages<=1)
 				{
 					return ;
 				}
@@ -263,13 +268,13 @@ package appManager.displayContent
 			/**Returns the next image*/
 			private function nextImage():*
 			{
-				return imagesList[(imageIndex+1)%totalImages];
+				return imagesList[(imageIndex+1)%_totalImages];
 			}
 			
 			/**Returns the previus image*/
 			private function prevImage():*
 			{
-				return imagesList[(((imageIndex-1)%totalImages)+totalImages)%totalImages];
+				return imagesList[(((imageIndex-1)%_totalImages)+_totalImages)%_totalImages];
 			}
 			
 			/**Start the functions*/
@@ -286,7 +291,7 @@ package appManager.displayContent
 				{
 					stopAnimation();
 					
-					if(totalImages==1)
+					if(_totalImages==1)
 					{
 						return ;
 					}
@@ -325,7 +330,7 @@ package appManager.displayContent
 						next();
 					}
 					
-					if(myMask.hitTestPoint(stage.mouseX,stage.mouseY) && (getTimer()-mouseDownTime)<150)
+					if(myMask.hitTestPoint(stage.mouseX,stage.mouseY) && (getTimer()-mouseDownTime)<100)
 					{
 						this.removeEventListener(MouseEvent.CLICK,preventDefaultClick,false);
 						this.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
@@ -400,10 +405,10 @@ package appManager.displayContent
 			switchToNext = false ;
 			imageIndex = currentIndex ;
 			imagesList = images ;
-			totalImages = imagesList.length ;
+			_totalImages = imagesList.length ;
 			getImageUp().load(images[imageIndex]);
 			
-			if(totalImages<=1)
+			if(_totalImages<=1)
 			{
 				this.removeEventListener(MouseEvent.CLICK,preventDefaultClick);
 				animInterval = 0 ;
