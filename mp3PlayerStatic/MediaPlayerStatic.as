@@ -1,5 +1,5 @@
-package mp3Player
-	//mp3Player.MediaPlayerMT
+package mp3PlayerStatic
+	//mp3PlayerStatic.MediaPlayerStatic
 {
 	
 	import flash.display.MovieClip;
@@ -12,56 +12,84 @@ package mp3Player
 	
 	import soundPlayer.SoundPlayer;
 	
+	[Event(name="PLAY", type="mp3PlayerStatic.MediaPlayerEventStatic")]
+	[Event(name="PAUSE", type="mp3PlayerStatic.MediaPlayerEventStatic")]
+	[Event(name="STOP", type="mp3PlayerStatic.MediaPlayerEventStatic")]
+	[Event(name="VOLUME", type="mp3PlayerStatic.MediaPlayerEventStatic")]
+	[Event(name="CURRENT_PRECENT", type="mp3PlayerStatic.MediaPlayerEventStatic")]
+	[Event(name="SOUND_PRESENT", type="mp3PlayerStatic.MediaPlayerEventStatic")]
+
 	
 	public class MediaPlayerStatic extends MovieClip
 	{
-		private var playPauseBTN:MovieClip;
+
+		public static var evt:MediaPlayerStatic		
+		public static var playStatus:Boolean=false
+		public static var currentPrecent:Number=1
+		public static var isReady:Boolean = false	
+			
 		
+		private var autoPlay:Boolean;
+			
 		private var precentTF:TextField ;		
-		
-		private var sliderMC:MediaSliderStatic ;
-		
-		
+					
 		private var SoundIsLoaded:Boolean = false;
-		
-		private var mainColor:uint = 0x184A85 ;
-		
-		private var backColor:uint = 0xFFFFFF ;
-		
-		
+						
 		private var urlController:URLSaver ;
 		
 		private var offlineURL:String ;
 		
 		private var mediaSoundID:uint = 2 ;
-		private var autoPlay:Boolean;
-		
-		
+			
 		public function MediaPlayerStatic()
 		{
 			super();
 			
-			//SetUp SoundPlayer class in stand alone mode
+
 				SoundPlayer.setUp(stage);
 			
-			playPauseBTN = Obj.get("button_mc",this);
-			playPauseBTN.stop();
-			playPauseBTN.buttonMode = true ;
-			playPauseBTN.addEventListener(MouseEvent.CLICK,toglleSoundIfLoaded);
-			
-			
+		
 			precentTF = Obj.get("precent_txt",this);
 			precentTF.text = '' ;
 			precentTF.mouseEnabled = false;
-			
-			sliderMC = Obj.get("slider_mc",this);
-			
+						
 			urlController = new URLSaver(true);
 			
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 			
+			this.addEventListener(MediaPlayerEventStatic.PAUSE,puseMeiaPlayer)
+			this.addEventListener(MediaPlayerEventStatic.STOP,stopMediaPLayer)
+			this.addEventListener(MediaPlayerEventStatic.PLAY,playMediaPlayer)
+			this.addEventListener(MediaPlayerEventStatic.CURRENT_PRECENT,onPrecentChanged)	
+			
 			//Debug line ↓
 				//setUp("E:/music/Super Instrumental/1995 - Super Instrumental 05/08. Fausto Papetti - Besame Mucho.mp3");
+		}
+		
+		protected function puseMeiaPlayer(event:Event):void
+		{
+			// TODO Auto-generated method stub
+			if(SoundIsLoaded)
+			{
+				SoundPlayer.pause(mediaSoundID,true);
+				playStatus = false
+			}
+		}
+		
+		protected function stopMediaPLayer(event:Event):void
+		{
+			// TODO Auto-generated method stub
+			
+		}
+		
+		protected function playMediaPlayer(event:Event):void
+		{
+			// TODO Auto-generated method stub
+			if(SoundIsLoaded)
+			{
+				SoundPlayer.play(mediaSoundID,true);
+				playStatus = true
+			}
 		}
 		
 		protected function unLoad(event:Event):void
@@ -74,28 +102,22 @@ package mp3Player
 		}
 		
 		/**Set the sound URL*/
-		public function setUp(soundURL:String,AutoPlay:Boolean=false,BackColor:int=-1,MainColor:int=-1)
+		private function setUp(soundURL_p:String,AutoPlay_p:Boolean)
 		{
-			if(BackColor!=-1)
-			{
-				backColor = BackColor;
-			}
-			if(MainColor!=-1)
-			{
-				mainColor = MainColor;
-			}
+			playStatus = AutoPlay_p	
+			autoPlay = AutoPlay_p;
 			
-			sliderMC.y = 0 ;
-			sliderMC.setUp(mainColor,backColor,onPrecentChanged);
-			
-			autoPlay = AutoPlay ;
 			urlController.addEventListener(URLSaverEvent.LOAD_COMPLETE,SoundIsReady);
 			urlController.addEventListener(URLSaverEvent.LOADING,Loading);
 			urlController.addEventListener(URLSaverEvent.NO_INTERNET,TryLater);
-			urlController.load(soundURL);
+			urlController.load(soundURL_p);
 		}
 		
-		
+		public static function setup(soundURL_p:String,AutoPlay_p:Boolean=false):void
+		{
+			evt = new MediaPlayerStatic()
+			evt.setUp(soundURL_p,AutoPlay_p)	
+		}
 		
 		
 		protected function TryLater(event:URLSaverEvent):void
@@ -127,61 +149,33 @@ package mp3Player
 			offlineURL = offlineTarget ;
 			SoundIsLoaded = true ;
 			precentTF.text = '' ;
-			sliderMC.userSlideEnabled();
-			//trace("Add my sound to sound player");
 			SoundPlayer.addSound(offlineURL,mediaSoundID,false,1);
 			this.addEventListener(Event.ENTER_FRAME,checkPrecent);
 			
-			sliderMC.setPrecent(0);
-			
 			if(autoPlay)
 			{
-				SoundPlayer.play(mediaSoundID);
-				playPauseBTN.gotoAndStop(2);
+				this.dispatchEvent(new MediaPlayerEventStatic(MediaPlayerEventStatic.PLAY))
 			}
+			
+			isReady = true
 		}		
+		
 		
 		
 		/**Sync the slider precent with SoundPlayer*/
 		private function checkPrecent(e:Event)
 		{
-			sliderMC.setPrecent(SoundPlayer.getPlayedPrecent(mediaSoundID));
+			this.dispatchEvent(new MediaPlayerEventStatic(MediaPlayerEventStatic.SOUND_PRESENT,1,1,SoundPlayer.getPlayedPrecent(mediaSoundID)))
 		}
 		
-		
-		
-		
-		
-		
-		
-		
-		protected function toglleSoundIfLoaded(event:MouseEvent):void
-		{
-			// TODO Auto-generated method stub
-			if(SoundIsLoaded)
-			{
-				if(playPauseBTN.currentFrame == 1)
-				{
-					SoundPlayer.play(mediaSoundID,true);
-					playPauseBTN.gotoAndStop(2);
-				}
-				else
-				{
-					SoundPlayer.pause(mediaSoundID,true);
-					playPauseBTN.gotoAndStop(1);
-				}
-			}
-		}
 		
 		/**precent changed by client*/
-		private function onPrecentChanged(newPrecetn:Number)
+		private function onPrecentChanged(event:MediaPlayerEventStatic)
 		{
 			if(SoundIsLoaded)
 			{
-				//trace("new precent seleced : "+newPrecetn);
 				SoundPlayer.pause(mediaSoundID,true);
-				SoundPlayer.play(mediaSoundID,true,true,newPrecetn);
-				playPauseBTN.gotoAndStop(2);
+				SoundPlayer.play(mediaSoundID,true,true,event.currentPrecent);
 			}
 		}
 	}

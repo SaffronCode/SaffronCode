@@ -1,5 +1,5 @@
-package mp3Player
-	//mp3Player.MediaSlider
+package mp3PlayerStatic
+	//mp3PlayerStatic.MediaSliderStatic
 {
 	import flash.display.Graphics;
 	import flash.display.MovieClip;
@@ -10,9 +10,9 @@ package mp3Player
 	{
 		private var backColor:uint;
 		private var mainColor:uint;
-		private var onChanged:Function;
+	//	private var onChanged:Function;
 		
-		private var currentPrecent:Number = 1 ;
+		private var currentPrecent:Number ;
 		
 		private var floatedPrecent:Number = 1 ;
 		
@@ -28,7 +28,11 @@ package mp3Player
 		public function MediaSliderStatic()
 		{
 			super();
+			currentPrecent = MediaPlayerStatic.currentPrecent
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
+			this.addEventListener(Event.ENTER_FRAME,cheker)	
+			
+			
 			this.buttonMode = true ;
 			this.mouseChildren = false;
 			
@@ -37,6 +41,35 @@ package mp3Player
 			this.scaleX = this.scaleY = 1 ;
 			
 			this.removeChildren();
+			
+			
+		}
+		
+		protected function cheker(event:Event):void
+		{
+			// TODO Auto-generated method stub
+			if(MediaPlayerStatic.isReady)
+			{
+				this.removeEventListener(Event.ENTER_FRAME,cheker)	
+				MediaPlayerStatic.evt.addEventListener(MediaPlayerEventStatic.CURRENT_PRECENT,getCurrentPrecent)
+				MediaPlayerStatic.evt.addEventListener(MediaPlayerEventStatic.SOUND_PRESENT,getSoundPrecent)	
+				this.addEventListener(Event.ENTER_FRAME,animIt);
+				userSlideEnabled()
+				setPrecent(0);
+				animIt();
+			}
+		}
+		
+		protected function getSoundPrecent(event:MediaPlayerEventStatic):void
+		{
+			// TODO Auto-generated method stub
+			setPrecent(event.soundPrecent);
+		}
+		
+		protected function getCurrentPrecent(event:MediaPlayerEventStatic):void
+		{
+			// TODO Auto-generated method stub
+			currentPrecent = event.currentPrecent
 		}
 		
 		protected function unLoad(event:Event):void
@@ -45,13 +78,14 @@ package mp3Player
 			this.removeEventListener(Event.ENTER_FRAME,animIt);
 			this.removeEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 			this.removeEventListener(MouseEvent.CLICK,changePrecent);
+			this.removeEventListener(Event.ENTER_FRAME,cheker)
 		}
 		
 		/**precent changed*/
 		protected function changePrecent(event:MouseEvent):void
 		{
 			// TODO Auto-generated method stub
-			if(onChanged!=null)
+			if(MediaPlayerStatic.isReady)
 			{
 				//Calculate current precent
 				var myPrecent:Number = this.mouseX / myWidth;
@@ -63,20 +97,24 @@ package mp3Player
 				{
 					myPrecent = 1 ;
 				}
-				currentPrecent = myPrecent ;
+				//currentPrecent = myPrecent ;
 				//trace("Touched Precent is : "+currentPrecent);
-				onChanged(currentPrecent);
+			//	onChanged(currentPrecent);
+				
+				MediaPlayerStatic.evt.dispatchEvent(new MediaPlayerEventStatic(MediaPlayerEventStatic.CURRENT_PRECENT,1,myPrecent))
+				MediaPlayerStatic.evt.dispatchEvent(new MediaPlayerEventStatic(MediaPlayerEventStatic.PLAY))
+				
 			}
 		}
 		
 		/**set up the slider*/
-		public function setUp(MainColor:uint,BackColor:uint,onPrecentChanged:Function)
+		public function setUp(MainColor:uint,BackColor:uint)
 		{
 			mainColor = MainColor ;
 			backColor = BackColor ;
-			onChanged = onPrecentChanged ;
-			this.addEventListener(Event.ENTER_FRAME,animIt);
-			animIt();
+		//	onChanged = onPrecentChanged ;
+			//this.addEventListener(Event.ENTER_FRAME,animIt);
+		//	animIt();
 		}
 		
 		/**From now , user can select the slider precent*/
