@@ -19,6 +19,7 @@ package contents
 					title:String='',
 					imageTarget:String='',
 					content:String='';
+				
 		
 		public var menuType:String = '' ;
 		
@@ -46,6 +47,8 @@ package contents
 					scrollEffect:Boolean=false;
 		
 		
+		/**New varibales to Reception value object*/
+		public var dynamicData:Object;
 		
 		
 		/*<page id="homePage">
@@ -281,6 +284,8 @@ package contents
 			newPageData.scrollEffect = scrollEffect ;
 
 			newPageData.musicVolume = musicVolume ;
+			
+			newPageData.dynamicData = dynamicData
 			
 			
 			//Mange belos ↓
