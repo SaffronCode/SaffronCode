@@ -60,7 +60,7 @@
 		
 		/**AutoLanguageConvertion will enabled just when supportsMutilanguage was true*/
 		public function AppWithContent(supportsMultiLanguage:Boolean=false,autoLanguageConvertEnabled:Boolean=true,animagePageContents:Boolean=false,autoChangeMusics:Boolean=false,skipAllAnimations:Boolean=false,manageStageManager:Boolean=false,loadConfig:Boolean=false,addVersionControll:Boolean=true
-		,addTheDeveloperPage:Boolean=false)
+		,addTheDeveloperPage:Boolean=false,activateShineEffect:Boolean=false)
 		{
 			super(autoChangeMusics,skipAllAnimations);
 			activeVersionControll = addVersionControll ;
