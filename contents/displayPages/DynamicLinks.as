@@ -74,6 +74,8 @@ package contents.displayPages
 						buttonsContainer:Sprite,
 						linksSensor:Sprite ;
 						
+		private var linkSensorHeight:Number = 2 ;
+						
 		/**This is the list of creted linkItems on the stage.*/
 		private var linksInterfaceStorage:Vector.<LinkItem>;
 		
@@ -504,7 +506,7 @@ package contents.displayPages
 				{
 					stepSize = sampleLink.height+deltaY ;
 				}
-				linksSensor.graphics.drawRect(0,0,areaRect.width,areaRect.height/2*MenuDirection);
+				linksSensor.graphics.drawRect(0,0,areaRect.width,linkSensorHeight*MenuDirection);
 			}
 			else
 			{
@@ -512,7 +514,7 @@ package contents.displayPages
 				{
 					stepSize = sampleLink.width+deltaX ;
 				}
-				linksSensor.graphics.drawRect(0,0,areaRect.width/2*MenuDirection,areaRect.height);
+				linksSensor.graphics.drawRect(0,0,linkSensorHeight*MenuDirection,areaRect.height);
 			}
 			linksSensor.mouseChildren = false ;
 			linksSensor.mouseEnabled = false ;
@@ -922,11 +924,11 @@ package contents.displayPages
 			linksContainer.graphics.beginFill(0,backAlpha) ;
 			if(!horizontalMenu)
 			{
-				linksContainer.graphics.drawRect(0,0,areaRect.width,linksSensor.y+(myPageData.links1.length-lastGeneratedLinkIndes)*(sampleLink.height+deltaY)) ;
+				linksContainer.graphics.drawRect(0,0,areaRect.width,linksSensor.y+(myPageData.links1.length-lastGeneratedLinkIndes-1)*(sampleLink.height+deltaY)) ;
 			}
 			else
 			{
-				linksContainer.graphics.drawRect(0,0,linksSensor.x+(myPageData.links1.length-lastGeneratedLinkIndes)*(sampleLink.width+deltaX),areaRect.height) ;
+				linksContainer.graphics.drawRect(0,0,linksSensor.x+(myPageData.links1.length-lastGeneratedLinkIndes-1)*(sampleLink.width+deltaX),areaRect.height) ;
 			}
 		}		
 		
