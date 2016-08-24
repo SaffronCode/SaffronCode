@@ -2,6 +2,7 @@ package appManager.mains
 {
 	import appManager.animatedPages.Intro;
 	import appManager.animatedPages.MainAnim;
+	import appManager.animatedPages.Shiner;
 	import appManager.animatedPages.pageManager.MenuManager;
 	import appManager.animatedPages.pageManager.PageManager;
 	import appManager.animatedPages.pageManager.TitleManager;
@@ -17,8 +18,10 @@ package appManager.mains
 	import flash.desktop.NativeApplication;
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
+	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
+	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
 	
 	import myAsCSS.MyAsCSS;
@@ -36,6 +39,8 @@ package appManager.mains
 		/**Current menu in the menuManagerObject*/
 		private static var _currentMenu:DisplayObject = null ;
 		
+		private var shineAreaMC:Shiner ;
+		
 		public static function get currentMenu():DisplayObject
 		{
 			return _currentMenu;
@@ -51,7 +56,8 @@ package appManager.mains
 		private static var is_in_home:Boolean = true ;
 		
 		/**This will maka all animated paged to open without animation*/
-		public static var skipAnimations:Boolean ;
+		public static var skipAnimations:Boolean,
+							haveShiner:Boolean;
 		
 		
 		private static var AutoPlayThePageMusics:Boolean ;
@@ -61,9 +67,16 @@ package appManager.mains
 			return is_in_home ;
 		}
 		
-		public function App(autoPlayThePageMusics:Boolean=false,skipAllAnimations:Boolean = false)
+		public function App(autoPlayThePageMusics:Boolean=false,skipAllAnimations:Boolean = false,activateShiner:Boolean=true)
 		{
 			super();
+			
+			haveShiner = activateShiner ;
+			if(haveShiner)
+			{
+				shineAreaMC = new Shiner();
+				stage.addChild(shineAreaMC);
+			}
 			
 			ME = this ;
 			
@@ -222,6 +235,13 @@ package appManager.mains
 		/**Returnd true if the current page is not same as the last page*/
 		protected function managePages(event:AppEvent):Boolean
 		{
+			if(event.target!=null && event.target is Sprite)
+			{
+				if(haveShiner)
+				{
+					shineAreaMC.add(event.target as Sprite);
+				}
+			}
 			trace('page changes to : '+event.myID);
 			//currentAppEvent = event ;•↓
 			//Why it dosen't currentAppEvent befor???????????????????????????
@@ -283,6 +303,8 @@ package appManager.mains
 			
 			return true ;
 		}
+		
+		
 		
 		/**You can use pageID by this class*/
 		public function setPageId(pageId:String):void
