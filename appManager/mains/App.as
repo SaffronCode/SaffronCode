@@ -67,11 +67,11 @@ package appManager.mains
 			return is_in_home ;
 		}
 		
-		public function App(autoPlayThePageMusics:Boolean=false,skipAllAnimations:Boolean = false,activateShiner:Boolean=true)
+		public function App(autoPlayThePageMusics:Boolean=false,skipAllAnimations:Boolean = false,activateShineEffect:Boolean=true)
 		{
 			super();
 			
-			haveShiner = activateShiner ;
+			haveShiner = activateShineEffect ;
 			if(haveShiner)
 			{
 				shineAreaMC = new Shiner();
