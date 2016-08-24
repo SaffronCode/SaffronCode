@@ -58,11 +58,12 @@
 			return contentResizedRect.clone();
 		}
 		
-		/**AutoLanguageConvertion will enabled just when supportsMutilanguage was true*/
+		/**AutoLanguageConvertion will enabled just when supportsMutilanguage was true,
+		 * Pass 1 to activate effects*/
 		public function AppWithContent(supportsMultiLanguage:Boolean=false,autoLanguageConvertEnabled:Boolean=true,animagePageContents:Boolean=false,autoChangeMusics:Boolean=false,skipAllAnimations:Boolean=false,manageStageManager:Boolean=false,loadConfig:Boolean=false,addVersionControll:Boolean=true
-		,addTheDeveloperPage:Boolean=false,activateShineEffect:Boolean=false)
+		,addTheDeveloperPage:Boolean=false,activateShineEffect:uint=0)
 		{
-			super(autoChangeMusics,skipAllAnimations);
+			super(autoChangeMusics,skipAllAnimations,activateShineEffect);
 			activeVersionControll = addVersionControll ;
 			
 			ME = this ;
