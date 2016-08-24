@@ -19,11 +19,8 @@ package appManager.animatedPages
 		public function setUp(controller:MovieClip):void
 		{
 			myTarget = controller ;
-			spriteRect = controller.getBounds(stage);
 			
-			this.graphics.beginFill(0xffffff,1);
-			this.graphics.drawRect(spriteRect.x,spriteRect.y,spriteRect.width,spriteRect.height);
-			AnimData.fadeOut(this,removeMe);
+			update();
 		}
 		
 		private function removeMe():void
@@ -33,7 +30,11 @@ package appManager.animatedPages
 		
 		public function update():void
 		{
-			trace("Update shine");
+			spriteRect = myTarget.getBounds(stage);
+			this.graphics.clear();
+			this.graphics.beginFill(0xffffff,1);
+			this.graphics.drawRect(spriteRect.x,spriteRect.y,spriteRect.width,spriteRect.height);
+			AnimData.fadeOut(this,removeMe);
 		}
 	}
 }
