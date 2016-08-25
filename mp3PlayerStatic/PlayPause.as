@@ -22,6 +22,11 @@ package mp3PlayerStatic
 			// TODO Auto-generated method stub
 			this.removeEventListener(Event.ENTER_FRAME,cheker)	
 			this.removeEventListener(Event.REMOVED_FROM_STAGE,unload)
+			if(MediaPlayerStatic.evt!=null)
+			{
+				MediaPlayerStatic.evt.removeEventListener(MediaPlayerEventStatic.PLAY,playFun)	
+				MediaPlayerStatic.evt.removeEventListener(MediaPlayerEventStatic.PAUSE,pauseFun)
+			}
 		}
 		
 		protected function cheker(event:Event):void

@@ -3,6 +3,7 @@ package mp3PlayerStatic
 {
 	
 	import flash.display.MovieClip;
+	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.text.TextField;
@@ -27,12 +28,12 @@ package mp3PlayerStatic
 		public static var playStatus:Boolean=false
 		public static var currentPrecent:Number=1
 		public static var isReady:Boolean = false	
+		public static var volume:Number=0.5	
+		public static  var mediaSoundID:uint = 1 ;	
 			
 		
 		private var autoPlay:Boolean;
-			
-		private var precentTF:TextField ;		
-					
+								
 		private var SoundIsLoaded:Boolean = false;
 						
 		private var urlController:URLSaver ;
@@ -46,24 +47,26 @@ package mp3PlayerStatic
 			super();
 			
 
-				SoundPlayer.setUp(stage);
-			
-		
-			precentTF = Obj.get("precent_txt",this);
-			precentTF.text = '' ;
-			precentTF.mouseEnabled = false;
-						
+
 			urlController = new URLSaver(true);
 			
-			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
+		//	this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 			
 			this.addEventListener(MediaPlayerEventStatic.PAUSE,puseMeiaPlayer)
 			this.addEventListener(MediaPlayerEventStatic.STOP,stopMediaPLayer)
 			this.addEventListener(MediaPlayerEventStatic.PLAY,playMediaPlayer)
 			this.addEventListener(MediaPlayerEventStatic.CURRENT_PRECENT,onPrecentChanged)	
+			this.addEventListener(MediaPlayerEventStatic.VOLUME,getVolume)	
 			
 			//Debug line ↓
 				//setUp("E:/music/Super Instrumental/1995 - Super Instrumental 05/08. Fausto Papetti - Besame Mucho.mp3");
+		}
+		
+		protected function getVolume(event:MediaPlayerEventStatic):void
+		{
+			// TODO Auto-generated method stub
+			volume = event.volumeNumber
+			SoundPlayer.volumeContril(mediaSoundID,volume)	
 		}
 		
 		protected function puseMeiaPlayer(event:Event):void
@@ -92,18 +95,19 @@ package mp3PlayerStatic
 			}
 		}
 		
-		protected function unLoad(event:Event):void
+	/*	protected function unLoad(event:Event):void
 		{
 			// TODO Auto-generated method stub
 			this.removeEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 			this.removeEventListener(Event.ENTER_FRAME,checkPrecent);
 			SoundPlayer.pause(mediaSoundID);
 			SoundPlayer.removeSound(mediaSoundID);
-		}
+		}*/
 		
 		/**Set the sound URL*/
-		private function setUp(soundURL_p:String,AutoPlay_p:Boolean)
+		private function setUp(Stage_p:Stage,soundURL_p:String,AutoPlay_p:Boolean)
 		{
+			SoundPlayer.setUp(Stage_p);
 			playStatus = AutoPlay_p	
 			autoPlay = AutoPlay_p;
 			
@@ -113,10 +117,11 @@ package mp3PlayerStatic
 			urlController.load(soundURL_p);
 		}
 		
-		public static function setup(soundURL_p:String,AutoPlay_p:Boolean=false):void
+		public static function setup(Stage_p,soundURL_p:String,MediaSoundID_p:uint=1,AutoPlay_p:Boolean=false):void
 		{
 			evt = new MediaPlayerStatic()
-			evt.setUp(soundURL_p,AutoPlay_p)	
+			evt.setUp(Stage_p,soundURL_p,AutoPlay_p)
+			mediaSoundID = MediaSoundID_p ;
 		}
 		
 		
@@ -131,7 +136,8 @@ package mp3PlayerStatic
 			// TODO Auto-generated method stub
 			trace("Im downloading..1:"+event.precent );
 			trace("Im downloading..2:"+  String( event.precent*100 ).substr(0,3)  ); 
-			precentTF.text = Math.round(Number(String( event.precent*100 ).substr(0,3))) +' %';
+			var _precent:String = Math.round(Number(String( event.precent*100 ).substr(0,3))) +' %';		
+			this.dispatchEvent(new MediaPlayerEventStatic(MediaPlayerEventStatic.DOWNLOAD_PRECENT,1,1,1,_precent))
 		}
 		
 		protected function SoundIsReady(event:URLSaverEvent):void
@@ -148,7 +154,7 @@ package mp3PlayerStatic
 			// TODO Auto Generated method stub
 			offlineURL = offlineTarget ;
 			SoundIsLoaded = true ;
-			precentTF.text = '' ;
+			this.dispatchEvent(new MediaPlayerEventStatic(MediaPlayerEventStatic.DOWNLOAD_PRECENT,1,1,1,''))
 			SoundPlayer.addSound(offlineURL,mediaSoundID,false,1);
 			this.addEventListener(Event.ENTER_FRAME,checkPrecent);
 			

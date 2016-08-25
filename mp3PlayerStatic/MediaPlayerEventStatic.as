@@ -10,6 +10,7 @@ package mp3PlayerStatic
 		public static const VOLUME:String = "VOLUME";
 		public static const CURRENT_PRECENT:String = "CURRENT_PRECENT";
 		public static const SOUND_PRESENT:String = "SOUND_PRESENT";
+		public static const DOWNLOAD_PRECENT:String = "DOWNLOAD_PRECENT";
 		
 			
 		private var _volumeNumber:Number
@@ -27,14 +28,21 @@ package mp3PlayerStatic
 		{
 			return _soundPrecent
 		}
+		
+		private var _downloadPrecent:String;
+		public function get downloadPrecent():String
+		{
+			return _downloadPrecent
+		}
 			
 		
-		public function MediaPlayerEventStatic(type:String,volumeNumber:Number=1,currentPrecent:Number=1,soundPrecent:Number=1, bubbles:Boolean=false, cancelable:Boolean=false)
+		public function MediaPlayerEventStatic(type:String,volumeNumber:Number=1,currentPrecent:Number=1,soundPrecent:Number=1,downloadPrecent:String=null, bubbles:Boolean=false, cancelable:Boolean=false)
 		{
 			super(type, bubbles, cancelable);
 			_volumeNumber = volumeNumber
 			_currentPrecent = currentPrecent
-			_soundPrecent = soundPrecent	
+			_soundPrecent = soundPrecent
+			_downloadPrecent = downloadPrecent	
 		}
 	}
 }

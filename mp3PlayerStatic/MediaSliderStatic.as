@@ -10,7 +10,7 @@ package mp3PlayerStatic
 	{
 		private var backColor:uint;
 		private var mainColor:uint;
-	//	private var onChanged:Function;
+
 		
 		private var currentPrecent:Number ;
 		
@@ -79,6 +79,11 @@ package mp3PlayerStatic
 			this.removeEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 			this.removeEventListener(MouseEvent.CLICK,changePrecent);
 			this.removeEventListener(Event.ENTER_FRAME,cheker)
+			if(MediaPlayerStatic.evt!=null)
+			{
+				MediaPlayerStatic.evt.addEventListener(MediaPlayerEventStatic.CURRENT_PRECENT,getCurrentPrecent)
+				MediaPlayerStatic.evt.addEventListener(MediaPlayerEventStatic.SOUND_PRESENT,getSoundPrecent)	
+			}
 		}
 		
 		/**precent changed*/
@@ -87,7 +92,6 @@ package mp3PlayerStatic
 			// TODO Auto-generated method stub
 			if(MediaPlayerStatic.isReady)
 			{
-				//Calculate current precent
 				var myPrecent:Number = this.mouseX / myWidth;
 				if(myPrecent<0)
 				{
@@ -97,9 +101,6 @@ package mp3PlayerStatic
 				{
 					myPrecent = 1 ;
 				}
-				//currentPrecent = myPrecent ;
-				//trace("Touched Precent is : "+currentPrecent);
-			//	onChanged(currentPrecent);
 				
 				MediaPlayerStatic.evt.dispatchEvent(new MediaPlayerEventStatic(MediaPlayerEventStatic.CURRENT_PRECENT,1,myPrecent))
 				MediaPlayerStatic.evt.dispatchEvent(new MediaPlayerEventStatic(MediaPlayerEventStatic.PLAY))
@@ -112,9 +113,6 @@ package mp3PlayerStatic
 		{
 			mainColor = MainColor ;
 			backColor = BackColor ;
-		//	onChanged = onPrecentChanged ;
-			//this.addEventListener(Event.ENTER_FRAME,animIt);
-		//	animIt();
 		}
 		
 		/**From now , user can select the slider precent*/
