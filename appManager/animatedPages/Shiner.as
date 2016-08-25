@@ -31,10 +31,10 @@ package appManager.animatedPages
 		public function add(button:Sprite):void
 		{
 			var shine:ShineElement = new ShineElement()
+			shine.addEventListener(Event.REMOVED,removeShine);//Dont change the orders
 			this.addChild(shine);
 			shine.setUp(button as MovieClip);
 			shineList.push(shine);
-			shine.addEventListener(Event.REMOVED,removeShine);
 		}
 		
 		private function removeShine(event:Event):void

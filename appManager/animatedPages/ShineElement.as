@@ -68,7 +68,7 @@ package appManager.animatedPages
 			//animateMC.graphics.drawRect(spriteRect.x,spriteRect.y,spriteRect.width,spriteRect.height);
 			
 			animateMC.alpha-=fadeSpeed;
-			if(animateMC.alpha<0)
+			if(animateMC.alpha<0 || Math.min(spriteRect.width,spriteRect.height)>500)
 			{
 				this.dispatchEvent(new Event(Event.REMOVED));
 			}
