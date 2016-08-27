@@ -19,7 +19,7 @@ package mp3Player
 		
 		private var precentTF:TextField ;		
 		
-		private var sliderMC:MediaSliderStatic ;
+		private var sliderMC:MediaSlider ;
 		
 		
 		private var SoundIsLoaded:Boolean = false;
