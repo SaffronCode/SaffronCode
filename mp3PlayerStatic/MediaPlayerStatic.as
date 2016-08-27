@@ -29,7 +29,7 @@ package mp3PlayerStatic
 		public static var currentPrecent:Number=1
 		public static var isReady:Boolean = false	
 		public static var volume:Number=0.5	
-		public static  var mediaSoundID:uint = 1 ;	
+		public static  var mediaSoundID:uint = 0 ;	
 			
 		
 		private var autoPlay:Boolean;
@@ -53,7 +53,7 @@ package mp3PlayerStatic
 		//	this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 			
 			this.addEventListener(MediaPlayerEventStatic.PAUSE,puseMeiaPlayer)
-			this.addEventListener(MediaPlayerEventStatic.STOP,stopMediaPLayer)
+			this.addEventListener(MediaPlayerEventStatic.STOP,puseMeiaPlayer)
 			this.addEventListener(MediaPlayerEventStatic.PLAY,playMediaPlayer)
 			this.addEventListener(MediaPlayerEventStatic.CURRENT_PRECENT,onPrecentChanged)	
 			this.addEventListener(MediaPlayerEventStatic.VOLUME,getVolume)	
@@ -184,5 +184,6 @@ package mp3PlayerStatic
 				SoundPlayer.play(mediaSoundID,true,true,event.currentPrecent);
 			}
 		}
+				
 	}
 }
