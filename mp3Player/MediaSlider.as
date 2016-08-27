@@ -6,7 +6,7 @@ package mp3Player
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
-	public class MediaSliderStatic extends MovieClip
+	public class MediaSlider extends MovieClip
 	{
 		private var backColor:uint;
 		private var mainColor:uint;
@@ -25,7 +25,7 @@ package mp3Player
 		 * setUp()<br>
 		 * setPrecent(precent:Number)
 		 * */
-		public function MediaSliderStatic()
+		public function MediaSlider()
 		{
 			super();
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
