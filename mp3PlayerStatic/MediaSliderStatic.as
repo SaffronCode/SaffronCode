@@ -8,8 +8,8 @@ package mp3PlayerStatic
 	
 	public class MediaSliderStatic extends MovieClip
 	{
-		private var backColor:uint;
-		private var mainColor:uint;
+		public static var  backColor:uint;
+		public static var mainColor:uint;
 
 		
 		private var currentPrecent:Number ;
