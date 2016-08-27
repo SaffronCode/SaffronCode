@@ -13,7 +13,7 @@ package mp3Player
 	import soundPlayer.SoundPlayer;
 	
 	
-	public class MediaPlayerStatic extends MovieClip
+	public class MediaPlayerMT extends MovieClip
 	{
 		private var playPauseBTN:MovieClip;
 		
@@ -37,7 +37,7 @@ package mp3Player
 		private var autoPlay:Boolean;
 		
 		
-		public function MediaPlayerStatic()
+		public function MediaPlayerMT()
 		{
 			super();
 			
