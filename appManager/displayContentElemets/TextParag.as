@@ -71,7 +71,7 @@
 			myTextTF.textColor = colorNum;
 		}
 		
-		public function setUp(myText:String,isArabic:Boolean = true,align:Boolean=true,knownAsHTML:Boolean=false,activateLinks:Boolean=false,useNativeText:Boolean=false,addScroller:Boolean=true,generateLinksForURLs:Boolean=false,scrollEffect:Boolean=true,userBitmap:Boolean=true,VerticalAlign:Boolean=false,useCash:Boolean=false,captureResolution:uint=0):void
+		public function setUp(myText:String,isArabic:Boolean = true,align:Boolean=true,knownAsHTML:Boolean=false,activateLinks:Boolean=false,useNativeText:Boolean=false,addScroller:Boolean=true,generateLinksForURLs:Boolean=false,scrollEffect:Boolean=true,userBitmap:Boolean=true,VerticalAlign:Boolean=false,useCash:Boolean=false,captureResolution:uint=0,splitIfToLong:Boolean=false):void
 		{
 			//This event dispatches to remove old scrollMC class
 			this.dispatchEvent(new Event(Event.REMOVED_FROM_STAGE)) ;
@@ -100,11 +100,11 @@
 				{
 					verticalHeight = H ;
 				}
-				TextPutter.onTextArea(myTextTF,myText,isArabic,userBitmap && !activateLinks,useCash,captureResolution,align,activateLinks,-1,generateLinksForURLs,verticalHeight);
+				TextPutter.onTextArea(myTextTF,myText,isArabic,userBitmap && !activateLinks,useCash,captureResolution,align,activateLinks,-1,generateLinksForURLs,verticalHeight,splitIfToLong);
 				//Debug line ↓
 				//TextPutter.onTextArea(myTextTF,myText,isArabic,false,false,1,true) ;
 				//	trace("2 add parag on TextParag and its font is : "+myTextTF.defaultTextFormat.font+' added to textParag class : '+myTextTF.text)
-				if(addScroller && TextPutter.lastInfo_numLines>2)
+				if((!splitIfToLong) && addScroller && TextPutter.lastInfo_numLines>2)
 				{
 					
 					scrollMC = new ScrollMT(this,new Rectangle(this.x,this.y,W,H),new Rectangle(0,0,W,super.height),false,false,scrollEffect) ;
