@@ -58,6 +58,9 @@ package appManager.mains
 		/**This will maka all animated paged to open without animation*/
 		public static var skipAnimations:Boolean,
 							haveShiner:Boolean;
+							
+		/**This will makes player to play music on background to*/
+		private var playSounOnBackGroundTo:Boolean ;
 		
 		
 		private static var AutoPlayThePageMusics:Boolean ;
@@ -67,9 +70,11 @@ package appManager.mains
 			return is_in_home ;
 		}
 		
-		public function App(autoPlayThePageMusics:Boolean=false,skipAllAnimations:Boolean = false,activateShineEffect:uint=0)
+		public function App(autoPlayThePageMusics:Boolean=false,skipAllAnimations:Boolean = false,activateShineEffect:uint=0,PlaySounOnBackGroundTo:Boolean=false)
 		{
 			super();
+			
+			playSounOnBackGroundTo = PlaySounOnBackGroundTo ;
 			
 			haveShiner = activateShineEffect!=0 ;
 			if(haveShiner)
@@ -219,7 +224,7 @@ package appManager.mains
 		/**now the application is ready for client to use*/
 		protected function appIsStarts()
 		{
-			ContentSoundManager.setUp(stage);
+			ContentSoundManager.setUp(stage,playSounOnBackGroundTo);
 			this.dispatchEvent(new AppEvent(null,AppEvent.APP_STARTS));
 			currentAppEvent = new AppEvent();
 			backToHomePage();

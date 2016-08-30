@@ -61,9 +61,9 @@
 		/**AutoLanguageConvertion will enabled just when supportsMutilanguage was true,
 		 * Pass 1 to activate effects*/
 		public function AppWithContent(supportsMultiLanguage:Boolean=false,autoLanguageConvertEnabled:Boolean=true,animagePageContents:Boolean=false,autoChangeMusics:Boolean=false,skipAllAnimations:Boolean=false,manageStageManager:Boolean=false,loadConfig:Boolean=false,addVersionControll:Boolean=true
-		,addTheDeveloperPage:Boolean=false,activateShineEffect:uint=0)
+		,addTheDeveloperPage:Boolean=false,activateShineEffect:uint=0,PlaySounOnBackGroundTo:Boolean=false)
 		{
-			super(autoChangeMusics,skipAllAnimations,activateShineEffect);
+			super(autoChangeMusics,skipAllAnimations,activateShineEffect,PlaySounOnBackGroundTo);
 			activeVersionControll = addVersionControll ;
 			
 			ME = this ;

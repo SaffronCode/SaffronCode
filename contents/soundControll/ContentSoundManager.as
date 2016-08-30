@@ -26,12 +26,12 @@ package contents.soundControll
 		private static var currentSoundId:uint,
 							otherSoundId:uint;
 							
-		public static function setUp(myStage:Stage)
+		public static function setUp(myStage:Stage,PlaySounOnBackGroundTo:Boolean)
 		{
 			currentSoundId = Contents.id_music ;
 			otherSoundId = Contents.id_music2 ;
 			
-			SoundPlayer.setUp(myStage,true,false);
+			SoundPlayer.setUp(myStage,!PlaySounOnBackGroundTo,false);
 			//SoundPlayer.addSound(Contents.homePage.musicURL,Contents.id_music,true,1);
 			changeMainMusic();
 			
