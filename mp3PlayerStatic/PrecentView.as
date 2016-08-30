@@ -11,7 +11,7 @@ package mp3PlayerStatic
 		{
 			super();
 			precentTF = Obj.get("precent_txt",this);
-			setPrecentViewText('')
+			setPrecentViewText(0)
 
 			this.mouseEnabled = false
 			this.mouseChildren = false
@@ -34,7 +34,7 @@ package mp3PlayerStatic
 			// TODO Auto-generated method stub
 			if(MediaPlayerStatic.evt!=null)
 			{	
-				setPrecentViewText('')
+				setPrecentViewText(0)
 				MediaPlayerStatic.evt.addEventListener(MediaPlayerEventStatic.DOWNLOAD_PRECENT,showPrecent)	
 				this.removeEventListener(Event.ENTER_FRAME,cheker)		
 			}
@@ -46,12 +46,28 @@ package mp3PlayerStatic
 			trace('event.downloadPrecent :',event.downloadPrecent)
 		}
 		
-		private function setPrecentViewText(Precent_p:String):void
+		private function setPrecentViewText(Precent_p:Number):void
 		{
+			if(Precent_p==0)
+			{
+				this.visible = false
+			}
+			else
+			{
+				this.visible = true
+			}
+			
 			if(precentTF!=null)
 			{
-				precentTF.text = Precent_p
+				precentTF.text = Precent_p + '%'
 			}
+			
+			if(Precent_p == 100)
+			{
+				precentTF.text =''
+			}
+			
+			this.gotoAndStop(Precent_p)
 			
 		}
 	}

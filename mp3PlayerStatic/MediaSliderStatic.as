@@ -10,6 +10,8 @@ package mp3PlayerStatic
 	{
 		public static var  backColor:uint;
 		public static var mainColor:uint;
+		public static var backColorALpha:Number;
+		public static var mainColorAlpha:Number;
 
 		
 		private var currentPrecent:Number ;
@@ -109,10 +111,12 @@ package mp3PlayerStatic
 		}
 		
 		/**set up the slider*/
-		public function setUp(MainColor:uint,BackColor:uint)
+		public function setUp(MainColor:uint,BackColor:uint,MainColorAlpha:Number=1,BackColorALpha:Number=1)
 		{
 			mainColor = MainColor ;
 			backColor = BackColor ;
+			BackColorALpha = BackColorALpha;
+			MainColorAlpha = MainColorAlpha;
 		}
 		
 		/**From now , user can select the slider precent*/
@@ -146,10 +150,10 @@ package mp3PlayerStatic
 			{
 				var gra:Graphics = this.graphics ;
 				gra.clear();
-				gra.beginFill(mainColor);
+				gra.beginFill(mainColor,mainColorAlpha);
 				var currentX:Number = floatedPrecent*myWidth ;
 				gra.drawRect(0,0,currentX,myHeight);
-				gra.beginFill(backColor);
+				gra.beginFill(backColor,backColorALpha);
 				gra.drawRect(currentX,0,myWidth-currentX,myHeight);
 				
 				lastFloatedPrecent = floatedPrecent ;

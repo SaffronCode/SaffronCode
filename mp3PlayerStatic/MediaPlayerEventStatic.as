@@ -29,14 +29,14 @@ package mp3PlayerStatic
 			return _soundPrecent
 		}
 		
-		private var _downloadPrecent:String;
-		public function get downloadPrecent():String
+		private var _downloadPrecent:Number;
+		public function get downloadPrecent():Number
 		{
 			return _downloadPrecent
 		}
 			
 		
-		public function MediaPlayerEventStatic(type:String,volumeNumber:Number=1,currentPrecent:Number=1,soundPrecent:Number=1,downloadPrecent:String=null, bubbles:Boolean=false, cancelable:Boolean=false)
+		public function MediaPlayerEventStatic(type:String,volumeNumber:Number=1,currentPrecent:Number=1,soundPrecent:Number=1,downloadPrecent:Number=0, bubbles:Boolean=false, cancelable:Boolean=false)
 		{
 			super(type, bubbles, cancelable);
 			_volumeNumber = volumeNumber
