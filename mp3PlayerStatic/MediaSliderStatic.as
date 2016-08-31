@@ -43,8 +43,19 @@ package mp3PlayerStatic
 			this.scaleX = this.scaleY = 1 ;
 			
 			this.removeChildren();
+			this.addEventListener(Event.ENTER_FRAME,chekDownLoad)
 			
-			
+		}
+		
+		protected function chekDownLoad(event:Event):void
+		{
+			// TODO Auto-generated method stub
+			if(MediaPlayerStatic.downLoadCompelete)
+			{
+				userSlideEnabled()
+				this.removeEventListener(Event.ENTER_FRAME,chekDownLoad)
+			}
+			trace('MediaPlayerStatic.downLoadCompelete :',MediaPlayerStatic.downLoadCompelete)
 		}
 		
 		protected function cheker(event:Event):void
@@ -55,13 +66,20 @@ package mp3PlayerStatic
 				this.removeEventListener(Event.ENTER_FRAME,cheker)	
 				MediaPlayerStatic.evt.addEventListener(MediaPlayerEventStatic.CURRENT_PRECENT,getCurrentPrecent)
 				MediaPlayerStatic.evt.addEventListener(MediaPlayerEventStatic.SOUND_PRESENT,getSoundPrecent)	
-				this.addEventListener(Event.ENTER_FRAME,animIt);
-				userSlideEnabled()
+				MediaPlayerStatic.evt.addEventListener(MediaPlayerEventStatic.START_DOWNLOAD,startDownLoad)	
+			//	this.addEventListener(Event.ENTER_FRAME,animIt);
+				
 				setPrecent(0);
 				animIt();
 			}
 		}
 		
+		protected function startDownLoad(event:Event):void
+		{
+			// TODO Auto-generated method stub
+			this.removeEventListener(MouseEvent.MOUSE_MOVE,changePrecent);
+			this.addEventListener(Event.ENTER_FRAME,chekDownLoad)
+		}
 		protected function getSoundPrecent(event:MediaPlayerEventStatic):void
 		{
 			// TODO Auto-generated method stub
@@ -81,10 +99,12 @@ package mp3PlayerStatic
 			this.removeEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 			this.removeEventListener(MouseEvent.CLICK,changePrecent);
 			this.removeEventListener(Event.ENTER_FRAME,cheker)
+			this.removeEventListener(Event.ENTER_FRAME,chekDownLoad)
 			if(MediaPlayerStatic.evt!=null)
 			{
-				MediaPlayerStatic.evt.addEventListener(MediaPlayerEventStatic.CURRENT_PRECENT,getCurrentPrecent)
-				MediaPlayerStatic.evt.addEventListener(MediaPlayerEventStatic.SOUND_PRESENT,getSoundPrecent)	
+				MediaPlayerStatic.evt.removeEventListener(MediaPlayerEventStatic.CURRENT_PRECENT,getCurrentPrecent)
+				MediaPlayerStatic.evt.removeEventListener(MediaPlayerEventStatic.SOUND_PRESENT,getSoundPrecent)	
+				MediaPlayerStatic.evt.removeEventListener(MediaPlayerEventStatic.START_DOWNLOAD,startDownLoad)	
 			}
 		}
 		

@@ -20,6 +20,8 @@ package mp3PlayerStatic
 	[Event(name="VOLUME", type="mp3PlayerStatic.MediaPlayerEventStatic")]
 	[Event(name="CURRENT_PRECENT", type="mp3PlayerStatic.MediaPlayerEventStatic")]
 	[Event(name="SOUND_PRESENT", type="mp3PlayerStatic.MediaPlayerEventStatic")]
+	[Event(name="START_DOWNLOAD", type="mp3PlayerStatic.MediaPlayerEventStatic")]
+	
 
 	
 	public class MediaPlayerStatic extends MovieClip
@@ -28,7 +30,8 @@ package mp3PlayerStatic
 		public static var evt:MediaPlayerStatic		
 		public static var playStatus:Boolean=false
 		public static var currentPrecent:Number=1
-		public static var isReady:Boolean = false	
+		public static var isReady:Boolean = false
+		public static var downLoadCompelete:Boolean=false	
 		public static var volume:Number=0.5	
 		public static  var mediaSoundID:uint = 0 ;	
 			
@@ -41,6 +44,8 @@ package mp3PlayerStatic
 		
 		private var offlineURL:String ;
 		
+		private var url:String;
+		
 		private var mediaSoundID:uint = 2 ;
 			
 		public function MediaPlayerStatic()
@@ -49,7 +54,7 @@ package mp3PlayerStatic
 			
 
 
-			urlController = new URLSaver(true);
+		//	urlController = new URLSaver(true);
 			
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 			
@@ -109,44 +114,45 @@ package mp3PlayerStatic
 		}
 		
 		/**Set the sound URL*/
-		private function setUp(Stage_p:Stage,soundURL_p:String,AutoPlay_p:Boolean,DownLoadCompeletAndPlay_p)
+		private function setUp(Stage_p:Stage,soundURL_p:String,AutoPlay_p:Boolean)
 		{
 			//SoundPlayer.setUp(Stage_p,true);
 			SoundPlayer.pause(mediaSoundID,true);
 			playStatus = false
+			SoundIsLoaded = false
+			downLoadCompelete = false
 			playStatus = AutoPlay_p	
 			autoPlay = AutoPlay_p;
-			if(!DownLoadCompeletAndPlay_p && urlController.offlineURL!=null)
-			{				
-				urlController.addEventListener(URLSaverEvent.LOAD_COMPLETE,SoundIsReady);
-				urlController.addEventListener(URLSaverEvent.LOADING,Loading);
-				urlController.addEventListener(URLSaverEvent.NO_INTERNET,TryLater);
-				urlController.load(soundURL_p);
-			}
-			else if(!DownLoadCompeletAndPlay_p && urlController.offlineURL==null)
+			url = soundURL_p
+			if(urlController!=null)
 			{
-				urlController.addEventListener(URLSaverEvent.LOADING,Loading);
-				urlController.addEventListener(URLSaverEvent.NO_INTERNET,TryLater);
-				urlController.load(soundURL_p);
-				startToPlaySound(soundURL_p);
+				urlController.cansel()		
 			}
-			else if(DownLoadCompeletAndPlay_p)
-			{
-				urlController.addEventListener(URLSaverEvent.LOAD_COMPLETE,SoundIsReady);
-				urlController.addEventListener(URLSaverEvent.LOADING,Loading);
-				urlController.addEventListener(URLSaverEvent.NO_INTERNET,TryLater);
-				urlController.load(soundURL_p);
-			}
+			urlController = new URLSaver(true);
+			urlController.addEventListener(URLSaverEvent.LOAD_COMPLETE,SoundIsReady);
+			urlController.addEventListener(URLSaverEvent.NO_OFLINE_URL,noOflineUrl);
+			urlController.addEventListener(URLSaverEvent.LOADING,Loading);
+			urlController.addEventListener(URLSaverEvent.NO_INTERNET,TryLater);
+			urlController.load(soundURL_p);
+
+			this.dispatchEvent(new MediaPlayerEventStatic(MediaPlayerEventStatic.START_DOWNLOAD))
+		}
+		
+		protected function noOflineUrl(event:URLSaverEvent):void
+		{
+			// TODO Auto-generated method stub
+			urlController.removeEventListener(URLSaverEvent.LOADING,Loading);
+			startToPlaySound(url);
 		}
 		
 		public static function setup():void
 		{
 			evt = new MediaPlayerStatic()
 		}
-		public static function update(Stage_p,soundURL_p:String,MediaSoundID_p:uint=1,AutoPlay_p:Boolean=false,DownLoadCompeletAndPlay_p:Boolean =false):void
+		public static function update(Stage_p,soundURL_p:String,MediaSoundID_p:uint=1,AutoPlay_p:Boolean=false):void
 		{
 			mediaSoundID = MediaSoundID_p ;
-			evt.setUp(Stage_p,soundURL_p,AutoPlay_p,DownLoadCompeletAndPlay_p)
+			evt.setUp(Stage_p,soundURL_p,AutoPlay_p)
 		}
 		
 		
@@ -159,20 +165,28 @@ package mp3PlayerStatic
 		protected function Loading(event:URLSaverEvent):void
 		{
 			// TODO Auto-generated method stub
-			loadingPrecent(event.precent)			
+			loadingPrecent(event.precent)
 		}
 		protected function loadingPrecent(Precent_p:Number):void
 		{
-			trace("Im downloading..1:"+Precent_p );
-			trace("Im downloading..2:"+  String( Precent_p*100 ).substr(0,3)  ); 
+		//	trace("Im downloading..1:"+Precent_p );
+		//	trace("Im downloading..2:"+  String( Precent_p*100 ).substr(0,3)  ); 
 			var _precent:Number = Math.round(Number(String(Precent_p*100 ).substr(0,3)));		
 			this.dispatchEvent(new MediaPlayerEventStatic(MediaPlayerEventStatic.DOWNLOAD_PRECENT,1,1,1,_precent))
+			if(_precent>=100)
+			{
+				downLoadCompelete = true
+			}
 		}
 		
 		protected function SoundIsReady(event:URLSaverEvent):void
 		{
 			// TODO Auto-generated method stub
-			startToPlaySound(event.offlineTarget);
+			
+			if(!SoundIsLoaded)
+			{
+				startToPlaySound(event.offlineTarget);
+			}
 		}
 				
 		private function startToPlaySound(offlineTarget:String):void
@@ -190,7 +204,7 @@ package mp3PlayerStatic
 			isReady = true
 		}		
 		
-		var bytArray:ByteArray =  new ByteArray()	
+		//var bytArray:ByteArray =  new ByteArray()	
 		
 		/**Sync the slider precent with SoundPlayer*/
 		private function checkPrecent(e:Event)
@@ -198,10 +212,10 @@ package mp3PlayerStatic
 			loadingPrecent(SoundPlayer.getLoadedSoundPrecent(mediaSoundID))	
 			this.dispatchEvent(new MediaPlayerEventStatic(MediaPlayerEventStatic.SOUND_PRESENT,1,1,SoundPlayer.getPlayedPrecent(mediaSoundID)))
 			//SoundPlayer.getExtractedData(mediaSoundID,bytArray)
-			//trace('bytArray :',bytArray.readInt())	
+			//trace('bytArray :',bytArray.readInt())
+			//trace('SoundPlayer.getPlayedPrecent(mediaSoundID) :',SoundPlayer.getPlayedPrecent(mediaSoundID))	
 		}
-		
-		
+			
 		/**precent changed by client*/
 		private function onPrecentChanged(event:MediaPlayerEventStatic)
 		{

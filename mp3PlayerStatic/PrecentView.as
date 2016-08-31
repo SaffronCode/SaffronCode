@@ -43,7 +43,6 @@ package mp3PlayerStatic
 		{
 			// TODO Auto-generated method stub
 			setPrecentViewText(event.downloadPrecent)
-			trace('event.downloadPrecent :',event.downloadPrecent)
 		}
 		
 		private function setPrecentViewText(Precent_p:Number):void
