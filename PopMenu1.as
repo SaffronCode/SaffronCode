@@ -27,7 +27,10 @@ package
 		}
 		public static function close()
 		{
-			ME1.close();
+			if(ME1)
+			{
+				ME1.close();
+			}
 		}
 		
 		/**this will tell if the popMenuIsOpen*/
