@@ -528,7 +528,10 @@ package contents.displayPages
 			controllSensor();
 			if(!dynamicHeight)
 			{
-				linkScroller = new ScrollMT(linksContainer,areaRect,/*areaRect*/null,!horizontalMenu,horizontalMenu,acceptAnimation&&!reverted,reverted,false,stepSize);
+				trace("linksContainer : "+linksContainer.getBounds(stage));
+				trace("areaRect : "+areaRect);
+				
+				linkScroller = new ScrollMT(linksContainer,areaRect,/*areaRect*/null,!horizontalMenu,horizontalMenu,acceptAnimation&&!reverted,!horizontalMenu &&reverted,horizontalMenu && reverted,stepSize);
 				if(myPageData.id!='' && scrollPosesObject[myPageData.id]!=null)
 				{
 					if(!horizontalMenu)
