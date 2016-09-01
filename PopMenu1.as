@@ -39,5 +39,24 @@ package
 			return ME1.show ;
 		}
 		
+		/**Returns the content width*/
+		public static function width():Number
+		{
+			if(ME1)
+			{
+				return ME1.getContentWidth();
+			}
+			return 0 ;
+		}
+		
+		/**Returns the content height*/
+		public static function height():Number
+		{
+			if(ME1)
+			{
+				return ME1.getContentHeight();
+			}
+			return 0 ;
+		}
 	}
 }

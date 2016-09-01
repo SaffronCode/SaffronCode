@@ -84,6 +84,18 @@
 			}
 		}
 		
+		/**Returns the content width*/
+		public function getContentWidth():Number
+		{
+			return myContent.width ;
+		}
+		
+		/**Returns the content height*/
+		public function getContentHeight():Number
+		{
+			return myContent.height ;
+		}
+		
 		public static function get popDispatcher():PopMenuDispatcher
 		{
 			return ME.popDispatcher ;

@@ -61,6 +61,22 @@ package popForm
 			absoluteHeight = value ;
 		}
 		
+		/**Returns the content rectangle area*/
+		public function getRectArea():Rectangle
+		{
+			return new Rectangle(maxAreaMC.width/-2,0,maxAreaMC.width,maxAreaMC.height)
+		}
+		
+		override public function get width():Number
+		{
+			return maxAreaMC.width ;
+		}
+		
+		override public function get height():Number
+		{
+			return maxAreaMC.height ;
+		}
+		
 		public function PopMenuContenDisplay()
 		{
 			super();
