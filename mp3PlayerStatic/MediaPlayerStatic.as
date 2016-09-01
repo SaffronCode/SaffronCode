@@ -130,20 +130,17 @@ package mp3PlayerStatic
 			}
 			urlController = new URLSaver(true);
 			urlController.addEventListener(URLSaverEvent.LOAD_COMPLETE,SoundIsReady);
-			urlController.addEventListener(URLSaverEvent.NO_OFLINE_URL,noOflineUrl);
 			urlController.addEventListener(URLSaverEvent.LOADING,Loading);
 			urlController.addEventListener(URLSaverEvent.NO_INTERNET,TryLater);
-			urlController.load(soundURL_p);
+			if(!urlController.load(soundURL_p))
+			{
+				startToPlaySound(url);
+				urlController.removeEventListener(URLSaverEvent.LOADING,Loading);
+			}
 
 			this.dispatchEvent(new MediaPlayerEventStatic(MediaPlayerEventStatic.START_DOWNLOAD))
 		}
 		
-		protected function noOflineUrl(event:URLSaverEvent):void
-		{
-			// TODO Auto-generated method stub
-			urlController.removeEventListener(URLSaverEvent.LOADING,Loading);
-			startToPlaySound(url);
-		}
 		
 		public static function setup():void
 		{
@@ -182,7 +179,6 @@ package mp3PlayerStatic
 		protected function SoundIsReady(event:URLSaverEvent):void
 		{
 			// TODO Auto-generated method stub
-			
 			if(!SoundIsLoaded)
 			{
 				startToPlaySound(event.offlineTarget);

@@ -55,7 +55,6 @@ package mp3PlayerStatic
 				userSlideEnabled()
 				this.removeEventListener(Event.ENTER_FRAME,chekDownLoad)
 			}
-			trace('MediaPlayerStatic.downLoadCompelete :',MediaPlayerStatic.downLoadCompelete)
 		}
 		
 		protected function cheker(event:Event):void
