@@ -11,8 +11,6 @@ package netManager.urlSaver
 		
 		public static const LOAD_COMPLETE:String = "LOAD_COMPLETE";
 		
-		public static const NO_OFLINE_URL:String = "NO_OFLINE_URL";
-		
 		public var precent:Number ; 
 		public var loadedBytes:ByteArray;
 		public var offlineTarget:String;

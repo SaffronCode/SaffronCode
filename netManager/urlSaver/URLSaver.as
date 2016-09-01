@@ -34,7 +34,6 @@ package netManager.urlSaver
 	[Event(name="NO_INTERNET", type="netManager.urlSaver.URLSaverEvent")]
 	[Event(name="LOAD_COMPLETE", type="netManager.urlSaver.URLSaverEvent")]
 	[Event(name="UPDATED", type="netManager.urlSaver.URLSaverEvent")]
-	[Event(name="LOAD_COMPLETE", type="netManager.urlSaver.URLSaverEvent")]
 	
 	public class URLSaver extends EventDispatcher
 	{
@@ -138,11 +137,9 @@ package netManager.urlSaver
 				//This file is local already
 				//trace("The file is exists");
 				offlineURL = localFileChecker.url ;
-
 			}
 			else
 			{
-				this.dispatchEvent(new URLSaverEvent(URLSaverEvent.NO_OFLINE_URL))
 				//This file is loaded befor
 				//offlineURL = SavedDatas.load(onlineURL) ;
 				if(datestorage != null && (datestorage.data[onlineURL] == undefined || datestorage.data[onlineURL]<myAcceptableDate.time))
