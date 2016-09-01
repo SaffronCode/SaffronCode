@@ -927,11 +927,11 @@ package contents.displayPages
 			linksContainer.graphics.beginFill(0,backAlpha) ;
 			if(!horizontalMenu)
 			{
-				linksContainer.graphics.drawRect(0,0,areaRect.width,linksSensor.y+(myPageData.links1.length-lastGeneratedLinkIndes-1)*(sampleLink.height+deltaY)) ;
+				linksContainer.graphics.drawRect(0,0,areaRect.width,linksSensor.y+(myPageData.links1.length-lastGeneratedLinkIndes-1)*(sampleLink.height+deltaY)*MenuDirection) ;
 			}
 			else
 			{
-				linksContainer.graphics.drawRect(0,0,linksSensor.x+(myPageData.links1.length-lastGeneratedLinkIndes-1)*(sampleLink.width+deltaX),areaRect.height) ;
+				linksContainer.graphics.drawRect(0,0,linksSensor.x+(myPageData.links1.length-lastGeneratedLinkIndes-1)*(sampleLink.width+deltaX)*MenuDirection,areaRect.height) ;
 			}
 		}		
 		
