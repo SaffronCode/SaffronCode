@@ -124,10 +124,29 @@ package contents.displayPages
 		/**This is the number of icons per each line*/
 		public var iconsPerLine:uint = 1 ;
 		
+		private var autoScrollSpeed:Number = 0 ;
+		
 		/**Make the dynamic link not scrollable and show all items instantly*/
 		public function set_dynamicHeigh(status:Boolean=true):void
 		{
 			dynamicHeight = loadAllLinksInstantly = status ;
+		}
+		
+		public function activateAtoScroll(scrollSpeed:Number=0):void
+		{
+			autoScrollSpeed = scrollSpeed ;
+			if(linkScroller)
+			{
+				if(horizontalMenu)
+				{
+					trace("MenuDirectionX : "+MenuDirectionX);
+					linkScroller.activateAutoScroll(autoScrollSpeed*MenuDirectionX);
+				}
+				else
+				{
+					linkScroller.activateAutoScroll(0,autoScrollSpeed*MenuDirectionY);
+				}
+			}
 		}
 
 		
@@ -552,6 +571,9 @@ package contents.displayPages
 				trace("areaRect : "+areaRect);
 				
 				linkScroller = new ScrollMT(linksContainer,areaRect,/*areaRect*/null,!horizontalMenu,horizontalMenu,acceptAnimation&&(!revertedX && !revertedY),revertedY,revertedX,stepSize);
+				
+				activateAtoScroll(autoScrollSpeed);
+				
 				if(myPageData.id!='' && scrollPosesObject[myPageData.id]!=null)
 				{
 					if(!horizontalMenu)
