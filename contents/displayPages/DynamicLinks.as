@@ -140,11 +140,11 @@ package contents.displayPages
 				if(horizontalMenu)
 				{
 					trace("MenuDirectionX : "+MenuDirectionX);
-					linkScroller.activateAutoScroll(autoScrollSpeed*MenuDirectionX);
+					linkScroller.activateAutoScroll(autoScrollSpeed*-MenuDirectionX);
 				}
 				else
 				{
-					linkScroller.activateAutoScroll(0,autoScrollSpeed*MenuDirectionY);
+					linkScroller.activateAutoScroll(0,autoScrollSpeed*-MenuDirectionY);
 				}
 			}
 		}
