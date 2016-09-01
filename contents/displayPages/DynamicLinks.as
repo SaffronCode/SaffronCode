@@ -110,7 +110,8 @@ package contents.displayPages
 		/**This will prevent scroller to have animation if there is.*/
 		public var acceptAnimation:Boolean = true;
 		
-		private var reverted:Boolean = false ;
+		private var revertedX:Boolean = false,
+					revertedY:Boolean = false;
 		
 		/**Load all links togather without sensor*/
 		protected var loadAllLinksInstantly:Boolean ;
@@ -130,10 +131,35 @@ package contents.displayPages
 		}
 
 		
+		/**returns X direction by reverted value*/
+		protected function get MenuDirectionX():int
+		{
+			if(revertedX)
+			{
+				return -1 ;
+			}
+			else
+			{
+				return 1 ;
+			}
+		}
 		/**returns Y direction by reverted value*/
+		protected function get MenuDirectionY():int
+		{
+			if(revertedY)
+			{
+				return -1 ;
+			}
+			else
+			{
+				return 1 ;
+			}
+		}
+		
+		/**Returns the menu direction in bot Y and X direction*/
 		protected function get MenuDirection():int
 		{
-			if(reverted)
+			if(revertedX || revertedY)
 			{
 				return -1 ;
 			}
@@ -182,21 +208,15 @@ package contents.displayPages
 			trace('link class is : '+linkClass);
 			
 			//Controll it by it's height to prevent revert activating at most of times.
-			if(!horizontalMenu)
+			if(this.getBounds(this).y<this.height/-2)
 			{
-				if(this.getBounds(this).y<this.height/-2)
-				{
-					trace("*****Reverted menu activated******");
-					reverted = true ;
-				}
+				trace("*****Reverted menu activated******");
+				revertedY = true ;
 			}
-			else
+			if(this.getBounds(this).x<this.width/-2)
 			{
-				if(this.getBounds(this).x<this.width/-2)
-				{
-					trace("*****Reverted menu activated on horizontal mode******");
-					reverted = true ;
-				}
+				trace("*****Reverted menu activated on horizontal mode******");
+				revertedX = true ;
 			}
 			
 			this.removeChildren();
@@ -313,7 +333,7 @@ package contents.displayPages
 		/**This will change the scroll area value but you have to call setUp after this functin*/
 		public function chageHeight(newValue:Number):void
 		{
-			if(reverted)
+			if(revertedY)
 			{
 				trace("**********************Revert added");
 				areaRect.top = newValue*-1 ;
@@ -460,7 +480,7 @@ package contents.displayPages
 			
 			/**Button container*/
 			buttonsContainer = new Sprite();
-			if(reverted)
+			if(revertedX || revertedY)
 			{
 				if(!horizontalMenu)
 				{
@@ -483,7 +503,7 @@ package contents.displayPages
 				}
 			}
 			linksContainer.graphics.beginFill(0,backAlpha) ;
-			linksContainer.graphics.drawRect(0,0,areaRect.width*MenuDirection,areaRect.height*MenuDirection) ;
+			linksContainer.graphics.drawRect(0,0,areaRect.width*MenuDirectionX,areaRect.height*MenuDirectionY) ;
 			
 			this.addChild(linksContainer);
 			linksContainer.addChild(buttonsContainer);
@@ -492,11 +512,11 @@ package contents.displayPages
 			linksSensor = new Sprite();
 			if(!horizontalMenu)
 			{
-				linksSensor.y = myDeltaY*MenuDirection*menuFirstPosition ;
+				linksSensor.y = myDeltaY*MenuDirectionY*menuFirstPosition ;
 			}
 			else
 			{
-				linksSensor.x = myDeltaX*MenuDirection*menuFirstPosition ;
+				linksSensor.x = myDeltaX*MenuDirectionX*menuFirstPosition ;
 			}
 			linksSensor.graphics.beginFill(0xff0000,linkSensorDebug);
 			var stepSize:Number = 0 ;
@@ -506,7 +526,7 @@ package contents.displayPages
 				{
 					stepSize = sampleLink.height+deltaY ;
 				}
-				linksSensor.graphics.drawRect(0,0,areaRect.width,linkSensorHeight*MenuDirection);
+				linksSensor.graphics.drawRect(0,0,areaRect.width,linkSensorHeight*MenuDirectionY);
 			}
 			else
 			{
@@ -514,7 +534,7 @@ package contents.displayPages
 				{
 					stepSize = sampleLink.width+deltaX ;
 				}
-				linksSensor.graphics.drawRect(0,0,linkSensorHeight*MenuDirection,areaRect.height);
+				linksSensor.graphics.drawRect(0,0,linkSensorHeight*MenuDirectionX,areaRect.height);
 			}
 			linksSensor.mouseChildren = false ;
 			linksSensor.mouseEnabled = false ;
@@ -531,7 +551,7 @@ package contents.displayPages
 				trace("linksContainer : "+linksContainer.getBounds(stage));
 				trace("areaRect : "+areaRect);
 				
-				linkScroller = new ScrollMT(linksContainer,areaRect,/*areaRect*/null,!horizontalMenu,horizontalMenu,acceptAnimation&&!reverted,!horizontalMenu &&reverted,horizontalMenu && reverted,stepSize);
+				linkScroller = new ScrollMT(linksContainer,areaRect,/*areaRect*/null,!horizontalMenu,horizontalMenu,acceptAnimation&&(!revertedX && !revertedY),revertedY,revertedX,stepSize);
 				if(myPageData.id!='' && scrollPosesObject[myPageData.id]!=null)
 				{
 					if(!horizontalMenu)
@@ -631,7 +651,7 @@ package contents.displayPages
 			if(reloaderMC)
 			{
 				var precent:Number = 0 ;
-				if(reverted)
+				if(revertedX || revertedY)
 				{
 					trace("Reloader on non horizontal but reverted menu");
 				}
@@ -750,8 +770,8 @@ package contents.displayPages
 			if(!addingLinksOver
 				&&
 				(loadAllLinksInstantly ||
-				(!horizontalMenu && !reverted && sens.top<areaRect.bottom) || (!horizontalMenu && reverted && sens.bottom>areaRect.top)
-				|| (horizontalMenu && !reverted && sens.left<areaRect.right) || (horizontalMenu && reverted && sens.right>areaRect.left))
+				(!horizontalMenu && !revertedY && sens.top<areaRect.bottom) || (!horizontalMenu && revertedY && sens.bottom>areaRect.top)
+				|| (horizontalMenu && !revertedX && sens.left<areaRect.right) || (horizontalMenu && revertedX && sens.right>areaRect.left))
 			)
 			{
 				trace("Request more link");
@@ -886,13 +906,13 @@ package contents.displayPages
 			var l:uint = linksInterfaceStorage.length ;
 			//var Y:Number = myDeltaY*Ydirection ;
 			var i:int = 1;
-			if(MenuDirection<0 && l>0)
+			if(MenuDirectionY<0 && l>0)
 			{
 				linksInterfaceStorage[0].y = linksInterfaceStorage[0].height*-1;
 			}
 			for(i = 1 ; i<l ; i++)
 			{
-				if(MenuDirection>0)
+				if(MenuDirectionY>0)
 				{
 					linksInterfaceStorage[i].y = linksInterfaceStorage[i-1].y+(linksInterfaceStorage[i-1].height+myDeltaY);
 				}
@@ -908,7 +928,7 @@ package contents.displayPages
 			}
 			
 			
-			if(MenuDirection>0)
+			if(MenuDirectionY>0)
 			{
 				linksSensor.y = linksInterfaceStorage[index].y+linksInterfaceStorage[index].height+myDeltaY;
 			}
@@ -927,11 +947,11 @@ package contents.displayPages
 			linksContainer.graphics.beginFill(0,backAlpha) ;
 			if(!horizontalMenu)
 			{
-				linksContainer.graphics.drawRect(0,0,areaRect.width,linksSensor.y+(myPageData.links1.length-lastGeneratedLinkIndes-1)*(sampleLink.height+deltaY)*MenuDirection) ;
+				linksContainer.graphics.drawRect(0,0,areaRect.width,linksSensor.y+(myPageData.links1.length-lastGeneratedLinkIndes-1)*(sampleLink.height+deltaY)*MenuDirectionY) ;
 			}
 			else
 			{
-				linksContainer.graphics.drawRect(0,0,linksSensor.x+(myPageData.links1.length-lastGeneratedLinkIndes-1)*(sampleLink.width+deltaX)*MenuDirection,areaRect.height) ;
+				linksContainer.graphics.drawRect(0,0,linksSensor.x+(myPageData.links1.length-lastGeneratedLinkIndes-1)*(sampleLink.width+deltaX)*MenuDirectionX,areaRect.height) ;
 			}
 		}		
 		
@@ -952,7 +972,7 @@ package contents.displayPages
 			if(!horizontalMenu)
 			{
 				newLink.x = ((areaRect.width-newLink.width*linkPerLine)/(linkPerLine+1))*(1+linkIndexPerLine)+newLink.width*linkIndexPerLine ;
-				if(reverted)
+				if(revertedY)
 				{
 					newLink.y = linksSensor.y-newLink.height ;
 				}
@@ -962,14 +982,14 @@ package contents.displayPages
 				}
 				if((linkIndex+1)%linkPerLine==0)
 				{
-					linksSensor.y += (newLink.height+myDeltaY)*MenuDirection ;
+					linksSensor.y += (newLink.height+myDeltaY)*MenuDirectionY ;
 				}
 				//trace(" linksSensor.y : "+linksSensor.y) ;
 			}
 			else
 			{
 				newLink.y = ((areaRect.height-newLink.height*linkPerLine)/(linkPerLine+1))*(1+linkIndexPerLine)+newLink.height*linkIndexPerLine ;
-				if(reverted)
+				if(revertedX)
 				{
 					newLink.x = linksSensor.x-newLink.width ;
 				}
@@ -979,7 +999,7 @@ package contents.displayPages
 				}
 				if((linkIndex+1)%linkPerLine==0)
 				{
-					linksSensor.x += (newLink.width+myDeltaX)*MenuDirection ;
+					linksSensor.x += (newLink.width+myDeltaX)*MenuDirectionX ;
 				}
 			}
 		}
@@ -994,7 +1014,7 @@ package contents.displayPages
 			if(horizontalMenu)
 			{
 				reloadMC.y = areaRect.height/2;
-				if(reverted)
+				if(revertedX)
 				{
 					reloadMC.x = reloadMC.width/2;
 				}
@@ -1006,7 +1026,7 @@ package contents.displayPages
 			else
 			{
 				reloadMC.x = areaRect.width/2;
-				if(reverted)
+				if(revertedY)
 				{
 					reloadMC.y = reloadMC.height/2;
 				}
