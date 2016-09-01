@@ -11,6 +11,7 @@
 	import contents.ContentsEvent;
 	import contents.History;
 	import contents.PageData;
+	import contents.displayElements.DeveloperPage;
 	
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
@@ -18,6 +19,10 @@
 	import flash.geom.Rectangle;
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
+	
+	import popForm.PopButtonData;
+	import popForm.PopMenu;
+	import popForm.PopMenuContent;
 	
 	import sliderMenu.SliderManager;
 	
@@ -54,7 +59,8 @@
 		}
 		
 		/**AutoLanguageConvertion will enabled just when supportsMutilanguage was true*/
-		public function AppWithContent(supportsMultiLanguage:Boolean=false,autoLanguageConvertEnabled:Boolean=true,animagePageContents:Boolean=false,autoChangeMusics:Boolean=false,skipAllAnimations:Boolean=false,manageStageManager:Boolean=false,loadConfig:Boolean=false,addVersionControll:Boolean=true)
+		public function AppWithContent(supportsMultiLanguage:Boolean=false,autoLanguageConvertEnabled:Boolean=true,animagePageContents:Boolean=false,autoChangeMusics:Boolean=false,skipAllAnimations:Boolean=false,manageStageManager:Boolean=false,loadConfig:Boolean=false,addVersionControll:Boolean=true
+		,addTheDeveloperPage:Boolean=false)
 		{
 			super(autoChangeMusics,skipAllAnimations);
 			activeVersionControll = addVersionControll ;
@@ -113,6 +119,19 @@
 			{
 				errorThrower += "Add below code to the manifest xml in the <iPhone> tag to prevent bad resolution on iPhone:\n\t<requestedDisplayResolution>high</requestedDisplayResolution>\n\n";
 			}
+			
+			if(addTheDeveloperPage)
+			{
+				try
+				{
+					new DeveloperPage();
+				} 
+				catch(error:Error) 
+				{
+					errorThrower+="You have to add DeveloperPage to your project. create a moveiClip based on contents.displayElements.DeveloperPage and set its interface as you like. "+error ;
+				}
+			}
+			
 			if(errorThrower!='')
 			{
 				throw errorThrower ;
@@ -198,6 +217,22 @@
 		
 		override protected function managePages(event:AppEvent):Boolean
 		{
+			if(event.myID == AppEvent.developer_static_pageid)
+			{
+				DevicePrefrence.createDownloadLink();
+				trace("Open the developer page");
+				if(PopMenu.isAvailable())
+				{
+					var backButton:String = 'بازگشت';
+					if(Contents.lang!=null && Contents.lang.t.back!=null)
+					{
+						backButton = Contents.lang.t.back ;
+					}
+					var popText:PopMenuContent = new PopMenuContent('',null,[new PopButtonData(backButton,0)],new DeveloperPage(),null,false,false);
+					PopMenu1.popUp('',null,popText);
+				}
+				return false ;
+			}
 			SliderManager.hide();
 			if(haveToGetPermition(event))
 			{

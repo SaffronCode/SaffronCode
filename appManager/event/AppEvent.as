@@ -24,6 +24,8 @@ package appManager.event
 		/**app event types , PageManager will listtening tho these variable*/
 		public static const home:String = 'home' ;
 		
+		public static const developer_static_pageid:String = "developer_static_page";
+		
 		public static const refresh:String = "ReffreshCurrentPage" ;
 		
 		/**This variable is not unic - this is the class name that application needs to create it. */

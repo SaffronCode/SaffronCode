@@ -165,6 +165,16 @@
 			}
 		}
 		
+		/**Returns true if any pop menu available*/
+		public static function isAvailable():Boolean
+		{
+			if(ME!=null)
+			{
+				return true ;
+			}
+			return false ;
+		}
+		
 		
 		/**back button on key board pressed*/
 		private function checkBack(ev:KeyboardEvent):void
