@@ -121,7 +121,7 @@ package contents.displayPages
 		/**If this variable was true, no more link addink proccess will call*/
 		private var addingLinksOver:Boolean ;
 		
-		/**This is the number of icons per each line*/
+		/**This is the number of icons per each line.<br>Call it after iconsPerLine*/
 		public var iconsPerLine:uint = 1 ;
 		
 		private var autoScrollSpeed:Number = 0 ;
