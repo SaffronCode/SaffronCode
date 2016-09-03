@@ -18,6 +18,8 @@ package contents.displayElements
 					closeMC:MovieClip,
 					appNameTF:TextField;
 					
+		private var versionTF:TextField ;
+					
 		/*[Embed(source="src/AppIconsForPublish/128.png")]
 		private var applicationIcon:Class;*/
 		
@@ -33,6 +35,7 @@ package contents.displayElements
 			storeMC = Obj.get("store_mc",this);
 			closeMC = Obj.get("close_mc",this);
 			appNameTF = Obj.get("app_name_txt",this);
+			versionTF = Obj.get("version_txt",this);
 			
 			storeMC.buttonMode = true ;
 			closeMC.buttonMode = true ;
@@ -41,6 +44,10 @@ package contents.displayElements
 			closeMC.addEventListener(MouseEvent.CLICK,justClosePopMenu);
 			
 			appNameTF.text = UnicodeStatic.convert(DevicePrefrence.appName);
+			if(versionTF)
+			{
+				versionTF.text = DevicePrefrence.appVersion ;
+			}
 		}
 		
 		protected function justClosePopMenu(event:MouseEvent):void
