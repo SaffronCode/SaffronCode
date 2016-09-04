@@ -41,7 +41,7 @@ package contents.displayPages
 					slideAnimationActivated:Boolean=false ; 
 		
 		/**This is the link item index*/
-		internal var myIndex:uint ;
+		protected var myIndex:uint ;
 		
 		public function LinkItem(mouseChildAccept:Boolean=false,searchForElements:Boolean=true)
 		{
