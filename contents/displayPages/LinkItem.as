@@ -41,7 +41,7 @@ package contents.displayPages
 					slideAnimationActivated:Boolean=false ; 
 		
 		/**This is the link item index*/
-		protected var myIndex:uint ;
+		internal var myIndex:uint ;
 		
 		public function LinkItem(mouseChildAccept:Boolean=false,searchForElements:Boolean=true)
 		{
@@ -68,6 +68,12 @@ package contents.displayPages
 			activateSelectorAgainAfterScroll();
 			this.addEventListener(ScrollMT.LOCK_SCROLL_TILL_MOUSE_UP,stopClickAcceptingAfterScroll);
 			this.stop();
+		}
+		
+		/**Returns the link index number*/
+		public function getIndex():uint
+		{
+			return myIndex ;
 		}
 		
 		/**Dont accept click*/
