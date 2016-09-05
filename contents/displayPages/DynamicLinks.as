@@ -111,7 +111,9 @@ package contents.displayPages
 		public var acceptAnimation:Boolean = true;
 		
 		private var revertedX:Boolean = false,
-					revertedY:Boolean = false;
+					revertedY:Boolean = false,
+					
+					revertedByMovieclipUI:Boolean = false;
 		
 		/**Load all links togather without sensor*/
 		protected var loadAllLinksInstantly:Boolean ;
@@ -231,11 +233,13 @@ package contents.displayPages
 			{
 				trace("*****Reverted menu activated******");
 				revertedY = true ;
+				revertedByMovieclipUI = true ;
 			}
 			if(this.getBounds(this).x<this.width/-2)
 			{
 				trace("*****Reverted menu activated on horizontal mode******");
 				revertedX = true ;
+				revertedByMovieclipUI = true ;
 			}
 			
 			this.removeChildren();
@@ -246,8 +250,23 @@ package contents.displayPages
 			}
 		}
 		
+		/**Reverting the list by code*/
+		public  function set setRevertList(value:Boolean):void
+		{
+			revertedX = revertedY = value ;
+		}
 		
+		/**Reverting the list by code*/
+		public  function set setRevertListX(value:Boolean):void
+		{
+			revertedX = value ;
+		}
 		
+		/**Reverting the list by code*/
+		public  function set setRevertListY(value:Boolean):void
+		{
+			revertedY = value ;
+		}
 		
 		
 		/**Start controlling mouse down*/
@@ -499,7 +518,7 @@ package contents.displayPages
 			
 			/**Button container*/
 			buttonsContainer = new Sprite();
-			if(revertedX || revertedY)
+			if((revertedX || revertedY) && revertedByMovieclipUI)
 			{
 				if(!horizontalMenu)
 				{
