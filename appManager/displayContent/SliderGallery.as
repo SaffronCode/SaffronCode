@@ -70,9 +70,9 @@ package appManager.displayContent
 		
 		internal static var preloaderClass:Class ;
 		
-		internal static var imageBackGroundColor:int=-1 ;
+		internal static var imageBackGroundColor:int=0xffffff ;
 		
-		internal static var imageBackAlpha:Number=0 ;
+		internal static var imageBackAlpha:Number=1 ;
 		
 		
 		public function SliderGallery()
