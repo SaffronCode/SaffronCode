@@ -1,6 +1,7 @@
 package appManager.displayContent
 	//appManager.displayContent.SliderController_thumbnails	
 {
+	import flash.desktop.Icon;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
@@ -21,6 +22,10 @@ package appManager.displayContent
 		
 		private var myImages:Vector.<SliderImageItem> ;
 		
+		private var iconLoaderDelay:uint = 100 ;
+		
+		private var loadedImageIndex:uint ;
+		
 		public function SliderController_thumbnails()
 		{
 			super();
@@ -36,17 +41,21 @@ package appManager.displayContent
 			
 			//Create new Objects
 			
-			
 			thumbnailsContainer = new Sprite();
+			resetThumbnailcontainer();
+			this.addChild(thumbnailsContainer);
+			
+			scroller = new ScrollMT(thumbnailsContainer,new Rectangle(0,0,W,H),null,false,true);
+		}
+		
+		private function resetThumbnailcontainer():void
+		{
+			thumbnailsContainer.removeChildren();
+			thumbnailsContainer.graphics.clear();
 			thumbnailsContainer.graphics.beginFill(0xff0000,1);
 			thumbnailsContainer.graphics.drawRect(0,0,W,H);
-			
-			this.addChild(thumbnailsContainer);
-			scroller = new ScrollMT(thumbnailsContainer,new Rectangle(0,0,W,H),null,false,true);
-			
-			thumbs = new Vector.<SliderThumbnail>();
 		}
-			
+		
 			override public function get width():Number
 			{
 				return W ;
@@ -59,10 +68,30 @@ package appManager.displayContent
 			
 		public function setUp(images:Vector.<SliderImageItem>,sliderDispalObject:SliderGallery,currentIndex:uint = 0 ,animateTimer:uint = 10000 ):void
 		{
+			resetThumbnailcontainer();
+			
 			mySlider = sliderDispalObject ;
 			myImages = images ;
 			
 			mySlider.setUp(myImages,currentIndex,animateTimer);
+			
+			startLoadingIcons();
+		}
+		
+		private function startLoadingIcons():void
+		{
+			thumbs = new Vector.<SliderThumbnail>();
+			loadedImageIndex = 0 ;
+			
+			addNextIcon();
+		}
+		
+		private function addNextIcon():void
+		{
+			var icon:SliderThumbnail = new thumbnailClass();
+			
+			thumbnailsContainer.addChild(icon);
+			I was here
 		}
 	}
 }
