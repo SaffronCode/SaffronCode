@@ -30,7 +30,7 @@ package appManager.displayContent
 					switchToNext:Boolean;
 		
 		/**This is the index of showing image*/
-		private var imageIndex:uint ;
+		private var imageIndex:int ;
 		private var _totalImages:uint ;
 		private var imagesList:Vector.<SliderImageItem> ;
 					
@@ -256,7 +256,12 @@ package appManager.displayContent
 						imageIndex--;
 					}
 				}
+				if(imageIndex<0)
+				{
+					imageIndex += 2000000000;
+				}
 				
+				trace("imageIndex : "+imageIndex);
 
 				mustSwitch = false ;
 				selectedImge = (selectedImge+1)%2 ;
