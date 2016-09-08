@@ -119,6 +119,8 @@ package appManager.displayContent
 			icon.addEventListener(Event.COMPLETE,currentIconIsReadyForTheNext);
 			thumbnailsContainer.addChild(icon);
 			icon.setUp(myImages[loadedImageIndex].thumbnail,loadedImageIndex,myPreloader);
+			//Repose all icons
+			resetAllIconsPoseAndSizes();
 		}
 		
 			protected function currentIconIsReadyForTheNext(event:Event):void
