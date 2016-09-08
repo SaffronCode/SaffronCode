@@ -7,14 +7,18 @@ package appManager.displayContent
 		
 		internal var title:String ;
 		
+		/**This is like image*/
+		internal var thumbnail:* ;
+		
 		/**Pass url, bitmapData or byteArray for image*/
-		public function SliderImageItem(ImageObject:*,Title:String='',thumbnail:*=null)
+		public function SliderImageItem(ImageObject:*,Title:String='',Thumbnail:*=null)
 		{
 			image = ImageObject ;
-			if(thumbnail==null)
+			if(Thumbnail==null)
 			{
-				thumbnail = image ;
+				Thumbnail = image ;
 			}
+			thumbnail = Thumbnail ;
 			title = Title ;
 		}
 	}
