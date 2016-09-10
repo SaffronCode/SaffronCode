@@ -65,6 +65,7 @@ package appManager.displayContent
 		protected function unLoad(event:Event):void
 		{
 			clearTimeout(myTimeOutId);
+			mySlider.removeEventListener(Event.CHANGE,resetAllIconsPoseAndSizes);
 		}
 		
 		/**Remove all thumbnails from the container*/
@@ -96,6 +97,8 @@ package appManager.displayContent
 			
 			mySlider.setUp(myImages,currentIndex,animateTimer);
 			
+			mySlider.addEventListener(Event.CHANGE,resetAllIconsPoseAndSizes);
+			
 			startLoadingIcons();
 		}
 		
@@ -121,6 +124,25 @@ package appManager.displayContent
 			icon.setUp(myImages[loadedImageIndex].thumbnail,loadedImageIndex,myPreloader);
 			//Repose all icons
 			resetAllIconsPoseAndSizes();
+			
+			icon.addEventListener(MouseEvent.CLICK,iconSelected);
+		}
+		
+		protected function iconSelected(event:MouseEvent):void
+		{
+			var selectedIcon:SliderThumbnail = event.currentTarget as SliderThumbnail ;
+			var currentImageIndex:uint = mySlider.getCurrentSelectedImage();
+			var requiredImageIndex:uint = selectedIcon.myIndex ;
+			while(currentImageIndex<requiredImageIndex)
+			{
+				currentImageIndex++;
+				mySlider.next();
+			}
+			while(currentImageIndex>requiredImageIndex)
+			{
+				currentImageIndex--;
+				mySlider.preve();
+			}
 		}
 		
 			protected function currentIconIsReadyForTheNext(event:Event):void
@@ -133,7 +155,7 @@ package appManager.displayContent
 				}
 			}
 			
-				private function resetAllIconsPoseAndSizes():void
+				private function resetAllIconsPoseAndSizes(e:*=null):void
 				{
 					var iconX:Number;
 					var _howMuchIconsShouldGoForward:Number = getHowMuchIconsShouldGoForward(thumbs.length) ; 
@@ -143,7 +165,14 @@ package appManager.displayContent
 						iconX = getIconX(i,_howMuchIconsShouldGoForward);
 						thumbs[i].X0 = iconX ;
 						thumbs[i].Scale0 = 1 ;
-						thumbs[i].Alpha0 = 1 ;
+						if(thumbs[i].myIndex == mySlider.getCurrentSelectedImage())
+						{
+							thumbs[i].Alpha0 = 0.5 ;
+						}
+						else
+						{
+							thumbs[i].Alpha0 = 1 ;
+						}
 					}
 				}
 				

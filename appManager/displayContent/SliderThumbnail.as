@@ -46,6 +46,9 @@ package appManager.displayContent
 		{
 			this.removeEventListener(Event.ENTER_FRAME,animate);
 			this.removeEventListener(Event.REMOVED_FROM_STAGE,unLoad);
+			
+			myImageArea.removeEventListener(Event.COMPLETE,imageReady);
+			myImageArea.removeEventListener(Event.UNLOAD,loadingFails);
 		}
 		
 		/**Animate the icons*/
@@ -79,6 +82,7 @@ package appManager.displayContent
 			if(image is String)
 			{
 				myImageArea.addEventListener(Event.COMPLETE,imageReady);
+				myImageArea.addEventListener(Event.UNLOAD,loadingFails);
 				myImageArea.setUp(image,false,0,0,0,0,true);
 			}
 			else if(image is BitmapData)
@@ -95,6 +99,12 @@ package appManager.displayContent
 			{
 				throw "What is this : "+image ;
 			}
+		}
+		
+		protected function loadingFails(event:Event):void
+		{
+			// TODO Auto-generated method stub
+			throw "Loading fails" ;
 		}
 	}
 }
