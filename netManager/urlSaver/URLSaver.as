@@ -369,7 +369,7 @@ package netManager.urlSaver
 				offlineFileNameWithExtention = offlineURLFileName;
 			}
 			
-			if(fileExtention!=null)
+			if(fileExtention!=null && offlineFileNameWithExtention.indexOf(fileExtention)==-1)
 			{
 				offlineFileNameWithExtention+=fileExtention;
 			}
