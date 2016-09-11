@@ -14,6 +14,8 @@ package appManager.animatedPages.pageManager
 		
 		public var toEvent:AppEvent = new AppEvent() ;
 		
+		public static var splitLargeTitles:Boolean = false ;
+		
 		//protected var pageContainer:PageContainer ;
 		
 		private var myTitle:TitleText ;
@@ -78,7 +80,7 @@ package appManager.animatedPages.pageManager
 						//pageContainer.setUp(currentEvent);
 						if(currentEvent is AppEventContent)
 						{
-							myTitle.setUp((currentEvent as AppEventContent).pageData.title);
+							myTitle.setUp((currentEvent as AppEventContent).pageData.title,true,splitLargeTitles);
 						}
 						else
 						{
