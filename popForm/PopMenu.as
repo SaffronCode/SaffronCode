@@ -87,13 +87,13 @@
 		/**Returns the content width*/
 		public function getContentWidth():Number
 		{
-			return myContent.width ;
+			return myContent.contentWidth ;
 		}
 		
 		/**Returns the content height*/
 		public function getContentHeight():Number
 		{
-			return myContent.height ;
+			return myContent.contentHeight ;
 		}
 		
 		public static function get popDispatcher():PopMenuDispatcher

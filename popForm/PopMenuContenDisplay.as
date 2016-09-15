@@ -67,12 +67,12 @@ package popForm
 			return new Rectangle(maxAreaMC.width/-2,0,maxAreaMC.width,maxAreaMC.height)
 		}
 		
-		override public function get width():Number
+		public function get contentWidth():Number
 		{
 			return maxAreaMC.width ;
 		}
 		
-		override public function get height():Number
+		public function get contentHeight():Number
 		{
 			return maxAreaMC.height ;
 		}
