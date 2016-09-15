@@ -12,6 +12,7 @@ package mp3PlayerStatic
 		public static const SOUND_PRESENT:String = "SOUND_PRESENT";
 		public static const DOWNLOAD_PRECENT:String = "DOWNLOAD_PRECENT";
 		public static const START_DOWNLOAD:String = "START_DOWNLOAD";
+		public static const NEW_TRACK_DOWNLOADED:String = "NEW_TRACK_DOWNLOADED";
 		
 		
 			

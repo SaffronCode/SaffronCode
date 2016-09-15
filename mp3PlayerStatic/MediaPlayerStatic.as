@@ -21,6 +21,7 @@ package mp3PlayerStatic
 	[Event(name="CURRENT_PRECENT", type="mp3PlayerStatic.MediaPlayerEventStatic")]
 	[Event(name="SOUND_PRESENT", type="mp3PlayerStatic.MediaPlayerEventStatic")]
 	[Event(name="START_DOWNLOAD", type="mp3PlayerStatic.MediaPlayerEventStatic")]
+	[Event(name="NEW_TRACK_DOWNLOADED", type="mp3PlayerStatic.MediaPlayerEventStatic")]
 	
 
 	
@@ -34,6 +35,9 @@ package mp3PlayerStatic
 		public static var downLoadCompelete:Boolean=false	
 		public static var volume:Number=0.5	
 		public static  var mediaSoundID:uint = 0 ;	
+		
+		private  var alreadyDownloaded:Boolean;
+		
 			
 		
 		private var autoPlay:Boolean;
@@ -128,12 +132,14 @@ package mp3PlayerStatic
 			{
 				urlController.cansel()		
 			}
+			alreadyDownloaded = true
 			urlController = new URLSaver(true);
 			urlController.addEventListener(URLSaverEvent.LOAD_COMPLETE,SoundIsReady);
 			urlController.addEventListener(URLSaverEvent.LOADING,Loading);
 			urlController.addEventListener(URLSaverEvent.NO_INTERNET,TryLater);
 			if(!urlController.load(soundURL_p))
 			{
+				alreadyDownloaded = false
 				startToPlaySound(url);
 				urlController.removeEventListener(URLSaverEvent.LOADING,Loading);
 			}
@@ -179,6 +185,10 @@ package mp3PlayerStatic
 		protected function SoundIsReady(event:URLSaverEvent):void
 		{
 			// TODO Auto-generated method stub
+			if(!alreadyDownloaded)
+			{
+				this.dispatchEvent(new MediaPlayerEventStatic(MediaPlayerEventStatic.NEW_TRACK_DOWNLOADED))
+			}
 			if(!SoundIsLoaded)
 			{
 				startToPlaySound(event.offlineTarget);
