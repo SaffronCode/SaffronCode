@@ -114,7 +114,14 @@ package darkBox
 				stageVewIsOpened = true ;
 				myStageWeb.stage = stage ;
 				trace("PDF path : "+pdftarget.nativePath);
-				myStageWeb.loadURL(pdftarget.url);
+				if(NativePDF.isSupports())
+				{
+					NativePDF.openPDFReader(pdftarget);
+				}
+				else
+				{
+					myStageWeb.loadURL(pdftarget.url);
+				}
 			}
 		}
 	}
