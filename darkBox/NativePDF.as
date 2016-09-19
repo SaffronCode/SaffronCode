@@ -57,6 +57,7 @@
 				{
 					trace("Use has no PDF reader");
 					navigateToURL(new URLRequest("market://delails?id=com.adobe.reader"));
+					navigateToURL(new URLRequest("https://play.google.com/store/apps/details?id=com.adobe.reader"));
 				}
 			}
 			else
