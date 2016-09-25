@@ -19,6 +19,9 @@ package darkBox
 	
 	import netManager.urlSaver.URLSaverEvent;
 	
+	import stageManager.StageManager;
+	import stageManager.StageManagerEvent;
+	
 	import videoShow.StageVideo;
 	
 	public class DarkBox extends MovieClip
@@ -96,7 +99,7 @@ package darkBox
 		}
 					
 		/**Initialize the DarkBox area*/
-		public static function setUp(newSize:Rectangle,noNetHintText:String='No Internet Connection Available',noImageHereText:String='',downloadFunction:Function=null,titleInFullLine:Boolean=false,RightToLeft:Boolean=true):void
+		public static function setUp(newSize:Rectangle,noNetHintText:String='No Internet Connection Available',noImageHereText:String='',downloadFunction:Function=null,titleInFullLine:Boolean=false,RightToLeft:Boolean=true,activateAutoSize:Boolean=true):void
 		{
 			rtf = RightToLeft ;
 			showTitleInFullLine = titleInFullLine ;
@@ -105,10 +108,22 @@ package darkBox
 			noImageTitle = noImageHereText ;
 			ME.setUp(newSize);
 			
+			if((true || DevicePrefrence.isAndroid()) && activateAutoSize)
+			{
+				StageManager.eventDispatcher.addEventListener(StageManagerEvent.STAGE_RESIZED,updateStageSize);
+			}
+			
 			if(DevicePrefrence.isItPC && DevicePrefrence.appDescriptor.toString().indexOf("<android>")!=-1 &&  DevicePrefrence.appDescriptor.toString().indexOf('android:hardwareAccelerated="true')==-1)
 			{
 				throw 'You have to add below permition to Android manifest to make StageVideo works:\n<application android:enabled="true" android:hardwareAccelerated="true"/>\n\nor\n\n<application android:enabled="true" android:hardwareAccelerated="true">'
 			}
+		}
+		
+		protected static function updateStageSize(event:Event):void
+		{
+			ME.x = StageManager.stageDelta.width/-2;
+			ME.y = StageManager.stageDelta.height/-2;
+			ME.setUp(StageManager.stageRect);
 		}
 		
 		public static function show(Images:Vector.<ImageFile>,currentIndex:uint=0,onClosed:Function=null):void
