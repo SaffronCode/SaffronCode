@@ -3,6 +3,7 @@ package photoEditor
 	import flash.desktop.NativeApplication;
 	import flash.display.BitmapData;
 	import flash.display.MovieClip;
+	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.filesystem.File;
 	import flash.geom.Rectangle;
@@ -12,6 +13,9 @@ package photoEditor
 	import flash.ui.Multitouch;
 	import flash.ui.MultitouchInputMode;
 	import flash.utils.ByteArray;
+	
+	import stageManager.StageManager;
+	import stageManager.StageManagerEvent;
 	
 	public class PhotoEdit extends MovieClip
 	{
@@ -100,6 +104,8 @@ package photoEditor
 			if(ME)
 			{
 				ME.setUp(pageRectangle);
+				StageManager.eventDispatcher.removeEventListener(StageManagerEvent.STAGE_RESIZED,updateMySize);
+				StageManager.eventDispatcher.addEventListener(StageManagerEvent.STAGE_RESIZED,updateMySize);
 			}
 			else
 			{
@@ -111,6 +117,13 @@ package photoEditor
 				trace("PHOTO EDIT IS NOT EXISTS!!!!");
 				trace("PHOTO EDIT IS NOT EXISTS!!!!");
 			}
+		}
+		
+		protected static function updateMySize(event:Event):void
+		{
+			setUp(StageManager.stageRect);
+			ME.x = StageManager.stageDelta.width/-2;
+			ME.y = StageManager.stageDelta.height/-2;
 		}
 		
 		private function setUp(pageRectangle:Rectangle):void
