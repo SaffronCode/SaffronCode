@@ -1,4 +1,4 @@
-package appManager.animatedPages
+﻿package appManager.animatedPages
 {
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
@@ -41,7 +41,7 @@ package appManager.animatedPages
 		{
 			trace("***Remove shine");
 			var shine:ShineElement = event.target as ShineElement ;
-			//shine.removeEventListener(Event.REMOVED,removeShine);
+			shine.removeEventListener(Event.REMOVED,removeShine);
 			Obj.remove(shine);
 			var shineIndex:int = shineList.indexOf(shine);
 			if(shineIndex>=0)
