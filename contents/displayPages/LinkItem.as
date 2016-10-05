@@ -11,6 +11,8 @@ package contents.displayPages
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.net.URLRequest;
+	import flash.net.navigateToURL;
 	import flash.utils.setTimeout;
 	
 	/**You can trigger me by calling imSelected function*/
@@ -227,7 +229,14 @@ package contents.displayPages
 		{
 			if(myLinkData!=null && ((Math.abs(this.x-X0)<1 && Xn == X0)  || isNaN(Xn) || isNaN(X0)))
 			{
-				this.dispatchEvent(new AppEventContent(myLinkData));
+				if(myLinkData.id.indexOf('http')==0)
+				{
+					navigateToURL(new URLRequest(myLinkData.id));
+				}
+				else
+				{
+					this.dispatchEvent(new AppEventContent(myLinkData));
+				}
 			}
 		}
 	}
