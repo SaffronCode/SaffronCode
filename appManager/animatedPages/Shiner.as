@@ -31,20 +31,23 @@ package appManager.animatedPages
 		public function add(button:Sprite):void
 		{
 			var shine:ShineElement = new ShineElement()
-			shine.addEventListener(Event.REMOVED,removeShine);//Dont change the orders
-			this.addChild(shine);
+				shine.addEventListener(Event.REMOVED,removeShine);//Dont change the orders
+				this.addChild(shine);
+				shineList.push(shine);
 			shine.setUp(button as MovieClip);
-			shineList.push(shine);
 		}
 		
 		private function removeShine(event:Event):void
 		{
 			trace("***Remove shine");
 			var shine:ShineElement = event.target as ShineElement ;
-			shine.removeEventListener(Event.REMOVED,removeShine);
+			//shine.removeEventListener(Event.REMOVED,removeShine);
 			Obj.remove(shine);
 			var shineIndex:int = shineList.indexOf(shine);
-			shineList.splice(shineIndex,1);
+			if(shineIndex>=0)
+			{
+				shineList.splice(shineIndex,1);
+			}
 		}
 	}
 }

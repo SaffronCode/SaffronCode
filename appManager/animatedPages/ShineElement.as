@@ -1,6 +1,7 @@
 package appManager.animatedPages
 {
 	import flash.display.MovieClip;
+	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
 
@@ -8,7 +9,7 @@ package appManager.animatedPages
 	[Event(name="remove", type="flash.events.Event")]
 	internal class ShineElement extends MovieClip
 	{
-		private var myTarget:MovieClip ;
+		private var myTarget:Sprite ;
 
 		private var spriteRect:Rectangle;
 		
@@ -26,7 +27,7 @@ package appManager.animatedPages
 		{
 		}
 		
-		public function setUp(controller:MovieClip):void
+		public function setUp(controller:Sprite):void
 		{
 			myTarget = controller ;
 			
@@ -46,9 +47,22 @@ package appManager.animatedPages
 			this.addChild(myMask);
 			this.addChild(animateMC);
 			
-			update();
+			
+			if(myTarget.stage==null)
+			{
+				removeMe();
+			}
+			else
+			{
+				myTarget.addEventListener(Event.REMOVED_FROM_STAGE,removeMe);
+				update();
+			}
 		}
 		
+		protected function removeMe(event:Event=null):void
+		{
+			this.dispatchEvent(new Event(Event.REMOVED));
+		}		
 		
 		public function update():void
 		{
@@ -70,7 +84,7 @@ package appManager.animatedPages
 			animateMC.alpha-=fadeSpeed;
 			if(animateMC.alpha<0 || Math.min(spriteRect.width,spriteRect.height)>500)
 			{
-				this.dispatchEvent(new Event(Event.REMOVED));
+				removeMe();
 			}
 		}
 	}
