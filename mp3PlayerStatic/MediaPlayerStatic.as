@@ -1,4 +1,4 @@
-package mp3PlayerStatic
+﻿package mp3PlayerStatic
 	//mp3PlayerStatic.MediaPlayerStatic
 {
 	
@@ -120,7 +120,6 @@ package mp3PlayerStatic
 		/**Set the sound URL*/
 		private function setUp(Stage_p:Stage,soundURL_p:String,AutoPlay_p:Boolean)
 		{
-			//SoundPlayer.setUp(Stage_p,true);
 			SoundPlayer.pause(mediaSoundID,true);
 			playStatus = false
 			SoundIsLoaded = false
@@ -216,7 +215,7 @@ package mp3PlayerStatic
 		private function checkPrecent(e:Event)
 		{
 			loadingPrecent(SoundPlayer.getLoadedSoundPrecent(mediaSoundID))	
-			this.dispatchEvent(new MediaPlayerEventStatic(MediaPlayerEventStatic.SOUND_PRESENT,1,1,SoundPlayer.getPlayedPrecent(mediaSoundID)))
+			this.dispatchEvent(new MediaPlayerEventStatic(MediaPlayerEventStatic.SOUND_PRESENT,1,1,SoundPlayer.getPlayedPrecent(mediaSoundID)))	
 			//SoundPlayer.getExtractedData(mediaSoundID,bytArray)
 			//trace('bytArray :',bytArray.readInt())
 			//trace('SoundPlayer.getPlayedPrecent(mediaSoundID) :',SoundPlayer.getPlayedPrecent(mediaSoundID))	
