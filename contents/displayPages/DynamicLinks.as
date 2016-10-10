@@ -29,6 +29,8 @@ package contents.displayPages
 	
 	/**Reload required*/
 	[Event(name="RELOAD_REQUIRED", type="contents.displayPages.DynamicLinksEvent")]
+	/**The image height changed*/
+	[Event(name="NEW_LINK_ITEM_ADDED", type="contents.displayPages.DynamicLinksEvent")]
 	public class DynamicLinks extends MovieClip implements DisplayPageInterface
 	{
 		public static const UPDATE_LINKS_POSITION:String = DynamicLinksEvent.UPDATE_LINKS_POSITION ;
@@ -127,6 +129,7 @@ package contents.displayPages
 		public var iconsPerLine:uint = 1 ;
 		
 		private var autoScrollSpeed:Number = 0 ;
+		
 		
 		/**Make the dynamic link not scrollable and show all items instantly*/
 		public function set_dynamicHeigh(status:Boolean=true):void
@@ -889,6 +892,7 @@ package contents.displayPages
 				
 				removedLinkItem = null ;
 				
+				this.dispatchEvent(new Event(Event.CHANGE));
 				return true ;
 			}
 			return false ;
@@ -928,6 +932,7 @@ package contents.displayPages
 					
 					lastGeneratedLinkIndes++ ;
 				}
+				this.dispatchEvent(new Event(Event.CHANGE));
 				return true ;
 			}
 			else
