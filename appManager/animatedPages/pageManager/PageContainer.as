@@ -64,8 +64,8 @@ package appManager.animatedPages.pageManager
 			
 			if(pageClassType != null)
 			{
-				try
-				{
+				/*try
+				{*/
 					currentPage = new pageClassType();
 					pageReadyDispatched = false ;
 					var framesList:Array = currentPage.currentLabels;
@@ -78,12 +78,12 @@ package appManager.animatedPages.pageManager
 						middleFrame = currentPage.totalFrames ;
 					}
 					finishFrame = currentPage.totalFrames ;
-				}
+				/*}
 				catch(e)
 				{
 					trace("Page is not generated : "+e);
 					return;
-				}
+				}*/
 				trace("*** currentPage added to stage");
 				this.addChild(currentPage);
 				
