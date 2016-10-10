@@ -892,7 +892,7 @@ package contents.displayPages
 				
 				removedLinkItem = null ;
 				
-				this.dispatchEvent(new Event(Event.CHANGE));
+				this.dispatchEvent(new Event(DynamicLinksEvent.NEW_LINK_ITEM_ADDED));
 				return true ;
 			}
 			return false ;
@@ -932,7 +932,7 @@ package contents.displayPages
 					
 					lastGeneratedLinkIndes++ ;
 				}
-				this.dispatchEvent(new Event(Event.CHANGE));
+				this.dispatchEvent(new Event(DynamicLinksEvent.NEW_LINK_ITEM_ADDED));
 				return true ;
 			}
 			else
