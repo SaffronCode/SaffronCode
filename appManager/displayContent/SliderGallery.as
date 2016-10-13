@@ -1,4 +1,4 @@
-package appManager.displayContent
+﻿package appManager.displayContent
 	//appManager.displayContent.SliderGallery
 {
 	
@@ -214,8 +214,8 @@ package appManager.displayContent
 						getImageUp().x -= getImageUp().x/backAnimSpeed ;
 						mustSwitch = false ;
 					}
-					
-					if(mustSwitch && (Math.abs(getImageUp().x+W)<2 || Math.abs(getImageUp().x-W)<5))
+					var minimomDeltaXToSwitch:Number = this.width/40 ;
+					if(mustSwitch && (Math.abs(getImageUp().x+W)<minimomDeltaXToSwitch || Math.abs(getImageUp().x-W)<minimomDeltaXToSwitch))
 					{
 						swtichImages();
 						return ;
