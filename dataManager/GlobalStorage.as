@@ -33,6 +33,7 @@ package dataManager
 		/**Boolean, Number, Stirng is supported*/
 		public static function save(id:String,value:*,flush:Boolean=true):void
 		{
+			setUp();
 			storage.data[id] = value ;
 			if(flush)
 			{
