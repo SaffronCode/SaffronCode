@@ -58,5 +58,15 @@ package
 			}
 			return 0 ;
 		}
+		
+		/**Returns true if the pop menu is exists*/
+		public static function isExists():Boolean
+		{
+			if(ME1==null)
+			{
+				return false ;
+			}
+			return true ;
+		}
 	}
 }
