@@ -17,8 +17,11 @@
 	import flash.text.TextFormatAlign;
 	import flash.utils.Timer;
 	
+	import saffronEvents.LanguageEvent;
 	
-	public class Language
+	/**This event dispatches whenever the language changed. this will also dispatches on the stage to*/
+	[Event(name="LANGUAGE_CHANGED", type="saffronEvents.LanguageEvent")]
+	public class Language extends EventDispatcher
 	{
 		private var _isArabic:Boolean = false,
 					_rtl:Boolean = false ;
@@ -179,11 +182,14 @@
 				FarsiInputCorrection.preventConvertor = !_isArabic ;
 				FarsiInputCorrection.detectArabic = isArabic ;
 				manageAll(myStage);
+				
+				myStage.dispatchEvent(new LanguageEvent(LanguageEvent.LANGUAGE_CHANGED));
 			}
 			else
 			{
 				trace("**Auto language switch is disabled");
 			}
+			this.dispatchEvent(new LanguageEvent(LanguageEvent.LANGUAGE_CHANGED));
 		}
 		
 		
