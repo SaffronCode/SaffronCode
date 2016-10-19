@@ -59,16 +59,16 @@ package contents.displayPages
 					linkClass:Class;
 					
 		/**This is the reload item. it will add to the top of the list and when you scroll it more than defautl, it will apear.*/
-		protected var reloaderMC:MovieClip,
+		protected var 	reloaderMC:MovieClip,
 						reloaderMCFrame:Number = 1;
 					
-		protected var sampleLinkButton:LinkItemButtons,
-					linkButtonClass,
-					activeSlideButtons:Boolean = false,
-					draggableLinkItem:LinkItem,
-					mouseFirstPose:Number,
-					mouseDeltaToSlide:Number=50,
-					linkItemButtonsWidth:Number;
+		protected var 	sampleLinkButton:LinkItemButtons,
+						linkButtonClass,
+						activeSlideButtons:Boolean = false,
+						draggableLinkItem:LinkItem,
+						mouseFirstPose:Number,
+						mouseDeltaToSlide:Number=50,
+						linkItemButtonsWidth:Number;
 					
 		protected var 	linkScroller:ScrollMT,
 						areaRect:Rectangle,
@@ -952,19 +952,43 @@ package contents.displayPages
 			var l:uint = linksInterfaceStorage.length ;
 			//var Y:Number = myDeltaY*Ydirection ;
 			var i:int = 1;
-			if(MenuDirectionY<0 && l>0)
+			if(horizontalMenu)
 			{
-				linksInterfaceStorage[0].y = linksInterfaceStorage[0].height*-1;
+				if(MenuDirectionX<0 && l>0)
+				{
+					linksInterfaceStorage[0].x = linksInterfaceStorage[0].width*-1;
+				}
+			}
+			else
+			{
+				if(MenuDirectionY<0 && l>0)
+				{
+					linksInterfaceStorage[0].y = linksInterfaceStorage[0].height*-1;
+				}
 			}
 			for(i = 1 ; i<l ; i++)
 			{
-				if(MenuDirectionY>0)
+				if(horizontalMenu)
 				{
-					linksInterfaceStorage[i].y = linksInterfaceStorage[i-1].y+(linksInterfaceStorage[i-1].height+myDeltaY);
+					if(MenuDirectionX>0)
+					{
+						linksInterfaceStorage[i].x = linksInterfaceStorage[i-1].x+(linksInterfaceStorage[i-1].width+myDeltaX);
+					}
+					else
+					{
+						linksInterfaceStorage[i].x = linksInterfaceStorage[i-1].x-(linksInterfaceStorage[i].width+myDeltaX);
+					}
 				}
 				else
 				{
-					linksInterfaceStorage[i].y = linksInterfaceStorage[i-1].y-(linksInterfaceStorage[i].height+myDeltaY);
+					if(MenuDirectionY>0)
+					{
+						linksInterfaceStorage[i].y = linksInterfaceStorage[i-1].y+(linksInterfaceStorage[i-1].height+myDeltaY);
+					}
+					else
+					{
+						linksInterfaceStorage[i].y = linksInterfaceStorage[i-1].y-(linksInterfaceStorage[i].height+myDeltaY);
+					}
 				}
 			}
 			var index:int = i-2;
@@ -973,14 +997,27 @@ package contents.displayPages
 				index = 0 ;
 			}
 			
-			
-			if(MenuDirectionY>0)
+			if(horizontalMenu)
 			{
-				linksSensor.y = linksInterfaceStorage[index].y+linksInterfaceStorage[index].height+myDeltaY;
+				if(MenuDirectionX>0)
+				{
+					linksSensor.x = linksInterfaceStorage[index].x+linksInterfaceStorage[index].width+myDeltaX;
+				}
+				else
+				{
+					linksSensor.x = linksInterfaceStorage[index].x-myDeltaX;
+				}
 			}
 			else
 			{
-				linksSensor.y = linksInterfaceStorage[index].y-myDeltaY;
+				if(MenuDirectionY>0)
+				{
+					linksSensor.y = linksInterfaceStorage[index].y+linksInterfaceStorage[index].height+myDeltaY;
+				}
+				else
+				{
+					linksSensor.y = linksInterfaceStorage[index].y-myDeltaY;
+				}
 			}
 			trace("linksSensor : "+linksSensor.y);
 			updateDynamicLinsBackGround();
