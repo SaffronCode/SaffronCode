@@ -347,8 +347,8 @@ package darkBox
 		
 		private function mouseSwipEnambed():Boolean
 		{
-			var image:ImageFile = images[currentImage];
-			return this.mouseEnabled && image.type!=ImageFile.TYPE_PANORAMA && image.type!=ImageFile.TYPE_SPHERE ;
+			var imageItem:ImageFile = images[currentImage];
+			return this.mouseEnabled && imageItem.type!=ImageFile.TYPE_PANORAMA && imageItem.type!=ImageFile.TYPE_SPHERE ;
 		}
 		
 		private function mouseDragedRight()
@@ -398,7 +398,7 @@ package darkBox
 			images = Images.concat() ;
 			if(images.length == 0)
 			{
-				titleMC.setUp(noImageTitle);
+				titleMC.setUp(noImageTitle,true,true);
 			}
 			
 			currentImage = index ;
@@ -446,25 +446,25 @@ package darkBox
 			loadImage(images[currentImage]);
 		}
 		
-		private function loadImage(image:ImageFile):void
+		private function loadImage(imageItem:ImageFile):void
 		{
-			titleMC.setUp(image.title) ;
-			if(image.storeOffline)
+			titleMC.setUp(imageItem.title,true,true) ;
+			if(imageItem.storeOffline)
 			{
 				trace("Download image first");
 				preLoderMC.visible = true ;
 				precentMC.visible = true ;
 				precentMC.width = 0 ;
-				image.addEventListener(URLSaverEvent.LOAD_COMPLETE,imageDownloaded);
-				image.addEventListener(URLSaverEvent.NO_INTERNET,noInternet);
-				image.addEventListener(URLSaverEvent.LOADING,showPrecent);
-				image.download();
+				imageItem.addEventListener(URLSaverEvent.LOAD_COMPLETE,imageDownloaded);
+				imageItem.addEventListener(URLSaverEvent.NO_INTERNET,noInternet);
+				imageItem.addEventListener(URLSaverEvent.LOADING,showPrecent);
+				imageItem.download();
 			}
 			else
 			{
 				preLoderMC.visible = false ;
 				precentMC.visible = false ;
-				showReadyImage(image);
+				showReadyImage(imageItem);
 			}
 		}
 		
@@ -478,7 +478,7 @@ package darkBox
 		protected function noInternet(event:Event):void
 		{
 			// TODO Auto-generated method stub
-			titleMC.setUp(noNetTitle);
+			titleMC.setUp(noNetTitle,true,true);
 			
 			//Reload this image if every thing is allright
 			//timeOutId = setTimeout(manageCurrentImage,10000);
@@ -491,43 +491,43 @@ package darkBox
 			showReadyImage(event.target as ImageFile);
 		}
 		
-		private function showReadyImage(image:ImageFile):void
+		private function showReadyImage(imageItem:ImageFile):void
 		{
 			preLoderMC.visible = false ;
 			precentMC.visible = false ;
 			trace("show this image");
-			switch(image.type)
+			switch(imageItem.type)
 			{
 				case ImageFile.TYPE_FLAT:
-					box_flat.show(image.target);
+					box_flat.show(imageItem.target);
 					break;
 				case ImageFile.TYPE_PANORAMA:
-					box_pano.show(image.target);
+					box_pano.show(imageItem.target);
 					break;
 				case ImageFile.TYPE_SPHERE:
-					box_shp.show(image.target);
+					box_shp.show(imageItem.target);
 					break;
 				case ImageFile.TYPE_VIDEO:
-					if(image.target.toLocaleLowerCase().indexOf('.flv')==-1)
+					if(imageItem.target.toLocaleLowerCase().indexOf('.flv')==-1)
 					{						
 						stageVideo = new StageVideo(imageSize.width,imageSize.height)	
 						this.addChild(stageVideo)
 						stageVideo.x = imageSize.x
 						stageVideo.y =imageSize.y	
 							
-						stageVideo.loadThiwVideo(image.target)
+						stageVideo.loadThiwVideo(imageItem.target)
 					}
 					else if(box_vid)
 					{
 						box_vid.setUp(imageSize);
-						box_vid.show(image.target);
+						box_vid.show(imageItem.target);
 					}
 					break;
 				case ImageFile.TYPE_BINARY:
-					box_binary.show(image.target);
+					box_binary.show(imageItem.target);
 					break;
 				case ImageFile.TYPE_PDF:
-					box_stageWeb.show(image.target);
+					box_stageWeb.show(imageItem.target);
 					break;
 					
 				default:
