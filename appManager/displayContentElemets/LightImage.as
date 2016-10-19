@@ -64,7 +64,7 @@ package appManager.displayContentElemets
 					
 		private var keepImageRatio:Boolean ;
 
-		private var newBitmap:Bitmap;
+		protected var newBitmap:Bitmap;
 
 		private var fileStreamLoader:FileStream;
 		
