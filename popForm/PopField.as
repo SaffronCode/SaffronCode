@@ -205,6 +205,7 @@
 				this.mouseEnabled = true ;
 				this.buttonMode = true ;
 				this.addEventListener(MouseEvent.CLICK,switchRadioButton);
+				this.removeEventListener(MouseEvent.CLICK,editThisText);
 			}
 		}
 		
