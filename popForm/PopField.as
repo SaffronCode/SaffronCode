@@ -163,6 +163,7 @@
 			if(editable)
 			{
 				nativeKeyBoard = FarsiInputCorrection.setUp(myTXT,KeyBordType,true,true,deleteDefautlText,false,true,true,returnKey,onTypedFunction);
+				this.addEventListener(MouseEvent.CLICK,editThisText);
 			}
 			else
 			{
@@ -204,6 +205,15 @@
 				this.mouseEnabled = true ;
 				this.buttonMode = true ;
 				this.addEventListener(MouseEvent.CLICK,switchRadioButton);
+			}
+		}
+		
+		/**Start editing me*/
+		protected function editThisText(event:MouseEvent):void
+		{
+			if(!myTXT.hitTestPoint(stage.mouseX,stage.mouseY))
+			{
+				nativeKeyBoard.focuseOnStageText();
 			}
 		}
 		
