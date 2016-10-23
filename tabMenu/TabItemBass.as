@@ -9,7 +9,7 @@ package tabMenu
 
 	public class TabItemBass extends MovieClip
 	{
-		private var _group:String,
+		protected var _group:String,
 					_bg:MovieClip,
 					_name:String,
 					_defaultTabe:String,
