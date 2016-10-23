@@ -1,5 +1,5 @@
 package componentStatic
-{//melkban.components.NumberBoxSender
+{//componentStatic.NumberBoxSender
 	import flash.events.Event;
 	import flash.text.SoftKeyboardType;
 
