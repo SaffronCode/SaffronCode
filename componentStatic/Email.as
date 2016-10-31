@@ -5,6 +5,8 @@ package componentStatic
 	public class Email extends ComponentManager
 	{
 
+		private var _textbox:TextBox;
+
 		import flash.text.SoftKeyboardType;
 		
 		
@@ -26,7 +28,7 @@ package componentStatic
 			{
 				value = getObj(this.name)
 			}
-			var _textbox:TextBox = new TextBox(this,value,SoftKeyboardType.EMAIL)
+			_textbox = new TextBox(this,value,SoftKeyboardType.EMAIL)
 			_textbox.addEventListener(TextBoxEvent.TEXT,textBoxEvent_fun)
 			
 			setObj(this.name,value,ErrorManager.EMAIL)
@@ -35,6 +37,11 @@ package componentStatic
 		{
 			// TODO Auto-generated method stub
 			setObj(this.name,event.text,ErrorManager.EMAIL)
+		}
+		public function rest()
+		{
+			//_textbox.setText('')
+			_textbox.setValueTextByeCod_fun('')
 		}
 	}
 }
