@@ -14,6 +14,10 @@ package PopButtonCreator
 					titles:Array,
 					ids:Array;
 		
+		/**<item name="" id=""/>
+		 * <item name="" id=""/>
+		 * <item name="" id=""/>
+		 * <item name="" id=""/>*/
 		public function GlobalButtonCreator(xmlTarget:String,buttonFrame:uint=2,sort:Boolean=true)
 		{
 			countriesXML = XMLList(TextFile.load(File.applicationDirectory.resolvePath(xmlTarget)));
