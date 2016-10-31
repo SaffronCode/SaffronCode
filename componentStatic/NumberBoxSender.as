@@ -5,6 +5,8 @@ package componentStatic
 
 	public class NumberBoxSender extends ComponentManager
 	{
+
+		private var _textbox:TextBox;
 		public function NumberBoxSender()
 		{
 			super()
@@ -23,7 +25,7 @@ package componentStatic
 			{
 				value = getObj(this.name)
 			}
-			var _textbox:TextBox = new TextBox(this,value,SoftKeyboardType.NUMBER)
+			_textbox = new TextBox(this,value,SoftKeyboardType.NUMBER)
 			_textbox.addEventListener(TextBoxEvent.TEXT,textBoxEvent_fun)
 			setObj(this.name,filter(value))	
 		}
@@ -37,6 +39,12 @@ package componentStatic
 			if(Str_p=='') return null
 			return Number(Str_p)		
 		}
+		public function rest()
+		{
+			//_textbox.setText('')
+			_textbox.setValueTextByeCod_fun('')
+		}
+		
 		
 	}
 }
