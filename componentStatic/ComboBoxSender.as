@@ -55,14 +55,14 @@ package componentStatic
 		}
 		protected function Server_Result(event:Event=null):void
 		{
-			
 			if(_data!=null)
 			{	
-				for(var i:int=0;i<_data.buttonArray().length;i++)
+				var _bottonArray:Array = _data.buttonArray()
+				for(var i:int=0;i<_bottonArray.length;i++)
 				{
-					if(getObj(this.name) == _data.buttonArray()[i].id)
+					if(getObj(this.name) == _bottonArray[i].id)
 					{
-						var _defaultValue:PopButtonData = _data.buttonArray()[i]
+						var _defaultValue:PopButtonData = _bottonArray[i]
 					}
 				}
 				
