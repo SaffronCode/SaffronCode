@@ -1,5 +1,5 @@
 package componentStatic
-{
+{//componentStatic.Email
 	import flash.events.Event;
 
 	public class Email extends ComponentManager
