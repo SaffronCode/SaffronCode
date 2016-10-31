@@ -71,6 +71,10 @@ package componentStatic
 					_titleMc.setUp(_defaultValue.title)
 					setObj(this.name,_defaultValue.id)
 				}
+				else
+				{
+					setObj(this.name,null)
+				}
 				this.addEventListener(MouseEvent.CLICK,OpenList)
 				clearTimeout(_timerId)	
 			}
