@@ -55,6 +55,12 @@ package contents.displayPages
 		
 		protected var myPageData:PageData ;
 		
+		/**This is the DynamicLinks current page data*/
+		public function get pageData():PageData
+		{
+			return myPageData 
+		}
+		
 		protected var sampleLink:LinkItem,
 					linkClass:Class;
 					
