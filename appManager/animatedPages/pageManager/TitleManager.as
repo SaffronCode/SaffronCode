@@ -16,7 +16,7 @@ package appManager.animatedPages.pageManager
 		
 		public static var splitLargeTitles:Boolean = false ;
 		
-		//protected var pageContainer:PageContainer ;
+		private var lastTitle:String = null ;
 		
 		private var myTitle:TitleText ;
 		
@@ -36,6 +36,16 @@ package appManager.animatedPages.pageManager
 		/**change the page event*/
 		public function setUp(newEvent:AppEvent,forceToRefresh:Boolean=false)
 		{
+			if(newEvent!=null 
+				&& lastTitle!=null
+				&& newEvent is AppEventContent 
+				&& lastTitle==(newEvent as AppEventContent).pageData.title 
+				&& true
+			)
+			{
+				trace("The title is not changed");
+				return ;
+			}
 			currentEvent = toEvent.clone() as AppEvent ;
 			if(forceToRefresh)
 			{
@@ -58,6 +68,7 @@ package appManager.animatedPages.pageManager
 					if(myTitle.text != '')
 					{
 						myTitle.setUp('');
+						lastTitle = null ;
 					}
 					if(toEvent.myType == AppEvent.home)
 					{
@@ -81,12 +92,14 @@ package appManager.animatedPages.pageManager
 						if(currentEvent is AppEventContent)
 						{
 							myTitle.setUp((currentEvent as AppEventContent).pageData.title,true,splitLargeTitles);
+							lastTitle = (currentEvent as AppEventContent).pageData.title ;
 						}
 						else
 						{
 							if(myTitle.text != '')
 							{
 								myTitle.setUp('');
+								lastTitle = null ;
 							}
 						}
 					}
