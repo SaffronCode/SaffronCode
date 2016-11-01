@@ -5,6 +5,7 @@
 	import appManager.event.AppEventContent;
 	import appManager.event.PageControllEvent;
 	
+	import com.mteamapp.StringFunctions;
 	import com.mteamapp.VersionController;
 	
 	import contents.Contents;
@@ -16,8 +17,10 @@
 	
 	import dataManager.GlobalStorage;
 	
+	import flash.desktop.NativeApplication;
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
+	import flash.events.InvokeEvent;
 	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
 	import flash.net.URLRequest;
@@ -64,7 +67,7 @@
 		/**AutoLanguageConvertion will enabled just when supportsMutilanguage was true,
 		 * Pass 1 to activate effects*/
 		public function AppWithContent(supportsMultiLanguage:Boolean=false,autoLanguageConvertEnabled:Boolean=true,animagePageContents:Boolean=false,autoChangeMusics:Boolean=false,skipAllAnimations:Boolean=false,manageStageManager:Boolean=false,loadConfig:Boolean=false,addVersionControll:Boolean=true
-		,addTheDeveloperPage:Boolean=false,activateShineEffect:uint=0,PlaySounOnBackGroundTo:Boolean=false,activateRankSystem:Boolean=false)
+		,addTheDeveloperPage:Boolean=false,activateShineEffect:uint=0,PlaySounOnBackGroundTo:Boolean=false,activateRankSystem:Boolean=false,activateURLCaller:Boolean=false)
 		{
 			super(autoChangeMusics,skipAllAnimations,activateShineEffect,PlaySounOnBackGroundTo);
 			activeVersionControll = addVersionControll ;
@@ -114,12 +117,54 @@
 			}
 			
 			var errorThrower:String = '' ;
+			var appDescriptorString:String = String(DevicePrefrence.appDescriptor) ;
+				appDescriptorString = StringFunctions.clearSpacesAndTabs(appDescriptorString)
 			
-			if(!DevicePrefrence.isAndroid() && String(DevicePrefrence.appDescriptor).indexOf("NSAllowsArbitraryLoads")==-1)
+			if((loadConfig && Contents.config.activateURLCaller) || activateURLCaller)
+			{
+				var URISchemId:String = DevicePrefrence.appID.substr(DevicePrefrence.appID.lastIndexOf('.')+1);
+				trace("***URISchemId : "+URISchemId);
+				
+				var androidURLPermision:String =   	'				<activity>\n'+
+													'					<intent-filter>\n'+
+													'						<action android:name="android.intent.action.MAIN"/>\n'+
+													'						<category android:name="android.intent.category.LAUNCHER"/>\n'+
+													'					</intent-filter>\n'+
+													'					<intent-filter>\n'+
+													'						<action android:name="android.intent.action.VIEW"/>\n'+
+													'						<category android:name="android.intent.category.BROWSABLE"/>\n'+
+													'						<category android:name="android.intent.category.DEFAULT"/>\n'+
+													'						<data android:scheme="'+URISchemId+'"/>\n'+
+													'					</intent-filter>\n'+
+													'				</activity>\n\n';
+				var appleURLPermision:String = 		'	<key>CFBundleURLTypes</key>\n'+
+													'		<array>\n'+
+													'			<dict>\n'+
+													'				<key>CFBundleURLName</key>\n'+
+													'				<string>'+DevicePrefrence.appID+'</string>\n'+
+													'				<key>CFBundleURLSchemes</key>\n'+
+													'				<array>\n'+
+													'					<string>'+URISchemId+'</string>\n'+
+													'				</array>\n'+
+													'			</dict>\n'+
+													'		</array>\n\n';
+
+				if(DevicePrefrence.isItPC && appDescriptorString.indexOf(StringFunctions.clearSpacesAndTabs(androidURLPermision))==-1)
+				{
+					errorThrower += "Add the below xml to the app manifest in \"<application android:en...\" tag to make it able to open with URI calls like: "+URISchemId+"://\n\n"+androidURLPermision
+				}
+				if(DevicePrefrence.isItPC && appDescriptorString.indexOf(StringFunctions.clearSpacesAndTabs(appleURLPermision))==-1)
+				{
+					errorThrower += "Add the below xml to the app manifest in \"<iPhone> <InfoAdditions><![CDATA[...\" tag to make it able to open with URI calls like: "+URISchemId+"://\n\n"+appleURLPermision
+				}
+				
+				NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE, URICalled);
+			}
+			if(!DevicePrefrence.isAndroid() && appDescriptorString.indexOf("NSAllowsArbitraryLoads")==-1)
 			{
 				errorThrower += "Add xml below to \"<iPhone><InfoAdditions><![CDATA[... \" make iOS version able to connect the internet:\n\n<key>NSAppTransportSecurity</key>\n<dict>\n\t<key>NSAllowsArbitraryLoads</key><true/>\n</dict>\n\n"
 			}
-			if(DevicePrefrence.isItPC && String(DevicePrefrence.appDescriptor).indexOf("<requestedDisplayResolution>high</requestedDisplayResolution>")==-1)
+			if(DevicePrefrence.isItPC && appDescriptorString.indexOf("<requestedDisplayResolution>high</requestedDisplayResolution>")==-1)
 			{
 				errorThrower += "Add below code to the manifest xml in the <iPhone> tag to prevent bad resolution on iPhone:\n\t<requestedDisplayResolution>high</requestedDisplayResolution>\n\n";
 			}
@@ -151,6 +196,13 @@
 			{
 				throw errorThrower ;
 			}
+		}
+		
+		
+		/**The application called with uri shcema*/
+		protected function URICalled(event:InvokeEvent):void
+		{
+			trace("App is oppend from an other application : "+event.arguments);
 		}
 		
 		private function updateConfigRects(e:*=null):void

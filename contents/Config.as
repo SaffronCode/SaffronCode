@@ -42,6 +42,9 @@
 		
 		private var _stageOrgiginalRect:Rectangle = new Rectangle();
 		
+		/**This will cause the application controlls its permissions for URI schem calling*/
+		public var activateURLCaller:Boolean = false ;
+		
 		
 		public function Config()
 		{

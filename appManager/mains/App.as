@@ -41,6 +41,12 @@ package appManager.mains
 		
 		private var shineAreaMC:Shiner ;
 		
+		/**It will be true when APP_IS_READY event calls*/
+		public function get appIsReady():Boolean
+		{
+			return _appIsReady;
+		}
+
 		public static function get currentMenu():DisplayObject
 		{
 			return _currentMenu;
@@ -64,6 +70,8 @@ package appManager.mains
 		
 		
 		private static var AutoPlayThePageMusics:Boolean ;
+		
+		private var _appIsReady:Boolean = false ;
 		
 		public static function get isInHome():Boolean
 		{
@@ -328,6 +336,7 @@ package appManager.mains
 		{
 			// TODO Auto-generated method stub
 			trace("Main anim is ready");
+			_appIsReady = true ;
 			manageAllAnimatedPaged(currentAppEvent);
 		}	
 		
