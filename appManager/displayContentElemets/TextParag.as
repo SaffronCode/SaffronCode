@@ -19,6 +19,8 @@
 		private var scrollMC:ScrollMT;
 		private var nativeText:FarsiInputCorrection;
 		
+		private var X0:Number,Y0:Number ;
+		
 		public function TextParag(moreHight:Number=0)
 		{
 			super();
@@ -73,6 +75,13 @@
 		
 		public function setUp(myText:String,isArabic:Boolean = true,align:Boolean=true,knownAsHTML:Boolean=false,activateLinks:Boolean=false,useNativeText:Boolean=false,addScroller:Boolean=true,generateLinksForURLs:Boolean=false,scrollEffect:Boolean=true,userBitmap:Boolean=true,VerticalAlign:Boolean=false,useCash:Boolean=false,captureResolution:uint=0,splitIfToLong:Boolean=false):void
 		{
+			if(!isNaN(X0))
+			{
+				this.x = X0 ;
+				this.y = Y0 ;
+			}
+			X0 = this.x ;
+			Y0 = this.y ;
 			//This event dispatches to remove old scrollMC class
 			this.dispatchEvent(new Event(Event.REMOVED_FROM_STAGE)) ;
 			if(nativeText)
