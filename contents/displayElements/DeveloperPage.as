@@ -18,6 +18,8 @@ package contents.displayElements
 					closeMC:MovieClip,
 					appNameTF:TextField;
 					
+		private var appNameContainerMC:MovieClip ;
+					
 		private var versionTF:TextField ;
 					
 		/*[Embed(source="src/AppIconsForPublish/128.png")]
@@ -43,7 +45,14 @@ package contents.displayElements
 			storeMC.addEventListener(MouseEvent.CLICK,openTheStore);
 			closeMC.addEventListener(MouseEvent.CLICK,justClosePopMenu);
 			
-			appNameTF.text = UnicodeStatic.convert(DevicePrefrence.appName);
+			appNameContainerMC = new  MovieClip();
+			this.addChild(appNameContainerMC);
+			appNameContainerMC.x = appNameTF.x ;
+			appNameContainerMC.y = appNameTF.y ;
+			appNameContainerMC.addChild(appNameTF);
+			appNameTF.x = appNameTF.y = 0 ;
+			
+			TextPutter.OnButton(appNameTF,DevicePrefrence.appName,true,true,false,false);
 			if(versionTF)
 			{
 				versionTF.text = DevicePrefrence.appVersion ;
