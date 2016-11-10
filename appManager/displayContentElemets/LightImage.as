@@ -76,6 +76,11 @@ package appManager.displayContentElemets
 		private var IsLoading:Boolean;
 		private var imageLoaderTimeOutId:uint;
 		
+		/**This is the maximom delay for waiting to cpu cool down*/
+		private var maximomImageLoadingDelay:Number = 8000 ;
+		
+		private var minimomImageLoadingDelay:Number = 4000 ;
+		
 		
 		public function LightImage(BackColor:uint=0x000000,BackAlpha:Number=0)
 		{
@@ -268,7 +273,7 @@ package appManager.displayContentElemets
 			if(CPUController.isSatUp && animated)
 			{
 				CPUController.eventDispatcher.addEventListener(CPUEvents.PERVECT_CPU,startLoading);
-				imageLoaderTimeOutId = setTimeout(startLoading,2000);
+				imageLoaderTimeOutId = setTimeout(startLoading,minimomImageLoadingDelay+(maximomImageLoadingDelay-minimomImageLoadingDelay)*Math.random());
 			}
 			else
 			{
