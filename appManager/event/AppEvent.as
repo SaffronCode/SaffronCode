@@ -1,4 +1,4 @@
-package appManager.event
+﻿package appManager.event
 {
 	import contents.LinkData;
 	
@@ -50,7 +50,7 @@ package appManager.event
 		/**Returns true if the current event is a refresh event*/
 		public static function isRefereshEvent(event:AppEvent):Boolean
 		{
-			return event.myID == id_not_set || event.myType == refresh ;
+			return event!= null && (event.myID == id_not_set || event.myType == refresh) ;
 		}
 		
 		public function AppEvent(pageType:String=home,eventType:String=PAGE_CHANGES,pageID:String=id_not_set,reloadNeeded:Boolean=false)

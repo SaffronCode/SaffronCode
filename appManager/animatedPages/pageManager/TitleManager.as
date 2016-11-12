@@ -1,4 +1,4 @@
-package appManager.animatedPages.pageManager
+﻿package appManager.animatedPages.pageManager
 	//appManager.animatedPages.pageManager.TitleManager
 {
 	import appManager.displayContentElemets.TitleText;
@@ -36,7 +36,10 @@ package appManager.animatedPages.pageManager
 		/**change the page event*/
 		public function setUp(newEvent:AppEvent,forceToRefresh:Boolean=false)
 		{
-			currentEvent = toEvent.clone() as AppEvent ;
+			if(toEvent!=null)
+			{
+				currentEvent = toEvent.clone() as AppEvent ;
+			}
 			if(forceToRefresh)
 			{
 				currentEvent.myID = newEvent.myID+'*';
