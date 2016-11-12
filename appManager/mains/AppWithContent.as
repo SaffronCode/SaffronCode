@@ -271,7 +271,8 @@
 			return false ;
 		}
 		
-		/**Returns true if you have to get permition to change the page*/
+		/**Returns true if you have to get permition to change the page<br>
+		 * PageControllEvent.PREVENT_PAGE_CHANGING can be cause of this */
 		public static function permitionRequiredToChangePage():Boolean
 		{
 			return ME.preventorFunction!=null && ME.preventorPage!=null && ME.preventorPage.stage !=null ;
@@ -284,6 +285,12 @@
 		
 		override protected function managePages(event:AppEvent):Boolean
 		{
+			if(haveToGetPermition(event))
+			{
+				prventedPageWasLastPage = History.undoLastPageHisotry();
+				return false;
+			}
+			
 			if(event.myID == AppEvent.developer_static_pageid)
 			{
 				DevicePrefrence.createDownloadLink();
@@ -301,11 +308,6 @@
 				return false ;
 			}
 			SliderManager.hide();
-			if(haveToGetPermition(event))
-			{
-				prventedPageWasLastPage = History.undoLastPageHisotry();
-				return false;
-			}
 			var duplicatePageController:Boolean = super.managePages(event);
 			
 			
