@@ -9,6 +9,7 @@ package filter
 		private var filterItemMc:MovieClip
 		public var totalItems:int=1;
 		private var _fun:Function;
+		private var _title:MovieClip;
 		public function FilterAnimate()
 		{
 			super();
@@ -28,7 +29,15 @@ package filter
 			if(filterItemMc!=null)
 			{
 				filterItemMc.gotoAndStop(Id_p)
+				_title = Obj.get('title_mc',filterItemMc)
 				totalItems = filterItemMc.totalFrames	
+			}
+		}
+		public function setTitle(Status_p:Boolean):void
+		{
+			if(_title!=null)
+			{
+				_title.visible = Status_p
 			}
 		}
 	}

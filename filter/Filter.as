@@ -23,17 +23,22 @@ package filter
 			// TODO Auto-generated method stub
 			status = !status
 			setup(status,Id_p)
-			this.dispatchEvent(new FilterEvent(FilterEvent.SELECT,Id_p))
 		}
 		public function setup(Opened_p:Boolean=false,Id_p:int=1):void
 		{
 			if(!this.visible)this.visible = true
 			status = Opened_p
+		
+			if(!status)
+			{
+				this.dispatchEvent(new FilterEvent(FilterEvent.SELECT,Id_p))	
+			}	
 			if(_filterAanimateMc!=null)
 			{
 				_filterAanimateMc.visible = true
 				_filterAanimateMc.gotoAndPlay(1)
 				_filterAanimateMc.setup(Id_p,select)	
+				_filterAanimateMc.setTitle(status)
 				totalITem = _filterAanimateMc.totalItems	
 			}
 			if(Opened_p)
@@ -47,7 +52,7 @@ package filter
 						var _filterAnimate:FilterAnimate = new FilterAnimate()
 						this.addChild(_filterAnimate)
 						_removeChildArray.push(_filterAnimate)	
-						_filterAnimate.setup(i,select)	
+						_filterAnimate.setup(i,select)
 						_filterAnimate.y = _filterAanimateMc.y-(_yStep*_filterAnimate.height)
 						_filterAnimate.x = _filterAanimateMc.x
 						_filterAnimate.addEventListener(FilterEvent.SELECT,select)	
