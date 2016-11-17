@@ -10,11 +10,12 @@ package filter
 		public var totalItems:int=1;
 		private var _fun:Function;
 		private var _title:MovieClip;
+		private var _backGroundColor:MovieClip;
 		public function FilterAnimate()
 		{
 			super();
-			filterItemMc = Obj.get('filterItem_mc',this)
-			this.addEventListener(MouseEvent.CLICK,selected)
+			filterItemMc = Obj.get('filterItem_mc',this)	
+			this.addEventListener(MouseEvent.MOUSE_DOWN,selected)	
 		}
 		
 		protected function selected(event:MouseEvent):void
@@ -22,7 +23,7 @@ package filter
 			// TODO Auto-generated method stub
 			_fun(_id)					
 		}
-		public function setup(Id_p,Fun_p:Function=null):void
+		public function setup(Id_p:int,Fun_p:Function=null,OldId_p:int=-1):void
 		{
 			_id = Id_p
 			_fun = Fun_p	
@@ -30,6 +31,18 @@ package filter
 			{
 				filterItemMc.gotoAndStop(Id_p)
 				_title = Obj.get('title_mc',filterItemMc)
+				_backGroundColor = Obj.get('backGroundColor_mc',filterItemMc)
+				if(_backGroundColor!=null)
+				{
+					if(_id==OldId_p)
+					{
+						_backGroundColor.gotoAndStop(true)
+					}
+					else
+					{
+						_backGroundColor.gotoAndStop(false)
+					}
+				}
 				totalItems = filterItemMc.totalFrames	
 			}
 		}
@@ -38,6 +51,10 @@ package filter
 			if(_title!=null)
 			{
 				_title.visible = Status_p
+			}
+			if(_backGroundColor!=null)
+			{
+				_backGroundColor.gotoAndStop(Status_p)
 			}
 		}
 	}
