@@ -928,11 +928,12 @@ package contents.displayPages
 					linksContainer.addChild(newLink) ;
 					newLink.setSize(areaRect.width,areaRect.height);
 					newLink.setIndex(lastGeneratedLinkIndes);
+					
+					linksInterfaceStorage.push(newLink);
 					newLink.setUp(myPageData.links1[lastGeneratedLinkIndes]) ;
 					
 					createLinkOn(newLink,linksSensor,lastGeneratedLinkIndes,howManyLinksGenerates);
 					
-					linksInterfaceStorage.push(newLink);
 					
 					updateDynamicLinsBackGround();
 					
@@ -1003,26 +1004,29 @@ package contents.displayPages
 				index = 0 ;
 			}
 			
-			if(horizontalMenu)
+			if(index>0)
 			{
-				if(MenuDirectionX>0)
+				if(horizontalMenu)
 				{
-					linksSensor.x = linksInterfaceStorage[index].x+linksInterfaceStorage[index].width+myDeltaX;
+					if(MenuDirectionX>0)
+					{
+						linksSensor.x = linksInterfaceStorage[index].x+linksInterfaceStorage[index].width+myDeltaX;
+					}
+					else
+					{
+						linksSensor.x = linksInterfaceStorage[index].x-myDeltaX;
+					}
 				}
 				else
 				{
-					linksSensor.x = linksInterfaceStorage[index].x-myDeltaX;
-				}
-			}
-			else
-			{
-				if(MenuDirectionY>0)
-				{
-					linksSensor.y = linksInterfaceStorage[index].y+linksInterfaceStorage[index].height+myDeltaY;
-				}
-				else
-				{
-					linksSensor.y = linksInterfaceStorage[index].y-myDeltaY;
+					if(MenuDirectionY>0)
+					{
+						linksSensor.y = linksInterfaceStorage[index].y+linksInterfaceStorage[index].height+myDeltaY;
+					}
+					else
+					{
+						linksSensor.y = linksInterfaceStorage[index].y-myDeltaY;
+					}
 				}
 			}
 			trace("linksSensor : "+linksSensor.y);
