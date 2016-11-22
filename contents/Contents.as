@@ -251,7 +251,7 @@ package contents
 			//trace('5- '+getTimer());
 			
 			//This will update all contents with current language and it will controll for the existing of the language
-			if(/*langEnabled*/autoLangUpdate && !dontUseLanguage)
+			if(/*langEnabled*/langEnabled && !dontUseLanguage)
 			{
 				controller = lang.t[foundedPage.musicURL];
 				if(controller != null)
