@@ -261,7 +261,7 @@ package webService.webCallers
 					//dispatchEveryWhere(Event.COMPLETE,false);
 					event_data();
 				}
-				else if(offlineValuesToSend != pureData)
+				else if(controllChange(pureData))
 				{
 					//There is no need to send update
 					trace(">Server data is changed");
@@ -287,6 +287,13 @@ package webService.webCallers
 				//dispatchEveryWhere(ErrorEvent.ERROR);
 				//dispatchEveryWhere(Event.UNLOAD);
 			}
+		}
+		
+		
+		/**Returns true if the service got any changes*/
+		protected function controllChange(pureData:String):Boolean
+		{
+			return offlineValuesToSend != pureData ;
 		}
 		
 		/**Manage your special data here*/
