@@ -21,6 +21,7 @@ package restDoaService
 		public static const JsonParsProblem:int = -2 ;
 		
 		public static const BinaryError:int = -3 ;
+		public static const TitleError:int=-4
 		
 		public function ErrorEnum()
 		{
