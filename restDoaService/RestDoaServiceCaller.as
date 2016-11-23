@@ -22,16 +22,16 @@
 	import flash.utils.setTimeout;
 	
 	/**Cannot connect to server*/
-	[Event(name="CONNECTION_ERROR", type="mainClass.restGhasedakService.RestDoaEvent")]
+	[Event(name="CONNECTION_ERROR", type="restDoaService.RestDoaEvent")]
 	/**Server returns error, use Error code or msg list*/
-	[Event(name="SERVER_ERROR", type="mainClass.restGhasedakService.RestDoaEvent")]
+	[Event(name="SERVER_ERROR", type="restDoaService.RestDoaEvent")]
 	/**Result returned*/
-	[Event(name="SERVER_RESULT", type="mainClass.restGhasedakService.RestDoaEvent")]
+	[Event(name="SERVER_RESULT", type="restDoaService.RestDoaEvent")]
 	/**Result updated - this event uses when you requested for offline datas*/
-	[Event(name="SERVER_RESULT_UPDATE", type="mainClass.restGhasedakService.RestDoaEvent")]
+	[Event(name="SERVER_RESULT_UPDATE", type="restDoaService.RestDoaEvent")]
 	
 	/**Result Title value is Error user when one parmas is invalid*/
-	[Event(name="TITLE_ERROR", type="mainClass.restGhasedakService.RestDoaEvent")]
+	[Event(name="TITLE_ERROR", type="restDoaService.RestDoaEvent")]
 	public class RestDoaServiceCaller extends EventDispatcher 
 	{
 		private var instantOfflineData:Boolean,

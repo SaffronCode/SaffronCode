@@ -1,4 +1,5 @@
 package restDoaService
+	//restDoaService.RestDoaEvent
 {
 	import flash.events.Event;
 	
