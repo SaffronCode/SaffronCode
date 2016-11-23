@@ -34,6 +34,8 @@ package appManager.displayContent
 					
 		private var maxHistory:uint = 5 ;
 		
+		private var lastIndex:int = int.MIN_VALUE ;
+		
 		public function SliderGalleryElements(rect:Rectangle)
 		{
 			super();
@@ -109,8 +111,12 @@ package appManager.displayContent
 		
 		public function load(imageItem:SliderImageItem=null,imageIndex:int=-1):void
 		{
+			if(lastIndex==imageIndex)
+			{
+				return ;
+			}
+			lastIndex = imageIndex ;
 			clearTimeout(preLoaderShowerTimeOutId);
-			trace("imageIndex : "+imageIndex);
 			if(imageItem.pageInterface==null)
 			{
 				if((imageItem==null && lastImage!=null) || imageItem!=lastImage)
@@ -201,7 +207,7 @@ package appManager.displayContent
 					removeOldInterface();
 					oldDisplayInterface = imageItem.pageInterface
 					this.addChild(oldDisplayInterface);
-					oldDisplayInterface.setUp(imageItem.data,myArea);
+					oldDisplayInterface.setUp(imageItem.data,myArea,imageIndex);
 					this.addChild(oldDisplayInterface);
 				}
 			}

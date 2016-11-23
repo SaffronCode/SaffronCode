@@ -10,7 +10,7 @@ package appManager.displayContent
 			super();
 		}
 		
-		public function setUp(data:*,area:Rectangle):void
+		public function setUp(data:*,area:Rectangle,myIndex:int):void
 		{
 			
 		}
