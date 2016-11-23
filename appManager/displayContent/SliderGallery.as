@@ -75,6 +75,7 @@
 		internal static var imageBackAlpha:Number=1 ;
 		
 		private const plusPages:int = 2000000000;
+		private var RTL:Boolean;
 		
 		
 		public function SliderGallery(myWidth:Number=0,myHeight:Number=0)
@@ -207,17 +208,25 @@
 				}
 				else
 				{
-					if(getImageUp().x<W/-2 || nextPrevController>0)
+					if(getImageUp().x<W/-2 || (!RTL && nextPrevController>0) || (RTL && nextPrevController<0))
 					{
 						getImageUp().x += (-W-getImageUp().x)/backAnimSpeed;
-						switchToNext = true ;
+						if(!RTL)
+							switchToNext = true ;
+						else
+							switchToNext = false ;
+							
 						mustSwitch = true ;
 					}
-					else if(getImageUp().x>W/2 || nextPrevController<0)
+					else if(getImageUp().x>W/2 || (!RTL && nextPrevController<0) || (RTL && nextPrevController>0))
 					{
 						getImageUp().x += (W-getImageUp().x)/backAnimSpeed;
+						if(!RTL)
+							switchToNext = false ;
+						else
+							switchToNext = true ;
+						
 						mustSwitch = true ;
-						switchToNext = false ;
 					}
 					else
 					{
@@ -235,12 +244,26 @@
 				
 				if(getImageUp().x<=0)
 				{
-					getImageDown().load(nextImage(),nextImageIndex());
+					if(RTL)
+					{
+						getImageDown().load(prevImage(),prevImageIndex());
+					}
+					else
+					{
+						getImageDown().load(nextImage(),nextImageIndex());
+					}
 					getImageDown().x = (getImageUp().x+getImageUp().width)/10;
 				}
 				else
 				{
-					getImageDown().load(prevImage(),prevImageIndex());
+					if(!RTL)
+					{
+						getImageDown().load(prevImage(),prevImageIndex());
+					}
+					else
+					{
+						getImageDown().load(nextImage(),nextImageIndex());
+					}
 					getImageDown().x = (getImageUp().x-getImageUp().width)/10;
 				}
 				speed*=0.5;
@@ -353,13 +376,27 @@
 					
 					trace("speed : "+(speed));
 					
-					if(speed<-userMinSpeed)
+					if(!RTL)
 					{
-						preve();
+						if(speed<-userMinSpeed)
+						{
+							preve();
+						}
+						else if(speed>userMinSpeed)
+						{
+							next();
+						}
 					}
-					else if(speed>userMinSpeed)
+					else
 					{
-						next();
+						if(speed<-userMinSpeed)
+						{
+							next();
+						}
+						else if(speed>userMinSpeed)
+						{
+							preve();
+						}
 					}
 					
 					if(myMask.hitTestPoint(stage.mouseX,stage.mouseY) && (getTimer()-mouseDownTime)<100)
@@ -426,10 +463,12 @@
 			}
 		}
 		
-		public function setUp(images:Vector.<SliderImageItem>,currentIndex:uint=0,animateTimer:uint = 10000):void
+		public function setUp(images:Vector.<SliderImageItem>,currentIndex:uint=0,animateTimer:uint = 10000,rightToLeft:Boolean=false):void
 		{
 			stage.removeEventListener(MouseEvent.MOUSE_DOWN,startDragging);
 			stage.removeEventListener(MouseEvent.MOUSE_MOVE,startSliding);
+			
+			RTL = rightToLeft ;
 			
 			
 			nextPrevController = 0 ;
