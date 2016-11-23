@@ -76,6 +76,7 @@
 		
 		private const plusPages:int = 2000000000;
 		private var RTL:Boolean;
+		private var Loop:Boolean;
 		
 		
 		public function SliderGallery(myWidth:Number=0,myHeight:Number=0)
@@ -241,16 +242,17 @@
 					}
 				}
 				
+				var loadNextImage:Boolean ;
 				
 				if(getImageUp().x<=0)
 				{
 					if(RTL)
 					{
-						getImageDown().load(prevImage(),prevImageIndex());
+						loadNextImage = false ;
 					}
 					else
 					{
-						getImageDown().load(nextImage(),nextImageIndex());
+						loadNextImage = true ;
 					}
 					getImageDown().x = (getImageUp().x+getImageUp().width)/10;
 				}
@@ -258,14 +260,41 @@
 				{
 					if(!RTL)
 					{
+						loadNextImage = false ;
+					}
+					else
+					{
+						loadNextImage = true ;
+					}
+					getImageDown().x = (getImageUp().x-getImageUp().width)/10;
+				}
+				
+				if(loadNextImage)
+				{
+					if(nextAvailable())
+					{
+						getImageDown().load(nextImage(),nextImageIndex());
+					}
+					else
+					{
+						trace("No next image available");
+						getImageUp().x = 0 ;
+					}
+				}
+				else
+				{
+					if(prevAvailabe())
+					{
 						getImageDown().load(prevImage(),prevImageIndex());
 					}
 					else
 					{
-						getImageDown().load(nextImage(),nextImageIndex());
+						trace("No prev image available");
+						getImageUp().x = 0 ;
 					}
-					getImageDown().x = (getImageUp().x-getImageUp().width)/10;
 				}
+				
+				
 				speed*=0.5;
 			}
 			
@@ -313,6 +342,12 @@
 				{
 					return (imageIndex+1)%_totalImages;
 				}
+				
+				/**Returns true if loop enabled or next image was enabled*/
+				public function nextAvailable():Boolean
+				{
+					return Loop || (imageIndex%_totalImages)+1<_totalImages ;
+				}
 			
 			/**Returns the previus image*/
 			private function prevImage():*
@@ -323,6 +358,12 @@
 				private function prevImageIndex():int
 				{
 					return (((imageIndex-1)%_totalImages)+_totalImages)%_totalImages ;
+				}
+				
+				/**Returns true if loop enabled or preveus image was enabled*/
+				public function prevAvailabe():Boolean
+				{
+					return Loop || (imageIndex%_totalImages)>0 ;
 				}
 			
 			/**Returns the previus image*/
@@ -429,7 +470,8 @@
 								return ;
 							}
 						}
-						getImageUp().x += this.mouseX-mouseLastX ;
+						var mouseDelta:Number = this.mouseX-mouseLastX ;
+						getImageUp().x += mouseDelta ;
 						getImageUp().x = Math.min(W,Math.max(-W,getImageUp().x));
 						speed += mouseLastX-this.mouseX;
 						mouseLastX = this.mouseX;
@@ -463,12 +505,13 @@
 			}
 		}
 		
-		public function setUp(images:Vector.<SliderImageItem>,currentIndex:uint=0,animateTimer:uint = 10000,rightToLeft:Boolean=false):void
+		public function setUp(images:Vector.<SliderImageItem>,currentIndex:uint=0,animateTimer:uint = 10000,rightToLeft:Boolean=false,loopEnabled:Boolean=true):void
 		{
 			stage.removeEventListener(MouseEvent.MOUSE_DOWN,startDragging);
 			stage.removeEventListener(MouseEvent.MOUSE_MOVE,startSliding);
 			
 			RTL = rightToLeft ;
+			Loop = loopEnabled ;
 			
 			
 			nextPrevController = 0 ;
@@ -512,20 +555,26 @@
 		
 		public function preve():void
 		{
-			if(nextPrevController!=0)
+			if(prevAvailabe())
 			{
-				swtichImages();
+				if(nextPrevController!=0)
+				{
+					swtichImages();
+				}
+				nextPrevController--;
 			}
-			nextPrevController--;
 		}
 		
 		public function next():void
 		{
-			if(nextPrevController!=0)
+			if(nextAvailable())
 			{
-				swtichImages();
+				if(nextPrevController!=0)
+				{
+					swtichImages();
+				}
+				nextPrevController++;
 			}
-			nextPrevController++;
 		}
 	}
 }
