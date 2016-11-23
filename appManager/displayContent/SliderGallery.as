@@ -74,16 +74,26 @@
 		
 		internal static var imageBackAlpha:Number=1 ;
 		
+		private const plusPages:int = 2000000000;
 		
-		public function SliderGallery()
+		
+		public function SliderGallery(myWidth:Number=0,myHeight:Number=0)
 		{
 			super();
 			
 			
 			_totalImages = 0 ;
 			
-			W = super.width;
-			H = super.height ;
+			if(myWidth!=0)
+			{
+				W = myWidth ;
+				H = myHeight ;
+			}
+			else
+			{
+				W = super.width;
+				H = super.height ;
+			}
 			
 			myMask = new Sprite();
 			myMask.graphics.beginFill(0xff0000,1);
@@ -157,7 +167,7 @@
 			return _totalImages ;
 		}
 		
-		public function get currentImageIndex():uint
+		public function get currentImageIndex():int
 		{
 			return getCurrentSelectedImage() ;
 		}
@@ -225,12 +235,12 @@
 				
 				if(getImageUp().x<=0)
 				{
-					getImageDown().load(nextImage());
+					getImageDown().load(nextImage(),nextImageIndex());
 					getImageDown().x = (getImageUp().x+getImageUp().width)/10;
 				}
 				else
 				{
-					getImageDown().load(prevImage());
+					getImageDown().load(prevImage(),prevImageIndex());
 					getImageDown().x = (getImageUp().x-getImageUp().width)/10;
 				}
 				speed*=0.5;
@@ -258,7 +268,7 @@
 				}
 				if(imageIndex<0)
 				{
-					imageIndex += 2000000000;
+					imageIndex += plusPages;
 				}
 				
 				trace("imageIndex : "+imageIndex);
@@ -273,14 +283,31 @@
 			/**Returns the next image*/
 			private function nextImage():*
 			{
-				return imagesList[(imageIndex+1)%_totalImages];
+				return imagesList[nextImageIndex()];
 			}
+			
+				private function nextImageIndex():int
+				{
+					return (imageIndex+1)%_totalImages;
+				}
 			
 			/**Returns the previus image*/
 			private function prevImage():*
 			{
-				return imagesList[(((imageIndex-1)%_totalImages)+_totalImages)%_totalImages];
+				return imagesList[prevImageIndex()];
 			}
+			
+				private function prevImageIndex():int
+				{
+					return (((imageIndex-1)%_totalImages)+_totalImages)%_totalImages ;
+				}
+			
+			/**Returns the previus image*/
+			private function currentImage():*
+			{
+				return imagesList[getCurrentSelectedImage()];
+			}
+			
 			
 			/**Start the functions*/
 			private function startFunctions(e:*=null):void
@@ -408,10 +435,10 @@
 			nextPrevController = 0 ;
 			mustSwitch = false ;
 			switchToNext = false ;
-			imageIndex = currentIndex ;
 			imagesList = images ;
 			_totalImages = imagesList.length ;
-			getImageUp().load(images[imageIndex]);
+			imageIndex = (plusPages-(plusPages%_totalImages))+currentIndex ;
+			getImageUp().load(currentImage());
 			
 			if(_totalImages<=1)
 			{
