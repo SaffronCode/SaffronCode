@@ -17,6 +17,9 @@ package restDoaService
 		/**Server connection error*/
 		public static const SERVER_RESULT_UPDATE:String = "SERVER_RESULT_UPDATE" ;
 		
+		
+		public static const TITLE_ERROR:String = "TITLE_ERROR";
+		
 		/**Look for error codes on ErrorEnum class.
 		<br>
 		noError:int = 0 ;

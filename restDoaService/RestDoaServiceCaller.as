@@ -3,6 +3,8 @@
 	import com.mteamapp.JSONParser;
 	import com.mteamapp.StringFunctions;
 	
+	import contents.Contents;
+	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IOErrorEvent;
@@ -18,15 +20,18 @@
 	import flash.utils.ByteArray;
 	import flash.utils.clearTimeout;
 	import flash.utils.setTimeout;
-
+	
 	/**Cannot connect to server*/
-	[Event(name="CONNECTION_ERROR", type="restDoaService.RestDoaEvent")]
+	[Event(name="CONNECTION_ERROR", type="mainClass.restGhasedakService.RestDoaEvent")]
 	/**Server returns error, use Error code or msg list*/
-	[Event(name="SERVER_ERROR", type="restDoaService.RestDoaEvent")]
+	[Event(name="SERVER_ERROR", type="mainClass.restGhasedakService.RestDoaEvent")]
 	/**Result returned*/
-	[Event(name="SERVER_RESULT", type="restDoaService.RestDoaEvent")]
+	[Event(name="SERVER_RESULT", type="mainClass.restGhasedakService.RestDoaEvent")]
 	/**Result updated - this event uses when you requested for offline datas*/
-	[Event(name="SERVER_RESULT_UPDATE", type="restDoaService.RestDoaEvent")]
+	[Event(name="SERVER_RESULT_UPDATE", type="mainClass.restGhasedakService.RestDoaEvent")]
+	
+	/**Result Title value is Error user when one parmas is invalid*/
+	[Event(name="TITLE_ERROR", type="mainClass.restGhasedakService.RestDoaEvent")]
 	public class RestDoaServiceCaller extends EventDispatcher 
 	{
 		private var instantOfflineData:Boolean,
@@ -165,7 +170,27 @@
 			}
 			//this.dispatchEvent(new RestEvent(RestEvent.CONNECTION_ERROR));
 			//RestService.eventDispatcher.dispatchEvent(new RestEvent(RestEvent.CONNECTION_ERROR,null,ErrorEnum.ConnectionError));
-			dispatch(new RestDoaEvent(RestDoaEvent.CONNECTION_ERROR,ErrorEnum.ConnectionError));
+			
+			
+			try
+			{
+				var chekTitleError:Object = JSON.parse(requestLoader.data)
+			}
+			catch(e)
+			{
+				dispatch(new RestDoaEvent(RestDoaEvent.CONNECTION_ERROR,ErrorEnum.ConnectionError));
+				return
+			}
+			if(chekTitleError.Title!=null && chekTitleError.Title == Contents.config.TitleErrorName)
+			{
+				dispatch(new RestDoaEvent(RestDoaEvent.TITLE_ERROR,ErrorEnum.TitleError))
+			}
+			else
+			{
+				dispatch(new RestDoaEvent(RestDoaEvent.CONNECTION_ERROR,ErrorEnum.ConnectionError));
+			}
+
+			
 		}
 		
 		private function requestLoaded(event:Event):void
