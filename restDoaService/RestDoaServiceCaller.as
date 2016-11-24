@@ -86,10 +86,10 @@
 			instantOfflineData = instantOfflineData_v ;
 			myId = myWebServiceLocation ;
 			requestedData = RequestedData ;
-			if(requestedData == null)
+			/*if(requestedData == null)
 			{
 				throw "Dont pass null value as RequestedData";
-			}
+			}*/
 			//serviceName = myWebServiceLocation ;
 			
 			pureRequest = new URLRequest(RestDoaService.domain+myWebServiceLocation);
@@ -220,27 +220,30 @@
 			var correctedLoadedData:String = pureRecevedData;//pureRecevedData.substring(1,pureRecevedData.length-1).split('\\"').join('\"').split("\\\\u003cbr\\\\u003e").join('\\n').split("<br>").join('\\n');
 			//correctedLoadedData = StringFunctions.clearDoubleQuartmarksOnJSON(correctedLoadedData);
 			//trace("Corrected data is : "+correctedLoadedData);
-			if(loadedData is String)
+			if(requestedData!=null)
 			{
-
-				try
+				if(loadedData is String)
 				{
-					JSONParser.parse(correctedLoadedData,requestedData);
-				}
-				catch(e)
-				{
-					if(pureRecevedData.toLowerCase() != 'true')
+	
+					try
 					{
-						serverErrorBool = true ;
-						trace("Data format error");
+						JSONParser.parse(correctedLoadedData,requestedData);
 					}
-
+					catch(e)
+					{
+						if(pureRecevedData.toLowerCase() != 'true')
+						{
+							serverErrorBool = true ;
+							trace("Data format error");
+						}
+	
+					}
 				}
-			}
-			else
-			{
-				trace("I Cannot receive any other types");
-				serverErrorBool = true ;
+				else
+				{
+					trace("I Cannot receive any other types");
+					serverErrorBool = true ;
+				}
 			}
 			//the receved data is not converted correctly
 			//parser = new RestFullJSONParser(loadedData,requestedData);
