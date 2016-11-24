@@ -549,6 +549,7 @@
 			
 			
 			setAnimation();
+			this.dispatchEvent(new Event(Event.CHANGE));
 		}
 		
 		/**Start animation timer*/
