@@ -10,6 +10,7 @@
 	import flash.utils.clearInterval;
 	import flash.utils.getTimer;
 	import flash.utils.setInterval;
+	import flash.utils.setTimeout;
 	
 	/**When an image changed*/
 	[Event(name="change", type="flash.events.Event")]
@@ -74,16 +75,28 @@
 		
 		internal static var imageBackAlpha:Number=1 ;
 		
+		private const plusPages:int = 2000000000;
+		private var RTL:Boolean;
+		private var Loop:Boolean;
 		
-		public function SliderGallery()
+		
+		public function SliderGallery(myWidth:Number=0,myHeight:Number=0)
 		{
 			super();
 			
 			
 			_totalImages = 0 ;
 			
-			W = super.width;
-			H = super.height ;
+			if(myWidth!=0)
+			{
+				W = myWidth ;
+				H = myHeight ;
+			}
+			else
+			{
+				W = super.width;
+				H = super.height ;
+			}
 			
 			myMask = new Sprite();
 			myMask.graphics.beginFill(0xff0000,1);
@@ -157,7 +170,7 @@
 			return _totalImages ;
 		}
 		
-		public function get currentImageIndex():uint
+		public function get currentImageIndex():int
 		{
 			return getCurrentSelectedImage() ;
 		}
@@ -197,17 +210,25 @@
 				}
 				else
 				{
-					if(getImageUp().x<W/-2 || nextPrevController>0)
+					if(getImageUp().x<W/-2 || (!RTL && nextPrevController>0) || (RTL && nextPrevController<0))
 					{
 						getImageUp().x += (-W-getImageUp().x)/backAnimSpeed;
-						switchToNext = true ;
+						if(!RTL)
+							switchToNext = true ;
+						else
+							switchToNext = false ;
+							
 						mustSwitch = true ;
 					}
-					else if(getImageUp().x>W/2 || nextPrevController<0)
+					else if(getImageUp().x>W/2 || (!RTL && nextPrevController<0) || (RTL && nextPrevController>0))
 					{
 						getImageUp().x += (W-getImageUp().x)/backAnimSpeed;
+						if(!RTL)
+							switchToNext = false ;
+						else
+							switchToNext = true ;
+						
 						mustSwitch = true ;
-						switchToNext = false ;
 					}
 					else
 					{
@@ -222,17 +243,59 @@
 					}
 				}
 				
+				var loadNextImage:Boolean ;
 				
 				if(getImageUp().x<=0)
 				{
-					getImageDown().load(nextImage());
+					if(RTL)
+					{
+						loadNextImage = false ;
+					}
+					else
+					{
+						loadNextImage = true ;
+					}
 					getImageDown().x = (getImageUp().x+getImageUp().width)/10;
 				}
 				else
 				{
-					getImageDown().load(prevImage());
+					if(!RTL)
+					{
+						loadNextImage = false ;
+					}
+					else
+					{
+						loadNextImage = true ;
+					}
 					getImageDown().x = (getImageUp().x-getImageUp().width)/10;
 				}
+				
+				if(loadNextImage)
+				{
+					if(nextAvailable())
+					{
+						getImageDown().load(nextImage(),nextImageIndex());
+					}
+					else
+					{
+						trace("No next image available");
+						getImageUp().x = 0 ;
+					}
+				}
+				else
+				{
+					if(prevAvailabe())
+					{
+						getImageDown().load(prevImage(),prevImageIndex());
+					}
+					else
+					{
+						trace("No prev image available");
+						getImageUp().x = 0 ;
+					}
+				}
+				
+				
 				speed*=0.5;
 			}
 			
@@ -258,7 +321,7 @@
 				}
 				if(imageIndex<0)
 				{
-					imageIndex += 2000000000;
+					imageIndex += plusPages;
 				}
 				
 				trace("imageIndex : "+imageIndex);
@@ -273,14 +336,43 @@
 			/**Returns the next image*/
 			private function nextImage():*
 			{
-				return imagesList[(imageIndex+1)%_totalImages];
+				return imagesList[nextImageIndex()];
 			}
+			
+				private function nextImageIndex():int
+				{
+					return (imageIndex+1)%_totalImages;
+				}
+				
+				/**Returns true if loop enabled or next image was enabled*/
+				public function nextAvailable():Boolean
+				{
+					return Loop || (imageIndex%_totalImages)+1<_totalImages ;
+				}
 			
 			/**Returns the previus image*/
 			private function prevImage():*
 			{
-				return imagesList[(((imageIndex-1)%_totalImages)+_totalImages)%_totalImages];
+				return imagesList[prevImageIndex()];
 			}
+			
+				private function prevImageIndex():int
+				{
+					return (((imageIndex-1)%_totalImages)+_totalImages)%_totalImages ;
+				}
+				
+				/**Returns true if loop enabled or preveus image was enabled*/
+				public function prevAvailabe():Boolean
+				{
+					return Loop || (imageIndex%_totalImages)>0 ;
+				}
+			
+			/**Returns the previus image*/
+			private function currentImage():*
+			{
+				return imagesList[getCurrentSelectedImage()];
+			}
+			
 			
 			/**Start the functions*/
 			private function startFunctions(e:*=null):void
@@ -315,10 +407,11 @@
 					
 					stage.addEventListener(MouseEvent.MOUSE_MOVE,startSliding);
 					stage.addEventListener(MouseEvent.MOUSE_UP,canselDragging);
+					this.addEventListener(ScrollMT.LOCK_SCROLL_TILL_MOUSE_UP,canselDragging);
 				}
 				
 				/**Cansel dragging*/
-				protected function canselDragging(event:MouseEvent):void
+				protected function canselDragging(event:*):void
 				{
 					isDragging = false ;
 					stage.removeEventListener(MouseEvent.MOUSE_MOVE,startSliding);
@@ -326,13 +419,27 @@
 					
 					trace("speed : "+(speed));
 					
-					if(speed<-userMinSpeed)
+					if(!RTL)
 					{
-						preve();
+						if(speed<-userMinSpeed)
+						{
+							preve();
+						}
+						else if(speed>userMinSpeed)
+						{
+							next();
+						}
 					}
-					else if(speed>userMinSpeed)
+					else
 					{
-						next();
+						if(speed<-userMinSpeed)
+						{
+							next();
+						}
+						else if(speed>userMinSpeed)
+						{
+							preve();
+						}
 					}
 					
 					if(myMask.hitTestPoint(stage.mouseX,stage.mouseY) && (getTimer()-mouseDownTime)<100)
@@ -343,6 +450,17 @@
 					}
 					
 					setAnimation();
+					setTimeout(activateClicks,0);
+				}
+				
+				private function activateClicks():void
+				{
+					this.mouseChildren = this.mouseEnabled = true ;
+				}
+				
+				private function diactivateClicks():void
+				{
+					this.mouseChildren = this.mouseEnabled = false ;
 				}
 				
 					protected function startSliding(event:MouseEvent):void
@@ -358,14 +476,16 @@
 							{
 								moveingStarts = true ;
 								mouseLastX = this.mouseX ;
-								this.dispatchEvent(new Event(ScrollMT.LOCK_SCROLL_TILL_MOUSE_UP,true));
+								diactivateClicks();
+								this.parent.dispatchEvent(new Event(ScrollMT.LOCK_SCROLL_TILL_MOUSE_UP,true));
 							}
 							else
 							{
 								return ;
 							}
 						}
-						getImageUp().x += this.mouseX-mouseLastX ;
+						var mouseDelta:Number = this.mouseX-mouseLastX ;
+						getImageUp().x += mouseDelta ;
 						getImageUp().x = Math.min(W,Math.max(-W,getImageUp().x));
 						speed += mouseLastX-this.mouseX;
 						mouseLastX = this.mouseX;
@@ -399,19 +519,22 @@
 			}
 		}
 		
-		public function setUp(images:Vector.<SliderImageItem>,currentIndex:uint=0,animateTimer:uint = 10000):void
+		public function setUp(images:Vector.<SliderImageItem>,currentIndex:uint=0,animateTimer:uint = 10000,rightToLeft:Boolean=false,loopEnabled:Boolean=true):void
 		{
 			stage.removeEventListener(MouseEvent.MOUSE_DOWN,startDragging);
 			stage.removeEventListener(MouseEvent.MOUSE_MOVE,startSliding);
+			
+			RTL = rightToLeft ;
+			Loop = loopEnabled ;
 			
 			
 			nextPrevController = 0 ;
 			mustSwitch = false ;
 			switchToNext = false ;
-			imageIndex = currentIndex ;
 			imagesList = images ;
 			_totalImages = imagesList.length ;
-			getImageUp().load(images[imageIndex]);
+			imageIndex = (plusPages-(plusPages%_totalImages))+currentIndex ;
+			getImageUp().load(currentImage());
 			
 			if(_totalImages<=1)
 			{
@@ -446,20 +569,26 @@
 		
 		public function preve():void
 		{
-			if(nextPrevController!=0)
+			if(prevAvailabe())
 			{
-				swtichImages();
+				if(nextPrevController!=0)
+				{
+					swtichImages();
+				}
+				nextPrevController--;
 			}
-			nextPrevController--;
 		}
 		
 		public function next():void
 		{
-			if(nextPrevController!=0)
+			if(nextAvailable())
 			{
-				swtichImages();
+				if(nextPrevController!=0)
+				{
+					swtichImages();
+				}
+				nextPrevController++;
 			}
-			nextPrevController++;
 		}
 	}
 }

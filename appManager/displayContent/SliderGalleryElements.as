@@ -30,7 +30,11 @@ package appManager.displayContent
 		private var lightImageHistory:Vector.<LightImage>,
 					lightImageLinks:Vector.<String> ;
 					
+		private var oldDisplayInterface:SliderElementInterface ;
+					
 		private var maxHistory:uint = 5 ;
+		
+		private var lastIndex:int = int.MIN_VALUE ;
 		
 		public function SliderGalleryElements(rect:Rectangle)
 		{
@@ -57,6 +61,18 @@ package appManager.displayContent
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 			
 			drawBackGround();
+		}
+		
+		override public function get width():Number
+		{
+			if(myArea)
+			{
+				return myArea.width ;
+			}
+			else
+			{
+				return super.width ;
+			}
 		}
 		
 		private function drawBackGround():void
@@ -93,86 +109,118 @@ package appManager.displayContent
 			return myArea.height ;
 		}
 		
-		public function load(image:SliderImageItem=null):void
+		public function load(imageItem:SliderImageItem=null,imageIndex:int=-1):void
 		{
-			clearTimeout(preLoaderShowerTimeOutId);
-			if((image==null && lastImage!=null) || image!=lastImage)
+			if(lastIndex==imageIndex)
 			{
-				if(image==null)
+				return ;
+			}
+			lastIndex = imageIndex ;
+			clearTimeout(preLoaderShowerTimeOutId);
+			if(imageItem.pageInterface==null)
+			{
+				if((imageItem==null && lastImage!=null) || imageItem!=lastImage)
 				{
-					image = lastImage ;
-				}
-				
-				if(lightImage)
-				{
-					lightImage.removeEventListener(Event.COMPLETE,imageLoaded);
-				}
-				
-				var imageWasLoadedBefor:Boolean = false ;
-				
-				if(image.image is String)
-				{
-					for(var i = 0 ; i<lightImageHistory.length ; i++)
+					if(imageItem==null)
 					{
-						if(lightImageLinks[i] == image.image )
-						{
-							if(lightImage)
-							{
-								lightImage.visible = false ;
-							}
-							lightImage = lightImageHistory[i];
-							lightImage.visible = true ;
-							imageWasLoadedBefor = true ;
-							break;
-						}
+						imageItem = lastImage ;
 					}
-				}
-				
-				if(!imageWasLoadedBefor)
-				{
+					
 					if(lightImage)
 					{
-						lightImage.visible = false ;
-					}
-					lightImage = new LightImage();
-					this.addChild(lightImage);
-					lightImage.addEventListener(Event.COMPLETE,imageLoaded);
-					
-					if(myPreloader)
-					{
-						preLoaderShowerTimeOutId = setTimeout(showPreLoader,5);
+						lightImage.removeEventListener(Event.COMPLETE,imageLoaded);
 					}
 					
+					var imageWasLoadedBefor:Boolean = false ;
 					
-					if(image.image is BitmapData)
+					if(imageItem.image is String)
 					{
-						lightImage.setUpBitmapData(image.image,false,myArea.width,myArea.height,0,0,true);
-					}
-					else if(image.image is ByteArray)
-					{
-						lightImage.setUpBytes(image.image,false,myArea.width,myArea.height,0,0,true);
-					}
-					else if(image.image is String)
-					{
-						lightImage.setUp(image.image,false,myArea.width,myArea.height,0,0,true);
+						for(var i = 0 ; i<lightImageHistory.length ; i++)
+						{
+							if(lightImageLinks[i] == imageItem.image )
+							{
+								if(lightImage)
+								{
+									lightImage.visible = false ;
+								}
+								lightImage = lightImageHistory[i];
+								lightImage.visible = true ;
+								imageWasLoadedBefor = true ;
+								break;
+							}
+						}
 					}
 					
-					if(image.image is String)
+					if(!imageWasLoadedBefor)
 					{
-						lightImageHistory.push(lightImage);
-						lightImageLinks.push(image.image);
+						if(lightImage)
+						{
+							lightImage.visible = false ;
+						}
+						lightImage = new LightImage();
+						this.addChild(lightImage);
+						lightImage.addEventListener(Event.COMPLETE,imageLoaded);
+						
+						if(myPreloader)
+						{
+							preLoaderShowerTimeOutId = setTimeout(showPreLoader,5);
+						}
+						
+						
+						if(imageItem.image is BitmapData)
+						{
+							lightImage.setUpBitmapData(imageItem.image,false,myArea.width,myArea.height,0,0,true);
+						}
+						else if(imageItem.image is ByteArray)
+						{
+							lightImage.setUpBytes(imageItem.image,false,myArea.width,myArea.height,0,0,true);
+						}
+						else if(imageItem.image is String)
+						{
+							lightImage.setUp(imageItem.image,false,myArea.width,myArea.height,0,0,true);
+						}
+						
+						if(imageItem.image is String)
+						{
+							lightImageHistory.push(lightImage);
+							lightImageLinks.push(imageItem.image);
+						}
 					}
+					
+					lastImage = imageItem ;
+					
+					
+					if(lightImageHistory.length>maxHistory)
+					{
+						var lightOne:LightImage = lightImageHistory.shift();
+						lightImageLinks.shift();
+						Obj.remove(lightOne);
+					}
+					
+					removeOldInterface();
 				}
-				
-				lastImage = image ;
-				
-				
-				if(lightImageHistory.length>maxHistory)
+			}
+			else
+			{
+				if(oldDisplayInterface!=imageItem.pageInterface)
 				{
-					var lightOne:LightImage = lightImageHistory.shift();
-					lightImageLinks.shift();
-					Obj.remove(lightOne);
+					removeOldInterface();
+					oldDisplayInterface = imageItem.pageInterface
+					this.addChild(oldDisplayInterface);
+					oldDisplayInterface.setUp(imageItem.data,myArea,imageIndex);
+					this.addChild(oldDisplayInterface);
 				}
+			}
+		}
+		
+		/**Removes old interface from the stage*/
+		private function removeOldInterface():void
+		{
+			if(oldDisplayInterface!=null)
+			{
+				oldDisplayInterface.hide();
+				Obj.remove(oldDisplayInterface);
+				oldDisplayInterface = null ;
 			}
 		}
 		
