@@ -10,6 +10,7 @@
 	import flash.utils.clearInterval;
 	import flash.utils.getTimer;
 	import flash.utils.setInterval;
+	import flash.utils.setTimeout;
 	
 	/**When an image changed*/
 	[Event(name="change", type="flash.events.Event")]
@@ -406,10 +407,11 @@
 					
 					stage.addEventListener(MouseEvent.MOUSE_MOVE,startSliding);
 					stage.addEventListener(MouseEvent.MOUSE_UP,canselDragging);
+					this.addEventListener(ScrollMT.LOCK_SCROLL_TILL_MOUSE_UP,canselDragging);
 				}
 				
 				/**Cansel dragging*/
-				protected function canselDragging(event:MouseEvent):void
+				protected function canselDragging(event:*):void
 				{
 					isDragging = false ;
 					stage.removeEventListener(MouseEvent.MOUSE_MOVE,startSliding);
@@ -448,6 +450,17 @@
 					}
 					
 					setAnimation();
+					setTimeout(activateClicks,0);
+				}
+				
+				private function activateClicks():void
+				{
+					this.mouseChildren = this.mouseEnabled = true ;
+				}
+				
+				private function diactivateClicks():void
+				{
+					this.mouseChildren = this.mouseEnabled = false ;
 				}
 				
 					protected function startSliding(event:MouseEvent):void
@@ -463,7 +476,8 @@
 							{
 								moveingStarts = true ;
 								mouseLastX = this.mouseX ;
-								this.dispatchEvent(new Event(ScrollMT.LOCK_SCROLL_TILL_MOUSE_UP,true));
+								diactivateClicks();
+								this.parent.dispatchEvent(new Event(ScrollMT.LOCK_SCROLL_TILL_MOUSE_UP,true));
 							}
 							else
 							{
