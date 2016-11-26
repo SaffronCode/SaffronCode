@@ -111,13 +111,24 @@ package appManager.displayContent
 		
 		public function load(imageItem:SliderImageItem=null,imageIndex:int=-1):void
 		{
-			if(lastIndex==imageIndex)
+			if(lastIndex==imageIndex && lastIndex!=-1)
 			{
 				return ;
 			}
 			lastIndex = imageIndex ;
 			clearTimeout(preLoaderShowerTimeOutId);
-			if(imageItem.pageInterface==null)
+			if(imageItem!=null && imageItem.pageInterface!=null)
+			{
+				if(oldDisplayInterface!=imageItem.pageInterface)
+				{
+					removeOldInterface();
+					oldDisplayInterface = imageItem.pageInterface
+					this.addChild(oldDisplayInterface);
+					oldDisplayInterface.setUp(imageItem.data,myArea,imageIndex);
+					this.addChild(oldDisplayInterface);
+				}
+			}
+			else
 			{
 				if((imageItem==null && lastImage!=null) || imageItem!=lastImage)
 				{
@@ -198,17 +209,6 @@ package appManager.displayContent
 					}
 					
 					removeOldInterface();
-				}
-			}
-			else
-			{
-				if(oldDisplayInterface!=imageItem.pageInterface)
-				{
-					removeOldInterface();
-					oldDisplayInterface = imageItem.pageInterface
-					this.addChild(oldDisplayInterface);
-					oldDisplayInterface.setUp(imageItem.data,myArea,imageIndex);
-					this.addChild(oldDisplayInterface);
 				}
 			}
 		}
