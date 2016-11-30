@@ -1,4 +1,4 @@
-/***Version 2 : from now , this class will get original object and it will return original Object on load time*/
+﻿/***Version 2 : from now , this class will get original object and it will return original Object on load time*/
 
 package webService2
 {
@@ -111,7 +111,11 @@ package webService2
 		{
 			var className:String = getQualifiedClassName(ClassObject) ;
 			className = className.substring(className.lastIndexOf('::')+2);
-			var paramVaue:String = Parameters.join('*');
+			var paramVaue:String = '' ;
+			if(Parameters!=null)
+			{
+				paramVaue = Parameters.join('*');
+			}
 			
 			return className+':'+paramVaue+':'+myWebService2.IP;
 		}
