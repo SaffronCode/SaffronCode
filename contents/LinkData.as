@@ -18,6 +18,8 @@
 		
 		/**You can use them for icon size*/
 		public var w:Number,h:Number;
+		
+		public var x:Number,y:Number;
 					
 		/*<link level="" name="فعالیت های عملی" id="faaliathayeamali" icon="sf.jpg"/>*/
 		public function LinkData(linkXML:XML=null)
@@ -32,6 +34,8 @@
 				name = linkXML.@name;
 				w = Number(linkXML.@w);
 				h = Number(linkXML.@h);
+				x = Number(linkXML.@x);
+				y = Number(linkXML.@y);
 				id = linkXML.@id ;
 				iconURL = linkXML.@icon ;
 				if(String(linkXML.@level) == '')
@@ -67,6 +71,8 @@
 			xml.@icon = iconURL;
 			xml.@w = w;
 			xml.@h = h;
+			xml.@x = x;
+			xml.@y = y;
 			
 			for(var i = 0 ; i<subLinks.length ; i++)
 			{
@@ -98,6 +104,8 @@
 			newLinkData.dynamicData = dynamicData ;
 			newLinkData.w = w ;
 			newLinkData.h = h ;
+			newLinkData.x = x ;
+			newLinkData.y = y ;
 			
 			return newLinkData ;
 		}
