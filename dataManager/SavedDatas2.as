@@ -1,5 +1,7 @@
 package dataManager
 {
+	import com.adobe.crypto.MD5;
+	
 	import flash.data.SQLConnection;
 	import flash.data.SQLMode;
 	import flash.data.SQLResult;
@@ -12,6 +14,8 @@ package dataManager
 	/**none encripted sql db*/
 	public class SavedDatas2
 	{
+		private static const encryptDatabase:Boolean = true ;
+		
 		private static var  sql:SQLConnection ,
 							asyncSql:SQLConnection,
 							query:SQLStatement,
@@ -28,6 +32,7 @@ package dataManager
 		private static var 	dbFolder:String = "DB",
 			dbName:String = "saves2",
 			dbUpdatedName:String = "updatedSaves",
+			dbUpdatedEncryptedName:String = "updatedSavesEnc",
 			tableName:String = tableBaseName,
 			field_id:String = "ID",
 			field_value:String = "VALUE",
@@ -76,34 +81,72 @@ package dataManager
 		
 		public static function setUp(checkTable:Boolean = false)
 		{
-			var needToUpdate:Boolean = false ;
 			if(sql == null)
 			{
+				var needToUpdate:Boolean = false ;
+				var encryptorByte:ByteArray;
+				var encryptorByte32:ByteArray = new ByteArray();
+				encryptorByte32.writeUTF(DevicePrefrence.DeviceEncryptedKey("478239472389"));
+				encryptorByte = new ByteArray();
+				encryptorByte.writeBytes(encryptorByte32,0,16);
+				
+				encryptorByte32.clear() ;
+				
+				
+				var sqlEncrypted:Boolean = false ;
 				needToUpdate = true ;
 				checkTable = true ;
 				//temporaryObject = {};
 				var sqlFile:File = File.applicationStorageDirectory.resolvePath(dbFolder);
-				var updatedFile:File = sqlFile.clone();
+				var sqlFolder:File = sqlFile.clone() ;
+				var updatedFile:File ;
 				if(!sqlFile.exists)
 				{
 					sqlFile.createDirectory() ;
 				}
 				sqlFile = sqlFile.resolvePath(dbName);
-				updatedFile = updatedFile.resolvePath(dbUpdatedName);
+				updatedFile = sqlFolder.resolvePath(dbUpdatedEncryptedName);
 				if(updatedFile.exists)
 				{
+					trace("**Old data base was encrypted");
+					sqlEncrypted = true ;
 					try
 					{
 						updatedFile.copyTo(sqlFile,true);
 					}
 					catch(e){trace("SavedData2 SetUp error : "+e)}
 				}
+				else if((updatedFile = sqlFolder.resolvePath(dbUpdatedName)).exists)
+				{
+					trace("**Old database was not encrypted");
+					sqlEncrypted = false ;
+					try
+					{
+						updatedFile.copyTo(sqlFile,true);
+					}
+					catch(e){trace("SavedData2 SetUp error : "+e)}
+				}
+				else
+				{
+					sqlEncrypted = encryptDatabase ;
+					trace("New database have to create");
+				}
+				
 				
 				/*var encrypt:ByteArray = new ByteArray();
 				encrypt.writeUTFBytes(setOrGetDeviceCode().substring(0,16));*/
 				
 				sql = new SQLConnection();
-				sql.open(sqlFile,SQLMode.CREATE);
+				if(sqlEncrypted)
+				{
+					trace("++++++Open the "+sqlFile+" by encryptorBytes");
+					sql.open(sqlFile,SQLMode.CREATE,false,1024,encryptorByte);
+				}
+				else
+				{
+					trace("-----Open teh "+sqlFile+" without encryption");
+					sql.open(sqlFile,SQLMode.CREATE);
+				}
 
 				
 				asyncSql = new SQLConnection();
@@ -150,7 +193,7 @@ package dataManager
 				{
 					sqlFile.copyTo(updatedFile);
 				}
-				asyncSql.openAsync(updatedFile,SQLMode.CREATE);
+				asyncSql.openAsync(updatedFile,SQLMode.CREATE,null,false,1024,encryptorByte);
 			}
 		}
 		
