@@ -1,6 +1,8 @@
 package contents.displayElements
 	//contents.displayElements.DeveloperPage
 {
+	import com.mteamapp.StringFunctions;
+	
 	import contents.Contents;
 	
 	import flash.display.Bitmap;
@@ -52,7 +54,14 @@ package contents.displayElements
 			appNameContainerMC.addChild(appNameTF);
 			appNameTF.x = appNameTF.y = 0 ;
 			
-			TextPutter.OnButton(appNameTF,DevicePrefrence.appName,true,true,false,false);
+			var convertedTitle:String = DevicePrefrence.appName ;
+			
+			if(StringFunctions.isPersian(convertedTitle))
+			{
+				convertedTitle = UnicodeStatic.convert(convertedTitle,false);
+			}
+			
+			TextPutter.OnButton(appNameTF,convertedTitle,false,true,false,false);
 			if(versionTF)
 			{
 				versionTF.text = DevicePrefrence.appVersion ;
