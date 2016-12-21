@@ -117,8 +117,13 @@
 			imageContainer.mask = myMask ;
 			
 			controllStage();
+			this.addEventListener(ScrollMTEvent.YOU_ARE_SCROLLING_FROM_YOUR_PARENT,canselDragingBecauseOfScroll);
 		}
 		
+		protected function canselDragingBecauseOfScroll(event:Event):void
+		{
+			canselDragging(null,false);
+		}		
 		
 		public static function setPreLoader(PreloaderClass:Class,imageBackGrounds:uint,imageBackgroundAlpha:Number=1)
 		{
@@ -411,7 +416,7 @@
 				}
 				
 				/**Cansel dragging*/
-				protected function canselDragging(event:*):void
+				protected function canselDragging(event:*,dispatchClick:Boolean=true):void
 				{
 					isDragging = false ;
 					stage.removeEventListener(MouseEvent.MOUSE_MOVE,startSliding);
@@ -442,7 +447,7 @@
 						}
 					}
 					
-					if(myMask.hitTestPoint(stage.mouseX,stage.mouseY) && (getTimer()-mouseDownTime)<100)
+					if(dispatchClick && myMask.hitTestPoint(stage.mouseX,stage.mouseY) && (getTimer()-mouseDownTime)<100)
 					{
 						this.removeEventListener(MouseEvent.CLICK,preventDefaultClick,false);
 						this.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
