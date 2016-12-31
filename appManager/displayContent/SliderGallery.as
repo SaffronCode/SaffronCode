@@ -580,6 +580,10 @@
 				if(nextPrevController!=0)
 				{
 					swtichImages();
+					if(!prevAvailabe())
+					{
+						return;
+					}
 				}
 				nextPrevController--;
 			}
@@ -592,6 +596,10 @@
 				if(nextPrevController!=0)
 				{
 					swtichImages();
+					if(!nextAvailable())
+					{
+						return;
+					}
 				}
 				nextPrevController++;
 			}
