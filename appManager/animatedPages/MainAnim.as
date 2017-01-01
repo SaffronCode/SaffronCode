@@ -1,4 +1,5 @@
 package appManager.animatedPages
+	//appManager.animatedPages.MainAnim
 {
 	
 	import appManager.event.AppEvent;
