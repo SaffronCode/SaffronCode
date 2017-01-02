@@ -209,6 +209,18 @@
 			}
 		}
 		
+		/**Set field editable or not*/
+		override public function set enabled(value:Boolean):void
+		{
+			this.mouseChildren = this.mouseEnabled = value ;
+			super.enabled = value ;
+		}
+		
+		override public function get enabled():Boolean
+		{
+			return this.mouseChildren ;
+		}
+		
 		/**Start editing me*/
 		protected function editThisText(event:MouseEvent):void
 		{
