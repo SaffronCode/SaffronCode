@@ -28,6 +28,24 @@
 		</links>
 	</page>
 	
+	
+	
+	<page id="free_page">
+	  <links>
+		<link level="-1" name="" id="" icon="" w="NaN" h="NaN" x="NaN" y="NaN"/>
+	  </links>
+	  <links/>
+	  <music/>
+	  <type/>
+	  <menutype/>
+	  <title/>
+	  <image/>
+	  <content x="NaN" y="NaN" w="NaN" h="NaN" align=""/>
+	  <images>
+		<img text="" targ="null" w="NaN" h="NaN" x="NaN" y="NaN"/>
+	  </images>
+	</page>
+	
 	<page id="newsPageList">
 			<type>zafaran.menu.InternalMenus</type>
 			<title>اخبار و مقالات</title>
