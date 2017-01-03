@@ -36,11 +36,11 @@ package diagrams.calender
 		
 		/**Special font for calender title*/
 		
-		public static const Font_title:String = "B Yekan Bold Bold",
+		public static var Font_title:String = "B Yekan Bold Bold",
 							Font_boxNames:String = "B Yekan Regular",
 							Font_contents_name:String = Font_boxNames;
 		
-		public static const Color_boxBackGround:uint = 0xffffff,
+		public static var Color_boxBackGround:uint = 0xffffff,
 							Color_boxBackGround_friday:uint = 0x555555,
 							Color_boxBackGround_currentDay:uint = 0xF46E31,
 							Color_TitleText:uint = 0,

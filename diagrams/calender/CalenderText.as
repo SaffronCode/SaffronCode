@@ -8,9 +8,18 @@ package diagrams.calender
 	{
 		private var myFormat:TextFormat ;
 		
-		public function CalenderText(color:uint=CalenderConstants.Color_TitleText,size:Number=20,Font:String = CalenderConstants.Font_title,align:String = TextFormatAlign.CENTER , lineSpacing:Number = 0 )
+		public function CalenderText(color:uint=uint.MAX_VALUE,size:Number=20,Font:String = null,align:String = TextFormatAlign.CENTER , lineSpacing:Number = 0 )
 		{
 			super();
+			
+			if(Font==null)
+			{
+				Font = CalenderConstants.Font_title ;
+			}
+			if(color == uint.MAX_VALUE)
+			{
+				color = CalenderConstants.Color_TitleText ;
+			}
 			
 			//1 generate required textFormat
 			myFormat = this.getTextFormat() ;
