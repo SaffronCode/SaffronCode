@@ -80,6 +80,13 @@ package diagrams.calender
 			dateData.setUp(generateCalender,dateData.nextMonth,todayDate);
 		}
 		
+		/**load the exact date to the calender*/
+		public function showDate(date:Date):void
+		{
+			clearOldBoxes();
+			dateData.setUp(generateCalender,date,todayDate);
+		}
+		
 		public function preveMonth()
 		{
 			clearOldBoxes();
