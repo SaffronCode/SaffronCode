@@ -212,7 +212,7 @@
 		/**Set field editable or not*/
 		override public function set enabled(value:Boolean):void
 		{
-			this.mouseChildren = this.mouseEnabled = value ;
+			this.mouseChildren = value ;
 			super.enabled = value ;
 		}
 		
@@ -224,7 +224,7 @@
 		/**Start editing me*/
 		protected function editThisText(event:MouseEvent):void
 		{
-			if(!myTXT.hitTestPoint(stage.mouseX,stage.mouseY))
+			if(super.enabled && !myTXT.hitTestPoint(stage.mouseX,stage.mouseY))
 			{
 				nativeKeyBoard.focuseOnStageText();
 			}
@@ -249,6 +249,10 @@
 		/**Returns true if radio butto changed*/
 		public function switchRadioButton(e=null):Boolean
 		{
+			if(!super.enabled)
+			{
+				return false;
+			}
 			if(radioButtonArray == null || radioButtonArray.length ==0)
 			{
 				trace("No radio button values receved");
