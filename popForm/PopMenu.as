@@ -37,6 +37,8 @@
 					titleBackMC:MovieClip,
 					titleTXT:TextField,
 					titleCont:MovieClip;
+					
+		protected var titleContainerMC:MovieClip;
 		
 		/*private var buttomMC:MovieClip,
 					buttomTXT:TextField;*/
@@ -131,6 +133,13 @@
 			if(titleCont)
 			{
 				titleTXT = Obj.get('title_txt',titleCont);
+				titleContainerMC = new MovieClip();
+				titleTXT.parent.addChild(titleContainerMC);
+				titleContainerMC.x = titleTXT.x ;
+				titleContainerMC.y = titleTXT.y ;
+				titleContainerMC.addChild(titleTXT);
+				titleTXT.x = 0 ;
+				titleTXT.y = 0 ;
 			}
 			titleBackMC = Obj.get('title_cont',this);
 			//titleMC = Obj.get('title_mc',titleBackMC);

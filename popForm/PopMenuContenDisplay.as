@@ -56,6 +56,19 @@ package popForm
 			myHieghtPlus = H ;
 		}
 		
+		public function setY(value:Number):void
+		{
+			thisY = value ;
+			if(scroll)
+			{
+				scroll.y = value ;
+			}
+			else
+			{
+				super.y = value ;
+			}
+		}
+		
 		override public function set height(value:Number):void
 		{
 			absoluteHeight = value ;
@@ -532,7 +545,7 @@ package popForm
 			var scrollRect:Rectangle = new Rectangle(this.x-maxAreaMC.width/2,thisY,maxAreaMC.width,maxAreaMC.height+stagePlusHaight+myHieghtPlus) ;
 			var areaRect:Rectangle = new Rectangle(maxAreaMC.width/-2,0,maxAreaMC.width,10) ;
 			scroll = new ScrollMT(this,scrollRect,areaRect,true);
-			//trace("* : this.height:"+this.height+' vs scrollRect.height:'+scrollRect.height);
+			trace("* : this.height:"+this.height+' vs scrollRect.height:'+scrollRect.height);
 			if(this.height<=scrollRect.height+10)
 			{
 				scroll.reset();
