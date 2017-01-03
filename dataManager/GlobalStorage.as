@@ -74,5 +74,17 @@ package dataManager
 			var jsonString:String = JSONParser.stringify(saverObject);
 			save(id,jsonString,flush);
 		}
+		public static function Delete(id:String):void
+		{
+				setUp();
+				delete storage.data[id];
+		}
+		
+		public function Clear(id:String):void
+		{
+			setUp();
+			storage.data[id] = null ;
+			storage.flush();
+		}
 	}
 }
