@@ -63,7 +63,7 @@ package popForm
 		/**Show this hint with PopMenu1
 		 * I made canselable default to true to make user confortable to close errors
 		 * */
-		public static function show(str:String,canselable:Boolean=true,delyTime:int=-1)
+		public static function show(str:String,canselable:Boolean=true,delyTime:int=-1,displayObject:MovieClip=null,title:String='')
 		{
 			var buttons:Array ;
 			if(canselable)
@@ -74,8 +74,8 @@ package popForm
 			{
 				delyTime = showTimer ;
 			}
-			var popText:PopMenuContent = new PopMenuContent(str,null,buttons,null);
-			PopMenu1.popUp('',null,popText,delyTime);
+			var popText:PopMenuContent = new PopMenuContent(str,null,buttons,displayObject);
+			PopMenu1.popUp(title,null,popText,delyTime);
 		}
 		
 		/**Show no internet connection available*/

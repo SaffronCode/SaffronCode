@@ -7,6 +7,12 @@ package diagrams.calender
 		/**Calender box contents will apear under masked area. You will loose performance*/
 		public static const maskAvailable:Boolean = false;
 		
+		/**Inner box parameters*/
+		public static var 	padding:Number = 1,
+							maskPadding:Number = 5,
+							maskPaddingT:Number = 20,
+							ellipse:Number = 10 ;
+		
 		private static const 	d0:String = "شنبه",
 								d1:String = "یک شنبه",
 								d2:String = "دو شنبه",

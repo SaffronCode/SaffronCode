@@ -9,11 +9,6 @@ package diagrams.calender
 	
 	internal class CalenderBox extends MovieClip
 	{
-		private static const padding:Number = 1 ;
-		private static const maskPadding:Number = 5 ;
-		private static const maskPaddingT:Number = 20 ;
-		private static const ellipse:Number = 10 ;
-		
 		private var dateTitle:CalenderText ;
 		
 		private var Width:Number;
@@ -36,10 +31,20 @@ package diagrams.calender
 
 		private var cahsedContents:CalenderContents;
 		
+		private var padding:Number 
+		private var ellipse:Number;
+		private var maskPadding:Number;
+		private var maskPaddingT:Number;
+		
 		
 		public function CalenderBox(myData:CalenderDayData,W:Number,H:Number)
 		{
 			super();
+			
+			padding = CalenderConstants.padding ;
+			ellipse = CalenderConstants.ellipse ;
+			maskPadding = CalenderConstants.maskPadding ;
+			maskPaddingT = CalenderConstants.maskPaddingT ;
 			
 			data = myData ;
 			
