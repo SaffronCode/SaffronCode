@@ -38,7 +38,7 @@ package diagrams.calender
 		
 		public static var Font_title:String = "B Yekan Bold Bold",
 							Font_boxNames:String = "B Yekan Regular",
-							Font_contents_name:String = Font_boxNames;
+							Font_contents_name:String = "B Yekan Regular";
 		
 		public static var Color_boxBackGround:uint = 0xffffff,
 							Color_boxBackGround_friday:uint = 0x555555,

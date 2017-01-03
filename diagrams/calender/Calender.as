@@ -267,5 +267,11 @@ package diagrams.calender
 			
 			updateCalenderContentInterFace();
 		}
+		
+		/**Update calender data*/
+		public function setUp(calContents:CalenderContents):void
+		{
+			updateCalendetContents(calContents);
+		}
 	}
 }
