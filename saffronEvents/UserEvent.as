@@ -16,13 +16,23 @@ package saffronEvents
 		/**User information is not correct to make him loggin*/
 		public static const LOGIN_FAILD:String = "LOGIN_FAILD" ;
 		
+		/**Register done*/
+		public static const REGISTER_COMPLETED:String = "REGISTER_COMPLETED" ;
+		
+		/**Register faild*/
+		public static const REGISTER_FAILD:String = "REGISTER_FAILD" ;
+		
 		/**0: no error*/
 		public var errorCode:int ;
 		
-		public function UserEvent(type:String,ErrorCode:int=0)
+		/**You can pass any error string on this parameter*/
+		public var errorText:String ;
+		
+		public function UserEvent(type:String,ErrorCode:int=0,ErrorText:String='')
 		{
 			super(type);
 			errorCode = ErrorCode ;
+			errorText = ErrorText ;
 		}
 	}
 }
