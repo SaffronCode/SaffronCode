@@ -91,8 +91,15 @@
 				throw "Dont pass null value as RequestedData";
 			}*/
 			//serviceName = myWebServiceLocation ;
-			
-			pureRequest = new URLRequest(RestDoaService.domain+myWebServiceLocation);
+
+			if(myWebServiceLocation.indexOf('http')==0)
+			{
+                pureRequest = new URLRequest(myWebServiceLocation);
+			}
+			else
+			{
+				pureRequest = new URLRequest(RestDoaService.domain+myWebServiceLocation);
+			}
 			
 			isGet = useGetMethod;
 			if(useGetMethod)
