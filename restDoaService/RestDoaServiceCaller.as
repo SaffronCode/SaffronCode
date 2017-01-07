@@ -70,6 +70,7 @@
 		
 					
 		private var isGet:Boolean ;
+		private var _isLoading:Boolean;
 		
 		
 		/**Do not pass null value as RequestedData, it will cause an Error!!<br>
@@ -147,6 +148,12 @@
 			requestLoader.addEventListener(IOErrorEvent.IO_ERROR,noInternet);
 		}
 		
+		/**Returns true if loading is in progress*/
+		public function get isLoading():Boolean
+		{
+			return _isLoading ;
+		}
+		
 		/**This function will change the maximomOfflineData value to new date<br>
 		 * null changes with new Date();*/
 		public function changeOfflineDate(newDate:Date=null):void
@@ -160,6 +167,7 @@
 		
 		private function noInternet(e:IOErrorEvent=null,controllData:Boolean=true)
 		{
+			_isLoading = false ;
 			trace("No internet connection");
 			if(controllData && offlineDataIsOK)
 			{
@@ -202,7 +210,7 @@
 		
 		private function requestLoaded(event:Event):void
 		{
-			
+			_isLoading = false ;
 			//parser = new JSONParser();
 			if(RestDoaService.debug_show_results)
 			{
@@ -377,6 +385,7 @@
 			
 			//debug line
 			//navigateToURL(pureRequest);
+				_isLoading = true ;
 				requestLoader.load(pureRequest);
 				//noInternet();
 		}
