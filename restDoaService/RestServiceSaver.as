@@ -7,7 +7,7 @@ package restDoaService
 	{
 		public static var lastLoadedData:String ;
 		
-		public static var lastCashDate:uint ;
+		public static var lastCashDate:Number ;
 		
 		public static function load(id:String,jsonParam:String):*
 		{

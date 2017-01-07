@@ -40,7 +40,7 @@ package dataManager
 		//private static var temporaryObject:Object ;
 		
 		/**This is a date that the last cash was saved*/
-		public static var savedDate:uint ;
+		public static var savedDate:Number ;
 		
 		
 		/**return true if the offline date number is not old*/
@@ -212,7 +212,7 @@ package dataManager
 			{
 				var id:String = asyncQue[0].id ;
 				var data:* = asyncQue[0].data ;
-				var date:uint = asyncQue[0].date ;
+				var date:Number = asyncQue[0].date ;
 				trace("************Query executed");
 				asyncQuery.removeEventListener(SQLEvent.RESULT,continueSaving);
 				//( "+field_id+" , "+field_value+" , "+field_date+" )
@@ -255,6 +255,7 @@ package dataManager
 				if(asyncQue[i].id == id)
 				{
 					TimeTracer.tr("founded "+id);
+					savedDate = asyncQue[i].date ;
 					return asyncQue[i].data ;
 				}
 			}
@@ -265,6 +266,7 @@ package dataManager
 					if(lastAcceptableDate===null || asyncSaved[i].date>lastAcceptableDate.time)
 					{
 						TimeTracer.tr("founded "+id);
+						savedDate = asyncSaved[i].date ;
 						return asyncSaved[i].data ;
 					}
 					else
@@ -289,7 +291,7 @@ package dataManager
 			
 			//trace("it have to send query to db to detect the data");
 			query.clearParameters();
-			query.text = "select "+field_value+" from "+tableName+" where "+field_id+" == @"+field_id+dateControllQuery;
+			query.text = "select "+field_value+','+field_date+" from "+tableName+" where "+field_id+" == @"+field_id+dateControllQuery;
 			query.parameters["@"+field_id] = id ;
 			
 			//trace("query.text  : "+query.text);
