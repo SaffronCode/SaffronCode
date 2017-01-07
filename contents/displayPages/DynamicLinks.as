@@ -204,7 +204,12 @@ package contents.displayPages
 		}
 		
 		/**1-Cereate LinkItem on this pages<br>
-		 * 2- Draw a shape to define scrollArea in this object*/
+		 * 2- Draw a shape to define scrollArea in this object<br><br>
+		 * 	//contents.displayPages.DynamicLinks<br>
+//Uses:<br>
+	//contents.displayPages.LinkItem<br>
+//And<br>
+	//contents.displayPages.LinkItemButtons<br>*/
 		public function DynamicLinks()
 		{
 			super();
