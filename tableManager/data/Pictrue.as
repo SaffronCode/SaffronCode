@@ -132,7 +132,7 @@
 		
 		protected function LOAD_BYTESARRAY_fun(event:ThumbnailEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			bytesArrayServic = event.url
 			_byteArray = bytesArrayServic.data
 			loadBytes_fun()

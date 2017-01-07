@@ -101,7 +101,7 @@ package contents.soundControll
 		/**This will change the current playing music ( not tested yet )*/
 		public static function changeMainMusic(musicURL:String='',volume:Number=1):void
 		{
-			// TODO Auto Generated method stub
+			
 			//SoundPlayer.pause(currentSoundId);
 			var musicWasPlaying:Boolean = MusicIsPlaying ;
 			if(lastPlayingMusic==null && musicURL=='')

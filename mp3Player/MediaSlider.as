@@ -41,7 +41,7 @@ package mp3Player
 		
 		protected function unLoad(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			this.removeEventListener(Event.ENTER_FRAME,animIt);
 			this.removeEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 			this.removeEventListener(MouseEvent.CLICK,changePrecent);
@@ -50,7 +50,7 @@ package mp3Player
 		/**precent changed*/
 		protected function changePrecent(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			if(onChanged!=null)
 			{
 				//Calculate current precent

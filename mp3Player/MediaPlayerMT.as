@@ -66,7 +66,7 @@ package mp3Player
 		
 		protected function unLoad(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			this.removeEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 			this.removeEventListener(Event.ENTER_FRAME,checkPrecent);
 			SoundPlayer.pause(mediaSoundID);
@@ -100,13 +100,13 @@ package mp3Player
 		
 		protected function TryLater(event:URLSaverEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			trace("Internet connection fails , but I will try again ... ");
 		}
 		
 		protected function Loading(event:URLSaverEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			trace("Im downloading..1:"+event.precent );
 			trace("Im downloading..2:"+  String( event.precent*100 ).substr(0,3)  ); 
 			precentTF.text = Math.round(Number(String( event.precent*100 ).substr(0,3))) +' %';
@@ -114,7 +114,7 @@ package mp3Player
 		
 		protected function SoundIsReady(event:URLSaverEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			trace("sound file is ready to use");
 			startToPlaySound(event.offlineTarget);
 		}
@@ -123,7 +123,7 @@ package mp3Player
 		
 		private function startToPlaySound(offlineTarget:String):void
 		{
-			// TODO Auto Generated method stub
+			
 			offlineURL = offlineTarget ;
 			SoundIsLoaded = true ;
 			precentTF.text = '' ;
@@ -157,7 +157,7 @@ package mp3Player
 		
 		protected function toglleSoundIfLoaded(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			if(SoundIsLoaded)
 			{
 				if(playPauseBTN.currentFrame == 1)

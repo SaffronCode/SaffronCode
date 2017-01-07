@@ -379,14 +379,14 @@
 		
 		private function captureAndSaveDrawingDilay():void
 		{
-			// TODO Auto Generated method stub
+			
 			captureTimer.start();
 		}
 		
 		private function captureAndSaveDrawing(e:TimerEvent=null):void
 		{
 			canselCaptureDilay()
-			// TODO Auto Generated method stub
+			
 			var currentDrawnBitmap:Bitmap = exportBitmap(true,false,autoCaptureResolution);
 			
 			rubberPlace.graphics.clear();

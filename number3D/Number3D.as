@@ -110,7 +110,7 @@
 		
 		protected function mouseDown_fun(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			startYlocation = this.mouseY
 			stopRol = false		
 			this.addEventListener(Event.ENTER_FRAME,enterFrame_fun)
@@ -120,7 +120,7 @@
 		
 		protected function removeEnterFrame(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			unloadEnterFrame()
 		
 		}
@@ -133,7 +133,7 @@
 		}
 		protected function enterFrame_fun(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			moveEffect_fun()
 		}
 

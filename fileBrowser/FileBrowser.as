@@ -74,7 +74,7 @@ package fileBrowser
 		
 		public static function browsToSave(targetBytes:ByteArray,fileName:String):void
 		{
-			// TODO Auto Generated method stub
+			
 			selectedFileBytes = targetBytes ;
 			mode = 2;
 			Name = fileName ;
@@ -249,7 +249,7 @@ package fileBrowser
 		/**Finish the browse*/
 		private static function selectThisFile(file:File):void
 		{
-			// TODO Auto Generated method stub
+			
 			selectedFile = file ;
 			
 			selectedFileBytes = FileManager.loadFile(selectedFile);
@@ -258,7 +258,7 @@ package fileBrowser
 		
 		private static function searchPage(searchVal:String=null):void
 		{
-			// TODO Auto Generated method stub
+			
 			if(searchVal!=null)
 			{
 				lastSearchVal = searchVal ;
@@ -296,7 +296,7 @@ package fileBrowser
 		private static function startSearch():void
 		{
 			trace("Start the search about : "+lastSearchVal);
-			// TODO Auto Generated method stub
+			
 			var searchMC:MovieClip = new MovieClip();
 			searchTF = new MTTextField(0,30,"B Yekan Regular");
 			searchTF.width = 400 ;
@@ -322,13 +322,13 @@ package fileBrowser
 				searchQue.push(bases[i] as File);
 			}
 			//queEndTime = getTimer()+10/*frameTimes*/;
-			// TODO Auto Generated method stub
+			
 			eventListen.addEventListener(Event.ENTER_FRAME,SearchOnQue);
 		}
 		
 			protected static function SearchOnQue(event:Event):void
 			{
-				// TODO Auto-generated method stub
+				
 				searchTF.text = foundedFiles.length.toString();
 				/*for(var i = 0 ; i<searchQue.length ; i++)
 				{
@@ -359,7 +359,7 @@ package fileBrowser
 			private static function searchOn2(file:File):void
 			{
 				//trace("Check this : "+file.nativePath);
-				// TODO Auto Generated method stub
+				
 				if(file.isDirectory)
 				{
 					var sub:Array = file.getDirectoryListing();
@@ -431,7 +431,7 @@ package fileBrowser
 						//trace("Time out on : "+file.nativePath);
 						return ;
 					}
-					// TODO Auto Generated method stub
+					
 					var sub:Array = file.getDirectoryListing() ;
 					var file2:File
 					for(var i = 0 ; i<sub.length ; i++)
@@ -454,7 +454,7 @@ package fileBrowser
 		
 		private static function stopSearching():void
 		{
-			// TODO Auto Generated method stub
+			
 			eventListen.removeEventListener(Event.ENTER_FRAME,SearchOnQue);
 		}
 		
@@ -474,7 +474,7 @@ package fileBrowser
 		
 		private static function ShowSearchResult():void
 		{
-			// TODO Auto Generated method stub
+			
 			var buttons:Array = [Lang.t.back,''];
 			
 			for(var i = 0 ; i<foundedFiles.length ; i++)

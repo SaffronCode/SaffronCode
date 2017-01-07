@@ -195,7 +195,7 @@ package popForm
 		
 		public static function setPreLoader(preLoaderMC:MovieClip):void
 		{
-			// TODO Auto Generated method stub
+			
 			myPreLoader = preLoaderMC ;
 		}
 	}

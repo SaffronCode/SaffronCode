@@ -15,7 +15,7 @@ package componentStatic
 		}
 		protected function getUpdate(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			update()
 		}
 		public function update():void
@@ -35,7 +35,7 @@ package componentStatic
 		}
 		protected function click_fun(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			_status = !_status
 			setObj(this.name,_status)
 			setStatus()	

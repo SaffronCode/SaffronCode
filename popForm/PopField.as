@@ -233,7 +233,7 @@
 		/**My input text is updated, so dispatch change event on my object*/
 		protected function dispatchChangeForMeToo(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			this.dispatchEvent(new Event(Event.CHANGE));
 		}
 		

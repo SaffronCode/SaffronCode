@@ -57,7 +57,7 @@ package darkBox
 		
 		protected function imageLoaded(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			var image:Bitmap = (imageLoader.content) as Bitmap ;
 			image.smoothing = true ;
 			imageMC.addChild(image);
@@ -72,7 +72,7 @@ package darkBox
 		
 		protected function imageNotLoaded(event:IOErrorEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			trace("Image type is unknown");
 		}
 	}

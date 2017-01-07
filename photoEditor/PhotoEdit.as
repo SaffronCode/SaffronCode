@@ -85,7 +85,7 @@ package photoEditor
 		
 		protected function blockBack(event:KeyboardEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			if(this.visible)
 			{
 				if(event.keyCode == Keyboard.BACK)
@@ -252,7 +252,7 @@ package photoEditor
 		
 		private function showCurrentImage():void
 		{
-			// TODO Auto Generated method stub
+			
 			if(previewPage!=null)
 			{
 				previewPage.killMe();
@@ -301,7 +301,7 @@ package photoEditor
 		/**Returns true if undo function works*/
 		internal static function undo():Boolean
 		{
-			// TODO Auto Generated method stub
+			
 			if(imageIndex>0)
 			{
 				imageIndex--;
@@ -333,7 +333,7 @@ package photoEditor
 		
 		internal static function getImage(rs:Rectangle=null):BitmapData
 		{
-			// TODO Auto Generated method stub
+			
 			if(rs==null)
 			{
 				return imageHistory[imageIndex] ;

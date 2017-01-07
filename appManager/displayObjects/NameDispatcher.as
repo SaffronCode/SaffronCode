@@ -18,7 +18,7 @@ package appManager.displayObjects
 		
 		protected function imSelected(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			this.dispatchEvent(new AppEvent(this.name));
 		}
 	}

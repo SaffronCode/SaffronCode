@@ -40,7 +40,7 @@ package diagrams.calender
 		
 		public function setUp( onDateReady:Function , dateOnMonth:Date , TodayDate:Date):void
 		{
-			// TODO Auto Generated method stub
+			
 			onReady = onDateReady ;
 			
 			/*if(todayDate.fullYear == dateOnMonth.fullYear && todayDate.month == dateOnMonth.month && todayDate.date == dateOnMonth.date)
@@ -67,7 +67,7 @@ package diagrams.calender
 			//Set each day lenght
 			//var dayLenght:Number = new Date(0,0,1).time ;
 			
-			// TODO Auto Generated method stub
+			
 			/**It is dayli data , so it dosent need to get houres and minutse*/
 			var testDate:Date = new Date(enteredDate.fullYear,enteredDate.month,enteredDate.date);
 			var testShamsiDate:MyShamsi = MyShamsi.miladiToShamsi(testDate) ;
@@ -130,13 +130,13 @@ package diagrams.calender
 		/**Server side function*/
 		private function findDateMeetings():void
 		{
-			// TODO Auto Generated method stub
+			
 			findDateDatas();
 		}
 		
 		private function findDateDatas():void
 		{
-			// TODO Auto Generated method stub
+			
 			onReady();
 		}
 		

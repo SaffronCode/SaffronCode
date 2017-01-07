@@ -110,7 +110,7 @@ package contents.robot
 		/**Open the questino page*/
 		private static function showRankQuestion():void
 		{
-			// TODO Auto Generated method stub
+			
 			stopCounting();
 			var popButtons:Array = [
 					new PopButtonData(Contents.lang.t[lang_yes],0,null,true,false),

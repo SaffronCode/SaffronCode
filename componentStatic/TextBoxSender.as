@@ -15,7 +15,7 @@ package componentStatic
 		
 		protected function getUpdate(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			update()
 		}
 		public function update():void
@@ -33,7 +33,7 @@ package componentStatic
 		}
 		protected function textBoxEvent_fun(event:TextBoxEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			setObj(this.name,event.text)
 		}
 		public function rest()

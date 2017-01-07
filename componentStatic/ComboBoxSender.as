@@ -34,7 +34,7 @@ package componentStatic
 		
 		protected function getUpdate(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			update()
 		}
 		public function update():void
@@ -94,7 +94,7 @@ package componentStatic
 		}
 		protected function OpenList(event:MouseEvent=null):void
 		{
-			// TODO Auto Generated method stub
+			
 			openListPopUp()
 		}
 		
@@ -105,12 +105,12 @@ package componentStatic
 		
 		protected function onBackFun():void
 		{
-			// TODO Auto Generated method stub
+			
 			
 		}
 		protected function selector(event:PopMenuEvent):void
 		{
-			// TODO Auto Generated method stub
+			
 			_titleMc.setUp(event.buttonTitle)
 			setObj(this.name,event.buttonID)
 			selected()
@@ -121,7 +121,7 @@ package componentStatic
 		}
 		protected function Server_Error(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			trace('combobox server erroe')
 			
 		}

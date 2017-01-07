@@ -311,7 +311,7 @@ package appManager.displayContentElemets
 		/**If you pass null to this functino, it will use loadedBytes valeu*/
 		protected function imageSaved(event:URLSaverEvent=null):void
 		{
-			// TODO Auto-generated method stub
+			
 			var loaderContext:LoaderContext = new LoaderContext(false,ApplicationDomain.currentDomain);
 			//trace("Load this image : "+event.offlineTarget);
 			loader = new Loader();
@@ -374,7 +374,7 @@ package appManager.displayContentElemets
 		
 		protected function imageNotFound(event:*):void
 		{
-			// TODO Auto-generated method stub
+			
 			this.dispatchEvent(new Event(Event.UNLOAD));
 			
 			timeOutValue = setTimeout(startWork,10000);
@@ -382,7 +382,7 @@ package appManager.displayContentElemets
 		
 		protected function imageLoaded(event:Event=null):void
 		{
-			// TODO Auto-generated method stub
+			
 			clearTheBitmap();
 			var loadedContent:DisplayObject ;
 			if(loader==null && loadedBitmap==null)
@@ -487,7 +487,7 @@ package appManager.displayContentElemets
 		
 		protected function clearTheBitmap():void
 		{
-			// TODO Auto Generated method stub
+			
 			if(newBitmap!=null)
 			{
 				if(newBitmap.bitmapData!=null)
@@ -499,7 +499,7 @@ package appManager.displayContentElemets
 		
 		protected function unLoad(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			clearTimeout(imageLoaderTimeOutId);
 			clearTimeout(timeOutValue);
 			if(CPUController.isSatUp)
@@ -539,7 +539,7 @@ package appManager.displayContentElemets
 		
 		public static function addWaterMark(watermarkTarget:File):void
 		{
-			// TODO Auto Generated method stub
+			
 			DeviceImage.loadFile(onWatermarkLoaded,watermarkTarget)
 		}
 		

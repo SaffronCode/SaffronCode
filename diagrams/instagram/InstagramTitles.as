@@ -33,7 +33,7 @@ package diagrams.instagram
 		/**This function will return the closest vTitle to this value with this step*/
 		public function getVName(vStepValTemp:Number, steps:Number):InstaTitleValue
 		{
-			// TODO Auto Generated method stub
+			
 			for(var i = 0 ; i<vTitle.length ; i++)
 			{
 				if(Math.abs(vTitle[i].value-vStepValTemp)<steps)

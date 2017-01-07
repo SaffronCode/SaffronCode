@@ -17,7 +17,7 @@ package sliderMenu
 		
 		protected function clicked(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			if(SliderManager.isOpen())
 			{
 				trace("Hide the menu");

@@ -115,7 +115,7 @@ package diagrams.instagram
 		
 		protected function anim(event:Event=null):void
 		{
-			// TODO Auto-generated method stub
+			
 			this.graphics.clear();
 			if(cilcles.length == 0)
 			{
@@ -151,7 +151,7 @@ package diagrams.instagram
 		
 		protected function unLoad(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			this.removeEventListener(Event.ENTER_FRAME,anim);
 			this.removeEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 		}

@@ -37,7 +37,7 @@ package contents.displayElements
 		
 		protected function unLoad(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			SoundPlayer.eventsDispatch.removeEventListener(SoundPlayerEvent.PAUSED,musicStoped);
 			SoundPlayer.eventsDispatch.removeEventListener(SoundPlayerEvent.STOPED,musicStoped);
 			SoundPlayer.eventsDispatch.removeEventListener(SoundPlayerEvent.PLAYED,musicPlayed);

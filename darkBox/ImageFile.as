@@ -144,19 +144,19 @@ package darkBox
 		
 		protected function loadingProcess(event:URLSaverEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			this.dispatchEvent(new URLSaverEvent(event.type,event.precent));
 		}
 		
 		protected function noNet(event:URLSaverEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			this.dispatchEvent(new URLSaverEvent(event.type,event.precent));
 		}
 		
 		protected function onImageFileSaved(event:URLSaverEvent=null,downloadedFileTarget:String=null):void
 		{
-			// TODO Auto-generated method stub
+			
 			if(event!=null)
 			{
 				target = event.offlineTarget;

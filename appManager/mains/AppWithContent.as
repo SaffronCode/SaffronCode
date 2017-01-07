@@ -214,7 +214,7 @@
 		/**Permition from the pages released*/
 		protected function letThePreventedAppEventRelease(event:PageControllEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			preventorFunction = null ;
 			preventorPage = null ;
 			var preventedEventCash:AppEvent = preventedEvent ;
@@ -239,7 +239,7 @@
 		/**Preventor set*/
 		protected function preventPageChanging(event:PageControllEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			trace("Permition sat");
 			preventorFunction = event.permitionReceiver ;
 			preventorPage = event.preventerPage ;

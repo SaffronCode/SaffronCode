@@ -26,7 +26,7 @@ package appManager.animatedPages
 		
 		protected function anim(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			if((minHistoryRequired == 1 && History.backAvailable()) || minHistoryRequired<History.length)
 			{
 				this.nextFrame();

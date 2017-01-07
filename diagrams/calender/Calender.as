@@ -114,7 +114,7 @@ package diagrams.calender
 		/**now , every thing is ready to generate real calender*/
 		private function generateCalender():void
 		{
-			// TODO Auto Generated method stub
+			
 			if(myType == MONTHLY)
 			{
 				generateMontlyCalender(dateData.lengthOfTheMonth,dateData.firstDayOfTheWeek);
@@ -152,7 +152,7 @@ package diagrams.calender
 		/**Generate monthly calender*/
 		private function generateMontlyCalender(currentMonthDays:uint = 31,firstDay:uint = 5):void
 		{
-			// TODO Auto Generated method stub
+			
 			var titleNumber:uint = CalenderConstants.dayNames.length ;
 			var titleWidth:Number = W/titleNumber ;
 			var titlesHeight:Number = 0 ;
@@ -228,7 +228,7 @@ package diagrams.calender
 		/**Update calender interface from calenderData.content*/
 		private function updateCalenderContentInterFace():void
 		{
-			// TODO Auto Generated method stub
+			
 			//the only things that is necesary to check are storedBoxes on the stage
 			for(var i = 0 ; i<storedBoxes.length ; i++)
 			{
@@ -255,7 +255,7 @@ package diagrams.calender
 		/**Cear old boxes*/
 		private function clearOldBoxes():void
 		{
-			// TODO Auto Generated method stub
+			
 			for(var i = 0 ; storedBoxes!=null && i<storedBoxes.length ; i++)
 			{
 				storedBoxes[i].hide(storedBoxes[i].showSpeed/10);
@@ -269,7 +269,7 @@ package diagrams.calender
 		/**update calender data on this*/
 		public function updateCalendetContents(calContents:CalenderContents):void
 		{
-			// TODO Auto Generated method stub
+			
 			calenderData = calContents ;
 			
 			updateCalenderContentInterFace();

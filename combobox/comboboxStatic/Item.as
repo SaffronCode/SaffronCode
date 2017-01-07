@@ -13,7 +13,7 @@ package combobox.comboboxStatic
 		
 		protected function click_fun(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			var _id:String = this.name
 			var _coboBoxId:String = parent.parent.parent.name.split('_')[1]	
 			select(_id,_coboBoxId)	

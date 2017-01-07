@@ -35,7 +35,7 @@ package contents.displayPages
 		
 		protected function openInWebBrowser(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			navigateToURL(new URLRequest(myPage.content));
 		}
 		
@@ -70,7 +70,7 @@ package contents.displayPages
 		/**Unload this item from web*/
 		protected function unLoad(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			this.removeEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 			this.removeEventListener(Event.ENTER_FRAME,controllStagePlace);
 			sw.stage = null ;

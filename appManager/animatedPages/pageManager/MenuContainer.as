@@ -233,7 +233,7 @@ package appManager.animatedPages.pageManager
 		
 		public function dispatchPageReadyEventOnceForPage():void
 		{
-			// TODO Auto Generated method stub
+			
 			if(currentMenu!=null && !pageReadyDispatched)
 			{
 				pageReadyDispatched = true ;

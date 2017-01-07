@@ -191,7 +191,7 @@ package contents.displayPages
 		/**New function to change the link item size dynamicly*/
 		public function setSize(Width:Number, Height:Number):void
 		{
-			// TODO Auto Generated method stub
+			
 			myParentWidth = Width;
 			myParentHeight = Height;
 		}

@@ -18,7 +18,7 @@ package appManager.animatedPages.pageManager
 		
 		public static function activatePageAnimation():void
 		{
-			// TODO Auto Generated method stub
+			
 			animateInternalPages = true ;
 		}
 		
@@ -48,7 +48,7 @@ package appManager.animatedPages.pageManager
 		
 		protected function anim(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			var animIsOver:Boolean = false;
 			if(toEvent.myType == AppEvent.home || toEvent.myID!=myCurrentEvent.myID || toEvent.myType == AppEvent.refresh || toEvent.reload)
 			{

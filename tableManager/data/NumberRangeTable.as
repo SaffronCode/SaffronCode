@@ -111,7 +111,7 @@ package tableManager.data
 
 		protected function delay_fun(event:TimerEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			delayTimver.stop()
 			delayTimver.removeEventListener(TimerEvent.TIMER,delay_fun)
 			sendValue()

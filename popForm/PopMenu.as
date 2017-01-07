@@ -200,7 +200,7 @@
 		/**back button on key board pressed*/
 		private function checkBack(ev:KeyboardEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			if(ev.keyCode == Keyboard.BACK || ev.keyCode == Keyboard.BACKSPACE || ev.keyCode == Keyboard.PAGE_UP )
 			{
 				if(show)
@@ -216,7 +216,7 @@
 		
 		protected function backClicked(event:MouseEvent):Boolean
 		{
-			// TODO Auto-generated method stub
+			
 			//trace("show : "+show);
 			if(show)
 			{

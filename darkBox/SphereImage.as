@@ -59,7 +59,7 @@ package darkBox
 		
 		protected function imageLoaded(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			var image:Bitmap = (imageLoader.content) as Bitmap ;
 			
 			var imageW:Number = Math.max(rect.width,rect.height)*4 ;
@@ -84,7 +84,7 @@ package darkBox
 		
 		protected function imageNotLoaded(event:IOErrorEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			trace("Image type is unknown");
 		}
 		

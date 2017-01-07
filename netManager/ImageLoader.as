@@ -74,7 +74,7 @@ package netManager
 		
 		protected function imSelected(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			var target:String ;
 			if(imageURL!=null)
 			{
@@ -106,7 +106,7 @@ package netManager
 		private function stageTest(e:Event=null):void
 		{
 			this.removeEventListener(Event.ADDED_TO_STAGE,stageTest);
-			// TODO Auto Generated method stub
+			
 			if(this.stage == null)
 			{
 				this.addEventListener(Event.ADDED_TO_STAGE,stageTest);
@@ -121,7 +121,7 @@ package netManager
 		protected function unLoad(event:Event):void
 		{
 			//trace("Cansel "+imageURL+" downloading");
-			// TODO Auto-generated method stub
+			
 			this.removeChildren();
 			myURLSaver.cansel();
 			try
@@ -132,7 +132,7 @@ package netManager
 		
 		private function loadImage():void
 		{
-			// TODO Auto Generated method stub
+			
 			unLoad(null);
 			if(imageURL == "")
 			{
@@ -154,7 +154,7 @@ package netManager
 		
 		protected function imageLoadingStarted(ev:URLSaverEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			//trace('downloading : '+ev.precent);
 			if(myPreLoader!=null && myPreLoader.hasOwnProperty('setUp'))
 			{
@@ -166,7 +166,7 @@ package netManager
 		private function showPreLoader():void
 		{
 			//trace("ask to load pre loader");
-			// TODO Auto Generated method stub
+			
 			if(myPreLoader == null && preLoaderClass!=null)
 			{
 				//trace("this is pre loader");
@@ -181,7 +181,7 @@ package netManager
 		{
 			myURLSaver.cansel();
 			//return ;
-			// TODO Auto-generated method stub
+			
 			imageURL = ev.offlineTarget ;
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE,imageLoaded);
 			loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR,urlProblem);
@@ -196,7 +196,7 @@ package netManager
 		
 		protected function urlProblem(event:*):void
 		{
-			// TODO Auto-generated method stub
+			
 			//trace('cansel!!');
 			myURLSaver.cansel();
 			myURLSaver.deletFileIfExists(imageURL);
@@ -206,7 +206,7 @@ package netManager
 		
 		protected function imageLoaded(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			var image:Bitmap ;
 			if(resizeBitmapFlag)
 			{
@@ -268,7 +268,7 @@ package netManager
 		
 		public function deleteImageIfItsCashed():void
 		{
-			// TODO Auto Generated method stub
+			
 			myURLSaver.deletFileIfExists(onlineURL);
 		}
 	}

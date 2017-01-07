@@ -39,7 +39,7 @@ package componentStatic
 		
 		protected function setlocatoin_fun(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			if(GeoLocation.marker!=null)
 			{
 				heideMap()
@@ -112,7 +112,7 @@ package componentStatic
 		}
 		protected function markerList_fun(event:MapEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			var _marker:Marker = event.makerList[event.makerList.length-1]		
 			error(setObj('Lat',_marker.lat))
 			error(setObj('Lon',_marker.lng))

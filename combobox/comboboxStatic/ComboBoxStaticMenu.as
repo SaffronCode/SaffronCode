@@ -35,7 +35,7 @@ package combobox.comboboxStatic
 		}
 		protected function close(event:ComboBoxStaticEvents):void
 		{
-			// TODO Auto-generated method stub
+			
 			if(_menu && this.currentFrame!=1  &&( _comboBoxId==event.comboBoxId || event.closeAllComboBox ))
 			{
 				gotoAndPlay(ComboBoxStaticEvents.CLOSE)
@@ -46,7 +46,7 @@ package combobox.comboboxStatic
 		
 		protected function open(event:ComboBoxStaticEvents):void
 		{
-			// TODO Auto-generated method stub
+			
 			if(_comboBoxId==event.comboBoxId)
 			{
 				gotoAndPlay(ComboBoxStaticEvents.OPEN)

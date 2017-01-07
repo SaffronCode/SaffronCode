@@ -45,7 +45,7 @@ package photoEditor
 		
 		private function controllStage(e:*=null):void
 		{
-			// TODO Auto Generated method stub
+			
 			if(this.stage!=null)
 			{
 				activateCropper();
@@ -68,7 +68,7 @@ package photoEditor
 		
 		protected function showCropArea(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			if(!cropActive)
 			{
 				return ;
@@ -154,13 +154,13 @@ package photoEditor
 		
 		protected function canselCropping(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			cropActive = false 
 		}
 		
 		protected function controllMousePose(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			//Activate draw editor
 			cropActive = true;
 			//Set the mouse position to use on drawEditor class
@@ -200,7 +200,7 @@ package photoEditor
 		
 		protected function unLoad(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			this.removeEventListener(MouseEvent.MOUSE_DOWN,controllMousePose);
 			stage.removeEventListener(MouseEvent.MOUSE_UP,canselCropping);
 			this.removeEventListener(Event.ENTER_FRAME,showCropArea);

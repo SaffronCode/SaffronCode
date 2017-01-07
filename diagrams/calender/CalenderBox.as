@@ -117,7 +117,7 @@ package diagrams.calender
 		
 			protected function showMe(event:TimerEvent):void
 			{
-				// TODO Auto-generated method stub
+				
 				AnimData.fadeIn(this);
 			}
 		
@@ -149,7 +149,7 @@ package diagrams.calender
 		
 		protected function hideMe(event:TimerEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			myTimer.reset();
 			AnimData.fadeOut(this,deleteMe);
 		}
@@ -227,7 +227,7 @@ package diagrams.calender
 		
 		protected function calBoxSelected(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			trace('show calender data now');
 			
 			this.dispatchEvent(new CalenderEvent(CalenderEvent.DATE_SELECTED,cahsedContents,data.Mdate,data.to));

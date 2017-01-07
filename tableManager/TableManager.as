@@ -187,7 +187,7 @@
 		
 		protected function compeletPictrue(event:TableEvents):void
 		{
-			// TODO Auto-generated method stub
+			
 			set_value_cell( event.pictrue.bitmap,event.pictrue.Id)
 			listCopye[event.pictrue.Id].TypeCell.PictrueType.removeEventListener(TableEvents.PICTRUE_TALBE,compeletPictrue)
 
@@ -195,7 +195,7 @@
 		
 		protected function compeletButtons(event:TableEvents):void
 		{
-			// TODO Auto-generated method stub
+			
 			set_value_cell(event.buttons.buttonMovie,event.buttons.Id,true)
 			listCopye[event.buttons.Id].TypeCell.ButtonType.removeEventListener(TableEvents.BUTTONS_TABLE,compeletButtons)
 
@@ -616,7 +616,7 @@
 		
 		private  function compareFunction(A:Cell,B:Cell):Number
 		{
-			// TODO Auto Generated method stub
+			
 			if(A.Movie.width<B.Movie.width)
 			{
 				return -1
@@ -632,7 +632,7 @@
 		}		
 		private  function compareFunctionHight(A:Cell,B:Cell):Number
 		{
-			// TODO Auto Generated method stub
+			
 			if(A.Movie.height<B.Movie.height)
 			{
 				return -1

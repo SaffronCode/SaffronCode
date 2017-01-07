@@ -48,7 +48,7 @@ package contents.multiLanguage
 		
 		protected function removeThisText(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			var tf:TextField = event.currentTarget as TextField ;
 			var I:int = texts.indexOf(tf);
 			if(I!=-1)

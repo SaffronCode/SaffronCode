@@ -43,7 +43,7 @@ package diagrams.instagram
 		
 		public function addVerticalLeverMeter():void
 		{
-			// TODO Auto Generated method stub
+			
 			this.graphics.lineStyle(InstagramConstants.Diagram_guide_line_thickness,InstagramConstants.Diagram_colors);
 			//trace("myText.width : "+myText.width);
 			this.graphics.moveTo(myText.width,myText.height/2);
@@ -52,7 +52,7 @@ package diagrams.instagram
 		
 		public function addHorizontalLeverMeter():void
 		{
-			// TODO Auto Generated method stub
+			
 			this.graphics.lineStyle(InstagramConstants.Diagram_guide_line_thickness,InstagramConstants.Diagram_colors);
 			//trace("myText.width : "+myText.width);
 			this.graphics.moveTo(myText.width/2,0);

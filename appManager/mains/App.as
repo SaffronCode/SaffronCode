@@ -135,20 +135,20 @@ package appManager.mains
 		
 		protected function removeCurrentMenu(event:MenuEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			_currentMenu = null ;
 		}
 		
 		protected function setTheCurrentMenu(event:MenuEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			trace("New menu is ready");
 			_currentMenu = event.menuTarget ;
 		}
 		
 		protected function changeTheTitle(event:TitleEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			if(titleManager)
 			{
 				var fakePageData:PageData = new PageData();
@@ -280,7 +280,7 @@ package appManager.mains
 					ContentSoundManager.changeMainMusic((event as AppEventContent).pageData.musicURL,(event as AppEventContent).pageData.musicVolume);
 				}
 				
-			// TODO Auto-generated method stub
+			
 			if(mainAnim == null)
 			{
 				//do it if mainAnim doesent exists
@@ -334,7 +334,7 @@ package appManager.mains
 		/**This function will call just when the mainAnim is exists*/
 		protected function changePage(s:AppEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			trace("Main anim is ready");
 			_appIsReady = true ;
 			manageAllAnimatedPaged(currentAppEvent);
@@ -368,7 +368,7 @@ package appManager.mains
 	//Main anim manager
 		protected function backToHomePage():void
 		{
-			// TODO Auto Generated method stub
+			
 			if(mainAnim != null)
 			{
 				mainAnim.goHome();
@@ -378,7 +378,7 @@ package appManager.mains
 		
 		protected function showExternalPages():void
 		{
-			// TODO Auto Generated method stub
+			
 			if(mainAnim != null)
 			{
 				mainAnim.goInternalPage();

@@ -64,7 +64,7 @@ package diagrams.table
 		
 		protected function imSelected(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			trace("Im selected : "+vid+' '+hid);
 			this.dispatchEvent(new TableEvent(TableEvent.TABLE_SELECTED,vid,hid,casheValue));
 		}

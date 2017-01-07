@@ -202,7 +202,7 @@
 		
 		private function requestLoaded(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			//parser = new JSONParser();
 			if(RestDoaService.debug_show_results)
 			{

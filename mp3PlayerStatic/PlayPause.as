@@ -19,7 +19,7 @@ package mp3PlayerStatic
 		
 		protected function unload(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			this.removeEventListener(Event.ENTER_FRAME,cheker)	
 			this.removeEventListener(Event.REMOVED_FROM_STAGE,unload)
 			if(MediaPlayerStatic.evt!=null)
@@ -31,7 +31,7 @@ package mp3PlayerStatic
 		
 		protected function cheker(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			if(MediaPlayerStatic.isReady)
 			{
 				_playStatus = MediaPlayerStatic.playStatus
@@ -46,21 +46,21 @@ package mp3PlayerStatic
 		
 		protected function pauseFun(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			_playStatus = false	
 			this.gotoAndStop(!_playStatus)	
 		}
 		
 		protected function playFun(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			_playStatus = true	
 			this.gotoAndStop(!_playStatus)	
 		}
 		
 		protected function click_fun(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			_playStatus = !_playStatus
 			if(_playStatus)	
 			{

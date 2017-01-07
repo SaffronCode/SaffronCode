@@ -48,7 +48,7 @@
 		
 		protected function click_fun(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			for(var targetIndex in _targetMovie)	
 			{
 				if(event.currentTarget.nameBtn==_targetMovie[targetIndex].nameBtn)

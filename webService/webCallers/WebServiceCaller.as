@@ -299,7 +299,7 @@ package webService.webCallers
 		/**Manage your special data here*/
 		protected function manageData(pureData:String):Boolean
 		{
-			// TODO Auto Generated method stub
+			
 			
 			//TODO: implement function
 			//1- For first type of values

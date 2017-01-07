@@ -200,7 +200,7 @@ package darkBox
 		
 		protected function catchBackButton(event:KeyboardEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			if(this.visible)
 			{
 				if(event.keyCode == Keyboard.BACK || event.keyCode == Keyboard.HOME )
@@ -214,7 +214,7 @@ package darkBox
 		
 		protected function downloadCurrentMedia(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			//images[currentImage].target
 			if(saveButtonFunction!=null)
 			{
@@ -224,7 +224,7 @@ package darkBox
 		
 		protected function closeMe(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			hide();
 		}
 		
@@ -423,7 +423,7 @@ package darkBox
 		
 		private function manageCurrentImage(imageIndex:int=-1):void
 		{
-			// TODO Auto Generated method stub
+			
 			if(imageIndex!=-1)
 			{
 				currentImage = Math.min(totalImages,Math.max(0,imageIndex)) ;
@@ -471,13 +471,13 @@ package darkBox
 		protected function showPrecent(event:URLSaverEvent):void
 		{
 			trace("donwloading");
-			// TODO Auto-generated method stub
+			
 			precentMC.width = event.precent*backMC.width ;
 		}
 		
 		protected function noInternet(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			titleMC.setUp(noNetTitle,true,true);
 			
 			//Reload this image if every thing is allright
@@ -487,7 +487,7 @@ package darkBox
 		protected function imageDownloaded(event:URLSaverEvent):void
 		{
 			trace("Image is downloaded");
-			// TODO Auto-generated method stub
+			
 			showReadyImage(event.target as ImageFile);
 		}
 		

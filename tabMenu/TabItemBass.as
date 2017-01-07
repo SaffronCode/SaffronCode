@@ -43,7 +43,7 @@ package tabMenu
 		
 		private function sendEventBytimer():void
 		{
-			// TODO Auto Generated method stub
+			
 			sendEvent()
 			clearTimeout(_timerId)
 		}
@@ -56,7 +56,7 @@ package tabMenu
 		
 		protected function onSelected(event:TabMenuEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			if(event.group == _group)
 			{
 				if(event.name == _name && _bg!=null)
@@ -76,7 +76,7 @@ package tabMenu
 		
 		protected function click_fun(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			if(!_selected)
 			{			
 				sendEvent()

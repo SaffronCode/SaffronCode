@@ -55,7 +55,7 @@ package photoEditor
 		
 		public function imageRect():Rectangle
 		{
-			// TODO Auto Generated method stub
+			
 			return imageRectangle.clone();
 		}
 		
@@ -64,7 +64,7 @@ package photoEditor
 			rs.x-=imageRectangle.x;
 			rs.y-=imageRectangle.y;
 			
-			// TODO Auto Generated method stub
+			
 			var orginalBitmap:BitmapData = bit.bitmapData ;
 			
 			trace("orginalBitmap vs bit : "+orginalBitmap.width+' vs '+bit.width);

@@ -50,7 +50,7 @@ package diagrams.table
 		
 		private function create():void
 		{
-			// TODO Auto Generated method stub
+			
 			if(myTitles==null)
 			{
 				trace("No title added");
@@ -223,7 +223,7 @@ package diagrams.table
 		
 		private function manageContents():void
 		{
-			// TODO Auto Generated method stub
+			
 			if(myContents == null || tableBoxes==null)
 			{
 				trace("Cannot create contents");

@@ -48,7 +48,7 @@ package contents.contentUpdate
 		
 		private static function startDownloadVersion():void
 		{
-			// TODO Auto Generated method stub
+			
 			if(versionFileURL.url == '')
 			{
 				startDownloadMain();
@@ -107,7 +107,7 @@ package contents.contentUpdate
 		/**Inject stored datas to Contents class - this will not remove images*/
 		private static function injectStoredDatas(xmlString:String,deleteImages:Boolean=false):void
 		{
-			// TODO Auto Generated method stub
+			
 			
 			try
 			{
@@ -156,7 +156,7 @@ package contents.contentUpdate
 		
 		private static function saveComplete():void
 		{
-			// TODO Auto Generated method stub
+			
 			success();
 		}		
 		

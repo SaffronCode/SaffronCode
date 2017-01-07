@@ -34,7 +34,7 @@ package componentStatic
 		}
 		protected function getUpdate(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			update()
 		}
 		
@@ -92,7 +92,7 @@ package componentStatic
 		}
 		protected function dd_fun(event:TextBoxEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			if(event.text!='')
 			{
 				_ddStr = event.text
@@ -107,7 +107,7 @@ package componentStatic
 		
 		protected function mm_fun(event:TextBoxEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 				if(event.text!='')
 				{
 					_mmStr = event.text
@@ -122,7 +122,7 @@ package componentStatic
 		
 		protected function yy_fun(event:TextBoxEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 		
 				if(event.text!='')
 				{	
@@ -241,7 +241,7 @@ package componentStatic
 		}
 		public function chekDateInMonth(CurrentMonth_p:int,CurrentYear_p:int):Number
 		{
-			// TODO Auto Generated method stub
+			
 			if(CurrentMonth_p<=5) return 31
 			if(CurrentMonth_p>5 && CurrentMonth_p<11) return 30
 			if(CurrentMonth_p==11 && kabise(CurrentYear_p))

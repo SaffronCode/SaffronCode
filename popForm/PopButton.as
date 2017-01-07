@@ -109,7 +109,7 @@
 		/**Check the stage*/
 		private function checkStage(e:Event=null):void
 		{
-			// TODO Auto Generated method stub
+			
 			this.removeEventListener(Event.ADDED_TO_STAGE,checkStage);
 			if(this.stage == null)
 			{
@@ -124,7 +124,7 @@
 		
 		protected function unLoad(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			this.removeEventListener(Event.ENTER_FRAME,controllPosition2);
 			NativeApplication.nativeApplication.removeEventListener(KeyboardEvent.KEY_DOWN,checkBack);
 		}
@@ -278,7 +278,7 @@
 		
 		protected function playAsound(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			soundMC.play();
 		}
 	}

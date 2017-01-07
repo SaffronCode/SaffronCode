@@ -74,14 +74,14 @@
 		
 		protected function getVolume(event:MediaPlayerEventStatic):void
 		{
-			// TODO Auto-generated method stub
+			
 			volume = event.volumeNumber
 			SoundPlayer.volumeContril(mediaSoundID,volume)	
 		}
 		
 		protected function puseMeiaPlayer(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			if(SoundIsLoaded)
 			{
 				SoundPlayer.pause(mediaSoundID,true);
@@ -92,13 +92,13 @@
 		
 		protected function stopMediaPLayer(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			
 		}
 		
 		protected function playMediaPlayer(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			if(SoundIsLoaded)
 			{
 				SoundPlayer.play(mediaSoundID,true);
@@ -109,7 +109,7 @@
 		
 		protected function unLoad(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			this.removeEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 			this.removeEventListener(Event.ENTER_FRAME,checkPrecent);
 			
@@ -160,13 +160,13 @@
 		
 		protected function TryLater(event:URLSaverEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			trace("Internet connection fails , but I will try again ... ");
 		}
 		
 		protected function Loading(event:URLSaverEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			loadingPrecent(event.precent)
 		}
 		protected function loadingPrecent(Precent_p:Number):void
@@ -183,7 +183,7 @@
 		
 		protected function SoundIsReady(event:URLSaverEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			if(!alreadyDownloaded)
 			{
 				this.dispatchEvent(new MediaPlayerEventStatic(MediaPlayerEventStatic.NEW_TRACK_DOWNLOADED))
@@ -196,7 +196,7 @@
 				
 		private function startToPlaySound(offlineTarget:String):void
 		{
-			// TODO Auto Generated method stub
+			
 			offlineURL = offlineTarget ;
 			SoundIsLoaded = true;
 			SoundPlayer.addSound(offlineURL,mediaSoundID,false,1);

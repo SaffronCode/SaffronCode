@@ -60,7 +60,7 @@ package diagrams.piChart
 		
 		protected function draws(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			showingPrecent+=(1-showingPrecent)/animSpeed;
 			if(showingPrecent>0.999)
 			{
@@ -75,7 +75,7 @@ package diagrams.piChart
 		
 		private function showTheNames():void
 		{
-			// TODO Auto Generated method stub
+			
 			for(var i = 0 ; i<myPiecesData.names.length ; i++)
 			{
 				if(myPiecesData.pieceNumbers[i]==0)

@@ -587,7 +587,7 @@ package popForm
 		
 		public static function addMoreHeight(moreHeight:Number):void
 		{
-			// TODO Auto Generated method stub
+			
 			stagePlusHaight = moreHeight ;
 		}
 	}

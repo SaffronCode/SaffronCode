@@ -49,7 +49,7 @@ package mp3PlayerStatic
 		
 		protected function chekDownLoad(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			if(MediaPlayerStatic.downLoadCompelete)
 			{
 				userSlideEnabled()
@@ -59,7 +59,7 @@ package mp3PlayerStatic
 		
 		protected function cheker(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			if(MediaPlayerStatic.isReady)
 			{
 				this.removeEventListener(Event.ENTER_FRAME,cheker)	
@@ -75,25 +75,25 @@ package mp3PlayerStatic
 		
 		protected function startDownLoad(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			this.removeEventListener(MouseEvent.MOUSE_MOVE,changePrecent);
 			this.addEventListener(Event.ENTER_FRAME,chekDownLoad)
 		}
 		protected function getSoundPrecent(event:MediaPlayerEventStatic):void
 		{
-			// TODO Auto-generated method stub
+			
 			setPrecent(event.soundPrecent);
 		}
 		
 		protected function getCurrentPrecent(event:MediaPlayerEventStatic):void
 		{
-			// TODO Auto-generated method stub
+			
 			currentPrecent = event.currentPrecent
 		}
 		
 		protected function unLoad(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			this.removeEventListener(Event.ENTER_FRAME,animIt);
 			this.removeEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 			this.removeEventListener(MouseEvent.CLICK,changePrecent);
@@ -110,7 +110,7 @@ package mp3PlayerStatic
 		/**precent changed*/
 		protected function changePrecent(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			if(MediaPlayerStatic.isReady)
 			{
 				var myPrecent:Number = this.mouseX / myWidth;

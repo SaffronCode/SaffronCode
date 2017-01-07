@@ -20,7 +20,7 @@ package filter
 		
 		protected function selected(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			_fun(_id)					
 		}
 		public function setup(Id_p:int,Fun_p:Function=null,OldId_p:int=-1):void

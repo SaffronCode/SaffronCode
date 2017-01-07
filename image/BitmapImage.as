@@ -116,7 +116,7 @@ package image
 		}
 		public function clearTheBitmap():void
 		{
-			// TODO Auto Generated method stub
+			
 			if(newBitmap!=null)
 			{
 				if(newBitmap.bitmapData!=null)

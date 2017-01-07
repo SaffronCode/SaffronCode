@@ -19,7 +19,7 @@ package mp3PlayerStatic
 		
 		protected function unload(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			this.removeEventListener(Event.ENTER_FRAME,cheker)
 			if(MediaPlayerStatic.evt!=null)
 			{
@@ -29,7 +29,7 @@ package mp3PlayerStatic
 		
 		protected function getVolume(event:MediaPlayerEventStatic):void
 		{
-			// TODO Auto-generated method stub
+			
 			setVolume(event.volumeNumber)
 		}
 		private function setVolume(Volume_p:Number):void
@@ -42,7 +42,7 @@ package mp3PlayerStatic
 		
 		protected function cheker(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			if(MediaPlayerStatic.isReady)
 			{
 				this.removeEventListener(Event.ENTER_FRAME,cheker)
@@ -53,13 +53,13 @@ package mp3PlayerStatic
 		
 		private function onMouseDOWN():void
 		{
-			// TODO Auto Generated method stub
+			
 			trace('mouse down :',volumeMc.value/100)
 		}
 		
 		private function onMousUP():void
 		{
-			// TODO Auto Generated method stub
+			
 			trace('mouse up :',volumeMc.value/100)
 			MediaPlayerStatic.evt.dispatchEvent(new MediaPlayerEventStatic(MediaPlayerEventStatic.VOLUME,volumeMc.value/100))
 			

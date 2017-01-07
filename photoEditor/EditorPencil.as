@@ -111,7 +111,7 @@ package photoEditor
 		
 		private function manageStage(e:*=null):void
 		{
-			// TODO Auto Generated method stub
+			
 			if(this.stage == null)
 			{
 				this.addEventListener(Event.ADDED_TO_STAGE,manageStage);
@@ -126,13 +126,13 @@ package photoEditor
 		
 		protected function unLoad(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			stage.removeEventListener(MouseEvent.MOUSE_DOWN,resetResetButton);
 		}
 		
 		protected function resetResetButton(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			if(!resetMC.hitTestPoint(stage.mouseX,stage.mouseY))
 			{
 				resetMC.gotoAndStop(1);
@@ -141,7 +141,7 @@ package photoEditor
 		
 		protected function resetPaper(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			if(resetMC.currentFrame == 1)
 			{
 				resetMC.gotoAndStop(2);
@@ -156,7 +156,7 @@ package photoEditor
 		private function manageTools():void
 		{
 			tools = new Vector.<MovieClip>();
-			// TODO Auto Generated method stub
+			
 			var i:int;
 			for(i = 0 ; i<toolbarContainer.numChildren ; i++)
 			{
@@ -190,7 +190,7 @@ package photoEditor
 		
 		protected function sizeChanged(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			var tool:MovieClip = event.currentTarget as MovieClip ;
 			var toolSize:Number = uint(tool.name.split(toolsSizeName).join(''));
 			
@@ -210,7 +210,7 @@ package photoEditor
 		protected function changeTool(event:MouseEvent):void
 		{
 			selectedTool = null ;
-			// TODO Auto-generated method stub
+			
 			for(var i = 0 ; i<tools.length ; i++)
 			{
 				if(event.target == tools[i])
@@ -227,7 +227,7 @@ package photoEditor
 		
 		protected function startDrawing(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			if(selectedTool==null)
 			{
 				trace("No tools selected on EdotorPencil");
@@ -257,14 +257,14 @@ package photoEditor
 		
 		protected function setThesePoints(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			myPaper.lineTo(myPaper.mouseX,myPaper.mouseY);
 		}
 		
 		/**stop drawing and cansel listeners*/
 		protected function stopDrawing(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			stage.removeEventListener(MouseEvent.MOUSE_MOVE,setThesePoints);
 			stage.removeEventListener(MouseEvent.MOUSE_UP,stopDrawing);
 			myPaper.stopDraw();

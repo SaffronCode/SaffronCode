@@ -258,7 +258,7 @@ package contents
 		
 		public function clone():PageData
 		{
-			// TODO Auto Generated method stub
+			
 			//return new PageData(export());
 			
 			//new Clone system 

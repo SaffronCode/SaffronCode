@@ -58,13 +58,13 @@ package panorama
 		
 		protected function unLoad(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			urlSaver.cansel();
 		}
 		
 		protected function imageNotFound(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			trace("Cant load this image : "+myPageData.images[0].targURL);
 			//Hints.hint(Contents.lang.t.image_not_loaded,myPageData.title);
 			this.dispatchEvent(AppEventContent.lastPage());
@@ -72,14 +72,14 @@ package panorama
 		
 		protected function imageLoaded(event:URLSaverEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			trace("All images loaded");
 			generatePage(event.offlineTarget);
 		}
 		
 		private function generatePage(imageTarget:String):void
 		{
-			// TODO Auto Generated method stub
+			
 			imageLoader = new Loader();
 			imageLoader.contentLoaderInfo.addEventListener(Event.COMPLETE,imageIsLoadedToShow);
 			imageLoader.load(new URLRequest(imageTarget));
@@ -87,7 +87,7 @@ package panorama
 		
 		protected function imageIsLoadedToShow(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			var bitmap:Bitmap = imageLoader.content as Bitmap; 
 			var bitmapData:BitmapData = bitmap.bitmapData ;
 			

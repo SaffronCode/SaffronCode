@@ -493,7 +493,7 @@ package contents.displayPages
 		
 		private function saveLastPosition(event:Event=null):void
 		{
-			// TODO Auto-generated method stub
+			
 			if(linksContainer!=null && myPageData!=null && myPageData.id!='')
 			{
 				if(myPageData.id!='')
@@ -922,7 +922,7 @@ package contents.displayPages
 		
 		private function creatOneLink():Boolean
 		{
-			// TODO Auto Generated method stub
+			
 			if(lastGeneratedLinkIndes<myPageData.links1.length)
 			{
 				trace(":::::howManyLinksGenerates : "+howManyLinksGenerates);
@@ -1039,7 +1039,7 @@ package contents.displayPages
 		
 		private function updateDynamicLinsBackGround():void
 		{
-			// TODO Auto Generated method stub
+			
 			linksContainer.graphics.clear();
 			linksContainer.graphics.beginFill(0,backAlpha) ;
 			if(!horizontalMenu)

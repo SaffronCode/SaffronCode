@@ -41,19 +41,19 @@ package combobox.comboboxStatic
 		
 		protected function open(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			_status = false
 		}
 		
 		protected function close(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			_status = true
 		}
 		
 		protected function menu(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 
 			ComboBoxStaticManager.evt.dispatchEvent(new ComboBoxStaticEvents(ComboBoxStaticEvents.CLOSE,null,null,null,true))
 			ComboBoxStaticManager.setStatus(_id,_status)
@@ -70,7 +70,7 @@ package combobox.comboboxStatic
 		
 		protected function changIcon(event:ComboBoxStaticEvents):void
 		{
-			// TODO Auto-generated method stub
+			
 		
 			if(_id == event.comboBoxId)
 			{	

@@ -33,7 +33,7 @@ package contents.multiLanguage
 		/**This will make values to save for the compiler use in the next run*/
 		public function saveForCompiler():void
 		{
-			// TODO Auto Generated method stub
+			
 			if(!DevicePrefrence.isItPC)
 			{
 				return ;

@@ -128,7 +128,7 @@ package webService
 		/**Cansel these listeners from listenning to webservice connection from Connect function*/
 		public static function Disconnect(onConnected:Object, noInternet:Object):void
 		{
-			// TODO Auto Generated method stub
+			
 			var I:int = onConnectFunctionList.indexOf(onConnected);
 			if(I!=-1)
 			{
@@ -203,7 +203,7 @@ package webService
 		
 		private static function callAllOperations():void
 		{
-			// TODO Auto Generated method stub
+			
 			for(var i = 0 ; i<operetionsList.length ; i++)
 			{
 				operetionsList[i].send.apply(operationsVariables[i]);

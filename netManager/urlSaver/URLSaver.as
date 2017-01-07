@@ -258,7 +258,7 @@ package netManager.urlSaver
 				//trace("The image was dispatched befor");
 				return ;
 			}
-			// TODO Auto-generated method stub
+			
 			/*if(ev.urlID == onlineURL)
 			{*/
 				//This will dispatch this event just to tell parent to make desition on canseling download
@@ -283,7 +283,7 @@ package netManager.urlSaver
 		protected function downloadCompletes(ev:Event/*DownloadManagerEvents*/):void
 		{
 			//trace("URL file is downloaded : "+urlLoader+' ..... ');
-			// TODO Auto-generated method stub
+			
 			/*if(ev.urlID == onlineURL)
 			{*/
 			if(urlLoader==null || urlLoader.data == null || urlLoader.data.length==0)
@@ -311,7 +311,7 @@ package netManager.urlSaver
 		protected function downloading(ev:ProgressEvent/*DownloadManagerEvents*/):void
 		{
 			//trace("Somthing downloaded");
-			// TODO Auto-generated method stub
+			
 			/*if(ev.urlID == onlineURL)
 			{*/
 			//trace("Downloading");
@@ -324,7 +324,7 @@ package netManager.urlSaver
 		
 		/*protected function noFileExists(ev:DownloadManagerEvents):void
 		{
-			// TODO Auto-generated method stub
+			
 			if(ev.urlID == onlineURL)
 			{
 				cansel();
@@ -336,7 +336,7 @@ package netManager.urlSaver
 		
 		private function saveLoadedBytes():void
 		{
-			// TODO Auto Generated method stub
+			
 			var oflineFolder:File;
 			if(fileExtention!=null && fileExtention.toLowerCase().indexOf('pdf')!=-1)
 			{
@@ -419,7 +419,7 @@ package netManager.urlSaver
 		
 		protected function fileSaverError(event:IOErrorEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			//trace("URL saver file is not write able. saveLoadedByte");
 			fileSaver.close();
 			loadOflineFile();
@@ -428,14 +428,14 @@ package netManager.urlSaver
 		protected function fileIsSaved(event:Event):void
 		{
 			//trace("******************************** File is ready to save on the device ****************");
-			// TODO Auto-generated method stub
+			
 			loadOflineFile();
 		}		
 		
 		/**load offline file as user wished*/
 		private function loadOflineFile():void
 		{
-			// TODO Auto Generated method stub
+			
 			
 			try
 			{
@@ -497,7 +497,7 @@ package netManager.urlSaver
 		
 		protected function fileCannotLoad(event:IOErrorEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			trace("Unable to load file");
 			fileLoader.close();
 			completeLoadRequestAndDispatchEvent();
@@ -505,7 +505,7 @@ package netManager.urlSaver
 		
 		protected function fileLoaded(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			//trace("***********************************************File is ready to load***************");
 			myLoadedBytes = new ByteArray();
 			fileLoader.readBytes(myLoadedBytes,0,fileLoader.bytesAvailable);

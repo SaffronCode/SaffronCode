@@ -62,7 +62,7 @@ package darkBox
 		
 		protected function imageLoaded(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			var image:Bitmap = (imageLoader.content) as Bitmap ;
 			image.smoothing = true ;
 			dragableImage.addChild(image);
@@ -77,19 +77,19 @@ package darkBox
 		
 		protected function stopImageDrag(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			dragableImage.stopDrag();
 		}
 		
 		protected function startImageDrag(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			dragableImage.startDrag(false,new Rectangle(rect.width-dragableImage.width,0,dragableImage.width-rect.width,0));
 		}
 		
 		protected function imageNotLoaded(event:IOErrorEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			trace("Image type is unknown");
 		}
 	}

@@ -22,7 +22,7 @@ package appManager.displayContentElemets
 		
 		protected function openMe(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			this.dispatchEvent(new ImageEvent(ImageEvent.IMAGE_SELECTED,URL));
 		}
 		

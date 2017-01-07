@@ -21,7 +21,7 @@ package mp3PlayerStatic
 		
 		protected function unload(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			if(MediaPlayerStatic.evt!=null)
 			{
 				MediaPlayerStatic.evt.removeEventListener(MediaPlayerEventStatic.DOWNLOAD_PRECENT,showPrecent)	
@@ -31,7 +31,7 @@ package mp3PlayerStatic
 		
 		protected function cheker(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			if(MediaPlayerStatic.evt!=null)
 			{	
 				setPrecentViewText(0)
@@ -41,7 +41,7 @@ package mp3PlayerStatic
 		}
 		protected function showPrecent(event:MediaPlayerEventStatic):void
 		{
-			// TODO Auto-generated method stub
+			
 			setPrecentViewText(event.downloadPrecent)
 		}
 		

@@ -56,7 +56,7 @@ package file
 		
 		private function download(Url_p:String):void
 		{
-			// TODO Auto Generated method stub
+			
 
 			var _urlLodaer:URLLoader = new URLLoader()
 			_urlLodaer.addEventListener(Event.COMPLETE,complete_fun)
@@ -70,24 +70,24 @@ package file
 		
 		protected function PROGRESS_fun(event:ProgressEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			downLoadPrecent(event.bytesLoaded,event.bytesTotal)
 		}
 		
 		protected function SECURITY_ERROR_fun(event:SecurityErrorEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			this.dispatchEvent(new SwitchUrlEvent(SwitchUrlEvent.SWITCH_ERROR_DOWNLOAD,null,event.text))
 		}
 		
 		protected function IO_ERROR_fun(event:IOErrorEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			this.dispatchEvent(new SwitchUrlEvent(SwitchUrlEvent.SWITCH_ERROR_DOWNLOAD,null,event.text))
 		}
 		protected function complete_fun(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			_file = CheckExistsPaht.check(_path,_fileName)
 			var errorMessage:String = Read_Write.write(_file,event.target.data)
 			if(errorMessage =='')

@@ -131,7 +131,7 @@ package appManager.animatedPages.pageManager
 		
 		protected function menuIsReady(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			currentPage.dispatchEvent(new MenuEvent(MenuEvent.MENU_READY,App.currentMenu));
 		}
 		
@@ -236,7 +236,7 @@ package appManager.animatedPages.pageManager
 		
 		public function dispatchPageReadyEventOnceForPage():void
 		{
-			// TODO Auto Generated method stub
+			
 			if(currentPage!=null && !pageReadyDispatched)
 			{
 				pageReadyDispatched = true ;

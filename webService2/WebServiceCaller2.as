@@ -280,7 +280,7 @@ package webService2
 		/**Manage your special data here*/
 		protected function manageData(pureData:Array):Boolean
 		{
-			// TODO Auto Generated method stub
+			
 			/*var cash:Array = WebServiceParser2.pars(pureData,FolderCount);
 			data = new Vector.<FolderCount>();
 			for(var i = 0 ; i < cash.length ; i++)

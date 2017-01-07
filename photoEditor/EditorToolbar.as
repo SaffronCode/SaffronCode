@@ -78,13 +78,13 @@ package photoEditor
 		
 		protected function rotateImage(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			rotateImageIn(90)
 		}
 		
 		protected function rotateLeftImage(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			rotateImageIn(-90)
 		}
 		
@@ -169,19 +169,19 @@ package photoEditor
 		
 		protected function redoNextJob(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			PhotoEdit.redo();
 		}
 		
 		protected function undoLastJob(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			PhotoEdit.undo();
 		}
 		
 		public function setUp(stageRectangle:Rectangle):void
 		{
-			// TODO Auto Generated method stub
+			
 			imageFullAreaRect = stageRectangle.clone() ;
 			if(scrollerMC==null)
 			{
@@ -201,7 +201,7 @@ package photoEditor
 		/**Select the tool with this name*/
 		public function select(selectedToolOnStartUp:String):void
 		{
-			// TODO Auto Generated method stub
+			
 			var selectedToolsList:Array = Obj.getAllChilds(selectedToolOnStartUp,this) ;
 			if(selectedToolsList.length>0 && selectedToolsList[0]!=null)
 			{

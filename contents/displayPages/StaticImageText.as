@@ -55,7 +55,7 @@ package contents.displayPages
 		
 		protected function setImage():void
 		{
-			// TODO Auto Generated method stub
+			
 			var i:int = 0 ;
 			if(myImage != null && currentPageData.imageTarget!='')
 			{
@@ -70,7 +70,7 @@ package contents.displayPages
 		
 		protected function setTitle():void
 		{
-			// TODO Auto Generated method stub
+			
 			if(myTitle != null)
 			{
 				myTitle.setUp(currentPageData.title);
@@ -79,7 +79,7 @@ package contents.displayPages
 		
 		protected function setText():void
 		{
-			// TODO Auto Generated method stub
+			
 			if(myParag != null)
 			{
 			var align:Boolean = false;

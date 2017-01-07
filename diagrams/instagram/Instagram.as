@@ -74,14 +74,14 @@ package diagrams.instagram
 		
 		protected function unLoad(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			this.removeEventListener(Event.ENTER_FRAME , checkMosePoseFoGuide);
 			this.removeEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 		}
 		
 		protected function checkMosePoseFoGuide(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			var i:int ;
 			if(this.mouseX<0 || this.mouseX>Width || this.mouseY<0 || this.mouseY>Height)
 			{
@@ -139,7 +139,7 @@ package diagrams.instagram
 		/**Lock instance diagram drawing*/
 		public function lock():void
 		{
-			// TODO Auto Generated method stub
+			
 			isLock = true ;
 		}
 		
@@ -175,7 +175,7 @@ package diagrams.instagram
 		/**This function will not redraw the tiltles of the instagram. if you need to change diagram range,call 0-lock() 1- clearDiagram(), 2-addDiagramDatas() with your new range 3-changeDiagramTitle() 4-unLock()*/
 		public function changeDiagramValue(instaData:InstagramData):void
 		{
-			// TODO Auto Generated method stub
+			
 			for(var i = 0 ; i<diagramsPrevList.length ; i++)
 			{
 				if(diagramsPrevList[i].id == instaData.id)

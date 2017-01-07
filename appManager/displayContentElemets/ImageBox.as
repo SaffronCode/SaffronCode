@@ -79,7 +79,7 @@
 		
 		private function checkStage(e=null):void
 		{
-			// TODO Auto Generated method stub
+			
 			this.removeEventListener(Event.ADDED_TO_STAGE,checkStage);
 			if(this.stage == null)
 			{
@@ -94,7 +94,7 @@
 		
 		protected function unLoad(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			this.removeEventListener(Event.ENTER_FRAME,checkPose);
 			this.removeEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 			
@@ -102,7 +102,7 @@
 		
 		protected function checkPose(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			if(this.stage != null)
 			{
 				var po:Rectangle = this.getBounds(this.stage) ;
@@ -116,7 +116,7 @@
 		
 		private function loadMe():void
 		{
-			// TODO Auto Generated method stub
+			
 			imageLoader.load(URL);
 		}
 		

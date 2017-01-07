@@ -64,21 +64,21 @@ package number3D
 		
 		protected function secounds_fun(event:Number3DEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			newDate.seconds = event.value.numberValue
 			dispachDate()	
 		}
 		
 		protected function minutes_fun(event:Number3DEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			newDate.minutes = event.value.numberValue
 			dispachDate()
 		}
 		
 		protected function hours_fun(event:Number3DEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			newDate.hours = event.value.numberValue
 			dispachDate()
 		}

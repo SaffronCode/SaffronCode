@@ -46,7 +46,7 @@ package contents.displayPages
 		}
 		protected function animating(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			this.dispatchEvent(new Event(DynamicLinks.UPDATE_LINKS_POSITION,true))
 			if(sinVal<PI_2)
 			{
@@ -64,7 +64,7 @@ package contents.displayPages
 		}
 		protected function animatingClose(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			this.dispatchEvent(new Event(DynamicLinks.UPDATE_LINKS_POSITION,true))
 			if(sinVal>0)
 			{
@@ -83,7 +83,7 @@ package contents.displayPages
 		}
 		protected function unLoad(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			this.removeEventListener(Event.ENTER_FRAME,animating);
 			this.removeEventListener(Event.ENTER_FRAME,animatingClose);
 		}

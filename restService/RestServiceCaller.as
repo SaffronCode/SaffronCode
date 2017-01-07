@@ -157,7 +157,7 @@
 		
 		private function requestLoaded(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			//parser = new JSONParser();
 			if(RestService.debug_show_results)
 			{

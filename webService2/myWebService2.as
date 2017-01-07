@@ -257,7 +257,7 @@ package webService2
 		/**Cansel these listeners from listenning to webservice connection from Connect function*/
 		public static function Disconnect(onConnected:Object, noInternet:Object):void
 		{
-			// TODO Auto Generated method stub
+			
 			var I:int = onConnectFunctionList.indexOf(onConnected);
 			if(I!=-1)
 			{
@@ -332,7 +332,7 @@ package webService2
 		
 		/*private static function callAllOperations():void
 		{
-			// TODO Auto Generated method stub
+			
 			for(var i = 0 ; i<operetionsList.length ; i++)
 			{
 				operetionsList[i].send.apply(operationsVariables[i]);
@@ -964,7 +964,7 @@ package webService2
 		
 		private static function xmlToObject(xml:XML):Object
 		{
-			// TODO Auto Generated method stub
+			
 			if(xml.*.length() == 0)
 			{
 				return '' ;
@@ -1031,7 +1031,7 @@ package webService2
 		/**Add header*/
 		public static function setHeader(userName:String,password:String,tocken:String,uid:String):void
 		{
-			// TODO Auto Generated method stub
+			
 			var qname:QName = new QName("http://tmeappuri.org/","SOAPHeaderContent");
 			var header:SOAPHeader = new SOAPHeader(qname,{UserName:userName,Password:password,Token:tocken,UID:uid});
 			ws.clearHeaders();

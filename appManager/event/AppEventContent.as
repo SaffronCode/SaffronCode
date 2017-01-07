@@ -50,7 +50,7 @@ package appManager.event
 		
 		/*private static function resetHistory():void
 		{
-			// TODO Auto Generated method stub
+			
 			
 			if(history==null)
 			{

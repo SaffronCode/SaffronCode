@@ -75,7 +75,7 @@ package tableManager.data
 		}
 		public function CLICK(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			_return = !_return
 			_chekBox.gotoAndStop(_return)		
 			this.dispatchEvent(new TableEvents(TableEvents.CLICK,null,null,null,null,null,this))
@@ -85,33 +85,33 @@ package tableManager.data
 		///////////////
 		public function DOWN(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub	
+			
 			this.dispatchEvent(new TableEvents(TableEvents.DOWN,null,null,null,null,null,this))
 		}
 		
 		public function UP(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub	
+			
 			this.dispatchEvent(new TableEvents(TableEvents.UP,null,null,null,null,null,this))
 		}
 		public function OVER(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub	
+			
 			this.dispatchEvent(new TableEvents(TableEvents.OVER,null,null,null,null,null,this))
 		}
 		public function OUT(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub	
+			
 			this.dispatchEvent(new TableEvents(TableEvents.OUT,null,null,null,null,null,this))
 		}
 		public function RELEASE_OUTSIDE(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub	
+			
 			this.dispatchEvent(new TableEvents(TableEvents.RELEASE_OUTSIDE,null,null,null,null,null,this))
 		}
 		protected function delay_fun(event:TimerEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			delayTimver.stop()
 			delayTimver.removeEventListener(TimerEvent.TIMER,delay_fun)
 			this.dispatchEvent(new TableEvents(TableEvents.CLICK,null,null,null,null,null,this))

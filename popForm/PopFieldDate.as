@@ -40,7 +40,7 @@ package popForm
 		
 		public function setUp(tagName:String,defaultDate:Date=null,isArabic:Boolean=false,languageFrame:uint=1,color:uint=1):void
 		{
-			// TODO Auto Generated method stub
+			
 			IsArabic = isArabic ;
 			
 			myTitle = tagName ;
@@ -104,7 +104,7 @@ package popForm
 		
 		protected function imUpdated(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			this.dispatchEvent(new Event(Event.CHANGE));
 		}
 		

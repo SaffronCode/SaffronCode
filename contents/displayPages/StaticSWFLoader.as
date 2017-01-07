@@ -54,7 +54,7 @@ package contents.displayPages
 		
 		protected function unLoad(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			try
 			{
 				loader.close();
@@ -65,7 +65,7 @@ package contents.displayPages
 		
 		protected function contentLoaded(event:Event):void
 		{
-			// TODO Auto-generated method stub
+			
 			var insertedItem:MovieClip = loader.content as MovieClip ;
 			insertedItem.addEventListener(Event.ADDED,preventBubble);
 			insertedItem.addEventListener(Event.ADDED_TO_STAGE,preventBubble);

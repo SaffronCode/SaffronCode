@@ -29,7 +29,7 @@ package filter
 			
 		protected function mouseUp(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			status = !status
 			setup(status,id)
 			if(!status)
@@ -40,7 +40,7 @@ package filter
 		
 		protected function select(Id_p:int):void
 		{
-			// TODO Auto-generated method stub					
+			
 			id = Id_p
 			stage.addEventListener(MouseEvent.MOUSE_UP,mouseUp)	
 		}

@@ -100,7 +100,7 @@ package tableManager.data
 		
 		protected function delayFun(event:TimerEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			creatCell()
 			delayTime.stop()
 			delayTime.removeEventListener(TimerEvent.TIMER,delayFun)
@@ -110,7 +110,7 @@ package tableManager.data
 		
 		/*protected function compeletCreatCell(event:ThumbnailEvent):void
 		{
-			// TODO Auto-generated method stub
+			
 			
 		}*/
 		
@@ -133,33 +133,33 @@ package tableManager.data
 
 		public function CLICK(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub	
+			
 			this.dispatchEvent(new TableEvents(TableEvents.CLICK,this))
 		}
 		public function DOWN(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub	
+			
 			this.dispatchEvent(new TableEvents(TableEvents.DOWN,this))
 		}
 
 		public function UP(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub	
+			
 			this.dispatchEvent(new TableEvents(TableEvents.UP,this))
 		}
 		public function OVER(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub	
+			
 			this.dispatchEvent(new TableEvents(TableEvents.OVER,this))
 		}
 		public function OUT(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub	
+			
 			this.dispatchEvent(new TableEvents(TableEvents.OUT,this))
 		}
 		public function RELEASE_OUTSIDE(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub	
+			
 			this.dispatchEvent(new TableEvents(TableEvents.RELEASE_OUTSIDE,this))
 		}
 		
