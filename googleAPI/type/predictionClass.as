@@ -2,6 +2,8 @@
  * Created by mes on 1/6/2017.
  */
 package googleAPI.type {
+	import contents.LinkData;
+
 public class predictionClass {
 
     /**"Victoria, Australie"*/
@@ -45,5 +47,13 @@ public class predictionClass {
 
     public function predictionClass() {
     }
+	
+	public function linkData():LinkData
+	{
+		var linkDat:LinkData = new LinkData();
+		linkDat.name = description ;
+		linkDat.dynamicData = this ;
+		return linkDat ;
+	}
 }
 }
