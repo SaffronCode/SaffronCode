@@ -23,7 +23,7 @@ package contents.robot
 		/**This is the time in mili seconds*/
 		private static var userWatchedDuration:int ;
 		
-		private static const requiredDurationTime:uint = 1000*60*40; //40 minauts
+		public static const requiredDurationTime:uint = 1000*60*40; //40 minauts
 		
 		private static var intervalId:uint;
 		
@@ -123,8 +123,8 @@ package contents.robot
 					new PopButtonData(Contents.lang.t[lang_yes],0,null,true,false),
 				new PopButtonData(Contents.lang.t[lang_dont_remind_me_again],1,null,true,true)
 			];
-			var popContent:PopMenuContent = new PopMenuContent(' ',null,popButtons,null);
-			PopMenu1.popUp(Contents.lang.t[lang_do_you_whant_to_rank],null,popContent,0,onButtonSelected);
+			var popContent:PopMenuContent = new PopMenuContent(Contents.lang.t[lang_do_you_whant_to_rank],null,popButtons,null);
+			PopMenu1.popUp('',null,popContent,0,onButtonSelected);
 		}
 		
 		
