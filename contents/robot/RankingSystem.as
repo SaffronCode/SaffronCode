@@ -23,7 +23,7 @@ package contents.robot
 		/**This is the time in mili seconds*/
 		private static var userWatchedDuration:int ;
 		
-		public static const requiredDurationTime:uint = 1000*60*40; //40 minauts
+		public static var requiredDurationTime:uint = 1000*60*40; //40 minauts
 		
 		private static var intervalId:uint;
 		
