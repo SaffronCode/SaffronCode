@@ -108,7 +108,7 @@ package contents.robot
 		
 		
 		/**Open the questino page*/
-		private static function showRankQuestion():void
+		public static function showRankQuestion():void
 		{
 			
 			stopCounting();
