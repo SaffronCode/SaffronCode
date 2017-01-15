@@ -138,7 +138,7 @@ package popForm
 		/**Select something from these buttons, but if the onSearchButtn function was not null, it will add search input to<br>
 		 * onButtonSelected : function(e:PopMenuEvent);<br>
 		 * onSearchButton : function(searchParam:String);*/
-		public static function selector(title:String,text:String,buttonsList:Array,onButtonSelected:Function,onSearchButton:Function=null,defButtonFrame:uint=1,itemFrame:uint=2,onBackFUnction:Function = null):void
+		public static function selector(title:String,text:String,buttonsList:Array,onButtonSelected:Function,onSearchButton:Function=null,defButtonFrame:uint=1,itemFrame:uint=2,onBackFUnction:Function = null,backButtonFrame:int=1):void
 		{
 			var moreHint:String = '' ;
 			var namesArray:Array ;
@@ -148,13 +148,15 @@ package popForm
 			onSelected = onButtonSelected ;
 			onBacked = onBackFUnction ;
 			
+			var backButton:PopButtonData = new PopButtonData(Contents.lang.t[id_back],backButtonFrame);
+			
 			if( onSearched != null )
 			{
-				namesArray = [Contents.lang.t[id_search],Contents.lang.t[id_back],''] ;
+				namesArray = [Contents.lang.t[id_search],backButton,''] ;
 			}
 			else
 			{
-				namesArray = [Contents.lang.t[id_back],''] ;
+				namesArray = [backButton,''] ;
 			}
 			namesArray = namesArray.concat(buttonsList);
 			trace("namesArray : "+namesArray.length);
