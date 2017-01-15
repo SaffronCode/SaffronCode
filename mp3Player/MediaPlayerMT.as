@@ -55,6 +55,7 @@ package mp3Player
 			precentTF.mouseEnabled = false;
 			
 			sliderMC = Obj.get("slider_mc",this);
+			sliderMC.height = playPauseBTN.height ;
 			
 			urlController = new URLSaver(true);
 			
@@ -74,7 +75,7 @@ package mp3Player
 		}
 		
 		/**Set the sound URL*/
-		public function setUp(soundURL:String,AutoPlay:Boolean=false,BackColor:int=-1,MainColor:int=-1)
+		public function setUp(soundURL:String,AutoPlay:Boolean=false,BackColor:int=-1,MainColor:int=-1,playItOnline:Boolean=false)
 		{
 			if(BackColor!=-1)
 			{
@@ -87,12 +88,19 @@ package mp3Player
 			
 			sliderMC.y = 0 ;
 			sliderMC.setUp(mainColor,backColor,onPrecentChanged);
-			
 			autoPlay = AutoPlay ;
-			urlController.addEventListener(URLSaverEvent.LOAD_COMPLETE,SoundIsReady);
-			urlController.addEventListener(URLSaverEvent.LOADING,Loading);
-			urlController.addEventListener(URLSaverEvent.NO_INTERNET,TryLater);
-			urlController.load(soundURL);
+			
+			if(playItOnline)
+			{
+				startToPlaySound(soundURL);
+			}
+			else
+			{
+				urlController.addEventListener(URLSaverEvent.LOAD_COMPLETE,SoundIsReady);
+				urlController.addEventListener(URLSaverEvent.LOADING,Loading);
+				urlController.addEventListener(URLSaverEvent.NO_INTERNET,TryLater);
+				urlController.load(soundURL);
+			}
 		}
 		
 		

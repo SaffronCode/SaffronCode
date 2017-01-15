@@ -39,6 +39,11 @@ package mp3Player
 			this.removeChildren();
 		}
 		
+		override public function set height(value:Number):void
+		{
+			myHeight = value ;
+		}
+		
 		protected function unLoad(event:Event):void
 		{
 			
