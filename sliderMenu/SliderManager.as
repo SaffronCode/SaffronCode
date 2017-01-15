@@ -61,7 +61,7 @@ package sliderMenu
 							ty:Number,
 							by:Number;*/
 		
-		private static var lock_flag:Boolean = false;
+		internal static var lock_flag:Boolean = false;
 							
 		
 		/**this variable tells that from witch side the slider menu is dragging*/
@@ -477,6 +477,7 @@ package sliderMenu
 			intialize(yourMenu.root);
 			
 			addGetSlider(menuPosition,yourMenu,deltaSlide);
+			unLock();
 		}
 		
 		/**lock the slider menus*/
@@ -487,12 +488,14 @@ package sliderMenu
 				hide();
 			}
 			lock_flag = true ;
+			SliderButtonSwitcher.lockDispatcher.dispatchEvent(new Event(Event.CLOSE));
 		}
 		
 		/**unlock the app*/
 		public static function unLock()
 		{
 			lock_flag = false;
+			SliderButtonSwitcher.lockDispatcher.dispatchEvent(new Event(Event.OPEN));
 		}
 		
 		/**exclude some objects from sliding with stage object*/
