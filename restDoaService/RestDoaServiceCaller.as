@@ -29,7 +29,8 @@
 	[Event(name="SERVER_RESULT", type="restDoaService.RestDoaEvent")]
 	/**Result updated - this event uses when you requested for offline datas*/
 	[Event(name="SERVER_RESULT_UPDATE", type="restDoaService.RestDoaEvent")]
-	
+	/**The web service result was update, no need to change the result*/
+	[Event(name="SERVER_WAS_UPDATED", type="restDoaService.RestDoaEvent")]
 	/**Result Title value is Error user when one parmas is invalid*/
 	[Event(name="TITLE_ERROR", type="restDoaService.RestDoaEvent")]
 	public class RestDoaServiceCaller extends EventDispatcher 
@@ -38,6 +39,8 @@
 					offlineDataIsOK:Boolean,
 					lastPureData:String,
 					onUpdateProccess:Boolean;
+					
+		public var isConnected:Boolean = false ;
 					
 		public function get pureData():String
 		{
@@ -211,6 +214,7 @@
 		private function requestLoaded(event:Event):void
 		{
 			_isLoading = false ;
+			isConnected = true ;
 			//parser = new JSONParser();
 			if(RestDoaService.debug_show_results)
 			{
@@ -304,6 +308,7 @@
 					else
 					{
 						trace("* Nothing change on this update");
+						dispatch(new RestDoaEvent(RestDoaEvent.SERVER_WAS_UPDATED));
 					}
 				}
 				else
@@ -320,7 +325,7 @@
 		protected function loadParam(obj:Object=null):void
 		{
 			cansel();
-			
+			isConnected = false ;
 			onUpdateProccess = false ;
 			if(obj!=null)
 			{
