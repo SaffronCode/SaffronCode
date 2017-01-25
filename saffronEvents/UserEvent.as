@@ -22,6 +22,11 @@ package saffronEvents
 		/**Register faild*/
 		public static const REGISTER_FAILD:String = "REGISTER_FAILD" ;
 		
+		/**User updatet to the server*/
+		public static const USER_UPDATED:String  = "USER_UPDATED" ;
+		/**User update fails*/
+		public static const USER_UPDAT_FAILS:String  = "USER_UPDAT_FAILS" ;
+		
 		/**0: no error*/
 		public var errorCode:int ;
 		
