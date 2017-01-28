@@ -27,6 +27,11 @@ package saffronEvents
 		/**User update fails*/
 		public static const USER_UPDAT_FAILS:String  = "USER_UPDAT_FAILS" ;
 		
+		/**Password changed*/
+		public static const PASSWORD_CHAGNED:String = "PASSWORD_CHAGNED" ;
+		/**Password changing error*/
+		public static const PASSWORD_ERROR:String = "PASSWORD_ERROR" ;
+		
 		/**0: no error*/
 		public var errorCode:int ;
 		
