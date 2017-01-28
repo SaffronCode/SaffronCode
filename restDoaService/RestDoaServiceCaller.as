@@ -189,8 +189,17 @@
 			//this.dispatchEvent(new RestEvent(RestEvent.CONNECTION_ERROR));
 			//RestService.eventDispatcher.dispatchEvent(new RestEvent(RestEvent.CONNECTION_ERROR,null,ErrorEnum.ConnectionError));
 			
-			
-			try
+			if(requestLoader.data!=null && requestLoader.data!='')
+			{
+				_isLoading = false ;
+				isConnected = true ;
+				parsLoadedData(requestLoader.data,true)
+			}
+			else
+			{
+				dispatch(new RestDoaEvent(RestDoaEvent.CONNECTION_ERROR,ErrorEnum.ConnectionError));
+			}
+			/*try
 			{
 				var chekTitleError:Object = JSON.parse(requestLoader.data)
 			}
@@ -199,14 +208,14 @@
 				dispatch(new RestDoaEvent(RestDoaEvent.CONNECTION_ERROR,ErrorEnum.ConnectionError));
 				return
 			}
-			if(chekTitleError.Title!=null && chekTitleError.Title == Contents.config.TitleErrorName)
+			if(chekTitleError.Name==null)
 			{
 				dispatch(new RestDoaEvent(RestDoaEvent.TITLE_ERROR,ErrorEnum.TitleError))
 			}
 			else
 			{
 				dispatch(new RestDoaEvent(RestDoaEvent.CONNECTION_ERROR,ErrorEnum.ConnectionError));
-			}
+			}*/
 
 			
 		}
