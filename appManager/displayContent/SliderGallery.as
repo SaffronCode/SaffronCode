@@ -447,7 +447,7 @@
 						}
 					}
 					
-					if(dispatchClick && myMask.hitTestPoint(stage.mouseX,stage.mouseY) && (getTimer()-mouseDownTime)<100)
+					if(dispatchClick && myMask.hitTestPoint(stage.mouseX,stage.mouseY) && !moveingStarts)
 					{
 						this.removeEventListener(MouseEvent.CLICK,preventDefaultClick,false);
 						this.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
