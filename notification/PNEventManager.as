@@ -10,6 +10,10 @@ package notification
 					title:String,
 					token:String,
 					type:String;
+					
+		public var customPayload:Object ;
+		
+		
 		public function PNEventManager()
 		{
 		}

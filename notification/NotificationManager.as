@@ -14,13 +14,17 @@ package notification
 	
 
 
-	[Event(name="TOKEN", type="notification.NotificationEvent")]
+	/**Notification tocken ready*/
+	[Event(name="TOKEN_REGISTER_COMPELETED", type="notification.NotificationEvent")]
+	/**Notification receved*/
+	[Event(name="NOTIFICATION", type="notification.NotificationEvent")]
 	public class NotificationManager extends MovieClip
 	{
 		public static var ONESIGNAL_APP_ID:String;
 		public static var GCM_PROJECT_NUMBER:String;
 		public static var Notification_Event:NotificationManager
 		
+		public static var token:String ;
 		
 		private var _timeOutId:uint	
 		public function NotificationManager()
@@ -88,6 +92,7 @@ package notification
 		private function onTokenRegistered(e:PNEvent):void
 		{
 			log("token registered:"+e.token);
+			token = e.token;
 			this.dispatchEvent(new NotificationEvent (NotificationEvent.TOKEN_REGISTER_COMPELETED,pnEvent(e)))
 			clearTimeout(_timeOutId)	
 		} 
@@ -110,7 +115,7 @@ package notification
 		
 		private function onNotification(e:PNEvent):void
 		{
-			log(e.type+"="+e.rawPayload+","+e.badgeValue+","+e.title);	
+			log(e.type+"="+e.rawPayload+","+e.badgeValue+","+e.title+" customPayload : "+e.customPayload);	
 			this.dispatchEvent(new NotificationEvent(NotificationEvent.NOTIFICATION,pnEvent(e)))
 		}
 		
@@ -127,6 +132,7 @@ package notification
 			_pnEvnet.errorId = e.errorId
 			_pnEvnet.errorMsg = e.errorMsg
 			_pnEvnet.rawPayload = e.rawPayload
+			_pnEvnet.customPayload = e.customPayload
 			_pnEvnet.title = e.title
 			_pnEvnet.token = e.token
 			_pnEvnet.type = e.type	
