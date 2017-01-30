@@ -50,6 +50,8 @@
 					
 					
 		private var activeVersionControll:Boolean = false ;
+
+		public var URISchemId:String;
 		
 		/**This is the contentManager rectangle size. it will generate from the content w and h on the home xml tag*/
 		public static function get contentRect():Rectangle
@@ -122,7 +124,7 @@
 			
 			if((loadConfig && Contents.config.activateURLCaller) || activateURLCaller)
 			{
-				var URISchemId:String = DevicePrefrence.appID.substr(DevicePrefrence.appID.lastIndexOf('.')+1);
+				URISchemId = DevicePrefrence.appID.substr(DevicePrefrence.appID.lastIndexOf('.')+1);
 				trace("***URISchemId : "+URISchemId);
 				
 				var androidURLPermision:String =   	'				<activity>\n'+
