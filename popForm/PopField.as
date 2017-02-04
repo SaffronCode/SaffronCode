@@ -44,6 +44,10 @@
 		
 		public function set text(value:String):void
 		{
+			if(value==null)
+			{
+				value = '' ;
+			}
 			myTXT.text = value ;
 			myTXT.dispatchEvent(new Event(Event.CHANGE));
 		}
