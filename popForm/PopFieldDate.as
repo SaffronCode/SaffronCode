@@ -7,6 +7,7 @@ package popForm
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import flash.text.ReturnKeyLabel;
 	import flash.text.SoftKeyboardType;
 	import flash.text.TextField;
 	
@@ -22,6 +23,11 @@ package popForm
 		
 		private var backMC:MovieClip;
 		private var IsArabic:Boolean;
+		private var yearKeyboard:FarsiInputCorrection;
+		private var monthKeyboard:FarsiInputCorrection;
+		private var dayKeyboard:FarsiInputCorrection;
+		private var OnTypedFunction:Function;
+		private var ReturnKey:String;
 		
 		public function changeColor(colorFrame:uint)
 		{
@@ -38,7 +44,7 @@ package popForm
 			}
 		}
 		
-		public function setUp(tagName:String,defaultDate:Date=null,isArabic:Boolean=false,languageFrame:uint=1,color:uint=1):void
+		public function setUp(tagName:String,defaultDate:Date=null,isArabic:Boolean=false,languageFrame:uint=1,color:uint=1,returnKey:String=ReturnKeyLabel.DEFAULT,onTypedFunction:Function=null):void
 		{
 			
 			IsArabic = isArabic ;
@@ -62,6 +68,8 @@ package popForm
 			dayTF = Obj.get("day_txt",this);
 			dayTF.maxChars = 2 ;
 			
+			ReturnKey = returnKey;
+			OnTypedFunction = onTypedFunction;
 			
 			update(defaultDate);
 		}
@@ -94,17 +102,44 @@ package popForm
 				dayTF.text = 'dd';
 			}
 			
-			FarsiInputCorrection.setUp(yearTF,SoftKeyboardType.NUMBER,IsArabic,true,clearAfterSelects);
+			yearKeyboard = FarsiInputCorrection.setUp(yearTF,SoftKeyboardType.NUMBER,IsArabic,true,clearAfterSelects,false,true,true,ReturnKeyLabel.NEXT,selectMonth);
 			yearTF.addEventListener(Event.CHANGE,imUpdated);
-			FarsiInputCorrection.setUp(monthTF,SoftKeyboardType.NUMBER,IsArabic,true,clearAfterSelects);
+			monthKeyboard = FarsiInputCorrection.setUp(monthTF,SoftKeyboardType.NUMBER,IsArabic,true,clearAfterSelects,false,true,true,ReturnKeyLabel.NEXT,selectDay);
 			monthTF.addEventListener(Event.CHANGE,imUpdated);
-			FarsiInputCorrection.setUp(dayTF,SoftKeyboardType.NUMBER,IsArabic,true,clearAfterSelects);
+			dayKeyboard = FarsiInputCorrection.setUp(dayTF,SoftKeyboardType.NUMBER,IsArabic,true,clearAfterSelects,false,true,true,ReturnKey,OnTypedFunction);
 			dayTF.addEventListener(Event.CHANGE,imUpdated);
+		}
+		
+		private function selectMonth():void
+		{
+			monthKeyboard.focuseOnStageText();
+		}
+		
+		private function selectDay():void
+		{
+			dayKeyboard.focuseOnStageText();
 		}
 		
 		protected function imUpdated(event:Event):void
 		{
-			
+			if(yearKeyboard.editing && yearTF.text.length>=4)
+			{
+				yearKeyboard.closeKeyBoard();
+				selectMonth();
+			}
+			else if(monthKeyboard.editing && monthTF.text.length>=2)
+			{
+				monthKeyboard.closeKeyBoard();
+				selectDay();
+			}
+			else if(dayKeyboard.editing && dayTF.text.length>=2)
+			{
+				dayKeyboard.closeKeyBoard();
+				if(OnTypedFunction!=null)
+				{
+					OnTypedFunction();
+				}
+			}
 			this.dispatchEvent(new Event(Event.CHANGE));
 		}
 		
@@ -173,6 +208,16 @@ package popForm
 			
 			
 			return finalDate ;
+		}
+		
+		
+		/**Open the device key board*/
+		public function activateKeyBoard():void
+		{
+			if(yearKeyboard)
+			{
+				yearKeyboard.focuseOnStageText();
+			}
 		}
 	}
 }
