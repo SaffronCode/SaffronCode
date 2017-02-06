@@ -137,7 +137,8 @@ package popForm
 		
 		/**Select something from these buttons, but if the onSearchButtn function was not null, it will add search input to<br>
 		 * onButtonSelected : function(e:PopMenuEvent);<br>
-		 * onSearchButton : function(searchParam:String);*/
+		 * onSearchButton : function(searchParam:String);<br>
+		 * the function "onJobSelected" must have a variable based on PopMenuEvent */
 		public static function selector(title:String,text:String,buttonsList:Array,onButtonSelected:Function,onSearchButton:Function=null,defButtonFrame:uint=1,itemFrame:uint=2,onBackFUnction:Function = null,backButtonFrame:int=1):void
 		{
 			var moreHint:String = '' ;
