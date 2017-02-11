@@ -20,16 +20,39 @@ package contents.displayPages
 		
 		private var openInWeb:MovieClip ;
 		
-		public function URLPage()
+		private var shoOnlyWhenLoaded:Boolean ;
+		
+		private var isLoaded:Boolean = false ;
+		
+		private var myPreLoader:MovieClip ;
+		
+		public function URLPage(newPageSize:Rectangle=null,myPreloaderMC:MovieClip=null)
 		{
 			super();
-			this.visible = false ;
+			if(newPageSize)
+			{
+				this.graphics.clear();
+				this.removeChildren();
+				this.graphics.beginFill(0,0);
+				this.graphics.drawRect(0,0,newPageSize.width,newPageSize.height);
+			}
+
+			if(myPreloaderMC)
+			{
+				myPreLoader = myPreloaderMC ;
+				shoOnlyWhenLoaded = true ;
+				myPreLoader.x = this.width/2;
+				myPreLoader.y = this.height/2-myPreLoader.height/2;
+				this.addChild(myPreLoader);
+			}
+			
+			//this.visible = false ;
 			
 			openInWeb = Obj.get("open_mc",this);
 			if(openInWeb)
 			{
 				openInWeb.addEventListener(MouseEvent.CLICK,openInWebBrowser);
-				this.visible = true;
+				//this.visible = true;
 			}
 		}
 		
@@ -61,10 +84,27 @@ package contents.displayPages
 		{
 			sw.stage = stage ;
 			controllStagePlace();
+			sw.addEventListener(Event.COMPLETE,pageLoaded);
+			isLoaded = false ;
+			if(myPreLoader)
+			{
+				myPreLoader.visible = true ;
+			}
+			trace("********** Open the page : "+myPage.content);
 			sw.loadURL(myPage.content);
 			
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 			this.addEventListener(Event.ENTER_FRAME,controllStagePlace);
+		}
+		
+		protected function pageLoaded(event:Event):void
+		{
+			isLoaded = true ;
+			if(myPreLoader)
+			{
+				myPreLoader.visible = false ;
+			}
+			trace("Page is loaded");
 		}
 		
 		/**Unload this item from web*/
@@ -85,6 +125,14 @@ package contents.displayPages
 				rect.bottom = buttonRect.top ;
 			}
 			sw.viewPort = rect;
+			if(Obj.isAccesibleByMouse(this) && (!shoOnlyWhenLoaded || isLoaded))
+			{
+				sw.stage = (stage!=null)?stage:null ;
+			}
+			else
+			{
+				sw.stage = null ;
+			}
 		}
 			
 	}
