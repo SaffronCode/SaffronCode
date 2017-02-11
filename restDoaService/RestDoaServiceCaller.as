@@ -189,7 +189,7 @@
 			//this.dispatchEvent(new RestEvent(RestEvent.CONNECTION_ERROR));
 			//RestService.eventDispatcher.dispatchEvent(new RestEvent(RestEvent.CONNECTION_ERROR,null,ErrorEnum.ConnectionError));
 			
-			if(requestLoader.data!=null && requestLoader.data!='')
+			if(controllData && requestLoader.data!=null && requestLoader.data!='')
 			{
 				_isLoading = false ;
 				isConnected = true ;
