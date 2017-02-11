@@ -201,7 +201,9 @@ package dataManager
 
 			
 			asyncQuery.clearParameters();
-			asyncQuery.text = "delete from "+tableName+" where "+field_id+" == '"+id+"'" ;
+			asyncQuery.text = "delete from "+tableName+" where "+field_id+" == @"+field_id ;
+			asyncQuery.parameters['@'+field_id] = id ;
+			trace("*************** asyncQuery.text : "+asyncQuery.text);
 			
 			
 			asyncQuery.addEventListener(SQLEvent.RESULT,continueSaving);
