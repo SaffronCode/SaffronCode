@@ -5,7 +5,11 @@
 	import flash.filesystem.File;
 	
 	import popForm.PopButtonData;
-
+	
+	/**<item name="" id=""/>
+	 * <item name="" id=""/>
+	 * <item name="" id=""/>
+	 * <item name="" id=""/>*/
 	public class GlobalButtonCreator
 	{
 		
