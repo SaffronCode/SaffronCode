@@ -462,6 +462,7 @@ package sliderMenu
 		 * you have only one stage*/
 		public static function setMenu(yourMenu:MovieClip,deltaSlide:Number,menuPosition:String = LEFT_MENU,manageFrames:Boolean=true,moveTheStage:Boolean=true)
 		{
+			lock_flag = true ;
 			moveStage = moveTheStage ;
 			manageMenusFrames = manageFrames ;
 			if(manageMenusFrames)

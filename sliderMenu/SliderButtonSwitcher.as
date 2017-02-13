@@ -22,8 +22,7 @@ package sliderMenu
 			this.buttonMode = true ;
 			
 			this.addEventListener(MouseEvent.CLICK,clicked);
-			
-			this.visible = SliderManager.lock_flag ;
+			this.visible = !SliderManager.lock_flag ;
 		}
 		
 		protected function imUnLock(event:Event):void
@@ -38,7 +37,6 @@ package sliderMenu
 		
 		protected function clicked(event:MouseEvent):void
 		{
-			
 			if(SliderManager.isOpen())
 			{
 				trace("Hide the menu");
