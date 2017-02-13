@@ -34,6 +34,14 @@ package
 		{
 			// TODO Auto-generated method stub
 			_stageWebView.viewPort = getArea();
+			if(!Obj.isAccesibleByMouse(_area))
+			{
+				_hide();
+			}
+			else
+			{
+				_show();
+			}
 		}
 		private  function load():void
 		{
