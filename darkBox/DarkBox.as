@@ -536,5 +536,25 @@ package darkBox
 			}
 		}
 		
+		public static function saveCurrentImageToGallery():void
+		{
+			if(DevicePrefrence.isItPC)
+			{
+				FileManager.seveFile(File.desktopDirectory.resolvePath('SavedFileFrom'+DevicePrefrence.appName+'.jpg'),ME.images[ME.currentImage].targetBytes,true,onImageSaved);
+			}
+			else
+			{
+				DeviceImage.saveImageToGallery(ME.images[ME.currentImage].targetBytes,onImageSaved);
+			}
+		}
+		
+			private static function onImageSaved():void
+			{
+				AnimData.fadeOut(ME.downloadMC,showDownloadAgain,0.334);
+				function showDownloadAgain():void
+				{
+					AnimData.fadeIn(ME.downloadMC,showDownloadAgain,0.2);
+				}
+			}
 	}
 }
