@@ -14,7 +14,7 @@ package contents.displayPages
 	
 	public class URLPage extends MovieClip implements DisplayPageInterface
 	{
-		private static var sw:StageWebView = new StageWebView();
+		public static var sw:StageWebView = new StageWebView();
 		protected var myPage:PageData;
 		
 		
