@@ -26,7 +26,12 @@ package nativeClasses.purchase
 		
 		/**Returns true if purchusing can start<br>
 		 * call userTicket to clear bout tickets<br>
-		 * If you request to by tickets befor and tickets was ready, you have to call useTicket to make the cash clear, otherwise, shopping will not start*/
+		 * If you request to by tickets befor and tickets was ready, you have to call useTicket to make the cash clear, otherwise, shopping will not start<br>
+		 * <br>
+		 * <br>
+		 * Android:
+		 * Add this permission to the <![CDATA[ <manifest android:installLocation="auto"> <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="19"/>]]>
+tag <br><br><bold><![CDATA[ <uses-permission android:name="com.android.vending.BILLING" />]]></bold>*/
 		public static function buyTicket(hoManyTicketsDoINeed:uint,yourTicketId:String,onTicketBought:Function,onFaildToBuy:Function):Boolean
 		{
 			onDone = onTicketBought ;
