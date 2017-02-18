@@ -57,7 +57,7 @@ package appManager.displayContentElemets
 		private var timeOutValue:uint ;
 		
 		private var loadedBytes:ByteArray ;
-		private var loadedBitmap:BitmapData ;
+		public var loadedBitmap:BitmapData ;
 		
 		private var backColor:uint,
 					backAlpha:Number;
