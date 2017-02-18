@@ -57,7 +57,7 @@ package appManager.displayContentElemets
 		private var timeOutValue:uint ;
 		
 		private var loadedBytes:ByteArray ;
-		public var loadedBitmap:BitmapData ;
+		private var loadedBitmap:BitmapData ;
 		
 		private var backColor:uint,
 					backAlpha:Number;
@@ -89,6 +89,16 @@ package appManager.displayContentElemets
 			super();
 			
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
+		}
+		
+		/**This function will returns the loaded image bitmap*/
+		public function getBitmapData():BitmapData
+		{
+			if(newBitmap!=null)
+			{
+				return newBitmap.bitmapData ;
+			}
+			return null ;
 		}
 		
 		/**Returns true if it is in the loading progress*/
