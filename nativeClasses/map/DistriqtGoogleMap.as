@@ -9,6 +9,8 @@ package nativeClasses.map
 	import flash.events.Event;
 	import flash.geom.Rectangle;
 	
+	import stageManager.StageManager;
+	
 	public class DistriqtGoogleMap extends Sprite
 	{
 		private static var api_key:String ;
@@ -175,24 +177,54 @@ package nativeClasses.map
 		private function createViewPort():Rectangle
 		{
 			var rect:Rectangle = this.getBounds(stage);
-			
+			trace("****Create view port");
 			if(scl==0)
 			{
-				
-				var sclX:Number = (stage.fullScreenWidth/stage.stageWidth) ;
-				var sclY:Number = (stage.fullScreenHeight/stage.stageHeight) ;
-				
+				var stageRect:Rectangle = StageManager.stageRect ;
+				trace("stageRect : "+stageRect);
+				var sclX:Number ;
+				var sclY:Number ;
 				deltaX = 0 ;
 				deltaY = 0 ;
-				if(sclX<=sclY)
+				var fullScreenWidth:Number,
+					fullScreenHeight:Number;
+				if(stageRect.width==0)
 				{
-					scl = sclX ;
-					deltaY = stage.fullScreenHeight-(stage.stageHeight)*scl ;
+					trace("+++default size detection")
+					sclX = (stage.fullScreenWidth/stage.stageWidth);
+					sclY = (stage.fullScreenHeight/stage.stageHeight);
+					if(sclX<=sclY)
+					{
+						scl = sclX ;
+						deltaY = stage.fullScreenHeight-(stage.stageHeight)*scl ;
+					}
+					else
+					{
+						scl = sclY ;
+						deltaX = stage.fullScreenWidth-(stage.stageWidth)*scl ;
+					}
 				}
 				else
 				{
-					scl = sclY ;
-					deltaX = stage.fullScreenWidth-(stage.stageWidth)*scl ;
+					trace("+++advvanced size detection");
+					fullScreenWidth = stageRect.width*StageManager.stageScaleFactor() ;
+					fullScreenHeight = stageRect.height*StageManager.stageScaleFactor() ;
+					sclX = (fullScreenWidth/stage.stageWidth);
+					sclY = (fullScreenHeight/stage.stageHeight);
+					trace("sclX : "+sclX);
+					trace("sclY : "+sclY);
+					if(sclX<=sclY)
+					{
+						scl = sclX ;
+						deltaY = fullScreenHeight-(stage.stageHeight)*scl ;
+					}
+					else
+					{
+						scl = sclY ;
+						deltaX = fullScreenWidth-(stage.stageWidth)*scl ;
+					}
+					trace("deltaX : "+deltaX);
+					trace("deltaY : "+deltaY);
 				}
 			}
 			
