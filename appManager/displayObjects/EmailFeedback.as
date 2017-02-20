@@ -14,7 +14,7 @@ package appManager.displayObjects
 		{
 			if(devicePrefrence==null)
 			{
-				devicePrefrence = " \n\n\r\r\r\r\r\r"+String('['+DevicePrefrence.appName+DevicePrefrence.appVersion+'-'+new Date().toString()+'-'+JSON.stringify(Capabilities)+']').split('"').join('').split('&').join('').split('?').join('').split('{').join('').split('}').join('').split(' ').join('');
+				devicePrefrence = "                                                                                                                           "+String('['+DevicePrefrence.appName+DevicePrefrence.appVersion+'-'+new Date().toString()+'-'+JSON.stringify(Capabilities)+']').split('"').join('').split('&').join('').split('?').join('').split('{').join('').split('}').join('').split(' ').join('');
 			}
 		}
 		
