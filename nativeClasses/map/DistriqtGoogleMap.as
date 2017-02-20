@@ -209,7 +209,7 @@ package nativeClasses.map
 		{
 			var rect:Rectangle = createViewPort();
 			trace("Repose : "+rect);
-			//NativeMaps.service.setLayout(rect.width,rect.height,rect.x,rect.y);
+			NativeMaps.service.setLayout(rect.width,rect.height,rect.x,rect.y);
 			I++;
 		}
 	}
