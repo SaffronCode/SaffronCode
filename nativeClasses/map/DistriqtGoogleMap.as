@@ -88,7 +88,8 @@ package nativeClasses.map
 						case AuthorisationStatus.DENIED:
 						case AuthorisationStatus.UNKNOWN:
 						default:
-							trace( "User denied access" );
+							trace( "Request access to location services." );
+							NativeMaps.service.requestAuthorisation( AuthorisationStatus.DENIED );
 							break;
 					}
 				}
