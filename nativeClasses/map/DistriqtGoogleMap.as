@@ -126,7 +126,14 @@ package nativeClasses.map
 				case AuthorisationStatus.UNKNOWN:
 				default:
 					trace( "Request access to location services." );
-					NativeMaps.service.requestAuthorisation( AuthorisationStatus.IN_USE );
+					if(NativeMaps.service.requestAuthorisation.length>0)
+					{
+						NativeMaps.service.requestAuthorisation( AuthorisationStatus.IN_USE );
+					}
+					else
+					{
+						NativeMaps.service.requestAuthorisation();
+					}
 					break;
 			}
 			
