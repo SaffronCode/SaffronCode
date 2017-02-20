@@ -1,6 +1,7 @@
 package nativeClasses
 {
 	
+	import flash.display.BitmapData;
 	import flash.utils.getDefinitionByName;
 
 	public class Sharing
@@ -26,7 +27,7 @@ package nativeClasses
 		}
 		
 		/**Share this text*/
-		public function shareText(str:String,downloadLinkLable:String=''):void
+		public function shareText(str:String,downloadLinkLable:String='',imageBirmapData:BitmapData=null):void
 		{
 			var sharedString:String = str+'\n\n'+DevicePrefrence.appName+'\n'+downloadLinkLable+'\n'
 				+((DevicePrefrence.downloadLink_iOS=='')?'':'Apple Store: '+DevicePrefrence.downloadLink_iOS+'\n\n')
@@ -40,7 +41,13 @@ package nativeClasses
 				options.title = "Share with ...";
 				options.showOpenIn = false;
 				
-				shareClass.service.share(sharedString);
+				var url:String ;
+				if(downloadLinkLable!='' && downloadLinkLable!=null)
+				{
+					url = downloadLinkLable ;
+				}
+				
+				shareClass.service.share(sharedString,imageBirmapData,url);
 			}
 		}
 		
