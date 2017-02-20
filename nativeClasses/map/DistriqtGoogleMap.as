@@ -186,9 +186,9 @@ package nativeClasses.map
 				var sclY:Number ;
 				deltaX = 0 ;
 				deltaY = 0 ;
-				var fullScreenWidth:Number,
-					fullScreenHeight:Number;
-				if(stageRect.width==0)
+				var _fullScreenWidth:Number,
+					_fullScreenHeight:Number;
+				if(true || stageRect.width==0)
 				{
 					trace("+++default size detection")
 					sclX = (stage.fullScreenWidth/stage.stageWidth);
@@ -207,24 +207,25 @@ package nativeClasses.map
 				else
 				{
 					trace("+++advvanced size detection");
-					fullScreenWidth = stageRect.width*StageManager.stageScaleFactor() ;
-					fullScreenHeight = stageRect.height*StageManager.stageScaleFactor() ;
-					sclX = (fullScreenWidth/stage.stageWidth);
-					sclY = (fullScreenHeight/stage.stageHeight);
+					_fullScreenWidth = stageRect.width*StageManager.stageScaleFactor() ;
+					_fullScreenHeight = stageRect.height*StageManager.stageScaleFactor() ;
+					sclX = (_fullScreenWidth/stage.stageWidth);
+					sclY = (_fullScreenHeight/stage.stageHeight);
 					trace("sclX : "+sclX);
 					trace("sclY : "+sclY);
 					if(sclX<=sclY)
 					{
 						scl = sclX ;
-						deltaY = fullScreenHeight-(stage.stageHeight)*scl ;
+						deltaY = _fullScreenHeight-(stage.stageHeight)*scl ;
 					}
 					else
 					{
 						scl = sclY ;
-						deltaX = fullScreenWidth-(stage.stageWidth)*scl ;
+						deltaX = _fullScreenWidth-(stage.stageWidth)*scl ;
 					}
 					trace("deltaX : "+deltaX);
 					trace("deltaY : "+deltaY);
+					trace("scl : "+scl);
 				}
 			}
 			
