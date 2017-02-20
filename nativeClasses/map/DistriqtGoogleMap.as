@@ -81,7 +81,7 @@ package nativeClasses.map
 		{
 			super();
 			
-			this.graphics.beginFill(0);
+			this.graphics.beginFill(0x222222);
 			this.graphics.drawRect(0,0,Width,Height);
 		}
 		
@@ -109,8 +109,9 @@ package nativeClasses.map
 			}
 			
 			var userAllowdAccess:Boolean = true ;
-			/*trace("NativeMaps.service.authorisationStatus() : "+NativeMaps.service.authorisationStatus());
-			switch (NativeMaps.service.authorisationStatus())
+			var autoriseStatus:String = NativeMaps.service.authorisationStatus();
+			trace("autoriseStatus : "+autoriseStatus);
+			switch (autoriseStatus)
 			{
 				case AuthorisationStatus.ALWAYS:
 				case AuthorisationStatus.IN_USE:
@@ -128,9 +129,10 @@ package nativeClasses.map
 				case AuthorisationStatus.RESTRICTED:
 				case AuthorisationStatus.DENIED:
 				case AuthorisationStatus.UNKNOWN:
+				default:
 					trace( "User denied access" );
 					break;
-			}*/
+			}
 			
 			trace("userAllowdAccess : "+userAllowdAccess);
 			
@@ -201,8 +203,8 @@ package nativeClasses.map
 		
 		protected function repose(event:Event):void
 		{
-			trace("Repose..");
 			var rect:Rectangle = createViewPort();
+			trace("Repose : "+rect);
 			//NativeMaps.service.setLayout(rect.width,rect.height,rect.x,rect.y);
 			I++;
 		}
