@@ -68,6 +68,29 @@ package nativeClasses.map
 				if (NativeMaps.isSupported)
 				{
 					isSupports = true ;
+					
+					var autoriseStatus:String = NativeMaps.service.authorisationStatus();
+					trace("autoriseStatus : "+autoriseStatus);
+					switch (autoriseStatus)
+					{
+						case AuthorisationStatus.ALWAYS:
+						case AuthorisationStatus.IN_USE:
+							trace( "User allowed access: " + NativeMaps.service.authorisationStatus() );
+							break;
+						
+						case AuthorisationStatus.NOT_DETERMINED:
+						case AuthorisationStatus.SHOULD_EXPLAIN:
+							trace("--requestAuthorisation");
+							NativeMaps.service.requestAuthorisation( AuthorisationStatus.IN_USE );
+							break;
+						
+						case AuthorisationStatus.RESTRICTED:
+						case AuthorisationStatus.DENIED:
+						case AuthorisationStatus.UNKNOWN:
+						default:
+							trace( "User denied access" );
+							break;
+					}
 				}
 			}
 			catch (e:Error)
@@ -108,53 +131,23 @@ package nativeClasses.map
 				throw "You should set the DistriqtGoogleMap.setUp(..) first";
 			}
 			
-			var userAllowdAccess:Boolean = true ;
-			var autoriseStatus:String = NativeMaps.service.authorisationStatus();
-			trace("autoriseStatus : "+autoriseStatus);
-			switch (autoriseStatus)
-			{
-				case AuthorisationStatus.ALWAYS:
-				case AuthorisationStatus.IN_USE:
-					trace( "User allowed access: " + NativeMaps.service.authorisationStatus() );
-					userAllowdAccess = true ;
-					break;
-				
-				case AuthorisationStatus.NOT_DETERMINED:
-				case AuthorisationStatus.SHOULD_EXPLAIN:
-					trace("--requestAuthorisation");
-					userAllowdAccess = true ;
-					NativeMaps.service.requestAuthorisation( AuthorisationStatus.IN_USE );
-					break;
-				
-				case AuthorisationStatus.RESTRICTED:
-				case AuthorisationStatus.DENIED:
-				case AuthorisationStatus.UNKNOWN:
-				default:
-					trace( "User denied access" );
-					break;
-			}
 			
-			trace("userAllowdAccess : "+userAllowdAccess);
-			
-			if(userAllowdAccess)
+			if (NativeMaps.isSupported)
 			{
-				if (NativeMaps.isSupported)
+				if(!mapInitialized)
 				{
-					if(!mapInitialized)
-					{
-						mapInitialized = true ;
-						trace("prepareViewOrder");
-						NativeMaps.service.prepareViewOrder();
-						trace("prepareViewOrder done");
-					}
-					var rect:Rectangle;
-					rect = createViewPort();
-					trace("Create map");
-					NativeMaps.service.createMap( rect, MapType.MAP_TYPE_NORMAL );
-					trace("Create map done");
-					mapCreated = true ;
-					this.addEventListener(Event.ENTER_FRAME,repose);
+					mapInitialized = true ;
+					trace("prepareViewOrder");
+					NativeMaps.service.prepareViewOrder();
+					trace("prepareViewOrder done");
 				}
+				var rect:Rectangle;
+				rect = createViewPort();
+				trace("Create map");
+				NativeMaps.service.createMap( rect, MapType.MAP_TYPE_NORMAL );
+				trace("Create map done");
+				mapCreated = true ;
+				this.addEventListener(Event.ENTER_FRAME,repose);
 			}
 
 		}
