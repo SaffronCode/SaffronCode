@@ -188,7 +188,7 @@ package nativeClasses.map
 				deltaY = 0 ;
 				var _fullScreenWidth:Number,
 					_fullScreenHeight:Number;
-				if(true || stageRect.width==0)
+				if(stageRect.width==0)
 				{
 					trace("+++default size detection")
 					sclX = (stage.fullScreenWidth/stage.stageWidth);
@@ -229,13 +229,31 @@ package nativeClasses.map
 				}
 			}
 			
+			trace("Old rect : " +rect);
+			trace("scl : "+scl);
+			trace("deltaX : "+deltaX);
+			trace("deltaY : "+deltaY);
+			
 			rect.x*=scl;
 			rect.y*=scl;
 			rect.x += deltaX/2;
 			rect.y += deltaY/2;
 			rect.width*=scl;
 			rect.height*=scl;
+			
+			rect.x = round(rect.x);
+			rect.y = round(rect.y);
+			rect.width = round(rect.width);
+			rect.height = round(rect.height);
+			
+			trace("new rect : " +rect);
+			
 			return rect;
+		}
+		
+		private function round(num:Number):Number
+		{
+			return Math.round(num);
 		}
 		
 		protected function repose(event:Event):void
