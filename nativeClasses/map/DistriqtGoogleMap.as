@@ -200,10 +200,13 @@ package nativeClasses.map
 		
 		protected function repose(event:Event):void
 		{
-			var rect:Rectangle = createViewPort();
-			trace("Repose : "+rect);
-			//NativeMaps.service.setLayout(rect.width,rect.height,rect.x,rect.y);
-			I++;
+			if(I%20==0)
+			{
+				var rect:Rectangle = createViewPort();
+				trace("Repose : "+rect);
+				//NativeMaps.service.setLayout(rect.width,rect.height,rect.x,rect.y);
+				I++;
+			}
 		}
 	}
 }
