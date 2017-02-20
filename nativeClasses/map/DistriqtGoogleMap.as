@@ -68,30 +68,6 @@ package nativeClasses.map
 				if (NativeMaps.isSupported)
 				{
 					isSupports = true ;
-					
-					var autoriseStatus:String = NativeMaps.service.authorisationStatus();
-					trace("autoriseStatus : "+autoriseStatus);
-					switch (autoriseStatus)
-					{
-						case AuthorisationStatus.ALWAYS:
-						case AuthorisationStatus.IN_USE:
-							trace( "User allowed access: " + NativeMaps.service.authorisationStatus() );
-							break;
-						
-						case AuthorisationStatus.NOT_DETERMINED:
-						case AuthorisationStatus.SHOULD_EXPLAIN:
-							trace("--requestAuthorisation");
-							NativeMaps.service.requestAuthorisation( AuthorisationStatus.IN_USE );
-							break;
-						
-						case AuthorisationStatus.RESTRICTED:
-						case AuthorisationStatus.DENIED:
-						case AuthorisationStatus.UNKNOWN:
-						default:
-							trace( "Request access to location services." );
-							NativeMaps.service.requestAuthorisation( AuthorisationStatus.DENIED );
-							break;
-					}
 				}
 			}
 			catch (e:Error)
@@ -120,12 +96,39 @@ package nativeClasses.map
 			trace("AuthorisationStatus.SHOULD_EXPLAIN : "+AuthorisationStatus.SHOULD_EXPLAIN);
 			trace("AuthorisationStatus.UNKNOWN : "+AuthorisationStatus.UNKNOWN);
 			
+			trace("----");
 			
 			trace("MapType.MAP_TYPE_HYBRID : "+MapType.MAP_TYPE_HYBRID);
 			trace("MapType.MAP_TYPE_NONE : "+MapType.MAP_TYPE_NONE);
 			trace("MapType.MAP_TYPE_NORMAL : "+MapType.MAP_TYPE_NORMAL);
 			trace("MapType.MAP_TYPE_SATELLITE : "+MapType.MAP_TYPE_SATELLITE);
 			trace("MapType.MAP_TYPE_TERRAIN : "+MapType.MAP_TYPE_TERRAIN);
+			
+			trace("-------");
+			
+			var autoriseStatus:String = NativeMaps.service.authorisationStatus();
+			trace("autoriseStatus : "+autoriseStatus);
+			switch (autoriseStatus)
+			{
+				case AuthorisationStatus.ALWAYS:
+				case AuthorisationStatus.IN_USE:
+					trace( "User allowed access: " + NativeMaps.service.authorisationStatus() );
+					break;
+				
+				case AuthorisationStatus.NOT_DETERMINED:
+				case AuthorisationStatus.SHOULD_EXPLAIN:
+					trace("--requestAuthorisation");
+					NativeMaps.service.requestAuthorisation( AuthorisationStatus.IN_USE );
+					break;
+				
+				case AuthorisationStatus.RESTRICTED:
+				case AuthorisationStatus.DENIED:
+				case AuthorisationStatus.UNKNOWN:
+				default:
+					trace( "Request access to location services." );
+					NativeMaps.service.requestAuthorisation( AuthorisationStatus.IN_USE );
+					break;
+			}
 			
 			if(api_key==null)
 			{
@@ -144,7 +147,7 @@ package nativeClasses.map
 				}
 				var rect:Rectangle;
 				rect = createViewPort();
-				trace("Create map");
+				trace("Create map : "+rect);
 				NativeMaps.service.createMap( rect, MapType.MAP_TYPE_NORMAL );
 				trace("Create map done");
 				mapCreated = true ;
