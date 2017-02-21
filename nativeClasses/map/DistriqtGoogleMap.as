@@ -123,6 +123,14 @@ package nativeClasses.map
 					}
 					break;
 			}
+			
+			if(!mapInitialized)
+			{
+				mapInitialized = true ;
+				trace("prepareViewOrder");
+				NativeMaps.service.prepareViewOrder();
+				trace("prepareViewOrder done");
+			}
 		}
 		
 		public function DistriqtGoogleMap(Width:Number,Height:Number)
@@ -165,13 +173,6 @@ package nativeClasses.map
 			
 			if (NativeMaps.isSupported)
 			{
-				if(!mapInitialized)
-				{
-					mapInitialized = true ;
-					trace("prepareViewOrder");
-					NativeMaps.service.prepareViewOrder();
-					trace("prepareViewOrder done");
-				}
 				var rect:Rectangle;
 				rect = createViewPort();
 				trace("Create map : "+rect);
