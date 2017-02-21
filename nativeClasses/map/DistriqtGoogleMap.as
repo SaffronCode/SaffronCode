@@ -191,7 +191,7 @@ package nativeClasses.map
 		private function createViewPort():Rectangle
 		{
 			var rect:Rectangle = this.getBounds(stage);
-			trace("****Create view port");
+			//trace("****Create view port");
 			if(scl==0)
 			{
 				var stageRect:Rectangle = StageManager.stageRect ;
