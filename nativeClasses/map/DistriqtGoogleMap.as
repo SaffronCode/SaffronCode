@@ -3,6 +3,7 @@ package nativeClasses.map
 	import com.distriqt.extension.nativemaps.AuthorisationStatus;
 	import com.distriqt.extension.nativemaps.NativeMaps;
 	import com.distriqt.extension.nativemaps.events.NativeMapEvent;
+	import com.distriqt.extension.nativemaps.objects.CustomMarkerIcon;
 	import com.distriqt.extension.nativemaps.objects.LatLng;
 	import com.distriqt.extension.nativemaps.objects.MapMarker;
 	import com.distriqt.extension.nativemaps.objects.MapType;
@@ -10,6 +11,7 @@ package nativeClasses.map
 	
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.filesystem.File;
 	import flash.geom.Rectangle;
 	import flash.utils.setTimeout;
 	
@@ -31,7 +33,8 @@ package nativeClasses.map
 		
 		private var mapIsShowing:Boolean = false ;
 		
-		private var myMarkers:Vector.<MapMarker> ;
+		private var myMarkers:Vector.<MapMarker>,
+					myIcons:Vector.<MapIcon>;
 		
 		private var mapCretedOnStage:Boolean;
 		
@@ -154,7 +157,7 @@ package nativeClasses.map
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unload);
 		}
 		
-		public function setMap(centerLat:Number=NaN,centerLon:Number=NaN):void
+		public function setMap(centerLat:Number=NaN,centerLon:Number=NaN,icons:Vector.<MapIcon>=null):void
 		{
 			//unload();
 			trace("AuthorisationStatus.ALWAYS : "+AuthorisationStatus.ALWAYS);
@@ -175,6 +178,11 @@ package nativeClasses.map
 			
 			trace("-------");
 			myMarkers = new Vector.<MapMarker>();
+			myIcons = new Vector.<MapIcon>();
+			if(icons!=null)
+			{
+				myIcons = icons ;
+			}
 			mapCretedOnStage = false ;
 			if(api_key==null)
 			{
@@ -194,6 +202,7 @@ package nativeClasses.map
 				}
 				NativeMaps.service.addEventListener( NativeMapEvent.MAP_CREATED, mapCreatedHandler );
 				NativeMaps.service.createMap( rect, MapType.MAP_TYPE_NORMAL,center);
+				
 				trace("Create map done");
 				mapCreated = true ;
 				mapIsShowing = true ;
@@ -323,10 +332,10 @@ package nativeClasses.map
 			}
 		}
 		
-		public function addMarker(markerName:String,lat:Number,lon:Number,markerTitle:String,markerInfo:String,color:uint=0,enableInfoWindow=true,animated:Boolean=true,showInfoButton:Boolean=true,iconURL:String=''):void
+		public function addMarker(markerName:String,lat:Number,lon:Number,markerTitle:String,markerInfo:String,color:uint=0,enableInfoWindow=true,animated:Boolean=true,showInfoButton:Boolean=true,iconId:String=''):void
 		{
-			trace("****************Map marker Added : ",lat,lon,markerName);
-			var myMarker:MapMarker = new MapMarker(markerName,new LatLng(lat,lon));//,markerTitle,markerInfo,color,false,enableInfoWindow,animated,showInfoButton,''
+			trace("****************Map marker Added : ",lat,lon,markerName,'iconId : '+iconId);
+			var myMarker:MapMarker = new MapMarker(markerName,new LatLng(lat,lon),markerTitle,markerInfo,color,false,enableInfoWindow,animated,showInfoButton,iconId)
 			myMarkers.push(myMarker);
 			if(mapCretedOnStage)
 			{
@@ -337,7 +346,12 @@ package nativeClasses.map
 		private function updateMarkers():void
 		{
 			NativeMaps.service.clearMap();
-			for(var i = 0 ; i<myMarkers.length ; i++)
+			var i:int ;
+			for(i = 0 ; i<myIcons.length ; i++)
+			{
+				NativeMaps.service.addCustomMarkerIcon(new CustomMarkerIcon(myIcons[i].Id,myIcons[i].bitmapData));
+			}
+			for(i = 0 ; i<myMarkers.length ; i++)
 			{
 				NativeMaps.service.addMarker(myMarkers[i]);
 			}
