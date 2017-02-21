@@ -64,7 +64,13 @@ package notification
 			trace('ONESIGNAL_APP_ID :',ONESIGNAL_APP_ID)
 			trace('GCM_PROJECT_NUMBER :',GCM_PROJECT_NUMBER)
 			log("init OneSignal...");
-			EasyPush.initOneSignal(ONESIGNAL_APP_ID, GCM_PROJECT_NUMBER, true);
+			try
+			{
+				EasyPush.initOneSignal(ONESIGNAL_APP_ID, GCM_PROJECT_NUMBER, true);
+			}catch(e)
+			{
+				trace("Esy push >>>> "+e);
+			}
 			log("did init OneSignal.");
 			EasyPush.oneSignal.addEventListener(PNOSEvent.ALERT_DISMISSED,onAlertDismissed);
 			EasyPush.oneSignal.addEventListener(PNOSEvent.FOREGROUND_NOTIFICATION,onNotification);
