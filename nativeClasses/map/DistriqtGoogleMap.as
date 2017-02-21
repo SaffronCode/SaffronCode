@@ -295,7 +295,9 @@ package nativeClasses.map
 		
 		public function addMarker(markerName:String,lat:Number,lon:Number,markerTitle:String,markerInfo:String,color:uint=0,enableInfoWindow=true,animated:Boolean=true,showInfoButton:Boolean=true,iconURL:String=''):void
 		{
-			NativeMaps.service.addMarker(new MapMarker(markerName,new LatLng(lat,lon),markerTitle,markerInfo,color,false,enableInfoWindow,animated,showInfoButton,iconURL));
+			trace("****************Map marker Added : ",lat,lon,markerName);
+			var myMarker:MapMarker = new MapMarker(markerName,new LatLng(lat,lon));//,markerTitle,markerInfo,color,false,enableInfoWindow,animated,showInfoButton,''
+			NativeMaps.service.addMarker(myMarker);
 		}
 	}
 }
