@@ -37,6 +37,8 @@ package nativeClasses.map
 					myIcons:Vector.<MapIcon>;
 		
 		private var mapCretedOnStage:Boolean;
+
+		private var center:LatLng;
 		
 		public static function setUp(GoogleAPIKey:String,DistriqtId:String):void
 		{
@@ -195,13 +197,15 @@ package nativeClasses.map
 				var rect:Rectangle;
 				rect = createViewPort();
 				trace("Create map : "+rect);
-				var center:LatLng
+				
 				if(!isNaN(centerLat) && !isNaN(centerLon))
 				{
 					center = new LatLng(centerLat,centerLon);
 				}
+				trace("...listenning...");
 				NativeMaps.service.addEventListener( NativeMapEvent.MAP_CREATED, mapCreatedHandler );
-				NativeMaps.service.createMap( rect, MapType.MAP_TYPE_NORMAL,center);
+				trace("---Creating...");
+				NativeMaps.service.createMap( rect, MapType.MAP_TYPE_NORMAL);
 				
 				trace("Create map done");
 				mapCreated = true ;
@@ -224,6 +228,7 @@ package nativeClasses.map
 		private function mapCreatedHandler(e:NativeMapEvent):void
 		{
 			mapCretedOnStage = true ;
+			NativeMaps.service.setCentre(center,-1,true,2000);
 			updateMarkers();
 		}
 		
