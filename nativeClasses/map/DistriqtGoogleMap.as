@@ -10,6 +10,7 @@ package nativeClasses.map
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
+	import flash.utils.setTimeout;
 	
 	import stageManager.StageManager;
 	
@@ -89,12 +90,16 @@ package nativeClasses.map
 				isSupports = false ;
 			}
 			
-			if(!isSupports)
+			if(isSupports)
 			{
-				return ;
+				setTimeout(initializeMap,0);
 			}
+		}
+		
+		private static function initializeMap():void
+		{
 			var autoriseStatus:String = NativeMaps.service.authorisationStatus();
-			trace("autoriseStatus : "+autoriseStatus);
+			trace("*********************autoriseStatus*******************"+autoriseStatus);
 			switch (autoriseStatus)
 			{
 				case AuthorisationStatus.ALWAYS:
