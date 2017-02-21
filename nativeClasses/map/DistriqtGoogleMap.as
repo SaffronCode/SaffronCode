@@ -346,10 +346,23 @@ package nativeClasses.map
 		private function updateMarkers():void
 		{
 			NativeMaps.service.clearMap();
+			
 			var i:int ;
+			var isDuplicated:Boolean = false ;
 			for(i = 0 ; i<myIcons.length ; i++)
 			{
-				NativeMaps.service.addCustomMarkerIcon(new CustomMarkerIcon(myIcons[i].Id,myIcons[i].bitmapData));
+				for(var j = 0 ; j<NativeMaps.service.customMarkerIcons.length ; j++)
+				{
+					if(NativeMaps.service.customMarkerIcons[i].id == myIcons[i].Id)
+					{
+						isDuplicated = true ;
+						break;
+					}
+				}
+				if(!isDuplicated)
+				{
+					NativeMaps.service.addCustomMarkerIcon(new CustomMarkerIcon(myIcons[i].Id,myIcons[i].bitmapData,2));
+				}
 			}
 			for(i = 0 ; i<myMarkers.length ; i++)
 			{
