@@ -27,7 +27,7 @@ package nativeClasses.map
 		
 		private var mapCreated:Boolean = false ;
 		
-		private var I:int ;
+		private var mapIsShowing:Boolean = false ;
 		
 		public static function setUp(GoogleAPIKey:String,DistriqtId:String):void
 		{
@@ -173,6 +173,7 @@ package nativeClasses.map
 				NativeMaps.service.createMap( rect, MapType.MAP_TYPE_NORMAL );
 				trace("Create map done");
 				mapCreated = true ;
+				mapIsShowing = true ;
 				this.addEventListener(Event.ENTER_FRAME,repose);
 			}
 
@@ -272,9 +273,24 @@ package nativeClasses.map
 		protected function repose(event:Event):void
 		{
 			var rect:Rectangle = createViewPort();
-			trace("Repose : "+rect);
+			//trace("Repose : "+rect);
 			NativeMaps.service.setLayout(rect.width,rect.height,rect.x,rect.y);
-			I++;
+			
+			if(Obj.isAccesibleByMouse(this))
+			{
+				if(!mapIsShowing)
+				{
+					NativeMaps.service.showMap();
+					mapIsShowing = true ;
+				}
+			}
+			else
+			{
+				if(mapIsShowing)
+				{
+					NativeMaps.service.hideMap();
+				}
+			}
 		}
 		
 		public function addMarker(markerName:String,lat:Number,lon:Number,markerTitle:String,markerInfo:String,color:uint=0,enableInfoWindow=true,animated:Boolean=true,showInfoButton:Boolean=true,iconURL:String=''):void
