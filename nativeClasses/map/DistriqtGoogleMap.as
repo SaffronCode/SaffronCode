@@ -83,8 +83,10 @@ package nativeClasses.map
 		{
 			super();
 			
-			this.graphics.beginFill(0x222222);
+			this.graphics.beginFill(0x222222,0);
 			this.graphics.drawRect(0,0,Width,Height);
+			
+			this.addEventListener(Event.REMOVED_FROM_STAGE,unload);
 		}
 		
 		public function setMap():void
@@ -169,7 +171,7 @@ package nativeClasses.map
 		{
 			if(mapCreated)
 			{
-				//NativeMaps.service.dispose();
+				NativeMaps.service.destroyMap();
 			}
 			this.removeEventListener(Event.ENTER_FRAME,repose);
 		}
