@@ -31,7 +31,7 @@ package nativeClasses.map
 		{
 			api_key = GoogleAPIKey ;
 			
-			trace("*******************\n\n\n\n\nYou have to add below ane files to your project : \n	com.distriqt.androidsupport.V4.ane\n" +
+			var hintText:String = ("*******************\n\n\n\n\nYou have to add below ane files to your project : \n	com.distriqt.androidsupport.V4.ane\n" +
 				"com.distriqt.Core.ane\n" +
 				//"com.distriqt.GooglePlayServices.ane\n" +
 				"com.distriqt.NativeMaps.ane\n" +
@@ -58,10 +58,19 @@ package nativeClasses.map
 				'</manifest>\n\n\n\n\n\n\n' +
 				"*******************");
 			
+			
 			var descriptString:String = StringFunctions.clearSpacesAndTabs(DevicePrefrence.appDescriptor.toString()) ; 
 			if(descriptString.indexOf("permission.MAPS_RECEIVE")!=-1 && descriptString.indexOf(DevicePrefrence.appID+".permission.MAPS_RECEIVE")==-1)
 			{
 				throw "Your Manifest is absolutly wrong!! controll the example";
+			}
+			if(descriptString.indexOf("com.google.android.providers.gsf.permission.READ_GSERVICES")==-1)
+			{
+				throw hintText ;
+			}
+			else
+			{
+				trace(hintText);
 			}
 			
 			try
