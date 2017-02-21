@@ -141,6 +141,7 @@ package nativeClasses.map
 		public function DistriqtGoogleMap(Width:Number,Height:Number)
 		{
 			super();
+			unload();
 			
 			this.graphics.beginFill(0x222222,0);
 			this.graphics.drawRect(0,0,Width,Height);
@@ -148,7 +149,7 @@ package nativeClasses.map
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unload);
 		}
 		
-		public function setMap():void
+		public function setMap(centerLat:Number=NaN,centerLon:Number=NaN):void
 		{
 			unload();
 			trace("AuthorisationStatus.ALWAYS : "+AuthorisationStatus.ALWAYS);
@@ -181,7 +182,12 @@ package nativeClasses.map
 				var rect:Rectangle;
 				rect = createViewPort();
 				trace("Create map : "+rect);
-				NativeMaps.service.createMap( rect, MapType.MAP_TYPE_NORMAL );
+				var center:LatLng
+				if(!isNaN(centerLat) && !isNaN(centerLon))
+				{
+					center = new LatLng(centerLat,centerLon);
+				}
+				NativeMaps.service.createMap( rect, MapType.MAP_TYPE_NORMAL,center);
 				trace("Create map done");
 				mapCreated = true ;
 				mapIsShowing = true ;
@@ -190,7 +196,7 @@ package nativeClasses.map
 
 		}
 		
-		private function unload(e:*=null):void
+		public function unload(e:*=null):void
 		{
 			if(mapCreated)
 			{
