@@ -156,7 +156,7 @@ package nativeClasses.map
 		
 		public function setMap(centerLat:Number=NaN,centerLon:Number=NaN):void
 		{
-			unload();
+			//unload();
 			trace("AuthorisationStatus.ALWAYS : "+AuthorisationStatus.ALWAYS);
 			trace("AuthorisationStatus.DENIED : "+AuthorisationStatus.DENIED);
 			trace("AuthorisationStatus.IN_USE : "+AuthorisationStatus.IN_USE);
