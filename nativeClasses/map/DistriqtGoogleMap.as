@@ -88,6 +88,41 @@ package nativeClasses.map
 				trace("e>>>"+ e );
 				isSupports = false ;
 			}
+			
+			if(!isSupports)
+			{
+				return ;
+			}
+			var autoriseStatus:String = NativeMaps.service.authorisationStatus();
+			trace("autoriseStatus : "+autoriseStatus);
+			switch (autoriseStatus)
+			{
+				case AuthorisationStatus.ALWAYS:
+				case AuthorisationStatus.IN_USE:
+					trace( "User allowed access: " + NativeMaps.service.authorisationStatus() );
+					break;
+				
+				case AuthorisationStatus.NOT_DETERMINED:
+				case AuthorisationStatus.SHOULD_EXPLAIN:
+					trace("--requestAuthorisation");
+					NativeMaps.service.requestAuthorisation( AuthorisationStatus.IN_USE );
+					break;
+				
+				case AuthorisationStatus.RESTRICTED:
+				case AuthorisationStatus.DENIED:
+				case AuthorisationStatus.UNKNOWN:
+				default:
+					trace( "Request access to location services." );
+					if(NativeMaps.service.requestAuthorisation.length>0)
+					{
+						NativeMaps.service.requestAuthorisation( AuthorisationStatus.IN_USE );
+					}
+					else
+					{
+						NativeMaps.service.requestAuthorisation();
+					}
+					break;
+			}
 		}
 		
 		public function DistriqtGoogleMap(Width:Number,Height:Number)
@@ -121,36 +156,6 @@ package nativeClasses.map
 			
 			trace("-------");
 			
-			var autoriseStatus:String = NativeMaps.service.authorisationStatus();
-			trace("autoriseStatus : "+autoriseStatus);
-			switch (autoriseStatus)
-			{
-				case AuthorisationStatus.ALWAYS:
-				case AuthorisationStatus.IN_USE:
-					trace( "User allowed access: " + NativeMaps.service.authorisationStatus() );
-					break;
-				
-				case AuthorisationStatus.NOT_DETERMINED:
-				case AuthorisationStatus.SHOULD_EXPLAIN:
-					trace("--requestAuthorisation");
-					NativeMaps.service.requestAuthorisation( AuthorisationStatus.IN_USE );
-					break;
-				
-				case AuthorisationStatus.RESTRICTED:
-				case AuthorisationStatus.DENIED:
-				case AuthorisationStatus.UNKNOWN:
-				default:
-					trace( "Request access to location services." );
-					if(NativeMaps.service.requestAuthorisation.length>0)
-					{
-						NativeMaps.service.requestAuthorisation( AuthorisationStatus.IN_USE );
-					}
-					else
-					{
-						NativeMaps.service.requestAuthorisation();
-					}
-					break;
-			}
 			
 			if(api_key==null)
 			{
