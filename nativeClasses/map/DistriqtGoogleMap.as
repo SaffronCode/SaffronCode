@@ -75,7 +75,7 @@ package nativeClasses.map
 			{
 				throw "Your Manifest is absolutly wrong!! controll the example";
 			}
-			if(descriptString.indexOf("com.google.android.providers.gsf.permission.READ_GSERVICES")==-1)
+			if(DevicePrefrence.isItPC && descriptString.indexOf("com.google.android.providers.gsf.permission.READ_GSERVICES")==-1)
 			{
 				throw hintText ;
 			}
