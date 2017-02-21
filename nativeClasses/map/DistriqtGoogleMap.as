@@ -179,7 +179,7 @@ package nativeClasses.map
 
 		}
 		
-		private function unload():void
+		private function unload(e:*=null):void
 		{
 			if(mapCreated)
 			{
@@ -243,10 +243,10 @@ package nativeClasses.map
 				}
 			}
 			
-			trace("Old rect : " +rect);
-			trace("scl : "+scl);
-			trace("deltaX : "+deltaX);
-			trace("deltaY : "+deltaY);
+			//trace("Old rect : " +rect);
+			//trace("scl : "+scl);
+			//trace("deltaX : "+deltaX);
+			//trace("deltaY : "+deltaY);
 			
 			rect.x*=scl;
 			rect.y*=scl;
@@ -260,7 +260,7 @@ package nativeClasses.map
 			rect.width = round(rect.width);
 			rect.height = round(rect.height);
 			
-			trace("new rect : " +rect);
+			//trace("new rect : " +rect);
 			
 			return rect;
 		}
