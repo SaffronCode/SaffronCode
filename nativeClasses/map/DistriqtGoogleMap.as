@@ -2,6 +2,7 @@ package nativeClasses.map
 {
 	import com.distriqt.extension.nativemaps.AuthorisationStatus;
 	import com.distriqt.extension.nativemaps.NativeMaps;
+	import com.distriqt.extension.nativemaps.events.NativeMapEvent;
 	import com.distriqt.extension.nativemaps.objects.LatLng;
 	import com.distriqt.extension.nativemaps.objects.MapMarker;
 	import com.distriqt.extension.nativemaps.objects.MapType;
@@ -29,6 +30,10 @@ package nativeClasses.map
 		private var mapCreated:Boolean = false ;
 		
 		private var mapIsShowing:Boolean = false ;
+		
+		private var myMarkers:Vector.<MapMarker> ;
+		
+		private var mapCretedOnStage:Boolean;
 		
 		public static function setUp(GoogleAPIKey:String,DistriqtId:String):void
 		{
@@ -169,8 +174,8 @@ package nativeClasses.map
 			trace("MapType.MAP_TYPE_TERRAIN : "+MapType.MAP_TYPE_TERRAIN);
 			
 			trace("-------");
-			
-			
+			myMarkers = new Vector.<MapMarker>();
+			mapCretedOnStage = false ;
 			if(api_key==null)
 			{
 				throw "You should set the DistriqtGoogleMap.setUp(..) first";
@@ -187,6 +192,7 @@ package nativeClasses.map
 				{
 					center = new LatLng(centerLat,centerLon);
 				}
+				NativeMaps.service.addEventListener( NativeMapEvent.MAP_CREATED, mapCreatedHandler );
 				NativeMaps.service.createMap( rect, MapType.MAP_TYPE_NORMAL,center);
 				trace("Create map done");
 				mapCreated = true ;
@@ -202,7 +208,14 @@ package nativeClasses.map
 			{
 				NativeMaps.service.destroyMap();
 			}
+			NativeMaps.service.removeEventListener( NativeMapEvent.MAP_CREATED, mapCreatedHandler );
 			this.removeEventListener(Event.ENTER_FRAME,repose);
+		}
+		
+		private function mapCreatedHandler(e:NativeMapEvent):void
+		{
+			mapCretedOnStage = true ;
+			updateMarkers();
 		}
 		
 		private function createViewPort():Rectangle
@@ -314,7 +327,20 @@ package nativeClasses.map
 		{
 			trace("****************Map marker Added : ",lat,lon,markerName);
 			var myMarker:MapMarker = new MapMarker(markerName,new LatLng(lat,lon));//,markerTitle,markerInfo,color,false,enableInfoWindow,animated,showInfoButton,''
-			NativeMaps.service.addMarker(myMarker);
+			myMarkers.push(myMarker);
+			if(mapCretedOnStage)
+			{
+				updateMarkers();
+			}
+		}
+		
+		private function updateMarkers():void
+		{
+			NativeMaps.service.clearMap();
+			for(var i = 0 ; i<myMarkers.length ; i++)
+			{
+				NativeMaps.service.addMarker(myMarkers[i]);
+			}
 		}
 	}
 }
