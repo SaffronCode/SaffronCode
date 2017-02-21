@@ -2,6 +2,8 @@ package nativeClasses.map
 {
 	import com.distriqt.extension.nativemaps.AuthorisationStatus;
 	import com.distriqt.extension.nativemaps.NativeMaps;
+	import com.distriqt.extension.nativemaps.objects.LatLng;
+	import com.distriqt.extension.nativemaps.objects.MapMarker;
 	import com.distriqt.extension.nativemaps.objects.MapType;
 	import com.mteamapp.StringFunctions;
 	
@@ -273,6 +275,11 @@ package nativeClasses.map
 			trace("Repose : "+rect);
 			NativeMaps.service.setLayout(rect.width,rect.height,rect.x,rect.y);
 			I++;
+		}
+		
+		public function addMarker(markerName:String,lat:Number,lon:Number,markerTitle:String,markerInfo:String,color:uint=0,enableInfoWindow=true,animated:Boolean=true,showInfoButton:Boolean=true,iconURL:String=''):void
+		{
+			NativeMaps.service.addMarker(new MapMarker(markerName,new LatLng(lat,lon),markerTitle,markerInfo,color,false,enableInfoWindow,animated,showInfoButton,iconURL));
 		}
 	}
 }
