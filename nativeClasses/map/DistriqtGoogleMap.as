@@ -333,6 +333,7 @@ package nativeClasses.map
 				if(mapIsShowing)
 				{
 					NativeMaps.service.hideMap();
+					mapIsShowing = false ;
 				}
 			}
 		}
