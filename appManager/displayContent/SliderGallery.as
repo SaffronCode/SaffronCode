@@ -167,7 +167,14 @@
 		
 		public function getCurrentSelectedImage():uint
 		{
-			return imageIndex%_totalImages;
+			if(imageIndex>=plusPages)
+			{
+				return (imageIndex-plusPages)%_totalImages;
+			}
+			else
+			{
+				return (imageIndex)%_totalImages;
+			}
 		}
 		
 		public function totalImages():uint

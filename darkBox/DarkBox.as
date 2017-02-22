@@ -426,7 +426,7 @@ package darkBox
 			
 			if(imageIndex!=-1)
 			{
-				currentImage = Math.min(totalImages,Math.max(0,imageIndex)) ;
+				currentImage = Math.min(totalImages-1,Math.max(0,imageIndex)) ;
 			}
 			
 			clearTimeout(timeOutId);
@@ -442,7 +442,6 @@ package darkBox
 			{
 				nextMC.visible = false ;
 			}
-			
 			loadImage(images[currentImage]);
 		}
 		
