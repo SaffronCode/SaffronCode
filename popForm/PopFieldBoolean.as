@@ -2,9 +2,12 @@ package popForm
 	//popForm.PopFieldBoolean
 {
 	import flash.display.MovieClip;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.text.TextField;
 
+	/**Boolean field changed*/
+	[Event(name="change", type="flash.events.Event")]
 	public class PopFieldBoolean extends PopFieldInterface
 	{
 		public var tagTF:TextField;
@@ -30,6 +33,7 @@ package popForm
 		private function switchBoolean(e):void
 		{
 			checkMC.visible = !checkMC.visible ;
+			this.dispatchEvent(new Event(Event.CHANGE));
 		}
 		
 		public function setUp(tagName:String,defaultState:Boolean=false,isArabic:Boolean=true,languageFrame:uint=1,color:uint=1):void
