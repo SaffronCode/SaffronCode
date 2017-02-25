@@ -41,13 +41,7 @@ package nativeClasses
 				options.title = "Share with ...";
 				options.showOpenIn = false;
 				
-				var url:String ;
-				if(downloadLinkLable!='' && downloadLinkLable!=null)
-				{
-					url = downloadLinkLable ;
-				}
-				
-				shareClass.service.share(sharedString,imageBirmapData,url);
+				shareClass.service.share(sharedString,imageBirmapData);
 			}
 		}
 		
