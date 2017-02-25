@@ -227,7 +227,12 @@ package contents.displayPages
 		
 		public function imSelected(event:MouseEvent=null):void
 		{
-			if(myLinkData!=null && ((Math.abs(this.x-X0)<1 && Xn == X0)  || isNaN(Xn) || isNaN(X0)))
+			//trace("Im selected");
+			//trace("myLinkData : "+myLinkData);
+			//trace("Xn : "+Xn);
+			//trace("X0"+X0);
+			//trace("Math.abs(this.x-X0)"+Math.abs(this.x-X0));
+			if(myLinkData!=null && (!slideAnimationActivated || (Math.abs(this.x-X0)<1 && Xn == X0)  || isNaN(Xn) || isNaN(X0)))
 			{
 				if(myLinkData.id.indexOf('http')==0)
 				{
@@ -235,6 +240,7 @@ package contents.displayPages
 				}
 				else
 				{
+					//trace("Dispatch linkData");
 					this.dispatchEvent(new AppEventContent(myLinkData));
 				}
 			}
