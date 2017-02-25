@@ -89,7 +89,7 @@ package contents.displayPages
 		private var linkSensorHeight:Number = 2 ;
 						
 		/**This is the list of creted linkItems on the stage.*/
-		private var linksInterfaceStorage:Vector.<LinkItem>;
+		protected var linksInterfaceStorage:Vector.<LinkItem>;
 		
 		private var lastInVisibleItem:int = 0 ;
 					
@@ -1042,7 +1042,7 @@ package contents.displayPages
 			updateDynamicLinsBackGround();
 		}
 		
-		private function updateDynamicLinsBackGround():void
+		protected function updateDynamicLinsBackGround():void
 		{
 			
 			linksContainer.graphics.clear();
