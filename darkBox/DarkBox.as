@@ -495,6 +495,7 @@ package darkBox
 			preLoderMC.visible = false ;
 			precentMC.visible = false ;
 			trace("show this image");
+			downloadMC.visible = (saveButtonFunction!=null);
 			switch(imageItem.type)
 			{
 				case ImageFile.TYPE_FLAT:
@@ -507,6 +508,7 @@ package darkBox
 					box_shp.show(imageItem.target);
 					break;
 				case ImageFile.TYPE_VIDEO:
+					downloadMC.visible = false ;
 					if(imageItem.target.toLocaleLowerCase().indexOf('.flv')==-1)
 					{						
 						stageVideo = new StageVideo(imageSize.width,imageSize.height)	
