@@ -1,5 +1,7 @@
 package fileBrowser
 {
+	import contents.Contents;
+	
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -85,7 +87,7 @@ package fileBrowser
 		public static function showBrowser(target:File,hint:String=''):void
 		{
 			lastLocation = target ;
-			var buttons:Array = [Lang.t.cansel,''] ;
+			var buttons:Array = [Contents.lang.t.cansel,''] ;
 			
 			baseFolderTarget = '' ;
 			if(/*true || */DevicePrefrence.isIOS())
@@ -110,15 +112,15 @@ package fileBrowser
 			if(lastLocation!=null && 
 				(baseFolder==null || lastLocation.nativePath!=baseFolder.nativePath))
 			{
-				buttons.push(Lang.t.back);
+				buttons.push(Contents.lang.t.back);
 			}
 			if(mode==2 && lastLocation!=null)
 			{
-				buttons.push(Lang.t.save);
+				buttons.push(Contents.lang.t.save);
 			}
 			else if(lastLocation!=null)
 			{
-				buttons.push(Lang.t.search);
+				buttons.push(Contents.lang.t.search);
 			}
 			var button:PopButtonData ;
 			var i:int ;
@@ -186,34 +188,34 @@ package fileBrowser
 			
 			if(!hadSub)
 			{
-				button = new PopButtonData(Lang.t.no_file_here,noFileFrame,null,false);
+				button = new PopButtonData(Contents.lang.t.no_file_here,noFileFrame,null,false);
 				buttons.push(button);
 			}
 			
 			var popText:PopMenuContent = new PopMenuContent(hint,null,buttons);
 			trace("Open browser");
-			PopMenu1.popUp(Lang.t.file_selector_title,null,popText,0,onFileSelected);
+			PopMenu1.popUp(Contents.lang.t.file_selector_title,null,popText,0,onFileSelected);
 		}
 		
 		private static function onFileSelected(e:PopMenuEvent):void
 		{
 			var file:File ;
-			if(e.buttonTitle == Lang.t.back)
+			if(e.buttonTitle == Contents.lang.t.back)
 			{
 				showBrowser(lastLocation.parent);
 			}
-			else if(e.buttonTitle == Lang.t.search)
+			else if(e.buttonTitle == Contents.lang.t.search)
 			{
 				searchPage('');
 			}
-			else if(e.buttonTitle == Lang.t.cansel)
+			else if(e.buttonTitle == Contents.lang.t.cansel)
 			{
 				trace("Cansel");
 				selectedFile = null;
 				selectedFileBytes = null ;
 				//onDone();
 			}
-			else if(e.buttonTitle == Lang.t.save)
+			else if(e.buttonTitle == Contents.lang.t.save)
 			{
 				var saveTarget:File = lastLocation.resolvePath(Name);
 				
@@ -266,18 +268,18 @@ package fileBrowser
 			foundedFiles = new Vector.<File>();
 			frameTimes = 1000/30 ;
 			var fields:PopMenuFields = new PopMenuFields();
-			fields.addField(Lang.t.search,lastSearchVal,null,false);
-			var buttons:Array = [Lang.t.search,Lang.t.back];
+			fields.addField(Contents.lang.t.search,lastSearchVal,null,false);
+			var buttons:Array = [Contents.lang.t.search,Contents.lang.t.back];
 			var popText:PopMenuContent = new PopMenuContent('',fields,buttons);
-			PopMenu1.popUp(Lang.t.file_selector_title,null,popText,0,onSearchButton);
+			PopMenu1.popUp(Contents.lang.t.file_selector_title,null,popText,0,onSearchButton);
 		}
 		
 		private static function onSearchButton(e:PopMenuEvent):void
 		{
-			if(e.buttonTitle == Lang.t.search)
+			if(e.buttonTitle == Contents.lang.t.search)
 			{
 				//Start search
-				lastSearchVal = e.field[Lang.t.search] as String;
+				lastSearchVal = e.field[Contents.lang.t.search] as String;
 				if(lastSearchVal == '')
 				{
 					searchPage();
@@ -307,10 +309,10 @@ package fileBrowser
 			
 			startSearchig();
 			
-			var buttons:Array = [Lang.t.back,Lang.t.see_the_result];
+			var buttons:Array = [Contents.lang.t.back,Contents.lang.t.see_the_result];
 			
-			var popText:PopMenuContent = new PopMenuContent(Lang.t.founded_items,null,buttons,searchMC);
-			PopMenu1.popUp(Lang.t.please_wait,null,popText,0,onSearchButton2);
+			var popText:PopMenuContent = new PopMenuContent(Contents.lang.t.founded_items,null,buttons,searchMC);
+			PopMenu1.popUp(Contents.lang.t.please_wait,null,popText,0,onSearchButton2);
 		}
 		
 		private static function startSearchig():void
@@ -462,7 +464,7 @@ package fileBrowser
 		{
 			//Stop the searches
 			stopSearching();
-			if(e.buttonTitle == Lang.t.back)
+			if(e.buttonTitle == Contents.lang.t.back)
 			{
 				searchPage();
 			}
@@ -475,7 +477,7 @@ package fileBrowser
 		private static function ShowSearchResult():void
 		{
 			
-			var buttons:Array = [Lang.t.back,''];
+			var buttons:Array = [Contents.lang.t.back,''];
 			
 			for(var i = 0 ; i<foundedFiles.length ; i++)
 			{
@@ -483,8 +485,8 @@ package fileBrowser
 				buttons.push(newButt);
 			}
 			
-			var popText:PopMenuContent = new PopMenuContent(Lang.t.founded_files_with+lastSearchVal,null,buttons);
-			PopMenu1.popUp(Lang.t.search,null,popText,0,onResultButton);
+			var popText:PopMenuContent = new PopMenuContent(Contents.lang.t.founded_files_with+lastSearchVal,null,buttons);
+			PopMenu1.popUp(Contents.lang.t.search,null,popText,0,onResultButton);
 		}
 		
 		private static function onResultButton(e:PopMenuEvent):void
