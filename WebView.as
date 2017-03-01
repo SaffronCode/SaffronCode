@@ -11,6 +11,7 @@ package
 		public static const LOAD_URL:String = "LOAD_URL";
 		public static const LOAD_STRING:String = "LOAD_STRING";
 		private static var Me:WebView;
+		public static var autoShowHide:Boolean=true;
 		private var _stageWebView:StageWebView;
 		private var _area:MovieClip;
 		private var _url:String;
@@ -58,6 +59,22 @@ package
 			}
 			Me.addEventListener(Event.ENTER_FRAME,chekArea)
 		}
+		public static function reLoad(url_p:String):void
+		{
+			Me._url = url_p;
+			Me.reLoad();
+		}
+		private function reLoad():void
+		{
+			if(_loadStatus==LOAD_URL)
+			{
+				_stageWebView.loadURL(_url);
+			}
+			else
+			{
+				_stageWebView.loadString(_url);
+			}
+		}
 		public static function unload():void
 		{
 			if(Me!=null)Me.remove();
@@ -86,11 +103,11 @@ package
 		}
 		private function _hide():void
 		{
-			if(isActive())_stageWebView.stage = null;
+			if(isActive() && autoShowHide)_stageWebView.stage = null;
 		}
 		private function _show():void
 		{
-			if(isActive())_stageWebView.stage = _stage;
+			if(isActive()&& autoShowHide)_stageWebView.stage = _stage;
 		}
 		public static function isActive():Boolean
 		{
