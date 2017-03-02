@@ -1074,6 +1074,10 @@ package contents.displayPages
 			if(!horizontalMenu)
 			{
 				newLink.x = ((areaRect.width-newLink.width*linkPerLine)/(linkPerLine+1))*(1+linkIndexPerLine)+newLink.width*linkIndexPerLine ;
+				if(revertedX)
+				{
+					newLink.x = newLink.x*-1-newLink.width;
+				}
 				if(revertedY)
 				{
 					newLink.y = linksSensor.y-newLink.height ;
