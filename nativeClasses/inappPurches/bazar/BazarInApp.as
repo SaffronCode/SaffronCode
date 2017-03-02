@@ -1,14 +1,19 @@
 package nativeClasses.inappPurches.bazar
 {
-	import com.pozirk.payment.android.InAppPurchase;
-	import com.pozirk.payment.android.InAppPurchaseDetails;
-	import com.pozirk.payment.android.InAppPurchaseEvent;
-	
 	import flash.events.Event;
+	import flash.utils.getDefinitionByName;
 
 	public class BazarInApp
 	{
-		private static var _iap:InAppPurchase;
+		/**com.pozirk.payment.android.InAppPurchase*/
+		private static var 	_iap:*,
+							InAppPurchaseClass:Class;
+		
+		/**com.pozirk.payment.android.InAppPurchaseDetails*/
+		private static var InAppPurchaseDetailsClass:Class;
+		
+		/**com.pozirk.payment.android.InAppPurchaseEvent*/
+		private static var InAppPurchaseEventClass:Class ;
 		
 		private static var onDone:Function,
 							onCanseled:Function;
@@ -17,31 +22,67 @@ package nativeClasses.inappPurches.bazar
 		
 		private static var CurrentProdId:String ;
 		
+		private static var isSatUpOnce:Boolean = false ;
+		
+		/**Returns true if the code is satup*/
+		public static function isSupport():Boolean
+		{
+			setUp();
+			return isSatUpOnce ;
+		}
+		
+		/***/
+		private static function setUp():void
+		{
+			if(isSatUpOnce)
+			{
+				return ;
+			}
+			try
+			{
+				InAppPurchaseClass = getDefinitionByName("com.pozirk.payment.android.InAppPurchase") as Class ;
+				InAppPurchaseDetailsClass = getDefinitionByName("com.pozirk.payment.android.InAppPurchaseDetails") as Class ;
+				InAppPurchaseEventClass = getDefinitionByName("com.pozirk.payment.android.InAppPurchaseEvent") as Class;
+				if(InAppPurchaseClass!=null && InAppPurchaseDetailsClass!=null && InAppPurchaseEventClass!=null)
+				{
+					isSatUpOnce = true ;
+				}
+			}
+			catch(e)
+			{
+				isSatUpOnce = false ;
+			}
+		}
+		
 		private static function canselAllListeners():void
 		{
 			if(_iap==null)
 			{
 				return ;
 			}
-			_iap.removeEventListener(InAppPurchaseEvent.INIT_SUCCESS, onInitSuccess);
-			_iap.removeEventListener(InAppPurchaseEvent.INIT_ERROR, onInitError);
+			_iap.removeEventListener(InAppPurchaseEventClass.INIT_SUCCESS, onInitSuccess);
+			_iap.removeEventListener(InAppPurchaseEventClass.INIT_ERROR, onInitError);
 			
-			_iap.removeEventListener(InAppPurchaseEvent.PURCHASE_SUCCESS, onPurchaseSuccess);
-			_iap.removeEventListener(InAppPurchaseEvent.PURCHASE_ERROR, onPurchaseError);
+			_iap.removeEventListener(InAppPurchaseEventClass.PURCHASE_SUCCESS, onPurchaseSuccess);
+			_iap.removeEventListener(InAppPurchaseEventClass.PURCHASE_ERROR, onPurchaseError);
 			
-			_iap.removeEventListener(InAppPurchaseEvent.RESTORE_SUCCESS, onRestoreConsumeSuccess);
-			_iap.removeEventListener(InAppPurchaseEvent.RESTORE_ERROR, onRestoreConsumeError);
+			_iap.removeEventListener(InAppPurchaseEventClass.RESTORE_SUCCESS, onRestoreConsumeSuccess);
+			_iap.removeEventListener(InAppPurchaseEventClass.RESTORE_ERROR, onRestoreConsumeError);
 			
-			_iap.removeEventListener(InAppPurchaseEvent.CONSUME_SUCCESS, onConsumeSuccess);
-			_iap.removeEventListener(InAppPurchaseEvent.CONSUME_ERROR, onConsumeError);
+			_iap.removeEventListener(InAppPurchaseEventClass.CONSUME_SUCCESS, onConsumeSuccess);
+			_iap.removeEventListener(InAppPurchaseEventClass.CONSUME_ERROR, onConsumeError);
 		}
 		
 		public static function buy(key:String,productId:String,numberOfShop:uint,onBought:Function,onFaild:Function):void
 		{
+			if(!isSupport())
+			{
+				throw "Controll the isSupport() function first."
+			}
 			trace("[[[[[[[[[CAFE BAZAR]]]]]]]]]]");
 			if(_iap==null)
 			{
-				_iap = new InAppPurchase(); 
+				_iap = new InAppPurchaseClass(); 
 			}
 			
 			CurrentProdId = productId ;
@@ -53,8 +94,8 @@ package nativeClasses.inappPurches.bazar
 			if(!bazarInit)
 			{
 				trace("***connect to bazar...");
-				_iap.addEventListener(InAppPurchaseEvent.INIT_SUCCESS, onInitSuccess);
-				_iap.addEventListener(InAppPurchaseEvent.INIT_ERROR, onInitError);
+				_iap.addEventListener(InAppPurchaseEventClass.INIT_SUCCESS, onInitSuccess);
+				_iap.addEventListener(InAppPurchaseEventClass.INIT_ERROR, onInitError);
 				_iap.init(key);
 			}
 			else
@@ -64,7 +105,7 @@ package nativeClasses.inappPurches.bazar
 			}
 		}
 		
-		protected static  function onInitSuccess(event:InAppPurchaseEvent):void
+		protected static  function onInitSuccess(event:*):void
 		{
 			bazarInit = true ;
 			trace( "InAppBilling supported2" );
@@ -78,9 +119,9 @@ package nativeClasses.inappPurches.bazar
 			{
 				trace("****Buy this item : "+CurrentProdId);
 				canselAllListeners();
-				_iap.addEventListener(InAppPurchaseEvent.PURCHASE_SUCCESS, onPurchaseSuccess);
-				_iap.addEventListener(InAppPurchaseEvent.PURCHASE_ERROR, onPurchaseError);
-				_iap.purchase(CurrentProdId, InAppPurchaseDetails.TYPE_INAPP);
+				_iap.addEventListener(InAppPurchaseEventClass.PURCHASE_SUCCESS, onPurchaseSuccess);
+				_iap.addEventListener(InAppPurchaseEventClass.PURCHASE_ERROR, onPurchaseError);
+				_iap.purchase(CurrentProdId, (InAppPurchaseDetailsClass as Object).TYPE_INAPP);
 			}
 			
 				protected static function onPurchaseError(event:Event):void
@@ -91,7 +132,7 @@ package nativeClasses.inappPurches.bazar
 				}
 				
 				/**Puchase done*/
-				protected static function onPurchaseSuccess(event:InAppPurchaseEvent):void
+				protected static function onPurchaseSuccess(event:*):void
 				{
 					canselAllListeners();
 					trace("-----Purchase done: ["+event.data+"] ... consume it");
@@ -99,7 +140,7 @@ package nativeClasses.inappPurches.bazar
 					consumeProduct(CurrentProdId,onDone,onCanseled);
 				}
 			
-		protected static function onInitError(event:InAppPurchaseEvent):void
+		protected static function onInitError(event:*):void
 		{
 			canselAllListeners();
 			trace( "!!!!!!!!InAppBilling not supported" );
@@ -117,35 +158,35 @@ package nativeClasses.inappPurches.bazar
 			
 			trace("*** Restore server to consume")
 			canselAllListeners();
-			_iap.addEventListener(InAppPurchaseEvent.RESTORE_SUCCESS, onRestoreConsumeSuccess);
-			_iap.addEventListener(InAppPurchaseEvent.RESTORE_ERROR, onRestoreConsumeError);
+			_iap.addEventListener(InAppPurchaseEventClass.RESTORE_SUCCESS, onRestoreConsumeSuccess);
+			_iap.addEventListener(InAppPurchaseEventClass.RESTORE_ERROR, onRestoreConsumeError);
 			_iap.restore();
 		}
 		
-			protected static function onRestoreConsumeError(event:InAppPurchaseEvent):void
+			protected static function onRestoreConsumeError(event:*):void
 			{
 				canselAllListeners();
 				trace( "restoreConsome Failed" );
 				onCanseled();
 			}
 		
-			protected static function onRestoreConsumeSuccess(event:InAppPurchaseEvent)
+			protected static function onRestoreConsumeSuccess(event:*)
 			{
 				trace("**** request to consume product : "+CurrentProdId);
 				canselAllListeners();
 				
-				_iap.addEventListener(InAppPurchaseEvent.CONSUME_SUCCESS, onConsumeSuccess);
-				_iap.addEventListener(InAppPurchaseEvent.CONSUME_ERROR, onConsumeError);
+				_iap.addEventListener(InAppPurchaseEventClass.CONSUME_SUCCESS, onConsumeSuccess);
+				_iap.addEventListener(InAppPurchaseEventClass.CONSUME_ERROR, onConsumeError);
 				_iap.consume(CurrentProdId);
 			}
 			
-				protected static function onConsumeSuccess(event:InAppPurchaseEvent):void
+				protected static function onConsumeSuccess(event:*):void
 				{
 					canselAllListeners();
 					trace("Consume Success"); 
 					onDone();
 				}
-				protected static function onConsumeError(event:InAppPurchaseEvent):void
+				protected static function onConsumeError(event:*):void
 				{
 					canselAllListeners();
 					trace("Consume Failed"); 
