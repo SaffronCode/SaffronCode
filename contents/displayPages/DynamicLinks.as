@@ -1,4 +1,4 @@
-/***Version
+﻿/***Version
  * 	1.1 : Save the last position of the scrollMT for each pageID to load it from that position later
  * 	1.1.1 : when the menu was empty, it will cause an error on leave stage.
  * 	1.2 : 	add function added to add linkData to old link datas
@@ -266,6 +266,9 @@ package contents.displayPages
 			{
 				this.addEventListener(MouseEvent.MOUSE_DOWN,controllMouseSlide);
 			}
+			
+			if(noLinksMC!=null)
+				this.addChild(noLinksMC);
 		}
 		
 		/**Reverting the list by code*/
@@ -490,6 +493,8 @@ package contents.displayPages
 			}
 			else
 			{
+				if(noLinksMC)
+					Obj.remove(noLinksMC);
 				createLinks();
 			}
 			this.addEventListener(Event.REMOVED_FROM_STAGE,saveLastPosition);
