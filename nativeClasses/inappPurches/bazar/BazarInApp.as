@@ -24,6 +24,18 @@ package nativeClasses.inappPurches.bazar
 		
 		private static var isSatUpOnce:Boolean = false ;
 		
+		/**
+					//trace (_purchase._orderId);
+					//trace (_purchase._packageName);
+					//trace (_purchase._payload);
+					//trace (_purchase._purchaseState);
+					//trace (_purchase._signature);
+					//trace (_purchase._sku);
+					//trace (_purchase._time);
+					//trace (_purchase._token);
+					//trace (_purchase._type);*/
+		private static var lastShopedItemDetail:Object ;
+		
 		/**Returns true if the code is satup*/
 		public static function isSupport():Boolean
 		{
@@ -173,6 +185,21 @@ package nativeClasses.inappPurches.bazar
 			protected static function onRestoreConsumeSuccess(event:*)
 			{
 				trace("**** request to consume product : "+CurrentProdId);
+				
+				lastShopedItemDetail = _iap.getPurchaseDetails(CurrentProdId);
+				if(lastShopedItemDetail != null ){
+					trace (lastShopedItemDetail._json);
+					//trace (_purchase._orderId);
+					//trace (_purchase._packageName);
+					//trace (_purchase._payload);
+					//trace (_purchase._purchaseState);
+					//trace (_purchase._signature);
+					//trace (_purchase._sku);
+					//trace (_purchase._time);
+					//trace (_purchase._token);
+					//trace (_purchase._type);
+				}  
+				
 				canselAllListeners();
 				
 				_iap.addEventListener(InAppPurchaseEventClass.CONSUME_SUCCESS, onConsumeSuccess);
@@ -184,7 +211,19 @@ package nativeClasses.inappPurches.bazar
 				{
 					canselAllListeners();
 					trace("Consume Success"); 
-					onDone();
+					var purchaseTocken:String ;
+					if(lastShopedItemDetail!=null)
+					{
+						purchaseTocken = lastShopedItemDetail._token ;
+					}
+					if(onDone.length>0)
+					{
+						onDone(purchaseTocken);
+					}
+					else
+					{
+						onDone();
+					}
 				}
 				protected static function onConsumeError(event:*):void
 				{
