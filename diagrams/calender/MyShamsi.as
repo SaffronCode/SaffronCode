@@ -1,5 +1,7 @@
 package diagrams.calender
 {
+	import com.mteamapp.StringFunctions;
+
 	/**All months are 0 indexed*/
 	public class MyShamsi
 	{
@@ -87,10 +89,10 @@ package diagrams.calender
 			var str:String = fullYear+'/'+(month+1)+'/'+date;
 			if(showClock)
 			{
-				str+='    '+hours+':'+minutes;//
+				str+='    '+TimeToString.numToString(hours)+':'+TimeToString.numToString(minutes);//
 				if(showSeconds)
 				{
-					str+=':'+seconds;
+					str+=':'+TimeToString.numToString(seconds);
 				}
 			}
 			return str ;
