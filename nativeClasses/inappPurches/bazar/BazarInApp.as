@@ -35,6 +35,7 @@ package nativeClasses.inappPurches.bazar
 					//trace (_purchase._token);
 					//trace (_purchase._type);*/
 		private static var lastShopedItemDetail:Object ;
+		private static var ConsumeIt:Boolean;
 		
 		/**Returns true if the code is satup*/
 		public static function isSupport():Boolean
@@ -85,8 +86,9 @@ package nativeClasses.inappPurches.bazar
 			_iap.removeEventListener(InAppPurchaseEventClass.CONSUME_ERROR, onConsumeError);
 		}
 		
-		public static function buy(key:String,productId:String,numberOfShop:uint,onBought:Function,onFaild:Function):void
+		public static function buy(key:String,productId:String,numberOfShop:uint,onBought:Function,onFaild:Function,consumeIt:Boolean=true):void
 		{
+			ConsumeIt = consumeIt ;
 			if(!isSupport())
 			{
 				throw "Controll the isSupport() function first."
@@ -202,9 +204,21 @@ package nativeClasses.inappPurches.bazar
 				
 				canselAllListeners();
 				
-				_iap.addEventListener(InAppPurchaseEventClass.CONSUME_SUCCESS, onConsumeSuccess);
-				_iap.addEventListener(InAppPurchaseEventClass.CONSUME_ERROR, onConsumeError);
-				_iap.consume(CurrentProdId);
+				if(!ConsumeIt)
+				{
+					var purchaseTocken:String = "NonConsumableItem";
+					if(lastShopedItemDetail!=null)
+					{
+						purchaseTocken = lastShopedItemDetail._token ;
+					}
+					onDone(purchaseTocken);
+				}
+				else
+				{
+					_iap.addEventListener(InAppPurchaseEventClass.CONSUME_SUCCESS, onConsumeSuccess);
+					_iap.addEventListener(InAppPurchaseEventClass.CONSUME_ERROR, onConsumeError);
+					_iap.consume(CurrentProdId);
+				}
 			}
 			
 				protected static function onConsumeSuccess(event:*):void
