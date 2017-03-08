@@ -267,8 +267,9 @@ package contents.displayPages
 				this.addEventListener(MouseEvent.MOUSE_DOWN,controllMouseSlide);
 			}
 			
-			if(noLinksMC!=null)
-				this.addChild(noLinksMC);
+			///It will make problem on online contents when its not loaded yet
+			/*if(noLinksMC!=null)
+				this.addChild(noLinksMC);*/
 		}
 		
 		/**Reverting the list by code*/
