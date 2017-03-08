@@ -1,4 +1,5 @@
 package nativeClasses.purchase
+	//nativeClasses.purchase.Purchase.buyTicket(hoManyTicketsDoINeed:uint,yourTicketId:String,onTicketBought:Function,onFaildToBuy:Function):Boolean
 {	
 	import com.milkmangames.nativeextensions.ios.*;
 	import com.milkmangames.nativeextensions.ios.events.*;
@@ -23,6 +24,8 @@ package nativeClasses.purchase
 							howManyTickets;
 							
 		private static const bought_flag:String = "bought_flag" ;
+		
+		private static var storeKitIsCreated:Boolean = false ;
 		
 		/**Returns true if purchusing can start<br>
 		 * call userTicket to clear bout tickets<br>
@@ -52,7 +55,11 @@ tag <br><br><bold><![CDATA[ <uses-permission android:name="com.android.vending.B
 				{
 					if(StoreKit.isSupported()) 
 					{ 
-						StoreKit.create();
+						if(!storeKitIsCreated)
+						{
+							StoreKit.create();
+							storeKitIsCreated = true ;
+						}
 						trace("*Srore kit is initialized now. continue to shop");
 						return continueShoppTickets();
 					} 
@@ -85,7 +92,7 @@ tag <br><br><bold><![CDATA[ <uses-permission android:name="com.android.vending.B
 			GlobalStorage.save(bought_flag,false);
 		}
 		
-		/**0: purchese done, 1:Purchese canseled, 2:Purchese permition fails, 3:Native error, 4:OS not supports, 5:Connection fails, 6:Purchase done but it was bought earler*/
+		/**0: purchese done, 1:Purchese canseled, 2:Purchese permition fails, 3:Native error, 4:OS not supports, 5:Connection fails, 6:Purchase done but it was bought earler, 7:Load detail faild*/
 		private static function faild(failId:int):void
 		{
 			removeListeners();
@@ -120,12 +127,14 @@ tag <br><br><bold><![CDATA[ <uses-permission android:name="com.android.vending.B
 			if(controll_PurchessPermition())
 			{
 				trace("* usser has permition to shop");
-				StoreKit.storeKit.addEventListener(StoreKitEvent.PURCHASE_DEFERRED,onPurchaseDeferred); 
-				StoreKit.storeKit.addEventListener(StoreKitEvent.PURCHASE_CANCELLED,onPurchaseCancel); 
-				StoreKit.storeKit.addEventListener(StoreKitErrorEvent.PURCHASE_FAILED, onPurchaseFailed); 
-				StoreKit.storeKit.addEventListener(StoreKitEvent.PURCHASE_SUCCEEDED,onPurchaseSuccess); 
+				var productIdList:Vector.<String>=new Vector.<String>();
+				productIdList.push(ticketId);
+				trace(">>> load store item info : "+ticketId);
 				
-				StoreKit.storeKit.purchaseProduct(ticketId,howManyTickets); 
+				StoreKit.storeKit.addEventListener(StoreKitEvent.PRODUCT_DETAILS_LOADED,onProducts); 
+				StoreKit.storeKit.addEventListener(StoreKitErrorEvent.PRODUCT_DETAILS_FAILED, onProductsFailed); 
+				StoreKit.storeKit.loadProductDetails(productIdList); 
+				
 				return true;
 			}
 			else
@@ -134,6 +143,42 @@ tag <br><br><bold><![CDATA[ <uses-permission android:name="com.android.vending.B
 				faild(2);
 				return false ;
 			}
+		}
+		
+		private static function onProductsFailed(e:StoreKitErrorEvent):void
+		{ 
+			trace("error loading products: "+e.text); 
+			faild(7);
+		}
+
+		
+		/**Product details loaded. now do the purchase*/
+		private static function onProducts(e:StoreKitEvent):void
+		{
+			trace("Product details loaded");
+			for each(var product:StoreKitProduct in e.validProducts) 
+			{ 
+				trace("ID: "+product.productId);
+				trace("Title: "+product.title);
+				trace("Description: "+product.description);
+				trace("String Price: "+product.localizedPrice);
+				trace("Price: "+product.price); 
+			} 
+			trace("Loaded "+e.validProducts.length+" Products.");
+			if (e.invalidProductIds.length>0) 
+			{ 
+				trace("[ERR]: invalid product ids:"+e.invalidProductIds.join(","));
+			}
+
+			
+			StoreKit.storeKit.addEventListener(StoreKitEvent.PURCHASE_DEFERRED,onPurchaseDeferred); 
+			StoreKit.storeKit.addEventListener(StoreKitEvent.PURCHASE_CANCELLED,onPurchaseCancel); 
+			StoreKit.storeKit.addEventListener(StoreKitErrorEvent.PURCHASE_FAILED, onPurchaseFailed); 
+			StoreKit.storeKit.addEventListener(StoreKitEvent.PURCHASE_SUCCEEDED,onPurchaseSuccess); 
+			
+			trace(">>>>>>>>>>>>>> User ticket is : "+ticketId);
+			
+			StoreKit.storeKit.purchaseProduct(ticketId,howManyTickets); 
 		}
 
 			/**Nothing happens. onlye parent permitions requireds. after this, default success of fal will dispatch*/
@@ -151,9 +196,9 @@ tag <br><br><bold><![CDATA[ <uses-permission android:name="com.android.vending.B
 			}
 			
 			/**Connection fails to complete shopping*/
-			private static function onPurchaseFailed(e:StoreKitEvent):void
+			private static function onPurchaseFailed(e:StoreKitErrorEvent):void
 			{
-				trace("* Purchess fails by no clear purpose");
+				trace("* Purchess fails by no clear purpose : "+e.text+' > '+e);
 				faild(5);
 			}
 			
