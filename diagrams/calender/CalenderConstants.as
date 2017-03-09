@@ -22,6 +22,7 @@ package diagrams.calender
 								d6:String = "جمعه";
 		
 		public static var dayNames:Array = [d0,d1,d2,d3,d4,d5,d6];
+		public static var dayNamesMiladi:Array = [d1,d2,d3,d4,d5,d6,d0];
 		
 		private static const 	m0:String = "فروردین",
 								m1:String = "اردیبهشت",
