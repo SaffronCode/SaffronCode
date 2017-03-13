@@ -382,7 +382,9 @@
 			/**Returns the previus image*/
 			private function currentImage():*
 			{
-				return imagesList[getCurrentSelectedImage()];
+				if(imagesList.length != 0){
+					return imagesList[getCurrentSelectedImage()];
+				}
 			}
 			
 			
