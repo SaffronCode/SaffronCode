@@ -302,7 +302,7 @@
 					}
 					else
 					{
-						trace("No prev image available");
+						//trace("No prev image available");
 						getImageUp().x = 0 ;
 					}
 				}
