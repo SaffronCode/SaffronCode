@@ -37,7 +37,10 @@ package simpelComboBox
 			this.addEventListener(MouseEvent.CLICK,openList)
 			if(list_p.length>0)
 			{
-				_titleText.setUp(list_p[0].title)
+				if(_titleText!=null)
+				{
+					_titleText.setUp(list_p[0].title)
+				}
 				Item.Id = list_p[0].id;
 				Item.Title = list_p[0].title;
 				onSeletItem();

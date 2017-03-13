@@ -2,7 +2,7 @@ package simpelComboBox
 {
 	public class SimpelComboBoxListItem
 	{
-		public var Id:int,
+		public var Id:*,
 					Title:String;
 		public function SimpelComboBoxListItem()
 		{
