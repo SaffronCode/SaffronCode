@@ -91,6 +91,13 @@ package appManager.displayContentElemets
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 		}
 		
+		/**Change the icon size*/
+		public function changeSize(newWidth:Number=0,newHeight:Number=0):void
+		{
+			W = newWidth ;
+			H = newHeight ;
+		}
+		
 		/**This function will returns the loaded image bitmap*/
 		public function getBitmapData():BitmapData
 		{
@@ -275,6 +282,8 @@ package appManager.displayContentElemets
 				this.addEventListener(Event.ADDED_TO_STAGE,startWork);
 			}
 			this.scaleX = this.scaleY = 1 ;
+			
+			trace("The imge W was "+W+" when you called to open image");
 		}
 		
 		protected function startWork(event:Event=null):void
@@ -428,8 +437,11 @@ package appManager.displayContentElemets
 			}
 			var bitmapData:BitmapData = newBitmap.bitmapData ;
 			//var newBitmapData:BitmapData ;
+			trace("The W is : "+W);
+			trace("The H is : "+H);
 			if(W!=0 && H!=0)
 			{
+				trace("Change image size to : "+W,H);
 				bitmapData = BitmapEffects.changeSize(bitmapData,W,H,keepImageRatio,LoadInThisArea);
 			}
 			else if(W!=0)
