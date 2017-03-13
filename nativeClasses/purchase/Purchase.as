@@ -37,17 +37,18 @@ package nativeClasses.purchase
 tag <br><br><bold><![CDATA[ <uses-permission android:name="com.android.vending.BILLING" />]]></bold>*/
 		public static function buyTicket(hoManyTicketsDoINeed:uint,yourTicketId:String,onTicketBought:Function,onFaildToBuy:Function):Boolean
 		{
+			removeListeners();
 			onDone = onTicketBought ;
 			onFails = onFaildToBuy ;
 			
 			ticketId = yourTicketId ;
 			howManyTickets = hoManyTicketsDoINeed ;
 			
-			if(GlobalStorage.load(bought_flag) == true)
+			/*if(GlobalStorage.load(bought_flag) == true)
 			{
 				done(6);
 				return true ;
-			}
+			}*/
 			
 			if(DevicePrefrence.isIOS())
 			{
@@ -86,6 +87,7 @@ tag <br><br><bold><![CDATA[ <uses-permission android:name="com.android.vending.B
 			return false ;
 		}
 		
+		
 		/**Tickets are used and the purchase done. now you can request for more tickets to buy*/
 		public static function useTickets():void
 		{
@@ -101,12 +103,12 @@ tag <br><br><bold><![CDATA[ <uses-permission android:name="com.android.vending.B
 		}
 		
 		/**0: purchese done, 1:Purchese canseled, 2:Purchese permition fails, 3:Native error, 4:OS not supports, 5:Connection fails, 6:Purchase done but it was bought earler*/
-		private static function done(doneId:uint):void
+		private static function done(doneId:uint,transactionId:String=null):void
 		{
 			removeListeners();
 			lastStatus = doneId ;
 			GlobalStorage.save(bought_flag,true);
-			onDone();
+			onDone(transactionId);
 		}
 		
 		/**Remove all purchess permitions listener*/
@@ -114,6 +116,9 @@ tag <br><br><bold><![CDATA[ <uses-permission android:name="com.android.vending.B
 		{
 			if(isStoreKitInitialized)
 			{
+				StoreKit.storeKit.removeEventListener(StoreKitEvent.PRODUCT_DETAILS_LOADED,onProducts); 
+				StoreKit.storeKit.removeEventListener(StoreKitErrorEvent.PRODUCT_DETAILS_FAILED, onProductsFailed); 
+				
 				StoreKit.storeKit.removeEventListener(StoreKitEvent.PURCHASE_DEFERRED,onPurchaseDeferred); 
 				StoreKit.storeKit.removeEventListener(StoreKitEvent.PURCHASE_CANCELLED,onPurchaseCancel);
 				StoreKit.storeKit.removeEventListener(StoreKitErrorEvent.PURCHASE_FAILED, onPurchaseFailed); 
@@ -155,6 +160,7 @@ tag <br><br><bold><![CDATA[ <uses-permission android:name="com.android.vending.B
 		/**Product details loaded. now do the purchase*/
 		private static function onProducts(e:StoreKitEvent):void
 		{
+			removeListeners();
 			trace("Product details loaded");
 			for each(var product:StoreKitProduct in e.validProducts) 
 			{ 
@@ -170,6 +176,8 @@ tag <br><br><bold><![CDATA[ <uses-permission android:name="com.android.vending.B
 				trace("[ERR]: invalid product ids:"+e.invalidProductIds.join(","));
 			}
 
+			//StoreKit.storeKit.
+			StoreKit.storeKit.setManualTransactionMode(true);
 			
 			StoreKit.storeKit.addEventListener(StoreKitEvent.PURCHASE_DEFERRED,onPurchaseDeferred); 
 			StoreKit.storeKit.addEventListener(StoreKitEvent.PURCHASE_CANCELLED,onPurchaseCancel); 
@@ -184,13 +192,15 @@ tag <br><br><bold><![CDATA[ <uses-permission android:name="com.android.vending.B
 			/**Nothing happens. onlye parent permitions requireds. after this, default success of fal will dispatch*/
 			private static function onPurchaseDeferred(e:StoreKitEvent):void 
 			{ 
+				removeListeners();
 				trace("* Waiting for permission to buy: "+e.productId); 
-				//Nothing happpend here
+				faild(4);
 			} 
 		
 			/**User canseled shopping*/
 			private static function onPurchaseCancel(e:StoreKitEvent):void
 			{
+				removeListeners();
 				trace("* User canseled shopping: "+e.productId);
 				faild(1);
 			}
@@ -198,14 +208,17 @@ tag <br><br><bold><![CDATA[ <uses-permission android:name="com.android.vending.B
 			/**Connection fails to complete shopping*/
 			private static function onPurchaseFailed(e:StoreKitErrorEvent):void
 			{
+				removeListeners();
 				trace("* Purchess fails by no clear purpose : "+e.text+' > '+e);
 				faild(5);
 			}
 			
 			private static function onPurchaseSuccess(e:StoreKitEvent):void
 			{
-				trace("* Purchase Done!");
-				done(0);
+				removeListeners();
+				trace("* Purchase Done! "+e.transactionId);
+				StoreKit.storeKit.manualFinishTransaction(e.transactionId);
+				done(0,e.transactionId);
 			}
 		
 		
