@@ -35,6 +35,7 @@ package
 		{
 			// TODO Auto-generated method stub
 			_stageWebView.viewPort = getArea();
+			trace('_stageWebView.viewPort 333:',_stageWebView.viewPort)
 			if(!Obj.isAccesibleByMouse(_area))
 			{
 				_hide();
@@ -81,12 +82,62 @@ package
 		}
 		private function remove():void
 		{
+			trace('*---------*')
+			trace('*---------*')
+			trace('*---------*')
+			trace('*---------*')
+			trace('*---------*')
+			trace('*---------*')
+			trace('*---------*')
+			trace('*---------*')
+			trace('*---------*')
+			trace('*---------*')
+			trace('*---------*')
+			trace('*---------*')
+			trace('*---------*')
+			trace('*---------*')
+			trace('*---------*')
+			trace('*---------*')
+			trace('*---------*')
+			trace('*---------*')
+			trace('*---------*',isActive())
+			trace('*---------*')
+			trace('*---------*')
+			trace('*---------*')
+			trace('*---------*')
+			trace('*---------*')
+			trace('*---------*')
+			trace('*---------*')
+			trace('*---------*')
+			trace('*---------*')
+			trace('*---------*')
+			trace('*---------*')
+			trace('*---------*')
+			trace('*---------*')
+			trace('*---------*')
+			trace('*---------*')
+			trace('*---------*')
+			trace('*---------*')
+			trace('*---------*')
+			trace('*---------*')
+			trace('*---------*')
+			trace('*---------*')
+			trace('*---------*')
+			trace('*---------*')
+			trace('*---------*')
+			trace('*---------*')
+			trace('*---------*')
+			trace('*---------*')
+			//trace('_stageWebView.stage :',_stageWebView.stage);
+			trace('_stageWebView :',_stageWebView)
 			if(isActive())
 			{
+				Me.removeEventListener(Event.ENTER_FRAME,chekArea)
 				_stageWebView.stage = null;
 				_stageWebView.dispose();
 				_stageWebView = null
-				Me.removeEventListener(Event.ENTER_FRAME,chekArea)
+				trace('_stageWebView 222:',_stageWebView)	
+				//trace('_stageWebView.stage22 :',_stageWebView.stage);
 			}
 		}
 		private function getArea():Rectangle
