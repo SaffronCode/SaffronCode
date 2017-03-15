@@ -19,9 +19,16 @@ public class AutocompletePlaces extends RestDoaServiceCaller {
         super("https://maps.googleapis.com/maps/api/place/autocomplete/json", data, true, true, date, true);
     }
 
-    public function load(input:String):void
+    public function load(input:String,onlyCities:Boolean=true):void
     {
-        super.loadParam({input:input,key:GoogleServices.getAPIKey()})
+		if(onlyCities)
+		{
+        	super.loadParam({input:input,key:GoogleServices.getAPIKey(),types:"(cities)"})
+		}
+		else
+		{
+        	super.loadParam({input:input,key:GoogleServices.getAPIKey()})
+		}
     }
 	
 	/**Each linkData is predictionClass*/
