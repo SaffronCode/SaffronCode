@@ -20,6 +20,7 @@
 		private var nativeText:FarsiInputCorrection;
 		
 		private var X0:Number,Y0:Number ;
+		public static var linkColor:int=-1;
 		
 		public function TextParag(moreHight:Number=0)
 		{
@@ -109,7 +110,7 @@
 				{
 					verticalHeight = H ;
 				}
-				TextPutter.onTextArea(myTextTF,myText,isArabic,userBitmap && !activateLinks,useCash,captureResolution,align,activateLinks,-1,generateLinksForURLs,verticalHeight,splitIfToLong);
+				TextPutter.onTextArea(myTextTF,myText,isArabic,userBitmap && !activateLinks,useCash,captureResolution,align,activateLinks,linkColor,generateLinksForURLs,verticalHeight,splitIfToLong);
 				//Debug line ↓
 				//TextPutter.onTextArea(myTextTF,myText,isArabic,false,false,1,true) ;
 				//	trace("2 add parag on TextParag and its font is : "+myTextTF.defaultTextFormat.font+' added to textParag class : '+myTextTF.text)
