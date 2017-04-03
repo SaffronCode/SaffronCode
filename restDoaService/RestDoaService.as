@@ -1,6 +1,7 @@
 package restDoaService
 {
 	import flash.net.SharedObject;
+	import flash.net.URLRequestHeader;
 
 
 	public class RestDoaService
@@ -14,12 +15,9 @@ package restDoaService
 		/**located server domain*/
 		internal static var serverDomain:String = null ;
 		
-		//private static var 	id_UId:String = "UId",
-						//	id_UIdAuth:String = "UIdAuth";
+		/**Default headers list*/
+		internal static var headers:Vector.<URLRequestHeader> = new Vector.<URLRequestHeader>();
 		
-		//private static var _UId:String = '';//"226e4187-4135-4733-bfe2-8fc526d6971c";
-		
-		//private static var _UIdAuth:String = '';//"29d46f85-1fb5-4ff2-8c36-6d70744eaf45" ;
 		
 		private static var sharedObject:SharedObject;
 		
@@ -53,49 +51,6 @@ package restDoaService
 			sharedObject.flush();
 		}
 		
-		
-		/*internal static function get UIdAuth():String
-		{
-			if(_UIdAuth=='')
-			{
-				_UIdAuth = get(id_UIdAuth);
-			}
-			return _UIdAuth;
-		}*/
-		
-		/*internal static function get UId():String
-		{
-			if(_UId=='')
-			{
-				_UId = get(id_UId);
-			}
-			//trace("♠ Get _UId : "+_UId);
-			return _UId;
-		}*/
-		
-		
-
-		/*private static function setUIdAuth(value:String):void
-		{
-			//trace("♠ set id_UIdAuth from "+_UIdAuth+" To "+value);
-			if(_UIdAuth!=value)
-			{
-				set(id_UIdAuth,value);
-				_UIdAuth = value;
-				//trace("♠ done");
-			}
-		}*/
-
-		/*private static function setUId(value:String):void
-		{
-			//trace("♠ set _UId from "+_UId+" To "+value);
-			if(_UId!=value)
-			{
-				set(id_UId,value);
-				_UId = value;
-				//trace("♠ done");
-			}
-		}*/
 
 		internal static function get domain():String
 		{
@@ -119,32 +74,18 @@ package restDoaService
 			trace("Rest service is starts on : "+serverDomain);
 		}
 		
-		/**Feal these values from signInViewModel to make user knownAsLoged in
-		public static function setUid(uId:String,uIdAuth:String):void
-		{
-			setUId(uId) ;
-			setUIdAuth(uIdAuth) ;
-			trace("User is logged in");
-		}*/
 		
-		/*public static function logOut():void
-		{
-			setUId('');
-			setUIdAuth('');
-			trace("User is logged out");
-		}*/
 		
-		/**Returns true if user is logged in.
-		public static function get isLogedIn():Boolean
+		/**Reset header list*/
+		public static function resetHeaders():void
 		{
-			if(UId=='' || UIdAuth=='')
-			{
-				return false ;
-			}
-			else
-			{
-				return true ;
-			}
-		}*/
+			headers = new Vector.<URLRequestHeader>();
+		}
+		
+		/**Add a static header to all services*/
+		public static function addHeader(name:String, value:String):void
+		{
+			headers.push(new URLRequestHeader(name,value));
+		}
 	}
 }

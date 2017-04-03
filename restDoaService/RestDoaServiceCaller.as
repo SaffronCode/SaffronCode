@@ -118,6 +118,10 @@
 			
 			var newHeader:URLRequestHeader = new URLRequestHeader('Accept','text/json,text/xml, application/xml, application/xhtml+xml, text/html;q=0.9, text/plain;q=0.8, text/css, image/png, image/jpeg, image/gif;q=0.8, application/x-shockwave-flash, video/mp4;q=0.9, flv-application/octet-stream;q=0.8, video/x-flv;q=0.7, audio/mp4, application/futuresplash, */*;q=0.5, application/x-mpegURL');
 			pureRequest.requestHeaders.push(newHeader);
+			for(var i = 0 ; i<RestDoaService.headers.length ; i++)
+			{
+				pureRequest.requestHeaders.push(RestDoaService.headers[i]);
+			}
 			
 			//var newHeader:URLRequestHeader = new URLRequestHeader('api-key','A4593387-2C4F-4FB6-8AFC-5AC3F3C6B80EEAD9075D-394C-4463-B4B2-C677F5CAA04B');
 			//var newHeader2:URLRequestHeader = new URLRequestHeader('Content-Type','application/json');
