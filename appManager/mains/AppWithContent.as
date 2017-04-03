@@ -67,7 +67,8 @@
 		}
 		
 		/**AutoLanguageConvertion will enabled just when supportsMutilanguage was true,
-		 * Pass 1 to activate effects*/
+		 * Pass 1 to activate effects<br>
+		 * activateURLCaller makes application be able to open from an URI from out side applications. first time it will throw the required permission */
 		public function AppWithContent(supportsMultiLanguage:Boolean=false,autoLanguageConvertEnabled:Boolean=true,animagePageContents:Boolean=false,autoChangeMusics:Boolean=false,skipAllAnimations:Boolean=false,manageStageManager:Boolean=false,loadConfig:Boolean=false,addVersionControll:Boolean=true
 		,addTheDeveloperPage:Boolean=false,activateShineEffect:uint=1,PlaySounOnBackGroundTo:Boolean=false,activateRankSystem:Boolean=false,activateURLCaller:Boolean=false)
 		{
