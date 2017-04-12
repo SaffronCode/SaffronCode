@@ -35,6 +35,15 @@ package saffronEvents
 		/**This is the request to open the loggin page*/
 		public static const OPEN_LOGIN_PAGE:String = "OPEN_LOGIN_PAGE" ;
 		
+		/**Verify code is sent from server to user*/
+		public static const VERIFY_CODE_SENT_FROM_SERVER:String = "VERIFY_CODE_SENT_FROM_SERVER" ;
+		/**Verify code sending faild*/
+		public static const VERIFY_CODE_FAILD:String = "VERIFY_CODE_FAILD" ;
+		/**Verify code is accepted by server*/
+		public static const VERIFY_CODE_ACCEPTED:String = "VERIFY_CODE_ACCEPTED" ;
+		/**Verify code is not accepted by server*/
+		public static const VERIFY_CODE_NOT_ACCEPTED:String = "VERIFY_CODE_NOT_ACCEPTED" ;
+		
 		/**0: no error*/
 		public var errorCode:int ;
 		
