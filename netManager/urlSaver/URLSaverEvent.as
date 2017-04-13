@@ -15,11 +15,16 @@ package netManager.urlSaver
 		public var loadedBytes:ByteArray;
 		public var offlineTarget:String;
 		
-		public function URLSaverEvent(type:String,Precent:Number = 0 , LoadedBytes:ByteArray=null,OfflineTarget:String='')
+		public var 	totalBytes:Number,
+					loadedBytesLenght:Number ;
+		
+		public function URLSaverEvent(type:String,Precent:Number = 0 , LoadedBytes:ByteArray=null,OfflineTarget:String='',TotalBytes:Number=0,LoadedBytesL:Number=0)
 		{
 			precent = Precent ;
-			loadedBytes = LoadedBytes ;
+			loadedBytesLenght = LoadedBytesL ;
 			offlineTarget = OfflineTarget ;
+			totalBytes = TotalBytes ;
+			loadedBytes = LoadedBytes ;
 			super(type, false);
 		}
 	}

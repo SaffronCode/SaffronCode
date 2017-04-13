@@ -317,7 +317,7 @@ package netManager.urlSaver
 			//trace("Downloading");
 			if(urlLoader!=null)
 			{
-				this.dispatchEvent(new URLSaverEvent(URLSaverEvent.LOADING,urlLoader.bytesLoaded/urlLoader.bytesTotal/*ev.precent*/));
+				this.dispatchEvent(new URLSaverEvent(URLSaverEvent.LOADING,urlLoader.bytesLoaded/urlLoader.bytesTotal,null,'',urlLoader.bytesTotal,urlLoader.bytesLoaded/*ev.precent*/));
 			}
 			/*}*/
 		}
