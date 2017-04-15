@@ -1,4 +1,4 @@
-package appManager.mains
+﻿package appManager.mains
 {
 	import appManager.animatedPages.Intro;
 	import appManager.animatedPages.MainAnim;
@@ -353,6 +353,10 @@ package appManager.mains
 			}*/
 			
 		//////////////////////////////////////////////
+			if(pageManagerObject==null)
+			{
+				throw "You forgot to add appManager.animatedPages.pageManager.PageManager to your project.\n\n";
+			}
 			pageManagerObject.setUp(selectedEvent);
 			if(menuManagerObject && !AppEvent.isRefereshEvent(selectedEvent))
 			{
