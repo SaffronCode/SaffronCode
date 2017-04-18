@@ -787,7 +787,7 @@ package contents.displayPages
 						{
 							if(thempRemoveLink(visibleItem))
 							{
-								trace("RemovedLink : "+(i));
+								trace("1 RemovedLink : "+(i));
 							}
 						}
 						/*}
@@ -818,7 +818,7 @@ package contents.displayPages
 						{
 							if(thempRemoveLink(visibleItem))
 							{
-								trace("RemovedLink : "+(i));
+								trace("2 RemovedLink : "+(i));
 							}
 						}
 						/*}
@@ -835,8 +835,24 @@ package contents.displayPages
 			if(!addingLinksOver
 				&&
 				(loadAllLinksInstantly ||
-				(!horizontalMenu && !revertedY && sens.top<areaRect.bottom) || (!horizontalMenu && revertedY && sens.bottom>areaRect.top)
-				|| (horizontalMenu && !revertedX && sens.left<areaRect.right) || (horizontalMenu && revertedX && sens.right>areaRect.left))
+					(!horizontalMenu 
+						&& !revertedY 
+						&& sens.top<areaRect.bottom
+					) || (
+						!horizontalMenu 
+						&& revertedY 
+						&& sens.bottom>areaRect.top
+					)
+					|| (
+						horizontalMenu 
+						&& !revertedX 
+						&& sens.left<areaRect.right
+					) || (
+						horizontalMenu 
+						&& revertedX 
+						&& sens.right>areaRect.left
+					)
+				)
 			)
 			{
 				trace("Request more link");
@@ -1005,7 +1021,14 @@ package contents.displayPages
 				{
 					if(MenuDirectionY>0)
 					{
-						linksInterfaceStorage[i].y = linksInterfaceStorage[i-1].y+(linksInterfaceStorage[i-1].height+myDeltaY);
+						if(i%iconsPerLine==0)
+						{
+							linksInterfaceStorage[i].y = linksInterfaceStorage[i-1].y+(linksInterfaceStorage[i-1].height+myDeltaY);
+						}
+						else
+						{
+							linksInterfaceStorage[i].y = linksInterfaceStorage[Math.floor(i/iconsPerLine)*iconsPerLine].y ;
+						}
 					}
 					else
 					{
