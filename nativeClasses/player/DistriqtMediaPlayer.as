@@ -97,16 +97,23 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 		/**is exited from full screen*/
 		protected function exitFullscreened(event:Event):void
 		{
-			stage.setOrientation(StageOrientation.DEFAULT);
-			trace("StageOrientation.DEFAULT >>> "+StageOrientation.DEFAULT);
+			if(!DevicePrefrence.isLandScape())
+			{
+				stage.setOrientation(StageOrientation.DEFAULT);
+				trace("StageOrientation.DEFAULT >>> "+StageOrientation.DEFAULT);
+			}
 			isFullScreen = false ;
 		}
 		
 		/**is full screen now*/
 		protected function isFullscreened(event:Event):void
 		{
-			stage.setOrientation(StageOrientation.ROTATED_LEFT);
-			trace("StageOrientation.ROTATED_LEFT >>> "+StageOrientation.ROTATED_LEFT);
+			if(!DevicePrefrence.isLandScape())
+			{
+				trace("The default oriented is : "+stage.orientation);
+				stage.setOrientation(StageOrientation.ROTATED_LEFT);
+				trace("StageOrientation.ROTATED_LEFT >>> "+StageOrientation.ROTATED_LEFT);
+			}
 			isFullScreen = true ;
 		}
 		
