@@ -30,6 +30,8 @@ package nativeClasses.player
 		
 		private static var 	appStageWidth:Number,
 							appStageHeight:Number;
+							
+		private var isOpen:Boolean = false ;
 		
 		public function DistriqtMediaPlayer(Width:Number,Height:Number)
 		{
@@ -70,22 +72,13 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 			}
 			
 			var rect:Rectangle = createVewPort();
+				
+			close();
+		
+			isOpen = true ;
 			
-			/*rect.x*=scl;
-			rect.y*=scl;
-			rect.x += deltaX/2;
-			rect.y += deltaY/2;
-			rect.width*=scl;
-			rect.height*=scl;*/
-			try
-			{
-				trace("Remove player");
-				(MediaPlayerClass as Object).service.removePlayer();
-			}
-			catch(e)
-			{
-				trace(">>e"+e);
-			}
+			trace("Play the video : "+videoURL);
+			
 			(MediaPlayerClass as Object).service.createPlayer(videoURL,rect.x,rect.y,rect.width,rect.height,autoPlay,controlls,true);
 			(MediaPlayerClass as Object).service.addEventListener(FULLSCREEN_ENTER,isFullscreened);
 			(MediaPlayerClass as Object).service.addEventListener(FULLSCREEN_EXIT,exitFullscreened);
@@ -120,14 +113,14 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 		private function createVewPort():Rectangle
 		{
 			var rect:Rectangle = this.getBounds(stage);
-			trace("|rect : "+rect);
+			/*trace("|rect : "+rect);
 			
 			trace("stage.fullScreenHeight : "+stage.fullScreenHeight);
 			trace("stage.fullScreenWidth : "+stage.fullScreenWidth);
 			trace("stage.stageHeight : "+stage.stageHeight);
 			trace("stage.stageWidth : "+stage.stageWidth);
 			trace("appStageWidth : "+appStageWidth);
-			trace("appStageHeight : "+appStageHeight);
+			trace("appStageHeight : "+appStageHeight);*/
 			
 			if(scl==0 || lastStageW!=stage.fullScreenWidth)
 			{
@@ -150,9 +143,9 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 				}
 			}
 			
-			trace("scl : "+scl);
+			/*trace("scl : "+scl);
 			trace("deltaY : "+deltaY);
-			trace("deltaX : "+deltaX);
+			trace("deltaX : "+deltaX);*/
 			
 			rect.x*=scl;
 			rect.y*=scl;
@@ -167,6 +160,18 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 			rect.height = round(rect.height);
 			
 			return rect ;
+		}
+		
+		/**Close player*/
+		public function close():void
+		{
+			trace("Hide the player");
+			try
+			{
+				isOpen = false ;
+				(MediaPlayerClass as Object).service.removePlayer();
+			}catch(e){};
+			this.removeEventListener(Event.ENTER_FRAME,controlPlayerViewPort);
 		}
 		
 		protected function unLoad(event:Event):void
@@ -188,7 +193,7 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 		/**Controll the player place*/
 		protected function controlPlayerViewPort(event:Event=null):void
 		{
-			if(isFullScreen)
+			if(isFullScreen || !isOpen)
 			{
 				return ;
 			}

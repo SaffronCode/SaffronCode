@@ -17,6 +17,8 @@ package darkBox
 	import flash.utils.getTimer;
 	import flash.utils.setTimeout;
 	
+	import nativeClasses.player.DistriqtMediaPlayer;
+	
 	import netManager.urlSaver.URLSaverEvent;
 	
 	import stageManager.StageManager;
@@ -44,7 +46,8 @@ package darkBox
 					box_shp:SphereImage,
 					box_binary:BinaryFile,
 					box_stageWeb:WebOpener,
-					box_vid:VideoImage;
+					box_vid:VideoImage,
+					box_vid2:DistriqtMediaPlayer;
 					
 		private var bannerMC:MovieClip,
 					titleMC:TitleText,
@@ -240,6 +243,8 @@ package darkBox
 			box_binary.hide();
 			box_stageWeb.hide();
 			box_shp.hide();
+			if(box_vid2)
+				box_vid2.close();
 			if(box_vid)
 				box_vid.hide();
 		}
@@ -323,6 +328,8 @@ package darkBox
 			box_shp.setUp(imageSize);
 			if(box_vid)
 				box_vid.setUp(imageSize);
+			if(box_vid2)
+				box_vid2 = new DistriqtMediaPlayer(imageSize.width,imageSize.height);
 			
 			
 			MouseDrag.setUp(stage);
@@ -509,19 +516,37 @@ package darkBox
 					break;
 				case ImageFile.TYPE_VIDEO:
 					downloadMC.visible = false ;
-					if(imageItem.target.toLocaleLowerCase().indexOf('.flv')==-1)
-					{						
-						stageVideo = new StageVideo(imageSize.width,imageSize.height)	
-						this.addChild(stageVideo)
-						stageVideo.x = imageSize.x
-						stageVideo.y =imageSize.y	
-							
-						stageVideo.loadThiwVideo(imageItem.target)
-					}
-					else if(box_vid)
+					if(DevicePrefrence.isItPC)
 					{
-						box_vid.setUp(imageSize);
-						box_vid.show(imageItem.target);
+						if(false && imageItem.target.toLocaleLowerCase().indexOf('.flv')==-1)
+						{						
+							stageVideo = new StageVideo(imageSize.width,imageSize.height)	
+							this.addChild(stageVideo)
+							stageVideo.x = imageSize.x
+							stageVideo.y =imageSize.y	
+								
+							stageVideo.loadThiwVideo(imageItem.target)
+						}
+						else if(box_vid)
+						{
+							box_vid.setUp(imageSize);
+							box_vid.show(imageItem.target);
+						}
+					}
+					else
+					{
+						if(box_vid2)
+						{
+							box_vid2.close();
+							Obj.remove(box_vid2);
+							box_vid2 = null ;
+						}
+						box_vid2 = new DistriqtMediaPlayer(imageSize.width,imageSize.height);
+						box_vid2.x = imageSize.x ;
+						box_vid2.y = imageSize.y ;
+						this.addChild(box_vid2);
+							
+						box_vid2.playVideo(imageItem.target);
 					}
 					break;
 				case ImageFile.TYPE_BINARY:
