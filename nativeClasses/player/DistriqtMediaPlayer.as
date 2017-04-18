@@ -3,6 +3,7 @@ package nativeClasses.player
 	//import com.distriqt.extension.mediaplayer.MediaPlayer;
 	
 	import flash.display.Sprite;
+	import flash.display.StageOrientation;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
 	import flash.utils.getDefinitionByName;
@@ -10,6 +11,11 @@ package nativeClasses.player
 	
 	public class DistriqtMediaPlayer extends Sprite
 	{
+		private static const FULLSCREEN_ENTER:String = "fullscreen:enter";
+		private static const FULLSCREEN_EXIT:String = "fullscreen:exit";
+		
+		private var isFullScreen:Boolean = false ;
+		
 		/**com.distriqt.extension.mediaplayer.MediaPlayer*/
 		private static var MediaPlayerClass:Class ;
 		
@@ -28,7 +34,6 @@ package nativeClasses.player
 		public function DistriqtMediaPlayer(Width:Number,Height:Number)
 		{
 			super();
-			
 			if(myDistriqtId==null)
 			{
 				throw "Set the distriqt id first by calling DistriqtMediaPlayer.setId(...)";
@@ -37,7 +42,7 @@ package nativeClasses.player
 			{
 				trace("Distriqt media player is not supporting this device");
 			}
-			
+			isFullScreen = false ;
 			this.graphics.beginFill(0x222222);
 			this.graphics.drawRect(0,0,Width,Height);
 			if(isNaN(appStageWidth))
@@ -82,10 +87,23 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 				trace(">>e"+e);
 			}
 			(MediaPlayerClass as Object).service.createPlayer(videoURL,rect.x,rect.y,rect.width,rect.height,autoPlay,controlls,true);
-			
-			this.removeEventListener(Event.ENTER_FRAME,controlPlayerFrame);
-			this.addEventListener(Event.ENTER_FRAME,controlPlayerFrame);
+			(MediaPlayerClass as Object).service.addEventListener(FULLSCREEN_ENTER,isFullscreened);
+			(MediaPlayerClass as Object).service.addEventListener(FULLSCREEN_EXIT,exitFullscreened);
+			this.removeEventListener(Event.ENTER_FRAME,controlPlayerViewPort);
+			this.addEventListener(Event.ENTER_FRAME,controlPlayerViewPort);
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
+		}
+		
+		/**is exited from full screen*/
+		protected function exitFullscreened(event:Event):void
+		{
+			isFullScreen = false ;
+		}
+		
+		/**is full screen now*/
+		protected function isFullscreened(event:Event):void
+		{
+			isFullScreen = true ;
 		}
 		
 		private function createVewPort():Rectangle
@@ -145,18 +163,24 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 			try
 			{
 				trace("Remove player");
+				(MediaPlayerClass as Object).service.removeEventListener(FULLSCREEN_ENTER,isFullscreened);
+				(MediaPlayerClass as Object).service.removeEventListener(FULLSCREEN_EXIT,exitFullscreened);
 				(MediaPlayerClass as Object).service.removePlayer();
 			}
 			catch(e)
 			{
 				trace(">>e"+e);
 			}
-			this.removeEventListener(Event.ENTER_FRAME,controlPlayerFrame);
+			this.removeEventListener(Event.ENTER_FRAME,controlPlayerViewPort);
 		}
 		
 		/**Controll the player place*/
-		protected function controlPlayerFrame(event:Event=null):void
+		protected function controlPlayerViewPort(event:Event=null):void
 		{
+			if(isFullScreen)
+			{
+				return ;
+			}
 			if(Obj.isAccesibleByMouse(this))
 			{
 				var rect:Rectangle = createVewPort();
