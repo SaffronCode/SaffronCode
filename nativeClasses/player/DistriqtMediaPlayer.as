@@ -5,6 +5,7 @@ package nativeClasses.player
 	import flash.display.Sprite;
 	import flash.display.StageOrientation;
 	import flash.events.Event;
+	import flash.filesystem.File;
 	import flash.geom.Rectangle;
 	import flash.utils.getDefinitionByName;
 
@@ -60,7 +61,8 @@ package nativeClasses.player
 			appStageHeight = stage.stageHeight ;
 		}
 		
-		/**MediaPlayer.CONTROLS_BASIC : controls:basic
+		/**Pass the video native path for local files
+		 * <br><br>MediaPlayer.CONTROLS_BASIC : controls:basic
 MediaPlayer.CONTROLS_EMBEDDED : controls:embedded
 MediaPlayer.CONTROLS_FULLSCREEN : controls:fullscreen
 MediaPlayer.CONTROLS_NONE : controls:none*/
@@ -76,6 +78,11 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 			close();
 		
 			isOpen = true ;
+			
+			if(videoURL.indexOf('http')!=0)
+			{
+				videoURL = new File(videoURL).nativePath;
+			}
 			
 			trace("Play the video : "+videoURL);
 			
