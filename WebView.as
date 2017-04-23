@@ -1,5 +1,6 @@
 package 
 {
+	import flash.display.BitmapData;
 	import flash.display.MovieClip;
 	import flash.display.Stage;
 	import flash.events.Event;
@@ -10,6 +11,7 @@ package
 	{
 		public static const LOAD_URL:String = "LOAD_URL";
 		public static const LOAD_STRING:String = "LOAD_STRING";
+		public static const LOAD_BITMAP:String = "LOAD_BITMAP";
 		private static var Me:WebView;
 		public static var autoShowHide:Boolean=true;
 		private var _stageWebView:StageWebView;
@@ -17,17 +19,19 @@ package
 		private var _url:String;
 		private var _stage:Stage;
 		private var _loadStatus:String;
+		private var _bitmapData:BitmapData;
 		public function WebView()
 		{
 			super();
 		}
-		public static function setup(area_p:MovieClip,url_p:String,stage_p:Stage,loadStatus_p:String=LOAD_URL):void
+		public static function setup(area_p:MovieClip,url_p:String,stage_p:Stage,loadStatus_p:String=LOAD_URL,bitmapData_p:BitmapData=null):void
 		{
 			Me = new WebView();
 			Me._area = area_p;	
 			Me._url = url_p;
 			Me._stage = stage_p;
 			Me._loadStatus = loadStatus_p;
+			Me._bitmapData = bitmapData_p;
 			Me.load();		
 		}
 		
@@ -35,7 +39,7 @@ package
 		{
 			// TODO Auto-generated method stub
 			_stageWebView.viewPort = getArea();
-			trace('_stageWebView.viewPort 333:',_stageWebView.viewPort)
+			//trace('_stageWebView.viewPort 333:',_stageWebView.viewPort)
 			if(!Obj.isAccesibleByMouse(_area))
 			{
 				_hide();
@@ -54,9 +58,13 @@ package
 			{
 				_stageWebView.loadURL(_url);
 			}
-			else
+			else if(_loadStatus==LOAD_STRING)
 			{
 				_stageWebView.loadString(_url);
+			}
+			else if(_loadStatus == LOAD_BITMAP)
+			{
+				_stageWebView.drawViewPortToBitmapData(_bitmapData);
 			}
 			Me.addEventListener(Event.ENTER_FRAME,chekArea)
 		}
