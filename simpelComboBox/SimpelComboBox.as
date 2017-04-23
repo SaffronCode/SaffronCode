@@ -1,9 +1,9 @@
 package simpelComboBox
 {//simpelComboBox.SimpelComboBox
-	import appManager.displayContentElemets.TitleText;
-	
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
+	
+	import appManager.displayContentElemets.TitleText;
 	
 	import popForm.Hints;
 	import popForm.PopButtonData;
@@ -28,7 +28,7 @@ package simpelComboBox
 			// TODO Auto-generated method stub
 			Hints.selector(_title,'',list,selector);
 		}
-		public function setup(title_p:String,list_p:Array,onSeletITemFun_p:Function):void
+		public function setup(title_p:String,list_p:Array,onSeletITemFun_p:Function,runFunctionOnSetup:Boolean=true):void
 		{
 			Item = new SimpelComboBoxListItem();
 			onSeletItem = onSeletITemFun_p;
@@ -43,7 +43,10 @@ package simpelComboBox
 				}
 				Item.Id = list_p[0].id;
 				Item.Title = list_p[0].title;
-				onSeletItem();
+				if(runFunctionOnSetup)
+				{
+					onSeletItem();
+				}
 			}
 		}
 		
