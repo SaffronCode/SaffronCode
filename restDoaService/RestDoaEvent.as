@@ -52,7 +52,8 @@ package restDoaService
 		public var errorCode:int ;
 		//public static var SERVER_RESULT_puInquiry_fun:String;
 		
-		public function RestDoaEvent(type:String,ErrorCode:int=ErrorEnum.noError)
+		/***ErrorEnum.noError**/
+		public function RestDoaEvent(type:String,ErrorCode:int=0)
 		{
 			errorCode = ErrorCode ;
 			super(type,false);
