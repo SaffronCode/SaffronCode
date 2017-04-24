@@ -5,7 +5,7 @@ package otherPlatforms.postMan.model
 		public var url:String ;
 		public var method:String ;
 		public var header:Vector.<HeaderModel> = new Vector.<HeaderModel>();
-		public var body:Vector.<BodyModel> = new Vector.<BodyModel>();
+		public var body:BodyModel = new BodyModel();
 		public var description:String ;
 		
 		
