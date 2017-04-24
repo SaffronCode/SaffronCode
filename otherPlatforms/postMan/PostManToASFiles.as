@@ -6,6 +6,7 @@ package otherPlatforms.postMan
 	
 	import flash.filesystem.File;
 	
+	import otherPlatforms.postMan.model.BodyModel;
 	import otherPlatforms.postMan.model.PostManExportModel;
 
 	public class PostManToASFiles
@@ -25,13 +26,48 @@ package otherPlatforms.postMan
 				serviceGenerator.IsGet = serviceData.item[i].request.method=="GET" ;
 				serviceGenerator.myWebServiceLocation = serviceData.item[i].request.url ;
 				
-				var inputDataClassName:String = createClassName(serviceGenerator.ServiceName,'Resutl');
+				serviceGenerator.inputObject = bodyToObject(serviceData.item[i].request.body);
+				serviceGenerator.inputObjectClassName = createClassName(serviceGenerator.ServiceName,'Request');
 				
-				SaveJSONtoAs(serviceData.item[i].request.body.raw,saveToFolder,inputDataClassName);
+				//serviceGenerator.inPutClass = 
+				if(serviceGenerator.inputObject!=null)
+				{
+					SaveJSONtoAs(serviceGenerator.inputObject,saveToFolder,serviceGenerator.inputObjectClassName);
+				}
 				
 				var serviceFile:File = saveToFolder.resolvePath(serviceGenerator.ServiceName+'.as');
 				TextFile.save(serviceFile,serviceGenerator.toString());
 			}
+		}
+		
+		private static function bodyToObject(body:BodyModel):Object
+		{
+			var bodyObject:Object ;
+			if(body.mode == "formdata")
+			{
+				if(body.formdata.length>0)
+				{
+					bodyObject = {} ;
+					for(var i:int ; i<body.formdata.length ; i++)
+					{
+						bodyObject[body.formdata[i].key] = body.formdata[i].value ;
+					}
+				}
+			}
+			else
+			{
+				if(body.raw!='')
+				{
+					bodyObject = JSON.parse(JSONCorrector(body.raw)) ;
+				}
+			}
+			return bodyObject;
+		}
+		
+		/**This will replace dfafd:"dfds" with "dfafd":"dfds"*/
+		private static function JSONCorrector(wrongJSON:String):String
+		{
+			return wrongJSON.replace(/([a-z]+):/gi,'"$1":') ;
 		}
 		
 		/**This will save the json to as file<br>
