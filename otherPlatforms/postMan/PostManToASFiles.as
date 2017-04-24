@@ -29,6 +29,25 @@ package otherPlatforms.postMan
 				serviceGenerator.inputObject = bodyToObject(serviceData.item[i].request.body);
 				serviceGenerator.inputObjectClassName = createClassName(serviceGenerator.ServiceName,'Request');
 				
+				if(serviceData.item[i].response.length>0 && serviceData.item[i].response[0].body!=null)
+				{
+					serviceGenerator.outPutObject = JSON.parse(JSONCorrector(serviceData.item[i].response[0].body)) ;
+					serviceGenerator.outPutObjectClassName = createClassName(serviceGenerator.ServiceName,'Respond');
+					if(serviceGenerator.outPutObject is Array)
+					{
+						SaveJSONtoAs(serviceGenerator.outPutObject[0],saveToFolder,serviceGenerator.outPutObjectClassName);
+					}
+					else
+					{
+						SaveJSONtoAs(serviceGenerator.outPutObject,saveToFolder,serviceGenerator.outPutObjectClassName);
+					}
+				}
+				else
+				{
+					serviceGenerator.outPutObject = null ;
+					serviceGenerator.outPutObjectClassName = '' ;
+				}
+				
 				//serviceGenerator.inPutClass = 
 				if(serviceGenerator.inputObject!=null)
 				{
@@ -75,7 +94,7 @@ package otherPlatforms.postMan
 		public static function SaveJSONtoAs(jsonObject:Object,directory:File,className:String):void
 		{
 			var myAsClass:String = classFileModel ;
-			myAsClass = myAsClass.split("[ClassName]").join("className") ;
+			myAsClass = myAsClass.split("[ClassName]").join(className) ;
 			
 			var newClassName:String ;
 			var parameters:String = '' ;
@@ -121,9 +140,14 @@ package otherPlatforms.postMan
 						parameters+='Array = [] ;';
 					}
 				}
+				else if(jsonObject[paramName]==null)
+				{
+					parameters+='* ;';
+				}
 				else
 				{
 					//The parameter is class
+					
 					newClassName = createClassName(paramName,"Model",jsonObject[paramName]);
 					parameters+=newClassName+' = new '+newClassName+'()';
 					SaveJSONtoAs(jsonObject[paramName],directory,newClassName);
