@@ -1,6 +1,6 @@
 package otherPlatforms.postMan
 {
-	public class ServiceGenerator
+	internal class ServiceGenerator
 	{
 		public var ServiceName:String ;
 		public var myWebServiceLocation:String ;
