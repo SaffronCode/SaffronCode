@@ -85,6 +85,7 @@ package otherPlatforms.postMan
 			{
 				myWebServiceLocation = myWebServiceLocation.substring(0,myWebServiceLocation.lastIndexOf('?'));
 			}
+			myWebServiceLocation = myWebServiceLocation.replace(/http[s]{0,1}:[\/]{1,2}[^\/]*/gi,'');
 			
 			classString = classString.split("[myWebServiceLocation]").join("'"+myWebServiceLocation+"'");
 			
