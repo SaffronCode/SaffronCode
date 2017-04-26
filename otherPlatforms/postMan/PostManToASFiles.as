@@ -31,7 +31,9 @@ package otherPlatforms.postMan
 				
 				if(serviceData.item[i].response.length>0 && serviceData.item[i].response[0].body!=null)
 				{
-					serviceGenerator.outPutObject = JSON.parse(JSONCorrector(serviceData.item[i].response[0].body)) ;
+					trace("***** : "+serviceData.item[i].response[serviceData.item[i].response.length-1].body);
+					trace("******** : "+JSONCorrector(serviceData.item[i].response[serviceData.item[i].response.length-1].body));
+					serviceGenerator.outPutObject = JSON.parse(JSONCorrector(serviceData.item[i].response[serviceData.item[i].response.length-1].body)) ;
 					serviceGenerator.outPutObjectClassName = createClassName(serviceGenerator.ServiceName,'Respond');
 					if(serviceGenerator.outPutObject is Array)
 					{
@@ -86,7 +88,7 @@ package otherPlatforms.postMan
 		/**This will replace dfafd:"dfds" with "dfafd":"dfds"*/
 		private static function JSONCorrector(wrongJSON:String):String
 		{
-			return wrongJSON.replace(/([a-z]+):/gi,'"$1":') ;
+			return wrongJSON.replace(/([,\{][\s\n\r]*)([a-z]+[\s]*[\s]*):/gi,'$1"$2":') ;
 		}
 		
 		/**This will save the json to as file<br>
