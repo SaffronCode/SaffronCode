@@ -1,7 +1,5 @@
 package fileBrowser
 {
-	import contents.Contents;
-	
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -10,6 +8,8 @@ package fileBrowser
 	import flash.text.TextField;
 	import flash.utils.ByteArray;
 	import flash.utils.getTimer;
+	
+	import contents.Contents;
 	
 	import popForm.PopButtonData;
 	import popForm.PopMenuContent;
@@ -30,10 +30,10 @@ package fileBrowser
 		
 		private static var Name:String ;
 		
-		private static var driveFrame:uint = 7,
-							folderFrame:uint=8,
-							fileFrame:uint=9,
-							noFileFrame:uint=4;
+		private static var driveFrame:uint = 8,
+							folderFrame:uint=9,
+							fileFrame:uint=10,
+							noFileFrame:uint=11;
 		
 		/**1: load file, 2:save file*/
 		private static var mode:uint = 0;
@@ -87,8 +87,9 @@ package fileBrowser
 		public static function showBrowser(target:File,hint:String=''):void
 		{
 			lastLocation = target ;
-			var buttons:Array = [Contents.lang.t.cansel,''] ;
-			
+			//var buttons:Array = [Contents.lang.t.cansel,''] ;
+			var buttons:Array = new Array();
+			buttons.push(new PopButtonData(Contents.lang.t.cansel,7,null,true,true)) ;
 			baseFolderTarget = '' ;
 			if(/*true || */DevicePrefrence.isIOS())
 			{
@@ -112,15 +113,15 @@ package fileBrowser
 			if(lastLocation!=null && 
 				(baseFolder==null || lastLocation.nativePath!=baseFolder.nativePath))
 			{
-				buttons.push(Contents.lang.t.back);
+				buttons.push(new PopButtonData(Contents.lang.t.back,7,null,true,true));
 			}
 			if(mode==2 && lastLocation!=null)
 			{
-				buttons.push(Contents.lang.t.save);
+				buttons.push(new PopButtonData(Contents.lang.t.save,7,null,true,true));
 			}
 			else if(lastLocation!=null)
 			{
-				buttons.push(Contents.lang.t.search);
+				buttons.push(new PopButtonData(Contents.lang.t.search,7,null,true,true));
 			}
 			var button:PopButtonData ;
 			var i:int ;
@@ -269,7 +270,13 @@ package fileBrowser
 			frameTimes = 1000/30 ;
 			var fields:PopMenuFields = new PopMenuFields();
 			fields.addField(Contents.lang.t.search,lastSearchVal,null,false);
-			var buttons:Array = [Contents.lang.t.search,Contents.lang.t.back];
+			
+			var buttons:Array = new Array();
+			var newButt1:PopButtonData = new PopButtonData(Contents.lang.t.search,5,null,true,true);
+			buttons.push(newButt1)
+			var newButt2:PopButtonData = new PopButtonData(Contents.lang.t.back,6,null,true,true);
+			buttons.push(newButt2)
+			//var buttons:Array = [Contents.lang.t.search,Contents.lang.t.back];
 			var popText:PopMenuContent = new PopMenuContent('',fields,buttons);
 			PopMenu1.popUp(Contents.lang.t.file_selector_title,null,popText,0,onSearchButton);
 		}
