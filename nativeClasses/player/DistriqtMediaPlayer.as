@@ -220,6 +220,11 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 			return Math.round(num);
 		}
 		
+		public static function isSupports():Boolean
+		{
+			return isSupports ;
+		}
+		
 		public static function setId(distriqtId:String):void
 		{
 			myDistriqtId = distriqtId ;

@@ -328,8 +328,8 @@ package darkBox
 			box_shp.setUp(imageSize);
 			if(box_vid)
 				box_vid.setUp(imageSize);
-			if(box_vid2)
-				box_vid2 = new DistriqtMediaPlayer(imageSize.width,imageSize.height);
+			/*if(box_vid2)
+				box_vid2 = new DistriqtMediaPlayer(imageSize.width,imageSize.height);*/
 			
 			
 			MouseDrag.setUp(stage);
@@ -516,7 +516,7 @@ package darkBox
 					break;
 				case ImageFile.TYPE_VIDEO:
 					downloadMC.visible = false ;
-					if(DevicePrefrence.isItPC)
+					if(DevicePrefrence.isItPC || !DistriqtMediaPlayer.isSupports())
 					{
 						if(false && imageItem.target.toLocaleLowerCase().indexOf('.flv')==-1)
 						{						
