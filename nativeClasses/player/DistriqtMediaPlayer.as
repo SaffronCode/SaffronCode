@@ -1,4 +1,4 @@
-package nativeClasses.player
+﻿package nativeClasses.player
 {
 	//import com.distriqt.extension.mediaplayer.MediaPlayer;
 	
@@ -22,7 +22,7 @@ package nativeClasses.player
 		
 		private static var myDistriqtId:String ;
 		
-		private static var isSupports:Boolean = false ;
+		public static var isSupports:Boolean = false ;
 
 		private static var 	scl:Number = 0,
 							lastStageW:Number=0,
@@ -220,10 +220,6 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 			return Math.round(num);
 		}
 		
-		public static function isSupports():Boolean
-		{
-			return isSupports ;
-		}
 		
 		public static function setId(distriqtId:String):void
 		{

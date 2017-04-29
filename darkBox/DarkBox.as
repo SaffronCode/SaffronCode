@@ -1,4 +1,4 @@
-package darkBox
+﻿package darkBox
 {
 	import appManager.displayContentElemets.TitleText;
 	
@@ -516,9 +516,9 @@ package darkBox
 					break;
 				case ImageFile.TYPE_VIDEO:
 					downloadMC.visible = false ;
-					if(DevicePrefrence.isItPC || !DistriqtMediaPlayer.isSupports())
+					if(DevicePrefrence.isItPC || !DistriqtMediaPlayer.isSupports)
 					{
-						if(false && imageItem.target.toLocaleLowerCase().indexOf('.flv')==-1)
+						if(DevicePrefrence.isIOS() && imageItem.target.toLocaleLowerCase().indexOf('.flv')==-1)
 						{						
 							stageVideo = new StageVideo(imageSize.width,imageSize.height)	
 							this.addChild(stageVideo)
