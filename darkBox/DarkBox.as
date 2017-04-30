@@ -518,7 +518,7 @@
 					downloadMC.visible = false ;
 					if(DevicePrefrence.isItPC || !DistriqtMediaPlayer.isSupports)
 					{
-						if(DevicePrefrence.isIOS() && imageItem.target.toLocaleLowerCase().indexOf('.flv')==-1)
+						if(DevicePrefrence.isIOS() || imageItem.target.toLocaleLowerCase().indexOf('.flv')==-1)
 						{						
 							stageVideo = new StageVideo(imageSize.width,imageSize.height)	
 							this.addChild(stageVideo)
