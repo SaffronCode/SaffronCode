@@ -220,13 +220,18 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 			return Math.round(num);
 		}
 		
-		
+		/**Add the natives below : <ber>
+		 * 
+   		<extensionID>com.distriqt.Core</extensionID>
+   		<extensionID>com.distriqt.MediaPlayer</extensionID>*/
 		public static function setId(distriqtId:String):void
 		{
 			myDistriqtId = distriqtId ;
+			trace("++++Distriqt media player starts+++");
 			try
 			{
 				MediaPlayerClass = getDefinitionByName("com.distriqt.extension.mediaplayer.MediaPlayer") as Class ;
+				trace("+++Media player starts+++");
 			}
 			catch(e)
 			{
@@ -241,11 +246,16 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 				if ((MediaPlayerClass as Object).isSupported)
 				{
 					isSupports = true ;
+					trace("+++Media player is supports+++");
+				}
+				else
+				{
+					trace("+++media player is not supports+++");
 				}
 			}
 			catch (e:Error)
 			{
-				trace("Distriqt media player isSupports : "+ e );
+				trace("+++Distriqt media player isSupports : "+ e );
 				isSupports = false ;
 			}
 		}
