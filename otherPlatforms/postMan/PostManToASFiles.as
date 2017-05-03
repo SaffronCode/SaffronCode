@@ -13,7 +13,7 @@ package otherPlatforms.postMan
 	{
 		private static const classFileModel:String = 'package\n{\n\tpublic class [ClassName]\n\t{\n[variables]\n\t\t\n\t\tpublic function [ClassName]()\n\t\t{\n\t\t}\n\t}\n}'
 		
-		public static function saveClasses(saveToFolder:File, service:String):void
+		public static function saveClasses(saveToFolderForServices:File, service:String,saveToFolderForTypes:File):void
 		{
 			// TODO Auto Generated method stub
 			var serviceData:PostManExportModel = new PostManExportModel();
@@ -22,7 +22,7 @@ package otherPlatforms.postMan
 			var serviceGenerator:ServiceGenerator = new ServiceGenerator();
 			for(var i:uint = 0 ; i<serviceData.item.length ; i++)
 			{
-				serviceGenerator.ServiceName = serviceData.item[i].name ;
+				serviceGenerator.ServiceName = correctNames(serviceData.item[i].name) ;
 				serviceGenerator.IsGet = serviceData.item[i].request.method=="GET" ;
 				serviceGenerator.myWebServiceLocation = serviceData.item[i].request.url ;
 				
@@ -37,11 +37,11 @@ package otherPlatforms.postMan
 					serviceGenerator.outPutObjectClassName = createClassName(serviceGenerator.ServiceName,'Respond');
 					if(serviceGenerator.outPutObject is Array)
 					{
-						SaveJSONtoAs(serviceGenerator.outPutObject[0],saveToFolder,serviceGenerator.outPutObjectClassName);
+						SaveJSONtoAs(serviceGenerator.outPutObject[0],saveToFolderForTypes,serviceGenerator.outPutObjectClassName);
 					}
 					else
 					{
-						SaveJSONtoAs(serviceGenerator.outPutObject,saveToFolder,serviceGenerator.outPutObjectClassName);
+						SaveJSONtoAs(serviceGenerator.outPutObject,saveToFolderForTypes,serviceGenerator.outPutObjectClassName);
 					}
 				}
 				else
@@ -53,12 +53,18 @@ package otherPlatforms.postMan
 				//serviceGenerator.inPutClass = 
 				if(serviceGenerator.inputObject!=null)
 				{
-					SaveJSONtoAs(serviceGenerator.inputObject,saveToFolder,serviceGenerator.inputObjectClassName);
+					SaveJSONtoAs(serviceGenerator.inputObject,saveToFolderForTypes,serviceGenerator.inputObjectClassName);
 				}
 				
-				var serviceFile:File = saveToFolder.resolvePath(serviceGenerator.ServiceName+'.as');
+				var serviceFile:File = saveToFolderForServices.resolvePath(serviceGenerator.ServiceName+'.as');
 				TextFile.save(serviceFile,serviceGenerator.toString());
 			}
+		}
+		
+		/**The wrong names can be like this : http://185.83.208.175:821/api/Service/GetBranches*/
+		private static function correctNames(name:String):String
+		{
+			return name.replace(/^.*\/([^\/]+)/gi,'$1');
 		}
 		
 		private static function bodyToObject(body:BodyModel):Object
