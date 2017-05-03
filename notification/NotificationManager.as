@@ -9,6 +9,7 @@ package notification
 	import flash.display.MovieClip;
 	import flash.events.ErrorEvent;
 	import flash.events.Event;
+	import flash.events.EventDispatcher;
 	import flash.utils.clearTimeout;
 	import flash.utils.setTimeout;
 	
@@ -18,7 +19,7 @@ package notification
 	[Event(name="TOKEN_REGISTER_COMPELETED", type="notification.NotificationEvent")]
 	/**Notification receved*/
 	[Event(name="NOTIFICATION", type="notification.NotificationEvent")]
-	public class NotificationManager extends MovieClip
+	public class NotificationManager extends EventDispatcher
 	{
 		public static var ONESIGNAL_APP_ID:String;
 		public static var GCM_PROJECT_NUMBER:String;
@@ -29,15 +30,19 @@ package notification
 		private var _timeOutId:uint	
 		public function NotificationManager()
 		{
-			
+			super();
 		}
-		public static function setup(ONESIGNAL_APP_ID_p:String='',GCM_PROJECT_NUMBER_p:String=''):void
+		
+		/**This will returns an instance on NofificatnionManager to cathc its events*/
+		public static function setup(ONESIGNAL_APP_ID_p:String='',GCM_PROJECT_NUMBER_p:String=''):NotificationManager
 		{
+			trace("SetUp easy push");
 			Notification_Event = new NotificationManager()
 			ONESIGNAL_APP_ID = ONESIGNAL_APP_ID_p
 			GCM_PROJECT_NUMBER = GCM_PROJECT_NUMBER_p
 		
-			NotificationManager.Notification_Event.EasyPushExample()
+			NotificationManager.Notification_Event.EasyPushExample();
+			return Notification_Event ;
 		}
 		
 		private function EasyPushExample() 
@@ -52,6 +57,8 @@ package notification
 				log("Notifications are not available!");
 				return;
 			}
+			
+			log("Easy push created")
 			
 			if (!validateConstants()) return;
 		
