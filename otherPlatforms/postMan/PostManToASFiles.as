@@ -7,58 +7,85 @@ package otherPlatforms.postMan
 	import flash.filesystem.File;
 	
 	import otherPlatforms.postMan.model.BodyModel;
+	import otherPlatforms.postMan.model.ItemModel;
 	import otherPlatforms.postMan.model.PostManExportModel;
 
 	public class PostManToASFiles
 	{
 		private static const classFileModel:String = 'package\n{\n\tpublic class [ClassName]\n\t{\n[variables]\n\t\t\n\t\tpublic function [ClassName]()\n\t\t{\n\t\t}\n\t}\n}'
+
+		private static var serviceGenerator:ServiceGenerator;
 		
-		public static function saveClasses(saveToFolderForServices:File, service:String,saveToFolderForTypes:File):void
+		private static var saveToFolderForServices:File,saveToFolderForTypes:File;
+		
+		public static function saveClasses(SaveToFolderForServices:File, service:String,SaveToFolderForTypes:File):void
 		{
-			// TODO Auto Generated method stub
+			saveToFolderForServices = SaveToFolderForServices ;
+			saveToFolderForTypes = SaveToFolderForTypes ;
 			var serviceData:PostManExportModel = new PostManExportModel();
 			JSONParser.parse(service,serviceData);
 			trace("serviceData : "+serviceData.item.length);
-			var serviceGenerator:ServiceGenerator = new ServiceGenerator();
-			for(var i:uint = 0 ; i<serviceData.item.length ; i++)
+			serviceGenerator = new ServiceGenerator();
+			/*for(var i:uint = 0 ; i<serviceData.item.length ; i++)
 			{
-				serviceGenerator.ServiceName = correctNames(serviceData.item[i].name) ;
-				serviceGenerator.IsGet = serviceData.item[i].request.method=="GET" ;
-				serviceGenerator.myWebServiceLocation = serviceData.item[i].request.url ;
-				
-				serviceGenerator.inputObject = bodyToObject(serviceData.item[i].request.body);
-				serviceGenerator.inputObjectClassName = createClassName(serviceGenerator.ServiceName,'Request');
-				
-				if(serviceData.item[i].response.length>0 && serviceData.item[i].response[0].body!=null)
+				createRequestFiles(serviceData.item[i])
+			}*/
+			
+			searchForAllItems(serviceData.item,SaveToFolderForServices);
+		}
+		
+		private static function searchForAllItems(rootItems:Vector.<ItemModel>,mySaveToFolderForServices:File):void
+		{
+			for(var i:int = 0 ; i<rootItems.length ; i++)
+			{
+				if(rootItems[i].request.url!=null)
 				{
-					trace("***** : "+serviceData.item[i].response[serviceData.item[i].response.length-1].body);
-					trace("******** : "+JSONCorrector(serviceData.item[i].response[serviceData.item[i].response.length-1].body));
-					serviceGenerator.outPutObject = JSON.parse(JSONCorrector(serviceData.item[i].response[serviceData.item[i].response.length-1].body)) ;
-					serviceGenerator.outPutObjectClassName = createClassName(serviceGenerator.ServiceName,'Respond');
-					if(serviceGenerator.outPutObject is Array)
-					{
-						SaveJSONtoAs(serviceGenerator.outPutObject[0],saveToFolderForTypes,serviceGenerator.outPutObjectClassName);
-					}
-					else
-					{
-						SaveJSONtoAs(serviceGenerator.outPutObject,saveToFolderForTypes,serviceGenerator.outPutObjectClassName);
-					}
+					mySaveToFolderForServices.createDirectory();
+					trace(">>test : "+rootItems[i].request.url);
+					createRequestFiles(rootItems[i],mySaveToFolderForServices);
+				}
+				searchForAllItems(rootItems[i].item,mySaveToFolderForServices.resolvePath(rootItems[i].name));
+			}
+		}
+		
+		private static function createRequestFiles(itemModel:ItemModel,mySaveToFolderForServices:File):void
+		{
+			serviceGenerator.ServiceName = correctNames(itemModel.name) ;
+			serviceGenerator.IsGet = itemModel.request.method=="GET" ;
+			serviceGenerator.myWebServiceLocation = itemModel.request.url ;
+			
+			serviceGenerator.inputObject = bodyToObject(itemModel.request.body);
+			serviceGenerator.inputObjectClassName = createClassName(serviceGenerator.ServiceName,'Request');
+			
+			if(itemModel.response.length>0 && itemModel.response[0].body!=null)
+			{
+				trace("***** : "+itemModel.response[itemModel.response.length-1].body);
+				trace("******** : "+JSONCorrector(itemModel.response[itemModel.response.length-1].body));
+				serviceGenerator.outPutObject = JSON.parse(JSONCorrector(itemModel.response[itemModel.response.length-1].body)) ;
+				serviceGenerator.outPutObjectClassName = createClassName(serviceGenerator.ServiceName,'Respond');
+				if(serviceGenerator.outPutObject is Array)
+				{
+					SaveJSONtoAs(serviceGenerator.outPutObject[0],saveToFolderForTypes,serviceGenerator.outPutObjectClassName);
 				}
 				else
 				{
-					serviceGenerator.outPutObject = null ;
-					serviceGenerator.outPutObjectClassName = '' ;
+					SaveJSONtoAs(serviceGenerator.outPutObject,saveToFolderForTypes,serviceGenerator.outPutObjectClassName);
 				}
-				
-				//serviceGenerator.inPutClass = 
-				if(serviceGenerator.inputObject!=null)
-				{
-					SaveJSONtoAs(serviceGenerator.inputObject,saveToFolderForTypes,serviceGenerator.inputObjectClassName);
-				}
-				
-				var serviceFile:File = saveToFolderForServices.resolvePath(serviceGenerator.ServiceName+'.as');
-				TextFile.save(serviceFile,serviceGenerator.toString());
 			}
+			else
+			{
+				serviceGenerator.outPutObject = null ;
+				serviceGenerator.outPutObjectClassName = '' ;
+			}
+			
+			//serviceGenerator.inPutClass = 
+			if(serviceGenerator.inputObject!=null)
+			{
+				SaveJSONtoAs(serviceGenerator.inputObject,saveToFolderForTypes,serviceGenerator.inputObjectClassName);
+			}
+			
+			var serviceFile:File = mySaveToFolderForServices.resolvePath(serviceGenerator.ServiceName+'.as');
+			TextFile.save(serviceFile,serviceGenerator.toString());
 		}
 		
 		/**The wrong names can be like this : http://185.83.208.175:821/api/Service/GetBranches*/
@@ -83,9 +110,16 @@ package otherPlatforms.postMan
 			}
 			else
 			{
-				if(body.raw!='')
+				if(body.raw!='' && body.raw!=null)
 				{
-					bodyObject = JSON.parse(JSONCorrector(body.raw)) ;
+					//trace("JSON is : "+body.raw);
+					var convertedJSON:String = JSONCorrector(body.raw) ;
+					//trace("convertedJSON JSON is : "+convertedJSON);
+					try
+					{
+						bodyObject = JSON.parse(convertedJSON) ;
+					}
+					catch(e){};
 				}
 			}
 			return bodyObject;

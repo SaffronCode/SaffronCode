@@ -1,5 +1,6 @@
 package otherPlatforms.postMan
 {
+	import flash.net.URLVariables;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
 
@@ -28,6 +29,19 @@ package otherPlatforms.postMan
 		{
 			var classString:String = serviceString.split("[ServiceName]").join(ServiceName)
 				.split("[IsGet]").join(String(IsGet));
+			
+			if(IsGet && myWebServiceLocation.indexOf('?')!=-1)
+			{
+				if(inputObject!=null)
+				{
+					myWebServiceLocation = myWebServiceLocation.substring(0,myWebServiceLocation.lastIndexOf('?'));
+				}
+				else
+				{
+					inputObject = new URLVariables(myWebServiceLocation.substring(myWebServiceLocation.lastIndexOf('?')+1));
+				}
+			}
+			
 			
 			if(inputObject!=null)
 			{
@@ -81,10 +95,6 @@ package otherPlatforms.postMan
 				classString = classString.split("[outPutClassName]").join('* ;');
 			}
 			
-			if(IsGet && inputObject!=null && myWebServiceLocation.indexOf('?')!=-1)
-			{
-				myWebServiceLocation = myWebServiceLocation.substring(0,myWebServiceLocation.lastIndexOf('?'));
-			}
 			myWebServiceLocation = myWebServiceLocation.replace(/http[s]{0,1}:[\/]{1,2}[^\/]*/gi,'');
 			
 			classString = classString.split("[myWebServiceLocation]").join("'"+myWebServiceLocation+"'");

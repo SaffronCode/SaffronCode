@@ -68,7 +68,7 @@
 		public var requestedData:Object ;
 		
 		/**Service id*/
-		private var myId:String,
+		protected var myId:String,
 					myParams:String='';
 		
 					

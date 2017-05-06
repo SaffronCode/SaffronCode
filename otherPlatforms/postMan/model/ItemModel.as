@@ -7,6 +7,8 @@ package otherPlatforms.postMan.model
 		public var name:String ;
 		public var request:RequestModel = new RequestModel();
 		public var response:Vector.<ResponseModel> = new Vector.<ResponseModel>() ;
+		
+		public var item:Vector.<ItemModel> = new Vector.<ItemModel>() ;
 		/**{
 			"name": "RegisterVideoGroupComment",
 			"request": {
