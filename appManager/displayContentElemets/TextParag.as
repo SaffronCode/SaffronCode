@@ -22,6 +22,10 @@
 		private var X0:Number,Y0:Number ;
 		public static var linkColor:int=-1;
 		
+		public function get text():String
+		{
+			return myTextTF.text
+		}
 		public function TextParag(moreHight:Number=0)
 		{
 			super();
