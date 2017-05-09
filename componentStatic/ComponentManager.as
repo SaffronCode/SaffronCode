@@ -18,45 +18,45 @@ package componentStatic
 		protected var filedCorrectMc:MovieClip;
 		public function ComponentManager()
 		{	
-			errorManager = new ErrorManager()
-			filedCorrectMc = Obj.get('filedCorrect_mc',this)	
+			errorManager = new ErrorManager();
+			filedCorrectMc = Obj.get('filedCorrect_mc',this);	
 		}
 		public function setup(CatcherObject:*,Page_p:String,IgnoreList_p:Array=null,DefultValue_p:*=null)
 		{
-			evt = this
-			errorManager.setup()
-			_page = Page_p
-			_catcherObject[_page] = CatcherObject
+			evt = this;
+			errorManager.setup();
+			_page = Page_p;
+			_catcherObject[_page] = CatcherObject;
 			if(IgnoreList_p!=null)
 			{
-				ErrorManager.ignoreList = IgnoreList_p
-				trace('ingnoreList :',JSON.stringify(ErrorManager.ignoreList))	
+				ErrorManager.ignoreList = IgnoreList_p;
+				trace('ingnoreList :',JSON.stringify(ErrorManager.ignoreList));	
 			}
 			else
 			{
-				ErrorManager.ignoreList = new Array()
+				ErrorManager.ignoreList = new Array();
 			}
 			if(_obj[_page]==null)
 			{
-				_obj[_page] =  new Object()
+				_obj[_page] =  new Object();
 			}
 			
-			var copyCatcherObject:Object = JSON.parse(JSON.stringify(DefultValue_p))	
+			var copyCatcherObject:Object = JSON.parse(JSON.stringify(DefultValue_p));	
 			if(DefultValue_p!=null)
 			{
-				_obj[_page] = copyCatcherObject
+				_obj[_page] = copyCatcherObject;
 			}
-			setCatacher()					
+			setCatacher();					
 		}
-		protected function setObj(Name_p:String,Value:*,Type_p:String='')
+		protected function setObj(Name_p:String,Value:*,Type_p:String=''):void
 		{
 			if(_obj[_page]!=null)
 			{
-				_obj[_page][Name_p] = Value
+				_obj[_page][Name_p] = Value;
 			}
 			if(Value is Array && _catcherObject[_page]!=null)
 			{
-				_catcherObject[_page][Name_p] = new Array()
+				_catcherObject[_page][Name_p] = new Array();
 			}
 			setCatacher()
 			
@@ -66,45 +66,45 @@ package componentStatic
 			
 			if(_catcherObject[_page]!=null)
 			{
-				_selectFieldData = JSON.parse(JSON.stringify(_catcherObject[_page]))
+				_selectFieldData = JSON.parse(JSON.stringify(_catcherObject[_page]));
 			}
 			else
 			{
-				_selectFieldData = _obj[_page]
+				_selectFieldData = _obj[_page];
 			}	
-			evt.dispatchEvent(new ComponentManagerEvent(ComponentManagerEvent.CHANG,Name_p,Type_p))
-			error(errorManager.chekError(_selectFieldData,Name_p,Type_p))	
+			evt.dispatchEvent(new ComponentManagerEvent(ComponentManagerEvent.CHANG,Name_p,Type_p));
+			error(errorManager.chekError(_selectFieldData,Name_p,Type_p));	
 		}
 		private function setCatacher():void
 		{
-			JSONParser.parse(JSONParser.stringify(_obj[_page]),_catcherObject[_page])		
+			JSONParser.parse(JSONParser.stringify(_obj[_page]),_catcherObject[_page]);		
 		}
 		protected function getObj(Name_p:String):*
 		{	if(_obj[_page]!=null)
 			{
-				return _obj[_page][Name_p]
+				return _obj[_page][Name_p];
 			}
-			trace('Component Manager is not setup ')
-			return null
+			trace('Component Manager is not setup ');
+			return null;
 		}
 		public function obj():*
 		{
-			return _catcherObject[_page]
+			return _catcherObject[_page];
 		}
 		protected function error(Error_p:Boolean):void
 		{
-			if(filedCorrectMc!=null )
+			if(filedCorrectMc!=null)
 			{
-				filedCorrectMc.visible = Error_p										
+				filedCorrectMc.visible = Error_p;										
 			}				
 		}
 		public function get errorlist():Vector.<ErrorItem>
 		{	
 			for(var i:int=0;i<errorManager.getError().length;i++)
 			{
-				trace('component fild error id:',errorManager.getError()[i].id,'message :',errorManager.getError()[i].message)
+				trace('component fild error id:',errorManager.getError()[i].id,'message :',errorManager.getError()[i].message);
 			}
-			return errorManager.getError()
+			return errorManager.getError();
 		}
 	}
 }
