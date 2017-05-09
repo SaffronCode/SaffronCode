@@ -315,7 +315,14 @@
 					{
 						trace("* This update is new");
 						//I have to upste lastPureData befor dispatching the event
-						dispatch(new RestDoaEvent(RestDoaEvent.SERVER_RESULT_UPDATE));
+						if(this.hasEventListener(RestDoaEvent.SERVER_RESULT_UPDATE))
+						{
+							dispatch(new RestDoaEvent(RestDoaEvent.SERVER_RESULT_UPDATE));
+						}
+						else
+						{
+							dispatch(new RestDoaEvent(RestDoaEvent.SERVER_RESULT))
+						}
 						//this.dispatchEvent(new RestEvent(RestEvent.SERVER_RESULT_UPDATE));
 					}
 					else
