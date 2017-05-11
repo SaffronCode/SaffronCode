@@ -18,6 +18,8 @@ package popForm
 		
 		public var isArabic:Vector.<Boolean>;
 		
+		public var booleanValues:Vector.<Boolean>;
+		
 		public var numLines:Vector.<uint>;
 		
 		/**1 for arabic, 2 for english*/
@@ -36,6 +38,7 @@ package popForm
 			fieldDefaults = new Vector.<String>();
 			fieldDefaultDate = new Vector.<Date>();
 			fieldDefaultBooleans = new Vector.<Array>();
+			booleanValues = new Vector.<Boolean>();
 			keyBoards = new Vector.<String>();
 			isPassWorld = new Vector.<Boolean>();
 			editable = new Vector.<Boolean>();
@@ -59,6 +62,7 @@ package popForm
 			fieldDefaults.push(fieldDefault);
 			fieldDefaultDate.push(null);
 			fieldDefaultBooleans.push(null);
+			booleanValues.push(false);
 			keyBoards.push(keyBoardType);
 			isPassWorld.push(isPass);
 			editable.push(Editable);
@@ -77,6 +81,7 @@ package popForm
 			fieldDefaults.push(fieldDefault);
 			fieldDefaultDate.push(null);
 			fieldDefaultBooleans.push(null);
+			booleanValues.push(false);
 			keyBoards.push(SoftKeyboardType.NUMBER);
 			isPassWorld.push(false);
 			editable.push(isEditable);
@@ -99,6 +104,7 @@ package popForm
 			fieldDefaults.push(fieldDefault);
 			fieldDefaultDate.push(null);
 			fieldDefaultBooleans.push(null);
+			booleanValues.push(false);
 			keyBoards.push(null);
 			isPassWorld.push(false);
 			editable.push(true);
@@ -121,6 +127,7 @@ package popForm
 			fieldDefaults.push('');
 			fieldDefaultDate.push(fieldDefaultDates);
 			fieldDefaultBooleans.push(null);
+			booleanValues.push(false);
 			keyBoards.push(null);
 			isPassWorld.push(false);
 			editable.push(Editable);
@@ -135,33 +142,24 @@ package popForm
 		
 		/**add new field<br>
 		 * frameForDirection: 1 for rtl and 2 for ltr script*/
-		public function addBooleanField(tagName:String,fieldBooleanBalues:Array,defaultVal:String,isArabic_v:Boolean=true,frameForDirection:uint=1,fieldColorFrame:uint=1)
+		public function addBooleanField(tagName:String,booleanValue:Boolean,frameForDirection:uint=1,fieldColorFrame:uint=1,Arabic:Boolean=true)
 		{
 			//keyBoardType = (keyBoardType==null)?SoftKeyboardType.DEFAULT:keyBoardType;
-			
-			for(var i = 0 ; i<fieldBooleanBalues.length ; i++)
-			{
-				fieldBooleanBalues[i] = String(fieldBooleanBalues[i]);
-			}
-			
 			tagNames.push(tagName);
-			fieldDefaults.push(defaultVal);
+			fieldDefaults.push(null);
 			fieldDefaultDate.push(null);
-			fieldDefaultBooleans.push(fieldBooleanBalues.concat());
+			fieldDefaultBooleans.push(null);
+			booleanValues.push(booleanValue);
 			keyBoards.push(null);
 			isPassWorld.push(false);
 			editable.push(true);
-			isArabic.push(isArabic_v);
+			isArabic.push(Arabic);
 			numLines.push(1);
 			languageDirection.push(frameForDirection);
 			backColor.push(fieldColorFrame);
 			
-			popFieldType.push(PopMenuFieldTypes.RadioButton);
+			popFieldType.push(PopMenuFieldTypes.BOOLEAN);
 			maxCharacters.push(0);
-			
-			trace(new Error("Continue to complete Boolean fielsd"));
-			trace("PopMenuFields.addBooleanField(tagName, fieldBooleanBalues, Editable, isArabic_v, frameForDirection, fieldColorFrame)");
-			
 		}
 		
 		/**add new field<br>
@@ -174,6 +172,7 @@ package popForm
 			fieldDefaults.push('');
 			fieldDefaultDate.push(fieldDefaultDates);
 			fieldDefaultBooleans.push(null);
+			booleanValues.push(false);
 			keyBoards.push(null);
 			isPassWorld.push(false);
 			editable.push(Editable);

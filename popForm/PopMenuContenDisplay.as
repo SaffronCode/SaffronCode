@@ -338,6 +338,23 @@ package popForm
 							field.push(newfieldTime) ;
 							break;
 						}
+						case(PopMenuFieldTypes.BOOLEAN):
+						{
+							trace("add Boolean input field");
+							var newBooleanTime:PopFieldBoolean = new PopFieldBoolean(
+								content.fieldDatas.tagNames[i],
+								content.fieldDatas.booleanValues[i],
+								content.fieldDatas.isArabic[i],
+								content.fieldDatas.languageDirection[i],
+								content.fieldDatas.backColor[i]
+							);
+							this.addChild(newBooleanTime);
+							newBooleanTime.y = Y ;
+							Y+=newBooleanTime.height+10;
+							deltaYForFiedl = 10;//newfield.height*2 ;
+							field.push(newBooleanTime) ;
+							break;
+						}
 						default:
 						{
 							throw "This is undefined type of PopMenuField";

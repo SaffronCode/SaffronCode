@@ -15,6 +15,8 @@ package popForm
 		
 		public static const RadioButton:uint = 5 ;
 		
+		public static const BOOLEAN:uint = 6 ;
+		
 		public var type:uint ;
 		
 		public function PopMenuFieldTypes(myType:uint=STRING)
