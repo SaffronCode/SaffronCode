@@ -63,12 +63,15 @@ package otherPlatforms.postMan
 				trace("******** : "+JSONCorrector(itemModel.response[itemModel.response.length-1].body));
 				serviceGenerator.outPutObject = JSON.parse(JSONCorrector(itemModel.response[itemModel.response.length-1].body)) ;
 				serviceGenerator.outPutObjectClassName = createClassName(serviceGenerator.ServiceName,'Respond');
-				if(serviceGenerator.outPutObject is Array)
+				trace("serviceGenerator.outPutObject : "+serviceGenerator.outPutObject);
+				if(serviceGenerator.outPutObject is Array || serviceGenerator.outPutObject is Vector.<*>)
 				{
+					trace("It was vector");
 					SaveJSONtoAs(serviceGenerator.outPutObject[0],saveToFolderForTypes,serviceGenerator.outPutObjectClassName);
 				}
 				else
 				{
+					trace("It was Object");
 					SaveJSONtoAs(serviceGenerator.outPutObject,saveToFolderForTypes,serviceGenerator.outPutObjectClassName);
 				}
 			}
