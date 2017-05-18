@@ -98,6 +98,18 @@ package diagrams.calender
 			return str ;
 		}
 		
+		/**Show clock format*/
+		public function showClock(showSecond:Boolean=false):String
+		{
+			var str:String = '';
+			str += TimeToString.numToString(hours)+':'+TimeToString.numToString(minutes);
+			if(showSecond)
+			{
+				str+=':'+TimeToString.numToString(seconds);
+			}
+			return str ;
+		}
+		
 		
 		public function toString(e=null):String
 		{
