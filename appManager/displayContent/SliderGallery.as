@@ -584,6 +584,7 @@
 		
 		public function preve():void
 		{
+			setAnimation();
 			if(prevAvailabe())
 			{
 				if(nextPrevController!=0)
@@ -602,6 +603,7 @@
 		{
 			if(nextAvailable())
 			{
+				setAnimation();
 				if(nextPrevController!=0)
 				{
 					swtichImages();
