@@ -201,7 +201,7 @@
 			}
 			else
 			{
-				dispatch(new RestDoaEvent(RestDoaEvent.CONNECTION_ERROR,ErrorEnum.ConnectionError));
+				dispatch(new RestDoaEvent(RestDoaEvent.CONNECTION_ERROR,ErrorEnum.ConnectionError,isConnected));
 			}
 			/*try
 			{
@@ -256,19 +256,25 @@
 			{
 				if(loadedData is String)
 				{
-	
-					try
+					if(loadedData == '{"Message":"An error has occurred."}')
 					{
-						JSONParser.parse(correctedLoadedData,requestedData);
+						serverErrorBool = true ;
 					}
-					catch(e)
+					else
 					{
-						if(pureRecevedData.toLowerCase() != 'true')
+						try
 						{
-							serverErrorBool = true ;
-							trace("Data format error");
+							JSONParser.parse(correctedLoadedData,requestedData);
 						}
-	
+						catch(e)
+						{
+							if(pureRecevedData.toLowerCase() != 'true')
+							{
+								serverErrorBool = true ;
+								trace("Data format error");
+							}
+		
+						}
 					}
 				}
 				else
@@ -287,7 +293,7 @@
 			{
 				trace("Server problem");
 				//if(this.hasEventListener(RestEvent.SERVER_ERROR))
-				var serverError:RestDoaEvent = new RestDoaEvent(RestDoaEvent.SERVER_ERROR) ;
+				var serverError:RestDoaEvent = new RestDoaEvent(RestDoaEvent.SERVER_ERROR,0,isConnected) ;
 				if(hasErrorListenerAndDispatchOnglobal(serverError))
 				{	
 					//this.dispatchEvent(new RestEvent(RestEvent.SERVER_ERROR,parser.msgs));
@@ -317,18 +323,18 @@
 						//I have to upste lastPureData befor dispatching the event
 						if(this.hasEventListener(RestDoaEvent.SERVER_RESULT_UPDATE))
 						{
-							dispatch(new RestDoaEvent(RestDoaEvent.SERVER_RESULT_UPDATE));
+							dispatch(new RestDoaEvent(RestDoaEvent.SERVER_RESULT_UPDATE,0,isConnected));
 						}
 						else
 						{
-							dispatch(new RestDoaEvent(RestDoaEvent.SERVER_RESULT))
+							dispatch(new RestDoaEvent(RestDoaEvent.SERVER_RESULT,0,isConnected))
 						}
 						//this.dispatchEvent(new RestEvent(RestEvent.SERVER_RESULT_UPDATE));
 					}
 					else
 					{
 						trace("* Nothing change on this update");
-						dispatch(new RestDoaEvent(RestDoaEvent.SERVER_WAS_UPDATED));
+						dispatch(new RestDoaEvent(RestDoaEvent.SERVER_WAS_UPDATED,0,isConnected));
 					}
 				}
 				else
@@ -336,7 +342,7 @@
 					//this.dispatchEvent(new RestEvent(RestEvent.SERVER_RESULT));
 					//I have to upste lastPureData befor dispatching the event
 					trace("Result event dispatching");
-					dispatch(new RestDoaEvent(RestDoaEvent.SERVER_RESULT))
+					dispatch(new RestDoaEvent(RestDoaEvent.SERVER_RESULT,0,isConnected))
 				}
 			}
 		}

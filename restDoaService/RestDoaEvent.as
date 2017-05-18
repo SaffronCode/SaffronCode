@@ -49,13 +49,15 @@ package restDoaService
 		EmailIsNotValid:int = 10 ;
 		<br>
 		MobileIsNotValid:int = 11 ;*/
-		public var errorCode:int ;
+		public var errorCode:int,
+					isConnect:Boolean;
 		//public static var SERVER_RESULT_puInquiry_fun:String;
 		
 		/***ErrorEnum.noError**/
-		public function RestDoaEvent(type:String,ErrorCode:int=0)
+		public function RestDoaEvent(type:String,ErrorCode:int=0,isConnected:Boolean=true)
 		{
 			errorCode = ErrorCode ;
+			isConnect = isConnected ;
 			super(type,false);
 		}
 		
