@@ -421,10 +421,12 @@
 				//noInternet();
 		}
 		
-		public function reLoad(delay:uint=20000):void
+		public function reLoad(delay:uint=20000,dontReturnOfflineData:Boolean=false):void
 		{
 			cansel();
-			
+			offlineDate = new Date() ;
+			offlineDataIsOK = !dontReturnOfflineData ;
+			instantOfflineData = false ;
 			timerId = setTimeout(loadParam,delay)
 		}
 		

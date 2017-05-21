@@ -63,7 +63,7 @@ package restDoaService
 		
 		override public function clone():Event
 		{
-			return new RestDoaEvent(type,errorCode);
+			return new RestDoaEvent(type,errorCode,isConnect);
 		}
 	}
 }
