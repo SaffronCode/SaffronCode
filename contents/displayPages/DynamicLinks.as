@@ -17,6 +17,9 @@ package contents.displayPages
 	//contents.displayPages.LinkItem
 //And
 	//contents.displayPages.LinkItemButtons
+	
+//No link lable
+	//contents.displayPages.DynamicLinksNoList
 {
 	import contents.LinkData;
 	import contents.PageData;
