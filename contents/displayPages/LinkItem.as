@@ -1,4 +1,4 @@
-package contents.displayPages
+﻿package contents.displayPages
 	//contents.displayPages.LinkItem
 {
 	import appManager.displayContentElemets.Image;
@@ -38,7 +38,7 @@ package contents.displayPages
 		protected var animatorActivated:Boolean = false ;
 		
 		/**This is the selected frame to show*/
-		private var visibleFrame:uint = 1,
+		protected var visibleFrame:uint = 1,
 					frameHandler:Number ,
 					slideAnimationActivated:Boolean=false ; 
 		
@@ -129,10 +129,11 @@ package contents.displayPages
 		
 		protected function setAnim(precent:Number):void
 		{
+			trace("precent : "+precent);
 			visibleFrame = Math.floor(Math.min(1,Math.abs(precent))*(this.totalFrames-1))+1;
+			slideAnimationActivated = true ;
 			if(!slideAnimationActivated && this.totalFrames>1)
 			{
-				slideAnimationActivated = true ;
 				this.addEventListener(Event.ENTER_FRAME,animate);
 				this.addEventListener(Event.REMOVED_FROM_STAGE,unLoadTheAnimation);
 			}
@@ -227,12 +228,30 @@ package contents.displayPages
 		
 		public function imSelected(event:MouseEvent=null):void
 		{
-			//trace("Im selected");
-			//trace("myLinkData : "+myLinkData);
-			//trace("Xn : "+Xn);
-			//trace("X0"+X0);
-			//trace("Math.abs(this.x-X0)"+Math.abs(this.x-X0));
-			if(myLinkData!=null && (!slideAnimationActivated || (Math.abs(this.x-X0)<1 && Xn == X0)  || isNaN(Xn) || isNaN(X0)))
+			trace("Im selected");
+			trace("myLinkData : "+myLinkData);
+			trace("Xn : "+Xn);
+			trace("X0"+X0);
+			trace("Math.abs(this.x-X0)"+Math.abs(this.x-X0));
+			if(
+				myLinkData!=null 
+				&& 
+				(
+					!slideAnimationActivated 
+					|| 
+					(
+						Math.abs(this.x-X0)<1 
+						&& 
+						Xn == X0
+					)  
+					|| 
+					isNaN(Xn) 
+					|| 
+					isNaN(X0)
+					||
+					Xn == 0
+				)
+			)
 			{
 				if(myLinkData.id.indexOf('http')==0)
 				{
