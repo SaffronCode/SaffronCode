@@ -22,6 +22,8 @@
 		private var X0:Number,Y0:Number ;
 		public static var linkColor:int=-1;
 		
+		private var fontSize0:int ;
+		
 		public function get text():String
 		{
 			return myTextTF.text
@@ -39,7 +41,7 @@
 			//Added for debug
 				//trace(myTextTF.getTextFormat().font+' added to textParag class') ;
 				
-				
+			fontSize0 = myTextTF.defaultTextFormat.size as uint ;
 			
 			myTextTF.multiline = true ;
 		}
@@ -124,6 +126,16 @@
 					scrollMC = new ScrollMT(this,new Rectangle(this.x,this.y,W,H),new Rectangle(0,0,W,super.height),false,false,scrollEffect) ;
 				}
 			}
+		}
+		
+		public function increase(newFontSize:int):void
+		{
+			var textFormat:TextFormat = myTextTF.defaultTextFormat ;
+			trace("Old text size : "+textFormat.size);
+			textFormat.size = Math.max(0,fontSize0+newFontSize);
+			trace("New text size : "+textFormat.size);
+			myTextTF.setTextFormat(textFormat);
+			myTextTF.defaultTextFormat = textFormat ;
 		}
 	}
 }
