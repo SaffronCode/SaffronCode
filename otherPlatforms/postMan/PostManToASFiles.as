@@ -94,8 +94,28 @@ package otherPlatforms.postMan
 		/**The wrong names can be like this : http://185.83.208.175:821/api/Service/GetBranches*/
 		private static function correctNames(name:String):String
 		{
-			return name.replace(/^.*\/([^\/]+)/gi,'$1');
+			var fileName:String = name.replace(/^.*\/([^\/]+)/gi,'$1');
+			var fileNameSplitted:Array = fileName.split(' ');
+			if(fileNameSplitted.length>1)
+			{
+                fileName = fileNameSplitted[0] ;
+                for (var i:int = 1; i < fileNameSplitted.length; i++)
+				{
+                    fileName += uperCaseFirstChar(fileNameSplitted[i]);
+                }
+            }
+			return fileName ;
 		}
+
+		/**chante name to Name*/
+        private static function uperCaseFirstChar(fileName:String):String
+		{
+			if(fileName.length>0)
+			{
+                return fileName.substring(0,1).toUpperCase()+fileName.substring(1);
+			}
+			return fileName ;
+        }
 		
 		private static function bodyToObject(body:BodyModel):Object
 		{
