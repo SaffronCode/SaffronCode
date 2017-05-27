@@ -39,7 +39,7 @@
 		/**Current menu in the menuManagerObject*/
 		private static var _currentMenu:DisplayObject = null ;
 		
-		private var shineAreaMC:Shiner ;
+		private static var shineAreaMC:Shiner ;
 		
 		/**It will be true when APP_IS_READY event calls*/
 		public function get appIsReady():Boolean
@@ -245,15 +245,25 @@
 			ME.dispatchEvent(AppEvent.refreshEvent());
 		}
 		
+		/**Show shine effect on the stage*/
+		public static function showShineEffect(element:Sprite):void
+		{
+			if(haveShiner)
+			{
+				shineAreaMC.add(element);
+			}
+			else
+			{
+				trace("Shiner is not activated on project");
+			}
+		}
+		
 		/**Returnd true if the current page is not same as the last page*/
 		protected function managePages(event:AppEvent):Boolean
 		{
 			if(event.target!=null && event.target is Sprite)
 			{
-				if(haveShiner)
-				{
-					shineAreaMC.add(event.target as Sprite);
-				}
+				showShineEffect(event.target as Sprite);
 			}
 			trace('page changes to : '+event.myID);
 			//currentAppEvent = event ;•↓
