@@ -35,7 +35,7 @@
 		
 		public var version_controll_url:String = "http://sarkandi.com/versionControl/"
 		
-		
+		public var createDownLoadLink:Boolean=true;
 		//Reserved valuse
 		
 		private var _stageRect:Rectangle = new Rectangle() ;
