@@ -332,7 +332,7 @@
 		{
 			stage.dispatchEvent(new ContentsEvent());
 			playIntro();
-			if(!(skipAnimations || Contents.config.skipAnimations || !activeVersionControll))
+			if(!(skipAnimations || Contents.config.skipAnimations) && activeVersionControll)
 			{
 				var appName:String = DevicePrefrence.appID ;
 				appName = appName.substring(appName.lastIndexOf('.')+1);
