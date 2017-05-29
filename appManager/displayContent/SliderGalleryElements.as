@@ -180,15 +180,15 @@ package appManager.displayContent
 						
 						if(imageItem.image is BitmapData)
 						{
-							lightImage.setUpBitmapData(imageItem.image,false,myArea.width,myArea.height,0,0,true,imageItem.keepRatio);
+							lightImage.setUpBitmapData(imageItem.image,imageItem.loadInThisArea,myArea.width,myArea.height,0,0,true,imageItem.keepRatio);
 						}
 						else if(imageItem.image is ByteArray)
 						{
-							lightImage.setUpBytes(imageItem.image,false,myArea.width,myArea.height,0,0,true,imageItem.keepRatio);
+							lightImage.setUpBytes(imageItem.image,imageItem.loadInThisArea,myArea.width,myArea.height,0,0,true,imageItem.keepRatio);
 						}
 						else if(imageItem.image is String)
 						{
-							lightImage.setUp(imageItem.image,false,myArea.width,myArea.height,0,0,imageItem.keepRatio);
+							lightImage.setUp(imageItem.image,imageItem.loadInThisArea,myArea.width,myArea.height,0,0,imageItem.keepRatio);
 						}
 						
 						if(imageItem.image is String)
