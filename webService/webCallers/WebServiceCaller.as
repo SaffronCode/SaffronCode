@@ -29,6 +29,8 @@ package webService.webCallers
 	
 	/**Server response received*/
 	[Event(name="connect", type="flash.events.Event")]
+	/**Sever data is same as cashed data*/
+	[Event(name="clear", type="flash.events.Event")]
 	
 	public class WebServiceCaller extends EventDispatcher
 	{
@@ -271,6 +273,7 @@ package webService.webCallers
 				else
 				{
 					trace(">Server data is steal same as old dispatched data");
+					event_dataWasUpdated()
 				}
 			}
 			else
@@ -339,6 +342,12 @@ package webService.webCallers
 		private function event_dataUpdated():void
 		{
 			this.dispatchEvent(new Event(Event.CHANGE));
+		}
+		
+		/**Server data is repeating*/
+		private function event_dataWasUpdated():void
+		{
+			this.dispatchEvent(new Event(Event.CLEAR));
 		}
 		
 		private function event_data():void
