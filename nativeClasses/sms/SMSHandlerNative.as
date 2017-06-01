@@ -67,9 +67,9 @@ package nativeClasses.sms
 			sms.conversation(myNumberToListen);
 			trace(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SMS are : "+sms.conversationArray);
 			
-			//sms.addEventListener((smsEventObject as Object).SMS_RECEIVED,controllReceivedSMS);
-			//sms.addEventListener((smsEventObject as Object).NEW_RECEIVED_SMS,controllReceivedSMS);
-			//sms.addEventListener((smsEventObject as Object).NEW_PERIOD_SMS,controllReceivedSMS);
+			sms.addEventListener((smsEventObject as Object).SMS_RECEIVED,controllReceivedSMS);
+			sms.addEventListener((smsEventObject as Object).NEW_RECEIVED_SMS,controllReceivedSMS);
+			sms.addEventListener((smsEventObject as Object).NEW_PERIOD_SMS,controllReceivedSMS);
 
 			trace("Listen to sms receive...");
 			//sms.updateNewSms();
