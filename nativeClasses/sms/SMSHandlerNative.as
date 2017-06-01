@@ -57,7 +57,11 @@ package nativeClasses.sms
 			}
 			onMessageReceived = onGet ;
 			
-			//sms.updateSms();
+			sms.updateSms();
+			var _smsArray:Array = sms.smsArray; 
+			var lastSMSId:uint = _smsArray[0].id ;
+			
+			trace("---------------------lastSMSId-------------------> "+lastSMSId);
 			
 			
 			sms.addEventListener((smsEventObject as Object).SMS_RECEIVED,controllReceivedSMS);
@@ -65,7 +69,7 @@ package nativeClasses.sms
 			sms.addEventListener((smsEventObject as Object).NEW_PERIOD_SMS,controllReceivedSMS);
 
 			trace("Listen to sms receive...");
-			sms.updateNewSms();
+			//sms.updateNewSms();
 		}
 		
 		public static function canselListenToGetMessage():void
