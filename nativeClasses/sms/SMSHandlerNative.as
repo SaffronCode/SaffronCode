@@ -58,18 +58,18 @@ package nativeClasses.sms
 			onMessageReceived = onGet ;
 			
 			//It can get the last sms ids
-			sms.updateSms();
+			//sms.updateSms();
 			var _smsArray:Array = sms.smsArray; 
 			var lastSMSId:uint = _smsArray[0].id ;
 			
 			trace("---------------------lastSMSId-------------------> "+lastSMSId);
 
 			trace(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SMS are : "+sms.conversationArray);
-			sms.getSmsAfterId(lastSMSId);
 			
 			sms.addEventListener((smsEventObject as Object).SMS_RECEIVED,controllReceivedSMS);
 			sms.addEventListener((smsEventObject as Object).NEW_RECEIVED_SMS,controllReceivedSMS);
 			sms.addEventListener((smsEventObject as Object).NEW_PERIOD_SMS,controllReceivedSMS);
+			sms.getSmsAfterId(6000);
 
 			trace("Listen to sms receive...");
 			//sms.updateNewSms();
