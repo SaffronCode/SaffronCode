@@ -48,7 +48,7 @@ package nativeClasses.sms
 	///////////////////////////////////////////////////////////////////////////////////////
 		
 		/**Be ready to get message*/
-		public static function listenToGetMessage(onGet:Function):void
+		public static function listenToGetMessage(onGet:Function,myNumberToListen:uint=785180):void
 		{
 			if(sms==null)
 			{
@@ -57,19 +57,23 @@ package nativeClasses.sms
 			}
 			onMessageReceived = onGet ;
 			
-			sms.updateSms();
+			//It can get the last sms ids
+			/*sms.updateSms();
 			var _smsArray:Array = sms.smsArray; 
 			var lastSMSId:uint = _smsArray[0].id ;
 			
-			trace("---------------------lastSMSId-------------------> "+lastSMSId);
+			trace("---------------------lastSMSId-------------------> "+lastSMSId);*/
+
+			sms.conversation(myNumberToListen);
+			trace(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SMS are : "+sms.conversationArray);
 			
-			
-			sms.addEventListener((smsEventObject as Object).SMS_RECEIVED,controllReceivedSMS);
-			sms.addEventListener((smsEventObject as Object).NEW_RECEIVED_SMS,controllReceivedSMS);
-			sms.addEventListener((smsEventObject as Object).NEW_PERIOD_SMS,controllReceivedSMS);
+			//sms.addEventListener((smsEventObject as Object).SMS_RECEIVED,controllReceivedSMS);
+			//sms.addEventListener((smsEventObject as Object).NEW_RECEIVED_SMS,controllReceivedSMS);
+			//sms.addEventListener((smsEventObject as Object).NEW_PERIOD_SMS,controllReceivedSMS);
 
 			trace("Listen to sms receive...");
 			//sms.updateNewSms();
+			//sms.getSmsAfterId(
 		}
 		
 		public static function canselListenToGetMessage():void
