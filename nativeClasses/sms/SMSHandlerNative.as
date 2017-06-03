@@ -3,9 +3,6 @@ package nativeClasses.sms
 	//import com.doitflash.air.extensions.sms.SMS;
 	//import com.doitflash.air.extensions.sms.SMSEvent;
 	
-	import com.doitflash.air.extensions.sms.SMS;
-	import com.doitflash.air.extensions.sms.SMSEvent;
-	
 	import dataManager.GlobalStorage;
 	
 	import flash.events.Event;
@@ -25,7 +22,7 @@ package nativeClasses.sms
 		/**com.doitflash.air.extensions.sms.SMSEvent*/
 		private static var smsEventObject:Class ;
 		
-		private static var sms:SMS ;
+		private static var sms:Object ;
 		
 		private static const smsid:String = '468456456';
 		
@@ -68,12 +65,12 @@ package nativeClasses.sms
 		{
 			//sms.addEventListener(SMSEvent.ALL_SMS, allSms);
 			trace("lastSMSId : "+lastSMSId);
-			sms.addEventListener(SMSEvent.NEW_PERIOD_SMS, allSmsPeriod);
+			sms.addEventListener((smsEventObject as Object).NEW_PERIOD_SMS, allSmsPeriod);
 			sms.getSmsAfterId(lastSMSId);
 		}	
 		
 		
-			private static function allSmsPeriod(e:SMSEvent):void
+			private static function allSmsPeriod(e:*):void
 			{
 				var arr:Array = e.param;
 				trace("All sms Period loaded1 : "+JSON.stringify(arr,null,' '));
@@ -91,7 +88,7 @@ package nativeClasses.sms
 					{
 						trace("-No new SMS");
 						lastSMSLoaded = true ;
-						sms.removeEventListener(SMSEvent.NEW_PERIOD_SMS, allSmsPeriod);
+						sms.removeEventListener((smsEventObject as Object).NEW_PERIOD_SMS, allSmsPeriod);
 						
 						if(listenToNewSMSafterready)
 						{
@@ -106,6 +103,7 @@ package nativeClasses.sms
 		/**Be ready to get message. listen to the dispatcher to catch events*/
 		public static function listenToGetMessage():void
 		{
+			setUp();
 			if(sms==null)
 			{
 				trace("SMS native is not supports on this device");
@@ -116,9 +114,9 @@ package nativeClasses.sms
 			if(lastSMSLoaded)
 			{
 				//Remove last sms loader listener
-				sms.removeEventListener(SMSEvent.NEW_PERIOD_SMS, allSmsPeriod);
+				sms.removeEventListener((smsEventObject as Object).NEW_PERIOD_SMS, allSmsPeriod);
 				
-				sms.addEventListener(SMSEvent.NEW_PERIOD_SMS, receivedSMS);
+				sms.addEventListener((smsEventObject as Object).NEW_PERIOD_SMS, receivedSMS);
 				clearInterval(smsListenerIntervalId);
 				smsListenerIntervalId = setInterval(loadLastSMSes,1000);
 			}
@@ -137,7 +135,7 @@ package nativeClasses.sms
 		
 		
 			/**Controll and dispatch event if new sms receved*/
-			private static function receivedSMS(e:SMSEvent):void
+			private static function receivedSMS(e:*):void
 			{
 				var arr:Array = e.param;
 				//trace("All sms Period loaded2 : "+JSON.stringify(arr,null,' '));
@@ -171,7 +169,7 @@ package nativeClasses.sms
 			listenToNewSMSafterready = false ;
 			
 			trace("Cansel listening to sms");
-			sms.removeEventListener(SMSEvent.NEW_PERIOD_SMS, receivedSMS);
+			sms.removeEventListener((smsEventObject as Object).NEW_PERIOD_SMS, receivedSMS);
 			clearInterval(smsListenerIntervalId);
 		}
 		
@@ -182,14 +180,17 @@ package nativeClasses.sms
 		{
 			setUp();
 			
-			if(sms)
+			if(sms==null)
 			{
-				sms.addEventListener((smsEventObject as Object).SEND_ERROR,sendingFaild);
-				sms.addEventListener((smsEventObject as Object).DELIVERY_FAILED,sendingFaild);
-				sms.addEventListener((smsEventObject as Object).SEND_SUCCESS,listenToAnswer);
-				
-				sms.sendSms(phoneNumber,body,smsid);
+				trace("SMS native is not supports on this device");
+				return ;
 			}
+			
+			sms.addEventListener((smsEventObject as Object).SEND_ERROR,sendingFaild);
+			sms.addEventListener((smsEventObject as Object).DELIVERY_FAILED,sendingFaild);
+			sms.addEventListener((smsEventObject as Object).SEND_SUCCESS,listenToAnswer);
+			
+			sms.sendSms(phoneNumber,body,smsid);
 		}
 		
 		protected static function listenToAnswer(event:*):void
@@ -216,6 +217,11 @@ package nativeClasses.sms
 		/**Delete this sms*/
 		public static function deleteSMS(smsId:uint):void
 		{
+			if(sms==null)
+			{
+				trace("SMS native is not supports on this device");
+				return ;
+			}
 			trace("Delete this sms");
 			sms.deleteSmsById(smsId);
 		}
