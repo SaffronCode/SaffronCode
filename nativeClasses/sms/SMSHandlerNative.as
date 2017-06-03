@@ -32,7 +32,7 @@ package nativeClasses.sms
 
 		private static var lastSMSId:uint;
 		
-		private static const id_lastsms_id:String = "id_lastsms_id" ;
+		private static const id_lastsms_id:String = "id_lastsms_id2" ;
 		
 		private static var 	_smsArray:Array = [] ,
 							_conversationArray:Array = [] ;
@@ -64,8 +64,9 @@ package nativeClasses.sms
 		private static function getLastRecevedMessage():void
 		{
 			//sms.addEventListener(SMSEvent.ALL_SMS, allSms);
+			trace("lastSMSId : "+lastSMSId);
 			sms.addEventListener(SMSEvent.NEW_PERIOD_SMS, allSmsPeriod);
-			sms.getSmsAfterId();
+			sms.getSmsAfterId(lastSMSId);
 		}	
 		
 		
@@ -87,12 +88,22 @@ package nativeClasses.sms
 			private static function allSmsPeriod(e:SMSEvent):void
 			{
 				var arr:Array = e.param;
-				
 				trace("All sms Period loaded : "+JSON.stringify(arr,null,' '));
-				if(arr!=null && arr.length>0)
+				
+				if(arr!=null)
 				{
-					sms.removeEventListener(SMSEvent.NEW_PERIOD_SMS, allSmsPeriod);
-					//sms = new SMS();
+					if(arr.length>0)
+					{
+						lastSMSId = arr[0].id ;
+						GlobalStorage.save(id_lastsms_id,lastSMSId);
+						trace(">>>> change last sms id to load : "+lastSMSId);
+						sms.getSmsAfterId(lastSMSId);
+					}
+					else
+					{
+						trace("No new SMS");
+						sms.removeEventListener(SMSEvent.NEW_PERIOD_SMS, allSmsPeriod);
+					}
 				}
 			}	
 		
