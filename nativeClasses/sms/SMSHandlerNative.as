@@ -4,6 +4,7 @@ package nativeClasses.sms
 	//import com.doitflash.air.extensions.sms.SMSEvent;
 	
 	import com.doitflash.air.extensions.sms.SMS;
+	import com.doitflash.air.extensions.sms.SMSEvent;
 	
 	import dataManager.GlobalStorage;
 	
@@ -33,6 +34,9 @@ package nativeClasses.sms
 		
 		private static const id_lastsms_id:String = "id_lastsms_id" ;
 		
+		private static var 	_smsArray:Array = [] ,
+							_conversationArray:Array = [] ;
+		
 		public static function setUp():void
 		{
 			lastSMSId = uint(GlobalStorage.load(id_lastsms_id));
@@ -49,39 +53,9 @@ package nativeClasses.sms
 					smsClass = null ;
 					trace("com.doitflash.air.extensions.sms.SMS is not imported : "+e);
 				}
-				/*if(smsClass!=null)
-				{
-					getLastReceivedSMS();
-				}*/
 			}
 		}
 		
-		/**Get loast sms id
-		private static function getLastReceivedSMS():void
-		{
-			trace("--------lastSMSId:"+lastSMSId);
-			//sms.getSmsAfterId(lastSMSId);
-			sms.addEventListener((smsEventObject as Object).SMS_RECEIVED,controllReceivedSMSToGetLastOne);
-			sms.addEventListener((smsEventObject as Object).NEW_RECEIVED_SMS,controllReceivedSMSToGetLastOne);
-			sms.addEventListener((smsEventObject as Object).NEW_PERIOD_SMS,controllReceivedSMSToGetLastOne);
-			
-		}
-		
-			protected static function controllReceivedSMSToGetLastOne(event:Event):void
-			{
-				trace("event :"+event);
-				sms.removeEventListener((smsEventObject as Object).SMS_RECEIVED,controllReceivedSMSToGetLastOne);
-				sms.removeEventListener((smsEventObject as Object).NEW_RECEIVED_SMS,controllReceivedSMSToGetLastOne);
-				sms.removeEventListener((smsEventObject as Object).NEW_PERIOD_SMS,controllReceivedSMSToGetLastOne);
-				
-				var _smsArray:Array = sms.smsArray ; 
-				trace("--------_smsArray:"+_smsArray) ;
-				lastSMSId = _smsArray[0].id ;
-				GlobalStorage.save(id_lastsms_id,lastSMSId) ;
-				trace("---------------------lastSMSId-------------------> "+lastSMSId) ;
-				sms.dispose() ;
-				sms = new smsClass() ;
-			}*/
 		
 	///////////////////////////////////////////////////////////////////////////////////////
 		
@@ -95,23 +69,42 @@ package nativeClasses.sms
 			}
 			onMessageReceived = onGet ;
 			
-			//It can get the last sms ids
-			//sms.updateSms();
-			//var _smsArray:Array = sms.smsArray; 
-			//var lastSMSId:uint = _smsArray[0].id ;
+			sms.addEventListener(SMSEvent.NEW_RECEIVED_SMS, receivedSMS);
 			
-			//trace("---------------------lastSMSId-------------------> "+lastSMSId);
-
-			trace(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SMS are : "+sms.conversationArray);
-			
-			sms.addEventListener((smsEventObject as Object).SMS_RECEIVED,controllReceivedSMS);
-			sms.addEventListener((smsEventObject as Object).NEW_RECEIVED_SMS,controllReceivedSMS);
-			sms.addEventListener((smsEventObject as Object).NEW_PERIOD_SMS,controllReceivedSMS);
-			sms.getSmsAfterId(lastSMSId);
-
-			trace("Listen to sms receive...");
-			//sms.updateNewSms();
+			// ok, user has started your app but has not received your sms information yet, set the needed parameters
+			if (_smsArray.length == 0) 
+			{
+				trace("Listen to sms receive...");
+				sms.addEventListener(SMSEvent.ALL_SMS, allSms);
+				sms.addEventListener(SMSEvent.NEW_PERIOD_SMS, allSmsPeriod);
+				sms.allSms();
+			}
 		}
+		
+		private static function receivedSMS(e:SMSEvent):void
+		{
+			sms.addEventListener(SMSEvent.ALL_SMS, allSms);
+			sms.addEventListener(SMSEvent.NEW_PERIOD_SMS, allSmsPeriod);
+			trace("receivedSMS >>", e.param);
+			/* if you like you can update information by one of the methods mentioned above
+			*/
+		}
+		
+		
+				private static function allSms(e:SMSEvent):void
+				{
+					sms.removeEventListener(SMSEvent.ALL_SMS, allSms);
+					sms.removeEventListener(SMSEvent.NEW_PERIOD_SMS, allSmsPeriod);
+					_smsArray = e.param;
+					_conversationArray = sms.conversation(8);
+					trace("received all SMS");
+				}
+				
+				private static function allSmsPeriod(e:SMSEvent):void
+				{
+					var arr:Array = e.param;
+					trace("All sms Period loaded");
+				}
 		
 		public static function canselListenToGetMessage():void
 		{
