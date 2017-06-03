@@ -211,5 +211,14 @@ package nativeClasses.sms
 			dispatcher.dispatchEvent(new SMSEvents(SMSEvents.SMS_SENT));
 		}
 		
+	////////////////////////////////////////////////////////////Delete
+		
+		/**Delete this sms*/
+		public static function deleteSMS(smsId:uint):void
+		{
+			trace("Delete this sms");
+			sms.deleteSmsById(smsId);
+		}
+		
 	}
 }
