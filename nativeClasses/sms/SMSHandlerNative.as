@@ -29,10 +29,6 @@ package nativeClasses.sms
 		
 		private static const smsid:String = '468456456';
 		
-		private static var 	onDone:Function,
-							onFaild:Function,
-							
-							onMessageReceived:Function;
 
 		private static var lastSMSId:uint;
 		
@@ -99,7 +95,7 @@ package nativeClasses.sms
 						
 						if(listenToNewSMSafterready)
 						{
-							listenToGetMessage(onMessageReceived);
+							listenToGetMessage();
 						}
 					}
 				}
@@ -108,7 +104,7 @@ package nativeClasses.sms
 	///////////////////////////////////////////////////////////////////////////////////////
 		
 		/**Be ready to get message*/
-		public static function listenToGetMessage(onGet:Function=null):void
+		public static function listenToGetMessage():void
 		{
 			if(sms==null)
 			{
@@ -116,7 +112,6 @@ package nativeClasses.sms
 				return ;
 			}
 			trace(">>>lastSMSLoaded : "+lastSMSLoaded);
-			onMessageReceived = onGet ;
 			
 			if(lastSMSLoaded)
 			{
@@ -158,19 +153,6 @@ package nativeClasses.sms
 						for(var i:int ; i<arr.length ; i++)
 						{
 							var recevedSMS:SMSObject = new SMSObject(arr[i]);
-							if(onMessageReceived!=null)
-							{
-								if(onMessageReceived.length>0)
-								{
-									trace(">> tell the caller that new sms is receved");
-									onMessageReceived(recevedSMS);
-								}
-								else
-								{
-									trace("Your onMessage receive cant get parameter");
-									onMessageReceived();
-								}
-							}
 							dispatcher.dispatchEvent(new SMSEvents(SMSEvents.NEW_SMS,recevedSMS));
 						}
 					}
@@ -191,17 +173,15 @@ package nativeClasses.sms
 			trace("Cansel listening to sms");
 			sms.removeEventListener(SMSEvent.NEW_PERIOD_SMS, receivedSMS);
 			clearInterval(smsListenerIntervalId);
-			onMessageReceived = null ;
 		}
 		
 	///////////////////////////////////////////////////////////////////////////////////////
 		
-		public static function sendMessage(phoneNumber:String,body:String,onDoneFunction:Function,onFaildFunction:Function):void
+		/**Listen to the events on dispatcher for geting status*/
+		public static function sendMessage(phoneNumber:String,body:String):void
 		{
 			setUp();
 			
-			onDone = onDoneFunction ;
-			onFaild = onFaildFunction ;
 			if(sms)
 			{
 				sms.addEventListener((smsEventObject as Object).SEND_ERROR,sendingFaild);
@@ -218,8 +198,6 @@ package nativeClasses.sms
 			trace("SMSs1 are : "+JSON.stringify(sms.smsArray));
 			sms.removeEventListener((smsEventObject as Object).SEND_SUCCESS,listenToAnswer);
 			
-			onFaild = null ;
-			calAndDeletFunction(onDone) ;
 			dispatcher.dispatchEvent(new SMSEvents(SMSEvents.SMS_NOT_SENT));
 		}
 		
@@ -229,26 +207,9 @@ package nativeClasses.sms
 			sms.removeEventListener((smsEventObject as Object).SEND_ERROR,sendingFaild);
 			sms.removeEventListener((smsEventObject as Object).DELIVERY_FAILED,sendingFaild);
 			sms.removeEventListener((smsEventObject as Object).SEND_SUCCESS,listenToAnswer);
-			onDone = null ;
-			calAndDeletFunction(onFaild);
+			
 			dispatcher.dispatchEvent(new SMSEvents(SMSEvents.SMS_SENT));
 		}
 		
-	////////////////////////////////////////////////////////////
-		
-		/**Call and delete this function*/
-		private static function calAndDeletFunction(func:Function,params:String=null):void
-		{
-			var cashedFunc:Function = func ;
-			func = null ;
-			if(params!=null && cashedFunc.length>0)
-			{
-				cashedFunc(params);
-			}
-			else
-			{
-				cashedFunc();
-			}
-		}
 	}
 }
