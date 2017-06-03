@@ -336,7 +336,7 @@
 					imageIndex += plusPages;
 				}
 				
-				trace("imageIndex : "+imageIndex);
+				//trace("imageIndex : "+imageIndex);
 
 				mustSwitch = false ;
 				selectedImge = (selectedImge+1)%2 ;
