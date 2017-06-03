@@ -88,11 +88,13 @@ package nativeClasses.sms
 			{
 				var arr:Array = e.param;
 				
-				trace("All sms Period loaded : "+arr);
+				trace("All sms Period loaded : "+JSON.stringify(arr,null,' '));
 				if(arr!=null && arr.length>0)
 				{
+					sms.removeEventListener(SMSEvent.NEW_PERIOD_SMS, allSmsPeriod);
 					sms.dispose();
-					sms = new SMS();
+					sms = null ;
+					//sms = new SMS();
 				}
 			}	
 		
