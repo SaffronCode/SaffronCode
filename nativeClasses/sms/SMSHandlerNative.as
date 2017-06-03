@@ -136,7 +136,7 @@ package nativeClasses.sms
 		/**Request smses after last sms id*/
 		private static function loadLastSMSes():void
 		{
-			trace("....load sms after "+lastSMSId);
+			//trace("....load sms after "+lastSMSId);
 			sms.getSmsAfterId(lastSMSId);
 		}
 		
@@ -158,15 +158,18 @@ package nativeClasses.sms
 						for(var i:int ; i<arr.length ; i++)
 						{
 							var recevedSMS:SMSObject = new SMSObject(arr[i]);
-							if(onMessageReceived.length>0)
+							if(onMessageReceived!=null)
 							{
-								trace(">> tell the caller that new sms is receved");
-								onMessageReceived(recevedSMS);
-							}
-							else
-							{
-								trace("Your onMessage receive cant get parameter");
-								onMessageReceived();
+								if(onMessageReceived.length>0)
+								{
+									trace(">> tell the caller that new sms is receved");
+									onMessageReceived(recevedSMS);
+								}
+								else
+								{
+									trace("Your onMessage receive cant get parameter");
+									onMessageReceived();
+								}
 							}
 							dispatcher.dispatchEvent(new SMSEvents(SMSEvents.NEW_SMS,recevedSMS));
 						}
