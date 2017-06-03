@@ -53,9 +53,42 @@ package nativeClasses.sms
 					smsClass = null ;
 					trace("com.doitflash.air.extensions.sms.SMS is not imported : "+e);
 				}
+				if(smsClass!=null)
+				{
+					getLastRecevedMessage();
+				}
 			}
 		}
 		
+		/**Get last message id*/
+		private static function getLastRecevedMessage():void
+		{
+			sms.addEventListener(SMSEvent.ALL_SMS, allSms);
+			sms.addEventListener(SMSEvent.NEW_PERIOD_SMS, allSmsPeriod);
+			sms.allSms();
+		}	
+		
+		
+			private static function allSms(e:SMSEvent):void
+			{
+				sms.removeEventListener(SMSEvent.ALL_SMS, allSms);
+				sms.removeEventListener(SMSEvent.NEW_PERIOD_SMS, allSmsPeriod);
+				_smsArray = e.param;
+				_conversationArray = sms.conversation(8);
+				trace("--_conversationArray : "+_conversationArray);
+				trace("--_smsArray : "+_smsArray);
+				trace("received all SMS");
+				if(_smsArray!=null && _smsArray.length>0)
+				{
+					trace("****************Get the last id and dispose sms");
+				}
+			}
+			
+			private static function allSmsPeriod(e:SMSEvent):void
+			{
+				var arr:Array = e.param;
+				trace("All sms Period loaded");
+			}	
 		
 	///////////////////////////////////////////////////////////////////////////////////////
 		
@@ -70,15 +103,8 @@ package nativeClasses.sms
 			onMessageReceived = onGet ;
 			
 			sms.addEventListener(SMSEvent.NEW_RECEIVED_SMS, receivedSMS);
-			
+			//I'm testing the project
 			// ok, user has started your app but has not received your sms information yet, set the needed parameters
-			if (_smsArray.length == 0) 
-			{
-				trace("Listen to sms receive...");
-				sms.addEventListener(SMSEvent.ALL_SMS, allSms);
-				sms.addEventListener(SMSEvent.NEW_PERIOD_SMS, allSmsPeriod);
-				sms.allSms();
-			}
 		}
 		
 		private static function receivedSMS(e:SMSEvent):void
@@ -89,22 +115,6 @@ package nativeClasses.sms
 			/* if you like you can update information by one of the methods mentioned above
 			*/
 		}
-		
-		
-				private static function allSms(e:SMSEvent):void
-				{
-					sms.removeEventListener(SMSEvent.ALL_SMS, allSms);
-					sms.removeEventListener(SMSEvent.NEW_PERIOD_SMS, allSmsPeriod);
-					_smsArray = e.param;
-					_conversationArray = sms.conversation(8);
-					trace("received all SMS");
-				}
-				
-				private static function allSmsPeriod(e:SMSEvent):void
-				{
-					var arr:Array = e.param;
-					trace("All sms Period loaded");
-				}
 		
 		public static function canselListenToGetMessage():void
 		{
