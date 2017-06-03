@@ -65,7 +65,7 @@ package nativeClasses.sms
 		{
 			//sms.addEventListener(SMSEvent.ALL_SMS, allSms);
 			sms.addEventListener(SMSEvent.NEW_PERIOD_SMS, allSmsPeriod);
-			sms.allSms();
+			sms.getSmsAfterId();
 		}	
 		
 		
@@ -92,8 +92,6 @@ package nativeClasses.sms
 				if(arr!=null && arr.length>0)
 				{
 					sms.removeEventListener(SMSEvent.NEW_PERIOD_SMS, allSmsPeriod);
-					sms.dispose();
-					sms = null ;
 					//sms = new SMS();
 				}
 			}	
