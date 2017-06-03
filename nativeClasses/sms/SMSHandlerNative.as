@@ -5,6 +5,8 @@ package nativeClasses.sms
 	
 	import com.doitflash.air.extensions.sms.SMS;
 	
+	import dataManager.GlobalStorage;
+	
 	import flash.events.Event;
 	import flash.utils.getDefinitionByName;
 	
@@ -26,9 +28,14 @@ package nativeClasses.sms
 							onFaild:Function,
 							
 							onMessageReceived:Function;
+
+		private static var lastSMSId:uint;
+		
+		private static const id_lastsms_id:String = "id_lastsms_id" ;
 		
 		public static function setUp():void
 		{
+			lastSMSId = uint(GlobalStorage.load(id_lastsms_id));
 			if(sms==null && DevicePrefrence.isAndroid())
 			{
 				try
@@ -42,8 +49,39 @@ package nativeClasses.sms
 					smsClass = null ;
 					trace("com.doitflash.air.extensions.sms.SMS is not imported : "+e);
 				}
+				if(smsClass!=null)
+				{
+					getLastReceivedSMS();
+				}
 			}
 		}
+		
+		/**Get loast sms id*/
+		private static function getLastReceivedSMS():void
+		{
+			trace("--------lastSMSId:"+lastSMSId);
+			sms.getSmsAfterId(lastSMSId);
+			sms.addEventListener((smsEventObject as Object).SMS_RECEIVED,controllReceivedSMSToGetLastOne);
+			sms.addEventListener((smsEventObject as Object).NEW_RECEIVED_SMS,controllReceivedSMSToGetLastOne);
+			sms.addEventListener((smsEventObject as Object).NEW_PERIOD_SMS,controllReceivedSMSToGetLastOne);
+			
+		}
+		
+			protected static function controllReceivedSMSToGetLastOne(event:Event):void
+			{
+				trace("event :"+event);
+				sms.removeEventListener((smsEventObject as Object).SMS_RECEIVED,controllReceivedSMSToGetLastOne);
+				sms.removeEventListener((smsEventObject as Object).NEW_RECEIVED_SMS,controllReceivedSMSToGetLastOne);
+				sms.removeEventListener((smsEventObject as Object).NEW_PERIOD_SMS,controllReceivedSMSToGetLastOne);
+				
+				var _smsArray:Array = sms.smsArray ; 
+				trace("--------_smsArray:"+_smsArray) ;
+				lastSMSId = _smsArray[0].id ;
+				GlobalStorage.save(id_lastsms_id,lastSMSId) ;
+				trace("---------------------lastSMSId-------------------> "+lastSMSId) ;
+				sms.dispose() ;
+				sms = new smsClass() ;
+			}
 		
 	///////////////////////////////////////////////////////////////////////////////////////
 		
@@ -59,17 +97,17 @@ package nativeClasses.sms
 			
 			//It can get the last sms ids
 			//sms.updateSms();
-			var _smsArray:Array = sms.smsArray; 
-			var lastSMSId:uint = _smsArray[0].id ;
+			//var _smsArray:Array = sms.smsArray; 
+			//var lastSMSId:uint = _smsArray[0].id ;
 			
-			trace("---------------------lastSMSId-------------------> "+lastSMSId);
+			//trace("---------------------lastSMSId-------------------> "+lastSMSId);
 
 			trace(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SMS are : "+sms.conversationArray);
 			
 			sms.addEventListener((smsEventObject as Object).SMS_RECEIVED,controllReceivedSMS);
 			sms.addEventListener((smsEventObject as Object).NEW_RECEIVED_SMS,controllReceivedSMS);
 			sms.addEventListener((smsEventObject as Object).NEW_PERIOD_SMS,controllReceivedSMS);
-			sms.getSmsAfterId(6000);
+			sms.getSmsAfterId(lastSMSId);
 
 			trace("Listen to sms receive...");
 			//sms.updateNewSms();
@@ -82,6 +120,8 @@ package nativeClasses.sms
 				trace("SMS native is not supports on this device");
 				return ;
 			}
+			
+			trace("Cansel listening to sms");
 			
 			sms.removeEventListener((smsEventObject as Object).SMS_RECEIVED,controllReceivedSMS);
 			sms.removeEventListener((smsEventObject as Object).NEW_RECEIVED_SMS,controllReceivedSMS);
