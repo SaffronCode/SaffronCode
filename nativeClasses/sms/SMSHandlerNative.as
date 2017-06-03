@@ -9,7 +9,9 @@ package nativeClasses.sms
 	import dataManager.GlobalStorage;
 	
 	import flash.events.Event;
+	import flash.utils.clearInterval;
 	import flash.utils.getDefinitionByName;
+	import flash.utils.setInterval;
 	
 	//import com.doitflash.air.extensions.sms.SMS;
 	
@@ -36,6 +38,8 @@ package nativeClasses.sms
 		
 		private static var 	_smsArray:Array = [] ,
 							_conversationArray:Array = [] ;
+							private static var lastSMSLoaded:Boolean;
+							private static var smsListenerIntervalId:uint;
 		
 		public static function setUp():void
 		{
@@ -88,7 +92,7 @@ package nativeClasses.sms
 			private static function allSmsPeriod(e:SMSEvent):void
 			{
 				var arr:Array = e.param;
-				trace("All sms Period loaded : "+JSON.stringify(arr,null,' '));
+				trace("All sms Period loaded1 : "+JSON.stringify(arr,null,' '));
 				
 				if(arr!=null)
 				{
@@ -101,7 +105,8 @@ package nativeClasses.sms
 					}
 					else
 					{
-						trace("No new SMS");
+						trace("-No new SMS");
+						lastSMSLoaded = true ;
 						sms.removeEventListener(SMSEvent.NEW_PERIOD_SMS, allSmsPeriod);
 					}
 				}
@@ -117,21 +122,57 @@ package nativeClasses.sms
 				trace("SMS native is not supports on this device");
 				return ;
 			}
+			trace(">>>lastSMSLoaded : "+lastSMSLoaded);
 			onMessageReceived = onGet ;
 			
-			sms.addEventListener(SMSEvent.NEW_RECEIVED_SMS, receivedSMS);
-			//I'm testing the project
-			// ok, user has started your app but has not received your sms information yet, set the needed parameters
+			if(lastSMSLoaded)
+			{
+				trace("Remove last sms loader listener");
+				sms.removeEventListener(SMSEvent.NEW_PERIOD_SMS, allSmsPeriod);
+			}
+			sms.addEventListener(SMSEvent.NEW_PERIOD_SMS, receivedSMS);
+			clearInterval(smsListenerIntervalId);
+			smsListenerIntervalId = setInterval(loadLastSMSes,1000);
 		}
 		
-		private static function receivedSMS(e:SMSEvent):void
+		/**Request smses after last sms id*/
+		private static function loadLastSMSes():void
 		{
-			//sms.addEventListener(SMSEvent.ALL_SMS, allSms);
-			sms.addEventListener(SMSEvent.NEW_PERIOD_SMS, allSmsPeriod);
-			trace("receivedSMS >>", e.param);
-			/* if you like you can update information by one of the methods mentioned above
-			*/
+			trace("....load sms after "+lastSMSId);
+			sms.getSmsAfterId(lastSMSId);
 		}
+		
+		
+			/**Controll and dispatch event if new sms receved*/
+			private static function receivedSMS(e:SMSEvent):void
+			{
+				var arr:Array = e.param;
+				trace("All sms Period loaded2 : "+JSON.stringify(arr,null,' '));
+				
+				if(arr!=null)
+				{
+					if(arr.length>0)
+					{
+						lastSMSId = arr[0].id ;
+						GlobalStorage.save(id_lastsms_id,lastSMSId);
+						trace(">>>> change last sms id to load2 : "+lastSMSId);
+						
+						for(var i:int ; i<arr.length ; i++)
+						{
+							if(onMessageReceived.length>0)
+							{
+								trace(">> tell the caller that new sms is receved");
+								onMessageReceived(new SMSObject(arr[i]));
+							}
+							else
+							{
+								trace("Your onMessage receive cant get parameter");
+								onMessageReceived();
+							}
+						}
+					}
+				}
+			}
 		
 		public static function canselListenToGetMessage():void
 		{
@@ -142,10 +183,8 @@ package nativeClasses.sms
 			}
 			
 			trace("Cansel listening to sms");
-			
-			sms.removeEventListener((smsEventObject as Object).SMS_RECEIVED,controllReceivedSMS);
-			sms.removeEventListener((smsEventObject as Object).NEW_RECEIVED_SMS,controllReceivedSMS);
-			sms.removeEventListener((smsEventObject as Object).NEW_PERIOD_SMS,controllReceivedSMS);
+			sms.removeEventListener(SMSEvent.NEW_PERIOD_SMS, receivedSMS);
+			clearInterval(smsListenerIntervalId);
 			onMessageReceived = null ;
 		}
 		
