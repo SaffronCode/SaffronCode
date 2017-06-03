@@ -103,7 +103,7 @@ package nativeClasses.sms
 		
 	///////////////////////////////////////////////////////////////////////////////////////
 		
-		/**Be ready to get message*/
+		/**Be ready to get message. listen to the dispatcher to catch events*/
 		public static function listenToGetMessage():void
 		{
 			if(sms==null)
