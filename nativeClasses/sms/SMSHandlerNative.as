@@ -63,13 +63,13 @@ package nativeClasses.sms
 		/**Get last message id*/
 		private static function getLastRecevedMessage():void
 		{
-			sms.addEventListener(SMSEvent.ALL_SMS, allSms);
+			//sms.addEventListener(SMSEvent.ALL_SMS, allSms);
 			sms.addEventListener(SMSEvent.NEW_PERIOD_SMS, allSmsPeriod);
 			sms.allSms();
 		}	
 		
 		
-			private static function allSms(e:SMSEvent):void
+			/*private static function allSms(e:SMSEvent):void
 			{
 				sms.removeEventListener(SMSEvent.ALL_SMS, allSms);
 				sms.removeEventListener(SMSEvent.NEW_PERIOD_SMS, allSmsPeriod);
@@ -82,12 +82,18 @@ package nativeClasses.sms
 				{
 					trace("****************Get the last id and dispose sms");
 				}
-			}
+			}*/
 			
 			private static function allSmsPeriod(e:SMSEvent):void
 			{
 				var arr:Array = e.param;
-				trace("All sms Period loaded");
+				
+				trace("All sms Period loaded : "+arr);
+				if(arr!=null && arr.length>0)
+				{
+					sms.dispose();
+					sms = new SMS();
+				}
 			}	
 		
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -109,7 +115,7 @@ package nativeClasses.sms
 		
 		private static function receivedSMS(e:SMSEvent):void
 		{
-			sms.addEventListener(SMSEvent.ALL_SMS, allSms);
+			//sms.addEventListener(SMSEvent.ALL_SMS, allSms);
 			sms.addEventListener(SMSEvent.NEW_PERIOD_SMS, allSmsPeriod);
 			trace("receivedSMS >>", e.param);
 			/* if you like you can update information by one of the methods mentioned above
