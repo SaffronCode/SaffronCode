@@ -49,18 +49,18 @@ package nativeClasses.sms
 					smsClass = null ;
 					trace("com.doitflash.air.extensions.sms.SMS is not imported : "+e);
 				}
-				if(smsClass!=null)
+				/*if(smsClass!=null)
 				{
 					getLastReceivedSMS();
-				}
+				}*/
 			}
 		}
 		
-		/**Get loast sms id*/
+		/**Get loast sms id
 		private static function getLastReceivedSMS():void
 		{
 			trace("--------lastSMSId:"+lastSMSId);
-			sms.getSmsAfterId(lastSMSId);
+			//sms.getSmsAfterId(lastSMSId);
 			sms.addEventListener((smsEventObject as Object).SMS_RECEIVED,controllReceivedSMSToGetLastOne);
 			sms.addEventListener((smsEventObject as Object).NEW_RECEIVED_SMS,controllReceivedSMSToGetLastOne);
 			sms.addEventListener((smsEventObject as Object).NEW_PERIOD_SMS,controllReceivedSMSToGetLastOne);
@@ -81,7 +81,7 @@ package nativeClasses.sms
 				trace("---------------------lastSMSId-------------------> "+lastSMSId) ;
 				sms.dispose() ;
 				sms = new smsClass() ;
-			}
+			}*/
 		
 	///////////////////////////////////////////////////////////////////////////////////////
 		
