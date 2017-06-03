@@ -17,6 +17,8 @@ package nativeClasses.sms
 	
 	public class SMSHandlerNative
 	{
+		public static var dispatcher:SMSDispatcher = new SMSDispatcher();
+		
 		/**com.doitflash.air.extensions.sms.SMS*/
 		private static var smsClass:Class ;
 		
@@ -40,6 +42,7 @@ package nativeClasses.sms
 							_conversationArray:Array = [] ;
 							private static var lastSMSLoaded:Boolean;
 							private static var smsListenerIntervalId:uint;
+							private static var listenToNewSMSafterready:Boolean;
 		
 		public static function setUp():void
 		{
@@ -74,21 +77,6 @@ package nativeClasses.sms
 		}	
 		
 		
-			/*private static function allSms(e:SMSEvent):void
-			{
-				sms.removeEventListener(SMSEvent.ALL_SMS, allSms);
-				sms.removeEventListener(SMSEvent.NEW_PERIOD_SMS, allSmsPeriod);
-				_smsArray = e.param;
-				_conversationArray = sms.conversation(8);
-				trace("--_conversationArray : "+_conversationArray);
-				trace("--_smsArray : "+_smsArray);
-				trace("received all SMS");
-				if(_smsArray!=null && _smsArray.length>0)
-				{
-					trace("****************Get the last id and dispose sms");
-				}
-			}*/
-			
 			private static function allSmsPeriod(e:SMSEvent):void
 			{
 				var arr:Array = e.param;
@@ -108,6 +96,11 @@ package nativeClasses.sms
 						trace("-No new SMS");
 						lastSMSLoaded = true ;
 						sms.removeEventListener(SMSEvent.NEW_PERIOD_SMS, allSmsPeriod);
+						
+						if(listenToNewSMSafterready)
+						{
+							listenToGetMessage(onMessageReceived);
+						}
 					}
 				}
 			}	
@@ -115,7 +108,7 @@ package nativeClasses.sms
 	///////////////////////////////////////////////////////////////////////////////////////
 		
 		/**Be ready to get message*/
-		public static function listenToGetMessage(onGet:Function,myNumberToListen:uint=785180):void
+		public static function listenToGetMessage(onGet:Function=null):void
 		{
 			if(sms==null)
 			{
@@ -127,12 +120,17 @@ package nativeClasses.sms
 			
 			if(lastSMSLoaded)
 			{
-				trace("Remove last sms loader listener");
+				//Remove last sms loader listener
 				sms.removeEventListener(SMSEvent.NEW_PERIOD_SMS, allSmsPeriod);
+				
+				sms.addEventListener(SMSEvent.NEW_PERIOD_SMS, receivedSMS);
+				clearInterval(smsListenerIntervalId);
+				smsListenerIntervalId = setInterval(loadLastSMSes,1000);
 			}
-			sms.addEventListener(SMSEvent.NEW_PERIOD_SMS, receivedSMS);
-			clearInterval(smsListenerIntervalId);
-			smsListenerIntervalId = setInterval(loadLastSMSes,1000);
+			else
+			{
+				listenToNewSMSafterready = true ;
+			}
 		}
 		
 		/**Request smses after last sms id*/
@@ -147,7 +145,7 @@ package nativeClasses.sms
 			private static function receivedSMS(e:SMSEvent):void
 			{
 				var arr:Array = e.param;
-				trace("All sms Period loaded2 : "+JSON.stringify(arr,null,' '));
+				//trace("All sms Period loaded2 : "+JSON.stringify(arr,null,' '));
 				
 				if(arr!=null)
 				{
@@ -159,21 +157,24 @@ package nativeClasses.sms
 						
 						for(var i:int ; i<arr.length ; i++)
 						{
+							var recevedSMS:SMSObject = new SMSObject(arr[i]);
 							if(onMessageReceived.length>0)
 							{
 								trace(">> tell the caller that new sms is receved");
-								onMessageReceived(new SMSObject(arr[i]));
+								onMessageReceived(recevedSMS);
 							}
 							else
 							{
 								trace("Your onMessage receive cant get parameter");
 								onMessageReceived();
 							}
+							dispatcher.dispatchEvent(new SMSEvents(SMSEvents.NEW_SMS,recevedSMS));
 						}
 					}
 				}
 			}
 		
+		/**Cansel listenning to smses*/
 		public static function canselListenToGetMessage():void
 		{
 			if(sms==null)
@@ -182,21 +183,14 @@ package nativeClasses.sms
 				return ;
 			}
 			
+			listenToNewSMSafterready = false ;
+			
 			trace("Cansel listening to sms");
 			sms.removeEventListener(SMSEvent.NEW_PERIOD_SMS, receivedSMS);
 			clearInterval(smsListenerIntervalId);
 			onMessageReceived = null ;
 		}
 		
-		/**SMS received- if you whant to cansel listening to it, call CanselListenToGetMessage()*/
-		protected static function controllReceivedSMS(event:*):void
-		{
-			trace("SMSs2 are : "+JSON.stringify(sms.smsArrayAfterId));
-			//clearInterval(intervalId);
-			trace("receved sms is : "+JSON.stringify(event.param,null,' '));
-			onMessageReceived();//Dont delete this functin, more sms may come to
-		}
-	
 	///////////////////////////////////////////////////////////////////////////////////////
 		
 		public static function sendMessage(phoneNumber:String,body:String,onDoneFunction:Function,onFaildFunction:Function):void
@@ -223,6 +217,7 @@ package nativeClasses.sms
 			
 			onFaild = null ;
 			calAndDeletFunction(onDone) ;
+			dispatcher.dispatchEvent(new SMSEvents(SMSEvents.SMS_NOT_SENT));
 		}
 		
 		protected static function sendingFaild(event:Event):void
@@ -233,6 +228,7 @@ package nativeClasses.sms
 			sms.removeEventListener((smsEventObject as Object).SEND_SUCCESS,listenToAnswer);
 			onDone = null ;
 			calAndDeletFunction(onFaild);
+			dispatcher.dispatchEvent(new SMSEvents(SMSEvents.SMS_SENT));
 		}
 		
 	////////////////////////////////////////////////////////////
