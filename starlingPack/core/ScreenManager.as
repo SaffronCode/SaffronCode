@@ -8,38 +8,74 @@ package starlingPack.core
 	import flash.system.Capabilities;
 
 	[Event(name="resize", type="flash.events.Event")]
-	public class ScreenManager extends EventDispatcher
-	{
-		/**You can catch all events on this variable*/
-		public static const eventDispatcher:ScreenManager = new ScreenManager();
-		
-		/**This is the default screedDPI*/
-		public static const defaultDPI:Number = 72 ;
-		
-		
-		/**This is the application stage*/
-		private static var stage:Stage ;
-		
-		
-		private static var _flashW:Number,_flashH:Number;
-		
-		private static var _stageWidth:Number,_stageHeight:Number;
-		
-		/**Stored screenDPI*/
-		private static var _screenDPI:Number ;
-		
-		/**Resized position of stage*/
-		private static var scaleFactorX:Number,scaleFactorY:Number;
-		
-		
-		private static var deltaX:Number,deltaY:Number;
-		
-		/**You can store roots list here and make them manage x and y and scale automaticaly*/
-		private static var roots:Array; 
-		
-		public function ScreenManager()
+	/**
+	 * Add this function to the Flash main:
+	 *  private function manageStageSize(e:Event):void
+     {
+         trace("ScreenManager.scaleFactor : "+ScreenManager.scaleFactor)
+		 root.scaleX = root.scaleY = ScreenManager.scaleFactor ;
+		 root.x = ScreenManager.deltaXOnScaleFactor();
+		 root.y = ScreenManager.deltaYOnScaleFactor();
+
+ 			//To change the view port of the staling
+         starling.viewPort = new Rectangle(0,0,ScreenManager.stageWidth,ScreenManager.stageHeight);
+         starling.stage.stageWidth = ScreenManager.stageWidth ;
+         starling.stage.stageHeight = ScreenManager.stageHeight ;
+     }
+
+	 and this to starling main :
+
+
+     protected function controllSize(event:Event):void
+     {
+     		//To change the starling content size
+         this.scaleX = this.scaleY = ScreenManager.scaleFactor ;
+         this.x = ScreenManager.deltaXOnScaleFactor() ;
+         this.y = ScreenManager.deltaYOnScaleFactor() ;
+     }
+
+
+	 on
+
+     ScreenManager.eventDispatcher.addEventListener(Event.RESIZE,controllSize);
+	 *
+	 * */
+	public class ScreenManager extends EventDispatcher {
+        /**You can catch all events on this variable*/
+        public static const eventDispatcher:ScreenManager = new ScreenManager();
+
+        /**This is the default screedDPI*/
+        public static const defaultDPI:Number = 72;
+
+
+        /**This is the application stage*/
+        private static var stage:Stage;
+
+
+        private static var _flashW:Number, _flashH:Number;
+
+        private static var _stageWidth:Number, _stageHeight:Number;
+
+        /**Stored screenDPI*/
+        private static var _screenDPI:Number;
+
+        /**Resized position of stage*/
+        private static var scaleFactorX:Number, scaleFactorY:Number;
+
+
+        private static var deltaX:Number, deltaY:Number;
+
+        /**You can store roots list here and make them manage x and y and scale automaticaly*/
+        private static var roots:Array;
+
+        public function ScreenManager() {
+            super();
+        }
+
+        override public function addEventListener(type:String, listener:Function, useCapture:Boolean = false, priority:int = 0, useWeakReference:Boolean = false):void
 		{
-			super();
+			super.addEventListener(type, listener, useCapture, priority, useWeakReference);
+            this.dispatchEvent(new Event(Event.RESIZE));
 		}
 
 		public static function get flashH():Number
@@ -162,7 +198,19 @@ package starlingPack.core
 		{
 			return (_stageHeight-_flashH*scaleFactor)/2;
 		}
-		
+
+		/**This will returns the stage.width of main swf*/
+		public static function stageWidthFlash():Number
+		{
+			return _flashW ;
+		}
+
+		/**This will returns the stage.height of main swf*/
+		public static function stageHeightFlash():Number
+		{
+			return _flashH ;
+		}
+
 		
 		
 		
