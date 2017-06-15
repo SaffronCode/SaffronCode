@@ -16,17 +16,18 @@ package file
 			return path		
 		}
 		/**applicationDirectory*/
+		
+		
 		public static function check2(Path_p:String,Name_p:String):File
 		{
-			var bases:Array = File.getRootDirectories()
-			var basePath:File = bases[0] as File;
-			var path:File = basePath.resolvePath(Path_p);
-	
+
+			var path:File =File.userDirectory.resolvePath(Path_p);
+			
 			if(!path.exists)
 			{
-				path.createDirectory()
+				path.createDirectory();
 			}
-			path = basePath.resolvePath(Path_p+Name_p)
+			path = File.userDirectory.resolvePath(Path_p+Name_p);
 			
 			return path		
 		}
