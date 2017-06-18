@@ -75,8 +75,14 @@ package starlingPack.core
         override public function addEventListener(type:String, listener:Function, useCapture:Boolean = false, priority:int = 0, useWeakReference:Boolean = false):void
 		{
 			super.addEventListener(type, listener, useCapture, priority, useWeakReference);
-            this.dispatchEvent(new Event(Event.RESIZE));
+			if(stage!=null)
+            	dispatchResizeEvent();
 		}
+
+        public static function dispatchResizeEvent():void
+        {
+            eventDispatcher.dispatchEvent(new Event(Event.RESIZE));
+        }
 
 		public static function get flashH():Number
 		{
@@ -137,8 +143,8 @@ package starlingPack.core
 					roots[i].y = deltaYOnScaleFactor();
 				}
 			}
-			
-			eventDispatcher.dispatchEvent(new Event(Event.RESIZE));
+
+            dispatchResizeEvent();
 		}
 		
 		/**Returns the scaleFactor to resize objects on the defrent stage sizes. but it depends on screenDPI.<br>
