@@ -15,32 +15,45 @@ public class StarlingZoomer {
     private var mySprite:Sprite,
                 area:Rectangle;
 
+    private var touchList:Vector.<Touch> ;
+
     public function StarlingZoomer(zoomableObject:Sprite) {
         mySprite = zoomableObject ;
+
+        clearTouchList();
 
         mySprite.addEventListener(TouchEvent.TOUCH,listenToTouch);
         mySprite.addEventListener(Event.ENTER_FRAME,animateFloor);
     }
 
+    /**Clear touch list*/
+    private function clearTouchList():void
+    {
+        touchList = new Vector.<Touch>();
+    }
+
     private function animateFloor(e:Event):void
     {
         //TODO
+        trace("touch : "+touchList.length);
     }
 
 
     private function listenToTouch(e:TouchEvent):void
     {
         //TODO
-        var touch:Touch = e.getTouch(mySprite.stage);
+        var touch:Touch;
+        touch = e.getTouch(mySprite.stage);
         if(touch)
         {
             if(touch.phase == TouchPhase.BEGAN)
             {
+                addTouch(touch);
             }
 
             else if(touch.phase == TouchPhase.ENDED)
             {
-
+                removeTouch(touch);
             }
 
             else if(touch.phase == TouchPhase.MOVED)
@@ -49,8 +62,39 @@ public class StarlingZoomer {
         }
     }
 
+        /**Add this touch to the touch list if its not duplicated*/
+        private function addTouch(touch:Touch):void
+        {
+            for(var i:int ; i<touchList.length ; i++)
+            {
+                if(touchList[i].id==touch.id)
+                {
+                    trace("The touch was duplicated");
+                    return ;
+                }
+            }
+            touchList.push(touch);
+        }
+
+        /**Remove this touch from the list*/
+        private function removeTouch(touch:Touch):void
+        {
+            for(var i:int ; i<touchList.length ;i++)
+            {
+                if(touchList[i].id == touch.id)
+                {
+                    touchList.removeAt(i);
+                    trace("Touch removed");
+                    return ;
+                }
+            }
+
+        }
+
     public function reset(zoomArea:Rectangle):void
     {
+        clearTouchList();
+
         area = zoomArea ;
         mySprite.width = zoomArea.width;
         mySprite.height = zoomArea.height;
