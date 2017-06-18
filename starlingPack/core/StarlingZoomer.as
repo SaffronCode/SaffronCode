@@ -12,7 +12,8 @@ import starling.events.TouchPhase;
 
 public class StarlingZoomer {
 
-    private var mySprite:Sprite ;
+    private var mySprite:Sprite,
+                area:Rectangle;
 
     public function StarlingZoomer(zoomableObject:Sprite) {
         mySprite = zoomableObject ;
@@ -50,16 +51,12 @@ public class StarlingZoomer {
 
     public function reset(zoomArea:Rectangle):void
     {
-        trace("gameAreaMC.width1 : "+mySprite.width);
+        area = zoomArea ;
         mySprite.width = zoomArea.width;
-        trace("gameAreaMC.width2 : "+mySprite.width);
         mySprite.height = zoomArea.height;
-        trace("+scaleX"+mySprite.scaleX);
-        trace("-scaleT"+mySprite.scaleY);
         mySprite.scale = Math.max(mySprite.scaleX,mySprite.scaleY);
-        trace("gameAreaMC.width3 : "+mySprite.width);
-        mySprite.x = zoomArea.x;//(gameAreaMC.width-ScreenManager.stageWidthFlash())/-2;
-        mySprite.y = zoomArea.y;//(gameAreaMC.height-ScreenManager.stageHeightFlash())/-2;
+        mySprite.x = zoomArea.x-(mySprite.width-zoomArea.width)/2;
+        mySprite.y = zoomArea.y-(mySprite.height-zoomArea.height)/2;
     }
 }
 }
