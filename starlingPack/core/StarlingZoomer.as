@@ -48,12 +48,11 @@ public class StarlingZoomer {
 
         for(var i:int = 0 ; i<l ; i++)
         {
-            deltaX += touchList[i].globalX-lastPose[i].x ;
-            deltaY += touchList[i].globalY-lastPose[i].y ;
+            var currentPose:Point = touchToPoint(touchList[i]);
+            deltaX += currentPose.x-lastPose[i].x ;
+            deltaY += currentPose.y-lastPose[i].y ;
 
-            lastPose[i] = new Point(touchList[i].globalX,touchList[i].globalY) ;
-
-            trace("Add "+i+" from "+l);
+            lastPose[i] = currentPose ;
         }
 
         targetX += deltaX/Math.max(1,l);
@@ -99,8 +98,15 @@ public class StarlingZoomer {
                 }
             }
             touchList.push(touch);
-            lastPose.push(new Point(touch.globalX,touch.globalY));
+            lastPose.push(touchToPoint(touch));
         }
+
+    /**Convert touch to the point*/
+    private function touchToPoint(touch:Touch):Point {
+        var point:Point = new Point(touch.globalX,touch.globalY) ;
+        trace("Touch pos is : "+point);
+        return point;
+    }
 
         /**Remove this touch from the list*/
         private function removeTouch(touch:Touch):void
