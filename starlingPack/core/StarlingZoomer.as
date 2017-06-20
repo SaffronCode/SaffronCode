@@ -2,7 +2,10 @@
  * Created by mes on 6/18/2017.
  */
 package starlingPack.core {
+import flash.geom.Point;
 import flash.geom.Rectangle;
+
+import starling.core.Starling;
 
 import starling.display.Sprite;
 import starling.events.Event;
@@ -15,49 +18,71 @@ public class StarlingZoomer {
     private var mySprite:Sprite,
                 area:Rectangle;
 
-    private var touchList:Vector.<Touch> ;
+    private var touchList:Vector.<Touch>,
+                lastPose:Vector.<Point>;
+
+    private var targetX:Number,targetY:Number;
 
     public function StarlingZoomer(zoomableObject:Sprite) {
+        if(Starling.multitouchEnabled==false)
+        {
+            trace("You should set Starling.multitouchEnabled = true  before creating starling instance on the main class.");
+        }
         mySprite = zoomableObject ;
-
-        clearTouchList();
-
-        mySprite.addEventListener(TouchEvent.TOUCH,listenToTouch);
-        mySprite.addEventListener(Event.ENTER_FRAME,animateFloor);
     }
 
     /**Clear touch list*/
     private function clearTouchList():void
     {
+        lastPose = new Vector.<Point>();
         touchList = new Vector.<Touch>();
     }
 
     private function animateFloor(e:Event):void
     {
-        //TODO
-        trace("touch : "+touchList.length);
+
+        var deltaX:Number = 0 ,
+            deltaY:Number = 0 ;
+
+        var l:int = touchList.length ;
+
+        for(var i:int = 0 ; i<l ; i++)
+        {
+            deltaX += touchList[i].globalX-lastPose[i].x ;
+            deltaY += touchList[i].globalY-lastPose[i].y ;
+
+            lastPose[i] = new Point(touchList[i].globalX,touchList[i].globalY) ;
+
+            trace("Add "+i+" from "+l);
+        }
+
+        targetX += deltaX/Math.max(1,l);
+        targetY += deltaY/Math.max(1,l);
+
+        mySprite.x = targetX ;
+        mySprite.y = targetY ;
     }
 
 
     private function listenToTouch(e:TouchEvent):void
     {
         //TODO
-        var touch:Touch;
-        touch = e.getTouch(mySprite.stage);
-        if(touch)
-        {
-            if(touch.phase == TouchPhase.BEGAN)
-            {
-                addTouch(touch);
-            }
+        var touch:Touch ;
+        var touchs:Vector.<Touch>;
+        touchs = e.getTouches(mySprite);
+        for(var i:int = 0 ; i<touchs.length ; i++) {
+            touch = touchs[i] ;
+            if (touch) {
+                if (touch.phase == TouchPhase.BEGAN) {
+                    addTouch(touch);
+                }
 
-            else if(touch.phase == TouchPhase.ENDED)
-            {
-                removeTouch(touch);
-            }
+                else if (touch.phase == TouchPhase.ENDED) {
+                    removeTouch(touch);
+                }
 
-            else if(touch.phase == TouchPhase.MOVED)
-            {
+                else if (touch.phase == TouchPhase.MOVED) {
+                }
             }
         }
     }
@@ -74,6 +99,7 @@ public class StarlingZoomer {
                 }
             }
             touchList.push(touch);
+            lastPose.push(new Point(touch.globalX,touch.globalY));
         }
 
         /**Remove this touch from the list*/
@@ -84,6 +110,7 @@ public class StarlingZoomer {
                 if(touchList[i].id == touch.id)
                 {
                     touchList.removeAt(i);
+                    lastPose.removeAt(i);
                     trace("Touch removed");
                     return ;
                 }
@@ -99,8 +126,13 @@ public class StarlingZoomer {
         mySprite.width = zoomArea.width;
         mySprite.height = zoomArea.height;
         mySprite.scale = Math.max(mySprite.scaleX,mySprite.scaleY);
-        mySprite.x = zoomArea.x-(mySprite.width-zoomArea.width)/2;
-        mySprite.y = zoomArea.y-(mySprite.height-zoomArea.height)/2;
+        targetX = mySprite.x = zoomArea.x-(mySprite.width-zoomArea.width)/2;
+        targetY = mySprite.y = zoomArea.y-(mySprite.height-zoomArea.height)/2;
+
+        mySprite.removeEventListener(TouchEvent.TOUCH,listenToTouch);
+        mySprite.removeEventListener(Event.ENTER_FRAME,animateFloor);
+        mySprite.addEventListener(TouchEvent.TOUCH,listenToTouch);
+        mySprite.addEventListener(Event.ENTER_FRAME,animateFloor);
     }
 }
 }
