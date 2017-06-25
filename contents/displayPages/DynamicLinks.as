@@ -773,9 +773,25 @@ package contents.displayPages
 						{*/
 							//trace("inVisibleItem.y : "+inVisibleItem.y);
 						if(
-							visibleItem.y+linksContainer.y+visibleItem.height>=visibleItem.height*-3
-							&&
-							visibleItem.y+linksContainer.y<areaRect.height+visibleItem.height*3
+							(
+								!revertedY
+								&&
+								(
+									visibleItem.y+linksContainer.y+visibleItem.height>=visibleItem.height*-3
+									&&
+									visibleItem.y+linksContainer.y<areaRect.height+visibleItem.height*3
+								)
+							)
+							||
+							(
+								revertedY
+								&&
+								(
+									visibleItem.y+linksContainer.y<0
+									&&
+									visibleItem.y+linksContainer.y+visibleItem.height>-areaRect.height-visibleItem.height*3
+								)
+							)
 						)
 						{
 							if(showThempRemovedLink(visibleItem))
