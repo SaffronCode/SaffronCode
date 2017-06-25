@@ -29,13 +29,14 @@ package nativeClasses.sms
 
 		private static var lastSMSId:uint;
 		
-		private static const id_lastsms_id:String = "id_lastsms_id2" ;
+		private static const id_lastsms_id:String = "id_lastsms_id3" ;
 		
 		private static var 	_smsArray:Array = [] ,
 							_conversationArray:Array = [] ;
-							private static var lastSMSLoaded:Boolean;
-							private static var smsListenerIntervalId:uint;
-							private static var listenToNewSMSafterready:Boolean;
+		
+		private static var lastSMSLoaded:Boolean;
+		private static var smsListenerIntervalId:uint;
+		private static var listenToNewSMSafterready:Boolean;
 		
 		public static function setUp():void
 		{
