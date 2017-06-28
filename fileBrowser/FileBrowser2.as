@@ -201,7 +201,7 @@ package fileBrowser
 		private static function onFileSelected(e:PopMenuEvent):void
 		{
 			trace('e :',JSON.stringify(e));
-			var file:File ;
+			var myFile:File ;
 			if(e.buttonTitle == Contents.lang.t.back)
 			{
 				showBrowser(lastLocation.parent);
@@ -242,14 +242,14 @@ package fileBrowser
 			}
 			else if(e.buttonID is File)
 			{
-				file = e.buttonID as File;
-				if(file.isDirectory)
+				myFile = e.buttonID as File;
+				if(myFile.isDirectory)
 				{
-					showBrowser(file); 
+					showBrowser(myFile); 
 				}
 				else
 				{
-					selectThisFile(file);
+					selectThisFile(myFile);
 				}
 			}
 		}
@@ -370,13 +370,13 @@ package fileBrowser
 				//stopSearching();
 			}
 			
-			private static function searchOn2(file:File):void
+			private static function searchOn2(myFile:File):void
 			{
 				//trace("Check this : "+file.nativePath);
 				
-				if(file.isDirectory)
+				if(myFile.isDirectory)
 				{
-					var sub:Array = file.getDirectoryListing();
+					var sub:Array = myFile.getDirectoryListing();
 					if(sub.length > 0)
 					{
 						lastSearchedFolder = sub[0] as File ;
@@ -387,14 +387,14 @@ package fileBrowser
 						//Same as file
 					}
 				}
-				else if(file.name.indexOf(lastSearchVal)!=-1)
+				else if(myFile.name.indexOf(lastSearchVal)!=-1)
 				{
-					foundedFiles.push(file);
+					foundedFiles.push(myFile);
 				}
 				
-				while(file.nativePath!=lastLocation.nativePath && file!=null)
+				while(myFile.nativePath!=lastLocation.nativePath && myFile!=null)
 				{
-					var nextFolder:File = file.parent;
+					var nextFolder:File = myFile.parent;
 					if(nextFolder==null)
 					{
 						lastSearchedFolder = null;
@@ -404,7 +404,7 @@ package fileBrowser
 					var sisters:Array = nextFolder.getDirectoryListing();
 					for(var i = 0 ; i<sisters.length ; i++)
 					{
-						if((sisters[i] as File).name == file.name)
+						if((sisters[i] as File).name == myFile.name)
 						{
 							myIndex = i ;
 							break ;
@@ -417,7 +417,7 @@ package fileBrowser
 					}
 					else
 					{
-						file = nextFolder ;
+						myFile = nextFolder ;
 					}
 					//trace("loop on : "+file.nativePath);
 				}
@@ -437,16 +437,16 @@ package fileBrowser
 				}*/
 			}
 			
-				private static function searchOn(file:File):void
+				private static function searchOn(myFile:File):void
 				{
 					if(getTimer()>queEndTime)
 					{
-						searchQue.push(file);
+						searchQue.push(myFile);
 						//trace("Time out on : "+file.nativePath);
 						return ;
 					}
 					
-					var sub:Array = file.getDirectoryListing() ;
+					var sub:Array = myFile.getDirectoryListing() ;
 					var file2:File
 					for(var i = 0 ; i<sub.length ; i++)
 					{
