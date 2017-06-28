@@ -1,4 +1,4 @@
-package webService.webCallers
+﻿package webService.webCallers
 {
 	
 	import flash.events.ErrorEvent;
@@ -102,6 +102,9 @@ package webService.webCallers
 			
 			LoadForDoubleControll = false,
 			offlineValuesToSend = null;
+			
+			changeOfflineDate();
+			justLoadOffline = false ;
 			
 			//clearTimeout(timerId);
 			/*if(reLoader!=null)
@@ -341,7 +344,14 @@ package webService.webCallers
 		
 		private function event_dataUpdated():void
 		{
-			this.dispatchEvent(new Event(Event.CHANGE));
+			if(this.hasEventListener(Event.CHANGE))
+			{
+				this.dispatchEvent(new Event(Event.CHANGE));
+			}
+			else
+			{
+				event_data();
+			}
 		}
 		
 		/**Server data is repeating*/
