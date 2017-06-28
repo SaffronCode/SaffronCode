@@ -33,7 +33,10 @@ package fileBrowser
 		private static var driveFrame:uint = 8,
 							folderFrame:uint=9,
 							fileFrame:uint=10,
-							noFileFrame:uint=11;
+							noFileFrame:uint=11,
+							searchButtonFrame:uint=5,
+							backButtonFrame:uint=6,
+							defaultButtonFrame:uint=7;
 		
 		/**1: load file, 2:save file*/
 		private static var mode:uint = 0;
@@ -51,12 +54,43 @@ package fileBrowser
 		
 		/**Set the Popmenu frames here*/
 		public static function setUp(DriveButtonFrame:uint,FolderButtonsFrame:uint,
-									 FilesButtonFrame:uint,NoFileButtonFrame:uint):void
+									 FilesButtonFrame:uint,NoFileButtonFrame:uint,
+									 SearchButtonFrame:uint=5,BackButtonFrame:uint=6,DefaultButtonFrame:uint=7):void
 		{
 			driveFrame = DriveButtonFrame ;
 			folderFrame = FolderButtonsFrame;
 			fileFrame = FilesButtonFrame;
 			noFileFrame = NoFileButtonFrame ;
+			searchButtonFrame = SearchButtonFrame ;
+			backButtonFrame = BackButtonFrame ;
+			defaultButtonFrame = DefaultButtonFrame ;
+			
+			var neededLang:String = "" ;
+			
+			neededLang+=controlLang("cansel","لغو") ;
+			neededLang+=controlLang("back","بازگشت") ;
+			neededLang+=controlLang("save","ذخیره") ;
+			neededLang+=controlLang("search","جستجو") ;
+			neededLang+=controlLang("no_file_here","هیچ فایلی در این مسیر وجود ندارد") ;
+			neededLang+=controlLang("file_selector_title","انتخاب فایل") ;
+			neededLang+=controlLang("see_the_result","مشاهده") ;
+			neededLang+=controlLang("founded_items","فایل های یافت شده:") ;
+			neededLang+=controlLang("founded_files_with","فایل های یافت شده با نام :") ;
+			neededLang+=controlLang("please_wait","لطفاً کمی صبر کنید ...") ;
+			
+			if(neededLang!='')
+			{
+				throw "Please add below tags to the Language.xml file for FileBrowser class.\n\n"+neededLang ;
+			}
+		}
+		
+		private static function controlLang(langName:String,defaultText:String):String
+		{
+			if(Contents.lang.t[langName] == null)
+			{
+				return "\t<"+langName+">\n\t\t<fa>"+defaultText+"</fa>\n\t</"+langName+">\n";
+			}
+			return '' ;
 		}
 
 		public static function get isSupported():Boolean
@@ -89,7 +123,7 @@ package fileBrowser
 			lastLocation = target ;
 			//var buttons:Array = [Contents.lang.t.cansel,''] ;
 			var buttons:Array = new Array();
-			buttons.push(new PopButtonData(Contents.lang.t.cansel,7,null,true,true)) ;
+			buttons.push(new PopButtonData(Contents.lang.t.cansel,defaultButtonFrame,null,true,true)) ;
 			baseFolderTarget = '' ;
 			if(/*true || */DevicePrefrence.isIOS())
 			{
@@ -113,15 +147,15 @@ package fileBrowser
 			if(lastLocation!=null && 
 				(baseFolder==null || lastLocation.nativePath!=baseFolder.nativePath))
 			{
-				buttons.push(new PopButtonData(Contents.lang.t.back,7,null,true,true));
+				buttons.push(new PopButtonData(Contents.lang.t.back,defaultButtonFrame,null,true,true));
 			}
 			if(mode==2 && lastLocation!=null)
 			{
-				buttons.push(new PopButtonData(Contents.lang.t.save,7,null,true,true));
+				buttons.push(new PopButtonData(Contents.lang.t.save,defaultButtonFrame,null,true,true));
 			}
 			else if(lastLocation!=null)
 			{
-				buttons.push(new PopButtonData(Contents.lang.t.search,7,null,true,true));
+				buttons.push(new PopButtonData(Contents.lang.t.search,defaultButtonFrame,null,true,true));
 			}
 			var button:PopButtonData ;
 			var i:int ;
@@ -277,9 +311,9 @@ package fileBrowser
 			fields.addField(Contents.lang.t.search,lastSearchVal,null,false);
 			
 			var buttons:Array = new Array();
-			var newButt1:PopButtonData = new PopButtonData(Contents.lang.t.search,5,null,true,true);
+			var newButt1:PopButtonData = new PopButtonData(Contents.lang.t.search,searchButtonFrame,null,true,true);
 			buttons.push(newButt1)
-			var newButt2:PopButtonData = new PopButtonData(Contents.lang.t.back,6,null,true,true);
+			var newButt2:PopButtonData = new PopButtonData(Contents.lang.t.back,backButtonFrame,null,true,true);
 			buttons.push(newButt2)
 			//var buttons:Array = [Contents.lang.t.search,Contents.lang.t.back];
 			var popText:PopMenuContent = new PopMenuContent('',fields,buttons);
