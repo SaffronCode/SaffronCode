@@ -57,6 +57,13 @@ package fileBrowser
 			folderFrame = FolderButtonsFrame;
 			fileFrame = FilesButtonFrame;
 			noFileFrame = NoFileButtonFrame ;
+			
+			var neededLang:String = "" ;
+			
+			if(Contents.lang.t.no_file_here==null)
+			{
+				
+			}
 		}
 
 		public static function get isSupported():Boolean
