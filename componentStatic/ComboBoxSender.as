@@ -33,8 +33,7 @@ package componentStatic
 		}
 		
 		protected function getUpdate(event:Event):void
-		{
-			
+		{	
 			update()
 		}
 		public function update():void
@@ -81,8 +80,7 @@ package componentStatic
 			else
 			{
 				_timerId = setTimeout(Server_Result,100)
-			}
-			
+			}		
 		}
 		
 		protected function Connectoin_Error(event:Event):void
@@ -93,8 +91,7 @@ package componentStatic
 			}
 		}
 		protected function OpenList(event:MouseEvent=null):void
-		{
-			
+		{	
 			openListPopUp()
 		}
 		
@@ -109,8 +106,7 @@ package componentStatic
 			
 		}
 		protected function selector(event:PopMenuEvent):void
-		{
-			
+		{		
 			_titleMc.setUp(event.buttonTitle)
 			setObj(this.name,event.buttonID)
 			selected()
@@ -120,10 +116,8 @@ package componentStatic
 			trace('select item')
 		}
 		protected function Server_Error(event:Event):void
-		{
-			
-			trace('combobox server erroe')
-			
+		{	
+			trace('combobox server erroe')	
 		}
 
 
