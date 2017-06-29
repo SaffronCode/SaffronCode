@@ -1,5 +1,7 @@
 package fileBrowser
 {
+	import com.mteamapp.StringFunctions;
+	
 	import contents.Contents;
 	
 	import flash.display.MovieClip;
@@ -199,6 +201,7 @@ package fileBrowser
 			else
 			{
 				var sub:Array = lastLocation.getDirectoryListing() ;
+				sub.sort(sortFolders);
 				for(i = 0 ; i<sub.length ; i++)
 				{
 					hadSub = true ;
@@ -219,6 +222,12 @@ package fileBrowser
 					button = new PopButtonData(currentFile.name,buttonFrame,currentFile);
 					buttons.push(button);
 				}
+			}
+			
+			/**Sort files by their name*/
+			private function sortFolders(a:File,b:File):int
+			{
+				return StringFunctions.compairFarsiString(a.name,b.name);
 			}
 			
 			if(!hadSub)
