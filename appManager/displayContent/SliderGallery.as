@@ -535,8 +535,12 @@
 		
 		public function setUp(images:Vector.<SliderImageItem>,currentIndex:uint=0,animateTimer:uint = 10000,rightToLeft:Boolean=false,loopEnabled:Boolean=true):void
 		{
-			stage.removeEventListener(MouseEvent.MOUSE_DOWN,startDragging);
-			stage.removeEventListener(MouseEvent.MOUSE_MOVE,startSliding);
+			if(stage!=null)
+			{
+				
+				stage.removeEventListener(MouseEvent.MOUSE_DOWN,startDragging);
+				stage.removeEventListener(MouseEvent.MOUSE_MOVE,startSliding);
+			}
 			
 			RTL = rightToLeft ;
 			Loop = loopEnabled ;
