@@ -53,6 +53,8 @@ package fileBrowser
 
 		private static var baseFolder:File,
 							baseFolderTarget:String;
+							
+		private static var thereIsNoOptionForSelectingRootDirectory:Boolean = false ;
 		
 		/**Set the Popmenu frames here*/
 		public static function setUp(DriveButtonFrame:uint,FolderButtonsFrame:uint,
@@ -188,6 +190,7 @@ package fileBrowser
 				if(bases.length==1)
 				{
 					showBrowser(bases[0] as File);
+					thereIsNoOptionForSelectingRootDirectory = true ;
 					return ;
 				}
 				for(i = 0 ; i<bases.length ; i++)
@@ -224,12 +227,6 @@ package fileBrowser
 				}
 			}
 			
-			/**Sort files by their name*/
-			private function sortFolders(a:File,b:File):int
-			{
-				return StringFunctions.compairFarsiString(a.name,b.name);
-			}
-			
 			if(!hadSub)
 			{
 				button = new PopButtonData(Contents.lang.t.no_file_here,noFileFrame,null,false);
@@ -239,6 +236,12 @@ package fileBrowser
 			var popText:PopMenuContent = new PopMenuContent(hint,null,buttons);
 			trace("Open browser");
 			PopMenu1.popUp(Contents.lang.t.file_selector_title,null,popText,0,onFileSelected);
+		}
+			
+		/**Sort files by their name*/
+		private function sortFolders(a:File,b:File):int
+		{
+			return StringFunctions.compairFarsiString(a.name,b.name);
 		}
 		
 		private static function onFileSelected(e:PopMenuEvent):void
