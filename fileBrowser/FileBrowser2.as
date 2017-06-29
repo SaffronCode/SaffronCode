@@ -122,12 +122,15 @@ package fileBrowser
 			showBrowser(lastLocation);
 		}
 		
-		public static function showBrowser(target:File,hint:String=''):void
+		public static function showBrowser(target:File,hint:String='',addBackButton:Boolean=true):void
 		{
 			lastLocation = target ;
 			//var buttons:Array = [Contents.lang.t.cansel,''] ;
 			var buttons:Array = new Array();
-			buttons.push(new PopButtonData(Contents.lang.t.cansel,defaultButtonFrame,null,true,true)) ;
+			if(addBackButton)
+			{
+				buttons.push(new PopButtonData(Contents.lang.t.cansel,defaultButtonFrame,null,true,true)) ;
+			}
 			baseFolderTarget = '' ;
 			if(/*true || */DevicePrefrence.isIOS())
 			{
@@ -189,7 +192,7 @@ package fileBrowser
 				var bases:Array = File.getRootDirectories() ;
 				if(bases.length==1)
 				{
-					showBrowser(bases[0] as File);
+					showBrowser(bases[0] as File,'',false);
 					thereIsNoOptionForSelectingRootDirectory = true ;
 					return ;
 				}
@@ -204,7 +207,7 @@ package fileBrowser
 			else
 			{
 				var sub:Array = lastLocation.getDirectoryListing() ;
-				sub.sort(sortFolders);
+				sub = sub.sort(sortFolders);
 				for(i = 0 ; i<sub.length ; i++)
 				{
 					hadSub = true ;
@@ -239,8 +242,9 @@ package fileBrowser
 		}
 			
 		/**Sort files by their name*/
-		private function sortFolders(a:File,b:File):int
+		private static function sortFolders(a:File,b:File):int
 		{
+			trace("Compair "+a.name+" vs "+b.name+" = "+StringFunctions.compairFarsiString(a.name,b.name));
 			return StringFunctions.compairFarsiString(a.name,b.name);
 		}
 		
