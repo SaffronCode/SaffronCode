@@ -1,4 +1,4 @@
-package fileBrowser
+﻿package fileBrowser
 {
 	import com.mteamapp.StringFunctions;
 	
@@ -159,9 +159,7 @@ package fileBrowser
 				) 
 				&& 
 				(
-					lastLocation.parent == null 
-					|| 
-					lastLocation.parent.nativePath != rootPath
+					lastLocation.nativePath != rootPath
 				)
 			)
 			{
