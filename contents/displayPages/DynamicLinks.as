@@ -86,8 +86,10 @@ package contents.displayPages
 		protected var 	linkScroller:ScrollMT,
 						areaRect:Rectangle,
 						linksContainer:Sprite,
-						buttonsContainer:Sprite,
-						linksSensor:Sprite ;
+						buttonsContainer:Sprite;
+						
+		/**LinkSensore should get deltaY on it*/
+		protected var linksSensor:Sprite ;
 						
 		private var linkSensorHeight:Number = 2 ;
 						
@@ -577,11 +579,11 @@ package contents.displayPages
 			linksSensor = new Sprite();
 			if(!horizontalMenu)
 			{
-				linksSensor.y = myDeltaY*MenuDirectionY*menuFirstPosition ;
+				linksSensor.y = myDeltaY0 ;
 			}
 			else
 			{
-				linksSensor.x = myDeltaX*MenuDirectionX*menuFirstPosition ;
+				linksSensor.x = myDeltaX0 ;
 			}
 			linksSensor.graphics.beginFill(0xff0000,linkSensorDebug);
 			var stepSize:Number = 0 ;
@@ -652,6 +654,18 @@ package contents.displayPages
 			
 			this.addEventListener(Event.ENTER_FRAME,controllSensor);
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
+		}
+		
+		/**Returns the myDeltaY on the first position*/
+		public function get myDeltaY0():Number
+		{
+			return myDeltaY*MenuDirectionY*menuFirstPosition ;
+		}
+		
+		/**Returns the myDeltaX on the first position*/
+		public function get myDeltaX0():Number
+		{
+			return myDeltaX*MenuDirectionX*menuFirstPosition ;
 		}
 		
 		
@@ -1013,14 +1027,14 @@ package contents.displayPages
 			{
 				if(MenuDirectionX<0 && l>0)
 				{
-					linksInterfaceStorage[0].x = linksInterfaceStorage[0].width*-1;
+					linksInterfaceStorage[0].x = linksInterfaceStorage[0].width*-1+myDeltaX0;
 				}
 			}
 			else
 			{
 				if(MenuDirectionY<0 && l>0)
 				{
-					linksInterfaceStorage[0].y = linksInterfaceStorage[0].height*-1;
+					linksInterfaceStorage[0].y = linksInterfaceStorage[0].height*-1+myDeltaY0;
 				}
 			}
 			for(i = 1 ; i<l ; i++)
@@ -1082,11 +1096,12 @@ package contents.displayPages
 					}
 					else
 					{
+						//trace("************************** >>>>>>>>>>>>>>> "+index);
 						linksSensor.y = linksInterfaceStorage[index].y-myDeltaY;
 					}
 				}
 			}
-			trace("linksSensor : "+linksSensor.y);
+			//trace("linksSensor : "+linksSensor.y+' MenuDirectionY : '+MenuDirectionY);
 			updateDynamicLinsBackGround();
 		}
 		
@@ -1136,7 +1151,14 @@ package contents.displayPages
 				}
 				if((linkIndex+1)%linkPerLine==0)
 				{
-					linksSensor.y += (newLink.height+myDeltaY)*MenuDirectionY ;
+					if(revertedY)
+					{
+						linksSensor.y = newLink.y-myDeltaY ;
+					}
+					else
+					{
+						linksSensor.y = newLink.y+(newLink.height+myDeltaY) ;
+					}
 				}
 				//trace(" linksSensor.y : "+linksSensor.y) ;
 			}
