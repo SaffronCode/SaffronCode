@@ -54,7 +54,7 @@ package fileBrowser
 		private static var baseFolder:File,
 							baseFolderTarget:String;
 							
-		private static var thereIsNoOptionForSelectingRootDirectory:Boolean = false ;
+		private static var rootPath:String = null ;
 		
 		/**Set the Popmenu frames here*/
 		public static function setUp(DriveButtonFrame:uint,FolderButtonsFrame:uint,
@@ -127,10 +127,8 @@ package fileBrowser
 			lastLocation = target ;
 			//var buttons:Array = [Contents.lang.t.cansel,''] ;
 			var buttons:Array = new Array();
-			if(addBackButton)
-			{
-				buttons.push(new PopButtonData(Contents.lang.t.cansel,defaultButtonFrame,null,true,true)) ;
-			}
+		
+			buttons.push(new PopButtonData(Contents.lang.t.cansel,defaultButtonFrame,null,true,true)) ;
 			baseFolderTarget = '' ;
 			if(/*true || */DevicePrefrence.isIOS())
 			{
@@ -151,8 +149,21 @@ package fileBrowser
 				trace("Location was not null : "+lastLocation.nativePath);
 			}
 			
-			if(lastLocation!=null && 
-				(baseFolder==null || lastLocation.nativePath!=baseFolder.nativePath))
+			if(
+				lastLocation!=null 
+				&& 
+				(
+					baseFolder==null 
+					|| 
+					lastLocation.nativePath!=baseFolder.nativePath
+				) 
+				&& 
+				(
+					lastLocation.parent == null 
+					|| 
+					lastLocation.parent.nativePath != rootPath
+				)
+			)
 			{
 				buttons.push(new PopButtonData(Contents.lang.t.back,defaultButtonFrame,null,true,true));
 			}
@@ -193,7 +204,7 @@ package fileBrowser
 				if(bases.length==1)
 				{
 					showBrowser(bases[0] as File,'',false);
-					thereIsNoOptionForSelectingRootDirectory = true ;
+					rootPath = (bases[0] as File).nativePath ;
 					return ;
 				}
 				for(i = 0 ; i<bases.length ; i++)
@@ -250,8 +261,9 @@ package fileBrowser
 		
 		private static function onFileSelected(e:PopMenuEvent):void
 		{
-			trace('e :',JSON.stringify(e));
+			//trace('e :',JSON.stringify(e));
 			var myFile:File ;
+			
 			if(e.buttonTitle == Contents.lang.t.back)
 			{
 				showBrowser(lastLocation.parent);
@@ -262,11 +274,6 @@ package fileBrowser
 			}
 			else if(e.buttonTitle == Contents.lang.t.cansel)
 			{
-				trace("Cansel");
-				trace("Cansel");
-				trace("Cansel");
-				trace("Cansel");
-				trace("Cansel");
 				selectedFile = null;
 				selectedFileBytes = null ;
 				//onDone();
