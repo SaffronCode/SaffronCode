@@ -201,8 +201,8 @@
 				var bases:Array = File.getRootDirectories() ;
 				if(bases.length==1)
 				{
-					showBrowser(bases[0] as File,'',false);
 					rootPath = (bases[0] as File).nativePath ;
+					showBrowser(bases[0] as File,'',false);
 					return ;
 				}
 				for(i = 0 ; i<bases.length ; i++)
