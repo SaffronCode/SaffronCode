@@ -1069,8 +1069,8 @@ package contents.displayPages
 					}
 				}
 			}
-			var index:int = i-2;
-			if(l<2)
+			var index:int = i-1;
+			if(l<1)
 			{
 				index = 0 ;
 			}
