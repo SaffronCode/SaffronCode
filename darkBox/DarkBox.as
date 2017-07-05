@@ -34,6 +34,8 @@
 		
 		private static var noNetTitle:String,
 							noImageTitle:String;
+		
+		private static var mouseDragId:uint ;
 							
 							
 		private var stageVideo:StageVideo;
@@ -336,11 +338,13 @@
 			
 			if(rtf)
 			{
-				MouseDrag.addFunctions(mouseDragedRight,mouseDraggedLeft,newSize);
+				MouseDrag.removeFunction(mouseDragId);
+				mouseDragId = MouseDrag.addFunctions(mouseDragedRight,mouseDraggedLeft,newSize);
 			}
 			else
 			{
-				MouseDrag.addFunctions(mouseDraggedLeft,mouseDragedRight,newSize);
+				MouseDrag.removeFunction(mouseDragId);
+				mouseDragId = MouseDrag.addFunctions(mouseDraggedLeft,mouseDragedRight,newSize);
 			}
 		}
 		

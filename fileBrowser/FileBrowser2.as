@@ -1,5 +1,9 @@
-package fileBrowser
+﻿package fileBrowser
 {
+	import com.mteamapp.StringFunctions;
+	
+	import contents.Contents;
+	
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -9,14 +13,12 @@ package fileBrowser
 	import flash.utils.ByteArray;
 	import flash.utils.getTimer;
 	
-	import contents.Contents;
-	
 	import popForm.PopButtonData;
 	import popForm.PopMenuContent;
 	import popForm.PopMenuEvent;
 	import popForm.PopMenuFields;
 
-	public class FileBrowser
+	public class FileBrowser2
 	{
 		private static var eventListen:Sprite = new Sprite();
 		
@@ -33,7 +35,10 @@ package fileBrowser
 		private static var driveFrame:uint = 8,
 							folderFrame:uint=9,
 							fileFrame:uint=10,
-							noFileFrame:uint=11;
+							noFileFrame:uint=11,
+							searchButtonFrame:uint=5,
+							backButtonFrame:uint=6,
+							defaultButtonFrame:uint=7;
 		
 		/**1: load file, 2:save file*/
 		private static var mode:uint = 0;
@@ -48,15 +53,48 @@ package fileBrowser
 
 		private static var baseFolder:File,
 							baseFolderTarget:String;
+							
+		private static var rootPath:String = null ;
 		
 		/**Set the Popmenu frames here*/
 		public static function setUp(DriveButtonFrame:uint,FolderButtonsFrame:uint,
-									 FilesButtonFrame:uint,NoFileButtonFrame:uint):void
+									 FilesButtonFrame:uint,NoFileButtonFrame:uint,
+									 SearchButtonFrame:uint=5,BackButtonFrame:uint=6,DefaultButtonFrame:uint=7):void
 		{
 			driveFrame = DriveButtonFrame ;
 			folderFrame = FolderButtonsFrame;
 			fileFrame = FilesButtonFrame;
 			noFileFrame = NoFileButtonFrame ;
+			searchButtonFrame = SearchButtonFrame ;
+			backButtonFrame = BackButtonFrame ;
+			defaultButtonFrame = DefaultButtonFrame ;
+			
+			var neededLang:String = "" ;
+			
+			neededLang+=controlLang("cansel","لغو") ;
+			neededLang+=controlLang("back","بازگشت") ;
+			neededLang+=controlLang("save","ذخیره") ;
+			neededLang+=controlLang("search","جستجو") ;
+			neededLang+=controlLang("no_file_here","هیچ فایلی در این مسیر وجود ندارد") ;
+			neededLang+=controlLang("file_selector_title","انتخاب فایل") ;
+			neededLang+=controlLang("see_the_result","مشاهده") ;
+			neededLang+=controlLang("founded_items","فایل های یافت شده:") ;
+			neededLang+=controlLang("founded_files_with","فایل های یافت شده با نام :") ;
+			neededLang+=controlLang("please_wait","لطفاً کمی صبر کنید ...") ;
+			
+			if(neededLang!='')
+			{
+				throw "Please add below tags to the Language.xml file for FileBrowser class.\n\n"+neededLang ;
+			}
+		}
+		
+		private static function controlLang(langName:String,defaultText:String):String
+		{
+			if(Contents.lang.t[langName] == null)
+			{
+				return "\t<"+langName+">\n\t\t<fa>"+defaultText+"</fa>\n\t</"+langName+">\n";
+			}
+			return '' ;
 		}
 
 		public static function get isSupported():Boolean
@@ -84,12 +122,13 @@ package fileBrowser
 			showBrowser(lastLocation);
 		}
 		
-		public static function showBrowser(target:File,hint:String=''):void
+		public static function showBrowser(target:File,hint:String='',addBackButton:Boolean=true):void
 		{
 			lastLocation = target ;
 			//var buttons:Array = [Contents.lang.t.cansel,''] ;
 			var buttons:Array = new Array();
-			buttons.push(new PopButtonData(Contents.lang.t.cansel,7,null,true,true)) ;
+		
+			buttons.push(new PopButtonData(Contents.lang.t.cansel,defaultButtonFrame,null,true,true)) ;
 			baseFolderTarget = '' ;
 			if(/*true || */DevicePrefrence.isIOS())
 			{
@@ -110,18 +149,29 @@ package fileBrowser
 				trace("Location was not null : "+lastLocation.nativePath);
 			}
 			
-			if(lastLocation!=null && 
-				(baseFolder==null || lastLocation.nativePath!=baseFolder.nativePath))
+			if(
+				lastLocation!=null 
+				&& 
+				(
+					baseFolder==null 
+					|| 
+					lastLocation.nativePath!=baseFolder.nativePath
+				) 
+				&& 
+				(
+					lastLocation.nativePath != rootPath
+				)
+			)
 			{
-				buttons.push(new PopButtonData(Contents.lang.t.back,7,null,true,true));
+				buttons.push(new PopButtonData(Contents.lang.t.back,defaultButtonFrame,null,true,true));
 			}
 			if(mode==2 && lastLocation!=null)
 			{
-				buttons.push(new PopButtonData(Contents.lang.t.save,7,null,true,true));
+				buttons.push(new PopButtonData(Contents.lang.t.save,defaultButtonFrame,null,true,true));
 			}
 			else if(lastLocation!=null)
 			{
-				buttons.push(new PopButtonData(Contents.lang.t.search,7,null,true,true));
+				buttons.push(new PopButtonData(Contents.lang.t.search,defaultButtonFrame,null,true,true));
 			}
 			var button:PopButtonData ;
 			var i:int ;
@@ -151,7 +201,8 @@ package fileBrowser
 				var bases:Array = File.getRootDirectories() ;
 				if(bases.length==1)
 				{
-					showBrowser(bases[0] as File);
+					rootPath = (bases[0] as File).nativePath ;
+					showBrowser(bases[0] as File,'',false);
 					return ;
 				}
 				for(i = 0 ; i<bases.length ; i++)
@@ -165,6 +216,7 @@ package fileBrowser
 			else
 			{
 				var sub:Array = lastLocation.getDirectoryListing() ;
+				sub = sub.sort(sortFolders);
 				for(i = 0 ; i<sub.length ; i++)
 				{
 					hadSub = true ;
@@ -197,10 +249,19 @@ package fileBrowser
 			trace("Open browser");
 			PopMenu1.popUp(Contents.lang.t.file_selector_title,null,popText,0,onFileSelected);
 		}
+			
+		/**Sort files by their name*/
+		private static function sortFolders(a:File,b:File):int
+		{
+			trace("Compair "+a.name+" vs "+b.name+" = "+StringFunctions.compairFarsiString(a.name,b.name));
+			return StringFunctions.compairFarsiString(a.name,b.name);
+		}
 		
 		private static function onFileSelected(e:PopMenuEvent):void
 		{
-			var file:File ;
+			//trace('e :',JSON.stringify(e));
+			var myFile:File ;
+			
 			if(e.buttonTitle == Contents.lang.t.back)
 			{
 				showBrowser(lastLocation.parent);
@@ -211,7 +272,6 @@ package fileBrowser
 			}
 			else if(e.buttonTitle == Contents.lang.t.cansel)
 			{
-				trace("Cansel");
 				selectedFile = null;
 				selectedFileBytes = null ;
 				//onDone();
@@ -237,14 +297,14 @@ package fileBrowser
 			}
 			else if(e.buttonID is File)
 			{
-				file = e.buttonID as File;
-				if(file.isDirectory)
+				myFile = e.buttonID as File;
+				if(myFile.isDirectory)
 				{
-					showBrowser(file); 
+					showBrowser(myFile); 
 				}
 				else
 				{
-					selectThisFile(file);
+					selectThisFile(myFile);
 				}
 			}
 		}
@@ -272,9 +332,9 @@ package fileBrowser
 			fields.addField(Contents.lang.t.search,lastSearchVal,null,false);
 			
 			var buttons:Array = new Array();
-			var newButt1:PopButtonData = new PopButtonData(Contents.lang.t.search,5,null,true,true);
+			var newButt1:PopButtonData = new PopButtonData(Contents.lang.t.search,searchButtonFrame,null,true,true);
 			buttons.push(newButt1)
-			var newButt2:PopButtonData = new PopButtonData(Contents.lang.t.back,6,null,true,true);
+			var newButt2:PopButtonData = new PopButtonData(Contents.lang.t.back,backButtonFrame,null,true,true);
 			buttons.push(newButt2)
 			//var buttons:Array = [Contents.lang.t.search,Contents.lang.t.back];
 			var popText:PopMenuContent = new PopMenuContent('',fields,buttons);
@@ -365,13 +425,13 @@ package fileBrowser
 				//stopSearching();
 			}
 			
-			private static function searchOn2(file:File):void
+			private static function searchOn2(myFile:File):void
 			{
 				//trace("Check this : "+file.nativePath);
 				
-				if(file.isDirectory)
+				if(myFile.isDirectory)
 				{
-					var sub:Array = file.getDirectoryListing();
+					var sub:Array = myFile.getDirectoryListing();
 					if(sub.length > 0)
 					{
 						lastSearchedFolder = sub[0] as File ;
@@ -382,14 +442,14 @@ package fileBrowser
 						//Same as file
 					}
 				}
-				else if(file.name.indexOf(lastSearchVal)!=-1)
+				else if(myFile.name.indexOf(lastSearchVal)!=-1)
 				{
-					foundedFiles.push(file);
+					foundedFiles.push(myFile);
 				}
 				
-				while(file.nativePath!=lastLocation.nativePath && file!=null)
+				while(myFile.nativePath!=lastLocation.nativePath && myFile!=null)
 				{
-					var nextFolder:File = file.parent;
+					var nextFolder:File = myFile.parent;
 					if(nextFolder==null)
 					{
 						lastSearchedFolder = null;
@@ -399,7 +459,7 @@ package fileBrowser
 					var sisters:Array = nextFolder.getDirectoryListing();
 					for(var i = 0 ; i<sisters.length ; i++)
 					{
-						if((sisters[i] as File).name == file.name)
+						if((sisters[i] as File).name == myFile.name)
 						{
 							myIndex = i ;
 							break ;
@@ -412,7 +472,7 @@ package fileBrowser
 					}
 					else
 					{
-						file = nextFolder ;
+						myFile = nextFolder ;
 					}
 					//trace("loop on : "+file.nativePath);
 				}
@@ -432,16 +492,16 @@ package fileBrowser
 				}*/
 			}
 			
-				private static function searchOn(file:File):void
+				private static function searchOn(myFile:File):void
 				{
 					if(getTimer()>queEndTime)
 					{
-						searchQue.push(file);
+						searchQue.push(myFile);
 						//trace("Time out on : "+file.nativePath);
 						return ;
 					}
 					
-					var sub:Array = file.getDirectoryListing() ;
+					var sub:Array = myFile.getDirectoryListing() ;
 					var file2:File
 					for(var i = 0 ; i<sub.length ; i++)
 					{
