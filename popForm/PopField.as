@@ -28,6 +28,9 @@
 		private var radioButtonArray:Array ;
 		
 		private var nativeKeyBoard:FarsiInputCorrection ;
+		private var isEditable:Boolean;
+		private var IsArabic:Object;
+		private var lastTXT:String;
 		
 		
 		public function get textField():TextField
@@ -39,7 +42,14 @@
 		/**this will returns last inputed text to client*/
 		public function get text():String
 		{
-			return myTXT.text ;
+			if(isEditable)
+			{
+				return myTXT.text ;
+			}
+			else
+			{
+				return lastTXT ; 
+			}
 		}
 		
 		public function set text(value:String):void
@@ -48,8 +58,26 @@
 			{
 				value = '' ;
 			}
-			myTXT.text = value ;
-			myTXT.dispatchEvent(new Event(Event.CHANGE));
+			
+			lastTXT = value ;
+			
+			if(isEditable)
+			{
+				myTXT.text = lastTXT ;
+				myTXT.dispatchEvent(new Event(Event.CHANGE));
+			}
+			else
+			{
+				if(IsArabic)
+				{
+					UnicodeStatic.fastUnicodeOnLines(myTXT,lastTXT);
+				}
+				else
+				{
+					myTXT.text = lastTXT ;
+				}
+			}
+			
 		}
 		override public function get title():String
 		{
@@ -105,7 +133,12 @@
 			var Y0:Number ;
 			var Y1:Number ;
 			
+			lastTXT = defaultText ;
+			
 			radioButtonArray = otherOptions ;
+			
+			isEditable = editable ;
+			IsArabic = isAraic ;
 			
 			if(editable && numLines==0)
 			{
