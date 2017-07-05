@@ -132,6 +132,7 @@
 			titleCont = Obj.get('title_container',this);
 			titleCont.mouseChildren = titleCont.mouseEnabled = false ;
 			titleBackMC = Obj.get('title_cont',this);
+			titleBackMC.mouseChildren = titleBackMC.mouseEnabled = false ;
 			if(titleCont)
 			{
 				titleTXT = Obj.get('title_txt',titleCont);
@@ -142,6 +143,7 @@
 				titleContainerMC.addChild(titleTXT);
 				titleTXT.x = 0 ;
 				titleTXT.y = 0 ;
+				titleTXT.parent.mouseChildren = titleTXT.parent.mouseEnabled = false ;
 			}
 			//titleMC = Obj.get('title_mc',titleBackMC);
 			
