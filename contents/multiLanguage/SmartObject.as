@@ -10,6 +10,7 @@ package contents.multiLanguage
 		
 		private var _____compilerValuesLocation:String ;
 		private var _____compilerValsAre:String;
+		public var about_lable:*;
 		
 		public function SmartObject()
 		{

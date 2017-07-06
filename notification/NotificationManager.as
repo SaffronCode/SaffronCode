@@ -28,14 +28,16 @@ package notification
 		public static var token:String ;
 		
 		private var _timeOutId:uint	
+		private static var autoAlertBox:Boolean;
 		public function NotificationManager()
 		{
 			super();
 		}
 		
 		/**This will returns an instance on NofificatnionManager to cathc its events*/
-		public static function setup(ONESIGNAL_APP_ID_p:String='',GCM_PROJECT_NUMBER_p:String=''):NotificationManager
+		public static function setup(ONESIGNAL_APP_ID_p:String='',GCM_PROJECT_NUMBER_p:String='',autoAlerOnNativeBox:Boolean=true):NotificationManager
 		{
+			autoAlertBox = autoAlerOnNativeBox ;
 			trace("SetUp easy push");
 			Notification_Event = new NotificationManager()
 			ONESIGNAL_APP_ID = ONESIGNAL_APP_ID_p
@@ -73,7 +75,7 @@ package notification
 			log("init OneSignal...");
 			try
 			{
-				EasyPush.initOneSignal(ONESIGNAL_APP_ID, GCM_PROJECT_NUMBER, true);
+				EasyPush.initOneSignal(ONESIGNAL_APP_ID, GCM_PROJECT_NUMBER, autoAlertBox);
 			}catch(e)
 			{
 				trace("Esy push >>>> "+e);

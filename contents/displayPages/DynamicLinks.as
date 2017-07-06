@@ -733,7 +733,7 @@ package contents.displayPages
 			if(reloaderMC)
 			{
 				var precent:Number = 0 ;
-				if(revertedX || revertedY)
+				if(revertedX)
 				{
 					trace("Reloader on non horizontal but reverted menu");
 				}
@@ -745,7 +745,14 @@ package contents.displayPages
 					}
 					else
 					{
-						precent = Math.max(0,Math.min(2,(linksContainer.y)/reloaderMC.height));
+						if(revertedY)
+						{
+							precent = Math.max(0,Math.min(2,Math.abs((linksContainer.y)/reloaderMC.height)));
+						}
+						else
+						{
+							precent = Math.max(0,Math.min(2,(linksContainer.y)/reloaderMC.height));
+						}
 					}
 					//trace("linksContainer.y : "+linksContainer.y);
 					if(precent>0)

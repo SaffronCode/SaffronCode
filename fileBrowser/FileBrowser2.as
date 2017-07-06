@@ -88,6 +88,12 @@
 			}
 		}
 		
+		/**Set default location for firs openning*/
+		public static function setDefaultPath(file:File):void
+		{
+			lastLocation = file ;
+		}
+		
 		private static function controlLang(langName:String,defaultText:String):String
 		{
 			if(Contents.lang.t[langName] == null)
