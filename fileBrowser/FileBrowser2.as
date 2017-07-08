@@ -72,7 +72,7 @@
 			var neededLang:String = "" ;
 			
 			neededLang+=controlLang("cansel","لغو") ;
-			neededLang+=controlLang("back","بازگشت") ;
+			neededLang+=controlLang("back_folder","بازگشت به بالا") ;
 			neededLang+=controlLang("save","ذخیره") ;
 			neededLang+=controlLang("search","جستجو") ;
 			neededLang+=controlLang("no_file_here","هیچ فایلی در این مسیر وجود ندارد") ;
@@ -86,6 +86,8 @@
 			{
 				throw "Please add below tags to the Language.xml file for FileBrowser class.\n\n"+neededLang ;
 			}
+			
+			lastLocation = File.userDirectory ;
 		}
 		
 		/**Set default location for firs openning*/
@@ -120,7 +122,7 @@
 		
 		public static function browsToSave(targetBytes:ByteArray,fileName:String):void
 		{
-			
+			trace("Save the file with the name ; "+fileName);
 			selectedFileBytes = targetBytes ;
 			mode = 2;
 			Name = fileName ;
@@ -169,7 +171,7 @@
 				)
 			)
 			{
-				buttons.push(new PopButtonData(Contents.lang.t.back,defaultButtonFrame,null,true,true));
+				buttons.push(new PopButtonData(Contents.lang.t.back_folder,defaultButtonFrame,null,true,true));
 			}
 			if(mode==2 && lastLocation!=null)
 			{
@@ -268,7 +270,7 @@
 			//trace('e :',JSON.stringify(e));
 			var myFile:File ;
 			
-			if(e.buttonTitle == Contents.lang.t.back)
+			if(e.buttonTitle == Contents.lang.t.back_folder)
 			{
 				showBrowser(lastLocation.parent);
 			}
