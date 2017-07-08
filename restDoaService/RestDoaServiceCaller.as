@@ -8,6 +8,7 @@
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IOErrorEvent;
+	import flash.events.ProgressEvent;
 	import flash.net.URLLoader;
 	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequest;
@@ -33,6 +34,8 @@
 	[Event(name="SERVER_WAS_UPDATED", type="restDoaService.RestDoaEvent")]
 	/**Result Title value is Error user when one parmas is invalid*/
 	[Event(name="TITLE_ERROR", type="restDoaService.RestDoaEvent")]
+	/**Dispatch progress event*/
+	[Event(name="progress", type="flash.events.ProgressEvent")]
 	public class RestDoaServiceCaller extends EventDispatcher 
 	{
 		private var instantOfflineData:Boolean,
@@ -153,6 +156,13 @@
 			}
 			requestLoader.addEventListener(Event.COMPLETE,requestLoaded);
 			requestLoader.addEventListener(IOErrorEvent.IO_ERROR,noInternet);
+			requestLoader.addEventListener(ProgressEvent.PROGRESS,dispatchProgress);
+		}
+		
+		/**Dispatch proggress event*/
+		protected function dispatchProgress(event:ProgressEvent):void
+		{
+			this.dispatch(new ProgressEvent(ProgressEvent.PROGRESS,false,false,event.bytesLoaded,event.bytesTotal));
 		}
 		
 		/**Returns true if loading is in progress*/
