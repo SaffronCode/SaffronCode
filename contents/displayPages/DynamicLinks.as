@@ -747,7 +747,7 @@ package contents.displayPages
 					{
 						if(revertedY)
 						{
-							precent = Math.max(0,Math.min(2,Math.abs((linksContainer.y)/reloaderMC.height)));
+							precent = Math.max(0,Math.min(2,(linksContainer.y)/-reloaderMC.height));
 						}
 						else
 						{
