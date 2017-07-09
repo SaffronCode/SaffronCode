@@ -28,14 +28,23 @@
 		{
 			return myTextTF.text
 		}
-		public function TextParag(moreHight:Number=0)
+		public function TextParag(moreHight:Number=0,myText:TextField=null)
 		{
 			super();
 			
+			if(myText==null)
+			{
+				myTextTF = Obj.findThisClass(TextField,this);
+			}
+			else
+			{
+				myTextTF = myText ;
+				this.addChild(myText);
+				myText.x = myText.y = 0 ;
+			}
+			
 			H = super.height+moreHight;
 			W = super.width ;
-			
-			myTextTF = Obj.findThisClass(TextField,this);
 			//Removed for debug
 			//myTextTF.text = '' ;
 			//Added for debug
