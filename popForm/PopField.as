@@ -217,13 +217,36 @@
 					backMC.visible = false;
 				}
 				
+				var textContainerMC:MovieClip = new MovieClip();
+				myTXT.parent.addChild(textContainerMC);
+				textContainerMC.addChild(myTXT);
+				textContainerMC.x = myTXT.x;
+				textContainerMC.y = myTXT.y;
+				myTXT.x = myTXT.y = 0 ;
+				
 				if(isAraic)
 				{
-					UnicodeStatic.fastUnicodeOnLines(myTXT,defaultText);
+					if(numLines==1)
+					{
+						myTXT.multiline = false ;
+						myTXT.wordWrap = false ;
+						TextPutter.OnButton(myTXT,defaultText,true,true,false,true);
+					}
+					else
+					{
+						TextPutter.onStaticArea(myTXT,defaultText,true,true,false);
+					}
 				}
 				else
 				{
-					myTXT.text = defaultText ;
+					if(numLines==1)
+					{
+						TextPutter.OnButton(myTXT,defaultText,false,true,false,true);
+					}
+					else
+					{
+						myTXT.text = defaultText ;
+					}
 				}
 				
 				if(numLines==0)
