@@ -1,5 +1,7 @@
 ﻿package popForm
 {
+	import appManager.displayContentElemets.TextParag;
+	
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -234,7 +236,13 @@
 					}
 					else
 					{
-						TextPutter.onStaticArea(myTXT,defaultText,true,true,false);
+						myTXT.height = myTXT.height*Math.max(1,numLines);
+						var parag:TextParag = new TextParag(0,myTXT);
+						parag.x = textContainerMC.x ;
+						parag.y = textContainerMC.y ;
+						this.addChild(parag);
+						parag.setUp(defaultText,true,true);
+						//TextPutter.onStaticArea(myTXT,defaultText,true,true,false);
 					}
 				}
 				else
