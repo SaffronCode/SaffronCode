@@ -2,7 +2,20 @@ package otherPlatforms.postMan.model
 {
 	public class RequestModel
 	{
-		public var url:String ;
+		/**Be care full, it can be some thing like this : 
+	"protocol" : "http",
+	"variable" : [],
+	"host" : ["185", "184", "32", "33"],
+	"query" : [{
+			"value" : "0451636155",
+			"key" : "codemelli",
+			"equals" : true,
+			"description" : ""
+		}
+	],
+	"raw" : "http://185.184.32.33/NovinInsuranceServices/Cmn/api/Person/Policies?codemelli=0451636155",
+	"path" : ["NovinInsuranceServices", "Cmn", "api", "Person", "Policies"]*/
+		public var url:String = '';
 		public var method:String ;
 		public var header:Vector.<HeaderModel> = new Vector.<HeaderModel>();
 		public var body:BodyModel = new BodyModel();
