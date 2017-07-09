@@ -1,4 +1,4 @@
-package otherPlatforms.postMan
+﻿package otherPlatforms.postMan
 {
 	import flash.net.URLVariables;
 	import flash.utils.getDefinitionByName;
@@ -32,13 +32,11 @@ package otherPlatforms.postMan
 			
 			if(IsGet && myWebServiceLocation.indexOf('?')!=-1)
 			{
-				if(inputObject!=null)
-				{
-					myWebServiceLocation = myWebServiceLocation.substring(0,myWebServiceLocation.lastIndexOf('?'));
-				}
-				else
+				if(inputObject==null)
 				{
 					inputObject = new URLVariables(myWebServiceLocation.substring(myWebServiceLocation.lastIndexOf('?')+1));
+					//Split extra variables from the web service url at all
+					myWebServiceLocation = myWebServiceLocation.substring(0,myWebServiceLocation.lastIndexOf('?'));
 				}
 			}
 			
