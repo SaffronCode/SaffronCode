@@ -33,6 +33,9 @@
 		private var isEditable:Boolean;
 		private var IsArabic:Object;
 		private var lastTXT:String;
+
+		private var parag:TextParag;
+		private var fieldNumLines:uint;
 		
 		
 		public function get textField():TextField
@@ -70,14 +73,22 @@
 			}
 			else
 			{
-				if(IsArabic)
+				if(fieldNumLines==1)
+				{
+					TextPutter.OnButton(myTXT,lastTXT,true,true,false,true);
+				}
+				else
+				{
+					parag.setUp(lastTXT,true,true);
+				}
+				/*if(IsArabic)
 				{
 					UnicodeStatic.fastUnicodeOnLines(myTXT,lastTXT);
 				}
 				else
 				{
 					myTXT.text = lastTXT ;
-				}
+				}*/
 			}
 			
 		}
@@ -132,6 +143,7 @@
 		
 		public function setUp(tagName:String,defaultText:String,KeyBordType:String = SoftKeyboardType.DEFAULT,isPass:Boolean = false,editable:Boolean = true,isAraic:Boolean=true,numLines:uint = 1,color:uint=1,frame:uint=1,maxChar:uint=0,otherOptions:Array=null,deleteDefautlText:Boolean=false,activateRadioSwitcher:Boolean=false,returnKey:String=ReturnKeyLabel.DEFAULT,onTypedFunction:Function=null,justShowNativeText:Boolean=false):void
 		{
+			
 			var Y0:Number ;
 			var Y1:Number ;
 			
@@ -147,6 +159,7 @@
 				trace("You cant have dynamic field size on editable texts");
 				numLines = 1 ;
 			}
+			fieldNumLines = numLines ;
 			
 			activeRadioMode = activateRadioSwitcher ;
 			
@@ -237,7 +250,7 @@
 					else
 					{
 						myTXT.height = myTXT.height*Math.max(1,numLines);
-						var parag:TextParag = new TextParag(0,myTXT);
+						parag = new TextParag(0,myTXT);
 						parag.x = textContainerMC.x ;
 						parag.y = textContainerMC.y ;
 						this.addChild(parag);
