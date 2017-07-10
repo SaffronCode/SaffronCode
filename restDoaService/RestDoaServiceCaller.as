@@ -162,6 +162,7 @@
 		/**Dispatch proggress event*/
 		protected function dispatchProgress(event:ProgressEvent):void
 		{
+			trace("--Rest doa service progress--",event.bytesLoaded,event.bytesTotal+' > '+myId);
 			this.dispatch(new ProgressEvent(ProgressEvent.PROGRESS,false,false,event.bytesLoaded,event.bytesTotal));
 		}
 		
