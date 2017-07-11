@@ -294,7 +294,7 @@ package photoEditor
 				imageHistory[i].dispose();
 			}
 			imageHistory = new Vector.<BitmapData>();
-			onDone();
+			//onDone(); // do not call onDone() function when user closed the win
 			ME.disable();
 		}
 		
