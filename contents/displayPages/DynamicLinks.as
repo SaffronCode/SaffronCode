@@ -125,7 +125,8 @@ package contents.displayPages
 		/**Preloader for more datas*/
 		private var requestPreLoader:Sprite ;
 		/**This will prevent scroller to have animation if there is.*/
-		public var acceptAnimation:Boolean = true;
+		public var 	acceptAnimation:Boolean = true,
+					forseScrollEffect:Boolean=false;
 		
 		private var revertedX:Boolean = false,
 					revertedY:Boolean = false,
@@ -618,7 +619,7 @@ package contents.displayPages
 				trace("linksContainer : "+linksContainer.getBounds(stage));
 				trace("areaRect : "+areaRect);
 				
-				linkScroller = new ScrollMT(linksContainer,areaRect,/*areaRect*/null,!horizontalMenu,horizontalMenu,acceptAnimation&&(!revertedX && !revertedY),revertedY,revertedX,stepSize);
+				linkScroller = new ScrollMT(linksContainer,areaRect,/*areaRect*/null,!horizontalMenu,horizontalMenu,acceptAnimation&&(!revertedX && !revertedY),revertedY,revertedX,stepSize,forseScrollEffect);
 				
 				activateAtoScroll(autoScrollSpeed);
 				
