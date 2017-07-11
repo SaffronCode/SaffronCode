@@ -13,6 +13,7 @@
 	import flash.utils.ByteArray;
 	import flash.utils.getTimer;
 	
+	import popForm.Hints;
 	import popForm.PopButtonData;
 	import popForm.PopMenuContent;
 	import popForm.PopMenuEvent;
@@ -301,6 +302,11 @@
 				if(status!='')
 				{
 					showBrowser(lastLocation,status);
+				}
+				else
+				{
+					var popContent:PopMenuContent = new PopMenuContent('فایل با نام \n'+saveTarget.name+'\n ذخیره شد.',null,[Contents.lang.t.back]);
+					PopMenu1.popUp('',null,popContent,10000);
 				}
 			}
 			else if(e.buttonID is File)
