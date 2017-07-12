@@ -253,15 +253,20 @@
 				)
 			)
 			{
-				if(myLinkData.id.indexOf('http')==0)
-				{
-					navigateToURL(new URLRequest(myLinkData.id));
-				}
-				else
-				{
-					//trace("Dispatch linkData");
-					this.dispatchEvent(new AppEventContent(myLinkData));
-				}
+				activateClick();
+			}
+		}
+		
+		protected function activateClick():void
+		{
+			if(myLinkData.id.indexOf('http')==0)
+			{
+				navigateToURL(new URLRequest(myLinkData.id));
+			}
+			else
+			{
+				//trace("Dispatch linkData");
+				this.dispatchEvent(new AppEventContent(myLinkData));
 			}
 		}
 	}
