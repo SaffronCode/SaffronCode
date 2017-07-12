@@ -26,6 +26,10 @@
 	
 	import myAsCSS.MyAsCSS;
 	
+	/**Now its ready to call other pages*/
+	[Event(name="MAIN_ANIM_IS_READY", type="appManager.event.AppEvent")]
+	/**Intro is over and app is starting to open*/
+	[Event(name="APP_STARTS", type="appManager.event.AppEvent")]
 	/**Use this class for the applications without any content . it just manage page manager with PageEvents without need to use content types<br>
 	 * add Intro and PageManger DisplayObject Classes to stage*/
 	public class App extends MovieClip
