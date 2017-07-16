@@ -108,8 +108,8 @@
 		/**The wrong names can be like this : http://185.83.208.175:821/api/Service/GetBranches*/
 		private static function correctNames(name:String):String
 		{
-			var fileName:String = name.replace(/^.*\/([^\/]+)/gi,'$1');
-			var fileNameSplitted:Array = fileName.split(' ');
+			var fileName:String = name.replace(/(^.*\/|)([^\/?\(]+)([?].*$|$|\(.*$)/gi,'$2');
+			var fileNameSplitted:Array = fileName.split("'").join('').split('"').join('').split(' ');
 			if(fileNameSplitted.length>1)
 			{
                 fileName = fileNameSplitted[0] ;
