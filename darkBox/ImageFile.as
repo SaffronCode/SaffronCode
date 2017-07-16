@@ -73,7 +73,7 @@ package darkBox
 							TYPE_PDF:int = 5
 		 * 
 		 * @see darkBox.ImageFile*/
-		public function ImageFile(Target:String='',Title:String='',Type:int=0,StoreOffline:Boolean=true)
+		public function ImageFile(Target:String='',Title:String='',Type:int=ImageFile.TYPE_FLAT,StoreOffline:Boolean=true)
 		{
 			target = Target ;
 			title = Title ;

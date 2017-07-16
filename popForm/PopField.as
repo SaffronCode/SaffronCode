@@ -1,5 +1,7 @@
 ﻿package popForm
 {
+	import appManager.displayContentElemets.TextParag;
+	
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -28,6 +30,12 @@
 		private var radioButtonArray:Array ;
 		
 		private var nativeKeyBoard:FarsiInputCorrection ;
+		private var isEditable:Boolean;
+		private var IsArabic:Object;
+		private var lastTXT:String;
+
+		private var parag:TextParag;
+		private var fieldNumLines:uint;
 		
 		
 		public function get textField():TextField
@@ -39,7 +47,14 @@
 		/**this will returns last inputed text to client*/
 		public function get text():String
 		{
-			return myTXT.text ;
+			if(isEditable)
+			{
+				return myTXT.text ;
+			}
+			else
+			{
+				return lastTXT ; 
+			}
 		}
 		
 		public function set text(value:String):void
@@ -48,8 +63,34 @@
 			{
 				value = '' ;
 			}
-			myTXT.text = value ;
-			myTXT.dispatchEvent(new Event(Event.CHANGE));
+			
+			lastTXT = value ;
+			
+			if(isEditable)
+			{
+				myTXT.text = lastTXT ;
+				myTXT.dispatchEvent(new Event(Event.CHANGE));
+			}
+			else
+			{
+				if(fieldNumLines==1)
+				{
+					TextPutter.OnButton(myTXT,lastTXT,true,true,false,true);
+				}
+				else
+				{
+					parag.setUp(lastTXT,true,true);
+				}
+				/*if(IsArabic)
+				{
+					UnicodeStatic.fastUnicodeOnLines(myTXT,lastTXT);
+				}
+				else
+				{
+					myTXT.text = lastTXT ;
+				}*/
+			}
+			
 		}
 		override public function get title():String
 		{
@@ -102,16 +143,23 @@
 		
 		public function setUp(tagName:String,defaultText:String,KeyBordType:String = SoftKeyboardType.DEFAULT,isPass:Boolean = false,editable:Boolean = true,isAraic:Boolean=true,numLines:uint = 1,color:uint=1,frame:uint=1,maxChar:uint=0,otherOptions:Array=null,deleteDefautlText:Boolean=false,activateRadioSwitcher:Boolean=false,returnKey:String=ReturnKeyLabel.DEFAULT,onTypedFunction:Function=null,justShowNativeText:Boolean=false):void
 		{
+			
 			var Y0:Number ;
 			var Y1:Number ;
 			
+			lastTXT = defaultText ;
+			
 			radioButtonArray = otherOptions ;
+			
+			isEditable = editable ;
+			IsArabic = isAraic ;
 			
 			if(editable && numLines==0)
 			{
 				trace("You cant have dynamic field size on editable texts");
 				numLines = 1 ;
 			}
+			fieldNumLines = numLines ;
 			
 			activeRadioMode = activateRadioSwitcher ;
 			
@@ -184,13 +232,42 @@
 					backMC.visible = false;
 				}
 				
+				var textContainerMC:MovieClip = new MovieClip();
+				myTXT.parent.addChild(textContainerMC);
+				textContainerMC.addChild(myTXT);
+				textContainerMC.x = myTXT.x;
+				textContainerMC.y = myTXT.y;
+				myTXT.x = myTXT.y = 0 ;
+				
 				if(isAraic)
 				{
-					UnicodeStatic.fastUnicodeOnLines(myTXT,defaultText);
+					if(numLines==1)
+					{
+						myTXT.multiline = false ;
+						myTXT.wordWrap = false ;
+						TextPutter.OnButton(myTXT,defaultText,true,true,false,true);
+					}
+					else
+					{
+						myTXT.height = myTXT.height*Math.max(1,numLines);
+						parag = new TextParag(0,myTXT);
+						parag.x = textContainerMC.x ;
+						parag.y = textContainerMC.y ;
+						this.addChild(parag);
+						parag.setUp(defaultText,true,true);
+						//TextPutter.onStaticArea(myTXT,defaultText,true,true,false);
+					}
 				}
 				else
 				{
-					myTXT.text = defaultText ;
+					if(numLines==1)
+					{
+						TextPutter.OnButton(myTXT,defaultText,false,true,false,true);
+					}
+					else
+					{
+						myTXT.text = defaultText ;
+					}
 				}
 				
 				if(numLines==0)

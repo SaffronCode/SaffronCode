@@ -20,7 +20,7 @@ package componentStatic
 		private var _fun:Function;
 		private var _data:*;
 		private var _timerId:uint;
-		
+		private var _title:String;
 		public function get data():*
 		{
 			return _data
@@ -40,10 +40,10 @@ package componentStatic
 		{
 			
 		}
-		protected function load(Fun_p:Function):void
+		protected function load(Fun_p:Function,Title_p:String=null):void
 		{
 			_fun = Fun_p
-			
+			_title = Title_p
 			upLoadDate = new Date()
 			upLoadDate.date-=7	
 			if(_titleMc!=null)
@@ -97,7 +97,16 @@ package componentStatic
 		
 		public function openListPopUp():void
 		{
-			Hints.selector(_data.title(),'',_data.buttonArray(),selector,null,1,2,onBackFun)
+			trace('_data.title() :',_data.title());
+			if(_title!=null)
+			{
+				Hints.selector(_title,'',_data.buttonArray(),selector,null,1,2,onBackFun)
+			}
+			else
+			{
+				Hints.selector(_data.title(),'',_data.buttonArray(),selector,null,1,2,onBackFun)
+			}
+			
 		}
 		
 		protected function onBackFun():void

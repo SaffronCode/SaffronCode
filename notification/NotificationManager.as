@@ -28,14 +28,16 @@ package notification
 		public static var token:String ;
 		
 		private var _timeOutId:uint	
+		private static var autoAlertBox:Boolean;
 		public function NotificationManager()
 		{
 			super();
 		}
 		
 		/**This will returns an instance on NofificatnionManager to cathc its events*/
-		public static function setup(ONESIGNAL_APP_ID_p:String='',GCM_PROJECT_NUMBER_p:String=''):NotificationManager
+		public static function setup(ONESIGNAL_APP_ID_p:String='',GCM_PROJECT_NUMBER_p:String='',autoAlerOnNativeBox:Boolean=true):NotificationManager
 		{
+			autoAlertBox = autoAlerOnNativeBox ;
 			trace("SetUp easy push");
 			Notification_Event = new NotificationManager()
 			ONESIGNAL_APP_ID = ONESIGNAL_APP_ID_p
@@ -73,14 +75,14 @@ package notification
 			log("init OneSignal...");
 			try
 			{
-				EasyPush.initOneSignal(ONESIGNAL_APP_ID, GCM_PROJECT_NUMBER, true);
+				EasyPush.initOneSignal(ONESIGNAL_APP_ID, GCM_PROJECT_NUMBER, autoAlertBox);
 			}catch(e)
 			{
 				trace("Esy push >>>> "+e);
 			}
 			log("did init OneSignal.");
 			EasyPush.oneSignal.addEventListener(PNOSEvent.ALERT_DISMISSED,onAlertDismissed);
-			EasyPush.oneSignal.addEventListener(PNOSEvent.FOREGROUND_NOTIFICATION,onNotification);
+			EasyPush.oneSignal.addEventListener(PNOSEvent.FOREGROUND_NOTIFICATION,onForegroundNotification);
 			EasyPush.oneSignal.addEventListener(PNOSEvent.RESUMED_FROM_NOTIFICATION,onNotification);
 			EasyPush.oneSignal.addEventListener(PNOSEvent.TOKEN_REGISTERED,onTokenRegistered);
 			EasyPush.oneSignal.addEventListener(PNOSEvent.TOKEN_REGISTRATION_FAILED,onRegFailed);
@@ -128,8 +130,14 @@ package notification
 		
 		private function onNotification(e:PNEvent):void
 		{
-			log(e.type+"="+e.rawPayload+","+e.badgeValue+","+e.title+" customPayload : "+e.customPayload);	
-			this.dispatchEvent(new NotificationEvent(NotificationEvent.NOTIFICATION,pnEvent(e)))
+			log(e.type+"="+e.rawPayload+","+e.badgeValue+","+e.title+" customPayload : "+e.customPayload+" : "+JSON.stringify(e.customPayload,null,' '));	
+			this.dispatchEvent(new NotificationEvent(NotificationEvent.NOTIFICATION,pnEvent(e),false,false,e.customPayload))
+		}
+		
+		private function onForegroundNotification(e:PNEvent):void
+		{
+			log(e.type+"="+e.rawPayload+","+e.badgeValue+","+e.title+" customPayload : "+e.customPayload+" : "+JSON.stringify(e.customPayload,null,' '));	
+			this.dispatchEvent(new NotificationEvent(NotificationEvent.FOREGROUND_NOTIFICATION,pnEvent(e),false,false,e.customPayload))
 		}
 		
 		///////////////////end event

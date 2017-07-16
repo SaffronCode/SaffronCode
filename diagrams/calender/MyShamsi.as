@@ -28,7 +28,11 @@ package diagrams.calender
 		}
 		
 		
-		
+		/**Returns a time lable 1396_4_17T11_22_30*/
+		public function timeLable():String
+		{
+			return fullYear+'_'+(month+1)+'_'+(date)+'T'+hours+'_'+minutes+'_'+seconds ;
+		}
 		
 		
 		
@@ -114,6 +118,12 @@ package diagrams.calender
 		public function toString(e=null):String
 		{
 			return fullYear+'/'+(month+1)+'/'+date+'   '+hours+':'+minutes+':'+seconds;
+		}
+		
+		public static function timeLable():String
+		{
+			// TODO Auto Generated method stub
+			return null;
 		}
 	}
 }

@@ -2,6 +2,8 @@ package appManager.displayContentElemets
 	//appManager.displayContentElemets.LightImage
 {
 	
+	import com.mteamapp.PerformanceTest;
+	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
@@ -206,6 +208,7 @@ package appManager.displayContentElemets
 		 * pass -1 for each dimention to make the original value to use on that side*/
 		override public function setUp(imageURL:String, loadInThisArea:Boolean=false, imageW:Number=0, imageH:Number=0, X:Number=0, Y:Number=0,keepRatio:Boolean=true):*
 		{
+			PerformanceTest.traceDelay(1);
 			//trace("Load this image : "+imageURL);
 			if(URL!=null && URL == imageURL)
 			{
@@ -273,6 +276,7 @@ package appManager.displayContentElemets
 			{
 				this.y=Y;
 			}
+			PerformanceTest.traceDelay(2);
 			if(this.stage!=null)
 			{
 				startWork(null);
@@ -303,6 +307,7 @@ package appManager.displayContentElemets
 		/**This will make images to load*/
 		private function startLoading(e:*=null):void
 		{
+			PerformanceTest.traceDelay(3);
 			clearTimeout(imageLoaderTimeOutId);
 			if(CPUController.isSatUp)
 			{
@@ -331,6 +336,7 @@ package appManager.displayContentElemets
 		protected function imageSaved(event:URLSaverEvent=null):void
 		{
 			
+			PerformanceTest.traceDelay('image is loaded');
 			var loaderContext:LoaderContext = new LoaderContext(false,ApplicationDomain.currentDomain);
 			//trace("Load this image : "+event.offlineTarget);
 			loader = new Loader();
@@ -348,10 +354,15 @@ package appManager.displayContentElemets
 				try
 				{
 					trace("Try to load : "+event.offlineTarget);
+					
+					PerformanceTest.traceDelay('create target file');
 					var targetFile:File = new File(event.offlineTarget) ;
+					PerformanceTest.traceDelay('Target file created');
 					if(targetFile.exists)
 					{
+						PerformanceTest.traceDelay('open file async');
 						fileStreamLoader.openAsync(targetFile,FileMode.READ);
+						PerformanceTest.traceDelay('async loaded');
 					}
 					else{
 						throw "The file is not exists" ;
@@ -381,7 +392,9 @@ package appManager.displayContentElemets
 			try
 			{
 				fileStreamLoader.readBytes(bytes);
+				PerformanceTest.traceDelay('file loaded. show the image');
 				loader.loadBytes(bytes,loaderContext);
+				PerformanceTest.traceDelay('image file showed');
 				fileStreamLoader.close();
 				bytes.clear();
 			}
@@ -402,6 +415,7 @@ package appManager.displayContentElemets
 		protected function imageLoaded(event:Event=null):void
 		{
 			
+			PerformanceTest.traceDelay('image loader loaded the image');
 			clearTheBitmap();
 			var loadedContent:DisplayObject ;
 			if(loader==null && loadedBitmap==null)
@@ -504,6 +518,7 @@ package appManager.displayContentElemets
 			}
 			
 			IsLoading = false;
+			PerformanceTest.traceDelay("Now image is ready to show");
 			this.dispatchEvent(new Event(Event.COMPLETE));
 		}
 		

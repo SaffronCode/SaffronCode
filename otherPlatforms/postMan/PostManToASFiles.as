@@ -1,4 +1,4 @@
-package otherPlatforms.postMan
+﻿package otherPlatforms.postMan
 {
 	import com.mteamapp.JSONParser;
 	
@@ -38,7 +38,7 @@ package otherPlatforms.postMan
 		{
 			for(var i:int = 0 ; i<rootItems.length ; i++)
 			{
-				if(rootItems[i].request.url!=null)
+				if(rootItems[i].request.url!=null && rootItems[i].request.url!='')
 				{
 					mySaveToFolderForServices.createDirectory();
 					trace(">>test : "+rootItems[i].request.url);
@@ -52,7 +52,7 @@ package otherPlatforms.postMan
 		{
 			serviceGenerator.ServiceName = correctNames(itemModel.name) ;
 			serviceGenerator.IsGet = itemModel.request.method=="GET" ;
-			serviceGenerator.myWebServiceLocation = itemModel.request.url ;
+			serviceGenerator.myWebServiceLocation = URLCatcher(itemModel.request.url) ;
 			
 			serviceGenerator.inputObject = bodyToObject(itemModel.request.body);
 			serviceGenerator.inputObjectClassName = createClassName(serviceGenerator.ServiceName,'Request');
@@ -89,6 +89,20 @@ package otherPlatforms.postMan
 			
 			var serviceFile:File = mySaveToFolderForServices.resolvePath(serviceGenerator.ServiceName+'.as');
 			TextFile.save(serviceFile,serviceGenerator.toString());
+		}
+		
+		/**Check the url object*/
+		private static function URLCatcher(url:String):String
+		{
+			if(url.indexOf('"raw"')==-1)
+			{
+				return url ;
+			}
+			else
+			{
+				var urlObj:Object = JSON.parse(url);
+				return urlObj.raw ;
+			}
 		}
 		
 		/**The wrong names can be like this : http://185.83.208.175:821/api/Service/GetBranches*/

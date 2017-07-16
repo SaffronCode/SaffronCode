@@ -125,7 +125,8 @@ package contents.displayPages
 		/**Preloader for more datas*/
 		private var requestPreLoader:Sprite ;
 		/**This will prevent scroller to have animation if there is.*/
-		public var acceptAnimation:Boolean = true;
+		public var 	acceptAnimation:Boolean = true,
+					forseScrollEffect:Boolean=false;
 		
 		private var revertedX:Boolean = false,
 					revertedY:Boolean = false,
@@ -618,7 +619,7 @@ package contents.displayPages
 				trace("linksContainer : "+linksContainer.getBounds(stage));
 				trace("areaRect : "+areaRect);
 				
-				linkScroller = new ScrollMT(linksContainer,areaRect,/*areaRect*/null,!horizontalMenu,horizontalMenu,acceptAnimation&&(!revertedX && !revertedY),revertedY,revertedX,stepSize);
+				linkScroller = new ScrollMT(linksContainer,areaRect,/*areaRect*/null,!horizontalMenu,horizontalMenu,acceptAnimation&&(!revertedX && !revertedY),revertedY,revertedX,stepSize,forseScrollEffect);
 				
 				activateAtoScroll(autoScrollSpeed);
 				
@@ -733,7 +734,7 @@ package contents.displayPages
 			if(reloaderMC)
 			{
 				var precent:Number = 0 ;
-				if(revertedX || revertedY)
+				if(revertedX)
 				{
 					trace("Reloader on non horizontal but reverted menu");
 				}
@@ -745,7 +746,14 @@ package contents.displayPages
 					}
 					else
 					{
-						precent = Math.max(0,Math.min(2,(linksContainer.y)/reloaderMC.height));
+						if(revertedY)
+						{
+							precent = Math.max(0,Math.min(2,(linksContainer.y)/-reloaderMC.height));
+						}
+						else
+						{
+							precent = Math.max(0,Math.min(2,(linksContainer.y)/reloaderMC.height));
+						}
 					}
 					//trace("linksContainer.y : "+linksContainer.y);
 					if(precent>0)
