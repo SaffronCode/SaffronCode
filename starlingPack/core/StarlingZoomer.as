@@ -47,7 +47,7 @@ public class StarlingZoomer {
         var deltaX:Number = 0 ,
             deltaY:Number = 0 ;
 
-        var scale:Number = 0 ;
+        var scale:Number = 1 ;
 
         var l:int = touchList.length ;
 
@@ -81,13 +81,11 @@ public class StarlingZoomer {
             var spriteRelativeWidth:Number = mySprite.width/mySprite.scaleX ;
             var spriteRelativeHeight:Number = area.height/mySprite.scale ;
 
-            scale = scale-1;
-
             trace("center : "+center+' vs width : '+spriteRelativeWidth+' from '+mySprite.width);//TODO control the center point to change the target osition on scaled.
             trace("scale : "+scale);
 
-            targetX -= ((center.x/(spriteRelativeWidth))*spriteRelativeWidth)*(scale);
-            targetY -= ((center.y/(spriteRelativeHeight))*spriteRelativeHeight)*(scale);
+            targetX -= (((center.x/(spriteRelativeWidth))*spriteRelativeWidth)*(scale-1))*mySprite.scaleX;
+            targetY -= ((center.y/(spriteRelativeHeight))*spriteRelativeHeight)*(scale-1)*mySprite.scaleY;
         }
         else if(l==1)
         {
@@ -96,11 +94,12 @@ public class StarlingZoomer {
 
         targetX += deltaX/Math.max(1,l);
         targetY += deltaY/Math.max(1,l);
-        targetScale += scale ;
+        targetScale = scale ;
 
         mySprite.x = targetX ;
         mySprite.y = targetY ;
-        mySprite.scale = targetScale ;
+        mySprite.width *= targetScale ;
+        mySprite.height *= targetScale ;
     }
 
 
