@@ -472,6 +472,23 @@ package contents.displayPages
 			}
 		}
 		
+		/**Update created linkItems with same model of pageData*/
+		public function update(pageData:PageData):void
+		{
+			if(myPageData.links1.length != pageData.links1.length)
+			{
+				throw "The update function is only works for the pages with same lenght of links1!!!" ;
+			}
+			myPageData = pageData ;
+			for(var i:int = 0 ; i<linksInterfaceStorage.length ; i++)
+			{
+				if(linksInterfaceStorage[i].stage!=null)
+				{
+					linksInterfaceStorage[i].setUp(myPageData.links1[i]);
+				}
+			}
+		}
+		
 		public function setUp(pageData:PageData):void
 		{
 			
