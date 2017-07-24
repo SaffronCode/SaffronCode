@@ -168,16 +168,16 @@
 			
 			
 			myTitle = tagName ;
-			backMC = Obj.get("back_mc",this);
+			backMC = Obj.getAllChilds("back_mc",this,true)[0];
 			
 			//New Line to manage textfield background color 
 			changeColor(color);
 			
-			tagNameTXT = Obj.get("tag_txt",Obj.get("tag_txt",this));
+			tagNameTXT = Obj.get("tag_txt",Obj.getAllChilds("tag_txt",this,true)[0]);
 			tagNameTXT.text = "" ;
 			
 			TextPutter.OnButton(tagNameTXT,tagName,true,false,true);
-			myTXT = Obj.get('txt_txt',this);
+			myTXT = Obj.getAllChilds('txt_txt',this,false)[0];
 			myTXT.addEventListener(Event.CHANGE,dispatchChangeForMeToo);
 			
 			myTXT.maxChars = maxChar ;
