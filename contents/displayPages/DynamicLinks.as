@@ -486,6 +486,10 @@ package contents.displayPages
 				{
 					linksInterfaceStorage[i].setUp(myPageData.links1[i]);
 				}
+				else
+				{
+					linksInterfaceStorage[i].myLinkData = myPageData.links1[i];
+				}
 			}
 		}
 		
