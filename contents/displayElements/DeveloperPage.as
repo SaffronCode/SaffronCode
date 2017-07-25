@@ -70,7 +70,10 @@ package contents.displayElements
 		
 		protected function justClosePopMenu(event:MouseEvent):void
 		{
+			trace("Closethe popUP");
 			PopMenu.close();
+			PopMenu1.close();
+			PopMenu2.close();
 		}
 		
 		protected function openTheStore(event:MouseEvent):void
