@@ -45,31 +45,39 @@
 			{
 				var inputParams:String = "" ;
 				var inputParamsFor:String = "" ;
-				var parameters:Array = [] ;
-				for(var i:String in inputObject)
+				if(inputObject is Array)
 				{
-					trace('i+":"+getQualifiedClassName(inputObject[i]) : '+i+":"+getQualifiedClassName(inputObject[i]));
-					parameters.push(i+":"+getQualifiedClassName(inputObject[i]));
+					classString = classString.split("[inputParam]").join("data:Vector.<"+inputObjectClassName+">");
+					classString = classString.split("[inputParam2]").join("data");
 				}
-				parameters.sort();
-				trace("params : "+parameters);
-				inputParamsFor = '{';
-				for(var j:uint ; j<parameters.length ; j++)
+				else
 				{
-					inputParams += parameters[j]+',' ;
-					var inputVaraible:String = String(parameters[j]).split(':')[0] ;
-					inputVaraible = inputVaraible+':'+inputVaraible ;
-					inputParamsFor += inputVaraible+',' ;
-					trace("0*** inputParams : "+inputParams);
+					var parameters:Array = [] ;
+					for(var i:String in inputObject)
+					{
+						trace('i+":"+getQualifiedClassName(inputObject[i]) : '+i+":"+getQualifiedClassName(inputObject[i]));
+						parameters.push(i+":"+getQualifiedClassName(inputObject[i]));
+					}
+					parameters.sort();
+					trace("params : "+parameters);
+					inputParamsFor = '{';
+					for(var j:uint ; j<parameters.length ; j++)
+					{
+						inputParams += parameters[j]+',' ;
+						var inputVaraible:String = String(parameters[j]).split(':')[0] ;
+						inputVaraible = inputVaraible+':'+inputVaraible ;
+						inputParamsFor += inputVaraible+',' ;
+						trace("0*** inputParams : "+inputParams);
+					}
+					
+					inputParams = inputParams.substring(0,inputParams.length-1);
+					inputParamsFor = inputParamsFor.substring(0,inputParamsFor.length-1);
+					inputParamsFor += '}' ;
+					trace("*** inputParams : "+inputParams);
+					trace("*** inputParamsFor : "+inputParamsFor);
+					classString = classString.split("[inputParam]").join(inputParams);
+					classString = classString.split("[inputParam2]").join(inputParamsFor);
 				}
-				
-				inputParams = inputParams.substring(0,inputParams.length-1);
-				inputParamsFor = inputParamsFor.substring(0,inputParamsFor.length-1);
-				inputParamsFor += '}' ;
-				trace("*** inputParams : "+inputParams);
-				trace("*** inputParamsFor : "+inputParamsFor);
-				classString = classString.split("[inputParam]").join(inputParams);
-				classString = classString.split("[inputParam2]").join(inputParamsFor);
 			}
 			else
 			{

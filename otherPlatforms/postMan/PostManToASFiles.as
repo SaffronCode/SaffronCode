@@ -84,7 +84,14 @@
 			//serviceGenerator.inPutClass = 
 			if(serviceGenerator.inputObject!=null)
 			{
-				SaveJSONtoAs(serviceGenerator.inputObject,saveToFolderForTypes,serviceGenerator.inputObjectClassName);
+				if(serviceGenerator.inputObject is Array)
+				{
+					SaveJSONtoAs(serviceGenerator.inputObject[0],saveToFolderForTypes,serviceGenerator.inputObjectClassName);
+				}
+				else
+				{
+					SaveJSONtoAs(serviceGenerator.inputObject,saveToFolderForTypes,serviceGenerator.inputObjectClassName);
+				}
 			}
 			
 			var serviceFile:File = mySaveToFolderForServices.resolvePath(serviceGenerator.ServiceName+'.as');
