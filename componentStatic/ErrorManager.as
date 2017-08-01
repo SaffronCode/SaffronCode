@@ -1,5 +1,7 @@
 package componentStatic
 {
+	import contents.Contents;
+	
 	import flash.display.MovieClip;
 	
 
@@ -28,15 +30,63 @@ package componentStatic
 		private var messageTitle:Array = new Array()
 		private static var errorObj:Object;	
 		public function ErrorManager()
-		{			
-			messageTitle[0]= 'هیچ خطایی در سیستم رخ نداده است';
-			messageTitle[mobileId] = 'شماره تلفن همراه اشتباه می باشد';
-			messageTitle[emailId] = 'ایمیل وارد شده صحیح نمی باشد';
-			messageTitle[telId] = 'شماره تلفن وارد شده صحیح نمی باشد';
-			messageTitle[priceId] = 'مبلغ وارد شده صحیح نمی باشد';
-			messageTitle[dateId] = 'تاریخ وارد شده صحیح نمی باشد';
-			messageTitle[filedEmptyId]='لطفا موارد خواسته شده را تکمیل نمایید';
-			
+		{	
+			if(Contents.lang.t.noErrorId!=null)
+			{
+				messageTitle[noErrorId]= Contents.lang.t.noErrorId;
+			}
+			else
+			{
+				messageTitle[noErrorId]= 'هیچ خطایی در سیستم رخ نداده است';
+			}
+			if(Contents.lang.t.mobileId!=null)
+			{
+				messageTitle[mobileId] = Contents.lang.t.mobileId;
+			}
+			else
+			{
+				messageTitle[mobileId] = 'شماره تلفن همراه اشتباه می باشد';
+			}
+			if(Contents.lang.t.emailId!=null)
+			{
+				messageTitle[emailId] = Contents.lang.t.emailId;
+			}
+			else
+			{
+				messageTitle[emailId] = 'ایمیل وارد شده صحیح نمی باشد';
+			}
+			if(Contents.lang.t.telId!=null)
+			{
+				messageTitle[telId] = Contents.lang.t.telId;
+			}
+			else
+			{
+				messageTitle[telId] = 'شماره تلفن وارد شده صحیح نمی باشد';
+			}
+			if(Contents.lang.t.priceId!=null)
+			{
+				messageTitle[priceId] = Contents.lang.t.priceId;
+			}
+			else
+			{
+				messageTitle[priceId] = 'مبلغ وارد شده صحیح نمی باشد';
+			}
+			if(Contents.lang.t.dateId!=null)
+			{
+				messageTitle[dateId] = Contents.lang.t.dateId;
+			}
+			else
+			{
+				messageTitle[dateId] = 'تاریخ وارد شده صحیح نمی باشد';
+			}
+			if(Contents.lang.t.filedEmptyId!=null)
+			{
+				messageTitle[filedEmptyId]= Contents.lang.t.filedEmptyId;
+			}
+			else
+			{
+				messageTitle[filedEmptyId]='لطفا موارد خواسته شده را تکمیل نمایید';
+			}	
 		}
 		public function setup():void
 		{
