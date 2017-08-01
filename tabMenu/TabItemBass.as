@@ -13,45 +13,52 @@ package tabMenu
 					_bg:MovieClip,
 					_name:String,
 					_defaultTabe:String,
-					_selected:Boolean;
+					_selected:Boolean,
+					_activeCurrentTab:Boolean;
 					
 		private var _timerId:uint;	
 		
-		public function TabItemBass(GroupName_p:String=null)
+		
+		public function TabItemBass(GroupName_p:String=null,ActiveCurrentTab_p:Boolean=false)
 		{
 			super();
-			_group = GroupName_p
-			_bg = Obj.get('bg',this)
+			_group = GroupName_p;
+			_activeCurrentTab = ActiveCurrentTab_p;
+			_bg = Obj.get('bg',this);
 			
-			_name = this.name.split('_')[0]
+			_name = this.name.split('_')[0];
 			try
 			{			
-				this.gotoAndStop(_name)	
+				this.gotoAndStop(_name);	
 			}
 			catch(e:Error)
 			{
-				trace('<<<Frame label '+_name+' not found in scene '+_name+'.>>>')
+				trace('<<<Frame label '+_name+' not found in scene '+_name+'.>>>');
 			}
-			_defaultTabe = this.name.split('_')[1]	
-			TabMenuManager.event.addEventListener(TabMenuEvent.SELECT,onSelected)	
-			if(_defaultTabe!=null && _defaultTabe.toLowerCase()=='true')
+			_defaultTabe = this.name.split('_')[1];	
+			TabMenuManager.event.addEventListener(TabMenuEvent.SELECT,onSelected);
+			if(_activeCurrentTab && TabMenuManager.getCurrentTabe(GroupName_p,_name)==true)
 			{
-				_timerId = setTimeout(sendEventBytimer,5)
+				_timerId = setTimeout(sendEventBytimer,5);
 			}
-			this.addEventListener(MouseEvent.CLICK,click_fun)	
+			else if( !TabMenuManager.getAtiveGroup(GroupName_p)&& _defaultTabe!=null && _defaultTabe.toLowerCase()=='true')
+			{
+				_timerId = setTimeout(sendEventBytimer,5);
+			}
+			this.addEventListener(MouseEvent.CLICK,click_fun);	
 		}
 		
 		private function sendEventBytimer():void
 		{
 			
-			sendEvent()
-			clearTimeout(_timerId)
+			sendEvent();
+			clearTimeout(_timerId);
 		}
 		
 		/** defined active tab selected metod or add _true of end name tabe simple 'tabname_true' if add true this tab is default selected tab*/
 		public function setup():void
 		{
-			sendEvent()
+			sendEvent();
 		}
 		
 		protected function onSelected(event:TabMenuEvent):void
@@ -61,15 +68,19 @@ package tabMenu
 			{
 				if(event.name == _name && _bg!=null)
 				{
-					_selected = true
+					_selected = true;
 				}
 				else if(_bg!=null)
 				{
-					_selected = false
+					_selected = false;
+					if(_activeCurrentTab)
+					{
+						TabMenuManager.setCurrentTabe(_group,_name,false);
+					}
 				}
 				if(_bg!=null)
 				{		
-					_bg.gotoAndStop(_selected)
+					_bg.gotoAndStop(_selected);
 				}
 			}
 		}
@@ -79,12 +90,16 @@ package tabMenu
 			
 			if(!_selected)
 			{			
-				sendEvent()
+				sendEvent();
+				if(_activeCurrentTab)
+				{
+					TabMenuManager.setCurrentTabe(_group,_name,true);
+				}
 			}
 		}
 		protected function sendEvent():void
 		{
-			TabMenuManager.event.dispatchEvent(new TabMenuEvent(TabMenuEvent.SELECT,_group,_name))
+			TabMenuManager.event.dispatchEvent(new TabMenuEvent(TabMenuEvent.SELECT,_group,_name));
 		}
 	}
 }
