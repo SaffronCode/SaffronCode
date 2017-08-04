@@ -21,7 +21,11 @@ public class StarlingZoomer {
     private var touchList:Vector.<Touch>,
                 lastPose:Vector.<Point>;
 
+    public static var maxZoomScale:Number = 5 ;
+
     private var targetX:Number,targetY:Number,targetScale:Number;
+
+    private var firstScale:Number,firstWidth:Number,firstHeight:Number ;
 
     /**0 is the reseted distance*/
     private var lastTwoPointsDistance:Number = 0 ;
@@ -92,14 +96,56 @@ public class StarlingZoomer {
             trace("Global touch point is  "+i+" is : "+touchList[0].getLocation(mySprite)+' vs '+mySprite.width/mySprite.scaleX);
         }
 
-        targetX += deltaX/Math.max(1,l);
-        targetY += deltaY/Math.max(1,l);
+
+        var moveX:Number = deltaX/Math.max(1,l);
+        var moveY:Number = deltaY/Math.max(1,l);
+        targetX += moveX;
+        targetY += moveY;
         targetScale = scale ;
+
+        var targetWidth:Number = mySprite.width*targetScale ;
+        var targetHeight:Number = mySprite.height*targetScale ;
+
+        if(targetWidth/firstWidth>maxZoomScale || targetHeight/firstHeight>maxZoomScale)
+        {
+            targetWidth = firstWidth*maxZoomScale ;
+            targetHeight = firstHeight*maxZoomScale ;
+            targetX = mySprite.x + moveX;
+            targetY = mySprite.y + moveY;
+        }
+
+        if(targetWidth<area.width || targetHeight<area.height)
+        {
+            mySprite.width = area.width;
+            mySprite.height = area.height;
+            mySprite.scale = Math.max(mySprite.scaleX,mySprite.scaleY);
+            targetWidth = mySprite.width ;
+            targetHeight = mySprite.height ;
+        }
+
+        if(targetX>area.left)
+        {
+            targetX = area.left ;
+        }
+        if(targetX+targetWidth<area.right)
+        {
+            targetX = area.right-targetWidth ;
+        }
+
+        if(targetY>area.top)
+        {
+            targetY = area.top ;
+        }
+        if(targetY+targetHeight<area.bottom)
+        {
+            targetY = area.bottom-targetHeight ;
+        }
 
         mySprite.x = targetX ;
         mySprite.y = targetY ;
-        mySprite.width *= targetScale ;
-        mySprite.height *= targetScale ;
+        mySprite.width = targetWidth ;
+        mySprite.height = targetHeight ;
+
     }
 
 
@@ -178,7 +224,9 @@ public class StarlingZoomer {
         mySprite.scale = Math.max(mySprite.scaleX,mySprite.scaleY);
         targetX = mySprite.x = zoomArea.x-(mySprite.width-zoomArea.width)/2;
         targetY = mySprite.y = zoomArea.y-(mySprite.height-zoomArea.height)/2;
-        targetScale = mySprite.scale ;
+        firstScale = targetScale = mySprite.scale ;
+        firstWidth = mySprite.width ;
+        firstHeight = mySprite.height ;
 
         mySprite.removeEventListener(TouchEvent.TOUCH,listenToTouch);
         mySprite.removeEventListener(Event.ENTER_FRAME,animateFloor);
