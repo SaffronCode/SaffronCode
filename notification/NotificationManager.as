@@ -3,6 +3,7 @@ package notification
 	import com.milkmangames.nativeextensions.EasyPush;
 	import com.milkmangames.nativeextensions.events.PNEvent;
 	import com.milkmangames.nativeextensions.events.PNOSEvent;
+	import com.mteamapp.StringFunctions;
 	
 	import contents.Contents;
 	
@@ -29,12 +30,22 @@ package notification
 		
 		private var _timeOutId:uint	
 		private static var autoAlertBox:Boolean;
-		public function NotificationManager()
+		public function NotificationManager(ONESIGNAL_APP_ID_p:String='',GCM_PROJECT_NUMBER_p:String='',autoAlerOnNativeBox:Boolean=true)
 		{
 			super();
+			autoAlertBox = autoAlerOnNativeBox ;
+			trace("SetUp easy push");
+			ONESIGNAL_APP_ID = ONESIGNAL_APP_ID_p ;
+			GCM_PROJECT_NUMBER = GCM_PROJECT_NUMBER_p ;
+		
+			if(ONESIGNAL_APP_ID_p!='' && GCM_PROJECT_NUMBER_p!='')
+			{
+				EasyPushExample();
+			}
 		}
 		
-		/**This will returns an instance on NofificatnionManager to cathc its events*/
+		/**This will returns an instance on NofificatnionManager to cathc its events<br>
+		 * there is no need to call this*/
 		public static function setup(ONESIGNAL_APP_ID_p:String='',GCM_PROJECT_NUMBER_p:String='',autoAlerOnNativeBox:Boolean=true):NotificationManager
 		{
 			autoAlertBox = autoAlerOnNativeBox ;
@@ -49,6 +60,26 @@ package notification
 		
 		private function EasyPushExample() 
 		{		
+			
+			//Controll permissions↓
+			var requiredPermissionIos:String = "<key>application-identifier</key>\n" +
+				"\t<string>??????????."+DevicePrefrence.appID+"</string>\n" +
+				"<key>aps-environment</key>\n" +
+				"\t<string>development</string><!--\"development\" for adhoc test, \"production\" for Appstore release-->\n" +
+				"<key>get-task-allow</key> <true/> <!--Remove this line for Appstore release-->\n" +
+				"<key>keychain-access-groups</key>\n" +
+				"\t<array>\n" +
+				"\t\t<string>??????????."+DevicePrefrence.appID+"</string> <!--Add team id-->\n" +
+				"\t</array>";
+			var permissions:String = StringFunctions.clearSpacesAndTabs(DevicePrefrence.appDescriptor) ;
+			if(permissions.indexOf("<key>application-identifier</key>")==-1)
+			{
+				throw "You have to add below permission on <iPhone><Entitlements>  <![CDATA[ \n\n\n"+requiredPermissionIos+'\n\n]]>\n\n' ;
+			}
+			//TODO control android permission
+			//Controll permissions↑
+			
+			
 			if (!EasyPush.isSupported())
 			{
 				log("EasyPush is not supported on this platform (not android or ios!)");
@@ -80,6 +111,7 @@ package notification
 			{
 				trace("Esy push >>>> "+e);
 			}
+			
 			log("did init OneSignal.");
 			EasyPush.oneSignal.addEventListener(PNOSEvent.ALERT_DISMISSED,onAlertDismissed);
 			EasyPush.oneSignal.addEventListener(PNOSEvent.FOREGROUND_NOTIFICATION,onForegroundNotification);
