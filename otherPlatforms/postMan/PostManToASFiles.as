@@ -247,7 +247,7 @@
 		}
 		
 		/**Craetes a standard class name*/
-		private static function createClassName(objectName:String,OffsetName:String = "Model",paramList:Object=null):String
+		internal static function createClassName(objectName:String,OffsetName:String = "Model",paramList:Object=null):String
 		{
 			/*var paramNames:String = '';
 			if(paramList!=null)

@@ -56,7 +56,22 @@
 					for(var i:String in inputObject)
 					{
 						trace('i+":"+getQualifiedClassName(inputObject[i]) : '+i+":"+getQualifiedClassName(inputObject[i]));
-						parameters.push(i+":"+getQualifiedClassName(inputObject[i]));
+						trace("Is is array? "+(inputObject[i] is Array)); 
+						
+						if(inputObject[i] is Array && 
+							inputObject[i].length>0 && 
+							!(inputObject[i][0] is String) && 
+							isNaN(Number(inputObject[i][0])) && 
+							!(inputObject[i][0] is Boolean) && 
+							(inputObject[i][0] != null)
+						)
+						{
+							parameters.push(i+":Vector.<"+PostManToASFiles.createClassName(i)+">");
+						}
+						else
+						{
+							parameters.push(i+":"+getQualifiedClassName(inputObject[i]));
+						}
 					}
 					parameters.sort();
 					trace("params : "+parameters);
