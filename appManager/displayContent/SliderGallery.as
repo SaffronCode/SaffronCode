@@ -552,7 +552,7 @@
 			imagesList = images ;
 			_totalImages = imagesList.length ;
 			imageIndex = (plusPages-(plusPages%_totalImages))+currentIndex ;
-			getImageUp().load(currentImage());
+			getImageUp().load(currentImage(),0);
 			
 			if(_totalImages<=1)
 			{
