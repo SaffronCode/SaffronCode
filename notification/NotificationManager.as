@@ -5,11 +5,6 @@ package notification
 	import com.milkmangames.nativeextensions.events.PNOSEvent;
 	import com.mteamapp.StringFunctions;
 	
-	import contents.Contents;
-	
-	import flash.display.MovieClip;
-	import flash.events.ErrorEvent;
-	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.utils.clearTimeout;
 	import flash.utils.setTimeout;
@@ -62,6 +57,7 @@ package notification
 		{		
 			
 			//Controll permissions↓
+			var currentPermissions:String = StringFunctions.clearSpacesAndTabs(DevicePrefrence.appDescriptor) ;
 			var requiredPermissionIos:String = "<key>application-identifier</key>\n" +
 				"\t<string>??????????."+DevicePrefrence.appID+"</string>\n" +
 				"<key>aps-environment</key>\n" +
@@ -71,12 +67,71 @@ package notification
 				"\t<array>\n" +
 				"\t\t<string>??????????."+DevicePrefrence.appID+"</string> <!--Add team id-->\n" +
 				"\t</array>";
-			var permissions:String = StringFunctions.clearSpacesAndTabs(DevicePrefrence.appDescriptor) ;
-			if(permissions.indexOf("<key>application-identifier</key>")==-1)
+			if(currentPermissions.indexOf("<key>application-identifier</key>")==-1)
 			{
 				throw "You have to add below permission on <iPhone><Entitlements>  <![CDATA[ \n\n\n"+requiredPermissionIos+'\n\n]]>\n\n' ;
 			}
-			//TODO control android permission
+			//control android permission  :  <android> <manifestAdditions><![CDATA[ 
+			var neceraryLines:String = '•' ;
+			var androidPermission:String = neceraryLines+'<manifest android:installLocation="auto">\n' +
+				'\t<uses-sdk android:minSdkVersion="9" android:targetSdkVersion="22" />\n' +
+				'\t<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>\n' +
+				'\t<uses-permission android:name="android.permission.READ_PHONE_STATE"/>\n' +
+				'\t<uses-permission android:name="android.permission.INTERNET"/>\n' +
+				'\t<uses-permission android:name="android.permission.GET_ACCOUNTS"/>\n' +
+				'\t<uses-permission android:name="android.permission.GET_TASKS"/>\n' +
+				'\t<uses-permission android:name="android.permission.WAKE_LOCK"/>\n' +
+				'\t<uses-permission android:name="android.permission.VIBRATE"/>\n' +
+				'\t<permission android:name="air.'+DevicePrefrence.appID+'.permission.C2D_MESSAGE" android:protectionLevel="signature" />\n' +
+				'\t<uses-permission android:name="air.'+DevicePrefrence.appID+'.permission.C2D_MESSAGE" />\n' +
+				'\t<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />\n' +
+				neceraryLines+'\t<application>\n' +
+				neceraryLines+'\t\t<receiver android:name="com.milkmangames.extensions.android.push.GCMBroadcastReceiver" android:permission="com.google.android.c2dm.permission.SEND" >\n' +
+				neceraryLines+'\t\t\t<intent-filter>\n' +
+				'\t\t\t\t<action android:name="com.google.android.c2dm.intent.RECEIVE" />\n' +
+				'\t\t\t\t<action android:name="com.google.android.c2dm.intent.REGISTRATION" />\n' +
+				'\t\t\t\t<category android:name="air.'+DevicePrefrence.appID+'" />\n' +
+				neceraryLines+'\t\t\t</intent-filter>\n' +
+				neceraryLines+'\t\t</receiver>\n' +
+				'\t<service android:name="com.milkmangames.extensions.android.push.GCMIntentService" />\n' +
+				neceraryLines+'\t</application>\n' +
+				neceraryLines+'</manifest>' ;
+			
+			var allAndroidPermission:Array = androidPermission.split('\n');
+			var leftPermission:String = '' ;
+			var androidManifestMustUpdate:Boolean = false ;
+			for(var i:int = 0 ; i<allAndroidPermission.length ; i++)
+			{
+				var isNessesaryToShow:Boolean = isNessesaryLine(allAndroidPermission[i]) ;
+				if(currentPermissions.indexOf(StringFunctions.clearSpacesAndTabs(removeNecessaryBoolet(allAndroidPermission[i])))==-1)
+				{
+					androidManifestMustUpdate = true ;
+					leftPermission += removeNecessaryBoolet(allAndroidPermission[i])+'\n' ;
+				}
+				else if(isNessesaryToShow)
+				{
+					leftPermission += removeNecessaryBoolet(allAndroidPermission[i])+'\n' ;
+				}
+				else
+				{
+					//leftPermission += '-'+allAndroidPermission[i]+'\n' ;
+				}
+			}
+			
+			function isNessesaryLine(line:String):Boolean
+			{
+				return line.indexOf(neceraryLines)!=-1 ;
+			}
+			
+			function removeNecessaryBoolet(line:String):String
+			{
+				return line.split(neceraryLines).join('') ;
+			}
+			
+			if(androidManifestMustUpdate)
+			{
+				throw "Add bellow permission to <android> <manifestAdditions><![CDATA[\n\n\n"+leftPermission+"\n\n]]>\n\n"; 
+			}
 			//Controll permissions↑
 			
 			
