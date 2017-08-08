@@ -159,6 +159,12 @@
 			requestLoader.addEventListener(ProgressEvent.PROGRESS,dispatchProgress);
 		}
 		
+		/**Set the offline data only status to false to prevent returning offline data or to true to make it return offline data first*/
+		public function offileDataOnly(status:Boolean):void
+		{
+			instantOfflineData = status ;
+		}
+		
 		/**Dispatch proggress event*/
 		protected function dispatchProgress(event:ProgressEvent):void
 		{
