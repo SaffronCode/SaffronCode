@@ -2,6 +2,8 @@
 {
 	//import com.distriqt.extension.mediaplayer.MediaPlayer;
 	
+	import flash.desktop.NativeApplication;
+	import flash.desktop.SystemIdleMode;
 	import flash.display.Sprite;
 	import flash.display.StageOrientation;
 	import flash.events.Event;
@@ -68,6 +70,7 @@ MediaPlayer.CONTROLS_FULLSCREEN : controls:fullscreen
 MediaPlayer.CONTROLS_NONE : controls:none*/
 		public function playVideo(videoURL:String,autoPlay:Boolean=true,controlls:String="controls:fullscreen"):void
 		{
+			NativeApplication.nativeApplication.systemIdleMode = SystemIdleMode.KEEP_AWAKE ;
 			if(this.stage==null)
 			{
 				throw "Add the player to the stage first";
@@ -89,6 +92,7 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 			(MediaPlayerClass as Object).service.createPlayer(videoURL,rect.x,rect.y,rect.width,rect.height,autoPlay,controlls,true);
 			(MediaPlayerClass as Object).service.addEventListener(FULLSCREEN_ENTER,isFullscreened);
 			(MediaPlayerClass as Object).service.addEventListener(FULLSCREEN_EXIT,exitFullscreened);
+			//(MediaPlayerClass as Object).service.addEventListener(com.distriqt.extension.mediaplayer.events.MediaPlayerEvent.STOPPED,exitFullscreened);
 			this.removeEventListener(Event.ENTER_FRAME,controlPlayerViewPort);
 			this.addEventListener(Event.ENTER_FRAME,controlPlayerViewPort);
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
@@ -97,6 +101,7 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 		/**is exited from full screen*/
 		protected function exitFullscreened(event:Event):void
 		{
+			trace("*** Exit full screen !! : "+event);
 			if(!DevicePrefrence.isLandScape())
 			{
 				stage.setOrientation(StageOrientation.DEFAULT);
@@ -108,6 +113,7 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 		/**is full screen now*/
 		protected function isFullscreened(event:Event):void
 		{
+			trace("*** Set full screen !! : "+event);
 			if(!DevicePrefrence.isLandScape())
 			{
 				trace("The default oriented is : "+stage.orientation);
@@ -172,9 +178,13 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 		/**Close player*/
 		public function close():void
 		{
+			NativeApplication.nativeApplication.systemIdleMode = SystemIdleMode.NORMAL ;
 			trace("Hide the player");
+			(MediaPlayerClass as Object).service.removeEventListener(FULLSCREEN_ENTER,isFullscreened);
+			(MediaPlayerClass as Object).service.removeEventListener(FULLSCREEN_EXIT,exitFullscreened);
 			try
 			{
+				exitFullscreened(null);
 				isOpen = false ;
 				(MediaPlayerClass as Object).service.removePlayer();
 			}catch(e){};
@@ -183,11 +193,14 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 		
 		protected function unLoad(event:Event):void
 		{
+			NativeApplication.nativeApplication.systemIdleMode = SystemIdleMode.NORMAL ;
 			try
 			{
-				trace("Remove player");
 				(MediaPlayerClass as Object).service.removeEventListener(FULLSCREEN_ENTER,isFullscreened);
 				(MediaPlayerClass as Object).service.removeEventListener(FULLSCREEN_EXIT,exitFullscreened);
+				exitFullscreened(null);
+				trace("Remove player");
+				//(MediaPlayerClass as Object).service.removeEventListener(com.distriqt.extension.mediaplayer.events.MediaPlayerEvent.STOPPED,exitFullscreened);
 				(MediaPlayerClass as Object).service.removePlayer();
 			}
 			catch(e)
