@@ -23,20 +23,19 @@ package tabMenu
 		{
 			super();
 			_group = GroupName_p;
-			_activeCurrentTab = ActiveCurrentTab_p;
-			_bg = Obj.get('bg',this);
-			
+			_activeCurrentTab = ActiveCurrentTab_p;		
 			_name = this.name.split('_')[0];
 			try
 			{			
-				this.gotoAndStop(_name);	
+				this.gotoAndStop(_name);
+				_bg = Obj.get('bg',this);
 			}
 			catch(e:Error)
 			{
 				trace('<<<Frame label '+_name+' not found in scene '+_name+'.>>>');
 			}
 			_defaultTabe = this.name.split('_')[1];	
-			TabMenuManager.event.addEventListener(TabMenuEvent.SELECT,onSelected);
+			TabMenuManager.event.addEventListener(TabMenuEvent.SELECT,onSelected);			
 			if(_activeCurrentTab && TabMenuManager.getCurrentTabe(GroupName_p,_name)==true)
 			{
 				_timerId = setTimeout(sendEventBytimer,5);
@@ -73,7 +72,7 @@ package tabMenu
 				else if(_bg!=null)
 				{
 					_selected = false;
-					if(_activeCurrentTab)
+					if(_activeCurrentTab && TabMenuManager.getAtiveGroup(event.group))
 					{
 						TabMenuManager.setCurrentTabe(_group,_name,false);
 					}
