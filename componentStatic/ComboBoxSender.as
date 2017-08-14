@@ -22,7 +22,7 @@
 		protected var upLoadDate:Date;
 		private var _fun:Function;
 		protected var _data:*;
-		private var _timerId:uint;
+		protected var _timerId:uint;
 		protected var _title:String;
 		public function get data():*
 		{
@@ -62,16 +62,22 @@
 				var _bottonArray:Array = _data.buttonArray();
 				for(var i:int=0;i<_bottonArray.length;i++)
 				{
+					trace('this.name :',this.name,'=', getObj(this.name),'_bottonArray[i].id :',_bottonArray[i].id)
+					var _defaultValue:PopButtonData;
 					if(getObj(this.name) == _bottonArray[i].id)
 					{
-						var _defaultValue:PopButtonData = _bottonArray[i];
+						_defaultValue = _bottonArray[i];
+						setObj(this.name,_defaultValue.id);
+					}
+					else if(!(_bottonArray[i].id is Number) && !(_bottonArray[i].id is String) && !(_bottonArray[i].id is Boolean) && _bottonArray[i].id is Object &&  getObj(this.name) == _bottonArray[i].id[this.name])
+					{
+						_defaultValue = _bottonArray[i];
+						setObj(this.name,_bottonArray[i].id[this.name]);
 					}
 				}
-				
 				if(_defaultValue!=null)
 				{
 					_titleMc.setUp(_defaultValue.title);
-					setObj(this.name,_defaultValue.id);
 				}
 				else
 				{
