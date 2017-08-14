@@ -64,6 +64,7 @@
 		private var closeTimer:Timer ;
 		private var cashedContents:PopMenuContent;
 		private var onButton:Function;
+		private var onTimerClose:Function;
 		
 		private static var cancelNames:Array=[],
 					cancelEvent:PopMenuEvent;
@@ -300,11 +301,13 @@
 		
 		
 		/**pop the pop menu up*/
-		public function popUp2(title:String='' , type:PopMenuTypes=null , content:PopMenuContent=null,closeOnTime=0,onButtonSelects:Function=null)
+		public function popUp2(title:String='' , type:PopMenuTypes=null , content:PopMenuContent=null,closeOnTime=0,onButtonSelects:Function=null,onClosedByTimer:Function=null)
 		{	
 			cashedContents = content ;
 			
 			onButton = onButtonSelects ;
+			
+			onTimerClose = onClosedByTimer ;
 			
 			if(closeTimer!=null)
 			{
@@ -399,6 +402,17 @@
 		private function closeME(e:TimerEvent)
 		{
 			close();
+			if(onTimerClose!=null)
+			{
+				if(onTimerClose.length==0)
+				{
+					onTimerClose();
+				}
+				else
+				{
+					onTimerClose(null);
+				}
+			}
 		}
 		
 ///////////////////////////////////////////pop menu manager

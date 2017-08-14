@@ -78,7 +78,7 @@ package popForm
 				delyTime = showTimer ;
 			}
 			var popText:PopMenuContent = new PopMenuContent(str,null,buttons,displayObject);
-			PopMenu1.popUp(title,null,popText,delyTime,onShowCloseSelected);
+			PopMenu1.popUp(title,null,popText,delyTime,onShowCloseSelected,onShowCloseSelected);
 		}
 		private static function onShowCloseSelected(evnet:PopMenuEvent):void
 		{
