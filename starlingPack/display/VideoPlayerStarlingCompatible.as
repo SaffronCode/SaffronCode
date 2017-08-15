@@ -91,7 +91,8 @@ public class VideoPlayerStarlingCompatible extends Sprite {
 
     override public function set scale(value:Number):void
     {
-        myVideoClass.scaleX = myVideoClass.scaleY = value ;
+        myVideoClass.scaleX = value ;
+        myVideoClass.scaleY = value*.85 ;
         super.scale = value ;
     }
     override public function set x(value:Number):void
