@@ -33,7 +33,7 @@
 		/**This is the index of showing image*/
 		private var imageIndex:int ;
 		private var _totalImages:uint ;
-		private var imagesList:Vector.<SliderImageItem> ;
+		public var imagesList:Vector.<SliderImageItem> ;
 					
 		private var W:Number,
 					H:Number;
