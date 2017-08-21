@@ -92,6 +92,7 @@ public class VideoPlayerStarlingCompatible extends Sprite {
     {
         myVideoClass.pause();
         flashStage.removeChild(myVideoClass);
+        myVideoClass.dispose()
         super.dispose();
     }
 
