@@ -21,7 +21,7 @@ public class StarlingZoomer {
     private var touchList:Vector.<Touch>,
                 lastPose:Vector.<Point>;
 
-    public static var maxZoomScale:Number = 5 ;
+    public static var maxZoomScale:Number = 20 ;
 
     private var targetX:Number,targetY:Number,targetScale:Number;
 
@@ -110,8 +110,9 @@ public class StarlingZoomer {
         {
             targetWidth = firstWidth*maxZoomScale ;
             targetHeight = firstHeight*maxZoomScale ;
-            targetX = mySprite.x + moveX;
-            targetY = mySprite.y + moveY;
+            targetScale = targetWidth/mySprite.width;
+            targetX = mySprite.x + moveX-(((center.x/(spriteRelativeWidth))*spriteRelativeWidth)*(targetScale-1))*mySprite.scaleX;
+            targetY = mySprite.y + moveY- ((center.y/(spriteRelativeHeight))*spriteRelativeHeight)*(targetScale-1)*mySprite.scaleY;
         }
 
         if(targetWidth<area.width || targetHeight<area.height)
