@@ -5,6 +5,7 @@ package starlingPack.display {
 import flash.display.Stage;
 import flash.events.Event;
 import flash.events.EventDispatcher;
+import flash.events.MouseEvent;
 import flash.events.StageVideoAvailabilityEvent;
 import flash.filesystem.File;
 import flash.media.StageVideo;
@@ -61,6 +62,11 @@ public class VideoPlayerStarlingCompatible extends Sprite {
         flashStage.addChild(myVideoClass);
         myVideoClass.addEventListener(VideoEvents.VIDEO_STATUS_CHANGED, statusChanged)
         myVideoClass.loadThiwVideo(videoTarget,true,NaN,NaN,null,false);
+        myVideoClass.addEventListener(MouseEvent.CLICK, dispatchClickEvent)
+    }
+
+    private function dispatchClickEvent(event:MouseEvent):void {
+        dispatcher.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
     }
 
     private function statusChanged(event:VideoEvents):void {
