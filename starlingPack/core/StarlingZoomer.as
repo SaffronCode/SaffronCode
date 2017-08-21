@@ -106,7 +106,7 @@ public class StarlingZoomer {
         var targetWidth:Number = mySprite.width*targetScale ;
         var targetHeight:Number = mySprite.height*targetScale ;
 
-        if(targetWidth/firstWidth>maxZoomScale || targetHeight/firstHeight>maxZoomScale)
+        if(l>1 && targetWidth/firstWidth>maxZoomScale || targetHeight/firstHeight>maxZoomScale)
         {
             targetWidth = firstWidth*maxZoomScale ;
             targetHeight = firstHeight*maxZoomScale ;
