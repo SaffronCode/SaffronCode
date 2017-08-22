@@ -28,6 +28,8 @@ package popForm
 		
 		private static var onWaitClosedUserFunctoin:Function ;
 		
+		private static var _onClose:Function;
+		
 		public static function get isOpen():Boolean
 		{
 			return PopMenu1.isOpen ;
@@ -63,9 +65,10 @@ package popForm
 		/**Show this hint with PopMenu1
 		 * I made canselable default to true to make user confortable to close errors
 		 * */
-		public static function show(str:String,canselable:Boolean=true,delyTime:int=-1,displayObject:MovieClip=null,title:String='')
+		public static function show(str:String,canselable:Boolean=true,delyTime:int=-1,displayObject:MovieClip=null,title:String='',onClose:Function=null)
 		{
 			var buttons:Array ;
+			_onClose = onClose;
 			if(canselable)
 			{
 				buttons = [Contents.lang.t[id_back]];
@@ -75,7 +78,14 @@ package popForm
 				delyTime = showTimer ;
 			}
 			var popText:PopMenuContent = new PopMenuContent(str,null,buttons,displayObject);
-			PopMenu1.popUp(title,null,popText,delyTime);
+			PopMenu1.popUp(title,null,popText,delyTime,onShowCloseSelected,onShowCloseSelected);
+		}
+		private static function onShowCloseSelected(evnet:PopMenuEvent):void
+		{
+			if(_onClose!=null)
+			{
+				_onClose.call();
+			}
 		}
 		
 		/**Show no internet connection available*/
@@ -131,7 +141,7 @@ package popForm
 		
 	///////////////////////////////////////////////////////////////////////////////
 		
-		private static var onSearched:Function,
+		protected static var onSearched:Function,
 							onSelected:Function,
 							onBacked:Function;
 		

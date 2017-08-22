@@ -239,7 +239,10 @@
 			ContentSoundManager.setUp(stage,playSounOnBackGroundTo);
 			this.dispatchEvent(new AppEvent(null,AppEvent.APP_STARTS));
 			currentAppEvent = new AppEvent();
-			backToHomePage();
+			if(!mainAnim.isOpened())
+			{
+				backToHomePage();
+			}				
 			this.dispatchEvent(new AppEvent(null,AppEvent.HOME_IS_READY));
 		}
 		

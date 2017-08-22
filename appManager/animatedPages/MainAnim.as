@@ -60,6 +60,12 @@ package appManager.animatedPages
 			}
 		}
 		
+		/**Returns true if the main animation page was changed befor*/
+		public function isOpened():Boolean
+		{
+			return currentPage!=1 ;
+		}
+		
 		/**take main animation to home frame*/
 		public function goHome()
 		{

@@ -33,7 +33,7 @@
 		/**This is the index of showing image*/
 		private var imageIndex:int ;
 		private var _totalImages:uint ;
-		private var imagesList:Vector.<SliderImageItem> ;
+		public var imagesList:Vector.<SliderImageItem> ;
 					
 		private var W:Number,
 					H:Number;
@@ -552,7 +552,7 @@
 			imagesList = images ;
 			_totalImages = imagesList.length ;
 			imageIndex = (plusPages-(plusPages%_totalImages))+currentIndex ;
-			getImageUp().load(currentImage());
+			getImageUp().load(currentImage(),0);
 			
 			if(_totalImages<=1)
 			{

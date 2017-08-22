@@ -35,7 +35,7 @@ package
 			staticStageHeight = applicationStageSize ;
 		}
 		
-		public static function popUp(title:String='' , type:PopMenuTypes=null , content:PopMenuContent=null,closeOnTime:uint=0,onButtonSelects:Function = null)
+		public static function popUp(title:String='' , type:PopMenuTypes=null , content:PopMenuContent=null,closeOnTime:uint=0,onButtonSelects:Function = null,onClosedByTimer:Function=null)
 		{
 			//trace('POP 1 MENU OPENED '+Math.random());
 			//ME1.popUp2(title, type, content,closeOnTime,onButtonSelects);
@@ -46,7 +46,7 @@ package
 			ME1.myContent.localHeight(0);
 			
 			trace('POP 2 MENU OPENED '+Math.random());
-			ME1.popUp2(title, type, content,closeOnTime,onButtonSelects);
+			ME1.popUp2(title, type, content,closeOnTime,onButtonSelects,onClosedByTimer);
 			
 			
 			

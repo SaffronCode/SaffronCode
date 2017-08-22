@@ -1,10 +1,15 @@
-package combobox.comboboxStatic
+﻿package combobox.comboboxStatic
 {//combobox.comboboxStatic.ComboBoxStaticHeader
 	import appManager.displayContentElemets.TitleText;
 	
+	import flash.desktop.NativeApplication;
 	import flash.display.MovieClip;
 	import flash.events.Event;
+	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
+	import flash.ui.Keyboard;
+	
+	import popForm.PopMenu;
 	
 	public class ComboBoxStaticHeader extends MovieClip
 	{
@@ -26,6 +31,25 @@ package combobox.comboboxStatic
 			ComboBoxStaticManager.evt.addEventListener(ComboBoxStaticEvents.CLOSE,close)
 			ComboBoxStaticManager.evt.addEventListener(ComboBoxStaticEvents.OPEN,open)
 				
+			NativeApplication.nativeApplication.addEventListener(KeyboardEvent.KEY_DOWN,preventBackIfMenuWasOpen,false,100);
+			
+			this.buttonMode = true ;
+		}
+		
+		protected function preventBackIfMenuWasOpen(event:KeyboardEvent):void
+		{
+			if(event.keyCode == Keyboard.BACK || event.keyCode == Keyboard.BACKSPACE || event.keyCode == Keyboard.PAGE_UP )
+			{
+				if(!_status)
+				{
+					event.preventDefault();
+					event.stopImmediatePropagation();
+					ComboBoxStaticManager.evt.dispatchEvent(new ComboBoxStaticEvents(ComboBoxStaticEvents.CLOSE,null,_id))
+					ComboBoxStaticManager.setStatus(_id,_status)
+				}
+				//trace("FocusDirection : "+FocusDirection);
+				//trace("(stage as Stage).focus : "+(stage as Stage).focus);
+			}
 		}
 		public function setTitle():void
 		{
@@ -55,8 +79,7 @@ package combobox.comboboxStatic
 		{
 			
 
-			ComboBoxStaticManager.evt.dispatchEvent(new ComboBoxStaticEvents(ComboBoxStaticEvents.CLOSE,null,null,null,true))
-			ComboBoxStaticManager.setStatus(_id,_status)
+			//ComboBoxStaticManager.evt.dispatchEvent(new ComboBoxStaticEvents(ComboBoxStaticEvents.CLOSE,null,null,null,true))
 			if(_status)
 			{
 				ComboBoxStaticManager.evt.dispatchEvent(new ComboBoxStaticEvents(ComboBoxStaticEvents.OPEN,null,_id))
@@ -65,6 +88,7 @@ package combobox.comboboxStatic
 			{
 				ComboBoxStaticManager.evt.dispatchEvent(new ComboBoxStaticEvents(ComboBoxStaticEvents.CLOSE,null,_id))
 			}
+			ComboBoxStaticManager.setStatus(_id,_status)
 			
 		}
 		

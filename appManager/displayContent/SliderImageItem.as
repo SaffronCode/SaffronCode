@@ -7,7 +7,7 @@ package appManager.displayContent
 		/**This can be a bitmapData or url or ByteArray*/
 		internal var image:* ;
 		
-		internal var title:String ;
+		public var title:String ;
 		
 		/**This is like image*/
 		internal var thumbnail:* ;

@@ -1,9 +1,13 @@
 package contents
 {
 	import appManager.event.AppEventContent;
+	
+	import flash.events.Event;
 
 	public class History
 	{
+		public static var historyDispatcher:HistoryDispatcher = new HistoryDispatcher();
+		
 		public static var history:Vector.<LinkData> ;
 		
 		private static var lastPopedHistory:Vector.<LinkData> ;
@@ -32,13 +36,12 @@ package contents
 				history.splice(currentLink.level/*-1*/,Math.max(history.length-currentLink.level/*+1*/,0));
 				history.push(currentLink);
 			}
+			historyDispatcher.dispatchEvent(new Event(Event.CHANGE));
 		}
 		
 		
 		private static function resetHistory():void
 		{
-			
-			
 			if(history==null)
 			{
 				reset();
@@ -50,6 +53,7 @@ package contents
 			history = new Vector.<LinkData>();
 			history.push(Contents.homeLink);
 			lastPopedHistory=null;
+			historyDispatcher.dispatchEvent(new Event(Event.CHANGE));
 		}
 		
 		/**You can predect if back is availabe*/
@@ -100,6 +104,7 @@ package contents
 			{
 				return new AppEventContent(Contents.homeLink,true);
 			}
+			historyDispatcher.dispatchEvent(new Event(Event.CHANGE));
 		}
 		
 		/**undo the history on prvented pages<br>
@@ -116,6 +121,21 @@ package contents
 			{
 				return false ;
 			}
+		}
+		
+	///////////////////////////////////
+		
+		/**Returns true if this page was on history*/
+		public static function isHistoryContainsThePageNamed(pageId:String):Boolean
+		{
+			for(var i:int = 0 ; history!=null && i<history.length ; i++)
+			{
+				if(history[i].id == pageId)
+				{
+					return true ;
+				}
+			}
+			return false ;
 		}
 		
 	}

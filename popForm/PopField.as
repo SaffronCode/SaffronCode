@@ -37,6 +37,9 @@
 		private var parag:TextParag;
 		private var fieldNumLines:uint;
 		
+		/**The button that makes password visible to all*/
+		private var showPassMC:MovieClip ;
+		
 		
 		public function get textField():TextField
 		{
@@ -176,6 +179,14 @@
 			tagNameTXT = Obj.get("tag_txt",Obj.getAllChilds("tag_txt",this,true)[0]);
 			tagNameTXT.text = "" ;
 			
+			showPassMC = Obj.get("show_pass_mc",this);
+			if(showPassMC)
+			{
+				showPassMC.buttonMode = true ;
+				showPassMC.addEventListener(MouseEvent.MOUSE_DOWN,showPassNow);
+				showPassMC.visible = isPass ;
+			}
+			
 			TextPutter.OnButton(tagNameTXT,tagName,true,false,true);
 			myTXT = Obj.getAllChilds('txt_txt',this,false)[0];
 			myTXT.addEventListener(Event.CHANGE,dispatchChangeForMeToo);
@@ -290,6 +301,18 @@
 			}
 		}
 		
+		protected function showPassNow(event:MouseEvent):void
+		{
+			nativeKeyBoard.showPass();
+			stage.addEventListener(MouseEvent.MOUSE_UP,hidePass);
+		}
+		
+		protected function hidePass(event:MouseEvent):void
+		{
+			nativeKeyBoard.hidePass();
+			stage.removeEventListener(MouseEvent.MOUSE_UP,hidePass);
+		}
+		
 		/**Set field editable or not*/
 		override public function set enabled(value:Boolean):void
 		{
@@ -305,7 +328,7 @@
 		/**Start editing me*/
 		protected function editThisText(event:MouseEvent):void
 		{
-			if(super.enabled && !myTXT.hitTestPoint(stage.mouseX,stage.mouseY))
+			if(super.enabled && !myTXT.hitTestPoint(stage.mouseX,stage.mouseY) && (showPassMC==null || !showPassMC.hitTestPoint(stage.mouseX,stage.mouseY)))
 			{
 				nativeKeyBoard.focuseOnStageText();
 			}

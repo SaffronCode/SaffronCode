@@ -7,6 +7,7 @@ package popForm
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import flash.events.MouseEvent;
 	import flash.text.ReturnKeyLabel;
 	import flash.text.SoftKeyboardType;
 	import flash.text.TextField;
@@ -28,6 +29,13 @@ package popForm
 		private var dayKeyboard:FarsiInputCorrection;
 		private var OnTypedFunction:Function;
 		private var ReturnKey:String;
+		
+		private var up_datMC:MovieClip,
+					up_yearMC:MovieClip,
+					up_monthMC:MovieClip;
+		private var dw_datMC:MovieClip,
+					dw_yearMC:MovieClip,
+					dw_monthMC:MovieClip;
 		
 		public function changeColor(colorFrame:uint)
 		{
@@ -57,6 +65,27 @@ package popForm
 			backMC.stop();
 			changeColor(color);
 			
+			up_datMC = Obj.get("up_dat_mc",this);
+			up_monthMC = Obj.get("up_mon_mc",this);
+			up_yearMC = Obj.get("up_yea_mc",this);
+			dw_datMC = Obj.get("dw_dat_mc",this);
+			dw_monthMC = Obj.get("dw_mon_mc",this);
+			dw_yearMC = Obj.get("dw_yea_mc",this);
+			
+			if(up_datMC)
+				up_datMC.addEventListener(MouseEvent.CLICK,upTheDay);
+			if(up_monthMC)
+				up_monthMC.addEventListener(MouseEvent.CLICK,upTheMonth);
+			if(up_yearMC)
+				up_yearMC.addEventListener(MouseEvent.CLICK,upTheYear);
+			
+			if(dw_datMC)
+				dw_datMC.addEventListener(MouseEvent.CLICK,downTheDay);
+			if(dw_monthMC)
+				dw_monthMC.addEventListener(MouseEvent.CLICK,downTheMonth);
+			if(dw_yearMC)
+				dw_yearMC.addEventListener(MouseEvent.CLICK,downTheYear);
+			
 			tagTF = Obj.get("tag_txt",Obj.get("tag_txt",this));
 			
 			TextPutter.OnButton(tagTF,tagName,isArabic,true,false);
@@ -73,6 +102,62 @@ package popForm
 			
 			update(defaultDate);
 		}
+		
+			protected function upTheDay(event:MouseEvent):void
+			{
+				var currentDate:Date = date ;
+				if(currentDate!=null)
+				{
+					currentDate.date++;
+					update(currentDate);
+				}
+			}
+			protected function upTheMonth(event:MouseEvent):void
+			{
+				var currentDate:Date = date ;
+				if(currentDate!=null)
+				{
+					currentDate.month++;
+					update(currentDate);
+				}
+			}
+			protected function upTheYear(event:MouseEvent):void
+			{
+				var currentDate:Date = date ;
+				if(currentDate!=null)
+				{
+					currentDate.fullYear++;
+					update(currentDate);
+				}
+			}
+		
+			protected function downTheDay(event:MouseEvent):void
+			{
+				var currentDate:Date = date ;
+				if(currentDate!=null)
+				{
+					currentDate.date--;
+					update(currentDate);
+				}
+			}
+			protected function downTheMonth(event:MouseEvent):void
+			{
+				var currentDate:Date = date ;
+				if(currentDate!=null)
+				{
+					currentDate.month--;
+					update(currentDate);
+				}
+			}
+			protected function downTheYear(event:MouseEvent):void
+			{
+				var currentDate:Date = date ;
+				if(currentDate!=null)
+				{
+					currentDate.fullYear--;
+					update(currentDate);
+				}
+			}
 		
 		override public function update(data:*):void
 		{
