@@ -57,7 +57,7 @@
 			serviceGenerator.inputObject = bodyToObject(itemModel.request.body);
 			serviceGenerator.inputObjectClassName = createClassName(serviceGenerator.ServiceName,'Request');
 			
-			if(itemModel.response.length>0 && itemModel.response[0].body!=null)
+			if(itemModel.response.length>0 && itemModel.response[itemModel.response.length-1].body!=null  && itemModel.response[itemModel.response.length-1].body==null)
 			{
 				trace("***** : "+itemModel.response[itemModel.response.length-1].body);
 				trace("******** : "+JSONCorrector(itemModel.response[itemModel.response.length-1].body));
