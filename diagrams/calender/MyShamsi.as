@@ -90,7 +90,7 @@ package diagrams.calender
 		
 		public function showStringFormat(showClock:Boolean=true,showSeconds:Boolean=true):String
 		{
-			var str:String = fullYear+'/'+(month+1)+'/'+date;
+			var str:String = fullYear+'/'+TimeToString.numToString(month+1)+'/'+TimeToString.numToString(date);
 			if(showClock)
 			{
 				str+='    '+TimeToString.numToString(hours)+':'+TimeToString.numToString(minutes);//
