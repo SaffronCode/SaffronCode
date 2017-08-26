@@ -31,9 +31,19 @@ package popForm
 		}
 		
 		
-		public function PopFieldTime(tagName:String,defaultTime:Date=null,isArabic:Boolean=false,languageFrame:uint=1,color:uint=1)
+		public function PopFieldTime(tagName:String=null,defaultTime:Date=null,isArabic:Boolean=false,languageFrame:uint=1,color:uint=1)
 		{
 			super();
+			
+			if(tagName!=null)
+			{
+				setUp(tagName,defaultTime,isArabic,languageFrame,color);
+			}
+
+		}
+		
+		public function setUp(tagName:String,defaultTime:Date=null,isArabic:Boolean=false,languageFrame:uint=1,color:uint=1):void
+		{
 			myTitle = tagName ;
 			this.gotoAndStop(languageFrame);
 			
@@ -43,7 +53,8 @@ package popForm
 			
 			tagTF = Obj.get("tag_txt",Obj.get("tag_txt",this));
 			
-			TextPutter.OnButton(tagTF,tagName,isArabic,false,false);
+			TextPutter.OnButton(tagTF,tagName,isArabic,true,false);
+
 			
 			houreTF = Obj.get("houre_txt",this);
 			minutesTF = Obj.get("minutes_txt",this);
@@ -65,7 +76,6 @@ package popForm
 			FarsiInputCorrection.setUp(houreTF,SoftKeyboardType.NUMBER,isArabic,true,clearAfterSelects);
 			FarsiInputCorrection.setUp(minutesTF,SoftKeyboardType.NUMBER,isArabic,true,clearAfterSelects);
 		}
-		
 		public function get date():Date
 		{
 			if(houreTF.text == '' || minutesTF.text == '')
