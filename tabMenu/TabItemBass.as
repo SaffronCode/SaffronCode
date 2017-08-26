@@ -85,8 +85,7 @@ package tabMenu
 		}
 		
 		protected function click_fun(event:MouseEvent):void
-		{
-			
+		{	
 			if(!_selected)
 			{			
 				sendEvent();
