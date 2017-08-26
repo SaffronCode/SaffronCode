@@ -13,6 +13,8 @@ import starling.events.Touch;
 import starling.events.TouchEvent;
 import starling.events.TouchPhase;
 
+import starlingPack.event.StarlingZoomEvent;
+
 public class StarlingZoomer {
 
     private var mySprite:Sprite,
@@ -30,12 +32,22 @@ public class StarlingZoomer {
     /**0 is the reseted distance*/
     private var lastTwoPointsDistance:Number = 0 ;
 
+    private var lock:Boolean = false,
+                unlockOnTouchUp:Boolean = false ;
+
     public function StarlingZoomer(zoomableObject:Sprite) {
         if(Starling.multitouchEnabled==false)
         {
             trace("You should set Starling.multitouchEnabled = true  before creating starling instance on the main class.");
         }
         mySprite = zoomableObject ;
+        mySprite.addEventListener(StarlingZoomEvent.LOCK_UNTIL_TOUCH_UP,lockUntilTouchUp);
+    }
+
+    private function lockUntilTouchUp(event:StarlingZoomEvent):void {
+        lock = true ;
+        unlockOnTouchUp = true ;
+        removeTouch();
     }
 
     /**Clear touch list*/
@@ -159,15 +171,19 @@ public class StarlingZoomer {
         for(var i:int = 0 ; i<touchs.length ; i++) {
             touch = touchs[i] ;
             if (touch) {
-                if (touch.phase == TouchPhase.BEGAN) {
+                if (touch.phase == TouchPhase.BEGAN && !lock) {
                     addTouch(touch);
                 }
 
                 else if (touch.phase == TouchPhase.ENDED) {
                     removeTouch(touch);
+                    if(unlockOnTouchUp)
+                    {
+                        lock = false ;
+                    }
                 }
 
-                else if (touch.phase == TouchPhase.MOVED) {
+                else if (touch.phase == TouchPhase.MOVED && !lock) {
                 }
             }
         }
@@ -198,10 +214,18 @@ public class StarlingZoomer {
         return touch.getLocation(mySprite);
     }
 
-        /**Remove this touch from the list*/
-        private function removeTouch(touch:Touch):void
+        /**Remove this touch from the list<br>
+         * Pass null to remove all touches*/
+        private function removeTouch(touch:Touch=null):void
         {
             lastTwoPointsDistance = 0 ;
+            if(touch==null)
+            {
+                touchList = new <Touch>[];
+                lastPose = new Vector.<Point>();
+                trace("All touches removed");
+                return ;
+            }
             for(var i:int ; i<touchList.length ;i++)
             {
                 if(touchList[i].id == touch.id)
