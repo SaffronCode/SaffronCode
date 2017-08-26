@@ -8,6 +8,7 @@ package appManager.displayContent
 		internal var image:* ;
 		
 		public var title:String ;
+		public var titleColor:int;
 		
 		/**This is like image*/
 		internal var thumbnail:* ;
@@ -25,7 +26,7 @@ package appManager.displayContent
 		
 		
 		/**Pass url, bitmapData or byteArray for image. pageInterfaceObject class must be a class that extends from SliderElementInterface*/
-		public function SliderImageItem(ImageObject:*,Title:String='',Thumbnail:*=null,pageInterfaceObject:SliderElementInterface=null,pageInterfaceData:*=null,KeepRatio:Boolean=true,LoadInThisArea:Boolean=false)
+		public function SliderImageItem(ImageObject:*,Title:String='',Thumbnail:*=null,pageInterfaceObject:SliderElementInterface=null,pageInterfaceData:*=null,KeepRatio:Boolean=true,LoadInThisArea:Boolean=false,TitleColor:int=-1)
 		{
 			image = ImageObject ;
 			if(Thumbnail==null)
@@ -34,6 +35,7 @@ package appManager.displayContent
 			}
 			thumbnail = Thumbnail ;
 			title = Title ;
+			titleColor = TitleColor;
 			
 			pageInterface = pageInterfaceObject ;
 			data = pageInterfaceData ;
