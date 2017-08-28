@@ -149,7 +149,7 @@ package popForm
 		 * onButtonSelected : function(e:PopMenuEvent);<br>
 		 * onSearchButton : function(searchParam:String);<br>
 		 * the function "onJobSelected" must have a variable based on PopMenuEvent */
-		public static function selector(title:String,text:String,buttonsList:Array,onButtonSelected:Function,onSearchButton:Function=null,defButtonFrame:uint=1,itemFrame:uint=2,onBackFUnction:Function = null,backButtonFrame:int=1):void
+		public static function selector(title:String,text:String,buttonsList:Array,onButtonSelected:Function,onSearchButton:Function=null,defButtonFrame:uint=1,itemFrame:uint=2,onBackFUnction:Function = null,backButtonFrame:int=1,addBackButton:Boolean=true):void
 		{
 			var moreHint:String = '' ;
 			var namesArray:Array ;
@@ -163,16 +163,30 @@ package popForm
 			
 			if( onSearched != null )
 			{
-				namesArray = [Contents.lang.t[id_search],backButton,''] ;
+				if(addBackButton)
+				{
+					namesArray = [Contents.lang.t[id_search],backButton,''] ;
+				}
+				else
+				{
+					namesArray = [Contents.lang.t[id_search],''] ;
+				}
 			}
 			else
 			{
-				namesArray = [backButton,''] ;
+				if(addBackButton)
+				{
+					namesArray = [backButton,''] ;
+				}
+				else
+				{
+					namesArray = [] ;
+				}
 			}
 			namesArray = namesArray.concat(buttonsList);
 			trace("namesArray : "+namesArray.length);
 			
-			if(namesArray.length <= 3)
+			if((addBackButton && namesArray.length <= 3) || (!addBackButton && namesArray.length == 0 ))
 			{
 				moreHint = Contents.lang.t[id_no_matches_found]+'\n' ;
 			}
