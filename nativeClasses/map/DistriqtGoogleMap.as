@@ -11,6 +11,7 @@ package nativeClasses.map
 	
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.EventDispatcher;
 	import flash.filesystem.File;
 	import flash.geom.Rectangle;
 	import flash.utils.setTimeout;
@@ -29,6 +30,8 @@ package nativeClasses.map
 							deltaX:Number,
 							deltaY:Number;
 		
+		private static var dispatcher:EventDispatcher = new EventDispatcher();
+		
 		private var mapCreated:Boolean = false ;
 		
 		private var mapIsShowing:Boolean = false ;
@@ -43,15 +46,9 @@ package nativeClasses.map
 		public static function setUp(GoogleAPIKey:String,DistriqtId:String):void
 		{
 			api_key = GoogleAPIKey ;
+			var neceraryLines:String = '•' ;
 			
-			var hintText:String = ("*******************\n\n\n\n\nYou have to add below ane files to your project : \n	com.distriqt.androidsupport.V4.ane\n" +
-				"com.distriqt.Core.ane\n" +
-				//"com.distriqt.GooglePlayServices.ane\n" +
-				"com.distriqt.NativeMaps.ane\n" +
-				"com.distriqt.playservices.Base.ane\n" +
-				"com.distriqt.playservices.Maps.ane\n\n\n" +
-				"And aloso controll your permission on Android manifest:\n\n" +
-				'<manifest android:installLocation="auto">\n' +
+			var AndroidPermission:String = neceraryLines+'<manifest android:installLocation="auto">\n' +
 				'\t<uses-sdk android:minSdkVersion="12" android:targetSdkVersion="24" />\n' +
 				'\t<uses-permission android:name="android.permission.INTERNET"/>\n' +
 				'\t<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>\n' +
@@ -63,12 +60,28 @@ package nativeClasses.map
 				'\t<uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>\n' +
 				'\t<uses-permission android:name="air.'+DevicePrefrence.appID+'.permission.MAPS_RECEIVE" android:protectionLevel="signature"/>\n' +
 				'\t<uses-feature android:glEsVersion="0x00020000" android:required="true"/>\n' +
-				'\t<application>\n' +
+				neceraryLines+'\t<application>\n' +
 				'\t\t<meta-data android:name="com.google.android.geo.API_KEY" android:value="'+api_key+'" />\n' +
 				'\t\t<meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />\n' +
 				'\t\t<activity android:name="com.distriqt.extension.nativemaps.permissions.AuthorisationActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar" />\n' +
-				'\t</application>\n' +
-				'</manifest>\n\n\n\n\n\n\n' +
+				neceraryLines+'\t</application>\n' +
+				neceraryLines+'</manifest>';
+			
+			var hintText:String = ("*******************\n\n\n\n\nYou have to add below ane files to your project : \n	com.distriqt.androidsupport.V4.ane\n" +
+				"\n" +
+				//"com.distriqt.GooglePlayServices.ane\n" +
+				
+				"\t<extensions>\n"+
+					"\t\t<extensionID>com.distriqt.Core</extensionID>\n"+
+					"\t\t<extensionID>com.distriqt.androidsupport.V4</extensionID>\n"+
+					"\t\t<extensionID>com.distriqt.NativeMaps</extensionID>\n"+
+					"\t\t<extensionID>com.distriqt.playservices.Base</extensionID>\n"+
+					"\t\t<extensionID>com.distriqt.playservices.Maps</extensionID>\n"+
+			  	"\t</extensions>\n\n\n"+
+				
+				"And aloso controll your permission on Android manifest:\n\n" +
+				AndroidPermission+
+				'\n\n\n\n\n\n\n' +
 				"*******************");
 			
 			
@@ -77,13 +90,42 @@ package nativeClasses.map
 			{
 				throw "Your Manifest is absolutly wrong!! controll the example";
 			}
-			if(DevicePrefrence.isItPC && descriptString.indexOf("com.google.android.providers.gsf.permission.READ_GSERVICES")==-1)
+			
+			
+			var allAndroidPermission:Array = AndroidPermission.split('\n');
+			var leftPermission:String = '' ;
+			var androidManifestMustUpdate:Boolean = false ;
+			for(var i:int = 0 ; i<allAndroidPermission.length ; i++)
 			{
-				throw hintText ;
+				var isNessesaryToShow:Boolean = isNessesaryLine(allAndroidPermission[i]) ;
+				if(descriptString.indexOf(StringFunctions.clearSpacesAndTabs(removeNecessaryBoolet(allAndroidPermission[i])))==-1)
+				{
+					androidManifestMustUpdate = true ;
+					leftPermission += removeNecessaryBoolet(allAndroidPermission[i])+'\n' ;
+				}
+				else if(isNessesaryToShow)
+				{
+					leftPermission += removeNecessaryBoolet(allAndroidPermission[i])+'\n' ;
+				}
+				else
+				{
+					//leftPermission += '-'+allAndroidPermission[i]+'\n' ;
+				}
 			}
-			else
+			
+			function isNessesaryLine(line:String):Boolean
 			{
-				trace(hintText);
+				return line.indexOf(neceraryLines)!=-1 ;
+			}
+			
+			function removeNecessaryBoolet(line:String):String
+			{
+				return line.split(neceraryLines).join('') ;
+			}
+			
+			if(DevicePrefrence.isItPC && androidManifestMustUpdate)
+			{
+				throw hintText; 
 			}
 			
 			try
@@ -151,12 +193,19 @@ package nativeClasses.map
 		public function DistriqtGoogleMap(Width:Number,Height:Number)
 		{
 			super();
+			dispatcher.dispatchEvent(new Event(Event.REMOVED_FROM_STAGE));
 			unload();
 			
-			this.graphics.beginFill(0x222222,0);
+			this.graphics.beginFill(0x222222,1);
 			this.graphics.drawRect(0,0,Width,Height);
 			
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unload);
+			dispatcher.addEventListener(Event.REMOVED_FROM_STAGE,removeMeBecauseSomeOneElseComes);
+		}
+		
+		protected function removeMeBecauseSomeOneElseComes(event:Event):void
+		{
+			Obj.remove(this);
 		}
 		
 		public function setMap(centerLat:Number=NaN,centerLon:Number=NaN,icons:Vector.<MapIcon>=null):void
@@ -210,8 +259,8 @@ package nativeClasses.map
 				trace("Create map done");
 				mapCreated = true ;
 				mapIsShowing = true ;
-				this.addEventListener(Event.ENTER_FRAME,repose);
 			}
+			this.addEventListener(Event.ENTER_FRAME,repose);
 
 		}
 		
@@ -221,6 +270,7 @@ package nativeClasses.map
 			{
 				NativeMaps.service.destroyMap();
 			}
+			dispatcher.removeEventListener(Event.REMOVED_FROM_STAGE,removeMeBecauseSomeOneElseComes);
 			NativeMaps.service.removeEventListener( NativeMapEvent.MAP_CREATED, mapCreatedHandler );
 			this.removeEventListener(Event.ENTER_FRAME,repose);
 		}
@@ -320,18 +370,24 @@ package nativeClasses.map
 			//trace("Repose : "+rect);
 			NativeMaps.service.setLayout(rect.width,rect.height,rect.x,rect.y);
 			
+			trace("map place is : "+rect);
+			
 			if(Obj.isAccesibleByMouse(this))
 			{
+				trace("Show map!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 				if(!mapIsShowing)
 				{
+					trace("!!!!!!!!!!!!!!!!!show!!!!!!!!!!!!");
 					NativeMaps.service.showMap();
 					mapIsShowing = true ;
 				}
 			}
 			else
 			{
+				trace("Hide the map!!!");
 				if(mapIsShowing)
 				{
+					trace("!!!!!!!!!!!!!!!hide!!!!!!!!!!!!!!!");
 					NativeMaps.service.hideMap();
 					mapIsShowing = false ;
 				}
