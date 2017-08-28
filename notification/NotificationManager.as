@@ -67,7 +67,7 @@ package notification
 				"\t<array>\n" +
 				"\t\t<string>??????????."+DevicePrefrence.appID+"</string> <!--Add team id-->\n" +
 				"\t</array>";
-			if(currentPermissions.indexOf("<key>application-identifier</key>")==-1)
+			if(DevicePrefrence.isItPC && currentPermissions.indexOf("<key>application-identifier</key>")==-1)
 			{
 				throw "You have to add below permission on <iPhone><Entitlements>  <![CDATA[ \n\n\n"+requiredPermissionIos+'\n\n]]>\n\n' ;
 			}
@@ -128,7 +128,7 @@ package notification
 				return line.split(neceraryLines).join('') ;
 			}
 			
-			if(androidManifestMustUpdate)
+			if(DevicePrefrence.isItPC && androidManifestMustUpdate)
 			{
 				throw "Add bellow permission to <android> <manifestAdditions><![CDATA[\n\n\n"+leftPermission+"\n\n]]>\n\n"; 
 			}
