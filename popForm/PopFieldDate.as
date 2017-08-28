@@ -110,6 +110,7 @@ package popForm
 				{
 					currentDate.date++;
 					update(currentDate);
+					this.dispatchEvent(new Event(Event.CHANGE));
 				}
 			}
 			protected function upTheMonth(event:MouseEvent):void
@@ -119,6 +120,7 @@ package popForm
 				{
 					currentDate.month++;
 					update(currentDate);
+					this.dispatchEvent(new Event(Event.CHANGE));
 				}
 			}
 			protected function upTheYear(event:MouseEvent):void
@@ -128,6 +130,7 @@ package popForm
 				{
 					currentDate.fullYear++;
 					update(currentDate);
+					this.dispatchEvent(new Event(Event.CHANGE));
 				}
 			}
 		
@@ -138,6 +141,7 @@ package popForm
 				{
 					currentDate.date--;
 					update(currentDate);
+					this.dispatchEvent(new Event(Event.CHANGE));
 				}
 			}
 			protected function downTheMonth(event:MouseEvent):void
@@ -147,6 +151,7 @@ package popForm
 				{
 					currentDate.month--;
 					update(currentDate);
+					this.dispatchEvent(new Event(Event.CHANGE));
 				}
 			}
 			protected function downTheYear(event:MouseEvent):void
@@ -156,6 +161,7 @@ package popForm
 				{
 					currentDate.fullYear--;
 					update(currentDate);
+					this.dispatchEvent(new Event(Event.CHANGE));
 				}
 			}
 		

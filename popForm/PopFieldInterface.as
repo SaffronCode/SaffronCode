@@ -2,6 +2,8 @@ package popForm
 {
 	import flash.display.MovieClip;
 	
+	/**The data value is changed*/
+	[Event(name="change", type="flash.events.Event")]
 	internal class PopFieldInterface extends MovieClip
 	{
 		public function PopFieldInterface()
