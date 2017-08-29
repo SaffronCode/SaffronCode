@@ -370,6 +370,19 @@ package nativeClasses.map
 				}
 			}
 			
+			if(rect!=null && rect.y<0)
+			{
+				if(-rect.y<rect.height)
+				{
+					rect.height += rect.y ;
+					rect.y = 0 ;
+				}
+				else
+				{
+					rect = null ;
+				}
+			}
+			
 			return rect;
 		}
 		
@@ -385,24 +398,24 @@ package nativeClasses.map
 			if(rect)
 				NativeMaps.service.setLayout(rect.width,rect.height,rect.x,rect.y);
 			
-			trace("map place is : "+rect);
+			//trace("map place is : "+rect);
 			
 			if(rect!=null && Obj.isAccesibleByMouse(this))
 			{
-				trace("Show map!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+				//trace("Show map!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 				if(!mapIsShowing)
 				{
-					trace("!!!!!!!!!!!!!!!!!show!!!!!!!!!!!!");
+					//trace("!!!!!!!!!!!!!!!!!show!!!!!!!!!!!!");
 					NativeMaps.service.showMap();
 					mapIsShowing = true ;
 				}
 			}
 			else
 			{
-				trace("Hide the map!!!");
+				//trace("Hide the map!!!");
 				if(mapIsShowing)
 				{
-					trace("!!!!!!!!!!!!!!!hide!!!!!!!!!!!!!!!");
+					//trace("!!!!!!!!!!!!!!!hide!!!!!!!!!!!!!!!");
 					NativeMaps.service.hideMap();
 					mapIsShowing = false ;
 				}
@@ -430,7 +443,7 @@ package nativeClasses.map
 			{
 				for(var j = 0 ; j<NativeMaps.service.customMarkerIcons.length ; j++)
 				{
-					if(NativeMaps.service.customMarkerIcons[i].id == myIcons[i].Id)
+					if(NativeMaps.service.customMarkerIcons[j].id == myIcons[i].Id)
 					{
 						isDuplicated = true ;
 						break;
