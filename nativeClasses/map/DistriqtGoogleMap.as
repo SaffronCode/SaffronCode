@@ -190,13 +190,14 @@ package nativeClasses.map
 			}
 		}
 		
+		/**Some times you have to create this class after a delay, We didn't found why till now...*/
 		public function DistriqtGoogleMap(Width:Number,Height:Number)
 		{
 			super();
 			dispatcher.dispatchEvent(new Event(Event.REMOVED_FROM_STAGE));
 			unload();
 			
-			this.graphics.beginFill(0x222222,1);
+			this.graphics.beginFill(0x222222,0);
 			this.graphics.drawRect(0,0,Width,Height);
 			
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unload);
@@ -356,6 +357,19 @@ package nativeClasses.map
 			
 			//trace("new rect : " +rect);
 			
+			if(rect.x<0)
+			{
+				if(-rect.x<rect.width)
+				{
+					rect.width += rect.x ;
+					rect.x = 0 ;
+				}
+				else
+				{
+					rect = null ;
+				}
+			}
+			
 			return rect;
 		}
 		
@@ -368,11 +382,12 @@ package nativeClasses.map
 		{
 			var rect:Rectangle = createViewPort();
 			//trace("Repose : "+rect);
-			NativeMaps.service.setLayout(rect.width,rect.height,rect.x,rect.y);
+			if(rect)
+				NativeMaps.service.setLayout(rect.width,rect.height,rect.x,rect.y);
 			
 			trace("map place is : "+rect);
 			
-			if(Obj.isAccesibleByMouse(this))
+			if(rect!=null && Obj.isAccesibleByMouse(this))
 			{
 				trace("Show map!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 				if(!mapIsShowing)
