@@ -1,8 +1,5 @@
 package notification
 {
-	import com.milkmangames.nativeextensions.EasyPush;
-	import com.milkmangames.nativeextensions.events.PNEvent;
-	import com.milkmangames.nativeextensions.events.PNOSEvent;
 	import com.mteamapp.StringFunctions;
 	
 	import flash.events.EventDispatcher;
@@ -25,6 +22,13 @@ package notification
 		
 		private var _timeOutId:uint	
 		private static var autoAlertBox:Boolean;
+		
+		/**com.milkmangames.nativeextensions.events.PNOSEvent*/
+		private static var PNOSEventClass:Class ;
+		
+		/**com.milkmangames.nativeextensions.EasyPush*/
+		private static var EasyPushClass:Class ;
+		
 		public function NotificationManager(ONESIGNAL_APP_ID_p:String='',GCM_PROJECT_NUMBER_p:String='',autoAlerOnNativeBox:Boolean=true)
 		{
 			super();
@@ -36,6 +40,16 @@ package notification
 			if(ONESIGNAL_APP_ID_p!='' && GCM_PROJECT_NUMBER_p!='')
 			{
 				EasyPushExample();
+			}
+			
+			if(PNOSEventClass==null)
+			{
+				PNOSEventClass = Obj.generateClass("com.milkmangames.nativeextensions.events.PNOSEvent") ;
+			}
+			
+			if(EasyPushClass==null)
+			{
+				EasyPushClass = Obj.generateClass("com.milkmangames.nativeextensions.EasyPush") ;
 			}
 		}
 		
@@ -135,12 +149,12 @@ package notification
 			//Controll permissions↑
 			
 			
-			if (!EasyPush.isSupported())
+			if (!(EasyPushClass as Object).isSupported())
 			{
 				log("EasyPush is not supported on this platform (not android or ios!)");
 				return;
 			}
-			if (!EasyPush.areNotificationsAvailable())
+			if (!(EasyPushClass as Object).areNotificationsAvailable())
 			{
 				log("Notifications are not available!");
 				return;
@@ -161,18 +175,18 @@ package notification
 			log("init OneSignal...");
 			try
 			{
-				EasyPush.initOneSignal(ONESIGNAL_APP_ID, GCM_PROJECT_NUMBER, autoAlertBox);
+				(EasyPushClass as Object).initOneSignal(ONESIGNAL_APP_ID, GCM_PROJECT_NUMBER, autoAlertBox);
 			}catch(e)
 			{
 				trace("Esy push >>>> "+e);
 			}
 			
 			log("did init OneSignal.");
-			EasyPush.oneSignal.addEventListener(PNOSEvent.ALERT_DISMISSED,onAlertDismissed);
-			EasyPush.oneSignal.addEventListener(PNOSEvent.FOREGROUND_NOTIFICATION,onForegroundNotification);
-			EasyPush.oneSignal.addEventListener(PNOSEvent.RESUMED_FROM_NOTIFICATION,onNotification);
-			EasyPush.oneSignal.addEventListener(PNOSEvent.TOKEN_REGISTERED,onTokenRegistered);
-			EasyPush.oneSignal.addEventListener(PNOSEvent.TOKEN_REGISTRATION_FAILED,onRegFailed);
+			(EasyPushClass as Object).oneSignal.addEventListener((PNOSEventClass as Object).ALERT_DISMISSED,onAlertDismissed);
+			(EasyPushClass as Object).oneSignal.addEventListener((PNOSEventClass as Object).FOREGROUND_NOTIFICATION,onForegroundNotification);
+			(EasyPushClass as Object).oneSignal.addEventListener((PNOSEventClass as Object).RESUMED_FROM_NOTIFICATION,onNotification);
+			(EasyPushClass as Object).oneSignal.addEventListener((PNOSEventClass as Object).TOKEN_REGISTERED,onTokenRegistered);
+			(EasyPushClass as Object).oneSignal.addEventListener((PNOSEventClass as Object).TOKEN_REGISTRATION_FAILED,onRegFailed);
 			tryeToConnectNotificationRegister()
 		}
 		private function validateConstants():Boolean
@@ -191,7 +205,8 @@ package notification
 			return true;
 		}
 		/////////////////////event
-		private function onTokenRegistered(e:PNEvent):void
+		//com.milkmangames.nativeextensions.events.PNEvent
+		private function onTokenRegistered(e:*):void
 		{
 			log("token registered:"+e.token);
 			token = e.token;
@@ -199,7 +214,8 @@ package notification
 			clearTimeout(_timeOutId)	
 		} 
 		
-		private function onRegFailed(e:PNEvent):void
+		//com.milkmangames.nativeextensions.events.PNEvent
+		private function onRegFailed(e:*):void
 		{
 			log("reg failed: "+e.errorId+"="+e.errorMsg);
 			loop()
@@ -209,19 +225,22 @@ package notification
 			clearTimeout(_timeOutId)
 			_timeOutId = setTimeout(setupOneSignal,5000)
 		}
-		private function onAlertDismissed(e:PNEvent):void
+		//com.milkmangames.nativeextensions.events.PNEvent
+		private function onAlertDismissed(e:*):void
 		{
 			log("dismissed alert "+e.alert);
 			loop()
 		}
 		
-		private function onNotification(e:PNEvent):void
+		//com.milkmangames.nativeextensions.events.PNEvent
+		private function onNotification(e:*):void
 		{
 			log(e.type+"="+e.rawPayload+","+e.badgeValue+","+e.title+" customPayload : "+e.customPayload+" : "+JSON.stringify(e.customPayload,null,' '));	
 			this.dispatchEvent(new NotificationEvent(NotificationEvent.NOTIFICATION,pnEvent(e),false,false,e.customPayload))
 		}
 		
-		private function onForegroundNotification(e:PNEvent):void
+		//com.milkmangames.nativeextensions.events.PNEvent
+		private function onForegroundNotification(e:*):void
 		{
 			log(e.type+"="+e.rawPayload+","+e.badgeValue+","+e.title+" customPayload : "+e.customPayload+" : "+JSON.stringify(e.customPayload,null,' '));	
 			this.dispatchEvent(new NotificationEvent(NotificationEvent.FOREGROUND_NOTIFICATION,pnEvent(e),false,false,e.customPayload))
@@ -232,7 +251,9 @@ package notification
 		{
 			trace("[Push Notificatoni]"+msg);
 		}
-		private function pnEvent(e:PNEvent):PNEventManager
+		
+		//com.milkmangames.nativeextensions.events.PNEvent
+		private function pnEvent(e:*):PNEventManager
 		{
 			var _pnEvnet:PNEventManager = new PNEventManager()
 			_pnEvnet.alert = e.alert

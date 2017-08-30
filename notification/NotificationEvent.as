@@ -1,8 +1,5 @@
 package notification
 {
-	import com.milkmangames.nativeextensions.events.PNEvent;
-	import com.milkmangames.nativeextensions.events.PNOSEvent;
-	
 	import flash.events.Event;
 	
 	public class NotificationEvent extends Event
