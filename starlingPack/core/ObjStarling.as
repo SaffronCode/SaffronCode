@@ -42,5 +42,18 @@ public class ObjStarling {
         arr[I-1] = arr[I]
         arr[I] = komaki
     }
+
+    /**Returns the object scale based on where it is*/
+    public static function getAbsoluteScale(target:Sprite):Number
+    {
+        var scl:Number = target.scale ;
+        var par:Sprite ;
+        par = target.parent as Sprite;
+        while(par!=null){
+            scl*=par.scale ;
+            par = par.parent as Sprite ;
+        }
+        return scl ;
+    }
 }
 }
