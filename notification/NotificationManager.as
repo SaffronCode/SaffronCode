@@ -149,7 +149,7 @@ package notification
 			//Controll permissions↑
 			
 			
-			if (!(EasyPushClass as Object).isSupported())
+			if (EasyPushClass==null || !(EasyPushClass as Object).isSupported())
 			{
 				log("EasyPush is not supported on this platform (not android or ios!)");
 				return;
