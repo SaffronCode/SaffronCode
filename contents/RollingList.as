@@ -25,7 +25,7 @@ package contents
 		
 		private var createdLins:Vector.<TitleText> ;
 		
-		private var firstOfList:int,
+		private var bottomOfList:int,
 					lastOfList:int;
 					
 		public function RollingList()
@@ -63,7 +63,7 @@ package contents
 				Obj.remove(createdLins[i]);
 			}
 			
-			firstOfList = 0 ;
+			bottomOfList = 0 ;
 			lastOfList = 0 ;
 			
 			createdLins = new Vector.<TitleText>();
@@ -78,14 +78,22 @@ package contents
 		private function controllLinkGenerator():void
 		{
 			var newLinkAdded:Boolean = false ;
-			if(firstOfList>=0 && firstOfList<totalPageLinks)
+			if(bottomOfList>=0)
 			{
-				var requiredLinkY:Number = createLinkY(firstOfList) ; 
-				if(requiredLinkY+myLinkItemHeight>0 && requiredLinkY<myHeight)
+				if(bottomOfList<totalPageLinks)
 				{
-					addLink(firstOfList,false);
-					firstOfList++ ;
-					newLinkAdded = true ;
+					var requiredLinkY:Number = createLinkY(bottomOfList) ; 
+					if(requiredLinkY+myLinkItemHeight>0 && requiredLinkY<myHeight)
+					{
+						addLink(bottomOfList,true);
+						bottomOfList++ ;
+						newLinkAdded = true ;
+					}
+				}
+				if(bottomOfList>0 && createLinkY(bottomOfList-1)>myHeight)
+				{
+					removeLint(true);
+					bottomOfList--;
 				}
 			}
 			
@@ -96,12 +104,32 @@ package contents
 		}
 		
 		/**Add this item to the list*/
-		private function addLink(linkItemIndex:int,isFromFirst:Boolean):void
+		private function addLink(linkItemIndex:int,isFromBottom:Boolean):void
 		{
 			var item:TitleText = new rollerItemClass();
 			this.addChild(item);
 			item.setUp(myPageDataLink[linkItemIndex].name);
-			createdLins.push(item);
+			if(isFromBottom)
+			{
+				createdLins.push(item) ;
+			}
+			else
+			{
+				createdLins.unshift(item) ;
+			}
+		}
+		
+		/**Remove the link item from the list*/
+		private function removeLint(isFromBottom:Boolean)
+		{
+			if(isFromBottom)
+			{
+				Obj.remove(createdLins.pop());
+			}
+			else
+			{
+				Obj.remove(createdLins.shift());
+			}
 		}
 		
 		/**Animate the scorller*/
