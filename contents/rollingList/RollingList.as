@@ -40,7 +40,9 @@ package contents.rollingList
 		private var V:Number,
 					Vlist:Vector.<Number>,
 					vQueLength:uint = 20 ,
-					mu:Number = 0.9 ;
+					mu:Number = 0.9,
+					mu2:Number=0.4,
+					fu:Number = 5 ;
 					
 		//Debug variables
 					private var direction:Number = -1 ;
@@ -118,6 +120,16 @@ package contents.rollingList
 					}
 					V = V/Vlist.length ;
 					Vlist = null ;
+				}
+				if(createLinkY(0)>0)
+				{
+					V += (0-createLinkY(0))/fu ;
+					V = V*mu2 ;
+				}
+				else if(createLinkY(totalPageLinks-1)+myLinkItemHeight<myHeight)
+				{
+					V += (myHeight-(createLinkY(totalPageLinks-1)+myLinkItemHeight))/fu ;
+					V = V*mu2 ;
 				}
 				scorllI += V ;
 				V = V*mu ;
