@@ -174,12 +174,13 @@ package contents.rollingList
 		{
 			var newLinkAdded:Boolean = false ;
 			var requiredLinkY:Number ;
+			trace('bottomOfList : '+bottomOfList+' , topOfList : '+topOfList); 
 			if(bottomOfList>=0)
 			{
 				if(bottomOfList<totalPageLinks)
 				{
 					requiredLinkY = createLinkY(bottomOfList); 
-					if(requiredLinkY+myLinkItemHeight>0 && requiredLinkY<myHeight)
+					if(/*requiredLinkY+myLinkItemHeight>0 && */requiredLinkY<myHeight)
 					{
 						addLink(bottomOfList,true);
 						bottomOfList++ ;
@@ -195,7 +196,7 @@ package contents.rollingList
 			if(topOfList>=0)
 			{
 				requiredLinkY = createLinkY(topOfList);
-				if(requiredLinkY+myLinkItemHeight>0 && requiredLinkY<myHeight)
+				if(requiredLinkY+myLinkItemHeight>0/* && requiredLinkY<myHeight*/)
 				{
 					addLink(topOfList,false);
 					topOfList--;
