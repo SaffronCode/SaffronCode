@@ -121,14 +121,14 @@ package contents.rollingList
 					V = V/Vlist.length ;
 					Vlist = null ;
 				}
-				if(createLinkY(0)>0)
+				if(createLinkY(0)>myHeight/2)
 				{
-					V += (0-createLinkY(0))/fu ;
+					V += (myHeight/2-createLinkY(0))/fu ;
 					V = V*mu2 ;
 				}
-				else if(createLinkY(totalPageLinks-1)+myLinkItemHeight<myHeight)
+				else if(createLinkY(totalPageLinks-1)+myLinkItemHeight<myHeight/2)
 				{
-					V += (myHeight-(createLinkY(totalPageLinks-1)+myLinkItemHeight))/fu ;
+					V += (myHeight/2-(createLinkY(totalPageLinks-1)+myLinkItemHeight))/fu ;
 					V = V*mu2 ;
 				}
 				scorllI += V ;
@@ -258,7 +258,7 @@ package contents.rollingList
 		/**Return the link Y for this index*/
 		private function createLinkY(itemIndex:uint):Number
 		{
-			return itemIndex*20+scorllI ;
+			return itemIndex*20+scorllI+myHeight/2 ;
 		}
 	}
 }
