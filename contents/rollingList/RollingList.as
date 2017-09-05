@@ -266,7 +266,29 @@ package contents.rollingList
 		/**Return the link Y for this index*/
 		private function createLinkAlphaAndScale(currentY:Number,rollItem:RollingItem):void
 		{
-			rollItem.alpha = currentY/myHeight ;
+			//currentY-=myLinkItemHeight;
+			var changedH:Number = myHeight-myLinkItemHeight ;
+			var rad:Number = Math.PI/-2+currentY/changedH*(Math.PI*2) ;
+			if(rad<-Math.PI/2)
+			{
+				rad = -Math.PI/2;
+			}
+			else if(rad>Math.PI*3/2)
+			{
+				rad = Math.PI*3/2;
+			}
+			var sinVal:Number = Math.sin(rad)/2+0.5 ;
+			if(rollItem.myIndex==0)
+			{
+				trace("sinVal : "+sinVal);
+				trace("rad : "+(rad/Math.PI*180));
+			}
+			if(sinVal<0)
+			{
+				sinVal
+			}
+			var sinPrecent:Number = 0.1+sinVal*0.9 ;
+			rollItem.alpha = sinPrecent ;
 		}
 	}
 }
