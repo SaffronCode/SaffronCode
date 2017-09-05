@@ -73,7 +73,7 @@ package contents.rollingList
 			this.addChild(rollingItemsContainer);
 			this.addChild(rollingItemsMask);
 			
-			rollingItemsContainer.mask = rollingItemsMask ;
+			//rollingItemsContainer.mask = rollingItemsMask ;
 			
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 			this.addEventListener(MouseEvent.MOUSE_DOWN,mousePressed);
@@ -249,9 +249,11 @@ package contents.rollingList
 		private function updateAllInterface():void
 		{
 			var listLenght:uint = createdLins.length ;
+			var currentY:Number ;
 			for(var i:int = 0 ; i<listLenght ; i++)
 			{
-				createdLins[i].y = createLinkY(createdLins[i].myIndex) ;
+				currentY = createdLins[i].y = createLinkY(createdLins[i].myIndex) ;
+				createLinkAlphaAndScale(currentY,createdLins[i]);
 			}			
 		}
 		
@@ -259,6 +261,12 @@ package contents.rollingList
 		private function createLinkY(itemIndex:uint):Number
 		{
 			return itemIndex*20+scorllI+myHeight/2 ;
+		}
+		
+		/**Return the link Y for this index*/
+		private function createLinkAlphaAndScale(currentY:Number,rollItem:RollingItem):void
+		{
+			rollItem.alpha = currentY/myHeight ;
 		}
 	}
 }
