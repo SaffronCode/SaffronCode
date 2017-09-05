@@ -19,7 +19,6 @@ package contents.rollingList
 		private var myPageDataLink:Vector.<LinkData>,
 					totalPageLinks:uint;
 		
-		private var scorllI:Number ; 
 		
 		private var myHeight:Number,
 					myWidth:Number,
@@ -33,12 +32,25 @@ package contents.rollingList
 		private var rollingItemsMask:Sprite ,
 					rollingItemsContainer:Sprite ;
 					
+					
+		//Animation variables
+		private var scorllI:Number ;
+		private var isDragging:Boolean = false ;
+		private var currentMouseY:Number ;
+		private var V:Number,
+					Vlist:Vector.<Number>,
+					vQueLength:uint = 20 ,
+					mu:Number = 0.9 ;
+					
 		//Debug variables
 					private var direction:Number = -1 ;
 					
 		public function RollingList()
 		{
 			super();
+			
+			scorllI = 0 ;
+			V = 0 ;
 			
 			var rollerSample:RollingItem = Obj.findThisClass(RollingItem,this);
 			myLinkItemHeight = rollerSample.height ;
@@ -62,17 +74,62 @@ package contents.rollingList
 			rollingItemsContainer.mask = rollingItemsMask ;
 			
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
-			this.addEventListener(MouseEvent.MOUSE_DOWN,directionChanged);
+			this.addEventListener(MouseEvent.MOUSE_DOWN,mousePressed);
 		}	
 		
-		protected function directionChanged(event:MouseEvent):void
+		/**Mouse down*/
+		protected function mousePressed(event:MouseEvent):void
 		{
-			direction = -direction ;
+			isDragging = true ;
+			V = 0 ;
+			Vlist = new Vector.<Number>();
+			stage.addEventListener(MouseEvent.MOUSE_UP,stopDraging);
+			currentMouseY = this.mouseY ;
 		}
+		
+		/**Mouse up*/
+		protected function stopDraging(event:MouseEvent):void
+		{
+			stage.removeEventListener(MouseEvent.MOUSE_UP,stopDraging);
+			isDragging = false ;
+		}
+		
+		/**Animate the scorller*/
+		protected function anim(event:Event):void
+		{
+			if(isDragging)
+			{
+				scorllI += (this.mouseY-currentMouseY);
+				Vlist.push(this.mouseY-currentMouseY);
+				currentMouseY = this.mouseY ;
+				if(Vlist.length>vQueLength)
+				{
+					Vlist.shift();
+				}
+			}
+			else
+			{
+				if(Vlist!=null)
+				{
+					V = 0 ;
+					for(var i:int = 0 ; i<Vlist.length ; i++)
+					{
+						V += Vlist[i] ;
+					}
+					V = V/Vlist.length ;
+					Vlist = null ;
+				}
+				scorllI += V ;
+				V = V*mu ;
+			}
+			controllLinkGenerator();
+			updateAllInterface();
+		}	
 		
 		/**Removed from stage*/
 		protected function unLoad(event:Event):void
 		{
+			stage.removeEventListener(MouseEvent.MOUSE_UP,stopDraging);
 			this.removeEventListener(Event.ENTER_FRAME,anim);
 			this.removeEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 		}
@@ -123,7 +180,6 @@ package contents.rollingList
 					bottomOfList--;
 				}
 			}
-			trace("topOfList : "+topOfList);
 			if(topOfList>=0)
 			{
 				requiredLinkY = createLinkY(topOfList);
@@ -175,14 +231,6 @@ package contents.rollingList
 				Obj.remove(createdLins.shift());
 			}
 		}
-		
-		/**Animate the scorller*/
-		protected function anim(event:Event):void
-		{
-			scorllI+=direction;
-			controllLinkGenerator();
-			updateAllInterface();
-		}	
 		
 		/**Update all interface*/
 		private function updateAllInterface():void
