@@ -267,7 +267,15 @@ package contents.rollingList
 		private function createLinkAlphaAndScale(currentY:Number,rollItem:RollingItem):void
 		{
 			//currentY-=myLinkItemHeight;
+			const maxAvailableArea:Number = myLinkItemHeight*5 ;
 			var changedH:Number = myHeight-myLinkItemHeight ;
+			
+			if(myHeight>maxAvailableArea)
+			{
+				changedH = maxAvailableArea ;
+				currentY -= (myHeight-maxAvailableArea)/2-myLinkItemHeight/2 ;
+			}
+			
 			var rad:Number = Math.PI/-2+currentY/changedH*(Math.PI*2) ;
 			if(rad<-Math.PI/2)
 			{
