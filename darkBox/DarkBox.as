@@ -246,7 +246,10 @@
 			box_stageWeb.hide();
 			box_shp.hide();
 			if(box_vid2)
+			{
 				box_vid2.close();
+				box_vid2.visible = false ;
+			}
 			if(box_vid)
 				box_vid.hide();
 		}

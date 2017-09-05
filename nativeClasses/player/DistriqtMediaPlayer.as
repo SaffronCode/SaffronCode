@@ -48,7 +48,7 @@
 				trace("Distriqt media player is not supporting this device");
 			}
 			isFullScreen = false ;
-			this.graphics.beginFill(0x222222);
+			this.graphics.beginFill(0x222222,0);
 			this.graphics.drawRect(0,0,Width,Height);
 			if(isNaN(appStageWidth))
 			{
