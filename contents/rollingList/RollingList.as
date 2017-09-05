@@ -151,7 +151,7 @@ package contents.rollingList
 		{
 			var item:RollingItem = new rollerItemClass();
 			rollingItemsContainer.addChild(item);
-			item.setUp(myPageDataLink[linkItemIndex].name);
+			item.setUp(myPageDataLink[linkItemIndex].name,true,false,1);
 			item.setIndex(linkItemIndex);
 			if(isFromBottom)
 			{
