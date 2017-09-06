@@ -38,6 +38,7 @@ package contents.rollingList
 		//Animation variables
 		private var scorllI:Number ;
 		private var isDragging:Boolean = false ;
+		private var startsToDrag:Boolean = false ;
 		private var currentMouseY:Number ;
 		private var V:Number,
 					Vlist:Vector.<Number>,
@@ -50,6 +51,8 @@ package contents.rollingList
 					fu:Number = 5 ;
 					
 		private var pointerMC:MovieClip ;
+		
+		private const minDragToMove:Number = 10 ;
 		
 		private var selectedItemIndexToTrack:int = -1 ;
 					
@@ -108,12 +111,12 @@ package contents.rollingList
 		/**Mouse down*/
 		protected function mousePressed(event:MouseEvent):void
 		{
-			isDragging = true ;
+			currentMouseY = this.mouseY ;
+			startsToDrag = true ;
 			selectedItemIndexToTrack = -1 ;
 			V = 0 ;
 			Vlist = new Vector.<Number>();
 			stage.addEventListener(MouseEvent.MOUSE_UP,stopDraging);
-			currentMouseY = this.mouseY ;
 		}
 		
 		/**Mouse up*/
@@ -121,11 +124,21 @@ package contents.rollingList
 		{
 			stage.removeEventListener(MouseEvent.MOUSE_UP,stopDraging);
 			isDragging = false ;
+			startsToDrag = false ;
 		}
 		
 		/**Animate the scorller*/
 		protected function anim(event:Event):void
 		{
+			if(startsToDrag)
+			{
+				if(Math.abs(currentMouseY-this.mouseY)>minDragToMove)
+				{
+					isDragging = true ;
+					currentMouseY = this.mouseY ;
+					startsToDrag = false ;
+				}
+			}
 			if(isDragging)
 			{
 				scorllI += (this.mouseY-currentMouseY);
@@ -138,14 +151,17 @@ package contents.rollingList
 			}
 			else
 			{
-				if(Vlist!=null)
+				if(startsToDrag == false && Vlist!=null )
 				{
 					V = 0 ;
 					for(var i:int = 0 ; i<Vlist.length ; i++)
 					{
 						V += Vlist[i] ;
 					}
-					V = V/Vlist.length ;
+					if(Vlist.length!=0)
+					{
+						V = V/Vlist.length ;
+					}
 					Vlist = null ;
 				}
 				if(createLinkY(0)>myHeight/2+2)
