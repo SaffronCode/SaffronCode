@@ -220,7 +220,8 @@ package contents.rollingList
 		{
 			var item:RollingItem = new rollerItemClass();
 			rollingItemsContainer.addChild(item);
-			item.setUp(myPageDataLink[linkItemIndex].name,true,false,1);
+			item.x = myWidth/2; 
+			item.setUp(myPageDataLink[linkItemIndex]);
 			item.setIndex(linkItemIndex);
 			if(isFromBottom)
 			{
@@ -295,8 +296,8 @@ package contents.rollingList
 			{
 				sinVal
 			}
-			var sinPrecent:Number = 0.1+sinVal*0.9 ;
-			rollItem.alpha = sinPrecent ;
+			rollItem.alpha = 0.1+sinVal*0.9 ;
+			rollItem.scaleX = rollItem.scaleY = 0.9+sinVal*0.1 ;
 		}
 	}
 }
