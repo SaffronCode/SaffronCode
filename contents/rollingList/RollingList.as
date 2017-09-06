@@ -44,6 +44,8 @@ package contents.rollingList
 					mu2:Number=0.4,
 					fu:Number = 5 ;
 					
+		private var pointerMC:MovieClip ;
+					
 		//Debug variables
 					private var direction:Number = -1 ;
 					
@@ -72,6 +74,11 @@ package contents.rollingList
 			
 			this.addChild(rollingItemsContainer);
 			this.addChild(rollingItemsMask);
+			
+			pointerMC = new MovieClip();
+				pointerMC.graphics.beginFill(0x000000);
+				pointerMC.graphics.lineTo(-10,-5);
+				pointerMC.graphics.lineTo(-10,5);
 			
 			//rollingItemsContainer.mask = rollingItemsMask ;
 			
@@ -131,6 +138,7 @@ package contents.rollingList
 					V += (myHeight/2-(createLinkY(totalPageLinks-1)+myLinkItemHeight))/fu ;
 					V = V*mu2 ;
 				}
+				trace("createLinkY : "+createLinkY);
 				scorllI += V ;
 				V = V*mu ;
 			}
@@ -167,6 +175,10 @@ package contents.rollingList
 			updateAllInterface();
 			this.removeEventListener(Event.ENTER_FRAME,anim);
 			this.addEventListener(Event.ENTER_FRAME,anim);
+			
+			this.addChild(pointerMC);
+			pointerMC.y = createLinkY(0)/*+myLinkItemHeight/2*/;
+			pointerMC.x = pointerMC.width ;
 		}
 		
 		/**Controll link*/
@@ -174,7 +186,7 @@ package contents.rollingList
 		{
 			var newLinkAdded:Boolean = false ;
 			var requiredLinkY:Number ;
-			trace('bottomOfList : '+bottomOfList+' , topOfList : '+topOfList); 
+			//trace('bottomOfList : '+bottomOfList+' , topOfList : '+topOfList); 
 			if(bottomOfList>=0)
 			{
 				if(bottomOfList<totalPageLinks)
@@ -261,20 +273,25 @@ package contents.rollingList
 		/**Return the link Y for this index*/
 		private function createLinkY(itemIndex:uint):Number
 		{
-			return itemIndex*20+scorllI+myHeight/2 ;
+			return itemIndex*linkHeight()+scorllI+myHeight/2 ;
+		}
+		
+		private function linkHeight():Number
+		{
+			return myLinkItemHeight ;
 		}
 		
 		/**Return the link Y for this index*/
 		private function createLinkAlphaAndScale(currentY:Number,rollItem:RollingItem):void
 		{
 			//currentY-=myLinkItemHeight;
-			const maxAvailableArea:Number = myLinkItemHeight*5 ;
+			const maxAvailableArea:Number = myLinkItemHeight*3 ;
 			var changedH:Number = myHeight-myLinkItemHeight ;
 			
 			if(myHeight>maxAvailableArea)
 			{
 				changedH = maxAvailableArea ;
-				currentY -= (myHeight-maxAvailableArea)/2-myLinkItemHeight/2 ;
+				currentY -= (myHeight-maxAvailableArea)/2 ;
 			}
 			
 			var rad:Number = Math.PI/-2+currentY/changedH*(Math.PI*2) ;
@@ -287,11 +304,11 @@ package contents.rollingList
 				rad = Math.PI*3/2;
 			}
 			var sinVal:Number = Math.sin(rad)/2+0.5 ;
-			if(rollItem.myIndex==0)
+			/*if(rollItem.myIndex==0)
 			{
 				trace("sinVal : "+sinVal);
 				trace("rad : "+(rad/Math.PI*180));
-			}
+			}*/
 			if(sinVal<0)
 			{
 				sinVal
