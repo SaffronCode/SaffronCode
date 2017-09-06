@@ -42,6 +42,7 @@ package contents.rollingList
 					vQueLength:uint = 20 ,
 					mu:Number = 0.9,
 					mu2:Number=0.4,
+					fu2:Number = 50 ,
 					fu:Number = 5 ;
 					
 		private var pointerMC:MovieClip ;
@@ -133,12 +134,19 @@ package contents.rollingList
 					V += (myHeight/2-createLinkY(0))/fu ;
 					V = V*mu2 ;
 				}
-				else if(createLinkY(totalPageLinks-1)+myLinkItemHeight<myHeight/2)
+				else if(createLinkY(totalPageLinks-1)<myHeight/2)
 				{
-					V += (myHeight/2-(createLinkY(totalPageLinks-1)+myLinkItemHeight))/fu ;
+					V += (myHeight/2-(createLinkY(totalPageLinks-1)))/fu ;
 					V = V*mu2 ;
 				}
-				trace("createLinkY : "+createLinkY);
+				else
+				{
+					var leedY:Number = (createLinkY(0)-myHeight/2) ;
+					leedY = leedY-Math.floor((leedY+linkHeight()/2)/linkHeight())*linkHeight()
+					V-=leedY/fu2;
+				}
+				
+				
 				scorllI += V ;
 				V = V*mu ;
 			}
