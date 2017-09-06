@@ -1,6 +1,8 @@
 package contents.rollingList
 	//contents.rollingList.RollingList
 {
+	import appManager.event.AppEvent;
+	
 	import contents.LinkData;
 	import contents.PageData;
 	import contents.displayPages.LinkItem;
@@ -42,13 +44,14 @@ package contents.rollingList
 					vQueLength:uint = 20 ,
 					mu:Number = 0.9,
 					mu2:Number=0.4,
+					mu3:Number=0.4,
 					fu2:Number = 50 ,
+					fu3:Number = 5 ,
 					fu:Number = 5 ;
 					
 		private var pointerMC:MovieClip ;
-					
-		//Debug variables
-					private var direction:Number = -1 ;
+		
+		private var selectedItemIndexToTrack:int = -1 ;
 					
 		public function RollingList()
 		{
@@ -81,16 +84,32 @@ package contents.rollingList
 				pointerMC.graphics.lineTo(-10,-5);
 				pointerMC.graphics.lineTo(-10,5);
 			
-			//rollingItemsContainer.mask = rollingItemsMask ;
+			rollingItemsContainer.mask = rollingItemsMask ;
 			
+			rollingItemsContainer.addEventListener(AppEvent.PAGE_CHANGES,preventPageChange);
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 			this.addEventListener(MouseEvent.MOUSE_DOWN,mousePressed);
 		}	
+		
+		protected function preventPageChange(event:Event):void
+		{
+			trace("Im selected");
+			var selectedItem:RollingItem = event.target as RollingItem ;
+			if(selectedItem == null)
+			{
+				return ;
+			}
+			else
+			{
+				selectedItemIndexToTrack = selectedItem.myIndex
+			}
+		}
 		
 		/**Mouse down*/
 		protected function mousePressed(event:MouseEvent):void
 		{
 			isDragging = true ;
+			selectedItemIndexToTrack = -1 ;
 			V = 0 ;
 			Vlist = new Vector.<Number>();
 			stage.addEventListener(MouseEvent.MOUSE_UP,stopDraging);
@@ -129,15 +148,25 @@ package contents.rollingList
 					V = V/Vlist.length ;
 					Vlist = null ;
 				}
-				if(createLinkY(0)>myHeight/2)
+				if(createLinkY(0)>myHeight/2+2)
 				{
 					V += (myHeight/2-createLinkY(0))/fu ;
 					V = V*mu2 ;
 				}
-				else if(createLinkY(totalPageLinks-1)<myHeight/2)
+				else if(createLinkY(totalPageLinks-1)<myHeight/2-2)
 				{
 					V += (myHeight/2-(createLinkY(totalPageLinks-1)))/fu ;
 					V = V*mu2 ;
+				}
+				else if(selectedItemIndexToTrack!=-1)
+				{
+					var targetY:Number = createLinkY(selectedItemIndexToTrack) ;
+					if(Math.abs(targetY-pointerMC.y)<myLinkItemHeight/2 && Math.abs(V)<4)
+					{
+						selectedItemIndexToTrack = -1 ;
+					}
+					V+=(pointerMC.y-targetY)/fu3 ;
+					V*=mu3 ;
 				}
 				else
 				{
