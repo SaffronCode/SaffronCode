@@ -16,6 +16,8 @@ package contents.rollingList
 	{
 		//appManager.displayContentElemets.TitleText
 		
+		public var lastSelectedItem:uint = 0 ;
+		
 		private var rollerItemClass:Class ;
 		
 		private var myPageDataLink:Vector.<LinkData>,
@@ -104,7 +106,9 @@ package contents.rollingList
 			}
 			else
 			{
-				selectedItemIndexToTrack = selectedItem.myIndex
+				lastSelectedItem = selectedItem.myIndex ;
+				selectedItemIndexToTrack = selectedItem.myIndex ;
+				dispatchChangeEvent();
 			}
 		}
 		
@@ -187,8 +191,15 @@ package contents.rollingList
 				else
 				{
 					var leedY:Number = (createLinkY(0)-myHeight/2) ;
-					leedY = leedY-Math.floor((leedY+linkHeight()/2)/linkHeight())*linkHeight()
+					var currentItemOnPointer:int = -Math.floor((leedY+linkHeight()/2)/linkHeight()) ;
+					leedY = leedY+currentItemOnPointer*linkHeight()
 					V-=leedY/fu2;
+					
+					if(lastSelectedItem!=currentItemOnPointer && Math.abs(V)<2)
+					{
+						lastSelectedItem = currentItemOnPointer ;
+						dispatchChangeEvent();
+					}
 				}
 				
 				
@@ -198,6 +209,13 @@ package contents.rollingList
 			controllLinkGenerator();
 			updateAllInterface();
 		}	
+		
+		/**Selected item changed*/
+		private function dispatchChangeEvent():void
+		{
+			trace("Changed : "+lastSelectedItem);
+			this.dispatchEvent(new Event(Event.CHANGE));
+		}
 		
 		/**Removed from stage*/
 		protected function unLoad(event:Event):void
@@ -210,6 +228,7 @@ package contents.rollingList
 		/**Set the page list*/
 		public function setUp(pageData:PageData):void
 		{
+			lastSelectedItem = 0 ;
 			myPageDataLink = pageData.links1 ;
 			totalPageLinks = myPageDataLink.length ;
 			scorllI = 0 ;
