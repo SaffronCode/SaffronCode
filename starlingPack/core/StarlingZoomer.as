@@ -67,6 +67,8 @@ public class StarlingZoomer {
 
         var l:int = touchList.length ;
 
+        var lastScale:Number = mySprite.scale ;
+
         for(var i:int = 0 ; i<l ; i++)
         {
             var currentPose:Point = touchToPoint(touchList[i]);
@@ -158,6 +160,10 @@ public class StarlingZoomer {
         mySprite.y = targetY ;
         mySprite.width = targetWidth ;
         mySprite.height = targetHeight ;
+
+        if(mySprite.scale!=lastScale){
+            ObjStarling.dispatchEventReverse(mySprite,new StarlingZoomEvent(StarlingZoomEvent.SCALE_CHANGED));
+        }
 
     }
 
