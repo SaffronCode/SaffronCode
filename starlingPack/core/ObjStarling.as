@@ -59,5 +59,19 @@ public class ObjStarling {
             }
         }
     }
+
+    /**Returns true if item was taouchable*/
+    public static function isTouchableFromParents(target:DisplayObject):Boolean
+    {
+        while(target!=null)
+        {
+            if(!target.touchable)
+            {
+                return false ;
+            }
+            target = target.parent ;
+        }
+        return true ;
+    }
 }
 }

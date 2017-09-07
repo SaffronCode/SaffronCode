@@ -4,8 +4,10 @@
 package starlingPack.core {
 import flash.geom.Point;
 import flash.geom.Rectangle;
+import flash.utils.setTimeout;
 
 import starling.core.Starling;
+import starling.display.Quad;
 
 import starling.display.Sprite;
 import starling.events.Event;
@@ -34,6 +36,9 @@ public class StarlingZoomer {
 
     private var lock:Boolean = false,
                 unlockOnTouchUp:Boolean = false ;
+
+    private const minMoveToStartDrag:Number = 10 ;
+    private var isAbleToDrag:Boolean = false ;
 
     public function StarlingZoomer(zoomableObject:Sprite) {
         if(Starling.multitouchEnabled==false)
@@ -69,6 +74,8 @@ public class StarlingZoomer {
 
         var lastScale:Number = mySprite.scale ;
 
+        var storedLastPoses:Vector.<Point> = lastPose.concat();
+
         for(var i:int = 0 ; i<l ; i++)
         {
             var currentPose:Point = touchToPoint(touchList[i]);
@@ -77,6 +84,33 @@ public class StarlingZoomer {
             deltaY += currentPose.y-lastPose[i].y ;
 
             lastPose[i] = currentPose ;
+        }
+
+        if(l==0)
+        {
+            if(!mySprite.touchable)
+            {
+                setTimeout(enableTouch,0);
+                function enableTouch():void
+                {
+                    mySprite.touchable = true ;
+                }
+            }
+            isAbleToDrag = false ;
+        }
+        else if(!isAbleToDrag)
+        {
+            if(Math.abs(deltaX)<minMoveToStartDrag && Math.abs(deltaY)<minMoveToStartDrag)
+            {
+                lastPose = storedLastPoses ;
+                return ;
+            }
+            else
+            {
+                mySprite.touchable = false ;
+                isAbleToDrag = true ;
+                return ;
+            }
         }
 
 

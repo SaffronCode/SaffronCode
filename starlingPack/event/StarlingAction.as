@@ -11,6 +11,10 @@ import starling.events.Touch;
 import starling.events.TouchEvent;
 import starling.events.TouchPhase;
 
+import starlingPack.core.ObjStarling;
+
+import starlingPack.core.ObjStarling;
+
 public class StarlingAction {
 
     private static var itemsList:Vector.<DisplayObject> = new Vector.<DisplayObject>();
@@ -63,7 +67,7 @@ public class StarlingAction {
                 case TouchPhase.BEGAN:
                     break ;
                 case TouchPhase.ENDED:
-                    if(clickedItem.hitTest(clickedItem.globalToLocal(new Point(touches.globalX,touches.globalY))))
+                    if(ObjStarling.isTouchableFromParents(clickedItem) && clickedItem.hitTest(clickedItem.globalToLocal(new Point(touches.globalX,touches.globalY))))
                         callFunctionFor(clickedItem);
                     break ;
             }
