@@ -16,27 +16,15 @@ public class ObjStarling {
 
     public static function zSort(targetParent:Sprite,sortBy:uint=0):void
     {
-        var chi:DisplayObject ;
-        var sorter:Array = new Array()
-        for(var i=targetParent.numChildren-1 ; i>=0 ; i--){
-            chi = targetParent.getChildAt(i);
-            switch(sortBy)
-            {
-                case(0):
-                    sorter[i] = (chi.y)
-                    break;
-                case(1):
-                    sorter[i] = (chi.scaleX)
-                    break;
-            }
-        }
-        for(i=0;i<sorter.length;i++){
-            for(var j=i;j<sorter.length;j++){
-                if(sorter[j-1]>sorter[j]){
-                    swip(sorter,j)
-                    targetParent.swapChildrenAt(j-1,j)
-                }
-            }
+        targetParent.sortChildren(sortFunctionOnY);
+        function sortFunctionOnY(a:DisplayObject,b:DisplayObject):int
+        {
+            if(a.y<b.y)
+                    return -1 ;
+            else if(a.y>b.y)
+                    return 1;
+            else
+                    return 0;
         }
     }
     private static function swip(arr:Array , I:int){
