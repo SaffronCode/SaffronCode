@@ -22,6 +22,16 @@
 		{
 			saveToFolderForServices = SaveToFolderForServices ;
 			saveToFolderForTypes = SaveToFolderForTypes ;
+			
+			if(saveToFolderForServices.exists)
+			{
+				saveToFolderForServices.deleteDirectory(true);
+			}
+			if(saveToFolderForTypes.exists)
+			{
+				saveToFolderForTypes.deleteDirectory(true);
+			}
+			
 			var serviceData:PostManExportModel = new PostManExportModel();
 			JSONParser.parse(service,serviceData);
 			trace("serviceData : "+serviceData.item.length);
@@ -95,6 +105,10 @@
 			}
 			
 			var serviceFile:File = mySaveToFolderForServices.resolvePath(serviceGenerator.ServiceName+'.as');
+			if(serviceFile.exists)
+			{
+				WebServiceGenerator.log(serviceFile.name+" was duplicated");
+			}
 			TextFile.save(serviceFile,serviceGenerator.toString());
 		}
 		
@@ -115,6 +129,8 @@
 		/**The wrong names can be like this : http://185.83.208.175:821/api/Service/GetBranches*/
 		private static function correctNames(name:String):String
 		{
+			name = name.split('/').join('');
+			name = name.split('\\').join('');
 			var fileName:String = name.replace(/(^.*\/|)([^\/?\(]+)([?].*$|$|\(.*$)/gi,'$2');
 			var fileNameSplitted:Array = fileName.split("'").join('').split('"').join('').split(' ');
 			if(fileNameSplitted.length>1)
@@ -179,6 +195,7 @@
 		 * Waring!! each class has to have a variable with a special name*/
 		public static function SaveJSONtoAs(jsonObject:Object,directory:File,className:String):void
 		{
+			trace("Create class : "+className);
 			var myAsClass:String = classFileModel ;
 			myAsClass = myAsClass.split("[ClassName]").join(className) ;
 			
@@ -219,7 +236,7 @@
 					{
 						newClassName = createClassName(paramName,"Model",jsonObject[paramName][0]);
 						parameters+='Vector.<'+newClassName+'> = new Vector.<'+newClassName+'>()';
-						SaveJSONtoAs(jsonObject[paramName][0],directory,newClassName);
+						SaveJSONtoAs(jsonObject[paramName][0],directory,className+newClassName);
 					}
 					else
 					{
@@ -236,13 +253,17 @@
 					
 					newClassName = createClassName(paramName,"Model",jsonObject[paramName]);
 					parameters+=newClassName+' = new '+newClassName+'()';
-					SaveJSONtoAs(jsonObject[paramName],directory,newClassName);
+					SaveJSONtoAs(jsonObject[paramName],directory,className+newClassName);
 				}
 				parameters+='\n';
 			}
 			myAsClass = myAsClass.split('[variables]').join(parameters);
 			
 			var targetFile:File = directory.resolvePath(className+'.as') ;
+			if(targetFile.exists)
+			{
+				WebServiceGenerator.log(targetFile.name+" was duplicated");
+			}
 			TextFile.save(targetFile,myAsClass);
 		}
 		
