@@ -72,7 +72,7 @@ public class StarlingZoomer {
         for(var i:int = 0 ; i<l ; i++)
         {
             var currentPose:Point = touchToPoint(touchList[i]);
-            trace("Global touch point is  "+i+" is : "+touchList[i].getLocation(mySprite)+' vs '+mySprite.width/mySprite.scaleX);
+            //trace("Global touch point is  "+i+" is : "+touchList[i].getLocation(mySprite)+' vs '+mySprite.width/mySprite.scaleX);
             deltaX += currentPose.x-lastPose[i].x ;
             deltaY += currentPose.y-lastPose[i].y ;
 
@@ -99,16 +99,16 @@ public class StarlingZoomer {
             var spriteRelativeWidth:Number = mySprite.width/mySprite.scaleX ;
             var spriteRelativeHeight:Number = area.height/mySprite.scale ;
 
-            trace("center : "+center+' vs width : '+spriteRelativeWidth+' from '+mySprite.width);//TODO control the center point to change the target osition on scaled.
-            trace("scale : "+scale);
+            //trace("center : "+center+' vs width : '+spriteRelativeWidth+' from '+mySprite.width);//TODO control the center point to change the target osition on scaled.
+            //trace("scale : "+scale);
 
             targetX -= (((center.x/(spriteRelativeWidth))*spriteRelativeWidth)*(scale-1))*mySprite.scaleX;
             targetY -= ((center.y/(spriteRelativeHeight))*spriteRelativeHeight)*(scale-1)*mySprite.scaleY;
         }
-        else if(l==1)
+        /*else if(l==1)
         {
             trace("Global touch point is  "+i+" is : "+touchList[0].getLocation(mySprite)+' vs '+mySprite.width/mySprite.scaleX);
-        }
+        }*/
 
 
         var moveX:Number = deltaX/Math.max(1,l);
