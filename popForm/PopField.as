@@ -236,12 +236,8 @@
 				{
 					myTXT.multiline = true ;
 					myTXT.wordWrap = true ;
-					backMC.visible = true ;
 				}
-				else
-				{
-					backMC.visible = false;
-				}
+				backMC.visible = false ;
 				
 				var textContainerMC:MovieClip = new MovieClip();
 				myTXT.parent.addChild(textContainerMC);
@@ -265,7 +261,7 @@
 						parag.x = textContainerMC.x ;
 						parag.y = textContainerMC.y ;
 						this.addChild(parag);
-						parag.setUp(defaultText,true,true);
+						parag.setUp(defaultText,true,true,false,false,false,false);
 						//TextPutter.onStaticArea(myTXT,defaultText,true,true,false);
 					}
 				}
