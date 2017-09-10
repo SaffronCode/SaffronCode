@@ -234,9 +234,9 @@
 						!(jsonObject[paramName][0] is String) &&
 						!(jsonObject[paramName][0] is Boolean))
 					{
-						newClassName = createClassName(paramName,"Model",jsonObject[paramName][0]);
+						newClassName = createClassName(className+paramName,"Model",jsonObject[paramName][0]);
 						parameters+='Vector.<'+newClassName+'> = new Vector.<'+newClassName+'>()';
-						SaveJSONtoAs(jsonObject[paramName][0],directory,className+newClassName);
+						SaveJSONtoAs(jsonObject[paramName][0],directory,newClassName);
 					}
 					else
 					{
@@ -251,9 +251,9 @@
 				{
 					//The parameter is class
 					
-					newClassName = createClassName(paramName,"Model",jsonObject[paramName]);
+					newClassName = createClassName(className+paramName,"Model",jsonObject[paramName]);
 					parameters+=newClassName+' = new '+newClassName+'()';
-					SaveJSONtoAs(jsonObject[paramName],directory,className+newClassName);
+					SaveJSONtoAs(jsonObject[paramName],directory,newClassName);
 				}
 				parameters+='\n';
 			}
