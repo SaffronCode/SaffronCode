@@ -59,6 +59,10 @@ package popForm
 			keyBoardType = (keyBoardType==null)?SoftKeyboardType.DEFAULT:keyBoardType;
 			
 			tagNames.push(tagName);
+			if(fieldDefault==null)
+			{
+				fieldDefault = '' ;
+			}
 			fieldDefaults.push(fieldDefault);
 			fieldDefaultDate.push(null);
 			fieldDefaultBooleans.push(null);
