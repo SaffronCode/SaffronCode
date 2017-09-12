@@ -132,8 +132,13 @@ package componentStatic
 			{
 				case MOBILE:
 					if(isNaN(Number(CatcherObject_p[Name_p]))){				
-						errorObj[Name_p] = mobileId		
-						return true
+						errorObj[Name_p] = mobileId;	
+						return true;
+					}
+					if(String(CatcherObject_p[Name_p]).length!=11 && !ignore(Name_p))
+					{
+						errorObj[Name_p] = mobileId;	
+						return true;
 					}
 				break;
 				case EMAIL:
