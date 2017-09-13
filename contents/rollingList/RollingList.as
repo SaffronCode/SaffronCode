@@ -2,6 +2,7 @@ package contents.rollingList
 	//contents.rollingList.RollingList
 {
 	import appManager.event.AppEvent;
+	import appManager.event.AppEventContent;
 	
 	import contents.LinkData;
 	import contents.PageData;
@@ -99,12 +100,13 @@ package contents.rollingList
 		protected function preventPageChange(event:Event):void
 		{
 			trace("Im selected");
+			event.stopImmediatePropagation();
 			var selectedItem:RollingItem = event.target as RollingItem ;
 			if(selectedItem == null)
 			{
 				return ;
 			}
-			else
+			else if(lastSelectedItem != selectedItem.myIndex)
 			{
 				lastSelectedItem = selectedItem.myIndex ;
 				selectedItemIndexToTrack = selectedItem.myIndex ;
@@ -215,6 +217,7 @@ package contents.rollingList
 		{
 			trace("Changed : "+lastSelectedItem);
 			this.dispatchEvent(new Event(Event.CHANGE));
+			this.dispatchEvent(new AppEventContent(myPageDataLink[lastSelectedItem]));
 		}
 		
 		/**Removed from stage*/
@@ -228,6 +231,10 @@ package contents.rollingList
 		/**Set the page list*/
 		public function setUp(pageData:PageData):void
 		{
+			if(pageData==null)
+			{
+				return;
+			}
 			lastSelectedItem = 0 ;
 			myPageDataLink = pageData.links1 ;
 			totalPageLinks = myPageDataLink.length ;
