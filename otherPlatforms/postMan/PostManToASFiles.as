@@ -63,6 +63,7 @@
 			serviceGenerator.ServiceName = correctNames(itemModel.name) ;
 			serviceGenerator.IsGet = itemModel.request.method=="GET" ;
 			serviceGenerator.myWebServiceLocation = URLCatcher(itemModel.request.url) ;
+			serviceGenerator.description = URLCatcher(itemModel.request.description) ;
 			
 			serviceGenerator.inputObject = bodyToObject(itemModel.request.body);
 			serviceGenerator.inputObjectClassName = createClassName(serviceGenerator.ServiceName,'Request');
