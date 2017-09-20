@@ -55,6 +55,7 @@ package componentStatic
 			{
 				setObj(this.name,value,ErrorManager.DATE)
 			}
+			trace('_datedate:',_date)
 			if(yMc!=null)
 			{
 				_yyStr = getFiledDate(_date,YYYY)
@@ -142,7 +143,7 @@ package componentStatic
 			{
 				return Status_p
 			}
-			return Add_Zero_Behind.add(2,getDateSplit(Date_p,Status_p))
+			return Add_Zero_Behind.add(2,getDateSplit(Date_p,Status_p,_shamsi))
 		}
 		public function getDateSplit(Date_p:Date,Status_p:String,Shamsi_p:Boolean=true):Number
 		{
