@@ -43,6 +43,10 @@ package contents.displayElements
 				this.addEventListener(Event.ENTER_FRAME,animate);
 				History.historyDispatcher.addEventListener(Event.CHANGE,controlHistoryAgain);
 			}
+			else
+			{
+				this.stop();
+			}
 			
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 		}
