@@ -1141,7 +1141,7 @@ package contents.displayPages
 			linksContainer.graphics.beginFill(0,backAlpha) ;
 			if(!horizontalMenu)
 			{
-				linksContainer.graphics.drawRect(0,0,areaRect.width,linksSensor.y+(myPageData.links1.length-lastGeneratedLinkIndes-1)*(sampleLink.height+deltaY)*MenuDirectionY) ;
+				linksContainer.graphics.drawRect(0,0,areaRect.width*MenuDirectionX,linksSensor.y+(myPageData.links1.length-lastGeneratedLinkIndes-1)*(sampleLink.height+deltaY)*MenuDirectionY) ;
 			}
 			else
 			{
