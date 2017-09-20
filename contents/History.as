@@ -98,13 +98,14 @@ package contents
 			if(history.length>1)
 			{
 				history.pop();
+				historyDispatcher.dispatchEvent(new Event(Event.CHANGE));
 				return new AppEventContent(history[history.length-1],true);
 			}
 			else
 			{
+				historyDispatcher.dispatchEvent(new Event(Event.CHANGE));
 				return new AppEventContent(Contents.homeLink,true);
 			}
-			historyDispatcher.dispatchEvent(new Event(Event.CHANGE));
 		}
 		
 		/**undo the history on prvented pages<br>
