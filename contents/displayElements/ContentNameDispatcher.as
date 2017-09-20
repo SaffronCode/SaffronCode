@@ -4,9 +4,11 @@ package contents.displayElements
 	import appManager.event.AppEventContent;
 	
 	import contents.Contents;
+	import contents.History;
 	import contents.LinkData;
 	
 	import flash.display.MovieClip;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
 	public class ContentNameDispatcher extends MovieClip
@@ -17,6 +19,8 @@ package contents.displayElements
 		
 		protected var refresh:Boolean = false ;
 		
+		private var isInHistory:Boolean = false ;
+		
 		public function ContentNameDispatcher()
 		{
 			super();
@@ -24,6 +28,49 @@ package contents.displayElements
 			this.buttonMode = true ;
 			//this.mouseChildren = false;
 			this.addEventListener(MouseEvent.CLICK,generateLink);
+			
+			if(this.totalFrames>1 && this.alpha>0)
+			{
+				controlHistoryAgain(null);
+				if(isInHistory)
+				{
+					this.gotoAndStop(this.totalFrames-1);
+				}
+				else 
+				{
+					this.gotoAndStop(1);
+				}
+				this.addEventListener(Event.ENTER_FRAME,animate);
+				History.historyDispatcher.addEventListener(Event.CHANGE,controlHistoryAgain);
+			}
+			
+			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
+		}
+		
+		/**Control if the button was on history*/
+		protected function controlHistoryAgain(event:Event):void
+		{
+			isInHistory = History.isHistoryContainsThePageNamed(this.name);
+		}
+		
+		/**The dispatcher removed*/
+		protected function unLoad(event:Event):void
+		{
+			History.historyDispatcher.removeEventListener(Event.CHANGE,controlHistoryAgain);
+			this.removeEventListener(Event.ENTER_FRAME,animate);
+		}
+		
+		/**Go to next frames if this page was in history*/
+		protected function animate(event:Event):void
+		{
+			if(isInHistory)
+			{
+				this.nextFrame();
+			}
+			else
+			{
+				this.prevFrame();
+			}
 		}
 		
 		/***/
