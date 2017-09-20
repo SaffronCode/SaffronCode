@@ -44,6 +44,10 @@ package appManager.displayContentElemets
 		
 		/**You can cansel all animation by changing the static value activateAnimation*/
 		public var animated:Boolean = true ;
+		public var animatedIfLoaded:Boolean = true ;
+		
+		/**This boolean will be true if the image was loaded earlier*/
+		private var wasLoadedBefor:Boolean ;
 		
 		public var grayScaledImage:Boolean = false ;
 		
@@ -335,7 +339,7 @@ package appManager.displayContentElemets
 		/**If you pass null to this functino, it will use loadedBytes valeu*/
 		protected function imageSaved(event:URLSaverEvent=null):void
 		{
-			
+			wasLoadedBefor = event.wasLoadedBefor ;
 			PerformanceTest.traceDelay('image is loaded');
 			var loaderContext:LoaderContext = new LoaderContext(false,ApplicationDomain.currentDomain);
 			//trace("Load this image : "+event.offlineTarget);
@@ -510,7 +514,7 @@ package appManager.displayContentElemets
 			this.addChild(imageContainer);
 			imageContainer.addChild(newBitmap);
 			
-			if(acitvateAnimation && animated)
+			if(acitvateAnimation && animated || (!wasLoadedBefor && animatedIfLoaded))
 			{
 				this.alpha = 0 ;
 				//trace("make it come with animation : "+this);

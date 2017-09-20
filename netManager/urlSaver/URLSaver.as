@@ -78,6 +78,7 @@ package netManager.urlSaver
 
 		/**File target manager*/
 		private var fileTarger:File;
+		private var wasLoadedBefor:Boolean;
 					
 		/**you have to call load() function to start file loading proccess<br>
 		 * if you set true in this value , it will not load byte array of your file and it will just return URL*/
@@ -156,6 +157,7 @@ package netManager.urlSaver
 			
 			if( offlineURL == null || justDownlaodToUpdate)
 			{
+				wasLoadedBefor = false ;
 				//downloadThisFile
 				//DownloadManager.autoReload = false ;
 				urlLoader = new URLLoader();
@@ -198,6 +200,7 @@ package netManager.urlSaver
 			}
 			else
 			{
+				wasLoadedBefor = true ;
 				//return itsByteArray
 				//Do not save online location again on shared objects
 					//SavedDatas.save(onlineURL,offlineURL);
@@ -484,7 +487,7 @@ package netManager.urlSaver
 				
 				//Cansel the file aftre downloaded file contrilled
 				cansel();
-				this.dispatchEvent(new URLSaverEvent(URLSaverEvent.LOAD_COMPLETE,1,myLoadedBytes,offlineURL));
+				this.dispatchEvent(new URLSaverEvent(URLSaverEvent.LOAD_COMPLETE,1,myLoadedBytes,offlineURL,0,0,wasLoadedBefor));
 			}
 			else
 			{

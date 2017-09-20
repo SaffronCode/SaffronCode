@@ -17,14 +17,17 @@ package netManager.urlSaver
 		
 		public var 	totalBytes:Number,
 					loadedBytesLenght:Number ;
+					
+		public var wasLoadedBefor:Boolean = false ;
 		
-		public function URLSaverEvent(type:String,Precent:Number = 0 , LoadedBytes:ByteArray=null,OfflineTarget:String='',TotalBytes:Number=0,LoadedBytesL:Number=0)
+		public function URLSaverEvent(type:String,Precent:Number = 0 , LoadedBytes:ByteArray=null,OfflineTarget:String='',TotalBytes:Number=0,LoadedBytesL:Number=0,WasLoadedBefor:Boolean=false)
 		{
 			precent = Precent ;
 			loadedBytesLenght = LoadedBytesL ;
 			offlineTarget = OfflineTarget ;
 			totalBytes = TotalBytes ;
 			loadedBytes = LoadedBytes ;
+			wasLoadedBefor = WasLoadedBefor ;
 			super(type, false);
 		}
 	}
