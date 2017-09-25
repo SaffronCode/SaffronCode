@@ -29,6 +29,7 @@ package notification
 		/**com.milkmangames.nativeextensions.EasyPush*/
 		private static var EasyPushClass:Class ;
 		
+		/**Dont call this function here !! use setup!!!*/
 		public function NotificationManager(ONESIGNAL_APP_ID_p:String='',GCM_PROJECT_NUMBER_p:String='',autoAlerOnNativeBox:Boolean=true)
 		{
 			super();
