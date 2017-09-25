@@ -43,6 +43,8 @@ package nativeClasses.map
 
 		private var center:LatLng;
 		
+		private var firstZoomLevel:Number = -1 ;
+		
 		public static function setUp(GoogleAPIKey:String,DistriqtId:String):void
 		{
 			api_key = GoogleAPIKey ;
@@ -209,7 +211,7 @@ package nativeClasses.map
 			Obj.remove(this);
 		}
 		
-		public function setMap(centerLat:Number=NaN,centerLon:Number=NaN,icons:Vector.<MapIcon>=null):void
+		public function setMap(centerLat:Number=NaN,centerLon:Number=NaN,icons:Vector.<MapIcon>=null,zoomLevel:Number=-1):void
 		{
 			//unload();
 			trace("AuthorisationStatus.ALWAYS : "+AuthorisationStatus.ALWAYS);
@@ -252,6 +254,7 @@ package nativeClasses.map
 				{
 					center = new LatLng(centerLat,centerLon);
 				}
+				firstZoomLevel = zoomLevel ;
 				trace("...listenning...");
 				NativeMaps.service.addEventListener( NativeMapEvent.MAP_CREATED, mapCreatedHandler );
 				trace("---Creating...");
@@ -279,8 +282,17 @@ package nativeClasses.map
 		private function mapCreatedHandler(e:NativeMapEvent):void
 		{
 			mapCretedOnStage = true ;
-			NativeMaps.service.setCentre(center,-1,true,2000);
+			setCenter(center.lat,center.lon,firstZoomLevel);
 			updateMarkers();
+		}
+		
+		
+		public function setCenter(lat:Number,lon:Number,zoomLevel:Number=-1,animationDuration:uint=2000):void
+		{
+			trace("******* first center is : "+lat,lon,zoomLevel);
+			center = new LatLng(lat,lon);
+			firstZoomLevel = zoomLevel ;
+			NativeMaps.service.setCentre(center,zoomLevel,animationDuration!=0,animationDuration)
 		}
 		
 		private function createViewPort():Rectangle
