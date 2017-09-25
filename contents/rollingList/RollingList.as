@@ -71,6 +71,16 @@ package contents.rollingList
 			rollerItemClass = Obj.getObjectClass(rollerSample) ;
 			Obj.remove(rollerSample);
 			
+			pointerMC = Obj.get("pointer_mc",this);
+			if(pointerMC==null)
+			{
+				pointerMC = new MovieClip();
+				pointerMC.graphics.beginFill(0x000000);
+				pointerMC.graphics.lineTo(-10,-5);
+				pointerMC.graphics.lineTo(-10,5);
+				pointerMC.x = pointerMC.width ;
+			}
+			
 			myHeight = this.height ;
 			myWidth = this.width ;
 			this.removeChildren();
@@ -85,10 +95,6 @@ package contents.rollingList
 			this.addChild(rollingItemsContainer);
 			this.addChild(rollingItemsMask);
 			
-			pointerMC = new MovieClip();
-				pointerMC.graphics.beginFill(0x000000);
-				pointerMC.graphics.lineTo(-10,-5);
-				pointerMC.graphics.lineTo(-10,5);
 			
 			rollingItemsContainer.mask = rollingItemsMask ;
 			
@@ -257,7 +263,6 @@ package contents.rollingList
 			
 			this.addChild(pointerMC);
 			pointerMC.y = createLinkY(0)/*+myLinkItemHeight/2*/;
-			pointerMC.x = pointerMC.width ;
 		}
 		
 		/**Controll link*/
