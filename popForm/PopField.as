@@ -307,7 +307,7 @@
 		{
 			if(myTXT==null)
 			{
-				return super.height ;
+				return Math.max(tagNameTXT.height,super.height) ;
 			}
 			return Math.max(myTXT.y+myTXT.height,backMC.y+backMC.height);
 		}

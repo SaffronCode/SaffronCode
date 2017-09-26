@@ -269,6 +269,7 @@ package popForm
 								,content.fieldDatas.languageDirection[i]
 								,content.fieldDatas.maxCharacters[i]
 								,content.fieldDatas.fieldDefaultBooleans[i]
+								,false,false,null,null,false
 								,content.fieldDatas.multiLineTag[i]
 								,content.fieldDatas.justify[i]
 								);
