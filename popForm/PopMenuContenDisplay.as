@@ -269,6 +269,8 @@ package popForm
 								,content.fieldDatas.languageDirection[i]
 								,content.fieldDatas.maxCharacters[i]
 								,content.fieldDatas.fieldDefaultBooleans[i]
+								,content.fieldDatas.multiLineTag[i]
+								,content.fieldDatas.justify[i]
 								);
 							this.addChild(newfield);
 							newfield.y = Y ;

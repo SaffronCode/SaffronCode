@@ -144,7 +144,7 @@
 			changeColor(colorFrame);
 		}
 		
-		public function setUp(tagName:String,defaultText:String,KeyBordType:String = SoftKeyboardType.DEFAULT,isPass:Boolean = false,editable:Boolean = true,isAraic:Boolean=true,numLines:uint = 1,color:uint=1,frame:uint=1,maxChar:uint=0,otherOptions:Array=null,deleteDefautlText:Boolean=false,activateRadioSwitcher:Boolean=false,returnKey:String=ReturnKeyLabel.DEFAULT,onTypedFunction:Function=null,justShowNativeText:Boolean=false):void
+		public function setUp(tagName:String,defaultText:String,KeyBordType:String = SoftKeyboardType.DEFAULT,isPass:Boolean = false,editable:Boolean = true,isAraic:Boolean=true,numLines:uint = 1,color:uint=1,frame:uint=1,maxChar:uint=0,otherOptions:Array=null,deleteDefautlText:Boolean=false,activateRadioSwitcher:Boolean=false,returnKey:String=ReturnKeyLabel.DEFAULT,onTypedFunction:Function=null,justShowNativeText:Boolean=false,multiLineTag:Boolean=false,justify:Boolean=true):void
 		{
 			
 			var Y0:Number ;
@@ -187,7 +187,13 @@
 				showPassMC.visible = isPass ;
 			}
 			
-			TextPutter.OnButton(tagNameTXT,tagName,true,false,true);
+			if(multiLineTag){
+				TextPutter.onTextArea(tagNameTXT,tagName,true,true,true,0,false,false,-1,false,0,false);
+			}
+			else
+			{
+				TextPutter.OnButton(tagNameTXT,tagName,true,false,true);
+			}
 			myTXT = Obj.getAllChilds('txt_txt',this,false)[0];
 			myTXT.addEventListener(Event.CHANGE,dispatchChangeForMeToo);
 			
@@ -261,7 +267,7 @@
 						parag.x = textContainerMC.x ;
 						parag.y = textContainerMC.y ;
 						this.addChild(parag);
-						parag.setUp(defaultText,true,true,false,false,false,false);
+						parag.setUp(defaultText,true,justify,false,false,false,false);
 						//TextPutter.onStaticArea(myTXT,defaultText,true,true,false);
 					}
 				}

@@ -9,6 +9,8 @@ package popForm
 		public var fieldDefaults:Vector.<String> ;
 		public var fieldDefaultDate:Vector.<Date> ;
 		public var fieldDefaultBooleans:Vector.<Array> ;
+		public var multiLineTag:Vector.<Boolean> ;
+		public var justify:Vector.<Boolean> ;
 		
 		public var keyBoards:Vector.<String> ;
 		
@@ -38,6 +40,8 @@ package popForm
 			fieldDefaults = new Vector.<String>();
 			fieldDefaultDate = new Vector.<Date>();
 			fieldDefaultBooleans = new Vector.<Array>();
+			multiLineTag = new Vector.<Boolean>();
+			justify = new Vector.<Boolean>();
 			booleanValues = new Vector.<Boolean>();
 			keyBoards = new Vector.<String>();
 			isPassWorld = new Vector.<Boolean>();
@@ -54,7 +58,7 @@ package popForm
 		/**add new field<br>
 		 * frameForDirection: 1 for rtl and 2 for ltr script<br>
 		 * if the field is read only, you can set numLines to 0 and make it change the lines by it's needs*/
-		public function addField(tagName:String,fieldDefault:*='',keyBoardType:String = SoftKeyboardType.DEFAULT,isPass:Boolean=false,Editable:Boolean = true,isArabic_v:Boolean=true,numLine:uint=1,frameForDirection:uint=1,fieldColorFrame:uint=1,maxChar:uint=0)
+		public function addField(tagName:String,fieldDefault:*='',keyBoardType:String = SoftKeyboardType.DEFAULT,isPass:Boolean=false,Editable:Boolean = true,isArabic_v:Boolean=true,numLine:uint=1,frameForDirection:uint=1,fieldColorFrame:uint=1,maxChar:uint=0,MultiLineTag:Boolean=false,Align:Boolean=true)
 		{
 			keyBoardType = (keyBoardType==null)?SoftKeyboardType.DEFAULT:keyBoardType;
 			
@@ -66,6 +70,8 @@ package popForm
 			fieldDefaults.push(fieldDefault);
 			fieldDefaultDate.push(null);
 			fieldDefaultBooleans.push(null);
+			multiLineTag.push(MultiLineTag);
+			justify.push(Align);
 			booleanValues.push(false);
 			keyBoards.push(keyBoardType);
 			isPassWorld.push(isPass);
@@ -85,6 +91,8 @@ package popForm
 			fieldDefaults.push(fieldDefault);
 			fieldDefaultDate.push(null);
 			fieldDefaultBooleans.push(null);
+			multiLineTag.push(false);
+			justify.push(true);
 			booleanValues.push(false);
 			keyBoards.push(SoftKeyboardType.NUMBER);
 			isPassWorld.push(false);
@@ -108,6 +116,8 @@ package popForm
 			fieldDefaults.push(fieldDefault);
 			fieldDefaultDate.push(null);
 			fieldDefaultBooleans.push(null);
+			multiLineTag.push(false);
+			justify.push(true);
 			booleanValues.push(false);
 			keyBoards.push(null);
 			isPassWorld.push(false);
@@ -131,6 +141,8 @@ package popForm
 			fieldDefaults.push('');
 			fieldDefaultDate.push(fieldDefaultDates);
 			fieldDefaultBooleans.push(null);
+			multiLineTag.push(false);
+			justify.push(true);
 			booleanValues.push(false);
 			keyBoards.push(null);
 			isPassWorld.push(false);
@@ -153,6 +165,8 @@ package popForm
 			fieldDefaults.push(null);
 			fieldDefaultDate.push(null);
 			fieldDefaultBooleans.push(null);
+			multiLineTag.push(false);
+			justify.push(true);
 			booleanValues.push(booleanValue);
 			keyBoards.push(null);
 			isPassWorld.push(false);
@@ -176,6 +190,8 @@ package popForm
 			fieldDefaults.push('');
 			fieldDefaultDate.push(fieldDefaultDates);
 			fieldDefaultBooleans.push(null);
+			multiLineTag.push(false);
+			justify.push(true);
 			booleanValues.push(false);
 			keyBoards.push(null);
 			isPassWorld.push(false);
