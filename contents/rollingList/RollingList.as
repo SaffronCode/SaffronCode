@@ -53,11 +53,14 @@ package contents.rollingList
 					fu3:Number = 5 ,
 					fu:Number = 5 ;
 					
+		private static var lastScrollPosition:Object = {};
+					
 		private var pointerMC:MovieClip ;
 		
 		private const minDragToMove:Number = 10 ;
 		
 		private var selectedItemIndexToTrack:int = -1 ;
+		private var myPageId:String;
 					
 		public function RollingList()
 		{
@@ -202,12 +205,12 @@ package contents.rollingList
 					var currentItemOnPointer:int = -Math.floor((leedY+linkHeight()/2)/linkHeight()) ;
 					leedY = leedY+currentItemOnPointer*linkHeight()
 					V-=leedY/fu2;
-					
 					if(lastSelectedItem!=currentItemOnPointer && Math.abs(V)<2)
 					{
 						lastSelectedItem = currentItemOnPointer ;
 						dispatchChangeEvent();
 					}
+					lastScrollPosition[myPageId] = scorllI ;
 				}
 				
 				
@@ -244,7 +247,15 @@ package contents.rollingList
 			lastSelectedItem = 0 ;
 			myPageDataLink = pageData.links1 ;
 			totalPageLinks = myPageDataLink.length ;
-			scorllI = 0 ;
+			myPageId = pageData.id ;
+			if(myPageId == '' || isNaN(Number(lastScrollPosition[myPageId])) )
+			{
+				scorllI = 0 ;
+			}
+			else
+			{
+				scorllI = Number(lastScrollPosition[myPageId]) ;
+			}
 			
 			for(var i:int = 0 ; createdLins!=null && i<createdLins.length ; i++)
 			{
@@ -262,7 +273,11 @@ package contents.rollingList
 			this.addEventListener(Event.ENTER_FRAME,anim);
 			
 			this.addChild(pointerMC);
-			pointerMC.y = createLinkY(0)/*+myLinkItemHeight/2*/;
+			var cahsedScroll:Number = scorllI ;
+			scorllI = 0 ;
+			pointerMC.y = createLinkY(0);/*+myLinkItemHeight/2*/
+			scorllI = cahsedScroll ;
+			dispatchChangeEvent();
 		}
 		
 		/**Controll link*/
