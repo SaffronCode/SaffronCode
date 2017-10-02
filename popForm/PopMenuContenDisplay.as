@@ -50,6 +50,8 @@ package popForm
 		
 		private var absoluteHeight:Number = NaN ;
 		
+		public static var showPopBackGroundAsDefault:Boolean = false ;
+		
 		/**Add more Height for scrolling*/
 		public function localHeight(H:Number)
 		{
@@ -172,9 +174,15 @@ package popForm
 		}
 		
 		/**set up the pop menu contents*/
-		public function setUp(content:PopMenuContent=null/*,color:ColorTransform*//*,resetScroll:Boolean=true*/)
+		public function setUp(content:PopMenuContent=null,activateColorDeviderForFieldsBoolean:*=null/*,color:ColorTransform*//*,resetScroll:Boolean=true*/)
 		{
+			if(activateColorDeviderForFieldsBoolean==null)
+			{
+				activateColorDeviderForFieldsBoolean = showPopBackGroundAsDefault ;
+			}
 			this.dispatchEvent(new Event(Event.REMOVED_FROM_STAGE));
+			
+			this.graphics.clear();
 			
 			while(field.length>0)
 			{
@@ -247,6 +255,7 @@ package popForm
 			{
 				for(i = 0 ; i<content.fieldDatas.fieldDefaults.length ; i++)
 				{
+					var oldY:Number = Y ; 
 					//trace("content.fieldDatas.keyBoards[i] : "+content.fieldDatas.keyBoards[i]);
 					switch(content.fieldDatas.popFieldType[i])
 					{
@@ -362,6 +371,11 @@ package popForm
 						{
 							throw "This is undefined type of PopMenuField";
 						}
+					}
+					if(activateColorDeviderForFieldsBoolean && (i%2)==0)
+					{
+						this.graphics.beginFill(0xffffff,0.5);
+						this.graphics.drawRect(maxAreaMC.width/-2,oldY,maxAreaMC.width,Y-oldY)
 					}
 				}
 				//Y -= newfield.height ;
@@ -520,8 +534,6 @@ package popForm
 				areaRect = new Rectangle(maxAreaMC.width/-2,0,maxAreaMC.width,butY+scrollRect.height/2);
 			}
 			
-			//I forgot this line
-				this.graphics.clear();
 			this.graphics.beginFill(0xff0000,0);
 			this.graphics.drawRect(areaRect.width/-2,0,areaRect.width,areaRect.height);
 			

@@ -350,7 +350,7 @@
 			/**do not change the form position*/
 			//ME.y = Y0-(backMC.height-backMinH)/2;
 			
-			myContent.setUp(content/*,type.colorTransform*/);
+			myContent.setUp(content,false/*,type.colorTransform*/);
 			if(backMC)
 			{
 				backMC.height = Math.max(Math.min(myContent.height+50,backMaxH),backMinH) ;//backMinH+Math.floor(Math.random()*(backMaxH-backMinH));
