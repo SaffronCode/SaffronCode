@@ -52,6 +52,8 @@ package diagrams.calender
 							Color_boxBackGround_currentDay:uint = 0xF46E31,
 							Color_TitleText:uint = 0,
 							Color_boxNames:uint = 0x0,
+							Color_boxNames_friday:uint = 0x0,
+							Color_boxNames_currentDay:uint = 0x0,
 							Color_content_text:uint = 0x222222;
 		
 		

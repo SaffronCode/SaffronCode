@@ -57,7 +57,7 @@
 		private var serviceName:String ;*/
 		
 		/**This is the request you need to send*/
-		private var pureRequest:URLRequest ;
+		protected var pureRequest:URLRequest ;
 		
 		/**Reload timeOut ID*/
 		private var timerId:uint ;
@@ -119,30 +119,13 @@
 				pureRequest.contentType = 'application/json'
 			}
 			
-			var newHeader:URLRequestHeader = new URLRequestHeader('Accept','text/json,text/xml, application/xml, application/xhtml+xml, text/html;q=0.9, text/plain;q=0.8, text/css, image/png, image/jpeg, image/gif;q=0.8, application/x-shockwave-flash, video/mp4;q=0.9, flv-application/octet-stream;q=0.8, video/x-flv;q=0.7, audio/mp4, application/futuresplash, */*;q=0.5, application/x-mpegURL');
-			pureRequest.requestHeaders.push(newHeader);
+			
+			addHeader();
+			
 			for(var i = 0 ; i<RestDoaService.headers.length ; i++)
 			{
 				pureRequest.requestHeaders.push(RestDoaService.headers[i]);
 			}
-			
-			//var newHeader:URLRequestHeader = new URLRequestHeader('api-key','A4593387-2C4F-4FB6-8AFC-5AC3F3C6B80EEAD9075D-394C-4463-B4B2-C677F5CAA04B');
-			//var newHeader2:URLRequestHeader = new URLRequestHeader('Content-Type','application/json');
-			
-				//headers.Add("dh-U", signIn.Member.UId.ToString());
-				//headers.Add("dh-UAuth", signIn.Member.UIdAuth.ToString());
-			/*if(RestMelkService.UId == '' || RestMelkService.UIdAuth == '')
-			{
-				trace("*** Warning, User is not logged in yet ***");
-			}*/
-			
-			//var newHeader3:URLRequestHeader = new URLRequestHeader('dh-U',RestMelkService.UId);
-			//var newHeader4:URLRequestHeader = new URLRequestHeader('dh-UAuth',RestMelkService.UIdAuth);
-			
-			//pureRequest.requestHeaders.push(newHeader);
-			//pureRequest.requestHeaders.push(newHeader2);
-			//pureRequest.requestHeaders.push(newHeader3);
-			//pureRequest.requestHeaders.push(newHeader4);
 			
 			requestLoader = new URLLoader();
 			if(requestedData is ByteArray)
@@ -158,7 +141,11 @@
 			requestLoader.addEventListener(IOErrorEvent.IO_ERROR,noInternet);
 			requestLoader.addEventListener(ProgressEvent.PROGRESS,dispatchProgress);
 		}
-		
+		protected function addHeader():void
+		{
+			var newHeader:URLRequestHeader = new URLRequestHeader('Accept','text/json,text/xml, application/xml, application/xhtml+xml, text/html;q=0.9, text/plain;q=0.8, text/css, image/png, image/jpeg, image/gif;q=0.8, application/x-shockwave-flash, video/mp4;q=0.9, flv-application/octet-stream;q=0.8, video/x-flv;q=0.7, audio/mp4, application/futuresplash, */*;q=0.5, application/x-mpegURL');
+			pureRequest.requestHeaders.push(newHeader);
+		}
 		/**Set the offline data only status to false to prevent returning offline data or to true to make it return offline data first*/
 		public function offileDataOnly(status:Boolean):void
 		{

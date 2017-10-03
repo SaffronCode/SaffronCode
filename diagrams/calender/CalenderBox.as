@@ -51,25 +51,29 @@ package diagrams.calender
 			Width = W ;
 			Height = H ;
 			
-			var color:uint ;
+			var color:uint;
+			var colorText:uint;
 			
 			if(data.isCurrentDay)
 			{
-				color = CalenderConstants.Color_boxBackGround_currentDay ;
+				color = CalenderConstants.Color_boxBackGround_currentDay;
+				colorText = CalenderConstants.Color_boxNames_currentDay;
 			}
 			else if(data.isFriday)
 			{
-				color = CalenderConstants.Color_boxBackGround_friday ;
+				color = CalenderConstants.Color_boxBackGround_friday;
+				colorText = CalenderConstants.Color_boxNames_friday;
 			}
 			else
 			{
-				color = CalenderConstants.Color_boxBackGround ;
+				color = CalenderConstants.Color_boxBackGround;
+				colorText = CalenderConstants.Color_boxNames;
 			}
 			
 			this.graphics.beginFill(color,1);
 			this.graphics.drawRoundRect(padding,padding,Width-padding*2,Height-padding*2,ellipse);
 			
-			dateTitle = new CalenderText(CalenderConstants.Color_boxNames,CalenderConstants.Font_size_dates,CalenderConstants.Font_boxNames/*,TextFormatAlign.LEFT*/);
+			dateTitle = new CalenderText(colorText,CalenderConstants.Font_size_dates,CalenderConstants.Font_boxNames/*,TextFormatAlign.LEFT*/);
 			this.addChild(dateTitle);
 			
 			/*
