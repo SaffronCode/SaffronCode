@@ -12,6 +12,9 @@ package
 		{
 			var splitValueArray:Array = new Array()
 			var valToString:String = value_p.toString()
+			var splitDotArray:Array = valToString.split('.');	
+			valToString = splitDotArray[0];
+			var flot:String = splitDotArray[1];
 			var split:String	
 			while(valToString.length>splitRange_p)
 			{
@@ -33,8 +36,12 @@ package
 				
 			// for edit text 	
 			if(reverse_p)splitValueArray.reverse()
-				
-			return splitValueArray.join(car_p)
+			var price:String = splitValueArray.join(car_p);
+			if(flot!=null && flot!='')
+			{
+				price+='.'+flot;
+			}
+			return price;
 		}
 
 	}
