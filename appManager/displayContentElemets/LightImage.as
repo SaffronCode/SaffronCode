@@ -339,7 +339,7 @@ package appManager.displayContentElemets
 		/**If you pass null to this functino, it will use loadedBytes valeu*/
 		protected function imageSaved(event:URLSaverEvent=null):void
 		{
-			wasLoadedBefor = event.wasLoadedBefor ;
+			wasLoadedBefor = event==null || event.wasLoadedBefor ;
 			PerformanceTest.traceDelay('image is loaded');
 			var loaderContext:LoaderContext = new LoaderContext(false,ApplicationDomain.currentDomain);
 			//trace("Load this image : "+event.offlineTarget);
