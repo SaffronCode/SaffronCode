@@ -1,4 +1,4 @@
-package
+﻿package
 {
 	import popForm.PopMenu;
 	import popForm.PopMenuContent;
@@ -27,7 +27,8 @@ package
 		}
 		public static function close()
 		{
-			ME2.close();
+			if(ME2)
+				ME2.close();
 		}
 		
 		/**this will tell if the popMenuIsOpen*/
