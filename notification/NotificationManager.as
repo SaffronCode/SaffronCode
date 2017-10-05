@@ -1,4 +1,4 @@
-package notification
+﻿package notification
 {
 	import com.mteamapp.StringFunctions;
 	
@@ -88,8 +88,15 @@ package notification
 			}
 			//control android permission  :  <android> <manifestAdditions><![CDATA[ 
 			var neceraryLines:String = '•' ;
+			var targetSDK:uint = 22 ;
+			var sdkTargetString:String = 'android:targetSdkVersion="' ;
+			var indexOf:int ;
+			if((indexOf = currentPermissions.indexOf(sdkTargetString))!=-1)
+			{
+				targetSDK = uint(currentPermissions.substring(indexOf+sdkTargetString.length,currentPermissions.indexOf('"',indexOf+sdkTargetString.length)));
+			}
 			var androidPermission:String = neceraryLines+'<manifest android:installLocation="auto">\n' +
-				'\t<uses-sdk android:minSdkVersion="9" android:targetSdkVersion="22" />\n' +
+				'\t<uses-sdk android:minSdkVersion="9" android:targetSdkVersion="'+targetSDK+'" />\n' +
 				'\t<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>\n' +
 				'\t<uses-permission android:name="android.permission.READ_PHONE_STATE"/>\n' +
 				'\t<uses-permission android:name="android.permission.INTERNET"/>\n' +
