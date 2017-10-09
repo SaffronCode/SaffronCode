@@ -49,7 +49,7 @@ package otherPlatforms.tablighan
 		{
 			sw.removeEventListener(LocationChangeEvent.LOCATION_CHANGE,preventChanging);
 			isLoaded = false ;
-			if(true)
+			if(false)
 			{
 				//sw.loadURL("https://unsplash.it/768/150/?random");
 				sw.loadURL("https://www.google.com/");
