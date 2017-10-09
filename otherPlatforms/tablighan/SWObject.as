@@ -14,6 +14,8 @@ package otherPlatforms.tablighan
 		
 		public var isLoaded:Boolean = false ;
 		
+		private var firstLocation:String = '' ;
+		
 		public function SWObject(Id:String)
 		{
 			id = Id ;
@@ -23,24 +25,31 @@ package otherPlatforms.tablighan
 		
 		protected function preventChanging(event:LocationChangeEvent):void
 		{
-			trace("Request to change the location : "+event.location);
-			navigateToURL(new URLRequest(event.location));
+			trace("*** Request to change the location : "+event.location);
+			if(firstLocation!=event.location)
+			{
+				trace("*** Change the location");
+				navigateToURL(new URLRequest(event.location));
+			}
+			else
+			{
+				trace("*** Prevent page change...");
+			}
 			sw.reload();
 		}
 		
 		protected function bannerLoaded(event:Event):void
 		{
+			firstLocation = sw.location ;
 			isLoaded = true ;
-			sw.addEventListener(LocationChangeEvent.LOCATION_CHANGING,preventChanging);
 			sw.addEventListener(LocationChangeEvent.LOCATION_CHANGE,preventChanging);
 		}
 		
 		public function load(domain:String):void
 		{
-			sw.removeEventListener(LocationChangeEvent.LOCATION_CHANGING,preventChanging);
 			sw.removeEventListener(LocationChangeEvent.LOCATION_CHANGE,preventChanging);
 			isLoaded = false ;
-			if(false)
+			if(true)
 			{
 				//sw.loadURL("https://unsplash.it/768/150/?random");
 				sw.loadURL("https://www.google.com/");
@@ -53,7 +62,6 @@ package otherPlatforms.tablighan
 		
 		public function reload():void
 		{
-			sw.removeEventListener(LocationChangeEvent.LOCATION_CHANGING,preventChanging);
 			sw.removeEventListener(LocationChangeEvent.LOCATION_CHANGE,preventChanging);
 			sw.reload();
 		}
