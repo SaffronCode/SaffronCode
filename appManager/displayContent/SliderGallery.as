@@ -79,6 +79,8 @@
 		private var RTL:Boolean;
 		private var Loop:Boolean;
 		
+		private var sliderBoolet:SliderBoolets ;
+		
 		
 		public function SliderGallery(myWidth:Number=0,myHeight:Number=0)
 		{
@@ -533,7 +535,7 @@
 			}
 		}
 		
-		public function setUp(images:Vector.<SliderImageItem>,currentIndex:uint=0,animateTimer:uint = 10000,rightToLeft:Boolean=false,loopEnabled:Boolean=true):void
+		public function setUp(images:Vector.<SliderImageItem>,currentIndex:uint=0,animateTimer:uint = 10000,rightToLeft:Boolean=false,loopEnabled:Boolean=true,addSliderEffect:SliderBooletSetting=null):void
 		{
 			if(stage!=null)
 			{
@@ -568,6 +570,23 @@
 			
 			setAnimation();
 			this.dispatchEvent(new Event(Event.CHANGE));
+			if(sliderBoolet)
+			{
+				Obj.remove(sliderBoolet);
+				sliderBoolet = null ;
+			}
+			if(addSliderEffect!=null)
+			{
+				addSliderEffect.sliderGallery = this ;
+				addSliderEffect.rtl = rightToLeft ;
+				
+				sliderBoolet = new SliderBoolets(addSliderEffect);
+				this.addChild(sliderBoolet);
+				sliderBoolet.scaleX = 1/this.scaleX ;
+				sliderBoolet.scaleY = 1/this.scaleY ;
+				sliderBoolet.y = H ;
+				sliderBoolet.x = W/2 ;
+			}
 		}
 		
 		/**Start animation timer*/
