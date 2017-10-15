@@ -125,7 +125,7 @@
 			
 			if((loadConfig && Contents.config.activateURLCaller) || activateURLCaller)
 			{
-				URISchemId = DevicePrefrence.appID.substr(DevicePrefrence.appID.lastIndexOf('.')+1).toLocaleUpperCase();
+				URISchemId = DevicePrefrence.appID.substr(DevicePrefrence.appID.lastIndexOf('.')+1).toLowerCase();
 				trace("***URISchemId : "+URISchemId);
 				
 				var androidURLPermision:String =   	'				<activity>\n'+
