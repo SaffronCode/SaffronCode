@@ -35,8 +35,15 @@ public class StarlingAction {
         removeItem(event.currentTarget as DisplayObject);
     }
 
-    /**Remove item and function from list*/
-    private static function removeItem(item:DisplayObject):void {
+    /**Remove all older click listeners from this item*/
+    public static function removeClickListeners(item:DisplayObject):void
+    {
+        while(removeItem(item)){};
+    }
+
+    /**Remove item and function from list<br>
+     * it will return true if item was exists on the itemsList*/
+    private static function removeItem(item:DisplayObject):Boolean {
         var I:int = itemsList.indexOf(item);
         if(I!=-1)
         {
@@ -44,7 +51,9 @@ public class StarlingAction {
             item.removeEventListener(TouchEvent.TOUCH, onTouched);
             itemsList.removeAt(I);
             itemsFunction.removeAt(I);
+            return true ;
         }
+        return false ;
     }
 
     private static function callFunctionFor(item:DisplayObject):void
