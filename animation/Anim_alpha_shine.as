@@ -6,6 +6,8 @@ import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.EventDispatcher;
 
+
+
 public class Anim_alpha_shine extends Sprite{
 
     var object:Object ;
@@ -19,7 +21,7 @@ public class Anim_alpha_shine extends Sprite{
         I = 0 ;
     }
 
-    private function unLoadMe(event:Event):void {
+    private function unLoadMe(event:*):void {
         object.removeEventListener(Event.REMOVED_FROM_STAGE,unLoadMe);
         this.removeEventListener(Event.ENTER_FRAME,animate);
     }
