@@ -2,6 +2,7 @@ package diagrams.calender
 {
 	public class CalenderConstants
 	{
+
 		public static const Debug_instantShow:Boolean = true;
 
 		/**Calender box contents will apear under masked area. You will loose performance*/
@@ -13,15 +14,16 @@ package diagrams.calender
 							maskPaddingT:Number = 20,
 							ellipse:Number = 10 ;
 		
-		private static const 	d0:String = "شنبه",
-								d1:String = "یک شنبه",
-								d2:String = "دو شنبه",
-								d3:String = "سه شنبه",
-								d4:String = "چهار شنبه",
-								d5:String = "پنج شنبه",
-								d6:String = "جمعه";
+		private static const 	d0:DayNamesModel  = new DayNamesModel("شنبه","ش"),
+								d1:DayNamesModel  = new DayNamesModel("یک شنبه","ی"),
+								d2:DayNamesModel  = new DayNamesModel("دو شنبه","د"),
+								d3:DayNamesModel  = new DayNamesModel("سه شنبه","س"),
+								d4:DayNamesModel  = new DayNamesModel("چهار شنبه","چ"),
+								d5:DayNamesModel  = new DayNamesModel("پنج شنبه","پ"),
+								d6:DayNamesModel  = new DayNamesModel("جمعه","ج");
 		
-		public static var dayNames:Array = [d0,d1,d2,d3,d4,d5,d6];
+		public static var dayNames:Vector.<DayNamesModel> = new Vector.<DayNamesModel>();
+		dayNames.push(d0,d1,d2,d3,d4,d5,d6);
 		public static var dayNamesMiladi:Array = [d1,d2,d3,d4,d5,d6,d0];
 		
 		private static const 	m0:String = "فروردین",
@@ -43,6 +45,8 @@ package diagrams.calender
 		
 		/**Special font for calender title*/
 		
+ 
+		
 		public static var Font_title:String = "B Yekan Bold Bold",
 							Font_boxNames:String = "B Yekan Regular",
 							Font_contents_name:String = "B Yekan Regular";
@@ -61,6 +65,11 @@ package diagrams.calender
 		public static var LineSpacing_content_box:Number = -8 ;
 		public static var Font_size_titles:Number = 25;
 		public static var Font_size_dates:Number = 17;
+		
+		
+		/**0 is long
+		 * 1 is short*/
+		public static var  dayNameTitle:int = 0;
 		
 		
 		public static function generateColor(seed:String):uint

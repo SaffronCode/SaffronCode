@@ -145,9 +145,19 @@ package diagrams.calender
 			return dateData.firstDateShamsi.fullYear.toString() ;
 		}
 		
+		public function get currentShamsiDate():MyShamsi
+		{
+			return dateData.firstDateShamsi;
+		}
+		public function get currentDate():Date
+		{
+			return dateData.firstDate;
+		}
 		
-		
-		
+		public function get currentDayOfTheWeek():uint
+		{
+			return dateData.firstDayOfTheWeek;
+		}
 		
 		/**Generate monthly calender*/
 		private function generateMontlyCalender(currentMonthDays:uint = 31,firstDay:uint = 5):void
@@ -171,8 +181,14 @@ package diagrams.calender
 				this.addChild(newTitle);
 				newTitle.width = titleWidth ;
 				newTitle.x = titleWidth*(titleNumber-i-1) ;
-				newTitle.text = CalenderConstants.dayNames[i] ;
-				
+				if(CalenderConstants.dayNameTitle==0)
+				{
+					newTitle.text = CalenderConstants.dayNames[i].long ;
+				}
+				else if(CalenderConstants.dayNameTitle==1)
+				{
+					newTitle.text = CalenderConstants.dayNames[i].short ;
+				}
 				storedTitles.push(newTitle);
 				
 				titlesHeight = newTitle.height; 
