@@ -17,51 +17,94 @@ import starlingPack.core.ObjStarling;
 
 public class StarlingAction {
 
-    private static var itemsList:Vector.<DisplayObject> = new Vector.<DisplayObject>();
-    private static var itemsFunction:Vector.<Function> = new Vector.<Function>();
+    private static var itemsList_click:Vector.<DisplayObject> = new Vector.<DisplayObject>();
+    private static var itemsFunction_click:Vector.<Function> = new Vector.<Function>();
+
+    private static var itemsList_mouseDown:Vector.<DisplayObject> = new Vector.<DisplayObject>();
+    private static var itemsFunction_mouseDown:Vector.<Function> = new Vector.<Function>();
 
 
 
     public static function addClickListener(item:DisplayObject, onClickedFunction:Function):void
     {
-        removeItem(item);
-        itemsList.push(item);
-        itemsFunction.push(onClickedFunction);
+        removeClickItem(item);
+        itemsList_click.push(item);
+        itemsFunction_click.push(onClickedFunction);
+        item.addEventListener(TouchEvent.TOUCH, onTouched);
+        item.addEventListener(Event.REMOVED_FROM_STAGE, itemRemovedFromStage);
+    }
+
+    public static function addMouseDownListener(item:DisplayObject,onMouseDownFunction:Function):void
+    {
+        removeMouseDownItem(item);
+        itemsList_mouseDown.push(item);
+        itemsFunction_mouseDown.push(onMouseDownFunction);
         item.addEventListener(TouchEvent.TOUCH, onTouched);
         item.addEventListener(Event.REMOVED_FROM_STAGE, itemRemovedFromStage);
     }
 
     private static function itemRemovedFromStage(event:Event):void {
-        removeItem(event.currentTarget as DisplayObject);
+        removeClickItem(event.currentTarget as DisplayObject);
+        removeMouseDownItem(event.currentTarget as DisplayObject);
     }
 
     /**Remove all older click listeners from this item*/
     public static function removeClickListeners(item:DisplayObject):void
     {
-        while(removeItem(item)){};
+        while(removeClickItem(item)){};
     }
 
     /**Remove item and function from list<br>
-     * it will return true if item was exists on the itemsList*/
-    private static function removeItem(item:DisplayObject):Boolean {
-        var I:int = itemsList.indexOf(item);
+     * it will return true if item was exists on the itemsList_click*/
+    private static function removeClickItem(item:DisplayObject):Boolean {
+        var I:int = itemsList_click.indexOf(item);
         if(I!=-1)
         {
             item.removeEventListener(Event.REMOVED_FROM_STAGE, itemRemovedFromStage);
             item.removeEventListener(TouchEvent.TOUCH, onTouched);
-            itemsList.removeAt(I);
-            itemsFunction.removeAt(I);
+            itemsList_click.removeAt(I);
+            itemsFunction_click.removeAt(I);
             return true ;
         }
         return false ;
     }
 
-    private static function callFunctionFor(item:DisplayObject):void
-    {
-        var I:int = itemsList.indexOf(item);
+    /**Remove item and function from list<br>
+     * it will return true if item was exists on the itemsList_click*/
+    private static function removeMouseDownItem(item:DisplayObject):Boolean {
+        var I:int = itemsList_mouseDown.indexOf(item);
         if(I!=-1)
         {
-            itemsFunction[I]();
+            item.removeEventListener(Event.REMOVED_FROM_STAGE, itemRemovedFromStage);
+            item.removeEventListener(TouchEvent.TOUCH, onTouched);
+            itemsList_mouseDown.removeAt(I);
+            itemsFunction_mouseDown.removeAt(I);
+            return true ;
+        }
+        return false ;
+    }
+
+    private static function callClickFunctionFor(item:DisplayObject,touches:Touch):void
+    {
+        var I:int = itemsList_click.indexOf(item);
+        if(I!=-1)
+        {
+            if(itemsFunction_click[I].length>0)
+                itemsFunction_click[I](touches);
+            else
+                itemsFunction_click[I]();
+        }
+    }
+
+    private static function callMouseDownFunctionFor(item:DisplayObject,touches:Touch):void
+    {
+        var I:int = itemsList_mouseDown.indexOf(item);
+        if(I!=-1)
+        {
+            if(itemsFunction_mouseDown[I].length>0)
+                itemsFunction_mouseDown[I](touches);
+            else
+                itemsFunction_mouseDown[I]();
         }
     }
 
@@ -74,10 +117,12 @@ public class StarlingAction {
             switch (touches.phase)
             {
                 case TouchPhase.BEGAN:
+                    if(ObjStarling.isTouchableFromParents(clickedItem) && clickedItem.hitTest(clickedItem.globalToLocal(new Point(touches.globalX,touches.globalY))))
+                        callMouseDownFunctionFor(clickedItem,touches);
                     break ;
                 case TouchPhase.ENDED:
                     if(ObjStarling.isTouchableFromParents(clickedItem) && clickedItem.hitTest(clickedItem.globalToLocal(new Point(touches.globalX,touches.globalY))))
-                        callFunctionFor(clickedItem);
+                        callClickFunctionFor(clickedItem,touches);
                     break ;
             }
         }
