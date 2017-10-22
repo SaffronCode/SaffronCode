@@ -89,6 +89,9 @@ package contents.rollingList
 			this.removeChildren();
 			this.graphics.clear();
 			
+			this.graphics.beginFill(0x000000,0);
+			this.graphics.drawRect(0,0,myWidth,myHeight);
+			
 			rollingItemsMask = new Sprite();
 			rollingItemsMask.graphics.beginFill(0x000000,0.1);
 			rollingItemsMask.graphics.drawRect(0,0,myWidth,myHeight);
