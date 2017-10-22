@@ -19,6 +19,8 @@ import starling.events.Touch;
 
 import starlingPack.event.StarlingAction;
 
+import starlingPack.event.StarlingAction;
+
 public class ScrollStarling extends Sprite {
 
     private var target:DisplayObject;
@@ -49,6 +51,7 @@ public class ScrollStarling extends Sprite {
     private function mouseStopDragg(touches:Touch):void
     {
         trace("Stoppp!!!!!!!!!!!!!");
+        StarlingAction.removeMouseMoveListeners(target.stage,mouseMoved);
         currentTouch = null ;
     }
 
@@ -57,6 +60,14 @@ public class ScrollStarling extends Sprite {
         trace("Touched!!!!!!!!!!!!!");
         currentTouch = touches ;
         firstPoint = target.globalToLocal(new Point(touches.globalX,touches.globalY));
+        StarlingAction.addMouseMoveListner(target.stage,mouseMoved);
+    }
+
+    /**Mouse movelistner*/
+    private function mouseMoved(touches:Touch):void
+    {
+        trace("Mouse moved : ")
+        currentTouch = touches ;
     }
 
 
@@ -68,6 +79,7 @@ public class ScrollStarling extends Sprite {
     private function animScroll(event:Event):void {
         if(currentTouch!=null)
         {
+            trace("Re place it")
             var currentPoint:Point = target.globalToLocal(new Point(currentTouch.globalX,currentTouch.globalY))
             target.x = currentPoint.x-firstPoint.x;
             target.y = currentPoint.y-firstPoint.y;
