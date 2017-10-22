@@ -42,10 +42,16 @@ public class ScrollStarling extends Sprite {
         var mask:Quad = new Quad(maskArea.width,maskArea.height);
         target.mask = mask;
 
-        this.addEventListener(Event.ENTER_FRAME,animScroll);
+        target.addEventListener(Event.ENTER_FRAME,animScroll);
         target.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
         StarlingAction.addMouseDownListener(target,mouseDragging);
         StarlingAction.addClickListener(target,mouseStopDragg);
+    }
+
+    /**Creates points from touchs*/
+    private function touchToParentPoint(touch:Touch):Point
+    {
+        return target.parent.globalToLocal(new Point(touch.globalX,touch.globalY));
     }
 
     private function mouseStopDragg(touches:Touch):void
@@ -58,16 +64,16 @@ public class ScrollStarling extends Sprite {
     private function mouseDragging(touches:Touch):void
     {
         trace("Touched!!!!!!!!!!!!!");
-        currentTouch = touches ;
-        firstPoint = target.globalToLocal(new Point(touches.globalX,touches.globalY));
+        currentTouch = touches.clone() ;
+        firstPoint = touchToParentPoint(touches);
         StarlingAction.addMouseMoveListner(target.stage,mouseMoved);
     }
 
     /**Mouse movelistner*/
     private function mouseMoved(touches:Touch):void
     {
-        trace("Mouse moved : ")
-        currentTouch = touches ;
+        trace("Mouse moved : ");
+        currentTouch = touches.clone() ;
     }
 
 
@@ -77,10 +83,11 @@ public class ScrollStarling extends Sprite {
     }
 
     private function animScroll(event:Event):void {
+        //trace("currentTouch : "+currentTouch)
         if(currentTouch!=null)
         {
-            trace("Re place it")
-            var currentPoint:Point = target.globalToLocal(new Point(currentTouch.globalX,currentTouch.globalY))
+            trace("Re place it");
+            var currentPoint:Point = touchToParentPoint(currentTouch);
             target.x = currentPoint.x-firstPoint.x;
             target.y = currentPoint.y-firstPoint.y;
         }
