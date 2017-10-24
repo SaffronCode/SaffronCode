@@ -15,6 +15,7 @@ import permissionControlManifestDiscriptor.PermissionControl;
 import starling.display.DisplayObject;
 import starling.display.Quad;
 import starling.display.Sprite;
+import starling.display.Stage;
 import starling.events.Event;
 import starling.events.Touch;
 
@@ -49,6 +50,8 @@ public class ScrollStarling extends Sprite {
     private var freeToScrollLR:Boolean,
                 freeToScrollTD:Boolean;
 
+    private var targetStage:Stage ;
+
     public function ScrollStarling(Target:DisplayObject,MaskArea:Rectangle) {
         super();
 
@@ -68,10 +71,23 @@ public class ScrollStarling extends Sprite {
         var mask:Quad = new Quad(maskArea.width,maskArea.height);
         target.mask = mask;
 
-        target.addEventListener(Event.ENTER_FRAME,animScroll);
-        target.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
-        StarlingAction.addMouseDownListener(target,mouseDown);
-        StarlingAction.addClickListener(target,mouseStopDragg);
+
+        controlTargetStage();
+    }
+
+    private function controlTargetStage():void {
+        if(target.stage==null)
+        {
+            target.addEventListener(Event.ADDED_TO_STAGE,controlTargetStage);
+        }
+        else
+        {
+            targetStage = target.stage ;
+            target.addEventListener(Event.ENTER_FRAME,animScroll);
+            target.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
+            StarlingAction.addMouseDownListener(target,mouseDown);
+            StarlingAction.addClickListener(targetStage,mouseStopDragg);
+        }
     }
 
         /**Creates points from touchs*/
@@ -82,6 +98,10 @@ public class ScrollStarling extends Sprite {
 
     private function mouseStopDragg(touches:Touch):void
     {
+        if(mode==0)
+        {
+            return ;
+        }
         mode = 0 ;
         freeToScrollLR = freeToScrollTD = false ;
         trace("Stoppp!!!!!!!!!!!!!");
@@ -126,6 +146,7 @@ public class ScrollStarling extends Sprite {
 
     private function unLoad(e:*):void
     {
+        StarlingAction.removeClickListeners(targetStage,mouseStopDragg);
         this.removeEventListener(Event.ENTER_FRAME,animScroll);
     }
 
