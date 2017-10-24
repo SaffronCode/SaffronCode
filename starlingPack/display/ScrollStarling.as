@@ -8,6 +8,7 @@ import flash.geom.Point;
 
 
 import flash.geom.Rectangle;
+import flash.utils.setTimeout;
 
 import permissionControlManifestDiscriptor.PermissionControl;
 
@@ -20,8 +21,10 @@ import starling.events.Touch;
 import starlingPack.event.StarlingAction;
 
 import starlingPack.event.StarlingAction;
+import starlingPack.event.StarlingScrollEvent;
 
 [Event(name="SCROLLING", type="starlingPack.event.StarlingScrollEvent")]
+[Event(name="SCROLLING_ENDED", type="starlingPack.event.StarlingScrollEvent")]
 public class ScrollStarling extends Sprite {
 
     private var target:DisplayObject;
@@ -82,8 +85,24 @@ public class ScrollStarling extends Sprite {
         mode = 0 ;
         freeToScrollLR = freeToScrollTD = false ;
         trace("Stoppp!!!!!!!!!!!!!");
-        StarlingAction.removeMouseMoveListeners(target.stage,mouseMoved);
+        //StarlingAction.removeMouseMoveListeners(target.stage,mouseMoved);
         currentTouch = null ;
+        dispatchScrollEndEvent();
+        setTimeout(dispatchScrollEndEvent,0);
+    }
+
+    /**Tells every body that the scroll is over*/
+    private function dispatchScrollEndEvent():void
+    {
+        target.dispatchEvent(new StarlingScrollEvent(StarlingScrollEvent.SCROLLING_ENDED,true));
+        target.touchable = true ;
+    }
+
+    /**Tells every body that the scroll is began*/
+    private function dispatchScrollStartsEvent():void
+    {
+        target.dispatchEvent(new StarlingScrollEvent(StarlingScrollEvent.SCROLLING,true));
+        target.touchable = false ;
     }
 
     private function mouseDown(touches:Touch):void
@@ -92,17 +111,17 @@ public class ScrollStarling extends Sprite {
         Vx = 0 ;
         Vy = 0 ;
         trace("Touched!!!!!!!!!!!!!");
-        currentTouch = touches.clone() ;
+        currentTouch = touches ;
         firstTouch = touches.clone();
-        StarlingAction.addMouseMoveListner(target.stage,mouseMoved);
+        //StarlingAction.addMouseMoveListner(target.stage,mouseMoved);
     }
 
-    /**Mouse movelistner*/
+    /**Mouse movelistner
     private function mouseMoved(touches:Touch):void
     {
         trace("Mouse moved : ");
         currentTouch = touches.clone() ;
-    }
+    }*/
 
 
     private function unLoad(e:*):void
@@ -111,6 +130,21 @@ public class ScrollStarling extends Sprite {
     }
 
     private function animScroll(event:Event):void {
+
+        if(mode!=0 && (freeToScrollLR==false || freeToScrollTD == false))
+        {
+            if(freeToScrollLR==false && Math.abs(currentTouch.globalX-firstTouch.globalX)>minMoveToScroll){
+                freeToScrollLR = true ;
+                mode = 2 ;
+                dispatchScrollStartsEvent();
+            }
+            if(freeToScrollTD == false && Math.abs(currentTouch.globalY-firstTouch.globalY)>minMoveToScroll){
+                freeToScrollTD = true ;
+                mode = 2 ;
+                dispatchScrollStartsEvent();
+            }
+        }
+
         switch(mode)
         {
             case 0:
@@ -120,26 +154,14 @@ public class ScrollStarling extends Sprite {
 
                 break;
             case 1:
-                if(lastCapturedTouch==currentTouch)
-                {
-                    break;
-                }
-                    trace("firstTouch.globalX  : "+firstTouch.globalX);
-                if(Math.abs(currentTouch.globalX-firstTouch.globalX)>minMoveToScroll){
-                    freeToScrollLR = true ;
-                    mode = 2 ;
-                }
-                if(Math.abs(currentTouch.globalY-firstTouch.globalY)>minMoveToScroll){
-                    freeToScrollTD = true ;
-                    mode = 2 ;
-                }
-
                 break;
             case 2:
                 var pointLast:Point = touchToParentPoint(lastCapturedTouch);
                 var pointCurrent:Point = touchToParentPoint(currentTouch);
-                Vx = pointCurrent.x-pointLast.x ;
-                Vy = pointCurrent.y-pointLast.y ;
+                if(freeToScrollLR)
+                    Vx = pointCurrent.x-pointLast.x ;
+                if(freeToScrollTD)
+                    Vy = pointCurrent.y-pointLast.y ;
 
                 break;
         }
@@ -150,7 +172,8 @@ public class ScrollStarling extends Sprite {
         target.mask.y = targetY0-target.y ;
 
 
-        lastCapturedTouch = currentTouch ;
+        if(currentTouch!=null)
+            lastCapturedTouch = currentTouch.clone() ;
     }
 
 }
