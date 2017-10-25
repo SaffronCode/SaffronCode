@@ -43,8 +43,8 @@ package wrokersJob
 		
 		private static function handlecustomeChannel(event:Event):void
 		{
-			var _txt:String = bgWorker_JSON_Pars.receive();
-			Alert.show(_txt);
+			var _txt:* = bgWorker_JSON_Pars.receive();
+			Alert.show(JSON.stringify(_txt));
 		}
 		
 		/**Worker state*/
