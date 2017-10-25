@@ -20,6 +20,7 @@ package appManager.displayContentElemets
 	import flash.system.LoaderContext;
 	import flash.utils.ByteArray;
 	import flash.utils.clearTimeout;
+	import flash.utils.getTimer;
 	import flash.utils.setTimeout;
 	
 	import netManager.urlSaver.URLSaver;
@@ -384,7 +385,9 @@ package appManager.displayContentElemets
 			{
 				loadedBytes.position = 0 ;
 				loaderContext.allowLoadBytesCodeExecution = true ;
+				var tim:Number = getTimer();
 				loader.loadBytes(loadedBytes,loaderContext);
+				trace(">>> "+(getTimer()-tim));
 			}
 		}
 		
@@ -397,7 +400,9 @@ package appManager.displayContentElemets
 			{
 				fileStreamLoader.readBytes(bytes);
 				PerformanceTest.traceDelay('file loaded. show the image');
+				var tim:Number = getTimer();
 				loader.loadBytes(bytes,loaderContext);
+				trace("*>>> "+(getTimer()-tim));
 				PerformanceTest.traceDelay('image file showed');
 				fileStreamLoader.close();
 				bytes.clear();

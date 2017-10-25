@@ -81,6 +81,8 @@
 		
 		private var sliderBoolet:SliderBoolets ;
 		
+		/**List of sliders shouldnt staye on the stage*/
+		private var ignoredIndexes:Array = [] ;
 		
 		public function SliderGallery(myWidth:Number=0,myHeight:Number=0)
 		{
@@ -320,7 +322,6 @@
 				if(nextPrevController!=0)
 				{
 					imageIndex+=nextPrevController;
-					nextPrevController = 0 ;
 				}
 				else
 				{
@@ -337,6 +338,21 @@
 				{
 					imageIndex += plusPages;
 				}
+
+				//trace("♠♠○♠369♠♠ compate ImageIndex vs IgnoredList "+ignoredIndexes+" vs "+getCurrentSelectedImage())
+				if(ignoredIndexes.indexOf(getCurrentSelectedImage())!=-1)
+				{
+					if(nextPrevController>0)
+					{
+						nextPrevController++;
+					}
+					else
+					{
+						nextPrevController--;
+					}
+				}
+				else
+					nextPrevController = 0 ;
 				
 				//trace("imageIndex : "+imageIndex);
 
@@ -535,8 +551,18 @@
 			}
 		}
 		
+		/**Set the list of indexes shouldnt stay on the stage*/
+		public function setIgnoreIndexes(ignoreIndexList:Array=null)
+		{
+			if(ignoreIndexList!=null)
+				ignoredIndexes = ignoreIndexList.concat();
+			else
+				ignoreIndexList = [] ;
+		}
+		
 		public function setUp(images:Vector.<SliderImageItem>,currentIndex:uint=0,animateTimer:uint = 10000,rightToLeft:Boolean=false,loopEnabled:Boolean=true,addSliderEffect:SliderBooletSetting=null):void
 		{
+			setIgnoreIndexes();
 			if(stage!=null)
 			{
 				
