@@ -42,6 +42,8 @@ public class ScrollStarling extends Sprite {
 
     public static const minMoveToScroll:Number = 10 ;
 
+    public static const rollBackAnimSpeed:Number = 10 ;
+
     private static const Mu:Number = 0.9 ;
 
     /**0:Not scrolling, 1:Dragging but scroll is not starting, 2:Is Scrolling.*/
@@ -193,17 +195,22 @@ public class ScrollStarling extends Sprite {
                 Vx*=Mu;
                 Vy*=Mu;
 
-                    if(targRect.x>maskArea.x)
-                    {
-                        Vx = (maskArea.x-target.x)/10;
-                    }
-                    else if(targRect.right<maskArea.right)
-                    {
-                        trace("targRect.right<maskArea.right : "+targRect.right+" < "+maskArea.right);
-                        trace("from : "+targRect.x);
-                        trace("to : "+(maskArea.width-targRect.width));
-                        Vx = ((maskArea.width-targRect.width)-target.x)/10;
-                    }
+                if(targRect.x>maskArea.x)
+                {
+                    Vx = (maskArea.x-target.x)/rollBackAnimSpeed;
+                }
+                else if(targRect.right<maskArea.right)
+                {
+                    Vx = ((maskArea.width-targRect.width)-target.x)/rollBackAnimSpeed;
+                }
+                if(targRect.y>maskArea.y)
+                {
+                    Vy = (maskArea.y-target.y)/rollBackAnimSpeed;
+                }
+                else if(targRect.bottom<maskArea.bottom)
+                {
+                    Vy = ((maskArea.height-targRect.height)-target.y)/rollBackAnimSpeed;
+                }
 
                 break;
             case 1:
