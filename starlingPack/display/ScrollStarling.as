@@ -75,6 +75,18 @@ public class ScrollStarling extends Sprite {
         controlTargetStage();
     }
 
+    /**Returns true if scrolling availables on LtR direction*/
+    private function scrollLRAvailable():Boolean
+    {
+        return maskArea.width<targRect.width ;
+    }
+
+    /**Returns true if scrolling availables on TtD direction*/
+    private function scrollTDAvailable():Boolean
+    {
+        return maskArea.height<targRect.height ;
+    }
+
     private function controlTargetStage():void {
         if(target.stage==null)
         {
@@ -93,6 +105,8 @@ public class ScrollStarling extends Sprite {
         /**Creates points from touchs*/
         private function touchToParentPoint(touch:Touch):Point
         {
+            trace("target.parent : "+target.parent);
+            trace("touch : "+touch);
             return target.parent.globalToLocal(new Point(touch.globalX,touch.globalY));
         }
 
@@ -125,6 +139,12 @@ public class ScrollStarling extends Sprite {
         target.touchable = false ;
     }
 
+    /**Returns a rectangle that defins target area rectangle*/
+    public function get targRect():Rectangle
+    {
+        return new Rectangle(target.x,target.y,target.width,target.height);
+    }
+
     private function mouseDown(touches:Touch):void
     {
         mode = 1 ;
@@ -154,12 +174,12 @@ public class ScrollStarling extends Sprite {
 
         if(mode!=0 && (freeToScrollLR==false || freeToScrollTD == false))
         {
-            if(freeToScrollLR==false && Math.abs(currentTouch.globalX-firstTouch.globalX)>minMoveToScroll){
+            if(freeToScrollLR==false && Math.abs(currentTouch.globalX-firstTouch.globalX)>minMoveToScroll && scrollLRAvailable()){
                 freeToScrollLR = true ;
                 mode = 2 ;
                 dispatchScrollStartsEvent();
             }
-            if(freeToScrollTD == false && Math.abs(currentTouch.globalY-firstTouch.globalY)>minMoveToScroll){
+            if(freeToScrollTD == false && Math.abs(currentTouch.globalY-firstTouch.globalY)>minMoveToScroll && scrollTDAvailable()){
                 freeToScrollTD = true ;
                 mode = 2 ;
                 dispatchScrollStartsEvent();
@@ -173,10 +193,24 @@ public class ScrollStarling extends Sprite {
                 Vx*=Mu;
                 Vy*=Mu;
 
+                    if(targRect.x>maskArea.x)
+                    {
+                        Vx = (maskArea.x-target.x)/10;
+                    }
+                    else if(targRect.right<maskArea.right)
+                    {
+                        trace("targRect.right<maskArea.right : "+targRect.right+" < "+maskArea.right);
+                        trace("from : "+targRect.x);
+                        trace("to : "+(maskArea.width-targRect.width));
+                        Vx = ((maskArea.width-targRect.width)-target.x)/10;
+                    }
+
                 break;
             case 1:
                 break;
             case 2:
+                if(lastCapturedTouch==null)
+                        break;
                 var pointLast:Point = touchToParentPoint(lastCapturedTouch);
                 var pointCurrent:Point = touchToParentPoint(currentTouch);
                 if(freeToScrollLR)
