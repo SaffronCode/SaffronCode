@@ -19,7 +19,7 @@ package wrokersJob
 				commandChannel = Worker.current.getSharedProperty("incomingCommandChannel") as MessageChannel;
 				commandChannel.addEventListener(Event.CHANNEL_MESSAGE, handleCommandMessage);
 				
-				customeChannel   = Worker.current.getSharedProperty("customeChannel") as MessageChannel;
+				customeChannel   = Worker.current.getSharedProperty("bgWorker_JSON_Pars") as MessageChannel;
 				
 			}
 		}
@@ -27,13 +27,7 @@ package wrokersJob
 		public function handleCommandMessage(event:Event) : void
 		{
 			var r_message = commandChannel.receive();
-			if (r_message == "test") {
-				
-				for (var i = 1; i <= 500;i++){
-					customeChannel.send("SepehrXXX"+Math.random()*999999999);
-				}	
-				
-			}
+			customeChannel.send("SepehrFard");//JSON.parse(r_message)
 			return;
 		}
 	}
