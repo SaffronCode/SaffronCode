@@ -65,6 +65,29 @@ package wrokersJob
 			isReady = worker.state == WorkerState.RUNNING ;
 		}
 		
+		
+		/**The receiver function will receive BitmapData or null*/
+		public static function createBitmapFromByte(byte:ByteArray,receiver:Function):void
+		{
+			var currentId:uint = lastID++ ;
+			
+			funcList.push(receiver);
+			idList.push(currentId);
+			
+			var toSendValue:Array = [currentId,byte] ;
+			
+			
+			if(!Capabilities.isDebugger)
+			{
+				bgWorkerCommandChannel.send(toSendValue);
+			}
+			else
+			{
+				bgEmulator.handleCommandMessage(toSendValue);
+			}
+		}
+		
+		
 		/**You will recevie your objec on your receiver function.*/
 		public static function JSONPars(str:String,receiver:Function):void
 		{
