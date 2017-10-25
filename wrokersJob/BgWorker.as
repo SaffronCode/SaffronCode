@@ -8,8 +8,8 @@ package wrokersJob
 	
 	public class BgWorker extends MovieClip
 	{
-		private var commandChannel:MessageChannel;
-		private var customeChannel:MessageChannel;
+		private var receiverChannel:MessageChannel;
+		private var senderChannel:MessageChannel;
 		
 		private var DebugReceverFunction:Function ;
 		
@@ -20,10 +20,10 @@ package wrokersJob
 			DebugReceverFunction = debuggerReceverFunction ;
 			
 			if(!Worker.current.isPrimordial){
-				commandChannel = Worker.current.getSharedProperty("incomingCommandChannel") as MessageChannel;
-				commandChannel.addEventListener(Event.CHANNEL_MESSAGE, handleCommandMessage);
+				receiverChannel = Worker.current.getSharedProperty("senderChannel_fromMainProject") as MessageChannel;
+				receiverChannel.addEventListener(Event.CHANNEL_MESSAGE, handleCommandMessage);
 				
-				customeChannel   = Worker.current.getSharedProperty("bgWorker_JSON_Pars") as MessageChannel;
+				senderChannel   = Worker.current.getSharedProperty("receiverChannel_fromMainProject") as MessageChannel;
 				
 			}
 		}
@@ -37,7 +37,7 @@ package wrokersJob
 			}
 			else
 			{
-				receveidData = commandChannel.receive() ;
+				receveidData = receiverChannel.receive() ;
 			}
 			var callerId:uint = receveidData[0] ;
 			var callerData:String = receveidData[1] ;
@@ -54,7 +54,7 @@ package wrokersJob
 			}
 			else
 			{
-				customeChannel.send(createdData);
+				senderChannel.send(createdData);
 			}
 			return;
 		}

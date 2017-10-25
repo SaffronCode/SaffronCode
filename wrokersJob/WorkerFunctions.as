@@ -15,12 +15,12 @@ package wrokersJob
 	{
 		private static var worker1:Worker ;
 		
-		private static var bgWorker_JSON_Pars : MessageChannel;
+		private static var receiverChannel : MessageChannel;
 		
 		private static var isReady:Boolean = false ;
 		
 		
-		private static var bgWorkerCommandChannel : MessageChannel;
+		private static var senderChannel : MessageChannel;
 		
 		private static var  funcList:Vector.<Function>,
 							idList:Vector.<uint>;
@@ -40,13 +40,13 @@ package wrokersJob
 			
 			worker1.addEventListener(Event.WORKER_STATE, workerStateHandler);
 			
-			bgWorkerCommandChannel = Worker.current.createMessageChannel(worker1);
-			worker1.setSharedProperty("incomingCommandChannel", bgWorkerCommandChannel);
+			senderChannel = Worker.current.createMessageChannel(worker1);
+			worker1.setSharedProperty("senderChannel_fromMainProject", senderChannel);
 			
 			
-			bgWorker_JSON_Pars = worker1.createMessageChannel(Worker.current);
-			bgWorker_JSON_Pars.addEventListener(Event.CHANNEL_MESSAGE, handlecustomeChannel)
-			worker1.setSharedProperty("bgWorker_JSON_Pars", bgWorker_JSON_Pars);
+			receiverChannel = worker1.createMessageChannel(Worker.current);
+			receiverChannel.addEventListener(Event.CHANNEL_MESSAGE, handlecustomeChannel)
+			worker1.setSharedProperty("receiverChannel_fromMainProject", receiverChannel);
 			
 			if(Capabilities.isDebugger)
 			{
@@ -79,7 +79,7 @@ package wrokersJob
 			
 			if(!Capabilities.isDebugger)
 			{
-				bgWorkerCommandChannel.send(toSendValue);
+				senderChannel.send(toSendValue);
 			}
 			else
 			{
@@ -100,7 +100,7 @@ package wrokersJob
 			
 			if(!Capabilities.isDebugger)
 			{
-				bgWorkerCommandChannel.send(toSendValue);
+				senderChannel.send(toSendValue);
 			}
 			else
 			{
@@ -119,7 +119,7 @@ package wrokersJob
 			}
 			else
 			{
-				received = bgWorker_JSON_Pars.receive();
+				received = receiverChannel.receive();
 			}
 			callFunction(received[0],received[1]);
 		}
