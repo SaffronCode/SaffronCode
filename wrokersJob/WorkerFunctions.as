@@ -7,6 +7,7 @@ package wrokersJob
 	import flash.system.MessageChannel;
 	import flash.system.Worker;
 	import flash.system.WorkerDomain;
+	import flash.system.WorkerState;
 	import flash.utils.ByteArray;
 
 	public class WorkerFunctions
@@ -55,7 +56,7 @@ package wrokersJob
 		public static function JSONPars(str:String):void
 		{
 			trace("Date sent");
-			bgWorkerCommandChannel.send("test");
+			bgWorkerCommandChannel.send(str);
 		}
 	}
 }

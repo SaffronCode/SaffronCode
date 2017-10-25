@@ -26,8 +26,7 @@ package wrokersJob
 		
 		public function handleCommandMessage(event:Event) : void
 		{
-			var r_message = commandChannel.receive();
-			customeChannel.send("SepehrFard");//JSON.parse(r_message)
+			customeChannel.send(JSON.parse(String(commandChannel.receive())));//JSON.parse(r_message)
 			return;
 		}
 	}
