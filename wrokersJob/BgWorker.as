@@ -19,7 +19,7 @@ package wrokersJob
 				commandChannel = Worker.current.getSharedProperty("incomingCommandChannel") as MessageChannel;
 				commandChannel.addEventListener(Event.CHANNEL_MESSAGE, handleCommandMessage);
 				
-				customeChannel   = Worker.current.getSharedProperty("bgWorker_JSON_Pars") as MessageChannel;
+				customeChannel   = Worker.current.getSharedProperty("customeChannel") as MessageChannel;
 				
 			}
 		}
