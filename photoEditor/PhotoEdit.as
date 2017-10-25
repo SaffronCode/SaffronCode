@@ -14,6 +14,8 @@ package photoEditor
 	import flash.ui.MultitouchInputMode;
 	import flash.utils.ByteArray;
 	
+	import sliderMenu.SliderManager;
+	
 	import stageManager.StageManager;
 	import stageManager.StageManagerEvent;
 	
@@ -151,6 +153,7 @@ package photoEditor
 			this.visible = true ;
 			this.mouseEnabled = this.mouseChildren = true ;
 			AnimData.fadeIn(this);
+			SliderManager.lock(true);
 		}
 		
 		/**Disable editor prevew*/
@@ -158,6 +161,7 @@ package photoEditor
 		{
 			this.mouseEnabled = this.mouseChildren = false ;
 			this.visible = false ;
+			SliderManager.unLock();
 			if(instanceDisabling)
 			{
 				this.alpha = 0 ;

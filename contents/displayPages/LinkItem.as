@@ -259,7 +259,7 @@
 		
 		protected function activateClick():void
 		{
-			if(myLinkData.id.indexOf('http')==0)
+			if(myLinkData.id.indexOf('http')==0 || myLinkData.id.indexOf('mailto')==0)
 			{
 				navigateToURL(new URLRequest(myLinkData.id));
 			}

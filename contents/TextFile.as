@@ -23,11 +23,13 @@ package contents
 			}
 		}
 		
-		public static function save(fileTarget:File,text:String):void
+		public static function save(fileTarget:File,text:String):String
 		{
 			var textBytes:ByteArray = new ByteArray();
 			textBytes.writeUTFBytes(text);
-			FileManager.seveFile(fileTarget,textBytes);
+			var stat:String = FileManager.seveFile(fileTarget,textBytes);
+			trace("File save status : "+stat);
+			return stat ;
 		}
 	}
 }
