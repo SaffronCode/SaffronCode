@@ -26,7 +26,17 @@ package wrokersJob
 		
 		public function handleCommandMessage(event:Event) : void
 		{
-			customeChannel.send(JSON.parse(String(commandChannel.receive())));//JSON.parse(r_message)
+			var receveidData:Array = commandChannel.receive();
+			var callerId:uint = receveidData[0] ;
+			var callerData:String = receveidData[1] ;
+			
+			customeChannel.send(
+				[
+					callerId
+					,
+					JSON.parse(String(callerData))
+				]
+			);//JSON.parse(r_message)
 			return;
 		}
 	}

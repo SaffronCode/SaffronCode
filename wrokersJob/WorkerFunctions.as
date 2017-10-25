@@ -21,8 +21,15 @@ package wrokersJob
 		
 		private static var bgWorkerCommandChannel : MessageChannel;
 		
+		private static var  funcList:Vector.<Function>,
+							idList:Vector.<uint>;
+							
+		private static var lastID:uint = 0 ;
+		
 		public static function setUp():void
 		{
+			funcList = new Vector.<Function>() ;
+			idList = new Vector.<uint>() ;
 			
 			var workerBytes:ByteArray = FileManager.loadFile(new File("D://Sepehr//gitHub/sepehrEngine/SaffronEngine/Data-sample/bgWork.swf"));
 			worker1 = WorkerDomain.current.createWorker(workerBytes);
@@ -41,12 +48,6 @@ package wrokersJob
 			worker1.start();
 		}
 		
-		private static function handlecustomeChannel(event:Event):void
-		{
-			var _txt:* = bgWorker_JSON_Pars.receive();
-			Alert.show(JSON.stringify(_txt));
-		}
-		
 		/**Worker state*/
 		private static function workerStateHandler(e:Event) {
 			var worker:Worker = e.currentTarget as Worker ;
@@ -54,10 +55,38 @@ package wrokersJob
 			isReady = worker.state == WorkerState.RUNNING ;
 		}
 		
-		public static function JSONPars(str:String):void
+		/**You will recevie your objec on your receiver function.*/
+		public static function JSONPars(str:String,receiver:Function):void
 		{
 			trace("Date sent");
-			bgWorkerCommandChannel.send(str);
+			
+			var currentId:uint = lastID++ ;
+			
+			funcList.push(receiver);
+			idList.push(currentId);
+			
+			bgWorkerCommandChannel.send([currentId,str]);
+		}
+		
+		/**Received data from worker*/
+		private static function handlecustomeChannel(event:Event):void
+		{
+			var received:Array = bgWorker_JSON_Pars.receive();
+			callFunction(received[0],received[1]);
+		}
+		
+		/**Send this data to its recever*/
+		private static function callFunction(callerId:uint,data:Object):void
+		{
+			Alert.show(callerId+' >> '+data);
+			var I:int = idList.indexOf(callerId) ;
+			if(I!=-1)
+			{
+				funcList[I](data);
+				
+				funcList.removeAt(I);
+				idList.removeAt(I);
+			}
 		}
 	}
 }
