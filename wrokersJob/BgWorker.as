@@ -11,9 +11,13 @@ package wrokersJob
 		private var commandChannel:MessageChannel;
 		private var customeChannel:MessageChannel;
 		
-		public function BgWorker()
+		private var DebugReceverFunction:Function ;
+		
+		public function BgWorker(debuggerReceverFunction:Function=null)
 		{
 			super();
+			
+			DebugReceverFunction = debuggerReceverFunction ;
 			
 			if(!Worker.current.isPrimordial){
 				commandChannel = Worker.current.getSharedProperty("incomingCommandChannel") as MessageChannel;
@@ -24,19 +28,34 @@ package wrokersJob
 			}
 		}
 		
-		public function handleCommandMessage(event:Event) : void
+		public function handleCommandMessage(eventOrValue:*) : void
 		{
-			var receveidData:Array = commandChannel.receive();
+			var receveidData:Array;
+			if(eventOrValue is Array)
+			{
+				receveidData = eventOrValue ;
+			}
+			else
+			{
+				receveidData = commandChannel.receive() ;
+			}
 			var callerId:uint = receveidData[0] ;
 			var callerData:String = receveidData[1] ;
 			
-			customeChannel.send(
-				[
+			var createdData:Array = [
 					callerId
 					,
 					JSON.parse(String(callerData))
-				]
-			);//JSON.parse(r_message)
+				];
+			
+			if(DebugReceverFunction!=null)
+			{
+				DebugReceverFunction(createdData)
+			}
+			else
+			{
+				customeChannel.send(createdData);
+			}
 			return;
 		}
 	}

@@ -4,6 +4,7 @@ package wrokersJob
 	
 	import flash.events.Event;
 	import flash.filesystem.File;
+	import flash.system.Capabilities;
 	import flash.system.MessageChannel;
 	import flash.system.Worker;
 	import flash.system.WorkerDomain;
@@ -26,6 +27,9 @@ package wrokersJob
 							
 		private static var lastID:uint = 0 ;
 		
+		/**This variable uses when you are in debugging mode*/
+		private static var bgEmulator:BgWorker ;
+		
 		public static function setUp():void
 		{
 			funcList = new Vector.<Function>() ;
@@ -44,8 +48,14 @@ package wrokersJob
 			bgWorker_JSON_Pars.addEventListener(Event.CHANNEL_MESSAGE, handlecustomeChannel)
 			worker1.setSharedProperty("bgWorker_JSON_Pars", bgWorker_JSON_Pars);
 			
-			
-			worker1.start();
+			if(Capabilities.isDebugger)
+			{
+				bgEmulator = new BgWorker(handlecustomeChannel);
+			}
+			else
+			{
+				worker1.start();
+			}
 		}
 		
 		/**Worker state*/
@@ -58,20 +68,36 @@ package wrokersJob
 		/**You will recevie your objec on your receiver function.*/
 		public static function JSONPars(str:String,receiver:Function):void
 		{
-			trace("Date sent");
-			
 			var currentId:uint = lastID++ ;
 			
 			funcList.push(receiver);
 			idList.push(currentId);
 			
-			bgWorkerCommandChannel.send([currentId,str]);
+			var toSendValue:Array = [currentId,str] ;
+			
+			if(!Capabilities.isDebugger)
+			{
+				bgWorkerCommandChannel.send(toSendValue);
+			}
+			else
+			{
+				bgEmulator.handleCommandMessage(toSendValue);
+			}
 		}
 		
 		/**Received data from worker*/
-		private static function handlecustomeChannel(event:Event):void
+		private static function handlecustomeChannel(eventOrDebugValue:*):void
 		{
-			var received:Array = bgWorker_JSON_Pars.receive();
+			trace('Receved event is : '+eventOrDebugValue);
+			var received:Array;
+			if(eventOrDebugValue is Array)
+			{
+				received = eventOrDebugValue ;
+			}
+			else
+			{
+				received = bgWorker_JSON_Pars.receive();
+			}
 			callFunction(received[0],received[1]);
 		}
 		
