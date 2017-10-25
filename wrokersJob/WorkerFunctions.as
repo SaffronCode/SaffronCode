@@ -51,6 +51,7 @@ package wrokersJob
 		private static function workerStateHandler(e:Event) {
 			var worker:Worker = e.currentTarget as Worker ;
 			trace("Worker State : "+worker.state);
+			isReady = worker.state == WorkerState.RUNNING ;
 		}
 		
 		public static function JSONPars(str:String):void
