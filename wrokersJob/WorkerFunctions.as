@@ -74,7 +74,7 @@ package wrokersJob
 			funcList.push(receiver);
 			idList.push(currentId);
 			
-			var toSendValue:Array = [currentId,byte] ;
+			var toSendValue:Array = [BgWorker.id_byteToBitmap,currentId,byte] ;
 			
 			
 			if(!Capabilities.isDebugger)
@@ -113,7 +113,7 @@ package wrokersJob
 		/**Received data from worker*/
 		private static function handlecustomeChannel(eventOrDebugValue:*):void
 		{
-			trace('Receved event on worker caller is : '+eventOrDebugValue);
+			trace('Receved event on worker caller ');
 			var received:Array;
 			if(eventOrDebugValue is Array)
 			{
@@ -129,7 +129,7 @@ package wrokersJob
 		/**Send this data to its recever*/
 		private static function callFunction(callerId:uint,data:Object):void
 		{
-			Alert.show(callerId+' >> '+data);
+			Alert.show(callerId+' function id receved '+((data is ByteArray)?'[Bytes]':data)+' function ids are : '+idList);
 			var I:int = idList.indexOf(callerId) ;
 			trace("Function founded : "+I);
 			if(I!=-1)
