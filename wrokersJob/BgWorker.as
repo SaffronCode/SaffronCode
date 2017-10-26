@@ -6,9 +6,11 @@
 	import flash.display.Loader;
 	import flash.display.MovieClip;
 	import flash.events.Event;
+	import flash.events.IOErrorEvent;
 	import flash.system.MessageChannel;
 	import flash.system.Worker;
 	import flash.utils.ByteArray;
+	import flash.utils.setTimeout;
 	
 	public class BgWorker extends MovieClip
 	{
@@ -62,23 +64,37 @@
 				case id_byteToBitmap:
 					try
 					{
-						createdData.push("Image Loader test");
-						break ;
 						var loader:Loader = new Loader();
 						loader.contentLoaderInfo.addEventListener(Event.COMPLETE,fileLoaded);
+						loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR,fileCantLoad);
 						loader.loadBytes(callerData as ByteArray);
 						
 						function fileLoaded(e:Event):void
 						{
-							var loadedBitmap:BitmapData = (loader.content as Bitmap).bitmapData ;
-							createdData.push(loadedBitmap.getPixels(loadedBitmap.rect));
+							try
+							{
+								var loadedBitmap:BitmapData = (loader.content as Bitmap).bitmapData ;
+								createdData.push(loadedBitmap.getPixels(loadedBitmap.rect));
+								sendTheData(createdData);
+								return ;
+							}
+							catch(err:Error)
+							{
+								createdData.push("Image loader on worker error : "+err.getStackTrace());
+								sendTheData(createdData);
+								return;
+							}
+						}
+						function fileCantLoad(e:Event=null):void
+						{
+							createdData.push(null);
 							sendTheData(createdData);
 						}
 						return ;
 					}
 					catch(e:Error)
 					{
-						createdData.push(e.getStackTrace());
+						createdData.push(e.message);
 					}
 					break;
 			}

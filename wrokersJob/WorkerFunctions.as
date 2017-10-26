@@ -36,7 +36,7 @@ package wrokersJob
 			idList = new Vector.<uint>() ;
 			
 			var workerBytes:ByteArray = FileManager.loadFile(new File("D://Sepehr//gitHub/sepehrEngine/SaffronEngine/Data-sample/bgWork.swf"));
-			worker1 = WorkerDomain.current.createWorker(workerBytes);
+			worker1 = WorkerDomain.current.createWorker(workerBytes,true);
 			
 			worker1.addEventListener(Event.WORKER_STATE, workerStateHandler);
 			
