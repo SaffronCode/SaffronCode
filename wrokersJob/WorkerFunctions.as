@@ -34,7 +34,7 @@ package wrokersJob
 		/**This variable uses when you are in debugging mode*/
 		private static var bgEmulator:BgWorker ;
 		
-		public static function setUp(TotalWorkers:uint = 4):void
+		public static function setUp(TotalWorkers:uint = 6):void
 		{
 			totalWorkers = TotalWorkers ;
 			funcList = new Vector.<Function>() ;

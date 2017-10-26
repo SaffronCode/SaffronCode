@@ -28,6 +28,8 @@ package appManager.displayContentElemets
 	
 	import utils.CPUController;
 	import utils.CPUEvents;
+	
+	import wrokersJob.WorkerFunctions;
 
 	/**Image loading completed*/
 	[Event(name="complete", type="flash.events.Event")]
@@ -55,7 +57,7 @@ package appManager.displayContentElemets
 		/**0 to 1*/
 		public var animateSpeed:Number = 0 ;
 		
-		private var loader:Loader ,
+		private var //loader:Loader ,
 					urlSaver:URLSaver; 
 		
 		private var W:Number=0,H:Number=0,
@@ -344,9 +346,9 @@ package appManager.displayContentElemets
 			PerformanceTest.traceDelay('image is loaded');
 			var loaderContext:LoaderContext = new LoaderContext(false,ApplicationDomain.currentDomain);
 			//trace("Load this image : "+event.offlineTarget);
-			loader = new Loader();
-			loader.contentLoaderInfo.addEventListener(Event.COMPLETE,imageLoaded);
-			loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR,imageNotFound);
+			//loader = new Loader();
+			//loader.contentLoaderInfo.addEventListener(Event.COMPLETE,imageLoaded);
+			//loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR,imageNotFound);
 			if(event!=null)
 			{
 				if(fileStreamLoader)
@@ -378,7 +380,8 @@ package appManager.displayContentElemets
 					trace("Light image async file loader errr : "+e);
 					fileStreamLoader.close();
 					fileStreamLoader = null ;
-					loader.load(new URLRequest(event.offlineTarget),loaderContext);
+					WorkerFunctions.createBitmapFromByte(event.offlineTarget,imageLoaded,LoadInThisArea,W,H,keepImageRatio);
+					//loader.load(new URLRequest(),loaderContext);
 				}
 			}
 			else
@@ -386,7 +389,8 @@ package appManager.displayContentElemets
 				loadedBytes.position = 0 ;
 				loaderContext.allowLoadBytesCodeExecution = true ;
 				var tim:Number = getTimer();
-				loader.loadBytes(loadedBytes,loaderContext);
+				WorkerFunctions.createBitmapFromByte(loadedBytes,imageLoaded,LoadInThisArea,W,H,keepImageRatio);
+				//loader.loadBytes(loadedBytes,loaderContext);
 				trace(">>> "+(getTimer()-tim));
 			}
 		}
@@ -401,7 +405,8 @@ package appManager.displayContentElemets
 				fileStreamLoader.readBytes(bytes);
 				PerformanceTest.traceDelay('file loaded. show the image');
 				var tim:Number = getTimer();
-				loader.loadBytes(bytes,loaderContext);
+				WorkerFunctions.createBitmapFromByte(bytes,imageLoaded,LoadInThisArea,W,H,keepImageRatio);
+				//loader.loadBytes(bytes,loaderContext);
 				trace("*>>> "+(getTimer()-tim));
 				PerformanceTest.traceDelay('image file showed');
 				fileStreamLoader.close();
@@ -421,17 +426,24 @@ package appManager.displayContentElemets
 			timeOutValue = setTimeout(startWork,10000);
 		}
 		
-		protected function imageLoaded(event:Event=null):void
+		protected function imageLoaded(workerArray:Array=null):void
 		{
 			
 			PerformanceTest.traceDelay('image loader loaded the image');
 			clearTheBitmap();
-			var loadedContent:DisplayObject ;
-			if(loader==null && loadedBitmap==null)
+			var workerBitmap:BitmapData ;
+			//var loadedContent:DisplayObject ;
+			/*if(loader==null && loadedBitmap==null)
 			{
 				trace("*************************why the loader is null???"+loader+' > '+event+'  >>  '+(event.target as LoaderInfo)+'  >>>  '+event.currentTarget);
 				loadedContent = (event.target as LoaderInfo).content;
 				//return;
+			}*/
+			if(workerArray is Array && workerArray.length==1)
+			{
+				trace("Image had problem");
+				imageNotFound(null);
+				return ;
 			}
 			if(newBitmap)
 			{
@@ -442,7 +454,18 @@ package appManager.displayContentElemets
 			{
 				newBitmap = new Bitmap(loadedBitmap);
 			}
-			else
+			else if(workerArray!=null && workerArray is Array && workerArray.length>1 && (workerArray[0] is ByteArray))
+			{
+				trace("The image file is : "+workerArray[0].length);
+				trace("The image file W : "+workerArray[1]);
+				trace("The image file H : "+workerArray[2]);
+				(workerArray[0] as ByteArray).position = 0 ;
+				workerBitmap = new BitmapData(workerArray[1],workerArray[2],false);
+				workerBitmap.setPixels(workerBitmap.rect,workerArray[0]);
+				
+				newBitmap = new Bitmap(workerBitmap);
+			}
+			/*else
 			{
 				if(loadedContent)
 				{
@@ -452,44 +475,51 @@ package appManager.displayContentElemets
 				{
 					newBitmap = (loader.content as Bitmap);
 				}
-			}
+			}*/
 			if(newBitmap==null)
 			{
 				trace("Image load faild on lightImage function imageLoaded");
 				return ;
 			}
-			var bitmapData:BitmapData = newBitmap.bitmapData ;
-			//var newBitmapData:BitmapData ;
-			trace("The W is : "+W);
-			trace("The H is : "+H);
-			if(W!=0 && H!=0)
+			if(workerBitmap==null)
 			{
-				trace("Change image size to : "+W,H);
-				bitmapData = BitmapEffects.changeSize(bitmapData,W,H,keepImageRatio,LoadInThisArea);
+				var bitmapData:BitmapData = newBitmap.bitmapData ;
+				//var newBitmapData:BitmapData ;
+				trace("The W is : "+W);
+				trace("The H is : "+H);
+				if(W!=0 && H!=0)
+				{
+					trace("Change image size to : "+W,H);
+					bitmapData = BitmapEffects.changeSize(bitmapData,W,H,keepImageRatio,LoadInThisArea);
+				}
+				else if(W!=0)
+				{
+					//trace("• I whant to change the bitmap width to : "+W);
+					//trace("And the height will be "+bitmapData.height*(W/bitmapData.width));
+					bitmapData = BitmapEffects.changeSize(bitmapData,W,bitmapData.height*(W/bitmapData.width),keepImageRatio,LoadInThisArea);
+					H = bitmapData.height;
+				}
+				else if(H!=0)
+				{
+					//trace("• I whant to change the bitmap height to : "+H);
+					//trace("And the width will be "+bitmapData.width*(H/bitmapData.height));
+					bitmapData = BitmapEffects.changeSize(bitmapData,bitmapData.width*(H/bitmapData.height),H,keepImageRatio,LoadInThisArea);
+					W = bitmapData.width;
+				}
+				else//(Both H and W are 0)
+				{
+					bitmapData = bitmapData.clone();
+					W = bitmapData.width;
+					H = bitmapData.height;
+				}
 			}
-			else if(W!=0)
+			else
 			{
-				//trace("• I whant to change the bitmap width to : "+W);
-				//trace("And the height will be "+bitmapData.height*(W/bitmapData.width));
-				bitmapData = BitmapEffects.changeSize(bitmapData,W,bitmapData.height*(W/bitmapData.width),keepImageRatio,LoadInThisArea);
-				H = bitmapData.height;
-			}
-			else if(H!=0)
-			{
-				//trace("• I whant to change the bitmap height to : "+H);
-				//trace("And the width will be "+bitmapData.width*(H/bitmapData.height));
-				bitmapData = BitmapEffects.changeSize(bitmapData,bitmapData.width*(H/bitmapData.height),H,keepImageRatio,LoadInThisArea);
-				W = bitmapData.width;
-			}
-			else//(Both H and W are 0)
-			{
-				bitmapData = bitmapData.clone();
-				W = bitmapData.width;
-				H = bitmapData.height;
+				bitmapData = workerBitmap ;
 			}
 			
 			
-			if(loader)
+			/*if(loader)
 			{
 				loader.contentLoaderInfo.removeEventListener(Event.COMPLETE,imageLoaded);
 				loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR,imageNotFound);
@@ -497,7 +527,7 @@ package appManager.displayContentElemets
 				loader.unloadAndStop();
 				loader.unload();
 				loader = null ;
-			}
+			}*/
 			
 			if(isWatermarkEnabled())
 			{
@@ -573,14 +603,14 @@ package appManager.displayContentElemets
 				urlSaver.removeEventListener(URLSaverEvent.LOAD_COMPLETE,imageSaved);
 				urlSaver.removeEventListener(URLSaverEvent.NO_INTERNET,imageNotFound);
 			}
-			try
+			/*try
 			{
 				loader.close();
 			}
 			catch(e)
 			{
 				//trace("LightImage problem : "+e);
-			}
+			}*/
 		}
 		
 		public static function addWaterMark(watermarkTarget:File):void
