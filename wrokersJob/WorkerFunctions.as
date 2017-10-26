@@ -96,7 +96,9 @@ package wrokersJob
 			funcList.push(receiver);
 			idList.push(currentId);
 			
-			var toSendValue:Array = [currentId,str] ;
+			trace("Function id list updated : "+idList+' vs currentId :'+currentId);
+			
+			var toSendValue:Array = [BgWorker.id_jsonParser,currentId,str] ;
 			
 			if(!Capabilities.isDebugger)
 			{
@@ -111,7 +113,7 @@ package wrokersJob
 		/**Received data from worker*/
 		private static function handlecustomeChannel(eventOrDebugValue:*):void
 		{
-			trace('Receved event is : '+eventOrDebugValue);
+			trace('Receved event on worker caller is : '+eventOrDebugValue);
 			var received:Array;
 			if(eventOrDebugValue is Array)
 			{
@@ -129,6 +131,7 @@ package wrokersJob
 		{
 			Alert.show(callerId+' >> '+data);
 			var I:int = idList.indexOf(callerId) ;
+			trace("Function founded : "+I);
 			if(I!=-1)
 			{
 				funcList[I](data);

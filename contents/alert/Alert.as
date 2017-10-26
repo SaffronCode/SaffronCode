@@ -9,7 +9,7 @@ package contents.alert
 		public static function show(title:String):void
 		{
 			setUp();
-			trace("A;ert called "+title);
+			trace("Alert:"+title);
 			sw.loadURL("javascript:alert(\""+title.split('\n').join('').split('\r').join('').split('"').join('\\"')+"\");")
 		}
 		

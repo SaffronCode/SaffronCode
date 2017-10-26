@@ -8,6 +8,9 @@ package wrokersJob
 	
 	public class BgWorker extends MovieClip
 	{
+		public static const id_jsonParser:int = 1 ;
+		
+		
 		private var receiverChannel:MessageChannel;
 		private var senderChannel:MessageChannel;
 		
@@ -39,14 +42,21 @@ package wrokersJob
 			{
 				receveidData = receiverChannel.receive() ;
 			}
-			var callerId:uint = receveidData[0] ;
-			var callerData:String = receveidData[1] ;
+			trace("Receved data on bgWorker is : "+receveidData);
+			var callerId:uint = receveidData[1] ;
+			var callerData:String = receveidData[2] ;
 			
-			var createdData:Array = [
-					callerId
-					,
-					JSON.parse(String(callerData))
-				];
+			/**0:Caller id, 1:Data*/
+			var createdData:Array;
+			
+			if(receveidData[0]==id_jsonParser)
+			{
+				createdData = 	[
+									callerId
+									,
+									JSON.parse(String(callerData))
+								];
+			}
 			
 			if(DebugReceverFunction!=null)
 			{
