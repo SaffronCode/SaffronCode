@@ -62,6 +62,8 @@
 				case id_byteToBitmap:
 					try
 					{
+						createdData.push("Image Loader test");
+						break ;
 						var loader:Loader = new Loader();
 						loader.contentLoaderInfo.addEventListener(Event.COMPLETE,fileLoaded);
 						loader.loadBytes(callerData as ByteArray);
