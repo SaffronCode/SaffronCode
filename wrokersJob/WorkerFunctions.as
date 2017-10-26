@@ -11,6 +11,7 @@ package wrokersJob
 	import flash.system.WorkerState;
 	import flash.utils.ByteArray;
 	import flash.utils.getQualifiedClassName;
+	import flash.utils.getTimer;
 
 	public class WorkerFunctions
 	{
@@ -68,19 +69,22 @@ package wrokersJob
 		
 		
 		/**The receiver function will receive array of byteOfBitmap,Width,Heigh or null to make a bitmapData with BitmapData.setPixels() function*/
-		public static function createBitmapFromByte(byte:ByteArray,receiver:Function,loadInThisArea:Boolean=false, imageW:Number=0, imageH:Number=0, keepRatio:Boolean=true):void
+		public static function createBitmapFromByte(byteOrURLString:*,receiver:Function,loadInThisArea:Boolean=false, imageW:Number=0, imageH:Number=0, keepRatio:Boolean=true):void
 		{
 			var currentId:uint = lastID++ ;
 			
 			funcList.push(receiver);
 			idList.push(currentId);
 			
-			var toSendValue:Array = [BgWorker.id_byteToBitmap,currentId,[byte,loadInThisArea,imageW,imageH,keepRatio]] ;
+			var toSendValue:Array = [BgWorker.id_byteToBitmap,currentId,[byteOrURLString,loadInThisArea,imageW,imageH,keepRatio]] ;
 			
 			
 			if(!Capabilities.isDebugger)
 			{
+				//var tim:Number = getTimer();
+				//It takes time to pass big bytes here
 				senderChannel.send(toSendValue);
+				//Alert.show("Get timer : "+(getTimer()-tim));
 			}
 			else
 			{

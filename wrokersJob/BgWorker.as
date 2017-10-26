@@ -7,6 +7,7 @@
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
+	import flash.net.URLRequest;
 	import flash.system.MessageChannel;
 	import flash.system.Worker;
 	import flash.utils.ByteArray;
@@ -65,7 +66,12 @@
 				case id_byteToBitmap:
 					try
 					{
-						var byte:ByteArray = callerData[0] ;
+						var byte:ByteArray ;
+						var fileTarget:String ;
+						if(callerData[0] is ByteArray)
+							byte = callerData[0];
+						else
+							fileTarget = callerData[0];
 						var LoadInThisArea:Boolean = callerData[1] ;
 						var W:Number = callerData[2] ;
 						var H:Number = callerData[3] ;
@@ -75,7 +81,10 @@
 						var loader:Loader = new Loader();
 						loader.contentLoaderInfo.addEventListener(Event.COMPLETE,fileLoaded);
 						loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR,fileCantLoad);
-						loader.loadBytes(byte);
+						if(byte!=null)
+							loader.loadBytes(byte);
+						else
+							loader.load(new URLRequest(fileTarget));
 						
 						function fileLoaded(e:Event):void
 						{
