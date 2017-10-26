@@ -15,14 +15,16 @@ package wrokersJob
 
 	public class WorkerFunctions
 	{
-		private static var worker1:Worker ;
+		private static var currentWorker:uint = 0 ;
+		private static var totalWorkers:uint ;
+		private static var workers:Vector.<Worker> ;
 		
-		private static var receiverChannel : MessageChannel;
+		private static var receiverChallens:Vector.<MessageChannel> ;
 		
 		private static var isReady:Boolean = false ;
 		
 		
-		private static var senderChannel : MessageChannel;
+		private static var senderChannels:Vector.<MessageChannel> ;
 		
 		private static var  funcList:Vector.<Function>,
 							idList:Vector.<uint>;
@@ -32,32 +34,49 @@ package wrokersJob
 		/**This variable uses when you are in debugging mode*/
 		private static var bgEmulator:BgWorker ;
 		
-		public static function setUp():void
+		public static function setUp(TotalWorkers:uint = 4):void
 		{
+			totalWorkers = TotalWorkers ;
 			funcList = new Vector.<Function>() ;
 			idList = new Vector.<uint>() ;
 			
 			var workerBytes:ByteArray = FileManager.loadFile(new File("D://Sepehr//gitHub/sepehrEngine/SaffronEngine/Data-sample/bgWork.swf"));
-			worker1 = WorkerDomain.current.createWorker(workerBytes,true);
 			
-			worker1.addEventListener(Event.WORKER_STATE, workerStateHandler);
-			
-			senderChannel = Worker.current.createMessageChannel(worker1);
-			worker1.setSharedProperty("senderChannel_fromMainProject", senderChannel);
-			
-			
-			receiverChannel = worker1.createMessageChannel(Worker.current);
-			receiverChannel.addEventListener(Event.CHANNEL_MESSAGE, handlecustomeChannel)
-			worker1.setSharedProperty("receiverChannel_fromMainProject", receiverChannel);
-			
-			if(Capabilities.isDebugger)
+			if(!Capabilities.isDebugger)
 			{
-				bgEmulator = new BgWorker(handlecustomeChannel);
+				workers = new Vector.<Worker>();
+				senderChannels = new Vector.<MessageChannel>();
+				receiverChallens = new Vector.<MessageChannel>();
+				for(var i:int = 0 ; i<totalWorkers ; i++)
+				{
+					var worker:Worker = WorkerDomain.current.createWorker(workerBytes,true);
+					worker.addEventListener(Event.WORKER_STATE, workerStateHandler);
+					
+					var senderChannel:MessageChannel = Worker.current.createMessageChannel(worker);
+					worker.setSharedProperty("senderChannel_fromMainProject", senderChannel);
+					
+					var receiverChannel:MessageChannel = worker.createMessageChannel(Worker.current);
+					receiverChannel.addEventListener(Event.CHANNEL_MESSAGE, handlecustomeChannel)
+					worker.setSharedProperty("receiverChannel_fromMainProject", receiverChannel);
+					worker.start();
+					
+					workers.push(worker);
+					senderChannels.push(senderChannel);
+					receiverChallens.push(receiverChannel);
+				}
 			}
 			else
 			{
-				worker1.start();
+				bgEmulator = new BgWorker(handlecustomeChannel);
 			}
+		}
+		
+		/**Select a sender channel*/
+		private static function selectSenderTosend():MessageChannel
+		{
+			currentWorker++ ;
+			//Alert.show("Selected Worker is : "+(currentWorker%totalWorkers));
+			return senderChannels[currentWorker%totalWorkers] ;
 		}
 		
 		/**Worker state*/
@@ -83,7 +102,7 @@ package wrokersJob
 			{
 				//var tim:Number = getTimer();
 				//It takes time to pass big bytes here
-				senderChannel.send(toSendValue);
+				selectSenderTosend().send(toSendValue);
 				//Alert.show("Get timer : "+(getTimer()-tim));
 			}
 			else
@@ -107,7 +126,7 @@ package wrokersJob
 			
 			if(!Capabilities.isDebugger)
 			{
-				senderChannel.send(toSendValue);
+				selectSenderTosend().send(toSendValue);
 			}
 			else
 			{
@@ -124,8 +143,9 @@ package wrokersJob
 			{
 				received = eventOrDebugValue ;
 			}
-			else
+			else if(eventOrDebugValue is Event)
 			{
+				var receiverChannel:MessageChannel = eventOrDebugValue.currentTarget as MessageChannel ;
 				received = receiverChannel.receive();
 			}
 			trace("Received data type is : "+getQualifiedClassName(received[1]));
