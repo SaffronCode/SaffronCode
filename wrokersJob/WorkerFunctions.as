@@ -66,7 +66,7 @@ package wrokersJob
 		}
 		
 		
-		/**The receiver function will receive BitmapData or null*/
+		/**The receiver function will receive array of byteOfBitmap,Width,Heigh or null to make a bitmapData with BitmapData.setPixels() function*/
 		public static function createBitmapFromByte(byte:ByteArray,receiver:Function):void
 		{
 			var currentId:uint = lastID++ ;
@@ -129,7 +129,7 @@ package wrokersJob
 		/**Send this data to its recever*/
 		private static function callFunction(callerId:uint,data:Object):void
 		{
-			Alert.show(callerId+' function id receved '+((data is ByteArray)?'[Bytes]':data)+' function ids are : '+idList);
+			//Alert.show(callerId+' function id receved '+((data.hasOwnProperty('length'))?"[data length is : "+data.length+"]":data)+' function ids are : '+idList);
 			var I:int = idList.indexOf(callerId) ;
 			trace("Function founded : "+I);
 			if(I!=-1)

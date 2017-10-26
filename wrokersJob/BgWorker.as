@@ -74,7 +74,7 @@
 							try
 							{
 								var loadedBitmap:BitmapData = (loader.content as Bitmap).bitmapData ;
-								createdData.push(loadedBitmap.getPixels(loadedBitmap.rect));
+								createdData.push([loadedBitmap.getPixels(loadedBitmap.rect),loadedBitmap.rect.width,loadedBitmap.rect.height]);
 								sendTheData(createdData);
 								return ;
 							}
