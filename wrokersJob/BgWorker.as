@@ -66,10 +66,10 @@
 					try
 					{
 						var byte:ByteArray = callerData[0] ;
-						var loadInThisArea:Boolean = callerData[1] ;
-						var Width:Number = callerData[2] ;
-						var Height:Number = callerData[3] ;
-						var keepRatio:Boolean = callerData[4] ;
+						var LoadInThisArea:Boolean = callerData[1] ;
+						var W:Number = callerData[2] ;
+						var H:Number = callerData[3] ;
+						var keepImageRatio:Boolean = callerData[4] ;
 						
 						
 						var loader:Loader = new Loader();
@@ -81,8 +81,25 @@
 						{
 							try
 							{
-								var loadedBitmap:BitmapData = (loader.content as Bitmap).bitmapData ;
-								createdData.push([loadedBitmap.getPixels(loadedBitmap.rect),loadedBitmap.rect.width,loadedBitmap.rect.height]);
+								var bitmapData:BitmapData = (loader.content as Bitmap).bitmapData ;
+								
+								if(W!=0 && H!=0)
+								{
+									trace("Change image size to : "+W,H);
+									bitmapData = BitmapEffects.changeSize(bitmapData,W,H,keepImageRatio,LoadInThisArea);
+								}
+								else if(W!=0)
+								{
+									bitmapData = BitmapEffects.changeSize(bitmapData,W,bitmapData.height*(W/bitmapData.width),keepImageRatio,LoadInThisArea);
+									H = bitmapData.height;
+								}
+								else if(H!=0)
+								{
+									bitmapData = BitmapEffects.changeSize(bitmapData,bitmapData.width*(H/bitmapData.height),H,keepImageRatio,LoadInThisArea);
+									W = bitmapData.width;
+								}
+								
+								createdData.push([bitmapData.getPixels(bitmapData.rect),bitmapData.rect.width,bitmapData.rect.height]);
 								sendTheData(createdData);
 								return ;
 							}
