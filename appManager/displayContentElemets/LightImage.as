@@ -4,6 +4,8 @@ package appManager.displayContentElemets
 	
 	import com.mteamapp.PerformanceTest;
 	
+	import contents.alert.Alert;
+	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
@@ -25,9 +27,6 @@ package appManager.displayContentElemets
 	
 	import netManager.urlSaver.URLSaver;
 	import netManager.urlSaver.URLSaverEvent;
-	
-	import utils.CPUController;
-	import utils.CPUEvents;
 	
 	import wrokersJob.WorkerFunctions;
 
@@ -75,7 +74,7 @@ package appManager.displayContentElemets
 
 		protected var newBitmap:Bitmap;
 
-		private var fileStreamLoader:FileStream;
+		//private var fileStreamLoader:FileStream;
 		
 		
 		private static var watermarkBitmapData:BitmapData ;
@@ -300,7 +299,7 @@ package appManager.displayContentElemets
 		protected function startWork(event:Event=null):void
 		{
 			//trace("Start to load");
-			if(CPUController.isSatUp && animated)
+			/*if(CPUController.isSatUp && animated)
 			{
 				CPUController.eventDispatcher.addEventListener(CPUEvents.PERVECT_CPU,startLoading);
 				imageLoaderTimeOutId = setTimeout(startLoading,minimomImageLoadingDelay+(maximomImageLoadingDelay-minimomImageLoadingDelay)*Math.random());
@@ -308,7 +307,8 @@ package appManager.displayContentElemets
 			else
 			{
 				startLoading();
-			}
+			}*/
+			startLoading()
 		}
 		
 		/**This will make images to load*/
@@ -316,10 +316,10 @@ package appManager.displayContentElemets
 		{
 			PerformanceTest.traceDelay(3);
 			clearTimeout(imageLoaderTimeOutId);
-			if(CPUController.isSatUp)
+			/*if(CPUController.isSatUp)
 			{
 				CPUController.eventDispatcher.removeEventListener(CPUEvents.PERVECT_CPU,startLoading);
-			}
+			}*/
 			urlSaver = new URLSaver(true);
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 			if(URL!=null)
@@ -351,7 +351,7 @@ package appManager.displayContentElemets
 			//loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR,imageNotFound);
 			if(event!=null)
 			{
-				if(fileStreamLoader)
+				/*if(fileStreamLoader)
 				{
 					fileStreamLoader.close();
 					fileStreamLoader = null ;
@@ -379,10 +379,11 @@ package appManager.displayContentElemets
 				{
 					trace("Light image async file loader errr : "+e);
 					fileStreamLoader.close();
-					fileStreamLoader = null ;
-					WorkerFunctions.createBitmapFromByte(event.offlineTarget,imageLoaded,LoadInThisArea,W,H,keepImageRatio);
+					fileStreamLoader = null ;*/
+					//Alert.show("event.offlineTarget : "+event.offlineTarget);
+					WorkerFunctions.createBitmapFromByte(new File(event.offlineTarget).nativePath,imageLoaded,LoadInThisArea,W,H,keepImageRatio);
 					//loader.load(new URLRequest(),loaderContext);
-				}
+				//}
 			}
 			else
 			{
@@ -395,7 +396,7 @@ package appManager.displayContentElemets
 			}
 		}
 		
-		protected function fileLoaded(event:Event):void
+		/*protected function fileLoaded(event:Event):void
 		{
 			//trace("\t*\tImage loaded as file");
 			var loaderContext:LoaderContext = new LoaderContext(false,ApplicationDomain.currentDomain);
@@ -416,7 +417,7 @@ package appManager.displayContentElemets
 			{
 				trace("Light image loading local file error : "+e);
 			}
-		}
+		}*/
 		
 		protected function imageNotFound(event:*):void
 		{
@@ -441,7 +442,7 @@ package appManager.displayContentElemets
 			}*/
 			if(workerArray is Array && workerArray.length==1)
 			{
-				trace("Image had problem");
+				//Alert.show("Image had problem"+workerArray[0]);
 				imageNotFound(null);
 				return ;
 			}
@@ -578,15 +579,15 @@ package appManager.displayContentElemets
 			
 			clearTimeout(imageLoaderTimeOutId);
 			clearTimeout(timeOutValue);
-			if(CPUController.isSatUp)
+			/*if(CPUController.isSatUp)
 			{
 				CPUController.eventDispatcher.removeEventListener(CPUEvents.PERVECT_CPU,startLoading);
-			}
+			}*/
 			
-			if(fileStreamLoader)
+			/*if(fileStreamLoader)
 			{
 				fileStreamLoader.close();
-			}
+			}*/
 			
 			if(loadedBytes!=null)
 			{

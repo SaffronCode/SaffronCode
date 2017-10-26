@@ -40,7 +40,9 @@ package wrokersJob
 			funcList = new Vector.<Function>() ;
 			idList = new Vector.<uint>() ;
 			
-			var workerBytes:ByteArray = FileManager.loadFile(new File("D://Sepehr//gitHub/sepehrEngine/SaffronEngine/Data-sample/bgWork.swf"));
+			var workerTarget:File = new File("D://Sepehr//gitHub/sepehrEngine/SaffronEngine/Data-sample/bgWork.swf") ;
+			
+			var workerBytes:ByteArray = FileManager.loadFile(workerTarget);
 			
 			if(!Capabilities.isDebugger)
 			{
@@ -87,7 +89,7 @@ package wrokersJob
 		}
 		
 		
-		/**The receiver function will receive array of byteOfBitmap,Width,Heigh or null to make a bitmapData with BitmapData.setPixels() function*/
+		/**The receiver function will receive array of byteOfBitmap,Width,Heigh or null to make a bitmapData with BitmapData.setPixels() function. if the file is local, pass the native path for it*/
 		public static function createBitmapFromByte(byteOrURLString:*,receiver:Function,loadInThisArea:Boolean=false, imageW:Number=0, imageH:Number=0, keepRatio:Boolean=true):void
 		{
 			var currentId:uint = lastID++ ;

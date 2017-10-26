@@ -109,6 +109,7 @@
 								}
 								
 								createdData.push([bitmapData.getPixels(bitmapData.rect),bitmapData.rect.width,bitmapData.rect.height]);
+								bitmapData.dispose();
 								sendTheData(createdData);
 								return ;
 							}
