@@ -34,14 +34,20 @@ package wrokersJob
 		/**This variable uses when you are in debugging mode*/
 		private static var bgEmulator:BgWorker ;
 		
+		private static var activated:Boolean = false ;
+		
 		public static function setUp(TotalWorkers:uint = 6):void
 		{
+			activated = true ;
 			totalWorkers = TotalWorkers ;
 			funcList = new Vector.<Function>() ;
 			idList = new Vector.<uint>() ;
 			
-			var workerTarget:File = new File("D://Sepehr//gitHub/sepehrEngine/SaffronEngine/Data-sample/bgWork.swf") ;
-			
+			var workerTarget:File = File.applicationDirectory.resolvePath("Data/bgWork.swf");//new File("D://Sepehr//gitHub/sepehrEngine/SaffronEngine/Data-sample/bgWork.swf") ;
+			if(!workerTarget.exists)
+			{
+				throw "Add the bgWork.swf from Data-sample folder on Saffron to your Data folder" ;
+			}
 			var workerBytes:ByteArray = FileManager.loadFile(workerTarget);
 			
 			if(!Capabilities.isDebugger)
@@ -69,6 +75,7 @@ package wrokersJob
 			}
 			else
 			{
+				activated = false ;
 				bgEmulator = new BgWorker(handlecustomeChannel);
 			}
 		}
@@ -100,7 +107,7 @@ package wrokersJob
 			var toSendValue:Array = [BgWorker.id_byteToBitmap,currentId,[byteOrURLString,loadInThisArea,imageW,imageH,keepRatio]] ;
 			
 			
-			if(!Capabilities.isDebugger)
+			if(activated)
 			{
 				//var tim:Number = getTimer();
 				//It takes time to pass big bytes here
@@ -126,7 +133,7 @@ package wrokersJob
 			
 			var toSendValue:Array = [BgWorker.id_jsonParser,currentId,str] ;
 			
-			if(!Capabilities.isDebugger)
+			if(activated)
 			{
 				selectSenderTosend().send(toSendValue);
 			}
