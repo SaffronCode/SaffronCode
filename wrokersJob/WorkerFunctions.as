@@ -10,6 +10,7 @@ package wrokersJob
 	import flash.system.WorkerDomain;
 	import flash.system.WorkerState;
 	import flash.utils.ByteArray;
+	import flash.utils.getQualifiedClassName;
 
 	public class WorkerFunctions
 	{
@@ -67,14 +68,14 @@ package wrokersJob
 		
 		
 		/**The receiver function will receive array of byteOfBitmap,Width,Heigh or null to make a bitmapData with BitmapData.setPixels() function*/
-		public static function createBitmapFromByte(byte:ByteArray,receiver:Function):void
+		public static function createBitmapFromByte(byte:ByteArray,receiver:Function,loadInThisArea:Boolean=false, imageW:Number=0, imageH:Number=0, keepRatio:Boolean=true):void
 		{
 			var currentId:uint = lastID++ ;
 			
 			funcList.push(receiver);
 			idList.push(currentId);
 			
-			var toSendValue:Array = [BgWorker.id_byteToBitmap,currentId,byte] ;
+			var toSendValue:Array = [BgWorker.id_byteToBitmap,currentId,[byte,loadInThisArea,imageW,imageH,keepRatio]] ;
 			
 			
 			if(!Capabilities.isDebugger)
@@ -88,7 +89,7 @@ package wrokersJob
 		}
 		
 		
-		/**You will recevie your objec on your receiver function.*/
+		/**You will recevie your objec on your receiver function on the first unit of an Array.*/
 		public static function JSONPars(str:String,receiver:Function):void
 		{
 			var currentId:uint = lastID++ ;
@@ -123,6 +124,7 @@ package wrokersJob
 			{
 				received = receiverChannel.receive();
 			}
+			trace("Received data type is : "+getQualifiedClassName(received[1]));
 			callFunction(received[0],received[1]);
 		}
 		

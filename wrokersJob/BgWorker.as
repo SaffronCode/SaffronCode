@@ -10,6 +10,7 @@
 	import flash.system.MessageChannel;
 	import flash.system.Worker;
 	import flash.utils.ByteArray;
+	import flash.utils.getQualifiedClassName;
 	import flash.utils.setTimeout;
 	
 	public class BgWorker extends MovieClip
@@ -59,15 +60,22 @@
 			switch(receveidData[0])
 			{
 				case id_jsonParser:
-					createdData.push(JSON.parse(String(callerData)))
+					createdData.push([JSON.parse(String(callerData))]);
 					break ;
 				case id_byteToBitmap:
 					try
 					{
+						var byte:ByteArray = callerData[0] ;
+						var loadInThisArea:Boolean = callerData[1] ;
+						var Width:Number = callerData[2] ;
+						var Height:Number = callerData[3] ;
+						var keepRatio:Boolean = callerData[4] ;
+						
+						
 						var loader:Loader = new Loader();
 						loader.contentLoaderInfo.addEventListener(Event.COMPLETE,fileLoaded);
 						loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR,fileCantLoad);
-						loader.loadBytes(callerData as ByteArray);
+						loader.loadBytes(byte);
 						
 						function fileLoaded(e:Event):void
 						{
@@ -80,21 +88,21 @@
 							}
 							catch(err:Error)
 							{
-								createdData.push("Image loader on worker error : "+err.getStackTrace());
+								createdData.push(["Image loader on worker error : "+err.getStackTrace()]);
 								sendTheData(createdData);
 								return;
 							}
 						}
 						function fileCantLoad(e:Event=null):void
 						{
-							createdData.push(null);
+							createdData.push([null]);
 							sendTheData(createdData);
 						}
 						return ;
 					}
 					catch(e:Error)
 					{
-						createdData.push(e.message);
+						createdData.push([e.message]);
 					}
 					break;
 			}
