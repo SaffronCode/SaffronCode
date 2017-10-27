@@ -123,7 +123,7 @@ public class ScrollStarling extends Sprite {
         freeToScrollLR = freeToScrollTD = false ;
         trace("Stoppp!!!!!!!!!!!!!");
         //StarlingAction.removeMouseMoveListeners(target.stage,mouseMoved);
-        currentTouch = null ;
+        lastCapturedTouch = currentTouch = null ;
         dispatchScrollEndEvent();
         setTimeout(dispatchScrollEndEvent,0);
     }
@@ -196,22 +196,27 @@ public class ScrollStarling extends Sprite {
                 Vx*=Mu;
                 Vy*=Mu;
 
+                var curTargRect:Rectangle = targRect ;
+
                 if(scrollLRAvailable()) {
-                    if (targRect.x > maskArea.x) {
+                    if (curTargRect.x > maskArea.x) {
                         Vx = (maskArea.x - target.x) / rollBackAnimSpeed;
                     }
-                    else if (targRect.right < maskArea.right) {
-                        Vx = ((maskArea.width - targRect.width) - target.x) / rollBackAnimSpeed;
+                    else if (curTargRect.right < maskArea.right) {
+                        Vx = ((maskArea.width - curTargRect.width) - curTargRect.x) / rollBackAnimSpeed;
                     }
                 }
                 if(scrollTDAvailable()){
-                    if(targRect.y>maskArea.y)
+                    if(curTargRect.y>maskArea.y)
                     {
-                        Vy = (maskArea.y-target.y)/rollBackAnimSpeed;
+                        Vy = (targetX0+maskArea.y-target.y)/rollBackAnimSpeed;
                     }
-                    else if(targRect.bottom<maskArea.bottom)
+                    else if(curTargRect.bottom<maskArea.bottom)
                     {
-                        Vy = ((maskArea.height-targRect.height)-target.y)/rollBackAnimSpeed;
+                        Vy = ((targetY0+maskArea.height-curTargRect.height)-curTargRect.y)/rollBackAnimSpeed;
+                        trace("maskArea.height : "+maskArea.height);
+                        trace("curTargRect.height : "+curTargRect.height);
+                        trace("curTargRect.y : "+curTargRect.y);
                     }
                 }
 
