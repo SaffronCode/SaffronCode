@@ -18,6 +18,7 @@ import starling.display.Sprite;
 import starling.display.Stage;
 import starling.events.Event;
 import starling.events.Touch;
+import starling.events.TouchPhase;
 
 import starlingPack.event.StarlingAction;
 
@@ -100,7 +101,6 @@ public class ScrollStarling extends Sprite {
             target.addEventListener(Event.ENTER_FRAME,animScroll);
             target.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
             StarlingAction.addMouseDownListener(target,mouseDown);
-            StarlingAction.addClickListener(targetStage,mouseStopDragg);
         }
     }
 
@@ -112,7 +112,8 @@ public class ScrollStarling extends Sprite {
             return target.parent.globalToLocal(new Point(touch.globalX,touch.globalY));
         }
 
-    private function mouseStopDragg(touches:Touch):void
+    /**Stop dragging*/
+    private function mouseStopDragg(touches:Touch=null):void
     {
         if(mode==0)
         {
@@ -168,7 +169,7 @@ public class ScrollStarling extends Sprite {
 
     private function unLoad(e:*):void
     {
-        StarlingAction.removeClickListeners(targetStage,mouseStopDragg);
+        mouseStopDragg();
         this.removeEventListener(Event.ENTER_FRAME,animScroll);
     }
 
@@ -176,12 +177,12 @@ public class ScrollStarling extends Sprite {
 
         if(mode!=0 && (freeToScrollLR==false || freeToScrollTD == false))
         {
-            if(freeToScrollLR==false && Math.abs(currentTouch.globalX-firstTouch.globalX)>minMoveToScroll && scrollLRAvailable()){
+            if(freeToScrollLR==false && scrollLRAvailable() && Math.abs(currentTouch.globalX-firstTouch.globalX)>minMoveToScroll){
                 freeToScrollLR = true ;
                 mode = 2 ;
                 dispatchScrollStartsEvent();
             }
-            if(freeToScrollTD == false && Math.abs(currentTouch.globalY-firstTouch.globalY)>minMoveToScroll && scrollTDAvailable()){
+            if(freeToScrollTD == false && scrollTDAvailable() && Math.abs(currentTouch.globalY-firstTouch.globalY)>minMoveToScroll){
                 freeToScrollTD = true ;
                 mode = 2 ;
                 dispatchScrollStartsEvent();
@@ -195,21 +196,23 @@ public class ScrollStarling extends Sprite {
                 Vx*=Mu;
                 Vy*=Mu;
 
-                if(targRect.x>maskArea.x)
-                {
-                    Vx = (maskArea.x-target.x)/rollBackAnimSpeed;
+                if(scrollLRAvailable()) {
+                    if (targRect.x > maskArea.x) {
+                        Vx = (maskArea.x - target.x) / rollBackAnimSpeed;
+                    }
+                    else if (targRect.right < maskArea.right) {
+                        Vx = ((maskArea.width - targRect.width) - target.x) / rollBackAnimSpeed;
+                    }
                 }
-                else if(targRect.right<maskArea.right)
-                {
-                    Vx = ((maskArea.width-targRect.width)-target.x)/rollBackAnimSpeed;
-                }
-                if(targRect.y>maskArea.y)
-                {
-                    Vy = (maskArea.y-target.y)/rollBackAnimSpeed;
-                }
-                else if(targRect.bottom<maskArea.bottom)
-                {
-                    Vy = ((maskArea.height-targRect.height)-target.y)/rollBackAnimSpeed;
+                if(scrollTDAvailable()){
+                    if(targRect.y>maskArea.y)
+                    {
+                        Vy = (maskArea.y-target.y)/rollBackAnimSpeed;
+                    }
+                    else if(targRect.bottom<maskArea.bottom)
+                    {
+                        Vy = ((maskArea.height-targRect.height)-target.y)/rollBackAnimSpeed;
+                    }
                 }
 
                 break;
@@ -218,6 +221,11 @@ public class ScrollStarling extends Sprite {
             case 2:
                 if(lastCapturedTouch==null)
                         break;
+                if(currentTouch.phase == TouchPhase.ENDED)
+                {
+                    mouseStopDragg();
+                    break
+                }
                 var pointLast:Point = touchToParentPoint(lastCapturedTouch);
                 var pointCurrent:Point = touchToParentPoint(currentTouch);
                 if(freeToScrollLR)
