@@ -10,7 +10,7 @@ package contents.alert
 		{
 			setUp();
 			trace("Alert:"+title);
-			sw.loadURL("javascript:alert(\""+title.split('\n').join('').split('\r').join('').split('"').join('\\"')+"\");")
+			sw.loadURL("javascript:alert(\""+title.split('\n').join('').split('\r').join('').split('\\').join('\\\\').split('"').join('\\"')+"\");")
 		}
 		
 		/**Create the sw for allerts*/
