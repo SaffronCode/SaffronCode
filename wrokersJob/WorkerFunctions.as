@@ -187,5 +187,16 @@ package wrokersJob
 				idList.removeAt(I);
 			}
 		}
+		
+		/***/
+		public static function removeFunction(answerFunction:Function):Boolean
+		{
+			var I:int = funcList.indexOf(answerFunction) ;
+			if(I!=-1)
+			{
+				funcList.removeAt(I);
+				idList.removeAt(I);
+			}
+		}
 	}
 }

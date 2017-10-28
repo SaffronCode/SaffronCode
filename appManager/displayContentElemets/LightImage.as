@@ -577,7 +577,7 @@ package appManager.displayContentElemets
 		
 		protected function unLoad(event:Event):void
 		{
-			
+			WorkerFunctions.removeFunction(imageLoaded);
 			clearTimeout(imageLoaderTimeOutId);
 			clearTimeout(timeOutValue);
 			/*if(CPUController.isSatUp)
