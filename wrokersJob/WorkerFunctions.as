@@ -26,8 +26,8 @@ package wrokersJob
 		
 		private static var senderChannels:Vector.<MessageChannel> ;
 		
-		private static var  funcList:Vector.<Function>,
-							idList:Vector.<uint>;
+		private static var  funcList:Vector.<Function> = new Vector.<Function>(),
+							idList:Vector.<uint> = new Vector.<uint>();
 							
 		private static var lastID:uint = 0 ;
 		
@@ -40,8 +40,6 @@ package wrokersJob
 		{
 			activated = true ;
 			totalWorkers = TotalWorkers ;
-			funcList = new Vector.<Function>() ;
-			idList = new Vector.<uint>() ;
 			
 			var workerTarget:File = File.applicationDirectory.resolvePath("Data/bgWork.swf");//new File("D://Sepehr//gitHub/sepehrEngine/SaffronEngine/Data-sample/bgWork.swf") ;
 			if(!workerTarget.exists)
@@ -76,8 +74,15 @@ package wrokersJob
 			else
 			{
 				activated = false ;
-				bgEmulator = new BgWorker(handlecustomeChannel);
+				setUpDebugOnce();
 			}
+		}
+		
+		/**Set up the back groun emolator dfirst*/
+		private static function setUpDebugOnce():void
+		{
+			if(bgEmulator==null)
+				bgEmulator = new BgWorker(handlecustomeChannel);
 		}
 		
 		/**Select a sender channel*/
@@ -116,6 +121,7 @@ package wrokersJob
 			}
 			else
 			{
+				setUpDebugOnce();
 				bgEmulator.handleCommandMessage(toSendValue);
 			}
 		}
@@ -139,6 +145,7 @@ package wrokersJob
 			}
 			else
 			{
+				setUpDebugOnce();
 				bgEmulator.handleCommandMessage(toSendValue);
 			}
 		}
