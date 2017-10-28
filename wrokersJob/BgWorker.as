@@ -8,6 +8,8 @@
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.net.URLRequest;
+	import flash.system.ApplicationDomain;
+	import flash.system.LoaderContext;
 	import flash.system.MessageChannel;
 	import flash.system.Worker;
 	import flash.utils.ByteArray;
@@ -79,6 +81,8 @@
 						
 						
 						var loader:Loader = new Loader();
+						var loaderContext:LoaderContext = new LoaderContext(true,ApplicationDomain.currentDomain);
+						loaderContext.allowLoadBytesCodeExecution = true ;
 						loader.contentLoaderInfo.addEventListener(Event.COMPLETE,fileLoaded);
 						loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR,fileCantLoad);
 						if(byte!=null)
@@ -120,9 +124,9 @@
 								return;
 							}
 						}
-						function fileCantLoad(e:Event=null):void
+						function fileCantLoad(e:IOErrorEvent=null):void
 						{
-							createdData.push([null]);
+							createdData.push([File.applicationDirectory.nativePath+' . '+e.toString()]);
 							sendTheData(createdData);
 						}
 						return ;
