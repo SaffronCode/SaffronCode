@@ -461,7 +461,7 @@ package appManager.displayContentElemets
 				trace("The image file W : "+workerArray[1]);
 				trace("The image file H : "+workerArray[2]);
 				(workerArray[0] as ByteArray).position = 0 ;
-				workerBitmap = new BitmapData(workerArray[1],workerArray[2],false);
+				workerBitmap = new BitmapData(workerArray[1],workerArray[2],true,0x00000000);
 				workerBitmap.setPixels(workerBitmap.rect,workerArray[0]);
 				
 				newBitmap = new Bitmap(workerBitmap);
