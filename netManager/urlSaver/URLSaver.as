@@ -79,6 +79,9 @@ package netManager.urlSaver
 		/**File target manager*/
 		private var fileTarger:File;
 		private var wasLoadedBefor:Boolean;
+		
+		/**This is the file list of images those copied to storage directory*/
+		private var copiedApplicationFilesTostorage:Object = {} ;
 					
 		/**you have to call load() function to start file loading proccess<br>
 		 * if you set true in this value , it will not load byte array of your file and it will just return URL*/
@@ -124,6 +127,16 @@ package netManager.urlSaver
 					try
 					{
 						localFileChecker = File.applicationDirectory.resolvePath(onlineURL);
+						if(localFileChecker.exists)
+						{
+							var targetFile:File = File.applicationStorageDirectory.resolvePath(offlineFolderName).resolvePath(onlineURL);
+							if(copiedApplicationFilesTostorage[onlineURL]==null)
+							{
+								localFileChecker.copyTo(targetFile,true);
+								copiedApplicationFilesTostorage[onlineURL] = true ;
+							}
+							localFileChecker = targetFile ;
+						}
 					}
 					catch(e)
 					{

@@ -344,7 +344,7 @@ package appManager.displayContentElemets
 		{
 			wasLoadedBefor = event==null || event.wasLoadedBefor ;
 			PerformanceTest.traceDelay('image is loaded');
-			var loaderContext:LoaderContext = new LoaderContext(false,ApplicationDomain.currentDomain);
+			//var loaderContext:LoaderContext = new LoaderContext(false,ApplicationDomain.currentDomain);
 			//trace("Load this image : "+event.offlineTarget);
 			//loader = new Loader();
 			//loader.contentLoaderInfo.addEventListener(Event.COMPLETE,imageLoaded);
@@ -381,14 +381,15 @@ package appManager.displayContentElemets
 					fileStreamLoader.close();
 					fileStreamLoader = null ;*/
 					//Alert.show("event.offlineTarget : "+event.offlineTarget);
-					WorkerFunctions.createBitmapFromByte(new File(event.offlineTarget).nativePath,imageLoaded,LoadInThisArea,W,H,keepImageRatio);
+				trace("**** event.offlineTarget on lightImage : "+event.offlineTarget);
+					WorkerFunctions.createBitmapFromByte(event.offlineTarget,imageLoaded,LoadInThisArea,W,H,keepImageRatio);
 					//loader.load(new URLRequest(),loaderContext);
 				//}
 			}
 			else
 			{
 				loadedBytes.position = 0 ;
-				loaderContext.allowLoadBytesCodeExecution = true ;
+				//loaderContext.allowLoadBytesCodeExecution = true ;
 				var tim:Number = getTimer();
 				WorkerFunctions.createBitmapFromByte(loadedBytes,imageLoaded,LoadInThisArea,W,H,keepImageRatio);
 				//loader.loadBytes(loadedBytes,loaderContext);

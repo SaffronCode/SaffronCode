@@ -7,6 +7,9 @@
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
+	import flash.filesystem.File;
+	import flash.filesystem.FileMode;
+	import flash.filesystem.FileStream;
 	import flash.net.URLRequest;
 	import flash.system.ApplicationDomain;
 	import flash.system.LoaderContext;
@@ -83,12 +86,34 @@
 						var loader:Loader = new Loader();
 						var loaderContext:LoaderContext = new LoaderContext(true,ApplicationDomain.currentDomain);
 						loaderContext.allowLoadBytesCodeExecution = true ;
+						trace("- loader created ");
 						loader.contentLoaderInfo.addEventListener(Event.COMPLETE,fileLoaded);
 						loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR,fileCantLoad);
-						if(byte!=null)
-							loader.loadBytes(byte);
-						else
-							loader.load(new URLRequest(fileTarget));
+						
+						var fileLoader:FileStream ;
+						
+						if(fileTarget!=null)
+						{
+							trace("-The file should load to load it with loader");
+							try
+							{
+								fileLoader = new FileStream();
+								trace("-fileTarget : "+fileTarget);
+								var targetFile:File = new File(fileTarget);
+								trace("-target file created");
+								fileLoader.open(targetFile,FileMode.READ);
+								byte = new ByteArray();
+								fileLoader.readBytes(byte,0,fileLoader.bytesAvailable);
+							}
+							catch(e:Error)
+							{
+								createdData.push(["load byte error for image target "+fileTarget+" : "+e.getStackTrace()]);
+								sendTheData(createdData);
+								return ;
+							}
+						}
+						
+						loader.loadBytes(byte);
 						
 						function fileLoaded(e:Event):void
 						{
@@ -126,7 +151,7 @@
 						}
 						function fileCantLoad(e:IOErrorEvent=null):void
 						{
-							createdData.push([File.applicationDirectory.nativePath+' . '+e.toString()]);
+							createdData.push([fileTarget+' was '+new File(fileTarget).exists+' . '+e.toString()]);
 							sendTheData(createdData);
 						}
 						return ;

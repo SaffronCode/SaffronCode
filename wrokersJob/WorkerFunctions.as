@@ -109,6 +109,9 @@ package wrokersJob
 			funcList.push(receiver);
 			idList.push(currentId);
 			
+			if(byteOrURLString is String)
+			{
+				byteOrURLString = new File(byteOrURLString).nativePath ;
 			var toSendValue:Array = [BgWorker.id_byteToBitmap,currentId,[byteOrURLString,loadInThisArea,imageW,imageH,keepRatio]] ;
 			
 			
