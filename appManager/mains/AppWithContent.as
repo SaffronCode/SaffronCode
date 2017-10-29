@@ -35,6 +35,8 @@
 	import stageManager.StageManager;
 	import stageManager.StageManagerEvent;
 	
+	import wrokersJob.WorkerFunctions;
+	
 	public class AppWithContent extends App
 	{
 		/**This is the contentManager rectangle size. it will generate from the content w and h on the home xml tag*/
@@ -70,9 +72,16 @@
 		 * Pass 1 to activate effects<br>
 		 * activateURLCaller makes application be able to open from an URI from out side applications. first time it will throw the required permission */
 		public function AppWithContent(supportsMultiLanguage:Boolean=false,autoLanguageConvertEnabled:Boolean=true,animagePageContents:Boolean=false,autoChangeMusics:Boolean=false,skipAllAnimations:Boolean=false,manageStageManager:Boolean=false,loadConfig:Boolean=false,addVersionControll:Boolean=true
-		,addTheDeveloperPage:Boolean=false,activateShineEffect:uint=1,PlaySounOnBackGroundTo:Boolean=false,activateRankSystem:Boolean=false,activateURLCaller:Boolean=false)
+		,addTheDeveloperPage:Boolean=false,activateShineEffect:uint=1,PlaySounOnBackGroundTo:Boolean=false,activateRankSystem:Boolean=false,activateURLCaller:Boolean=false,
+		activateWorkers:Boolean = true )
 		{
 			super(autoChangeMusics,skipAllAnimations,activateShineEffect,PlaySounOnBackGroundTo);
+			
+			if(activateWorkers)
+			{
+				WorkerFunctions.setUp();
+			}
+			
 			activeVersionControll = addVersionControll ;
 			
 			ME = this ;
