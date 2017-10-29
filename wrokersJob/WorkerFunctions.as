@@ -1,4 +1,4 @@
-package wrokersJob
+﻿package wrokersJob
 {
 	import contents.alert.Alert;
 	
@@ -44,7 +44,7 @@ package wrokersJob
 			var workerTarget:File = File.applicationDirectory.resolvePath("Data/bgWork");//new File("D://Sepehr//gitHub/sepehrEngine/SaffronEngine/Data-sample/bgWork.swf") ;
 			if(!workerTarget.exists)
 			{
-				throw "Add the  bgWork  file from Data-sample folder on Saffron to your Data folder" ;
+				Alert.show("Add the  bgWork  file from Data-sample folder on Saffron to your Data folder") ;
 			}
 			var workerBytes:ByteArray = FileManager.loadFile(workerTarget);
 			
@@ -196,7 +196,9 @@ package wrokersJob
 			{
 				funcList.removeAt(I);
 				idList.removeAt(I);
+				return true ;
 			}
+			return false ;
 		}
 	}
 }
