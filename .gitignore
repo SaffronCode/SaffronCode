@@ -62,12 +62,6 @@ $RECYCLE.BIN/
 
 
 # Flash files
-*.fla
-*.swf
-*.SWF
-.swf
-.swf
-*.swf
 *.apk
 *.apk
 *.ipa
@@ -109,3 +103,4 @@ $RECYCLE.BIN/
 *.epd
 
 #hello
+Data-sample/bgWork-app.xml
