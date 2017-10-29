@@ -88,6 +88,11 @@ package darkBox
 			}
 		}
 		
+		public function isYouTube():Boolean
+		{
+			return target.toLowerCase().indexOf("youtube.com")!=-1 ;
+		}
+		
 		public function download(timeOut:uint=0):void
 		{
 			onlineTarget = target ;
