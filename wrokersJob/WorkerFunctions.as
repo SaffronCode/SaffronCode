@@ -41,10 +41,10 @@ package wrokersJob
 			activated = true ;
 			totalWorkers = TotalWorkers ;
 			
-			var workerTarget:File = File.applicationDirectory.resolvePath("Data/bgWork.swf");//new File("D://Sepehr//gitHub/sepehrEngine/SaffronEngine/Data-sample/bgWork.swf") ;
+			var workerTarget:File = File.applicationDirectory.resolvePath("Data/bgWork");//new File("D://Sepehr//gitHub/sepehrEngine/SaffronEngine/Data-sample/bgWork.swf") ;
 			if(!workerTarget.exists)
 			{
-				throw "Add the bgWork.swf from Data-sample folder on Saffron to your Data folder" ;
+				throw "Add the  bgWork  file from Data-sample folder on Saffron to your Data folder" ;
 			}
 			var workerBytes:ByteArray = FileManager.loadFile(workerTarget);
 			
