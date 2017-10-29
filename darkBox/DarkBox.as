@@ -307,7 +307,7 @@
 			}
 			else
 			{
-				titleMC.x = prevMC.x + prevMC.width ;
+				titleMC.x = Math.max(prevMC.x + prevMC.width,nextMC.x + nextMC.width) ;
 			}
 			preLoderMC.x = imageSize.width/2;
 			preLoderMC.y = imageSize.y+imageSize.height/2;
