@@ -260,8 +260,7 @@ package diagrams.calender
 							calenderData.contents[j].end,
 							calenderData.contents[j].color
 						);
-						///dddd
-						storedBoxes[i].updateGraphic(calenderData.contents[j].color,0xffffff,20);
+
 					}
 				}
 				storedBoxes[i].addContents(boxData);
