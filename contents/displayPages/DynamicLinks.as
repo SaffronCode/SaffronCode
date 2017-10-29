@@ -810,85 +810,7 @@ package contents.displayPages
 				for(var i:int=0 ; i<l ; i++)
 				{
 					visibleItem = linksInterfaceStorage[i];
-					if(!horizontalMenu)
-					{
-						/*if(!reverted)
-						{*/
-							//trace("inVisibleItem.y : "+inVisibleItem.y);
-						if(
-							(
-								!revertedY
-								&&
-								(
-									visibleItem.y+linksContainer.y+visibleItem.height>=-areaRect.height
-									&&
-									visibleItem.y+linksContainer.y<areaRect.height*2
-								)
-							)
-							||
-							(
-								revertedY
-								&&
-								(
-									visibleItem.y+linksContainer.y<0
-									&&
-									visibleItem.y+linksContainer.y+visibleItem.height>-areaRect.height*2
-								)
-							)
-						)
-						{
-							if(showThempRemovedLink(visibleItem))
-							{
-								trace("Backed link : "+i);
-							}
-						}else if(
-							visibleItem.y+linksContainer.y+visibleItem.height<-maxVisibleDistance
-							||
-							visibleItem.y>areaRect.height+maxVisibleDistance
-						)
-						{
-							if(thempRemoveLink(visibleItem))
-							{
-								trace("1 RemovedLink : "+(i));
-							}
-						}
-						/*}
-						else
-						{
-							trace("reverted dynamic link");
-						}*/
-					}
-					else
-					{
-						/*if(!reverted)
-						{*/
-						if(
-							visibleItem.x+linksContainer.x+visibleItem.width>=visibleItem.width*-3
-							&&
-							visibleItem.x+linksContainer.x<areaRect.width+visibleItem.width*3
-						)
-						{
-							if(showThempRemovedLink(visibleItem))
-							{
-								trace("Backed link : "+i);
-							}
-						}else if(
-							visibleItem.x+linksContainer.x+visibleItem.width<-maxVisibleDistance
-							||
-							visibleItem.x>areaRect.width+maxVisibleDistance
-						)
-						{
-							if(thempRemoveLink(visibleItem))
-							{
-								trace("2 RemovedLink : "+(i));
-							}
-						}
-						/*}
-						else
-						{
-							trace("horizontalMenu reverted dynamic link");
-						}*/
-					}
+					showOrHideLinkItem(visibleItem,i);
 				}
 				
 				//trace("****************************** it takes : "+(getTimer()-tim));
@@ -949,6 +871,79 @@ package contents.displayPages
 					//Call below function after preloader added.
 					requestMore();
 				}
+			}
+		}
+		
+		/**Control the current link if it can be shown or hide*/
+		private function showOrHideLinkItem(visibleItem:LinkItem,linkIndex:uint):Boolean
+		{
+			if(!horizontalMenu)
+			{
+				if(
+					(
+						!revertedY
+						&&
+						(
+							visibleItem.y+linksContainer.y+visibleItem.height>=-areaRect.height
+							&&
+							visibleItem.y+linksContainer.y<areaRect.height*2
+						)
+					)
+					||
+					(
+						revertedY
+						&&
+						(
+							visibleItem.y+linksContainer.y<0
+							&&
+							visibleItem.y+linksContainer.y+visibleItem.height>-areaRect.height*2
+						)
+					)
+				)
+				{
+					if(showThempRemovedLink(visibleItem))
+					{
+						trace("Backed link : "+linkIndex);
+					}
+					return true ;
+				}else if(
+					visibleItem.y+linksContainer.y+visibleItem.height<-maxVisibleDistance
+					||
+					visibleItem.y>areaRect.height+maxVisibleDistance
+				)
+				{
+					if(thempRemoveLink(visibleItem))
+					{
+						trace("1 RemovedLink : "+(linkIndex));
+					}
+				}
+				return false ;
+			}
+			else
+			{
+				if(
+					visibleItem.x+linksContainer.x+visibleItem.width>=visibleItem.width*-3
+					&&
+					visibleItem.x+linksContainer.x<areaRect.width+visibleItem.width*3
+				)
+				{
+					if(showThempRemovedLink(visibleItem))
+					{
+						trace("Backed link : "+linkIndex);
+					}
+					return true ;
+				}else if(
+					visibleItem.x+linksContainer.x+visibleItem.width<-maxVisibleDistance
+					||
+					visibleItem.x>areaRect.width+maxVisibleDistance
+				)
+				{
+					if(thempRemoveLink(visibleItem))
+					{
+						trace("2 RemovedLink : "+(linkIndex));
+					}
+				}
+				return false ;
 			}
 		}
 		
