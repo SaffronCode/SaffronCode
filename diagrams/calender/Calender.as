@@ -183,11 +183,11 @@ package diagrams.calender
 				newTitle.x = titleWidth*(titleNumber-i-1) ;
 				if(CalenderConstants.dayNameTitle==0)
 				{
-					newTitle.text = CalenderConstants.dayNames[i].long ;
+					newTitle.text = CalenderConstants.dayNames[i];
 				}
 				else if(CalenderConstants.dayNameTitle==1)
 				{
-					newTitle.text = CalenderConstants.dayNames[i].short ;
+					newTitle.text = CalenderConstants.dayNames2[i].short ;
 				}
 				storedTitles.push(newTitle);
 				
@@ -260,6 +260,8 @@ package diagrams.calender
 							calenderData.contents[j].end,
 							calenderData.contents[j].color
 						);
+						///dddd
+						storedBoxes[i].updateGraphic(calenderData.contents[j].color,0xffffff,20);
 					}
 				}
 				storedBoxes[i].addContents(boxData);

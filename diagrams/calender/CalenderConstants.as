@@ -14,16 +14,26 @@ package diagrams.calender
 							maskPaddingT:Number = 20,
 							ellipse:Number = 10 ;
 		
-		private static const 	d0:DayNamesModel  = new DayNamesModel("شنبه","ش"),
-								d1:DayNamesModel  = new DayNamesModel("یک شنبه","ی"),
-								d2:DayNamesModel  = new DayNamesModel("دو شنبه","د"),
-								d3:DayNamesModel  = new DayNamesModel("سه شنبه","س"),
-								d4:DayNamesModel  = new DayNamesModel("چهار شنبه","چ"),
-								d5:DayNamesModel  = new DayNamesModel("پنج شنبه","پ"),
-								d6:DayNamesModel  = new DayNamesModel("جمعه","ج");
+		private static const 	d0:String = "شنبه",
+								d1:String = "یک شنبه",
+								d2:String = "دو شنبه",
+								d3:String = "سه شنبه",
+								d4:String = "چهار شنبه",
+								d5:String = "پنج شنبه",
+								d6:String = "جمعه";
 		
-		public static var dayNames:Vector.<DayNamesModel> = new Vector.<DayNamesModel>();
+		private static const 	dd0:DayNamesModel  = new DayNamesModel("شنبه","ش"),
+								dd1:DayNamesModel  = new DayNamesModel("یک شنبه","ی"),
+								dd2:DayNamesModel  = new DayNamesModel("دو شنبه","د"),
+								dd3:DayNamesModel  = new DayNamesModel("سه شنبه","س"),
+								dd4:DayNamesModel  = new DayNamesModel("چهار شنبه","چ"),
+								dd5:DayNamesModel  = new DayNamesModel("پنج شنبه","پ"),
+								dd6:DayNamesModel  = new DayNamesModel("جمعه","ج");
 		dayNames.push(d0,d1,d2,d3,d4,d5,d6);
+		
+		public static var dayNames:Array = [d0,d1,d2,d3,d4,d5,d6];
+		public static var dayNames2:Vector.<DayNamesModel> = new Vector.<DayNamesModel>();
+		dayNames.push(dd0,dd1,dd2,dd3,dd4,dd5,dd6);
 		public static var dayNamesMiladi:Array = [d1,d2,d3,d4,d5,d6,d0];
 		
 		private static const 	m0:String = "فروردین",
