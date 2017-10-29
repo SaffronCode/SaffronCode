@@ -36,7 +36,7 @@
 		
 		private static var activated:Boolean = false ;
 		
-		public static function setUp(TotalWorkers:uint = 6):void
+		public static function setUp(TotalWorkers:uint = 4):void
 		{
 			activated = true ;
 			totalWorkers = TotalWorkers ;
