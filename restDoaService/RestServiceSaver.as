@@ -53,11 +53,17 @@ package restDoaService
 				Parameters = '';
 			}
 			
+			var headerString:String = "";
+			for(var i:int = 0 ; i<RestDoaService.headers.length ; i++)
+			{
+				headerString += RestDoaService.headers[i].value ;
+			}
+			
 			var ParametersArray:Array = Parameters.split('"').join('').split("{").join('').split("}").join('').split("[").join('').split("]").join('').split(',');
 			ParametersArray.sort();
 			Parameters = ParametersArray.join(',');
 			//trace("Storage id is :    "+Parameters+':'+Classid)
-			return Classid+':'+Parameters+':'+RestDoaService.serverDomain;
+			return Classid+':'+Parameters+':'+RestDoaService.serverDomain+headerString;
 		}
 	}
 }
