@@ -85,6 +85,31 @@ package popForm
 			maxCharacters.push(maxChar);
 		}
 		
+		public function addRadioListField(tagName:String,popFieldOptions:Array,fieldDefault:*='',isArabic_v:Boolean=true,frameForDirection:uint=1,fieldColorFrame:uint=1,Align:Boolean=true)
+		{
+			tagNames.push(tagName);
+			if(fieldDefault==null)
+			{
+				fieldDefault = '' ;
+			}
+			fieldDefaults.push(fieldDefault);
+			fieldDefaultDate.push(null);
+			fieldDefaultBooleans.push(popFieldOptions);
+			multiLineTag.push(false);
+			justify.push(Align);
+			booleanValues.push(false);
+			keyBoards.push(null);
+			isPassWorld.push(false);
+			editable.push(true);
+			isArabic.push(isArabic_v);
+			numLines.push(1);
+			languageDirection.push(frameForDirection);
+			backColor.push(fieldColorFrame);
+			
+			popFieldType.push(PopMenuFieldTypes.RadioButton);
+			maxCharacters.push(0);
+		}
+		
 		public function addPhoneField(tagName:String,fieldDefault:String='',isArabic_v:Boolean=true,frameForDirection:uint=1,fieldColorFrame:uint=1,isEditable:Boolean=true)
 		{
 			tagNames.push(tagName);
