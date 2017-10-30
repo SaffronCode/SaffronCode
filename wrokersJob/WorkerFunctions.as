@@ -76,6 +76,10 @@
 				activated = false ;
 				setUpDebugOnce();
 			}
+			if(DevicePrefrence.isIOS())
+			{
+				activated = false ;
+			}
 		}
 		
 		/**Set up the back groun emolator dfirst*/
