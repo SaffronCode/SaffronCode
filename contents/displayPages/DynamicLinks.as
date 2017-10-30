@@ -97,7 +97,7 @@ package contents.displayPages
 		protected var linksInterfaceStorage:Vector.<LinkItem>;
 		
 		private var firstItemIndex:int = -1 ;
-		private var lastItemIndex:int = -1 ;
+		private var lastItemIndex:int = 0 ;
 
 		protected var lastGeneratedLinkIndes:uint ;
 		
@@ -511,7 +511,7 @@ package contents.displayPages
 			//reset cashed list
 			linksInterfaceStorage = new  Vector.<LinkItem>();
 			firstItemIndex = -1 ;
-            lastItemIndex = -1 ;
+            lastItemIndex = 0 ;
 			
 			//trace("current page data is : "+pageData.export());
 			this.removeChildren();
@@ -816,61 +816,70 @@ package contents.displayPages
 				//trace("****************************** it takes : "+(getTimer()-tim));
 			}*/
 
+			//Control inside links or out side links ↓
             var l:uint = linksInterfaceStorage.length ;
 			var itWasOnStage:Boolean ;
-			if(horizontalMenu)
-			{
-				//TODO
-			}
-			else
-			{
-				if(revertedY)
+
+
+			itWasOnStage = showOrHideLinkItem(firstItemIndex);
+			if (itWasOnStage){
+				do
 				{
-					//TODO
-				}
-				else {
-                    itWasOnStage = showOrHideLinkItem(firstItemIndex);
-                    if (itWasOnStage){
-                        do
-                        {
-                            firstItemIndex--;
-                            itWasOnStage = showOrHideLinkItem(firstItemIndex);
-                        }while(firstItemIndex>=0 && itWasOnStage)
-						firstItemIndex++;
-					}
-					else{
-                        do
-                        {
-                            firstItemIndex++;
-                            itWasOnStage = showOrHideLinkItem(firstItemIndex);
-                        }while(firstItemIndex<l && !itWasOnStage)
-						firstItemIndex--;
-					}
-				}
+					firstItemIndex--;
+					itWasOnStage = showOrHideLinkItem(firstItemIndex);
+				}while(firstItemIndex>=0 && itWasOnStage)
+				firstItemIndex++;
 			}
-			trace("firstItemIndex : "+firstItemIndex);
+			else{
+				do
+				{
+					firstItemIndex++;
+					itWasOnStage = showOrHideLinkItem(firstItemIndex);
+				}while(firstItemIndex<l && !itWasOnStage)
+				firstItemIndex--;
+			}
+
+            itWasOnStage = showOrHideLinkItem(lastItemIndex);
+            if (itWasOnStage){
+                do
+                {
+                    lastItemIndex++;
+                    itWasOnStage = showOrHideLinkItem(lastItemIndex);
+                }while(lastItemIndex<l && itWasOnStage)
+                lastItemIndex--;
+            }
+            else{
+                do
+                {
+                    lastItemIndex--;
+                    itWasOnStage = showOrHideLinkItem(lastItemIndex);
+                }while(lastItemIndex>=0 && !itWasOnStage)
+                lastItemIndex++;
+            }
+			//Control inside links or out side links ↑
+
 
 
             var sens:Rectangle = linksSensor.getBounds(this);
 			if(!addingLinksOver
 				&&
 				(loadAllLinksInstantly ||
-					(!horizontalMenu 
-						&& !revertedY 
-						&& sens.top<areaRect.bottom
+					(!horizontalMenu
+						&& !revertedY
+						&& sens.top-areaRect.height<areaRect.bottom
 					) || (
-						!horizontalMenu 
-						&& revertedY 
-						&& sens.bottom>areaRect.top
+						!horizontalMenu
+						&& revertedY
+						&& sens.bottom+areaRect.height>areaRect.top
 					)
 					|| (
 						horizontalMenu 
 						&& !revertedX 
-						&& sens.left<areaRect.right
+						&& sens.left-areaRect.width<areaRect.right
 					) || (
 						horizontalMenu 
 						&& revertedX 
-						&& sens.right>areaRect.left
+						&& sens.right+areaRect.width>areaRect.left
 					)
 				)
 			)
@@ -913,11 +922,15 @@ package contents.displayPages
 		/**Control the current link if it can be shown or hide*/
 		private function showOrHideLinkItem(linkIndex:uint):Boolean
 		{
-			if(firstItemIndex<0 || firstItemIndex>=linksInterfaceStorage.length)
+			if(linkIndex<0 || linkIndex>=linksInterfaceStorage.length)
 			{
 				return false ;
 			}
-            var visibleItem:LinkItem = linksInterfaceStorage[firstItemIndex];
+			/*if(linkIndex==0)
+			{
+				var setBreakPoint:Boolean = false ;
+			}*/
+            var visibleItem:LinkItem = linksInterfaceStorage[linkIndex];
 			if(!horizontalMenu)
 			{
 				if(
@@ -947,11 +960,11 @@ package contents.displayPages
 						trace("Backed link : "+linkIndex);
 					}
 					return true ;
-				}else if(
-					visibleItem.y+linksContainer.y+visibleItem.height<-maxVisibleDistance
-					||
-					visibleItem.y>areaRect.height+maxVisibleDistance
-				)
+				}else /*if(
+                    visibleItem.y+linksContainer.y+visibleItem.height<-maxVisibleDistance
+                    ||
+                    visibleItem.y>areaRect.height+maxVisibleDistance
+            )*/
 				{
 					if(thempRemoveLink(visibleItem))
 					{
@@ -973,11 +986,11 @@ package contents.displayPages
 						trace("Backed link : "+linkIndex);
 					}
 					return true ;
-				}else if(
+				}else /*if(
 					visibleItem.x+linksContainer.x+visibleItem.width<-maxVisibleDistance
 					||
 					visibleItem.x>areaRect.width+maxVisibleDistance
-				)
+				)*/
 				{
 					if(thempRemoveLink(visibleItem))
 					{
