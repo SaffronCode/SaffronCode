@@ -899,7 +899,7 @@ package contents.displayPages
 					}
 					
 					controllSensor();
-					return;
+					//return;
 				}
 				else
 				{
