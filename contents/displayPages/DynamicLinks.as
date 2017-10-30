@@ -96,8 +96,9 @@ package contents.displayPages
 		/**This is the list of creted linkItems on the stage.*/
 		protected var linksInterfaceStorage:Vector.<LinkItem>;
 		
-		private var lastInVisibleItem:int = 0 ;
-					
+		private var firstItemIndex:int = -1 ;
+		private var lastItemIndex:int = 0 ;
+
 		protected var lastGeneratedLinkIndes:uint ;
 		
 		public static var deltaY:Number = 20,
@@ -509,7 +510,8 @@ package contents.displayPages
 			
 			//reset cashed list
 			linksInterfaceStorage = new  Vector.<LinkItem>();
-			lastInVisibleItem = -1 ;
+			firstItemIndex = -1 ;
+            lastItemIndex = 0 ;
 			
 			//trace("current page data is : "+pageData.export());
 			this.removeChildren();
@@ -750,8 +752,6 @@ package contents.displayPages
 		
 		private function controllSensor(ev:Event=null)
 		{
-			var sens:Rectangle = linksSensor.getBounds(this);
-			
 			if(reloaderMC)
 			{
 				var precent:Number = 0 ;
@@ -800,7 +800,7 @@ package contents.displayPages
 				}
 			}
 			
-			if(linksInterfaceStorage.length>0)
+			/*if(linksInterfaceStorage.length>0)
 			{
 				var visibleItem:LinkItem ;
 				//var inVisibleItem:LinkItem ;
@@ -814,27 +814,72 @@ package contents.displayPages
 				}
 				
 				//trace("****************************** it takes : "+(getTimer()-tim));
+			}*/
+
+			//Control inside links or out side links ↓
+            var l:uint = linksInterfaceStorage.length ;
+			var itWasOnStage:Boolean ;
+
+
+			itWasOnStage = showOrHideLinkItem(firstItemIndex);
+			if (itWasOnStage){
+				do
+				{
+					firstItemIndex--;
+					itWasOnStage = showOrHideLinkItem(firstItemIndex);
+				}while(firstItemIndex>=0 && itWasOnStage)
+				firstItemIndex++;
 			}
-			
+			else{
+				do
+				{
+					firstItemIndex++;
+					itWasOnStage = showOrHideLinkItem(firstItemIndex);
+				}while(firstItemIndex<l && !itWasOnStage)
+				firstItemIndex--;
+			}
+
+            itWasOnStage = showOrHideLinkItem(lastItemIndex);
+            if (itWasOnStage){
+                do
+                {
+                    lastItemIndex++;
+                    itWasOnStage = showOrHideLinkItem(lastItemIndex);
+                }while(lastItemIndex<l && itWasOnStage)
+                lastItemIndex--;
+            }
+            else{
+                do
+                {
+                    lastItemIndex--;
+                    itWasOnStage = showOrHideLinkItem(lastItemIndex);
+                }while(lastItemIndex>=0 && !itWasOnStage)
+                lastItemIndex++;
+            }
+			//Control inside links or out side links ↑
+
+
+
+            var sens:Rectangle = linksSensor.getBounds(this);
 			if(!addingLinksOver
 				&&
 				(loadAllLinksInstantly ||
-					(!horizontalMenu 
-						&& !revertedY 
-						&& sens.top<areaRect.bottom
+					(!horizontalMenu
+						&& !revertedY
+						&& sens.top-areaRect.height<areaRect.bottom
 					) || (
-						!horizontalMenu 
-						&& revertedY 
-						&& sens.bottom>areaRect.top
+						!horizontalMenu
+						&& revertedY
+						&& sens.bottom+areaRect.height>areaRect.top
 					)
 					|| (
 						horizontalMenu 
 						&& !revertedX 
-						&& sens.left<areaRect.right
+						&& sens.left-areaRect.width<areaRect.right
 					) || (
 						horizontalMenu 
 						&& revertedX 
-						&& sens.right>areaRect.left
+						&& sens.right+areaRect.width>areaRect.left
 					)
 				)
 			)
@@ -875,8 +920,17 @@ package contents.displayPages
 		}
 		
 		/**Control the current link if it can be shown or hide*/
-		private function showOrHideLinkItem(visibleItem:LinkItem,linkIndex:uint):Boolean
+		private function showOrHideLinkItem(linkIndex:uint):Boolean
 		{
+			if(linkIndex<0 || linkIndex>=linksInterfaceStorage.length)
+			{
+				return false ;
+			}
+			/*if(linkIndex==0)
+			{
+				var setBreakPoint:Boolean = false ;
+			}*/
+            var visibleItem:LinkItem = linksInterfaceStorage[linkIndex];
 			if(!horizontalMenu)
 			{
 				if(
@@ -906,11 +960,11 @@ package contents.displayPages
 						trace("Backed link : "+linkIndex);
 					}
 					return true ;
-				}else if(
-					visibleItem.y+linksContainer.y+visibleItem.height<-maxVisibleDistance
-					||
-					visibleItem.y>areaRect.height+maxVisibleDistance
-				)
+				}else /*if(
+                    visibleItem.y+linksContainer.y+visibleItem.height<-maxVisibleDistance
+                    ||
+                    visibleItem.y>areaRect.height+maxVisibleDistance
+            )*/
 				{
 					if(thempRemoveLink(visibleItem))
 					{
@@ -932,11 +986,11 @@ package contents.displayPages
 						trace("Backed link : "+linkIndex);
 					}
 					return true ;
-				}else if(
+				}else /*if(
 					visibleItem.x+linksContainer.x+visibleItem.width<-maxVisibleDistance
 					||
 					visibleItem.x>areaRect.width+maxVisibleDistance
-				)
+				)*/
 				{
 					if(thempRemoveLink(visibleItem))
 					{
