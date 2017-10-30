@@ -838,6 +838,8 @@ package contents.displayPages
 				}while(firstItemIndex<l && !itWasOnStage)
 				firstItemIndex--;
 			}
+			
+			lastItemIndex = Math.max(lastItemIndex,firstItemIndex+1);
 
             itWasOnStage = showOrHideLinkItem(lastItemIndex);
             if (itWasOnStage){
@@ -857,6 +859,7 @@ package contents.displayPages
                 lastItemIndex++;
             }
 			//Control inside links or out side links ↑
+			//trace("firstItemIndex,lastItemIndex : "+firstItemIndex,lastItemIndex);
 
 
 
@@ -894,7 +897,9 @@ package contents.displayPages
 					{
 						linksContainer.addChild(linksSensor);
 					}
+					
 					controllSensor();
+					return;
 				}
 				else
 				{
