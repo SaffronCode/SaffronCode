@@ -1,6 +1,10 @@
-package restDoaService
+﻿package restDoaService
 {
+	import com.adobe.crypto.MD5;
+	
 	import dataManager.SavedDatas2;
+	
+	import flash.net.URLRequestHeader;
 	
 
 	internal class RestServiceSaver
@@ -9,9 +13,9 @@ package restDoaService
 		
 		public static var lastCashDate:Number ;
 		
-		public static function load(id:String,jsonParam:String):*
+		public static function load(id:String,jsonParam:String,headerArray:Array=null):*
 		{
-			var valueName:String = generateID(id,jsonParam) ;
+			var valueName:String = generateID(id,jsonParam,headerArray) ;
 			var cash:* = SavedDatas2.load(valueName) ;
 
 			lastCashDate = SavedDatas2.savedDate ;
@@ -36,17 +40,17 @@ package restDoaService
 
 		
 		
-		public static function save(id:String,jsonParam:String,value:*):void
+		public static function save(id:String,jsonParam:String,value:*,headerArray:Array=null):void
 		{
 			//trace("**Values saved");
-			var valueName:String = generateID(id,jsonParam);
+			var valueName:String = generateID(id,jsonParam,headerArray);
 			trace("○ jsonParam is  :  "+jsonParam);
 			trace("Save > "+valueName+" ○ "+value+' ○');
 			SavedDatas2.save(valueName,value);
 		}
 		
 		
-		private static function generateID(Classid:String,Parameters:String):String
+		private static function generateID(Classid:String,Parameters:String,headerArray:Array=null):String
 		{
 			if(Parameters == null)
 			{
@@ -56,7 +60,15 @@ package restDoaService
 			var headerString:String = "";
 			for(var i:int = 0 ; i<RestDoaService.headers.length ; i++)
 			{
-				headerString += RestDoaService.headers[i].value ;
+				headerString += MD5.hash(RestDoaService.headers[i].name+RestDoaService.headers[i].value) ;
+			}
+			for(i = 0 ; i<headerArray.length ; i++)
+			{
+				var currentHeader:URLRequestHeader = headerArray[i] as URLRequestHeader ;
+				if(currentHeader.name!="Accept")
+				{
+					headerString += MD5.hash(currentHeader.name+currentHeader.value) ;
+				}
 			}
 			
 			var ParametersArray:Array = Parameters.split('"').join('').split("{").join('').split("}").join('').split("[").join('').split("]").join('').split(',');

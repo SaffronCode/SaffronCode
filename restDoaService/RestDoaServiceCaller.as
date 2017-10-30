@@ -182,7 +182,7 @@
 			trace("No internet connection");
 			if(controllData && offlineDataIsOK)
 			{
-				var savedData:* = RestServiceSaver.load(myId,myParams);
+				var savedData:* = RestServiceSaver.load(myId,myParams,pureRequest.requestHeaders);
 				if(savedData != null)
 				{
 					trace("Saved data is not null");
@@ -316,7 +316,7 @@
 				//Save the server data
 				if(offlineDataIsOK && !alreadyLoadedFromCash)
 				{
-					RestServiceSaver.save(myId,myParams,loadedData);
+					RestServiceSaver.save(myId,myParams,loadedData,pureRequest.requestHeaders);
 				}
 				trace("Data is ready to use");
 				if(onUpdateProccess)
@@ -393,7 +393,7 @@
 			trace("instantOfflineData : "+instantOfflineData);
 			if(instantOfflineData)
 			{
-				var savedData:* = RestServiceSaver.load(myId,myParams) ;
+				var savedData:* = RestServiceSaver.load(myId,myParams,pureRequest.requestHeaders) ;
 				if(savedData != null)
 				{
 					var expired:Boolean = offlineDate.time>RestServiceSaver.lastCashDate;//RestServiceSaver.isExpired(myId,myParams,offlineDate);
