@@ -305,11 +305,12 @@
 		
 		override public function get height():Number
 		{
+			var tagHeight:Number = Math.max(super.height,tagNameTXT.height+tagNameTXT.y);
 			if(myTXT==null)
 			{
-				return Math.max(tagNameTXT.height,super.height) ;
+				return Math.max(tagNameTXT.height,tagHeight) ;
 			}
-			return Math.max(myTXT.y+myTXT.height,backMC.y+backMC.height);
+			return Math.max(myTXT.y+myTXT.height,backMC.y+backMC.height,tagHeight);
 		}
 		
 		protected function showPassNow(event:MouseEvent):void
