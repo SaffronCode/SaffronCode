@@ -14,17 +14,20 @@ package tabMenu
 					_name:String,
 					_defaultTabe:String,
 					_selected:Boolean,
-					_activeCurrentTab:Boolean;
+					_activeCurrentTab:Boolean,
+					_sendOnLoadEvent:Boolean;
+					
 					
 		private var _timerId:uint;	
 		
 		
-		public function TabItemBass(GroupName_p:String=null,ActiveCurrentTab_p:Boolean=false)
+		public function TabItemBass(GroupName_p:String=null,ActiveCurrentTab_p:Boolean=false,SendOnLoadEvent_p:Boolean=true)
 		{
 			super();
 			_group = GroupName_p;
 			_activeCurrentTab = ActiveCurrentTab_p;		
 			_name = this.name.split('_')[0];
+			_sendOnLoadEvent = SendOnLoadEvent_p;
 			try
 			{			
 				this.gotoAndStop(_name);
@@ -44,13 +47,24 @@ package tabMenu
 			{
 				_timerId = setTimeout(sendEventBytimer,5);
 			}
-			this.addEventListener(MouseEvent.CLICK,click_fun);	
+			else if(!_sendOnLoadEvent)
+			{
+				onSelected(new TabMenuEvent(TabMenuEvent.SELECT,_group,null));
+			}
+
+			this.addEventListener(MouseEvent.CLICK,click_fun);
 		}
 		
 		private function sendEventBytimer():void
 		{
-			
-			sendEvent();
+			if(_sendOnLoadEvent)
+			{
+				sendEvent();
+			}
+			else
+			{				
+				onSelected(new TabMenuEvent(TabMenuEvent.SELECT,_group,_name));
+			}
 			clearTimeout(_timerId);
 		}
 		
