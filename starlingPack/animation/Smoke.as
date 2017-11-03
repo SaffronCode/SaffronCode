@@ -2,18 +2,26 @@
  * Created by mes on 03/11/2017.
  */
 package starlingPack.animation {
+import flash.display.BitmapData;
+import flash.display.DisplayObject;
+
 import starling.display.Canvas;
+import starling.display.Image;
 import starling.display.Quad;
 import starling.display.Sprite;
 import starling.events.Event;
 import starling.filters.BlurFilter;
+import starling.textures.Texture;
 
 import starlingPack.core.ObjStarling;
 
 public class Smoke extends Sprite {
 
+    private static var smokeBitmap:BitmapData ;
 
-    private var smokes:Vector.<Canvas> = new Vector.<Canvas>();
+    private static const smokeElementW:Number = 20 ;
+
+    private var smokes:Vector.<Image> = new Vector.<Image>();
 
     private var sX:Vector.<Number> = new Vector.<Number>();
     private var sY:Vector.<Number> = new Vector.<Number>();
@@ -32,6 +40,18 @@ public class Smoke extends Sprite {
         this.x = X ;
         this.y = Y ;
 
+        if (smokeBitmap == null) {
+            var circ:Canvas = new Canvas();
+            circ.beginFill(0xccbc70, 0.4);
+            circ.drawCircle(0, 0, smokeElementW);
+            circ.filter = new BlurFilter(3, 3, 1);
+            var container:Sprite = new Sprite() ;
+            container.addChild(circ);
+            container.drawToBitmapData()
+            smokeBitmap = new BitmapData(smokeElementW*2,smokeElementW*2,true,0x00000000);
+            container.drawToBitmapData(smokeBitmap)
+        }
+
         if(this.stage!=null)
             added();
         else
@@ -40,21 +60,18 @@ public class Smoke extends Sprite {
 
     private function added(event:Event=null):void {
         this.removeEventListener(Event.ADDED_TO_STAGE,added);
-        for(var i:int = 0 ; i<total ; i++)
-        {
-            var circ:Canvas = new Canvas();
+        for(var i:int = 0 ; i<total ; i++) {
+            var smoke:Image = new Image(Texture.fromBitmapData(smokeBitmap))
+
             sX.push(Math.random()-0.5);
             sY.push(Math.random()-0.5);
             sA.push(Math.random()*0.02+0.05);
             sW.push(Math.random());
-            circ.beginFill(0xccbc70,0.4);
-            circ.drawCircle(0,0,20);
-            circ.filter = new BlurFilter(2,2,1);
-            circ.x = this.x+Math.random()*areaW-areaW/2 ;
-            circ.y = this.y+Math.random()*areaH-areaH/2 ;
-            circ.alpha=0;
-            smokes.push(circ);
-            this.parent.addChild(circ);
+            smoke.x = this.x+Math.random()*areaW-areaW/2-smokeElementW/2 ;
+            smoke.y = this.y+Math.random()*areaH-areaH/2-smokeElementW/2 ;
+            smoke.alpha=0;
+            smokes.push(smoke);
+            this.parent.addChild(smoke);
         }
         this.addEventListener(Event.ENTER_FRAME,anim);
         this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
