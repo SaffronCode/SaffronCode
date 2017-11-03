@@ -19,7 +19,7 @@ public class Smoke extends Sprite {
 
     private static var smokeBitmap:BitmapData ;
 
-    private static const smokeElementW:Number = 20 ;
+    private static const smokeElementW:Number = 40 ;
 
     private var smokes:Vector.<Image> = new Vector.<Image>();
 
@@ -44,7 +44,7 @@ public class Smoke extends Sprite {
             var circ:Canvas = new Canvas();
             circ.beginFill(0xccbc70, 0.4);
             circ.drawCircle(0, 0, smokeElementW);
-            circ.filter = new BlurFilter(3, 3, 1);
+            circ.filter = new BlurFilter(10, 10, 2);
             var container:Sprite = new Sprite() ;
             container.addChild(circ);
             container.drawToBitmapData()
@@ -69,6 +69,7 @@ public class Smoke extends Sprite {
             sW.push(Math.random());
             smoke.x = this.x+Math.random()*areaW-areaW/2-smokeElementW/2 ;
             smoke.y = this.y+Math.random()*areaH-areaH/2-smokeElementW/2 ;
+            smoke.scale = Math.random()/4+0.5;
             smoke.alpha=0;
             smokes.push(smoke);
             this.parent.addChild(smoke);
