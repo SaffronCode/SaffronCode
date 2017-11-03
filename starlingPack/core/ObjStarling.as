@@ -8,7 +8,7 @@ import starling.display.Sprite;
 import starling.events.Event;
 
 public class ObjStarling {
-   public static function remove(target:Sprite):void
+   public static function remove(target:DisplayObject):void
    {
        if(target.parent!=null)
         target.parent.removeChild(target);
