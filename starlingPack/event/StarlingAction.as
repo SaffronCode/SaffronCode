@@ -32,10 +32,12 @@ public class StarlingAction {
     public static function addClickListener(item:DisplayObject, onClickedFunction:Function):void
     {
         removeClickItem(item,onClickedFunction);
-        itemsList_click.push(item);
-        itemsFunction_click.push(onClickedFunction);
-        item.addEventListener(TouchEvent.TOUCH, onTouched);
-        item.addEventListener(Event.REMOVED_FROM_STAGE, itemRemovedFromStage);
+        if(onClickedFunction!=null) {
+            itemsList_click.push(item);
+            itemsFunction_click.push(onClickedFunction);
+            item.addEventListener(TouchEvent.TOUCH, onTouched);
+            item.addEventListener(Event.REMOVED_FROM_STAGE, itemRemovedFromStage);
+        }
     }
 
     /**The action function can get Touch variable to*/
