@@ -41,10 +41,13 @@
 			activated = true ;
 			totalWorkers = TotalWorkers ;
 			
-			var workerTarget:File = File.applicationDirectory.resolvePath("Data/bgWork");//new File("D://Sepehr//gitHub/sepehrEngine/SaffronEngine/Data-sample/bgWork.swf") ;
+			var workerTarget:File = File.applicationDirectory.resolvePath("Data/bgWork.swf");//new File("D://Sepehr//gitHub/sepehrEngine/SaffronEngine/Data-sample/bgWork.swf") ;
 			if(!workerTarget.exists)
 			{
-				Alert.show("Add the  bgWork  file from Data-sample folder on Saffron to your Data folder") ;
+				var moreHints:String = '';
+				if(File.applicationDirectory.resolvePath("Data/bgWork").exists)
+					moreHints += " and remove the Data/bgWork now. ";
+				Alert.show("Add the  bgWork  file from Data-sample folder on Saffron to your Data folder"+moreHints) ;
 			}
 			var workerBytes:ByteArray = FileManager.loadFile(workerTarget);
 			
@@ -75,10 +78,6 @@
 			{
 				activated = false ;
 				setUpDebugOnce();
-			}
-			if(DevicePrefrence.isIOS())
-			{
-				activated = false ;
 			}
 		}
 		
