@@ -189,6 +189,15 @@
 		/**This will replace dfafd:"dfds" with "dfafd":"dfds"*/
 		private static function JSONCorrector(wrongJSON:String):String
 		{
+			trace("Current entered json is : "+wrongJSON);
+			if(wrongJSON=="True")
+			{
+				return "true" ;
+			}
+			else if(wrongJSON=="False")
+			{
+				return 'false';
+			}
 			return wrongJSON.replace(/([,\{][\s\n\r]*)([a-z]+[\s]*[\s]*):/gi,'$1"$2":') ;
 		}
 		
