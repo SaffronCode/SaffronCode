@@ -26,6 +26,7 @@
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
 	
+	import popForm.Hints;
 	import popForm.PopButtonData;
 	import popForm.PopMenu;
 	import popForm.PopMenuContent;
@@ -82,6 +83,7 @@
 				WorkerFunctions.setUp();
 			}
 			
+			
 			activeVersionControll = addVersionControll ;
 			
 			ME = this ;
@@ -96,6 +98,8 @@
 			Contents.setUp(startApp,supportsMultiLanguage,autoLanguageConvertEnabled,this.stage,loadConfig);
 			
 			
+			if(DevicePrefrence.isItPC)
+				Hints.controlLanguages();
 			
 			if(manageStageManager)
 			{

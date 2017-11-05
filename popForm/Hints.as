@@ -4,12 +4,14 @@ package popForm
 	
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
+	import flash.text.SoftKeyboardType;
 	
 
 	public class Hints
 	{
 		public static var 	id_no_internet:String = "no_internet",
 							id_yes:String = "yes",
+							id_submit:String = "id_submit",
 							id_back:String = "back",
 							id_please_wait:String = "please_wait",
 							id_search:String = "search",
@@ -45,6 +47,45 @@ package popForm
 			var popText:PopMenuContent = new PopMenuContent(question,null,buttons,innerDisplayObject);
 			PopMenu1.popUp(title,null,popText,0,onQuestionAnswered);
 		}
+		
+		
+		public static function getText(title:String,question:String,tagLable:String,onDone:Function,OnNotAccepted:Function=null,keyboardType:String=SoftKeyboardType.DEFAULT,isPassword:Boolean=false,innerDisplayObject:DisplayObject=null,ButtonFrameYes:int=1,ButtonFrameNo:int=1):void
+		{
+			onQuestionAccepted = onDone;
+			onNotAccepted = OnNotAccepted;
+			
+			var buttons:Array = [new PopButtonData(Contents.lang.t[id_submit],ButtonFrameYes,null,true,true)
+				,new PopButtonData(Contents.lang.t[id_no],ButtonFrameNo,null,true,true)] ;
+			var popFields:PopMenuFields = new PopMenuFields();
+			popFields.addField(tagLable,'',keyboardType,isPassword,true,true);
+			var popText:PopMenuContent = new PopMenuContent(question,popFields,buttons,innerDisplayObject);
+			PopMenu1.popUp(title,null,popText,0,textCatched);
+		}
+		
+			/**Text catched*/
+			private static function textCatched(e:PopMenuEvent):void
+			{
+				switch(e.buttonTitle)
+				{
+					case Contents.lang.t[id_submit]:
+					{
+						if(onQuestionAccepted.length==0)
+							onQuestionAccepted()
+						else
+							onQuestionAccepted(e);
+						break;
+					}
+						
+					default:
+					{
+						if(onNotAccepted.length==0)
+							onNotAccepted()
+						else
+							onNotAccepted(e);
+						break;
+					}
+				}
+			}
 		
 		private static function onQuestionAnswered(e:PopMenuEvent)
 		{
@@ -224,6 +265,17 @@ package popForm
 		{
 			
 			myPreLoader = preLoaderMC ;
+		}
+		
+		public static function controlLanguages():void
+		{
+			trace("+Contents.lang.t[id_submit] : "+Contents.lang.t[id_submit]);
+			trace("+Contents.lang.t.id_submit : "+Contents.lang.t.id_submit);
+			trace("+id_submit : "+id_submit);
+			if(Contents.lang.t[id_submit]==undefined)
+			{
+				throw "Add below tag to language.xml\n\n\t<id_submit>\n\t\t<fa>ثبت</fa>\n\t</id_submit>\n\n\n";
+			}
 		}
 	}
 }
