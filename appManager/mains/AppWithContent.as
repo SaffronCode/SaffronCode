@@ -26,6 +26,8 @@
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
 	
+	import permissionControlManifestDiscriptor.PermissionControl;
+	
 	import popForm.Hints;
 	import popForm.PopButtonData;
 	import popForm.PopMenu;
@@ -136,6 +138,8 @@
 			var appDescriptorString:String = String(DevicePrefrence.appDescriptor) ;
 				appDescriptorString = StringFunctions.clearSpacesAndTabs(appDescriptorString)
 			
+			PermissionControl.controlVideoProblem();
+					
 			if((loadConfig && Contents.config.activateURLCaller) || activateURLCaller)
 			{
 				URISchemId = DevicePrefrence.appID.substr(DevicePrefrence.appID.lastIndexOf('.')+1).toLowerCase();
