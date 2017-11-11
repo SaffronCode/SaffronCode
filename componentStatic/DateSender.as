@@ -96,14 +96,14 @@ package componentStatic
 			
 			if(event.text!='')
 			{
-				_ddStr = event.text
+				_ddStr = event.text;
 			}
 			else
 			{
-				_dd.setText(DD)
-				_ddStr = DD	
+				_dd.setText('');
+				_ddStr = getFiledDate(_date,DD);	
 			}
-			sentValue()	
+			sentValue();	
 		}
 		
 		protected function mm_fun(event:TextBoxEvent):void
@@ -111,14 +111,14 @@ package componentStatic
 			
 				if(event.text!='')
 				{
-					_mmStr = event.text
+					_mmStr = event.text;
 				}
 				else
 				{
-					_mm.setText(MM)
-					_mmStr = MM
+					_mm.setText('');
+					_mmStr = getFiledDate(_date,MM);
 				}
-				sentValue()
+				sentValue();
 		}
 		
 		protected function yy_fun(event:TextBoxEvent):void
@@ -127,23 +127,23 @@ package componentStatic
 		
 				if(event.text!='')
 				{	
-					_yyStr = event.text			
+					_yyStr = event.text;			
 				}
 				else
 				{					
-					_yy.setText(YYYY)
-					_yyStr = YYYY
+					_yy.setText('');
+					_yyStr = getFiledDate(_date,YYYY);
 				}
-				sentValue()	
+				sentValue();	
 		}
 		
 		private function getFiledDate(Date_p:Date,Status_p:String):String
 		{
 			if(Date_p==null)
 			{
-				return Status_p
+				return Status_p;
 			}
-			return Add_Zero_Behind.add(2,getDateSplit(Date_p,Status_p,_shamsi))
+			return Add_Zero_Behind.add(2,getDateSplit(Date_p,Status_p,_shamsi));
 		}
 		public function getDateSplit(Date_p:Date,Status_p:String,Shamsi_p:Boolean=true):Number
 		{
@@ -215,9 +215,9 @@ package componentStatic
 		public function chekError():Boolean
 		{
 			
-			if(_yyStr == YYYY && _mmStr == MM && _ddStr == DD)
+			if(_yyStr == YYYY || _mmStr == MM || _ddStr == DD)
 			{
-				return true
+				return false
 			}
 			var _yyStatus:Boolean = false
 			var _mmStatus:Boolean = false
