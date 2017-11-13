@@ -6,6 +6,7 @@ package appManager.animatedPages.pageManager
 	
 	import flash.display.MovieClip;
 	import flash.events.Event;
+	import flash.utils.setTimeout;
 	
 	public class PageManager extends MovieClip
 	{
@@ -27,6 +28,8 @@ package appManager.animatedPages.pageManager
 		public var toEvent:AppEvent = new AppEvent() ;
 		
 		protected var pageContainer:PageContainer ;
+		/**This flag prevents page to set up twice*/
+		private var waitingToLoad:Boolean = false ;
 		
 		public function PageManager()
 		{
@@ -65,31 +68,11 @@ package appManager.animatedPages.pageManager
 					this.prevFrame() ;
 					animIsOver = (this.currentFrame == 1) ;
 				}
-				if(animIsOver)
+				if(animIsOver && !waitingToLoad)
 				{
 					this.gotoAndStop(1);
-					pageContainer.setUp();
-					toEvent.reload = false ;
-					if(toEvent.myType == AppEvent.home)
-					{
-						//this.visible = false ;
-						if( myCurrentEvent != toEvent  )
-						{
-							myCurrentEvent = toEvent ;
-						}
-					}
-					else
-					{
-						if( toEvent.myType != AppEvent.refresh )
-						{
-							myCurrentEvent = toEvent ;
-						}
-						else
-						{
-							toEvent = myCurrentEvent ;
-						}
-						pageContainer.setUp(myCurrentEvent);
-					}
+					waitingToLoad = true ;
+					setTimeout(setUpThePageContainer,20);
 				}
 				
 			}
@@ -116,6 +99,33 @@ package appManager.animatedPages.pageManager
 					pageContainer.dispatchPageReadyEventOnceForPage();
 				}
 			}
+		}
+		
+		private function setUpThePageContainer():void
+		{
+			pageContainer.setUp();
+			toEvent.reload = false ;
+			if(toEvent.myType == AppEvent.home)
+			{
+				//this.visible = false ;
+				if( myCurrentEvent != toEvent  )
+				{
+					myCurrentEvent = toEvent ;
+				}
+			}
+			else
+			{
+				if( toEvent.myType != AppEvent.refresh )
+				{
+					myCurrentEvent = toEvent ;
+				}
+				else
+				{
+					toEvent = myCurrentEvent ;
+				}
+				pageContainer.setUp(myCurrentEvent);
+			}
+			waitingToLoad = false ;
 		}
 	}
 }

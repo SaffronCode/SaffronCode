@@ -50,8 +50,8 @@ package appManager.animatedPages.pageManager
 				currentMenu = null ;
 				middleFrame = 0 ;
 				finishFrame = 0 ;
-				System.gc();
-				System.gc();
+				//System.gc();
+				//System.gc();
 				
 				this.dispatchEvent(new MenuEvent(MenuEvent.MENU_DELETED,null,true));
 			}

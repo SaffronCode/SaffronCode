@@ -48,7 +48,7 @@ package appManager.animatedPages.pageManager
 				middleFrame = 0 ;
 				finishFrame = 0 ;
 				System.gc();
-				System.gc();
+				//System.gc();
 				(this.root).removeEventListener(MenuEvent.MENU_READY,menuIsReady);
 			}
 			if(myEvent == null)
