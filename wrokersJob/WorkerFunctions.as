@@ -152,13 +152,13 @@
 			var fileStream:FileStream = new FileStream();
 			fileStream.addEventListener(Event.CLOSE,fileSaved);
 			fileStream.openAsync(tempFile,FileMode.WRITE);
-			trace("** Save "+base64String.length+" to temp file targeted : "+tempFile.nativePath);
+			Alert.show("** Save "+base64String.length+" to temp file targeted : "+tempFile.nativePath);
 			fileStream.writeUTFBytes(base64String);
 			fileStream.close();
 			
 			function fileSaved(event:Event):void
 			{
-				trace("** File saved done!!");
+				Alert.show("** File saved done!!");
 				fileStream.close();
 				var toSendValue:Array = [BgWorker.id_base64ToByte,currentId,tempFile.nativePath] ;
 				

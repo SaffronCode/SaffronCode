@@ -84,16 +84,20 @@
 							var fileStreamBase64:FileStream = new FileStream();
 							trace("*** Read file ");
 							fileStreamBase64.open(targetFile,FileMode.READ);
+							var loadedString:String = fileStreamBase64.readUTFBytes(fileStreamBase64.bytesAvailable)  ;
 							var baseDecoder:Base64Decoder = new Base64Decoder();
-							baseDecoder.decode(fileStreamBase64.readUTFBytes(fileStreamBase64.bytesAvailable));
+							baseDecoder.decode(loadedString);
+							var decodedBytes:ByteArray = baseDecoder.toByteArray() ;
 							fileStreamBase64.close();
 							trace("*** File loaded");
-							createdData.push([baseDecoder.toByteArray()]);
+							//createdData.push([decodedBytes]);
 							try
 							{
 								targetFile.deleteFile();
 							}
 							catch(e:Error){};
+							createdData.push(["deleted without byte"]);
+							break;
 						}
 						catch(e:Error)
 						{
