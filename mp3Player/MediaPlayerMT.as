@@ -70,6 +70,11 @@ package mp3Player
 			
 			this.removeEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 			this.removeEventListener(Event.ENTER_FRAME,checkPrecent);
+			stop();
+		}
+		
+		override public function stop():void
+		{
 			SoundPlayer.pause(mediaSoundID);
 			SoundPlayer.removeSound(mediaSoundID);
 		}
