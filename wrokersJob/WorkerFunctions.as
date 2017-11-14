@@ -3,7 +3,10 @@
 	import contents.alert.Alert;
 	
 	import flash.events.Event;
+	import flash.events.IOErrorEvent;
 	import flash.filesystem.File;
+	import flash.filesystem.FileMode;
+	import flash.filesystem.FileStream;
 	import flash.system.Capabilities;
 	import flash.system.MessageChannel;
 	import flash.system.Worker;
@@ -36,18 +39,21 @@
 		
 		private static var activated:Boolean = false ;
 		
+		
 		public static function setUp(TotalWorkers:uint = 4):void
 		{
 			activated = true ;
 			totalWorkers = TotalWorkers ;
 			
-			var workerTarget:File = File.applicationDirectory.resolvePath("Data/bgWork.swf");//new File("D://Sepehr//gitHub/sepehrEngine/SaffronEngine/Data-sample/bgWork.swf") ;
+			var workerTarget:File = File.applicationDirectory.resolvePath("Data/bgWork2.swf");//new File("D://Sepehr//gitHub/sepehrEngine/SaffronEngine/Data-sample/bgWork.swf") ;
 			if(!workerTarget.exists)
 			{
 				var moreHints:String = '';
 				if(File.applicationDirectory.resolvePath("Data/bgWork").exists)
-					moreHints += " and remove the Data/bgWork now. ";
-				Alert.show("Add the  bgWork  file from Data-sample folder on Saffron to your Data folder"+moreHints) ;
+					moreHints += " and remove the Data/bgWork now.\n";
+				if(File.applicationDirectory.resolvePath("Data/bgWork.swf").exists)
+					moreHints += " and remove the Data/bgWork.swf now.\n";
+				Alert.show("Add the  "+workerTarget.name+"  file from Data-sample folder on Saffron to your Data folder"+moreHints) ;
 			}
 			var workerBytes:ByteArray = FileManager.loadFile(workerTarget);
 			
@@ -134,6 +140,39 @@
 			}
 		}
 		
+		/**You will receive your byte array on the first unit of receiver array. so receiver must take an array*/
+		public static function base64ToByte(base64String:String,receiver:Function):void
+		{
+			var currentId:uint = lastID++ ;
+			
+			funcList.push(receiver);
+			idList.push(currentId);
+			
+			var tempFile:File = File.createTempFile() ;
+			var fileStream:FileStream = new FileStream();
+			fileStream.addEventListener(Event.CLOSE,fileSaved);
+			fileStream.openAsync(tempFile,FileMode.WRITE);
+			trace("** Save "+base64String.length+" to temp file targeted : "+tempFile.nativePath);
+			fileStream.writeUTFBytes(base64String);
+			fileStream.close();
+			
+			function fileSaved(event:Event):void
+			{
+				trace("** File saved done!!");
+				fileStream.close();
+				var toSendValue:Array = [BgWorker.id_base64ToByte,currentId,tempFile.nativePath] ;
+				
+				if(activated)
+				{
+					selectSenderTosend().send(toSendValue);
+				}
+				else
+				{
+					setUpDebugOnce();
+					bgEmulator.handleCommandMessage(toSendValue);
+				}
+			}
+		}		
 		
 		/**You will recevie your objec on your receiver function on the first unit of an Array.*/
 		public static function JSONPars(str:String,receiver:Function):void
@@ -173,7 +212,10 @@
 				received = receiverChannel.receive();
 			}
 			trace("Received data type is : "+getQualifiedClassName(received[1]));
-			callFunction(received[0],received[1]);
+			var callerId:uint = received[0] ;
+			
+		
+			callFunction(callerId,received[1]);
 		}
 		
 		/**Send this data to its recever*/

@@ -19,10 +19,14 @@
 	import flash.utils.getQualifiedClassName;
 	import flash.utils.setTimeout;
 	
+	import mx.utils.Base64Decoder;
+	import mx.utils.Base64Encoder;
+	
 	public class BgWorker extends MovieClip
 	{
 		public static const id_jsonParser:int = 1 ;
 		public static const id_byteToBitmap:int = 2 ;
+		public static const id_base64ToByte:int = 3 ;
 		
 		
 		private var receiverChannel:MessageChannel;
@@ -56,6 +60,7 @@
 			{
 				receveidData = receiverChannel.receive() ;
 			}
+			var targetFile:File;
 			//trace("Receved data on bgWorker is : "+receveidData);
 			var callerId:uint = receveidData[1] ;
 			var callerData:Object = receveidData[2] ;
@@ -67,6 +72,37 @@
 			{
 				case id_jsonParser:
 					createdData.push([JSON.parse(String(callerData))]);
+					break ;
+				case id_base64ToByte:
+					if(callerData is String)
+					{
+						trace("*** File catched by worker : "+callerData);
+						try
+						{
+							targetFile = new File(callerData as String);
+							var fileStreamBase64:FileStream = new FileStream();
+							trace("*** Read file ");
+							fileStreamBase64.open(targetFile,FileMode.READ);
+							var baseDecoder:Base64Decoder = new Base64Decoder();
+							baseDecoder.decode(fileStreamBase64.readUTFBytes(fileStreamBase64.bytesAvailable));
+							fileStreamBase64.close();
+							trace("*** File loaded");
+							createdData.push([baseDecoder.toByteArray()]);
+							try
+							{
+								targetFile.deleteFile();
+							}
+							catch(e:Error){};
+						}
+						catch(e:Error)
+						{
+							createdData.push([e.message]);
+						}
+					}
+					else
+					{
+						createdData.push([null]);
+					}
 					break ;
 				case id_byteToBitmap:
 					try
@@ -99,7 +135,7 @@
 							{
 								fileLoader = new FileStream();
 								trace("-fileTarget : "+fileTarget);
-								var targetFile:File = new File(fileTarget);
+								targetFile = new File(fileTarget);
 								trace("-target file created");
 								fileLoader.open(targetFile,FileMode.READ);
 								byte = new ByteArray();
