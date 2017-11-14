@@ -172,7 +172,41 @@
 					bgEmulator.handleCommandMessage(toSendValue);
 				}
 			}
-		}		
+		}	
+		
+		/**You will receive your base64 string on the first unit of receiver array. so receiver must take an array*/
+		public static function byteToBase64(fileByte:ByteArray,receiver:Function):void
+		{
+			var currentId:uint = lastID++ ;
+			
+			funcList.push(receiver);
+			idList.push(currentId);
+			
+			trace("** Convert byte to base64");
+			var tempFile:File = File.createTempFile() ;
+			var fileStream:FileStream = new FileStream();
+			fileStream.addEventListener(Event.CLOSE,fileSaved);
+			fileStream.openAsync(tempFile,FileMode.WRITE);
+			fileStream.writeBytes(fileByte,0,fileByte.length);
+			fileStream.close();
+			
+			function fileSaved(event:Event):void
+			{
+				trace("** File saved done!!");
+				fileStream.close();
+				var toSendValue:Array = [BgWorker.id_byteToBase64,currentId,tempFile.nativePath] ;
+				
+				if(activated)
+				{
+					selectSenderTosend().send(toSendValue);
+				}
+				else
+				{
+					setUpDebugOnce();
+					bgEmulator.handleCommandMessage(toSendValue);
+				}
+			}
+		}	
 		
 		/**You will recevie your objec on your receiver function on the first unit of an Array.*/
 		public static function JSONPars(str:String,receiver:Function):void

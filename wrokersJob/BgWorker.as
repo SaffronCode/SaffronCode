@@ -27,6 +27,7 @@
 		public static const id_jsonParser:int = 1 ;
 		public static const id_byteToBitmap:int = 2 ;
 		public static const id_base64ToByte:int = 3 ;
+		public static const id_byteToBase64:int = 4 ;
 		
 		
 		private var receiverChannel:MessageChannel;
@@ -88,6 +89,39 @@
 							fileStreamBase64.close();
 							trace("*** File loaded");
 							createdData.push([baseDecoder.toByteArray()]);
+							try
+							{
+								targetFile.deleteFile();
+							}
+							catch(e:Error){};
+						}
+						catch(e:Error)
+						{
+							createdData.push([e.message]);
+						}
+					}
+					else
+					{
+						createdData.push([null]);
+					}
+					break ;
+				case id_byteToBase64:
+					if(callerData is String)
+					{
+						trace("*** File catched by worker : "+callerData);
+						try
+						{
+							targetFile = new File(callerData as String);
+							var fileStreamByte:FileStream = new FileStream();
+							trace("*** Read file ");
+							fileStreamByte.open(targetFile,FileMode.READ);
+							var baseEncoder:Base64Encoder = new Base64Encoder();
+							var loadedBytes:ByteArray = new ByteArray();
+							fileStreamByte.readBytes(loadedBytes,0,fileStreamByte.bytesAvailable)
+							baseEncoder.encodeBytes(loadedBytes);
+							fileStreamByte.close();
+							trace("*** File loaded");
+							createdData.push([baseEncoder.toString()]);
 							try
 							{
 								targetFile.deleteFile();
