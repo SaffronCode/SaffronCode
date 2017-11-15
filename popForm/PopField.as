@@ -60,6 +60,18 @@
 			}
 		}
 		
+		public function set textWithoutChangeEvent(value:String):void
+		{
+			this.addEventListener(Event.CHANGE,eventStopper,false,1000);
+			text = value ;
+			this.removeEventListener(Event.CHANGE,eventStopper);
+		}
+		
+		private function eventStopper(e:Event):void
+		{
+			e.stopImmediatePropagation();
+		}
+		
 		public function set text(value:String):void
 		{
 			if(value==null)

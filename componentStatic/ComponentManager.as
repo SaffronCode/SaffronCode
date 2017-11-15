@@ -21,7 +21,7 @@ package componentStatic
 			errorManager = new ErrorManager();
 			filedCorrectMc = Obj.get('filedCorrect_mc',this);	
 		}
-		public function setup(CatcherObject:*,Page_p:String,IgnoreList_p:Array=null,DefultValue_p:*=null)
+		public function setup(CatcherObject:*,Page_p:String,IgnoreList_p:Array=null,DefultValue_p:*=null,resetData_p:Boolean = false)
 		{
 			evt = this;
 			errorManager.setup();
@@ -30,13 +30,12 @@ package componentStatic
 			if(IgnoreList_p!=null)
 			{
 				ErrorManager.ignoreList = IgnoreList_p;
-				trace('ingnoreList :',JSON.stringify(ErrorManager.ignoreList));	
 			}
 			else
 			{
 				ErrorManager.ignoreList = new Array();
 			}
-			if(_obj[_page]==null)
+			if(_obj[_page]==null || resetData_p)
 			{
 				_obj[_page] =  new Object();
 			}
