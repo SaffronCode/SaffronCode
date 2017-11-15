@@ -2,7 +2,6 @@
 {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
-	import flash.display.DisplayObject;
 	import flash.display.Loader;
 	import flash.display.MovieClip;
 	import flash.events.Event;
@@ -10,14 +9,11 @@
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
-	import flash.net.URLRequest;
 	import flash.system.ApplicationDomain;
 	import flash.system.LoaderContext;
 	import flash.system.MessageChannel;
 	import flash.system.Worker;
 	import flash.utils.ByteArray;
-	import flash.utils.getQualifiedClassName;
-	import flash.utils.setTimeout;
 	
 	import mx.utils.Base64Decoder;
 	import mx.utils.Base64Encoder;
@@ -84,16 +80,25 @@
 							var fileStreamBase64:FileStream = new FileStream();
 							trace("*** Read file ");
 							fileStreamBase64.open(targetFile,FileMode.READ);
+							var loadedString:String = fileStreamBase64.readUTFBytes(fileStreamBase64.bytesAvailable)  ;
 							var baseDecoder:Base64Decoder = new Base64Decoder();
-							baseDecoder.decode(fileStreamBase64.readUTFBytes(fileStreamBase64.bytesAvailable));
+							baseDecoder.decode(loadedString);
+							var decodedBytes:ByteArray = baseDecoder.toByteArray() ;
 							fileStreamBase64.close();
 							trace("*** File loaded");
-							createdData.push([baseDecoder.toByteArray()]);
 							try
 							{
 								targetFile.deleteFile();
 							}
 							catch(e:Error){};
+							
+							fileStreamBase64.open(targetFile,FileMode.WRITE);
+							fileStreamBase64.writeBytes(decodedBytes,0,decodedBytes.length);
+							fileStreamBase64.close();
+							
+							createdData.push([targetFile.nativePath]);
+							
+							break;
 						}
 						catch(e:Error)
 						{

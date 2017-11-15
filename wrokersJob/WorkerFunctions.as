@@ -1,6 +1,5 @@
 ﻿package wrokersJob
 {
-	import contents.alert.Alert;
 	
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
@@ -45,7 +44,7 @@
 			activated = true ;
 			totalWorkers = TotalWorkers ;
 			
-			var workerTarget:File = File.applicationDirectory.resolvePath("Data/bgWork2.swf");//new File("D://Sepehr//gitHub/sepehrEngine/SaffronEngine/Data-sample/bgWork.swf") ;
+			var workerTarget:File = File.applicationDirectory.resolvePath("Data/bgWork3.swf");//new File("D://Sepehr//gitHub/sepehrEngine/SaffronEngine/Data-sample/bgWork.swf") ;
 			if(!workerTarget.exists)
 			{
 				var moreHints:String = '';
@@ -53,7 +52,8 @@
 					moreHints += " and remove the Data/bgWork now.\n";
 				if(File.applicationDirectory.resolvePath("Data/bgWork.swf").exists)
 					moreHints += " and remove the Data/bgWork.swf now.\n";
-				Alert.show("Add the  "+workerTarget.name+"  file from Data-sample folder on Saffron to your Data folder"+moreHints) ;
+				if(File.applicationDirectory.resolvePath("Data/bgWork2.swf").exists)
+					moreHints += " and remove the Data/bgWork2.swf now.\n";
 			}
 			var workerBytes:ByteArray = FileManager.loadFile(workerTarget);
 			
@@ -140,7 +140,7 @@
 			}
 		}
 		
-		/**You will receive your byte array on the first unit of receiver array. so receiver must take an array*/
+		/**You will receive your encoded bytes in a file that will target on the first unit of receiver array. so receiver must take an array*/
 		public static function base64ToByte(base64String:String,receiver:Function):void
 		{
 			var currentId:uint = lastID++ ;
@@ -152,13 +152,11 @@
 			var fileStream:FileStream = new FileStream();
 			fileStream.addEventListener(Event.CLOSE,fileSaved);
 			fileStream.openAsync(tempFile,FileMode.WRITE);
-			trace("** Save "+base64String.length+" to temp file targeted : "+tempFile.nativePath);
 			fileStream.writeUTFBytes(base64String);
 			fileStream.close();
 			
 			function fileSaved(event:Event):void
 			{
-				trace("** File saved done!!");
 				fileStream.close();
 				var toSendValue:Array = [BgWorker.id_base64ToByte,currentId,tempFile.nativePath] ;
 				
