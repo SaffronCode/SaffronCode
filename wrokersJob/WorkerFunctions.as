@@ -40,6 +40,8 @@
 		
 		private static var activated:Boolean = false ;
 		
+		private static var numberOfWorkersWaitnigToStart:int = 0 ;
+		
 		
 		public static function setUp(TotalWorkers:uint = 4):void
 		{
@@ -67,6 +69,7 @@
 				receiverChallens = new Vector.<MessageChannel>();
 				for(var i:int = 0 ; i<totalWorkers ; i++)
 				{
+					numberOfWorkersWaitnigToStart++ ;
 					var worker:Worker = WorkerDomain.current.createWorker(workerBytes,true);
 					worker.addEventListener(Event.WORKER_STATE, workerStateHandler);
 					
@@ -110,7 +113,15 @@
 		private static function workerStateHandler(e:Event) {
 			var worker:Worker = e.currentTarget as Worker ;
 			trace("Worker State : "+worker.state);
-			isReady = worker.state == WorkerState.RUNNING ;
+			if(worker.state == WorkerState.RUNNING)
+			{
+				numberOfWorkersWaitnigToStart--;
+			}
+			if(numberOfWorkersWaitnigToStart<=0)
+			{
+				isReady = true ;
+				//Alert.show("All workers ready");
+			}
 		}
 		
 		
@@ -131,7 +142,7 @@
 			var toSendValue:Array = [BgWorker.id_byteToBitmap,currentId,[byteOrURLString,loadInThisArea,imageW,imageH,keepRatio]] ;
 			
 			
-			if(activated)
+			if(activated && isReady)
 			{
 				//var tim:Number = getTimer();
 				//It takes time to pass big bytes here
@@ -167,7 +178,7 @@
 				fileStream.close();
 				var toSendValue:Array = [BgWorker.id_base64ToByte,currentId,tempFile.nativePath] ;
 				
-				if(activated)
+				if(activated && isReady)
 				{
 					selectSenderTosend().send(toSendValue);
 				}
@@ -201,7 +212,7 @@
 				fileStream.close();
 				var toSendValue:Array = [BgWorker.id_byteToBase64,currentId,tempFile.nativePath] ;
 				
-				if(activated)
+				if(activated && isReady)
 				{
 					selectSenderTosend().send(toSendValue);
 				}
@@ -224,13 +235,15 @@
 			trace("Function id list updated : "+idList+' vs currentId :'+currentId);
 			
 			var toSendValue:Array = [BgWorker.id_jsonParser,currentId,str] ;
-			
-			if(activated)
+			//Alert.show("JSOn called, activated:"+activated+" isReady:"+isReady);
+			if(activated && isReady)
 			{
+				//Alert.show("JSOn called used worker");
 				selectSenderTosend().send(toSendValue);
 			}
 			else
 			{
+				//Alert.show("JSOn called used debug worker");
 				setUpDebugOnce();
 				bgEmulator.handleCommandMessage(toSendValue);
 			}
