@@ -26,6 +26,8 @@
 	
 	import myAsCSS.MyAsCSS;
 	
+	import soundPlayer.SoundPlayer;
+	
 	/**Now its ready to call other pages*/
 	[Event(name="MAIN_ANIM_IS_READY", type="appManager.event.AppEvent")]
 	/**Intro is over and app is starting to open*/
@@ -128,6 +130,7 @@
 			this.addEventListener(TitleEvent.CHANGE_TITLE,changeTheTitle);
 			
 			NativeApplication.nativeApplication.addEventListener(KeyboardEvent.KEY_DOWN,controllBackButton);
+			SoundPlayer.preventExitHandler();
 			
 			//This will remind that first page of the application is HomePage
 			is_in_home = true ;
