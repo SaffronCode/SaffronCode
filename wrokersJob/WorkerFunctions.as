@@ -1,6 +1,8 @@
 ﻿package wrokersJob
 {
 	
+	import contents.alert.Alert;
+	
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.filesystem.File;
@@ -54,6 +56,7 @@
 					moreHints += " and remove the Data/bgWork.swf now.\n";
 				if(File.applicationDirectory.resolvePath("Data/bgWork2.swf").exists)
 					moreHints += " and remove the Data/bgWork2.swf now.\n";
+				Alert.show("Add the  "+workerTarget.name+"  file from Data-sample folder on Saffron to your Data folder"+moreHints) ;
 			}
 			var workerBytes:ByteArray = FileManager.loadFile(workerTarget);
 			
@@ -85,6 +88,7 @@
 				activated = false ;
 				setUpDebugOnce();
 			}
+			//Alert.show("Worker starts! "+activated);
 		}
 		
 		/**Set up the back groun emolator dfirst*/
@@ -113,6 +117,7 @@
 		/**The receiver function will receive array of byteOfBitmap,Width,Heigh or null to make a bitmapData with BitmapData.setPixels() function. if the file is local, pass the native path for it*/
 		public static function createBitmapFromByte(byteOrURLString:*,receiver:Function,loadInThisArea:Boolean=false, imageW:Number=0, imageH:Number=0, keepRatio:Boolean=true):void
 		{
+			//Alert.show("Worker Bitmap ");
 			var currentId:uint = lastID++ ;
 			
 			funcList.push(receiver);
@@ -135,6 +140,7 @@
 			}
 			else
 			{
+				//Alert.show("Worker DEBUG ");
 				setUpDebugOnce();
 				bgEmulator.handleCommandMessage(toSendValue);
 			}
@@ -143,6 +149,7 @@
 		/**You will receive your encoded bytes in a file that will target on the first unit of receiver array. so receiver must take an array*/
 		public static function base64ToByte(base64String:String,receiver:Function):void
 		{
+			//Alert.show("Worker Bitmap ");
 			var currentId:uint = lastID++ ;
 			
 			funcList.push(receiver);
