@@ -30,6 +30,9 @@
 		/**it can be an uint or string*/
 		public var ID:* ;
 		
+		/**This is the buttonData*/
+		public var buttonData:Object ;
+		
 		public var title:String ;
 		
 		private var me:PopButton ;
@@ -157,6 +160,7 @@
 				type = completeButtonObject.buttonFrame ;
 				buttonID = completeButtonObject.id ;
 				str = completeButtonObject.title ;
+				buttonData = (completeButtonObject as PopButtonData).dynamicData ;
 				this.mouseEnabled = completeButtonObject.selectable;
 			}
 			

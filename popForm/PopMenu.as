@@ -260,7 +260,7 @@
 		private function popMenuitemsAreSelected(e:PopMenuEvent)
 		{
 			this.close();
-			var buttonEvent:PopMenuEvent = new PopMenuEvent(e.type,e.buttonID,e.field,e.buttonTitle) ;
+			var buttonEvent:PopMenuEvent = new PopMenuEvent(e.type,e.buttonID,e.field,e.buttonTitle,false,e.buttonData) ;
 			if(onButton!=null)
 			{
 				onButton(buttonEvent);
@@ -368,11 +368,13 @@
 					//trace("button is : "+getQualifiedClassName(button));
 					var buttonName:String ;
 					var buttonId:String ;
+					var buttonData:Object ;
 					if(button is PopButtonData)
 					{
 						//trace("This is data button");
 						buttonName = (button as PopButtonData).title ;
 						buttonId = (button as PopButtonData).id ;
+						buttonData = (button as PopButtonData).dynamicData ;
 					}
 					else
 					{
@@ -385,7 +387,7 @@
 					if( cancelNames.indexOf(buttonName)!=-1)
 					{
 						cancelButton.visible = true ;
-						cancelEvent = new PopMenuEvent(PopMenuEvent.POP_BUTTON_SELECTED,buttonId,null,buttonName) ;
+						cancelEvent = new PopMenuEvent(PopMenuEvent.POP_BUTTON_SELECTED,buttonId,null,buttonName,false,buttonData) ;
 					}
 				}
 			}

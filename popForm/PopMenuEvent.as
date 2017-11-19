@@ -1,5 +1,7 @@
 ﻿package popForm
 {
+	import contents.alert.Alert;
+	
 	import flash.events.Event;
 
 	/**it is contains buttonID and field values*/
@@ -17,18 +19,20 @@
 		
 		/**Button id can be String or Number*/
 		public var 	buttonID:*,
-					buttonTitle:String; 
+					buttonTitle:String,
+					buttonData:Object; 
 		
 		/**this is an Object of each values that entered on fields<br>
 		 * You can find each field with its id on this object*/
 		public var field:Object ;
 		
 		/**Button id can be a String value*/
-		public function PopMenuEvent(type:String,ButtonID:*=0,enteredField:Object=null,ButtonTitle:String='',bubble:Boolean=false)
+		public function PopMenuEvent(type:String,ButtonID:*=0,enteredField:Object=null,ButtonTitle:String='',bubble:Boolean=false,ButtonData:Object=null)
 		{
 			super(type,bubble);
 			buttonID = ButtonID;
 			buttonTitle = ButtonTitle ;
+			buttonData = ButtonData ;
 			if(enteredField == null)
 			{
 				field = {} ;

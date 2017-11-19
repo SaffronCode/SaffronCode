@@ -595,7 +595,7 @@ package popForm
 				//trace("field[i].data : "+field[i].data);
 				outField[field[i].title] = field[i].data ;
 			}
-			this.dispatchEvent(new PopMenuEvent(PopMenuEvent.POP_BUTTON_SELECTED,PopButton(e.currentTarget).ID,outField,PopButton(e.currentTarget).title));
+			this.dispatchEvent(new PopMenuEvent(PopMenuEvent.POP_BUTTON_SELECTED,PopButton(e.currentTarget).ID,outField,PopButton(e.currentTarget).title,false,PopButton(e.currentTarget).buttonData));
 		}
 		
 		/**This will returns all PopFieldInterfaces*/
