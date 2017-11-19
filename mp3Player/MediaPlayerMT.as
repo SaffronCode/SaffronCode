@@ -47,6 +47,9 @@ package mp3Player
 		
 		private var currentMuseicTotalTimeInMilisecond:uint ;
 		
+		private var 	stepForwardMC:MovieClip,
+								stepBackwardMC:MovieClip;
+		
 		
 		public function MediaPlayerMT()
 		{
@@ -60,6 +63,8 @@ package mp3Player
 			playPauseBTN.buttonMode = true ;
 			playPauseBTN.addEventListener(MouseEvent.CLICK,toglleSoundIfLoaded);
 			
+			stepForwardMC = Obj.get("step_next_mc",this);
+			stepBackwardMC = Obj.get("step_back_mc",this);
 			
 			precentTF = Obj.get("precent_txt",this);
 			precentTF.text = '' ;
@@ -105,6 +110,12 @@ package mp3Player
 				mainColor = MainColor;
 			}
 			
+			if(stepForwardMC!=null && stepBackwardMC!=null)
+			{
+				stepForwardMC.addEventListener(MouseEvent.CLICK,stepForwardFunction);
+				stepBackwardMC.addEventListener(MouseEvent.CLICK,stepbackwardFunction);
+			}
+			
 			sliderMC.y = 0 ;
 			sliderMC.setUp(mainColor,backColor,onPrecentChanged);
 			autoPlay = AutoPlay ;
@@ -122,6 +133,15 @@ package mp3Player
 			}
 		}
 		
+		protected function stepbackwardFunction(event:MouseEvent):void
+		{
+			SoundPlayer.stepBackward(mediaSoundID);
+		}
+		
+		protected function stepForwardFunction(event:MouseEvent):void
+		{
+			SoundPlayer.stepForward(mediaSoundID);
+		}		
 		
 		
 		
