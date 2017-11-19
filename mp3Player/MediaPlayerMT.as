@@ -6,18 +6,26 @@ package mp3Player
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.text.TextField;
+	import flash.utils.clearInterval;
+	import flash.utils.clearTimeout;
+	import flash.utils.setInterval;
+	import flash.utils.setTimeout;
 	
 	import netManager.urlSaver.URLSaver;
 	import netManager.urlSaver.URLSaverEvent;
 	
 	import soundPlayer.SoundPlayer;
+	import soundPlayer.SoundPlayerEvent;
 	
 	
 	public class MediaPlayerMT extends MovieClip
 	{
 		private var playPauseBTN:MovieClip;
 		
-		private var precentTF:TextField ;		
+		private var precentTF:TextField ;	
+		
+		private var 	currentTF:TextField,
+								totalTF:TextField;
 		
 		private var sliderMC:MediaSlider ;
 		
@@ -35,6 +43,9 @@ package mp3Player
 		
 		private var mediaSoundID:uint = 2 ;
 		private var autoPlay:Boolean;
+		private var timeOutId:uint;
+		
+		private var currentMuseicTotalTimeInMilisecond:uint ;
 		
 		
 		public function MediaPlayerMT()
@@ -54,8 +65,11 @@ package mp3Player
 			precentTF.text = '' ;
 			precentTF.mouseEnabled = false;
 			
+			currentTF = Obj.get("current_txt",this);
+			totalTF = Obj.get("total_txt",this);
+			
 			sliderMC = Obj.get("slider_mc",this);
-			sliderMC.height = playPauseBTN.height ;
+			//sliderMC.height = playPauseBTN.height ;
 			
 			urlController = new URLSaver(true);
 			
@@ -67,7 +81,7 @@ package mp3Player
 		
 		protected function unLoad(event:Event):void
 		{
-			
+			clearInterval(timeOutId);
 			this.removeEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 			this.removeEventListener(Event.ENTER_FRAME,checkPrecent);
 			stop();
@@ -152,7 +166,33 @@ package mp3Player
 				SoundPlayer.play(mediaSoundID);
 				playPauseBTN.gotoAndStop(2);
 			}
+			
+
+			
+			
+			clearInterval(timeOutId);
+			if(totalTF!=null && currentTF!=null)
+			{
+				currentMuseicTotalTimeInMilisecond = 0 ;
+				timeOutId = setInterval(showTimes,500);
+				showTimes();
+			}
 		}		
+		
+
+		
+		private function showTimes():void
+		{
+			if(currentMuseicTotalTimeInMilisecond==0)
+			{
+				currentMuseicTotalTimeInMilisecond = SoundPlayer.getMusicTime(mediaSoundID);
+				totalTF.text = TimeToString.timeInString(Math.round( currentMuseicTotalTimeInMilisecond/1000));
+			}
+			
+			var precent:Number = SoundPlayer.getPlayedPrecent(mediaSoundID) ;
+			trace("Sound precent is : "+precent);
+			currentTF.text = TimeToString.timeInString(Math.round(precent*(currentMuseicTotalTimeInMilisecond/1000)));
+		}
 		
 		
 		/**Sync the slider precent with SoundPlayer*/
