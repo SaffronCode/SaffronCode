@@ -84,7 +84,8 @@
 			
 			if(activateWorkers)
 			{
-				setTimeout(startWorker,1000);
+				//setTimeout(startWorker,1000);
+				startWorker();
 			}
 			
 			
