@@ -180,7 +180,10 @@
 					{
 						bodyObject = JSON.parse(convertedJSON) ;
 					}
-					catch(e){};
+					catch(e)
+					{
+						trace("JSON input model was wrnog : "+JSONCorrector(body.raw));
+					};
 				}
 			}
 			return bodyObject;
@@ -198,7 +201,8 @@
 			{
 				return 'false';
 			}
-			return wrongJSON.replace(/([,\{][\s\n\r]*)([a-z]+[\s]*[\s]*):/gi,'$1"$2":') ;
+			//																					↓ Remove comments
+			return wrongJSON.replace(/([,\{][\s\n\r]*)([a-z]+[\s]*[\s]*):/gi,'$1"$2":').replace(/\/\*[^*]*\*\//gi,'');
 		}
 		
 		/**This will save the json to as file<br>
