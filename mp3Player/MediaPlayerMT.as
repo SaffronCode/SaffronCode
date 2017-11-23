@@ -210,7 +210,7 @@ package mp3Player
 			}
 			
 			var precent:Number = SoundPlayer.getPlayedPrecent(mediaSoundID) ;
-			trace("Sound precent is : "+precent);
+			//trace("Sound precent is : "+precent);
 			currentTF.text = TimeToString.timeInString(Math.round(precent*(currentMuseicTotalTimeInMilisecond/1000)));
 		}
 		
