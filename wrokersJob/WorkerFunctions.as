@@ -16,6 +16,7 @@
 	import flash.utils.ByteArray;
 	import flash.utils.getQualifiedClassName;
 	import flash.utils.getTimer;
+	import flash.utils.setTimeout;
 
 	public class WorkerFunctions
 	{
@@ -42,12 +43,24 @@
 		
 		private static var numberOfWorkersWaitnigToStart:int = 0 ;
 		
+		private static var startWorkerCalled:Boolean = false ;
+		
 		
 		public static function setUp(TotalWorkers:uint = 4):void
 		{
 			activated = true ;
 			totalWorkers = TotalWorkers ;
 			
+			if(startWorkerCalled==false)
+			{
+				startWorkerCalled = true ;
+				setTimeout(startWorkerAfterDelay,0);
+			}
+		}
+		
+		private static function startWorkerAfterDelay():void
+		{
+			trace("Worker stats");
 			var workerTarget:File = File.applicationDirectory.resolvePath("Data/bgWork3.swf");//new File("D://Sepehr//gitHub/sepehrEngine/SaffronEngine/Data-sample/bgWork.swf") ;
 			if(!workerTarget.exists)
 			{
@@ -91,7 +104,6 @@
 				activated = false ;
 				setUpDebugOnce();
 			}
-			//Alert.show("Worker starts! "+activated);
 		}
 		
 		/**Set up the back groun emolator dfirst*/
