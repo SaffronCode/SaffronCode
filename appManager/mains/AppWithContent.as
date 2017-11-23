@@ -12,6 +12,7 @@
 	import contents.ContentsEvent;
 	import contents.History;
 	import contents.PageData;
+	import contents.alert.Alert;
 	import contents.displayElements.DeveloperPage;
 	import contents.robot.RankingSystem;
 	
@@ -25,6 +26,7 @@
 	import flash.geom.Rectangle;
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
+	import flash.utils.setTimeout;
 	
 	import permissionControlManifestDiscriptor.PermissionControl;
 	
@@ -82,7 +84,7 @@
 			
 			if(activateWorkers)
 			{
-				WorkerFunctions.setUp();
+				setTimeout(startWorker,1000);
 			}
 			
 			
@@ -218,6 +220,11 @@
 			}
 		}
 		
+		/**Start the worker with delay*/
+		private function startWorker():void
+		{
+			WorkerFunctions.setUp();
+		}		
 		
 		/**The application called with uri shcema*/
 		protected function URICalled(event:InvokeEvent):void
