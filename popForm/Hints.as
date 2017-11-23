@@ -200,13 +200,13 @@ package popForm
 			onSelected = onButtonSelected ;
 			onBacked = onBackFUnction ;
 			
-			var backButton:PopButtonData = new PopButtonData(Contents.lang.t[id_back],backButtonFrame);
+			var backButton:PopButtonData = new PopButtonData(Contents.lang.t[id_back],backButtonFrame,null,true,true);
 			
 			if( onSearched != null )
 			{
 				if(addBackButton)
 				{
-					namesArray = [Contents.lang.t[id_search],backButton,''] ;
+					namesArray = [new PopButtonData(Contents.lang.t[id_search],1,null,true,true),backButton,''] ;
 				}
 				else
 				{
