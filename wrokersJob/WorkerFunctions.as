@@ -54,7 +54,7 @@
 			if(startWorkerCalled==false)
 			{
 				startWorkerCalled = true ;
-				setTimeout(startWorkerAfterDelay,1000);
+				setTimeout(startWorkerAfterDelay,0);
 			}
 		}
 		
