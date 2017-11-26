@@ -248,7 +248,7 @@
 			parsLoadedData(requestLoader.data);
 		}
 		
-		private function parsLoadedData(loadedData:*,alreadyLoadedFromCash:Boolean=false):void
+		protected function parsLoadedData(loadedData:*,alreadyLoadedFromCash:Boolean=false):void
 		{
 			var serverErrorBool:Boolean = false ;
 			var pureRecevedData:String = String(loadedData);
