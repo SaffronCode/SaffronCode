@@ -116,6 +116,10 @@
 		/**Check the url object*/
 		private static function URLCatcher(url:String):String
 		{
+			if(url==null)
+			{
+				url = '' ;
+			}
 			if(url.indexOf('"raw"')==-1)
 			{
 				return url ;
