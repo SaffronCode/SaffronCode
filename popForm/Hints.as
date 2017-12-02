@@ -106,13 +106,13 @@ package popForm
 		/**Show this hint with PopMenu1
 		 * I made canselable default to true to make user confortable to close errors
 		 * */
-		public static function show(str:String,canselable:Boolean=true,delyTime:int=-1,displayObject:MovieClip=null,title:String='',onClose:Function=null)
+		public static function show(str:String,canselable:Boolean=true,delyTime:int=-1,displayObject:MovieClip=null,title:String='',onClose:Function=null,backButtonFrame:uint=1)
 		{
 			var buttons:Array ;
 			_onClose = onClose;
 			if(canselable)
 			{
-				buttons = [Contents.lang.t[id_back]];
+				buttons = [new PopButtonData(Contents.lang.t[id_back],backButtonFrame)];
 			}
 			if(delyTime==-1)
 			{
