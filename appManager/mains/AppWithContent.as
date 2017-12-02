@@ -215,6 +215,12 @@
 				}
 			}
 			
+			if(loadConfig && PopMenu1.isExists())
+			{
+				PopMenu.backEnable(Contents.lang.t.back);
+				PopMenu.staticCanselEnabled([Contents.lang.t.back]);
+			}
+			
 			if(errorThrower!='')
 			{
 				throw errorThrower ;
@@ -394,6 +400,7 @@
 			/**Returns true if there is no listener on this function, so the application have to redirect to the server*/
 			protected function isExpired(hint:String,link:String):Boolean
 			{
+				Alert.show(hint);
 				return true ;
 			}
 	}

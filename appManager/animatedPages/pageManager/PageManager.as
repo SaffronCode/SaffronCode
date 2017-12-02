@@ -2,6 +2,7 @@ package appManager.animatedPages.pageManager
 	//appManager.animatedPages.pageManager.PageManager
 {
 	import appManager.event.AppEvent;
+	import appManager.event.AppEventContent;
 	import appManager.mains.App;
 	
 	import flash.display.MovieClip;
@@ -122,6 +123,8 @@ package appManager.animatedPages.pageManager
 				else
 				{
 					toEvent = myCurrentEvent ;
+					if(myCurrentEvent is AppEventContent)
+						(myCurrentEvent as AppEventContent).updateMyPageData();
 				}
 				pageContainer.setUp(myCurrentEvent);
 			}
