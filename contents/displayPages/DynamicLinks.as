@@ -953,9 +953,9 @@ package contents.displayPages
 						revertedY
 						&&
 						(
-							visibleItem.y+linksContainer.y<0
+							visibleItem.y+linksContainer.y<areaRect.height
 							&&
-							visibleItem.y+linksContainer.y+visibleItem.height>-areaRect.height*2
+							visibleItem.y+linksContainer.y+visibleItem.height>0
 						)
 					)
 				)
