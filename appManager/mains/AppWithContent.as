@@ -146,40 +146,7 @@
 			if((loadConfig && Contents.config.activateURLCaller) || activateURLCaller)
 			{
 				URISchemId = DevicePrefrence.appID.substr(DevicePrefrence.appID.lastIndexOf('.')+1).toLowerCase();
-				trace("***URISchemId : "+URISchemId);
-				
-				var androidURLPermision:String =   	'				<activity>\n'+
-													'					<intent-filter>\n'+
-													'						<action android:name="android.intent.action.MAIN"/>\n'+
-													'						<category android:name="android.intent.category.LAUNCHER"/>\n'+
-													'					</intent-filter>\n'+
-													'					<intent-filter>\n'+
-													'						<action android:name="android.intent.action.VIEW"/>\n'+
-													'						<category android:name="android.intent.category.BROWSABLE"/>\n'+
-													'						<category android:name="android.intent.category.DEFAULT"/>\n'+
-													'						<data android:scheme="'+URISchemId+'"/>\n'+
-													'					</intent-filter>\n'+
-													'				</activity>\n\n';
-				var appleURLPermision:String = 		'	<key>CFBundleURLTypes</key>\n'+
-													'		<array>\n'+
-													'			<dict>\n'+
-													'				<key>CFBundleURLName</key>\n'+
-													'				<string>'+DevicePrefrence.appID+'</string>\n'+
-													'				<key>CFBundleURLSchemes</key>\n'+
-													'				<array>\n'+
-													'					<string>'+URISchemId+'</string>\n'+
-													'				</array>\n'+
-													'			</dict>\n'+
-													'		</array>\n\n';
-
-				if(DevicePrefrence.isItPC && appDescriptorString.indexOf(StringFunctions.clearSpacesAndTabs(androidURLPermision))==-1)
-				{
-					errorThrower += "Add the below xml to the app manifest in \"<application android:en...\" tag to make it able to open with URI calls like: "+URISchemId+"://\n\n"+androidURLPermision
-				}
-				if(DevicePrefrence.isItPC && appDescriptorString.indexOf(StringFunctions.clearSpacesAndTabs(appleURLPermision))==-1)
-				{
-					errorThrower += "Add the below xml to the app manifest in \"<iPhone> <InfoAdditions><![CDATA[...\" tag to make it able to open with URI calls like: "+URISchemId+"://\n\n"+appleURLPermision
-				}
+				PermissionControl.controlURLShemePermission(URISchemId);
 				
 				NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE, URICalled);
 			}
