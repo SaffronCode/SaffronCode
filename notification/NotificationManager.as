@@ -90,13 +90,19 @@
 			var neceraryLines:String = '•' ;
 			var targetSDK:uint = 22 ;
 			var sdkTargetString:String = 'android:targetSdkVersion="' ;
+			var minSDK:uint = 9 ;
+			var sdkMinTargetString:String = 'android:minSdkVersion="' ;
 			var indexOf:int ;
+			if((indexOf = currentPermissions.indexOf(sdkMinTargetString))!=-1)
+			{
+				minSDK = uint(currentPermissions.substring(indexOf+sdkMinTargetString.length,currentPermissions.indexOf('"',indexOf+sdkMinTargetString.length)));
+			}
 			if((indexOf = currentPermissions.indexOf(sdkTargetString))!=-1)
 			{
 				targetSDK = uint(currentPermissions.substring(indexOf+sdkTargetString.length,currentPermissions.indexOf('"',indexOf+sdkTargetString.length)));
 			}
 			var androidPermission:String = neceraryLines+'<manifest android:installLocation="auto">\n' +
-				'\t<uses-sdk android:minSdkVersion="9" android:targetSdkVersion="'+targetSDK+'" />\n' +
+				'\t<uses-sdk android:minSdkVersion="'+minSDK+'" android:targetSdkVersion="'+targetSDK+'" />\n' +
 				'\t<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>\n' +
 				'\t<uses-permission android:name="android.permission.READ_PHONE_STATE"/>\n' +
 				'\t<uses-permission android:name="android.permission.INTERNET"/>\n' +
@@ -115,7 +121,7 @@
 				'\t\t\t\t<category android:name="air.'+DevicePrefrence.appID+'" />\n' +
 				neceraryLines+'\t\t\t</intent-filter>\n' +
 				neceraryLines+'\t\t</receiver>\n' +
-				'\t<service android:name="com.milkmangames.extensions.android.push.GCMIntentService" />\n' +
+				'\t\t<service android:name="com.milkmangames.extensions.android.push.GCMIntentService" />\n' +
 				neceraryLines+'\t</application>\n' +
 				neceraryLines+'</manifest>' ;
 			
@@ -127,6 +133,7 @@
 				var isNessesaryToShow:Boolean = isNessesaryLine(allAndroidPermission[i]) ;
 				if(currentPermissions.indexOf(StringFunctions.clearSpacesAndTabs(removeNecessaryBoolet(allAndroidPermission[i])))==-1)
 				{
+					trace("permission not found : "+allAndroidPermission[i]);
 					androidManifestMustUpdate = true ;
 					leftPermission += removeNecessaryBoolet(allAndroidPermission[i])+'\n' ;
 				}
