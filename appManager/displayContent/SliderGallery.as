@@ -601,7 +601,7 @@
 				Obj.remove(sliderBoolet);
 				sliderBoolet = null ;
 			}
-			if(addSliderEffect!=null)
+			if(addSliderEffect!=null && _totalImages>1)
 			{
 				addSliderEffect.sliderGallery = this ;
 				addSliderEffect.rtl = rightToLeft ;
