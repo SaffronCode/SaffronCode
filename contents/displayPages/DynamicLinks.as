@@ -32,7 +32,6 @@ package contents.displayPages
 	import flash.geom.Rectangle;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
-	import flash.utils.getTimer;
 	
 	/**Reload required*/
 	[Event(name="RELOAD_REQUIRED", type="contents.displayPages.DynamicLinksEvent")]
@@ -56,7 +55,7 @@ package contents.displayPages
 		
 		private static var scrollPosesObject:Object = {} ;
 		
-		private const backAlpha:Number = 0 ;
+		private const backAlpha:Number = 0.0 ;
 		
 		private const linkSensorDebug:Number = 0.0 ;
 		
@@ -1209,13 +1208,20 @@ package contents.displayPages
 			
 			linksContainer.graphics.clear();
 			linksContainer.graphics.beginFill(0,backAlpha) ;
+			
+			var totalLinks:uint = myPageData.links1.length ;
+			
+			if(reloaderMC!=null)
+			{
+				totalLinks = Math.max(totalLinks,1+Math.ceil(areaRect.height/(sampleLink.height+deltaY)));
+			}
 			if(!horizontalMenu)
 			{
-				linksContainer.graphics.drawRect(0,0,areaRect.width*MenuDirectionX,linksSensor.y+(myPageData.links1.length-lastGeneratedLinkIndes-1)*(sampleLink.height+deltaY)*MenuDirectionY) ;
+				linksContainer.graphics.drawRect(0,0,areaRect.width*MenuDirectionX,linksSensor.y+(totalLinks-lastGeneratedLinkIndes-1)*(sampleLink.height+deltaY)*MenuDirectionY) ;
 			}
 			else
 			{
-				linksContainer.graphics.drawRect(0,0,linksSensor.x+(myPageData.links1.length-lastGeneratedLinkIndes-1)*(sampleLink.width+deltaX)*MenuDirectionX,areaRect.height) ;
+				linksContainer.graphics.drawRect(0,0,linksSensor.x+(totalLinks-lastGeneratedLinkIndes-1)*(sampleLink.width+deltaX)*MenuDirectionX,areaRect.height) ;
 			}
 		}		
 		
@@ -1311,6 +1317,7 @@ package contents.displayPages
 				}
 			}
 			reloaderMC = reloadMC ;
+			updateDynamicLinsBackGround();
 		}
 	}
 }
