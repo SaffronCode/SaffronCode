@@ -119,13 +119,7 @@
 				pureRequest.contentType = 'application/json'
 			}
 			
-			
-			addHeader();
-			
-			for(var i = 0 ; i<RestDoaService.headers.length ; i++)
-			{
-				pureRequest.requestHeaders.push(RestDoaService.headers[i]);
-			}
+			updateHeaders();
 			
 			requestLoader = new URLLoader();
 			if(requestedData is ByteArray)
@@ -141,11 +135,23 @@
 			requestLoader.addEventListener(IOErrorEvent.IO_ERROR,noInternet);
 			requestLoader.addEventListener(ProgressEvent.PROGRESS,dispatchProgress);
 		}
-		protected function addHeader():void
+		
+		/**Update full headers*/
+		private function updateHeaders():void
 		{
-			var newHeader:URLRequestHeader = new URLRequestHeader('Accept','text/json,text/xml, application/xml, application/xhtml+xml, text/html;q=0.9, text/plain;q=0.8, text/css, image/png, image/jpeg, image/gif;q=0.8, application/x-shockwave-flash, video/mp4;q=0.9, flv-application/octet-stream;q=0.8, video/x-flv;q=0.7, audio/mp4, application/futuresplash, */*;q=0.5, application/x-mpegURL');
-			pureRequest.requestHeaders.push(newHeader);
+			pureRequest.requestHeaders = [] ;
+			addHeader();
+			
+			for(var i = 0 ; i<RestDoaService.headers.length ; i++)
+			{
+				pureRequest.requestHeaders.push(RestDoaService.headers[i]);
+			}
 		}
+			protected function addHeader():void
+			{
+				var newHeader:URLRequestHeader = new URLRequestHeader('Accept','text/json,text/xml, application/xml, application/xhtml+xml, text/html;q=0.9, text/plain;q=0.8, text/css, image/png, image/jpeg, image/gif;q=0.8, application/x-shockwave-flash, video/mp4;q=0.9, flv-application/octet-stream;q=0.8, video/x-flv;q=0.7, audio/mp4, application/futuresplash, */*;q=0.5, application/x-mpegURL');
+				pureRequest.requestHeaders.push(newHeader);
+			}
 		/**Set the offline data only status to false to prevent returning offline data or to true to make it return offline data first*/
 		public function offileDataOnly(status:Boolean):void
 		{
@@ -355,6 +361,7 @@
 		protected function loadParam(obj:Object=null):void
 		{
 			cansel();
+			updateHeaders();
 			isConnected = false ;
 			onUpdateProccess = false ;
 			if(obj!=null)
