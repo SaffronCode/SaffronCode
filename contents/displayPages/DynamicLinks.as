@@ -519,6 +519,7 @@ package contents.displayPages
 			if(pageData.links1.length == 0 && noLinksMC!=null)
 			{
 				this.addChild(noLinksMC);
+				linksSensor = new Sprite();
 			}
 			else
 			{
