@@ -1,5 +1,5 @@
 package componentStatic
-{
+{//componentStatic.DateSender
 	import diagrams.calender.MyShamsi;
 	
 	import flash.display.MovieClip;
