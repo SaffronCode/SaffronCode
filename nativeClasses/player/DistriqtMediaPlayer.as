@@ -180,10 +180,10 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 		{
 			NativeApplication.nativeApplication.systemIdleMode = SystemIdleMode.NORMAL ;
 			trace("Hide the player");
-			(MediaPlayerClass as Object).service.removeEventListener(FULLSCREEN_ENTER,isFullscreened);
-			(MediaPlayerClass as Object).service.removeEventListener(FULLSCREEN_EXIT,exitFullscreened);
 			try
 			{
+				(MediaPlayerClass as Object).service.removeEventListener(FULLSCREEN_ENTER,isFullscreened);
+				(MediaPlayerClass as Object).service.removeEventListener(FULLSCREEN_EXIT,exitFullscreened);
 				exitFullscreened(null);
 				isOpen = false ;
 				(MediaPlayerClass as Object).service.removePlayer();
