@@ -52,6 +52,7 @@ package netManager.urlSaver
 		public var onlineURL:String ,
 					offlineURL:String,
 					fileExtention:String,
+					savedAcceptableDate:Date,
 					fileNameOnStorage:String;
 					
 		private var myLoadedBytes:ByteArray ;
@@ -82,6 +83,9 @@ package netManager.urlSaver
 		
 		/**This is the file list of images those copied to storage directory*/
 		private var copiedApplicationFilesTostorage:Object = {} ;
+		
+		/**Special folder to save the file there*/
+		private var mySpecialFolder:File;
 					
 		/**you have to call load() function to start file loading proccess<br>
 		 * if you set true in this value , it will not load byte array of your file and it will just return URL*/
@@ -92,12 +96,14 @@ package netManager.urlSaver
 		
 		/**Start to load my file<br>
 		 * this function will return true if image was offline*/
-		public function load(url:String,myAcceptableDate:Date=null,extention:String=null,fileName:String=null):Boolean
+		public function load(url:String,myAcceptableDate:Date=null,extention:String=null,fileName:String=null,specialFolderToSave:File=null):Boolean
 		{
+			mySpecialFolder = specialFolderToSave ;
 			onlineURL = url ;
 			offlineURL = null ;
 			fileExtention = extention ;
 			fileNameOnStorage = fileName ;
+			savedAcceptableDate = myAcceptableDate ;
 			
 			if(url=='')
 			{
@@ -116,7 +122,7 @@ package netManager.urlSaver
 			
 			//trace("Requested image url is : "+onlineURL);
 			var localFileChecker:File;
-			if(onlineURL.indexOf('http')!=0)
+			if(onlineURL.toLowerCase().indexOf('http')!=0)
 			{
 				try
 				{
@@ -354,7 +360,11 @@ package netManager.urlSaver
 		{
 			
 			var oflineFolder:File;
-			if(fileExtention!=null && fileExtention.toLowerCase().indexOf('pdf')!=-1)
+			if(mySpecialFolder!=null)
+			{
+				oflineFolder = mySpecialFolder ;
+			}
+			else if(fileExtention!=null && fileExtention.toLowerCase().indexOf('pdf')!=-1)
 			{
 				oflineFolder = File.documentsDirectory.resolvePath(offlineFolderName);			
 			}
@@ -385,9 +395,9 @@ package netManager.urlSaver
 				offlineFileNameWithExtention = offlineURLFileName;
 			}
 			
-			if(fileExtention!=null && offlineFileNameWithExtention.indexOf(fileExtention)==-1)
+			if(fileExtention!=null/* && offlineFileNameWithExtention.indexOf(fileExtention)==-1*/)
 			{
-				offlineFileNameWithExtention+=fileExtention;
+				offlineFileNameWithExtention+=(fileExtention.indexOf('.')==-1)?'.'+fileExtention:fileExtention;
 			}
 			
 			
@@ -507,7 +517,7 @@ package netManager.urlSaver
 				trace("Offline url is not exists : "+offlineURL);
 				URLSaver.deletFileIfExists(onlineURL);
 				trace("So I have to download it again from "+onlineURL);
-				load(onlineURL);
+				load(onlineURL,savedAcceptableDate,fileExtention,fileNameOnStorage,mySpecialFolder);
 			}
 		}
 		
