@@ -1038,6 +1038,15 @@ package webService2
 			ws.addHeader(header)
 		}
 		
+		public static function addHeader(headerName:String,headerValue:String):void
+		{
+			var qname:QName = new QName("http://tmeappuri.org/","SOAPHeaderContent");
+			var headerObject:Object = {};
+			headerObject[headerName] = headerValue ;
+			var header:SOAPHeader = new SOAPHeader(qname,headerObject);
+			ws.addHeader(header);
+		}
+		
 		/**Clear header*/
 		public static function clearHeader():void
 		{

@@ -10,6 +10,7 @@ package webService
 	import mx.rpc.events.FaultEvent;
 	import mx.rpc.events.ResultEvent;
 	import mx.rpc.soap.LoadEvent;
+	import mx.rpc.soap.SOAPHeader;
 	import mx.rpc.soap.WebService;
 	
 	
@@ -323,7 +324,33 @@ package webService
 			return XML(str);
 		}
 		
+	///////////////////////////////////Header part
 		
+		
+		/**Add header*/
+		public static function setHeader(userName:String,password:String,tocken:String,uid:String):void
+		{
+			
+			var qname:QName = new QName("http://tmeappuri.org/","SOAPHeaderContent");
+			var header:SOAPHeader = new SOAPHeader(qname,{UserName:userName,Password:password,Token:tocken,UID:uid});
+			ws.clearHeaders();
+			ws.addHeader(header)
+		}
+		
+		public static function addHeader(headerName:String,headerValue:String):void
+		{
+			var qname:QName = new QName("http://tmeappuri.org/","SOAPHeaderContent");
+			var headerObject:Object = {};
+			headerObject[headerName] = headerValue ;
+			var header:SOAPHeader = new SOAPHeader(qname,headerObject);
+			ws.addHeader(header);
+		}
+		
+		/**Clear header*/
+		public static function clearHeader():void
+		{
+			ws.clearHeaders();
+		}
 		
 	}
 }
