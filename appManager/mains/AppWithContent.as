@@ -113,7 +113,7 @@
 			Contents.setUp(startApp,supportsMultiLanguage,autoLanguageConvertEnabled,this.stage,loadConfig);
 			
 			
-			if(DevicePrefrence.isItPC)
+			if(supportsMultiLanguage && DevicePrefrence.isItPC)
 				Hints.controlLanguages();
 			
 			if(manageStageManager)
