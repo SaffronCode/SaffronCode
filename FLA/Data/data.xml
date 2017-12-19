@@ -1,0 +1,54 @@
+﻿<app>
+	<!--Saffron PageData format
+	
+		page.@id: page unique id to call with this.dispatch(new AppEventContent())
+		type: Page class name on PageContainer
+		menutype: Menu class name on MenuContainer
+		content: String content for the page
+		music: Music url on Data folder. the Saffrom engine will load it automaticly for each page
+		image: The page single Image url
+		images: List of images for gallery contains <img text="" targ="null" w="NaN" h="NaN" x="NaN" y="NaN"/> list
+		first links tag: list of Link items to creats lists
+		second links tag just same as first one but the order of them is important
+	-->
+	
+	<!--debug/-->
+	
+	<page id="home">
+	  <type>home</type>
+	  <menutype/>
+	  <title/>
+	  <content x="NaN" y="NaN" w="NaN" h="NaN" align=""/>
+	  <music/>
+	  <image/>
+	  <images>
+		<img text="" targ="null" w="NaN" h="NaN" x="NaN" y="NaN"/>
+	  </images>
+	  <links>
+		<link level="-1" name="" id="" icon="" w="NaN" h="NaN" x="NaN" y="NaN"/>
+	  </links>
+	  <links/>
+	</page>
+	
+	
+	
+	<page id="sample1_page">
+	  <type>sample1</type>
+	</page>
+	
+	
+	<page id="sample2_page">
+	  <type>sample2</type>
+	</page>
+	
+	
+	<page id="sample3_page">
+	  <type>sample3</type>
+	</page>
+	
+	
+	<page id="sample4_page">
+	  <type>sample4</type>
+	</page>
+	
+</app>

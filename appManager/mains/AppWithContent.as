@@ -1,5 +1,15 @@
 ﻿package appManager.mains
+//appManager.mains.AppWithContent
 {
+//Uses
+	//appManager.animatedPages.Intro
+//appManager.animatedPages.MainAnim
+	//appManager.animatedPages.pageManager.PageManager
+	//appManager.animatedPages.pageManager.PageContainer
+
+//To change pages
+	//contents.displayElements.ContentNameDispatcher
+
 	import appManager.animatedPages.pageManager.PageManager;
 	import appManager.event.AppEvent;
 	import appManager.event.AppEventContent;
