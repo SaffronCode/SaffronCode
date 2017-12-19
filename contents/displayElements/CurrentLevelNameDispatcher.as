@@ -5,8 +5,7 @@ package contents.displayElements
 	{
 		public function CurrentLevelNameDispatcher()
 		{
-			defaultLevel = -2 ;
-			super();
+			super(-2);
 		}
 	}
 }

@@ -1,4 +1,4 @@
-package contents
+﻿package contents
 {
 	import appManager.event.AppEventContent;
 	
@@ -139,6 +139,16 @@ package contents
 				{
 					return true ;
 				}
+			}
+			return false ;
+		}
+		
+		/**Returns true if this page was on history*/
+		public static function isCurrentPageNamed(pageId:String):Boolean
+		{
+			if(history!=null && history.length>0 && history[history.length-1].id == pageId)
+			{
+				return true ;
 			}
 			return false ;
 		}

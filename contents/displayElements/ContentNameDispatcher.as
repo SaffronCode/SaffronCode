@@ -21,9 +21,14 @@ package contents.displayElements
 		
 		private var isInHistory:Boolean = false ;
 		
-		public function ContentNameDispatcher()
+		public function ContentNameDispatcher(defaultLinkLevel:Number=NaN)
 		{
 			super();
+			
+			if(!isNaN(defaultLinkLevel))
+			{
+				defaultLevel = defaultLinkLevel ;
+			}
 			
 			this.buttonMode = true ;
 			//this.mouseChildren = false;
@@ -54,7 +59,14 @@ package contents.displayElements
 		/**Control if the button was on history*/
 		protected function controlHistoryAgain(event:Event):void
 		{
-			isInHistory = History.isHistoryContainsThePageNamed(this.name);
+			if(defaultLevel==0)
+			{
+				isInHistory = History.isCurrentPageNamed(this.name);
+			}
+			else
+			{
+				isInHistory = History.isHistoryContainsThePageNamed(this.name);
+			}
 		}
 		
 		/**The dispatcher removed*/
