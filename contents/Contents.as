@@ -6,6 +6,8 @@ package contents
 {
 	import appManager.event.AppEvent;
 	
+	import com.mteamapp.sanction.SanctionControl;
+	
 	import contents.multiLanguage.Language;
 	import contents.soundControll.ContentSoundManager;
 	
@@ -220,6 +222,12 @@ package contents
 		public static function getPage(pageID:String,dontUseLanguage:Boolean=false):PageData 
 		{
 			//trace('1- '+getTimer());
+			
+			if(blockedPagesForSanction!=null && blockedPagesForSanction.indexOf(pageID)!=-1)
+			{
+				trace("This user cannot see this page!!!!!!!!!!!!!!");
+				return new PageData();
+			}
 			if(pages==null)
 			{
 				trace("You have to set Contents first");
@@ -294,6 +302,18 @@ package contents
 				}
 			}
 			
+			if(blockedPagesForSanction!=null)
+			{
+				for(var i:int = 0 ; i<foundedPage.links1.length ; i++)
+				{
+					if(blockedPagesForSanction.indexOf(foundedPage.links1[i].id)!=-1)
+					{
+						foundedPage.links1.removeAt(i);
+						i--;
+					}
+				}
+			}
+			
 			//trace('6- '+getTimer());
 			return foundedPage;
 		}
@@ -365,6 +385,17 @@ package contents
 			{
 				throw "Lanuage is not enabled yet.";
 			}
+		}
+		
+	///////////////////////////////////////////////////////////Sanction
+		
+		private static var blockedPagesForSanction:Array ;
+		
+		/**Dont show these pages for the sanctioned users*/
+		public static function activateSanctionForThesePages(...sanctiondPageIdList):void
+		{
+			if(SanctionControl.isForeign())
+				blockedPagesForSanction = sanctiondPageIdList ;
 		}
 	}
 }
