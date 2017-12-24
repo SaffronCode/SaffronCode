@@ -1,4 +1,4 @@
-/***Version
+﻿/***Version
  * 1.1 : Instant data.xml laoded
  * 1.1.1 : link id s on link will change with language class on multiLanguage applications
  */
@@ -304,7 +304,7 @@ package contents
 			
 			if(blockedPagesForSanction!=null)
 			{
-				for(var i:int = 0 ; i<foundedPage.links1.length ; i++)
+				for(i = 0 ; i<foundedPage.links1.length ; i++)
 				{
 					if(blockedPagesForSanction.indexOf(foundedPage.links1[i].id)!=-1)
 					{
