@@ -37,11 +37,6 @@
 			trace("SetUp easy push");
 			ONESIGNAL_APP_ID = ONESIGNAL_APP_ID_p ;
 			GCM_PROJECT_NUMBER = GCM_PROJECT_NUMBER_p ;
-		
-			if(ONESIGNAL_APP_ID_p!='' && GCM_PROJECT_NUMBER_p!='')
-			{
-				EasyPushExample();
-			}
 			
 			if(PNOSEventClass==null)
 			{
@@ -51,6 +46,11 @@
 			if(EasyPushClass==null)
 			{
 				EasyPushClass = Obj.generateClass("com.milkmangames.nativeextensions.EasyPush") ;
+			}
+		
+			if(ONESIGNAL_APP_ID_p!='' && GCM_PROJECT_NUMBER_p!='')
+			{
+				EasyPushExample();
 			}
 		}
 		
