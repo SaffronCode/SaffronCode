@@ -130,5 +130,10 @@ package appManager.animatedPages.pageManager
 			}
 			waitingToLoad = false ;
 		}
+		
+		public function activateSwapBack():void
+		{
+			pageContainer.activateSwapBack();
+		}
 	}
 }

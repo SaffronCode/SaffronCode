@@ -8,12 +8,15 @@ package appManager.animatedPages.pageManager
 	import appManager.mains.App;
 	import appManager.mains.AppWithContent;
 	
+	import contents.Contents;
+	import contents.History;
 	import contents.PageData;
 	import contents.interFace.DisplayPageInterface;
 	
 	import flash.display.FrameLabel;
 	import flash.display.MovieClip;
 	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
 	import flash.system.System;
 	
@@ -244,5 +247,20 @@ package appManager.animatedPages.pageManager
 				currentPage.dispatchEvent(new PageControllEvent(PageControllEvent.PAGE_ANIMATION_READY));
 			}
 		}
+		
+		public function activateSwapBack():void
+		{
+			MouseDrag.setUp(stage);
+			MouseDrag.addFunctions(new Function(),backEvent,Contents.config.pageRect);
+		}
+		
+		private function backEvent():void
+		{
+			if(History.backAvailable())
+			{
+				this.dispatchEvent(History.lastPage());
+			}
+		}
+		
 	}
 }

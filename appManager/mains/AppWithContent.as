@@ -88,8 +88,9 @@
 		 * activateURLCaller makes application be able to open from an URI from out side applications. first time it will throw the required permission */
 		public function AppWithContent(supportsMultiLanguage:Boolean=false,autoLanguageConvertEnabled:Boolean=true,animagePageContents:Boolean=false,autoChangeMusics:Boolean=false,skipAllAnimations:Boolean=false,manageStageManager:Boolean=false,loadConfig:Boolean=false,addVersionControll:Boolean=true
 		,addTheDeveloperPage:Boolean=false,activateShineEffect:uint=1,PlaySounOnBackGroundTo:Boolean=false,activateRankSystem:Boolean=false,activateURLCaller:Boolean=false,
-		activateWorkers:Boolean = true )
+		activateWorkers:Boolean = true, activateBackSwap:Boolean=false)
 		{
+			manageStageManager = activateBackSwap || manageStageManager ;
 			super(autoChangeMusics,skipAllAnimations,activateShineEffect,PlaySounOnBackGroundTo);
 			
 			if(activateWorkers)
@@ -124,6 +125,10 @@
 				updateConfigRects();
 				trace("**** : "+StageManager.stageRect);
 			}
+			
+			if(activateBackSwap)
+				pageManagerObject.activateSwapBack();
+			
 			//Create the contentPage rectangle by contentW and contentH values on homePage data to use on scrolled pages
 			var homePageData:PageData = Contents.homePage ;
 			if(isNaN(homePageData.contentW))
