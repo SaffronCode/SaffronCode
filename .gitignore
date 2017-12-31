@@ -80,9 +80,6 @@ $RECYCLE.BIN/
 *.tif
 
 # Data files
-*.doc
-*.pdf
-*.docx
 *.mdj
 
 # Sound files
