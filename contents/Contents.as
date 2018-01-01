@@ -312,6 +312,14 @@ package contents
 						i--;
 					}
 				}
+				for(i = 0 ; i<foundedPage.links2.length ; i++)
+				{
+					if(blockedPagesForSanction.indexOf(foundedPage.links2[i].id)!=-1)
+					{
+						foundedPage.links2.removeAt(i);
+						i--;
+					}
+				}
 			}
 			
 			//trace('6- '+getTimer());
