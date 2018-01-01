@@ -99,10 +99,10 @@ package componentStatic
 		}
 		public function get errorlist():Vector.<ErrorItem>
 		{	
-			for(var i:int=0;i<errorManager.getError().length;i++)
+			/*for(var i:int=0;i<errorManager.getError().length;i++)
 			{
 				trace('component fild error id:',errorManager.getError()[i].id,'message :',errorManager.getError()[i].message);
-			}
+			}*/
 			return errorManager.getError();
 		}
 	}
