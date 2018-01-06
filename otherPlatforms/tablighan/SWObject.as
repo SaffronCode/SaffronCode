@@ -1,12 +1,14 @@
 package otherPlatforms.tablighan
 {
 	import flash.events.Event;
+	import flash.events.EventDispatcher;
 	import flash.events.LocationChangeEvent;
 	import flash.media.StageWebView;
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
 
-	internal class SWObject
+	[Event(name="complete", type="flash.events.Event")]
+	internal class SWObject extends EventDispatcher
 	{
 		public var sw:StageWebView ;
 		
@@ -43,6 +45,7 @@ package otherPlatforms.tablighan
 			firstLocation = sw.location ;
 			isLoaded = true ;
 			sw.addEventListener(LocationChangeEvent.LOCATION_CHANGE,preventChanging);
+			this.dispatchEvent(new Event(Event.COMPLETE));
 		}
 		
 		public function load(domain:String):void

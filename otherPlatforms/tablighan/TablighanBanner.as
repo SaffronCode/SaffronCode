@@ -15,7 +15,7 @@ package otherPlatforms.tablighan
 		
 		private var BannerId:String ;
 		
-		private var mySW:SWObject ;
+		internal var mySW:SWObject ;
 		
 		/**First you need to call TablighanBanner.setUp() function to pass main url for the Tablighan server, then pass it to the initialize function or add a textField to the object and pass the Tablighan id to it*/
 		public function TablighanBanner(Width:Number=0,Height:Number=0,bannerId:String=null)
@@ -38,7 +38,8 @@ package otherPlatforms.tablighan
 			
 			if(myDomain==null || bannerId==null)
 			{
-				throw "First you need to call TablighanBanner.setUp() function to pass main url for the Tablighan server, then pass it to the initialize function or add a textField to the object and pass the Tablighan id to it" ; 
+				//throw "First you need to call TablighanBanner.setUp() function to pass main url for the Tablighan server, then pass it to the initialize function or add a textField to the object and pass the Tablighan id to it" ;
+				setDomain();
 			}
 			this.alpha = 0 ; 
 			BannerId = bannerId ;
@@ -97,7 +98,7 @@ package otherPlatforms.tablighan
 		/**Update place of banner*/
 		protected function updateMyPlace(event:Event):void
 		{
-			if(Obj.isAccesibleByMouse(this))
+			if(mySW.isLoaded && Obj.isAccesibleByMouse(this))
 			{
 				mySW.sw.stage = this.stage ;
 			}
@@ -111,9 +112,9 @@ package otherPlatforms.tablighan
 	//////////////////////////////////////////////////////
 		
 		/**http://185.83.208.175:9095/api/feed?HostId=1d9163b3-fd60-415a-be59-6e92f832ff23*/
-		public static function setDomain(tablighaanDomain:String):void
+		private static function setDomain():void
 		{
-			myDomain = tablighaanDomain+"/api/feed?HostId=" ;
+			myDomain = 'http://api.tablighon.com/'+"api/feed?HostId=" ;
 		}
 	}
 }
