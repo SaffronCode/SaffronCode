@@ -10,8 +10,8 @@ package otherPlatforms.tablighan
 	public class TablighanBanner extends MovieClip
 	{
 		private static var myDomain:String ;
-		
-		private static var swList:Vector.<SWObject> = new Vector.<SWObject>();
+		//private var Tablighanmc:MovieClip;
+		//private static var swList:Vector.<SWObject> = new Vector.<SWObject>();
 		
 		private var BannerId:String ;
 		
@@ -21,6 +21,7 @@ package otherPlatforms.tablighan
 		public function TablighanBanner(Width:Number=0,Height:Number=0,bannerId:String=null)
 		{
 			super();
+			//Tablighanmc = Obj.get("Tablighan_mc",this);
 			if(Width!=0 && Height!=0)
 			{
 				this.graphics.beginFill(0,0);
@@ -29,10 +30,20 @@ package otherPlatforms.tablighan
 			
 			if(bannerId==null)
 			{
-				var idTF:TextField = Obj.findThisClass(TextField,this);
-				if(idTF!=null)
+				var idTFios:TextField = Obj.get('idTFios_mc',this);
+				var idTFandroid:TextField = Obj.get('idTFandroid_mc',this);
+				if(idTFios!=null && DevicePrefrence.isIOS() == true)
 				{
-					bannerId = idTF.text ;
+					bannerId = idTFios.text ;
+				}
+				else if (idTFandroid!=null && DevicePrefrence.isAndroid() == true)
+				{
+					bannerId = idTFandroid.text ;
+				}
+				else
+				{
+					idTFandroid = Obj.findThisClass(TextField,this);
+					bannerId = idTFandroid.text
 				}
 			}
 			
@@ -61,29 +72,33 @@ package otherPlatforms.tablighan
 		/**Set my banner*/
 		private function setUp(e:*=null):void
 		{
-			for(var i:int = 0 ; i<swList.length ; i++)
+			//Debug line
+				mySW = null ;
+			/*for(var i:int = 0 ; i<swList.length ; i++)
 			{
 				if(swList[i].id == BannerId)
 				{
 					mySW = swList[i] ;
 					break;
 				}
-			}
+			}*/
 			if(mySW==null)
 			{
 				var newSW:SWObject = new SWObject(BannerId);
-				swList.push(newSW);
+				//swList.push(newSW);
 				mySW = newSW ;
 			}
-			if(mySW.isLoaded == false)
-			{
-				mySW.load(myDomain);
-			}
+			//if(mySW.isLoaded == false)
+			//{
+				mySW.load(myDomain,"&individual=true");
+			//}
 			
 			updateMyPlace(null);
 			
 			this.addEventListener(Event.ENTER_FRAME,updateMyPlace);
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
+			//Tablighanmc.height = this.y
+		
 		}
 		
 		/**Removed from stage*/
@@ -92,7 +107,7 @@ package otherPlatforms.tablighan
 			this.removeEventListener(Event.ENTER_FRAME,updateMyPlace);
 			this.removeEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 			mySW.sw.stage = null ;
-			mySW.reload();
+			//mySW.reload();
 		}
 		
 		/**Update place of banner*/

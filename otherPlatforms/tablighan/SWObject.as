@@ -1,4 +1,4 @@
-package otherPlatforms.tablighan
+﻿package otherPlatforms.tablighan
 {
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -48,19 +48,20 @@ package otherPlatforms.tablighan
 			this.dispatchEvent(new Event(Event.COMPLETE));
 		}
 		
-		public function load(domain:String):void
+		public function load(domain:String,moreParams:String=''):void
 		{
 			sw.removeEventListener(LocationChangeEvent.LOCATION_CHANGE,preventChanging);
-			isLoaded = false ;
+			isLoaded = true ;
 			if(false)
 			{
 				//sw.loadURL("https://unsplash.it/768/150/?random");
-				sw.loadURL("https://www.google.com/");
+				sw.loadURL("https://www.google.de/?gfe_rd=cr&dcr=0&ei=iIxgWpfFKPCP8QeQporgBw");
 			}
 			else
 			{
-				sw.loadURL(domain+id);
+				sw.loadURL(domain+id+moreParams);
 			}
+			//sw.reload();
 		}
 		
 		public function reload():void
