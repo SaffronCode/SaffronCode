@@ -997,9 +997,41 @@ package contents.displayPages
 			else
 			{
 				if(
-					visibleItem.x+linksContainer.x+visibleItem.width>=visibleItem.width*-3
-					&&
-					visibleItem.x+linksContainer.x<areaRect.width+visibleItem.width*3
+					(
+						revertedX
+						&&
+						(
+							(
+								revertedByMovieclipUI
+								&&
+								(
+									visibleItem.x+linksContainer.x+visibleItem.width>=visibleItem.width*-3-areaRect.width
+									&&
+									visibleItem.x<visibleItem.width*3
+								)
+							)	
+							||
+							(
+								!revertedByMovieclipUI
+								&&
+								(
+									visibleItem.x+linksContainer.x+visibleItem.width>=visibleItem.width*-3
+									&&
+									visibleItem.x+linksContainer.x<areaRect.width+visibleItem.width*3
+								)
+							)
+						)
+					)
+					||
+					(
+						!revertedX
+						&&
+						(
+							visibleItem.x+linksContainer.x+visibleItem.width>=visibleItem.width*-3
+							&&
+							visibleItem.x+linksContainer.x<areaRect.width+visibleItem.width*3
+						)
+					)
 				)
 				{
 					if(showThempRemovedLink(visibleItem))
