@@ -183,7 +183,7 @@ package mp3Player
 			
 			if(autoPlay)
 			{
-				SoundPlayer.play(mediaSoundID);
+				SoundPlayer.play(mediaSoundID,true);
 				playPauseBTN.gotoAndStop(2);
 			}
 			
