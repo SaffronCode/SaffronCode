@@ -105,8 +105,17 @@ package darkBox
 			pdftarget = new File(target);
 			if(DevicePrefrence.isAndroid())
 			{
-				openPDF();
-				//On android, the pdf reader can share,save and do any thing that user need to do. so close the DarkBox
+				if(NativePDF.isSupports())
+				{
+					trace("******* Open pdf with native");
+					NativePDF.openPDFReader(pdftarget);
+				}
+				else
+				{
+					trace("******* Navigate to open pdf");
+					openPDF();
+					//On android, the pdf reader can share,save and do any thing that user need to do. so close the DarkBox
+				}
 				DarkBox.hide();
 			}
 			else
@@ -114,14 +123,7 @@ package darkBox
 				stageVewIsOpened = true ;
 				myStageWeb.stage = stage ;
 				trace("PDF path : "+pdftarget.nativePath);
-				if(NativePDF.isSupports())
-				{
-					NativePDF.openPDFReader(pdftarget);
-				}
-				else
-				{
-					myStageWeb.loadURL(pdftarget.url);
-				}
+				myStageWeb.loadURL(pdftarget.url);
 			}
 		}
 	}
