@@ -6,7 +6,6 @@ package contents.rollingList
 	
 	import contents.LinkData;
 	import contents.PageData;
-	import contents.displayPages.LinkItem;
 	
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
@@ -155,6 +154,7 @@ package contents.rollingList
 					isDragging = true ;
 					currentMouseY = this.mouseY ;
 					startsToDrag = false ;
+					this.dispatchEvent(new ScrollMTEvent(ScrollMTEvent.LOCK_SCROLL_TILL_MOUSE_UP,true));
 				}
 			}
 			if(isDragging)
