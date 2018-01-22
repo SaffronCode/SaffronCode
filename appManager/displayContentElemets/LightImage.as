@@ -1,4 +1,4 @@
-package appManager.displayContentElemets
+﻿package appManager.displayContentElemets
 	//appManager.displayContentElemets.LightImage
 {
 	
@@ -46,6 +46,10 @@ package appManager.displayContentElemets
 		
 		/**You can cansel all animation by changing the static value activateAnimation*/
 		public var animated:Boolean = true ;
+		
+		/**Pass numbers to this variable befor setup function to make it blur the image*/
+		public var blur:Number = 0 ;
+		
 		public var animatedIfLoaded:Boolean = true ;
 		
 		/**This boolean will be true if the image was loaded earlier*/
@@ -382,7 +386,7 @@ package appManager.displayContentElemets
 					fileStreamLoader = null ;*/
 					//Alert.show("event.offlineTarget : "+event.offlineTarget);
 				trace("**** event.offlineTarget on lightImage : "+event.offlineTarget);
-					WorkerFunctions.createBitmapFromByte(event.offlineTarget,imageLoaded,LoadInThisArea,W,H,keepImageRatio);
+					WorkerFunctions.createBitmapFromByte(event.offlineTarget,imageLoaded,LoadInThisArea,W,H,keepImageRatio,blur);
 					//loader.load(new URLRequest(),loaderContext);
 				//}
 			}
@@ -391,7 +395,7 @@ package appManager.displayContentElemets
 				loadedBytes.position = 0 ;
 				//loaderContext.allowLoadBytesCodeExecution = true ;
 				var tim:Number = getTimer();
-				WorkerFunctions.createBitmapFromByte(loadedBytes,imageLoaded,LoadInThisArea,W,H,keepImageRatio);
+				WorkerFunctions.createBitmapFromByte(loadedBytes,imageLoaded,LoadInThisArea,W,H,keepImageRatio,blur);
 				//loader.loadBytes(loadedBytes,loaderContext);
 				trace(">>> "+(getTimer()-tim));
 			}
@@ -514,6 +518,11 @@ package appManager.displayContentElemets
 					W = bitmapData.width;
 					H = bitmapData.height;
 				}
+				
+				if(blur>0)
+				{
+					BitmapEffects.blur(bitmapData,blur);
+				}
 			}
 			else
 			{
@@ -530,6 +539,7 @@ package appManager.displayContentElemets
 				loader.unload();
 				loader = null ;
 			}*/
+		
 			
 			if(isWatermarkEnabled())
 			{

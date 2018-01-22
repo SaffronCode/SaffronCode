@@ -138,7 +138,7 @@
 		
 		
 		/**The receiver function will receive array of byteOfBitmap,Width,Heigh or null to make a bitmapData with BitmapData.setPixels() function. if the file is local, pass the native path for it*/
-		public static function createBitmapFromByte(byteOrURLString:*,receiver:Function,loadInThisArea:Boolean=false, imageW:Number=0, imageH:Number=0, keepRatio:Boolean=true):void
+		public static function createBitmapFromByte(byteOrURLString:*,receiver:Function,loadInThisArea:Boolean=false, imageW:Number=0, imageH:Number=0, keepRatio:Boolean=true,blur:Number=0):void
 		{
 			//Alert.show("Worker Bitmap ");
 			var currentId:uint = lastID++ ;
@@ -151,7 +151,7 @@
 				byteOrURLString = new File(byteOrURLString).nativePath ;
 			}
 			
-			var toSendValue:Array = [BgWorker.id_byteToBitmap,currentId,[byteOrURLString,loadInThisArea,imageW,imageH,keepRatio]] ;
+			var toSendValue:Array = [BgWorker.id_byteToBitmap,currentId,[byteOrURLString,loadInThisArea,imageW,imageH,keepRatio,blur]] ;
 			
 			
 			if(activated && isReady)

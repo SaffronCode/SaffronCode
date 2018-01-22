@@ -156,6 +156,7 @@
 						var W:Number = callerData[2] ;
 						var H:Number = callerData[3] ;
 						var keepImageRatio:Boolean = callerData[4] ;
+						var blur:Number = callerData[5] ;
 						
 						
 						var loader:Loader = new Loader();
@@ -210,6 +211,11 @@
 								{
 									bitmapData = BitmapEffects.changeSize(bitmapData,bitmapData.width*(H/bitmapData.height),H,keepImageRatio,LoadInThisArea);
 									W = bitmapData.width;
+								}
+								
+								if(blur>0)
+								{
+									BitmapEffects.blur(bitmapData,blur,3);
 								}
 								
 								createdData.push([bitmapData.getPixels(bitmapData.rect),bitmapData.rect.width,bitmapData.rect.height]);
