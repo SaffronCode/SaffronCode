@@ -9,6 +9,9 @@ package restDoaService
 		internal static const debug_show_results:Boolean = false ;
 		
 		
+		public static var isOnline:Boolean = false ;
+		
+		
 		/**This will take all errors on it*/
 		public static var eventDispatcher:RestDoaEventDispatcher = new RestDoaEventDispatcher();
 		

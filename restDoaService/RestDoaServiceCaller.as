@@ -184,6 +184,7 @@
 		
 		private function noInternet(e:IOErrorEvent=null,controllData:Boolean=true)
 		{
+			RestDoaService.isOnline = false ;
 			_isLoading = false ;
 			trace("No internet connection");
 			if(controllData && offlineDataIsOK)
@@ -236,6 +237,7 @@
 		
 		private function requestLoaded(event:Event):void
 		{
+			RestDoaService.isOnline = true ;
 			_isLoading = false ;
 			isConnected = true ;
 			//parser = new JSONParser();
