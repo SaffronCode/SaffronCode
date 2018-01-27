@@ -211,11 +211,12 @@
 		
 		/**This will save the json to as file<br>
 		 * Waring!! each class has to have a variable with a special name*/
-		public static function SaveJSONtoAs(jsonObject:Object,directory:File,className:String):void
+		public static function SaveJSONtoAs(jsonObject:Object,directory:File,rootClassName:String):void
 		{
-			trace("Create class : "+className);
+			trace("Target file directory is : "+directory.nativePath);
+			trace("Create class : "+rootClassName);
 			var myAsClass:String = classFileModel ;
-			myAsClass = myAsClass.split("[ClassName]").join(className) ;
+			myAsClass = myAsClass.split("[ClassName]").join(rootClassName) ;
 			
 			var newClassName:String ;
 			var parameters:String = '' ;
@@ -252,7 +253,7 @@
 						!(jsonObject[paramName][0] is String) &&
 						!(jsonObject[paramName][0] is Boolean))
 					{
-						newClassName = createClassName(className+paramName,"Model",jsonObject[paramName][0]);
+						newClassName = createClassName(rootClassName+paramName,"Model",jsonObject[paramName][0]);
 						parameters+='Vector.<'+newClassName+'> = new Vector.<'+newClassName+'>()';
 						SaveJSONtoAs(jsonObject[paramName][0],directory,newClassName);
 					}
@@ -269,7 +270,7 @@
 				{
 					//The parameter is class
 					
-					newClassName = createClassName(className+paramName,"Model",jsonObject[paramName]);
+					newClassName = createClassName(rootClassName+paramName,"Model",jsonObject[paramName]);
 					parameters+=newClassName+' = new '+newClassName+'()';
 					SaveJSONtoAs(jsonObject[paramName],directory,newClassName);
 				}
@@ -277,7 +278,7 @@
 			}
 			myAsClass = myAsClass.split('[variables]').join(parameters);
 			
-			var targetFile:File = directory.resolvePath(className+'.as') ;
+			var targetFile:File = directory.resolvePath(rootClassName+'.as') ;
 			if(targetFile.exists)
 			{
 				WebServiceGenerator.log(targetFile.name+" was duplicated");
