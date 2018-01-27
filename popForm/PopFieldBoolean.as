@@ -76,5 +76,10 @@ package popForm
 			//trace("Get my date : "+date);
 			return checkMC.visible ;
 		}
+		
+		public function set data(value:Boolean):void
+		{
+			checkMC.visible = value ;
+		}
 	}
 }
