@@ -153,6 +153,15 @@ package diagrams.calender
 		{
 			return dateData.firstDate;
 		}
+		public function getFirstDateOfMonth():Date
+		{
+			return dateData.firstDate;
+		}
+		
+		public function getLastDateOfMonth():Date
+		{
+			return dateData.lastDate ;
+		}
 		
 		public function get currentDayOfTheWeek():uint
 		{
