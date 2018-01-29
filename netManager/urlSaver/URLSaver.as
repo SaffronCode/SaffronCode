@@ -366,7 +366,14 @@ package netManager.urlSaver
 			}
 			else if(fileExtention!=null && fileExtention.toLowerCase().indexOf('pdf')!=-1)
 			{
-				oflineFolder = File.documentsDirectory.resolvePath(offlineFolderName);			
+				if(DevicePrefrence.isIOS())
+				{
+					oflineFolder = File.applicationStorageDirectory.resolvePath(offlineFolderName);
+				}
+				else
+				{
+					oflineFolder = File.documentsDirectory.resolvePath(offlineFolderName);
+				}
 			}
 			else
 			{
