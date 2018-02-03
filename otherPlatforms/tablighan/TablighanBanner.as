@@ -3,19 +3,22 @@ package otherPlatforms.tablighan
 {
 	import flash.display.MovieClip;
 	import flash.events.Event;
+	import flash.events.IOErrorEvent;
 	import flash.media.StageWebView;
+	import flash.net.URLLoader;
+	import flash.net.URLRequest;
 	import flash.text.TextField;
 	
 	/**First you need to call TablighanBanner.setUp() function to pass main url for the Tablighan server, then pass it to the initialize function or add a textField to the object and pass the Tablighan id to it*/
 	public class TablighanBanner extends MovieClip
 	{
-		private static var myDomain:String ;
-		//private var Tablighanmc:MovieClip;
-		//private static var swList:Vector.<SWObject> = new Vector.<SWObject>();
+		private var myDomain:String ;
 		
 		private var BannerId:String ;
 		
-		internal var mySW:SWObject ;
+		private var sw:StageWebView ;
+		
+		private var urlLoader:URLLoader ;
 		
 		/**First you need to call TablighanBanner.setUp() function to pass main url for the Tablighan server, then pass it to the initialize function or add a textField to the object and pass the Tablighan id to it*/
 		public function TablighanBanner(Width:Number=0,Height:Number=0,bannerId:String=null)
@@ -43,7 +46,7 @@ package otherPlatforms.tablighan
 				else
 				{
 					idTFandroid = Obj.findThisClass(TextField,this);
-					bannerId = idTFandroid.text
+					bannerId = idTFandroid.text;
 				}
 			}
 			
@@ -72,33 +75,26 @@ package otherPlatforms.tablighan
 		/**Set my banner*/
 		private function setUp(e:*=null):void
 		{
-			//Debug line
-				mySW = null ;
-			/*for(var i:int = 0 ; i<swList.length ; i++)
-			{
-				if(swList[i].id == BannerId)
-				{
-					mySW = swList[i] ;
-					break;
-				}
-			}*/
-			if(mySW==null)
-			{
-				var newSW:SWObject = new SWObject(BannerId);
-				//swList.push(newSW);
-				mySW = newSW ;
-			}
-			//if(mySW.isLoaded == false)
-			//{
-				mySW.load(myDomain,"&individual=true");
-			//}
+			this.removeEventListener(Event.ADDED_TO_STAGE,setUp);
+			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
+			this.addEventListener(Event.ENTER_FRAME,updateMyPlace);
+			
+			urlLoader = new URLLoader(new URLRequest(myDomain));
+			urlLoader.addEventListener(Event.COMPLETE,fullBannerHTMLLoaded);
+			urlLoader.addEventListener(IOErrorEvent.IO_ERROR,reloadURLHTML);
 			
 			updateMyPlace(null);
-			
-			this.addEventListener(Event.ENTER_FRAME,updateMyPlace);
-			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
-			//Tablighanmc.height = this.y
+		}
 		
+		protected function fullBannerHTMLLoaded(event:Event):void
+		{
+			// TODO Auto-generated method stub
+			
+		}
+		
+		protected function reloadURLHTML(event:IOErrorEvent):void
+		{
+			trace("No internet connection to load stageWebView Content
 		}
 		
 		/**Removed from stage*/
@@ -127,9 +123,9 @@ package otherPlatforms.tablighan
 	//////////////////////////////////////////////////////
 		
 		/**http://185.83.208.175:9095/api/feed?HostId=1d9163b3-fd60-415a-be59-6e92f832ff23*/
-		private static function setDomain():void
+		private function setDomain():void
 		{
-			myDomain = 'http://api.tablighon.com/'+"api/feed?HostId=" ;
+			myDomain = 'http://api.tablighon.com/'+"api/feed?HostId="+bannerId+"&individual=true" ;
 		}
 	}
 }
