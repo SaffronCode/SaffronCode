@@ -1,4 +1,4 @@
-package webService2
+﻿package webService2
 {
 	
 	import contents.Contents;
@@ -63,7 +63,7 @@ package webService2
 			if(_justLoadOffline && offlineDate == null)
 			{
 				offlineDate = new Date();
-				offlineDate.minutes-=Number(Contents.config.max_available_service_data);
+				offlineDate.minutes-=uint(Contents.config.max_available_service_data);
 			}
 			else
 			{
@@ -85,12 +85,12 @@ package webService2
 			//#4
 			//myServiceFunction = myWebService ;
 			//New line ↓
-			if(justLoadOfline_v && maximomOfflineData == null)
-			{
-				maximomOfflineData = new Date();
-				maximomOfflineData.minutes-= Number(Contents.config.max_available_service_data);
-			}
-			offlineDate = maximomOfflineData ;
+				/*if(justLoadOfline_v && maximomOfflineData == null)
+				{
+					maximomOfflineData = new Date();
+					maximomOfflineData.minutes-= uint(Contents.config.max_available_service_data);
+				}
+				offlineDate = maximomOfflineData ;*/
 			myWebService2.setOperation(webServiceName);
 			
 			serviceName = webServiceName ;
@@ -111,11 +111,13 @@ package webService2
 		/**I created this function to make reload available*/
 		private function reLoadLastRequest()
 		{
-			if(_justLoadOffline && generateDataAndDispatchEvent(null,false,true))
+			var needReload:Boolean ;
+			if(_justLoadOffline)
 			{
 				//Cashed data sent to user class on generateDataAndDispatchEvent function
+				needReload = generateDataAndDispatchEvent(null,false,true);
 			}
-			else
+			if(needReload || offlineDate==null)
 			{
 				//If no oflinte data requests or no oflinte data avaiable
 				myWebService2.Connect(onConnected,noInternet);
