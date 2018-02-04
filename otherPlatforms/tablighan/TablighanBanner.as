@@ -90,7 +90,7 @@ package otherPlatforms.tablighan
 			}
 			//if(mySW.isLoaded == false)
 			//{
-				mySW.load(myDomain,"&individual=true");
+				mySW.load(myDomain,"&individual=true&App=true");
 			//}
 			
 			updateMyPlace(null);
