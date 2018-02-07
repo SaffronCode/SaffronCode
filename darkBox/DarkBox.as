@@ -21,6 +21,8 @@
 	
 	import netManager.urlSaver.URLSaverEvent;
 	
+	import permissionControlManifestDiscriptor.PermissionControl;
+	
 	import stageManager.StageManager;
 	import stageManager.StageManagerEvent;
 	
@@ -118,10 +120,7 @@
 				StageManager.eventDispatcher.addEventListener(StageManagerEvent.STAGE_RESIZED,updateStageSize);
 			}
 			
-			if(DevicePrefrence.isItPC && DevicePrefrence.appDescriptor.toString().indexOf("<android>")!=-1 &&  DevicePrefrence.appDescriptor.toString().indexOf('android:hardwareAccelerated="true')==-1)
-			{
-				throw 'You have to add below permition to Android manifest to make StageVideo works:\n<application android:enabled="true" android:hardwareAccelerated="true"/>\n\nor\n\n<application android:enabled="true" android:hardwareAccelerated="true">'
-			}
+			PermissionControl.VideoTagForStageWebView();
 		}
 		
 		protected static function updateStageSize(event:Event):void
