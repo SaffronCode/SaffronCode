@@ -137,19 +137,19 @@ package otherPlatforms.tablighan
 			{
 				mySW.sw.stage = null ;
 			}
-			if(false && userAbsoluteNativeBrowser)
+			/*if(false && userAbsoluteNativeBrowser)
 			{
-				mySW.sw.viewPort = StageManager.createViewPortForNatives(this.getBounds(stage));
+				//mySW.sw.viewPort = StageManager.createViewPortForNatives(this.getBounds(stage));
 			}
 			else
-			{
-				var rect:Rectangle = this.getBounds(stage); 
-					rect.x = Math.round(rect.x);
-					rect.y = Math.round(rect.y);
-					rect.width = Math.round(rect.width);
-					rect.height = Math.round(rect.height);
-				mySW.sw.viewPort = rect ;
-			}
+			{*/
+			var rect:Rectangle = this.getBounds(stage); 
+				rect.x = Math.round(rect.x);
+				rect.y = Math.round(rect.y);
+				rect.width = Math.round(rect.width);
+				rect.height = Math.round(rect.height);
+			mySW.sw.viewPort = rect ;
+			//}
 		}
 		
 	//////////////////////////////////////////////////////
