@@ -18,26 +18,39 @@
 		
 		private var firstLocation:String = '' ;
 		
-		public function SWObject(Id:String)
+		private var userAbsoluteNativeBrowser:Boolean ;
+		
+		public function SWObject(Id:String,UserAbsoluteNativeBrowser:Boolean)
 		{
 			id = Id ;
-			sw = new StageWebView();
+			sw = new StageWebView(UserAbsoluteNativeBrowser);
 			sw.addEventListener(Event.COMPLETE,bannerLoaded);
+			userAbsoluteNativeBrowser = UserAbsoluteNativeBrowser ;
 		}
 		
 		protected function preventChanging(event:LocationChangeEvent):void
 		{
 			trace("*** Request to change the location : "+event.location);
+			trace("firstLocation " +firstLocation);
+			trace("event.location " +event.location);
 			if(firstLocation!=event.location)
 			{
 				trace("*** Change the location");
 				navigateToURL(new URLRequest(event.location));
+				if(userAbsoluteNativeBrowser)
+				{
+					sw.stop();
+					sw.loadURL(firstLocation);
+				}
+				else
+				{
+					sw.reload();
+				}
 			}
 			else
 			{
 				trace("*** Prevent page change...");
 			}
-			sw.reload();
 		}
 		
 		protected function bannerLoaded(event:Event):void
@@ -51,6 +64,7 @@
 		public function load(domain:String,moreParams:String=''):void
 		{
 			sw.removeEventListener(LocationChangeEvent.LOCATION_CHANGE,preventChanging);
+			sw.mediaPlaybackRequiresUserAction = false ;
 			isLoaded = true ;
 			if(false)
 			{

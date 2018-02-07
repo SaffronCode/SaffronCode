@@ -3,8 +3,13 @@ package otherPlatforms.tablighan
 {
 	import flash.display.MovieClip;
 	import flash.events.Event;
+	import flash.geom.Rectangle;
 	import flash.media.StageWebView;
 	import flash.text.TextField;
+	
+	import permissionControlManifestDiscriptor.PermissionControl;
+	
+	import stageManager.StageManager;
 	
 	/**First you need to call TablighanBanner.setUp() function to pass main url for the Tablighan server, then pass it to the initialize function or add a textField to the object and pass the Tablighan id to it*/
 	public class TablighanBanner extends MovieClip
@@ -13,14 +18,26 @@ package otherPlatforms.tablighan
 		//private var Tablighanmc:MovieClip;
 		//private static var swList:Vector.<SWObject> = new Vector.<SWObject>();
 		
+		public static var userAbsoluteNativeBrowser:Boolean = true ; 
+		
 		private var BannerId:String ;
 		
 		internal var mySW:SWObject ;
+		
+		private var isSatUpOnce:Boolean ;
 		
 		/**First you need to call TablighanBanner.setUp() function to pass main url for the Tablighan server, then pass it to the initialize function or add a textField to the object and pass the Tablighan id to it*/
 		public function TablighanBanner(Width:Number=0,Height:Number=0,bannerId:String=null)
 		{
 			super();
+			
+			if(!isSatUpOnce)
+			{
+				PermissionControl.VideoTagForStageWebView();
+				if(DevicePrefrence.isItPC)
+					userAbsoluteNativeBrowser = false ; 
+				isSatUpOnce = true ;
+			}
 			//Tablighanmc = Obj.get("Tablighan_mc",this);
 			if(Width!=0 && Height!=0)
 			{
@@ -84,7 +101,7 @@ package otherPlatforms.tablighan
 			}*/
 			if(mySW==null)
 			{
-				var newSW:SWObject = new SWObject(BannerId);
+				var newSW:SWObject = new SWObject(BannerId,userAbsoluteNativeBrowser);
 				//swList.push(newSW);
 				mySW = newSW ;
 			}
@@ -98,7 +115,6 @@ package otherPlatforms.tablighan
 			this.addEventListener(Event.ENTER_FRAME,updateMyPlace);
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 			//Tablighanmc.height = this.y
-		
 		}
 		
 		/**Removed from stage*/
@@ -121,7 +137,19 @@ package otherPlatforms.tablighan
 			{
 				mySW.sw.stage = null ;
 			}
-			mySW.sw.viewPort = this.getBounds(stage);
+			if(false && userAbsoluteNativeBrowser)
+			{
+				mySW.sw.viewPort = StageManager.createViewPortForNatives(this.getBounds(stage));
+			}
+			else
+			{
+				var rect:Rectangle = this.getBounds(stage); 
+					rect.x = Math.round(rect.x);
+					rect.y = Math.round(rect.y);
+					rect.width = Math.round(rect.width);
+					rect.height = Math.round(rect.height);
+				mySW.sw.viewPort = rect ;
+			}
 		}
 		
 	//////////////////////////////////////////////////////
