@@ -664,5 +664,34 @@
 				nextPrevController++;
 			}
 		}
+		
+		/**Set the exact index for this question*/
+		public function showExactIndex(sliderElementIndex:uint):void
+		{
+			if(sliderElementIndex<0 || sliderElementIndex>=totalImages())
+			{
+				throw "Wrong image index passed to showExactIndex() funciton\n\n" ;
+				return ;
+			}
+			setAnimation();
+			if(nextPrevController!=0)
+			{
+				swtichImages();
+			}
+			if(sliderElementIndex>currentImageIndex)
+			{
+				imageIndex = sliderElementIndex-1;
+				nextPrevController = 1;
+			}
+			if(sliderElementIndex<currentImageIndex)
+			{
+				imageIndex = sliderElementIndex+1;
+				nextPrevController = -1;
+			}
+			//getImageUp().load(imagesList[sliderElementIndex],sliderElementIndex);
+			//getImageDown().load(imagesList[sliderElementIndex],sliderElementIndex);
+		}
+		
+		
 	}
 }
