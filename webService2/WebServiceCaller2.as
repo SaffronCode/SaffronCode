@@ -51,6 +51,9 @@
 		private var connectinError:WebEvent2;
 		
 		
+		private var offlineDataDispatchedOnce:Boolean=false;
+		
+		
 		
 		public function get justLoadOffline():Boolean
 		{
@@ -103,6 +106,7 @@
 		{
 			trace(serviceName+' - offlineDataIsOK:'+offlineDataIsOK+' _justLoadOffline:'+_justLoadOffline);
 			connectinError = null ;
+			offlineDataDispatchedOnce = false ;
 			myParam = params ;
 			//#1
 			reLoadLastRequest();
@@ -184,7 +188,10 @@
 				if(offlineDataIsOK)
 				{
 					//I will save conntectionError to dispatch it if no cashed data will load
-					generateDataAndDispatchEvent(null,false);
+					if(!offlineDataDispatchedOnce)
+					{
+						generateDataAndDispatchEvent(null,false);
+					}
 				}
 				else
 				{
@@ -262,6 +269,7 @@
 			
 			if(manageData(pureData))
 			{
+				offlineDataDispatchedOnce = true ;
 				dispatchEveryWhere(Event.COMPLETE);
 			}
 			else
