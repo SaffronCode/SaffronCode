@@ -1,6 +1,7 @@
 ﻿package appManager.displayContentElemets
 	//appManager.displayContentElemets.TextParag
 {
+	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
@@ -35,6 +36,7 @@
 			if(myText==null)
 			{
 				myTextTF = Obj.findThisClass(TextField,this);
+				myTextTF.text = '' ;
 			}
 			else
 			{
@@ -145,6 +147,23 @@
 			trace("New text size : "+textFormat.size);
 			myTextTF.setTextFormat(textFormat);
 			myTextTF.defaultTextFormat = textFormat ;
+		}
+		
+		/**You can do this once. no undo available*/
+		public function addChildToTop(addedItem:DisplayObject):void
+		{
+			this.graphics.beginFill(0xff0000,1);
+			this.graphics.drawRect(0,0,100,5000);
+			for(var i:int = 0 ; i<this.numChildren ;i++)
+			{
+				var item:DisplayObject = this.getChildAt(i);
+				if(item != myTextTF)
+				{
+					item.y+=addedItem.height ;
+				}
+			}
+			//this.addChild(addedItem);
+			addedItem.y = 0 ;
 		}
 	}
 }
