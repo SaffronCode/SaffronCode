@@ -316,7 +316,7 @@
 		}
 		
 		/**This will make images to load*/
-		private function startLoading(e:*=null):void
+		public function startLoading(e:*=null):void
 		{
 			PerformanceTest.traceDelay(3);
 			clearTimeout(imageLoaderTimeOutId);
