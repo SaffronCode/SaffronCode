@@ -14,9 +14,13 @@ package net
 	[Event(name="ioError", type="flash.events.IOErrorEvent")]
 	public class SaffronURLLoader extends EventDispatcher
 	{
+		private static const ln:String = '\r\n';
+		
 		private var senderSocket:Socket ;
 
 		private var rawBodyToSend:String;
+		
+		public var responsHeaders:Vector.<URLRequestHeader> = new Vector.<URLRequestHeader>();
 		
 		public function SaffronURLLoader()
 		{
@@ -34,7 +38,8 @@ package net
 				senderSocket.close();
 			}
 			
-			const ln:String = '\r\n';
+			//Reset respond headers
+			responsHeaders = new Vector.<URLRequestHeader>();
 			
 			//Create headers
 			rawBodyToSend = request.method+' / HTTP/1.1'+ln +
@@ -62,8 +67,25 @@ package net
 		
 		protected function serverAnswered(event:ProgressEvent):void
 		{
-			// TODO Auto-generated method stub
-			trace("Server answered : "+senderSocket.readUTFBytes(senderSocket.bytesAvailable));
+			responsHeaders = new Vector.<URLRequestHeader>();
+			
+			var serverAnswerParts:Array = senderSocket.readUTFBytes(senderSocket.bytesAvailable).split(ln+ln) ;
+			senderSocket.close();
+			if(serverAnswerParts.length!=2)
+			{
+				trace("Respond problem!!");
+				this.dispatchEvent(new IOErrorEvent(IOErrorEvent.IO_ERROR));
+			}
+			var headers:Array = serverAnswerParts[0].split(ln);
+			for(var i:int = 0 ; i<headers.length ; i++)
+			{
+				var headInPart:Array = headers[i].split(':') ;
+				if(headInPart.length==2)
+				{
+					trace(">>>header1:"+headInPart);
+					responsHeaders.push(new URLRequestHeader(headInPart[0],headInPart[1]));
+				}
+			}
 		}
 		
 		protected function connectionError(event:IOErrorEvent):void
