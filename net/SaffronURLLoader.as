@@ -15,6 +15,7 @@ package net
 	public class SaffronURLLoader extends EventDispatcher
 	{
 		private static const ln:String = '\r\n';
+		private static const defaultPort:uint = 80;
 		
 		private var senderSocket:Socket ;
 
@@ -38,29 +39,40 @@ package net
 				senderSocket.close();
 			}
 			
-			//Reset respond headers
-			responsHeaders = new Vector.<URLRequestHeader>();
-			
-			//Create headers
-			rawBodyToSend = request.method+' / HTTP/1.1'+ln +
-				'Host: '+request.url+ln;
-			for(var i:int = 0 ; i<request.requestHeaders.length ; i++)
-			{
-				var currentHeader:URLRequestHeader = request.requestHeaders[i] ;
-				rawBodyToSend+=currentHeader.name+': '+currentHeader.value+ln;
-			}
-			rawBodyToSend+=ln;
-			//Body part
-			if(request.data!=null)
-				rawBodyToSend+=request.data.toString();
 			
 			var currentDomain:String = StringFunctions.findMainDomain(request.url);
 			var currentPort:int = StringFunctions.findPortOfURL(request.url) ;
 			if(currentPort==-1)
 			{
-				currentPort = 80 ;
+				currentPort = defaultPort ;
 			}
 			
+			//Reset respond headers
+			responsHeaders = new Vector.<URLRequestHeader>();
+			
+			//Create headers
+			rawBodyToSend = request.method+' '+request.url+' HTTP/1.1'+ln +
+				'Host: '+currentDomain+((currentPort==defaultPort)?'':':'+currentPort)+ln;
+			for(var i:int = 0 ; i<request.requestHeaders.length ; i++)
+			{
+				var currentHeader:URLRequestHeader = request.requestHeaders[i] ;
+				rawBodyToSend+=currentHeader.name+': '+currentHeader.value+ln;
+			}
+			if(request.contentType!=null)
+				rawBodyToSend+="Content-Type: "+request.contentType+ln;
+			//Body part
+			if(request.data!=null)
+			{
+				rawBodyToSend+="content-length: "+String(request.data).length+ln
+				rawBodyToSend+=ln;
+				rawBodyToSend+=request.data.toString();
+			}
+			else
+			{
+				rawBodyToSend+=ln ;
+			}
+			
+			trace("Connect to : "+currentDomain+":"+currentPort);
 			senderSocket.connect(currentDomain,currentPort);
 		}
 		
@@ -82,10 +94,12 @@ package net
 				var headInPart:Array = headers[i].split(':') ;
 				if(headInPart.length==2)
 				{
-					trace(">>>header1:"+headInPart);
+					trace(">>>header:"+headInPart);
 					responsHeaders.push(new URLRequestHeader(headInPart[0],headInPart[1]));
 				}
 			}
+			
+			trace(">>>Body:"+serverAnswerParts[1]);
 		}
 		
 		protected function connectionError(event:IOErrorEvent):void
