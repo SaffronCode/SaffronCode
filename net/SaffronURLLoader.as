@@ -5,7 +5,10 @@ package net
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IOErrorEvent;
+	import flash.events.OutputProgressEvent;
 	import flash.events.ProgressEvent;
+	import flash.events.SecurityErrorEvent;
+	import flash.net.SecureSocket;
 	import flash.net.Socket;
 	import flash.net.URLRequest;
 	import flash.net.URLRequestHeader;
@@ -17,7 +20,7 @@ package net
 		private static const ln:String = '\r\n';
 		private static const defaultPort:uint = 80;
 		
-		private var senderSocket:Socket ;
+		private var senderSocket:SecureSocket ;
 
 		private var rawBodyToSend:String;
 		
@@ -26,10 +29,28 @@ package net
 		public function SaffronURLLoader()
 		{
 			super();
-			senderSocket = new Socket();
+			senderSocket = new SecureSocket();
 			senderSocket.addEventListener(Event.CONNECT,onConnectedToSocket);
 			senderSocket.addEventListener(IOErrorEvent.IO_ERROR,connectionError);
 			senderSocket.addEventListener(ProgressEvent.SOCKET_DATA,serverAnswered);
+			senderSocket.addEventListener(Event.CLOSE,connectionClosed);
+			senderSocket.addEventListener(OutputProgressEvent.OUTPUT_PROGRESS,outputProgress);
+			senderSocket.addEventListener(SecurityErrorEvent.SECURITY_ERROR,securityError);
+		}
+		
+		protected function connectionClosed(event:Event):void
+		{
+			trace("• connectionClosed");
+		}
+		
+		protected function outputProgress(event:OutputProgressEvent):void
+		{
+			trace("• Output progress");
+		}
+		
+		protected function securityError(event:SecurityErrorEvent):void
+		{
+			trace("• securityError");
 		}
 		
 		public function load(request:URLRequest):void
@@ -69,6 +90,7 @@ package net
 			}
 			else
 			{
+				rawBodyToSend+="content-length: 0"+ln
 				rawBodyToSend+=ln ;
 			}
 			
