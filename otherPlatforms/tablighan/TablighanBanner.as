@@ -123,6 +123,7 @@ package otherPlatforms.tablighan
 			this.removeEventListener(Event.ENTER_FRAME,updateMyPlace);
 			this.removeEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 			mySW.sw.stage = null ;
+			mySW.sw.dispose();
 			//mySW.reload();
 		}
 		
