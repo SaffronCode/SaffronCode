@@ -4,6 +4,7 @@
 	import com.mteamapp.StringFunctions;
 	
 	import contents.Contents;
+	import contents.alert.Alert;
 	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -208,6 +209,11 @@
 			{
 				_isLoading = false ;
 				isConnected = true ;
+				Alert.show("noInternet");
+				for each(var i in requestLoader)
+				{
+					Alert.show(i+" : "+requestLoader[i]);
+				}
 				parsLoadedData(requestLoader.data,true)
 			}
 			else
@@ -252,6 +258,7 @@
 					trace("* JSON model had problem : "+requestLoader.data);
 				}
 			}
+			Alert.show("requestLoaded : "+JSON.stringify(pureRequest));
 			
 			parsLoadedData(requestLoader.data);
 		}
