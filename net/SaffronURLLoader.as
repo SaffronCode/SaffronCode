@@ -20,7 +20,7 @@ package net
 		private static const ln:String = '\r\n';
 		private static const defaultPort:uint = 80;
 		
-		private var senderSocket:SecureSocket ;
+		private var senderSocket:Socket ;
 
 		private var rawBodyToSend:String;
 		
@@ -29,7 +29,7 @@ package net
 		public function SaffronURLLoader()
 		{
 			super();
-			senderSocket = new SecureSocket();
+			senderSocket = new Socket();
 			senderSocket.addEventListener(Event.CONNECT,onConnectedToSocket);
 			senderSocket.addEventListener(IOErrorEvent.IO_ERROR,connectionError);
 			senderSocket.addEventListener(ProgressEvent.SOCKET_DATA,serverAnswered);
