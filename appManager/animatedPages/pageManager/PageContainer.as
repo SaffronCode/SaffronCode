@@ -20,6 +20,8 @@ package appManager.animatedPages.pageManager
 	import flash.geom.Rectangle;
 	import flash.system.System;
 	
+	import sliderMenu.SliderManager;
+	
 	public class PageContainer extends MovieClip
 	{
 		private var currentPage:MovieClip,
@@ -256,7 +258,7 @@ package appManager.animatedPages.pageManager
 		
 		private function backEvent():void
 		{
-			if(History.backAvailable())
+			if(History.backAvailable() && !SliderManager.isOpen())
 			{
 				this.dispatchEvent(History.lastPage());
 			}
