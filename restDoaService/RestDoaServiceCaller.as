@@ -274,7 +274,7 @@
 			{
 				if(loadedData is String)
 				{
-					if(loadedData == '{"Message":"An error has occurred."}')
+					if(RestDoaService.serverErrorModels.indexOf(loadedData)!=-1)
 					{
 						serverErrorBool = true ;
 					}

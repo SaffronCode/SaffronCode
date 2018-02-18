@@ -24,6 +24,9 @@ package restDoaService
 		
 		private static var sharedObject:SharedObject;
 		
+		/**You can add your own error message stye here to this array. like "warning!", "caution", {"Message":null,"StackTrace":null}, ...*/
+		public static var serverErrorModels:Array = ['{"Message":"An error has occurred."}'] ;
+		
 		private static function setUpStorage():void
 		{
 			if(sharedObject == null)
