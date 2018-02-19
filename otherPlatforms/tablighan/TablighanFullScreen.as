@@ -2,10 +2,6 @@ package otherPlatforms.tablighan
 	//otherPlatforms.tablighan.TablighanFullScreen
 {
 	import flash.display.MovieClip;
-	import flash.events.Event;
-	import flash.geom.Rectangle;
-	
-	import picContest.PicConst;
 	
 	public class TablighanFullScreen extends TablighanBanner
 	{

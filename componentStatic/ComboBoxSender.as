@@ -2,7 +2,6 @@
 {//componentStatic.ComboBoxSender
 	import appManager.displayContentElemets.TitleText;
 	
-	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.utils.clearTimeout;
@@ -11,9 +10,6 @@
 	import popForm.Hints;
 	import popForm.PopButtonData;
 	import popForm.PopMenuEvent;
-	
-	import servicManager.ServicEvent;
-	import servicManager.ServicManager;
 	
 	
 	public class ComboBoxSender extends ComponentManager
