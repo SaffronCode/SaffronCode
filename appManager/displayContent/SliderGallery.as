@@ -630,7 +630,7 @@
 		{
 			clearInterval(intervalId);
 		}
-		
+		/**Open the previus question, call showExactIndex() function to open exact page*/
 		public function preve():void
 		{
 			setAnimation();
@@ -647,7 +647,7 @@
 				nextPrevController--;
 			}
 		}
-		
+		/**Open the next question, call showExactIndex() function to open exact page*/
 		public function next():void
 		{
 			if(nextAvailable())
