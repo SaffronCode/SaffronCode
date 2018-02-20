@@ -48,7 +48,13 @@ package restDoaService
 		<br>
 		EmailIsNotValid:int = 10 ;
 		<br>
-		MobileIsNotValid:int = 11 ;*/
+		MobileIsNotValid:int = 11 ;<br><br>
+		 <br><br> 200:Ok<br>
+		 * 404:NotFound<br>
+		 * 400:Bad Request<br>
+		 * 401:Unautorized<br>
+		 * 502:Connection Failed<br>
+		 * For read full list, please visit <a href="https://en.wikipedia.org/wiki/List_of_HTTP_status_codes">https://en.wikipedia.org/wiki/List_of_HTTP_status_codes</a>*/
 		public var errorCode:int,
 					isConnect:Boolean;
 		//public static var SERVER_RESULT_puInquiry_fun:String;

@@ -7,6 +7,7 @@
 	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import flash.events.HTTPStatusEvent;
 	import flash.events.IOErrorEvent;
 	import flash.events.ProgressEvent;
 	import flash.net.URLLoader;
@@ -38,6 +39,14 @@
 	[Event(name="progress", type="flash.events.ProgressEvent")]
 	public class RestDoaServiceCaller extends EventDispatcher 
 	{
+		/**200:Ok<br>
+		 * 404:NotFound<br>
+		 * 400:Bad Request<br>
+		 * 401:Unautorized<br>
+		 * 502:Connection Failed<br>
+		 * For read full list, please visit <a href="https://en.wikipedia.org/wiki/List_of_HTTP_status_codes">https://en.wikipedia.org/wiki/List_of_HTTP_status_codes</a>*/
+		public var HTTPStatus:int ;
+		
 		private var instantOfflineData:Boolean,
 					offlineDataIsOK:Boolean,
 					lastPureData:String,
@@ -132,8 +141,16 @@
 				requestLoader.dataFormat = URLLoaderDataFormat.TEXT ;
 			}
 			requestLoader.addEventListener(Event.COMPLETE,requestLoaded);
+			requestLoader.addEventListener(HTTPStatusEvent.HTTP_RESPONSE_STATUS,serverHeaderReceived);
 			requestLoader.addEventListener(IOErrorEvent.IO_ERROR,noInternet);
 			requestLoader.addEventListener(ProgressEvent.PROGRESS,dispatchProgress);
+		}
+		
+		private function serverHeaderReceived(e:HTTPStatusEvent):void
+		{
+			trace("******** ***  *** * ** HTTP headers received : "+e.status);
+			HTTPStatus = e.status ;
+			RestDoaService.eventDispatcher.dispatchEvent(e.clone());
 		}
 		
 		/**Update full headers*/
@@ -186,7 +203,8 @@
 		{
 			RestDoaService.isOnline = false ;
 			_isLoading = false ;
-			trace("No internet connection");
+			HTTPStatus = 502 ;
+			trace("No internet connection : "+HTTPStatus);
 			if(controllData && offlineDataIsOK)
 			{
 				var savedData:* = RestServiceSaver.load(myId,myParams,pureRequest.requestHeaders);
@@ -217,7 +235,7 @@
 			}
 			else
 			{
-				dispatch(new RestDoaEvent(RestDoaEvent.CONNECTION_ERROR,ErrorEnum.ConnectionError,isConnected));
+				dispatch(new RestDoaEvent(RestDoaEvent.CONNECTION_ERROR,HTTPStatus,isConnected));
 			}
 			/*try
 			{
@@ -270,7 +288,7 @@
 			var correctedLoadedData:String = pureRecevedData;//pureRecevedData.substring(1,pureRecevedData.length-1).split('\\"').join('\"').split("\\\\u003cbr\\\\u003e").join('\\n').split("<br>").join('\\n');
 			//correctedLoadedData = StringFunctions.clearDoubleQuartmarksOnJSON(correctedLoadedData);
 			//trace("Corrected data is : "+correctedLoadedData);
-			if(requestedData!=null)
+			if(HTTPStatus!=502 && requestedData!=null)
 			{
 				if(loadedData is String)
 				{
@@ -301,6 +319,11 @@
 					serverErrorBool = true ;
 				}
 			}
+			else if(HTTPStatus==502)
+			{
+				dispatch(new RestDoaEvent(RestDoaEvent.CONNECTION_ERROR,HTTPStatus,isConnected));
+				return;
+			}
 			//the receved data is not converted correctly
 			//parser = new RestFullJSONParser(loadedData,requestedData);
 			var oldPureData:String = lastPureData ;
@@ -311,7 +334,7 @@
 			{
 				trace("Server problem");
 				//if(this.hasEventListener(RestEvent.SERVER_ERROR))
-				var serverError:RestDoaEvent = new RestDoaEvent(RestDoaEvent.SERVER_ERROR,0,isConnected) ;
+				var serverError:RestDoaEvent = new RestDoaEvent(RestDoaEvent.SERVER_ERROR,HTTPStatus,isConnected) ;
 				if(hasErrorListenerAndDispatchOnglobal(serverError))
 				{	
 					//this.dispatchEvent(new RestEvent(RestEvent.SERVER_ERROR,parser.msgs));
@@ -341,18 +364,18 @@
 						//I have to upste lastPureData befor dispatching the event
 						if(this.hasEventListener(RestDoaEvent.SERVER_RESULT_UPDATE))
 						{
-							dispatch(new RestDoaEvent(RestDoaEvent.SERVER_RESULT_UPDATE,0,isConnected));
+							dispatch(new RestDoaEvent(RestDoaEvent.SERVER_RESULT_UPDATE,HTTPStatus,isConnected));
 						}
 						else
 						{
-							dispatch(new RestDoaEvent(RestDoaEvent.SERVER_RESULT,0,isConnected))
+							dispatch(new RestDoaEvent(RestDoaEvent.SERVER_RESULT,HTTPStatus,isConnected))
 						}
 						//this.dispatchEvent(new RestEvent(RestEvent.SERVER_RESULT_UPDATE));
 					}
 					else
 					{
 						trace("* Nothing change on this update");
-						dispatch(new RestDoaEvent(RestDoaEvent.SERVER_WAS_UPDATED,0,isConnected));
+						dispatch(new RestDoaEvent(RestDoaEvent.SERVER_WAS_UPDATED,HTTPStatus,isConnected));
 					}
 				}
 				else
@@ -360,7 +383,7 @@
 					//this.dispatchEvent(new RestEvent(RestEvent.SERVER_RESULT));
 					//I have to upste lastPureData befor dispatching the event
 					trace("Result event dispatching");
-					dispatch(new RestDoaEvent(RestDoaEvent.SERVER_RESULT,0,isConnected))
+					dispatch(new RestDoaEvent(RestDoaEvent.SERVER_RESULT,HTTPStatus,isConnected))
 				}
 			}
 		}
@@ -368,6 +391,7 @@
 		/**Values are not case sencitive*/
 		protected function loadParam(obj:Object=null):void
 		{
+			HTTPStatus = 0 ;
 			cansel();
 			updateHeaders();
 			isConnected = false ;
