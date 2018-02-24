@@ -91,6 +91,14 @@ package restDoaService
 		/**Add a static header to all services*/
 		public static function addHeader(name:String, value:String):void
 		{
+			for(var i:int = 0 ; i<headers.length ; i++)
+			{
+				if((headers[i] as URLRequestHeader).name == name)
+				{
+					headers.removeAt(i);
+					break;
+				}
+			}
 			headers.push(new URLRequestHeader(name,value));
 		}
 	}
