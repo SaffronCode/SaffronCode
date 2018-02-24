@@ -26,6 +26,8 @@
 		
 		public var myLinkData:LinkData ;
 		
+		public static var alignVariabel:Boolean = true;
+		
 		protected var myParentWidth:Number,myParentHeight:Number;
 		
 		internal var X0:Number,Y0:Number;
@@ -222,7 +224,7 @@
 			}
 			else if(myParag!=null)
 			{
-				myParag.setUp(linkData.name);
+				myParag.setUp(linkData.name,true,alignVariabel);
 			}
 		}
 		

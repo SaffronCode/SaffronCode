@@ -52,6 +52,9 @@ package popForm
 		
 		public static var showPopBackGroundAsDefault:Boolean = false ;
 		
+		
+		public static var ylist:Number = 10;
+		public static var contolBtnY:Number = 20;
 		/**Add more Height for scrolling*/
 		public function localHeight(H:Number)
 		{
@@ -139,7 +142,7 @@ package popForm
 			if(!DevicePrefrence.isTablet)
 			{
 				var txtFormat:TextFormat = mainText.getTextFormat();
-				txtFormat.size = txtFormat.size+10;
+				txtFormat.size = txtFormat.size+ylist;
 				mainText.defaultTextFormat = txtFormat ;
 			}
 			mainText.text = '' ;
@@ -238,12 +241,12 @@ package popForm
 				myDisplay.y = Y ;
 				myDisplay.x = 0 ;
 				this.addChild(myDisplay);
-				Y+=myDisplay.height+10 ;
+				Y+=myDisplay.height+ylist ;
 			}
 			
 			var deltaYForFiedl:Number = 0 ;
 			
-			var deltaXForButtons:Number = 10,
+			var deltaXForButtons:Number = ylist,
 				//☻
 				deltaYForButtons:Number = 0;//20;
 			
@@ -284,8 +287,8 @@ package popForm
 								);
 							this.addChild(newfield);
 							newfield.y = Y ;
-							Y+=newfield.height+10;
-							deltaYForFiedl = 10;//newfield.height*2 ;
+							Y+=newfield.height+ylist;
+							deltaYForFiedl = ylist;//newfield.height*2 ;
 							field.push(newfield) ;
 							
 							switch(content.fieldDatas.popFieldType[i])
@@ -327,8 +330,8 @@ package popForm
 							);
 							this.addChild(newfieldDate);
 							newfieldDate.y = Y ;
-							Y+=newfieldDate.height+10;
-							deltaYForFiedl = 10;//newfield.height*2 ;
+							Y+=newfieldDate.height+ylist;
+							deltaYForFiedl = ylist;//newfield.height*2 ;
 							field.push(newfieldDate) ;
 							
 							break;
@@ -345,8 +348,8 @@ package popForm
 							);
 							this.addChild(newfieldTime);
 							newfieldTime.y = Y ;
-							Y+=newfieldTime.height+10;
-							deltaYForFiedl = 10;//newfield.height*2 ;
+							Y+=newfieldTime.height+ylist;
+							deltaYForFiedl = ylist;//newfield.height*2 ;
 							field.push(newfieldTime) ;
 							break;
 						}
@@ -362,8 +365,8 @@ package popForm
 							);
 							this.addChild(newBooleanTime);
 							newBooleanTime.y = Y ;
-							Y+=newBooleanTime.height+10;
-							deltaYForFiedl = 10;//newfield.height*2 ;
+							Y+=newBooleanTime.height+ylist;
+							deltaYForFiedl = ylist;//newfield.height*2 ;
 							field.push(newBooleanTime) ;
 							break;
 						}
@@ -399,7 +402,7 @@ package popForm
 			{
 				if(content.buttonList[i] == '')
 				{
-					butY+=20;
+					butY+=contolBtnY;
 					buttonList.push(null);
 					continue ;
 				}
@@ -428,7 +431,7 @@ package popForm
 				
 				but.y = butY+but.height/2 ;
 				
-				butY += but.height+10 ;
+				butY += but.height+ylist ;
 				//trace("lastButFrame == but.currentFrame : "+lastButFrame+" vs "+but.currentFrame);
 				if(butData!=null && butData.singleLine)
 				{
@@ -459,7 +462,7 @@ package popForm
 								buttonList[k].x = X0 + (k-lastInLineButton)*deltaX ;
 							}
 							//trace("This button has problem : "+JSON.stringify(butData));
-							butY = lineY+but.height/2+10 ;
+							butY = lineY+but.height/2+ylist ;
 						}
 						else
 						{
@@ -524,7 +527,7 @@ package popForm
 			maxAreaMC.height -= 5 ;
 			var areaRect:Rectangle ;
 			
-			if(butY<=scrollRect.height+10)
+			if(butY<=scrollRect.height+ylist)
 			{
 				areaRect = new Rectangle(maxAreaMC.width/-2,0,maxAreaMC.width,butY);
 			}
@@ -550,7 +553,7 @@ package popForm
 				scroll.stopFloat();
 			}
 			//trace("* : this.height:"+this.height+' vs scrollRect.height:'+scrollRect.height);
-			if(this.height<=scrollRect.height+10)
+			if(this.height<=scrollRect.height+ylist)
 			{
 				scroll.reset();
 				scroll.lock();
@@ -575,10 +578,10 @@ package popForm
 		{
 			trace("myHieghtPlus : "+maxAreaMC.height+'+'+stagePlusHaight+'+'+myHieghtPlus);
 			var scrollRect:Rectangle = new Rectangle(this.x-maxAreaMC.width/2,thisY,maxAreaMC.width,maxAreaMC.height+stagePlusHaight+myHieghtPlus) ;
-			var areaRect:Rectangle = new Rectangle(maxAreaMC.width/-2,0,maxAreaMC.width,10) ;
+			var areaRect:Rectangle = new Rectangle(maxAreaMC.width/-2,0,maxAreaMC.width,ylist) ;
 			scroll = new ScrollMT(this,scrollRect,areaRect,true);
 			trace("* : this.height:"+this.height+' vs scrollRect.height:'+scrollRect.height);
-			if(this.height<=scrollRect.height+10)
+			if(this.height<=scrollRect.height+ylist)
 			{
 				scroll.reset();
 				scroll.lock();
