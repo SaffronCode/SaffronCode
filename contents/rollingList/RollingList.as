@@ -241,13 +241,13 @@ package contents.rollingList
 		}
 		
 		/**Set the page list*/
-		public function setUp(pageData:PageData):void
+		public function setUp(pageData:PageData,selectedItemIndex:uint=0):void
 		{
 			if(pageData==null)
 			{
 				return;
 			}
-			lastSelectedItem = 0 ;
+			selectedItemIndexToTrack = lastSelectedItem = selectedItemIndex ;
 			myPageDataLink = pageData.links1 ;
 			totalPageLinks = myPageDataLink.length ;
 			myPageId = pageData.id ;
