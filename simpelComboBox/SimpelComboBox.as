@@ -28,7 +28,7 @@ package simpelComboBox
 			// TODO Auto-generated method stub
 			Hints.selector(_title,'',list,selector);
 		}
-		public function setup(title_p:String,list_p:Array,onSeletITemFun_p:Function,runFunctionOnSetup:Boolean=true,splitTitle:Boolean=false):void
+		public function setup(title_p:String,list_p:Array,onSeletITemFun_p:Function,runFunctionOnSetup:Boolean=true,splitTitle:Boolean=false,defualtIndex:int=0):void
 		{
 			Item = new SimpelComboBoxListItem();
 			onSeletItem = onSeletITemFun_p;
@@ -39,7 +39,7 @@ package simpelComboBox
 			{
 				if(_titleText!=null)
 				{
-					_titleText.setUp(list_p[0].title,true,splitTitle)
+					_titleText.setUp(list_p[defualtIndex].title,true,splitTitle)
 				}
 				Item.Id = list_p[0].id;
 				Item.Title = list_p[0].title;
