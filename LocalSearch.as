@@ -15,7 +15,7 @@ package
 		public function LocalSearch()
 		{
 			super();
-			_searchTitle = Obj.get('searchTitle_mc',this);
+			_searchTitle = Obj.findThisClass(PopField,this);
 			_closeBtn = Obj.get('closeBtn_mc',this);
 			_icon = Obj.get('icon_mc',this);
 		}
