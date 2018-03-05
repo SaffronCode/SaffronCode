@@ -91,6 +91,13 @@ package restDoaService
 		/**Add a static header to all services*/
 		public static function addHeader(name:String, value:String):void
 		{
+			removeHeader(name);
+			headers.push(new URLRequestHeader(name,value));
+		}
+		
+		/**Remove this special header*/
+		public static function removeHeader(name:String):void
+		{
 			for(var i:int = 0 ; i<headers.length ; i++)
 			{
 				if((headers[i] as URLRequestHeader).name == name)
@@ -99,7 +106,6 @@ package restDoaService
 					break;
 				}
 			}
-			headers.push(new URLRequestHeader(name,value));
 		}
 	}
 }
