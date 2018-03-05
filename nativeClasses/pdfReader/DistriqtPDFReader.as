@@ -115,7 +115,6 @@
 			
 			allSplittedPermission = appleURLPermision.split('\n');
 			leftPermission = '' ;
-			var appleManifestMustUpdate:Boolean = false ;
 			
 			for(i = 0 ; i<allSplittedPermission.length ; i++)
 			{
@@ -164,6 +163,8 @@
 				isSupport = false ;
 			}
 
+			trace("****\n\n\n\nPDF support status is : "+isSupport+"\n\n\n********");
+			
 		}
 		
 		public function DistriqtPDFReader(W:Number,H:Number)
@@ -188,7 +189,7 @@
 			
 			trace("**** **** **** PDFview : "+view);
 			
-			view.setViewport( 50, 100, 400, 500 );
+			view.setViewport( 50, 100, 400, 500 );//TODO
 			view.addEventListener( PDFViewEvent.SHOWN, pdfView_shownHandler );
 			view.addEventListener( PDFViewEvent.HIDDEN, pdfView_hiddenHandler );
 			
