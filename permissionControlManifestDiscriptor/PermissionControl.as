@@ -146,6 +146,21 @@ public class PermissionControl {
 		}
 	}
 	
+	/**Returns '' if the native was added to the project befor otherwise it return the required line of extensionID*/
+	public static function checkTheNativeLibrary(nativeLibraryName:String):String
+	{
+		var descriptString:String = StringFunctions.clearSpacesAndTabsAndArrows(DevicePrefrence.appDescriptor.toString()) ;
+		var requiredParameterOnManifest:String = "<extensionID>"+nativeLibraryName+"</extensionID>" ;
+		if(descriptString.indexOf(requiredParameterOnManifest)==-1)
+		{
+			return requiredParameterOnManifest ;
+		}
+		else
+		{
+			return '' ;
+		}
+	}
+	
 	/**Control the video tag on the stage*/
 	public static function VideoTagForStageWebView():void
 	{
