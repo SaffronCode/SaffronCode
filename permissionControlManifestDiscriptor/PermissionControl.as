@@ -126,7 +126,7 @@ public class PermissionControl {
 			Caution(appleHintText+leftPermission);
 	}
 	
-	private static function Caution(str:String):void
+	public static function Caution(str:String):void
 	{
 		if(DevicePrefrence.isItPC)
 		{
