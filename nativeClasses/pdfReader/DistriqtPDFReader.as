@@ -1,14 +1,15 @@
 ﻿package nativeClasses.pdfReader
 {
 	
-	import com.distriqt.extension.pdfreader.PDFReader;
-	import com.distriqt.extension.pdfreader.builders.PDFViewBuilder;
-	import com.distriqt.extension.pdfreader.events.PDFViewEvent;
+	//import com.distriqt.extension.pdfreader.PDFReader;
+	//import com.distriqt.extension.pdfreader.builders.PDFViewBuilder;
+	//import com.distriqt.extension.pdfreader.events.PDFViewEvent;
 	import com.mteamapp.StringFunctions;
 	
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
+	import flash.utils.getDefinitionByName;
 	
 	import permissionControlManifestDiscriptor.PermissionControl;
 	
@@ -17,6 +18,12 @@
 	public class DistriqtPDFReader extends Sprite
 	{
 		private static var satUp:Boolean = false ;
+		
+		/**import com.distriqt.extension.pdfreader.PDFReader*/
+		private static var PDFReaderClass:Class ;
+		
+		/**com.distriqt.extension.pdfreader.builders.PDFViewBuilder*/
+		private static var PDFViewBuilderClass:Class
 		
 		public static var isSupport:Boolean = false ;
 
@@ -161,8 +168,10 @@
 			
 			try
 			{
-				PDFReader.init( DistriqtId );
-				if (PDFReader.isSupported)
+				PDFReaderClass = getDefinitionByName("com.distriqt.extension.pdfreader.PDFReader") as Class ;
+				PDFViewBuilderClass = getDefinitionByName("com.distriqt.extension.pdfreader.builders.PDFViewBuilder") as Class ;
+				(PDFReaderClass as Object).init( DistriqtId );
+				if ((PDFReaderClass as Object).isSupported)
 				{
 					// Functionality here
 					isSupport = true ;
@@ -311,8 +320,8 @@
 			
 			dispose();
 			
-			view = PDFReader.service.createView( 
-				new PDFViewBuilder()
+			view = (PDFReaderClass as Object).service.createView( 
+				new PDFViewBuilderClass()
 				.setPath( PDR_URL )
 				.showDoneButton( false )
 				.showTitle( false )
@@ -322,13 +331,13 @@
 			
 			trace("**** **** **** PDFview : "+view);
 			
-			view.addEventListener( PDFViewEvent.SHOWN, pdfView_shownHandler );
-			view.addEventListener( PDFViewEvent.HIDDEN, pdfView_hiddenHandler );
+			//view.addEventListener( PDFViewEvent.SHOWN, pdfView_shownHandler );
+			//view.addEventListener( PDFViewEvent.HIDDEN, pdfView_hiddenHandler );
 			this.addEventListener(Event.ENTER_FRAME,updatePDFPosition);
 			
 			updatePDFPosition();
 			
-			function pdfView_shownHandler( event:PDFViewEvent ):void
+			/*function pdfView_shownHandler( event:PDFViewEvent ):void
 			{
 				trace( "** ** ** ** * view shown" );
 			}
@@ -336,7 +345,7 @@
 			function pdfView_hiddenHandler( event:PDFViewEvent ):void
 			{
 				trace( "** ** ** ** * view hidden" );
-			}
+			}*/
 
 			
 			view.show();
