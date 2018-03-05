@@ -15,6 +15,8 @@
 		private static var satUp:Boolean = false ;
 		
 		public static var isSupport:Boolean = false ;
+
+		private var view:*;
 		
 		public static function setUp(DistriqtId:String):void
 		{
@@ -174,12 +176,17 @@
 			this.graphics.drawRect(0,0,W,H);
 		}
 		
+		public function dispose():void
+		{
+			//TODO dispose the pdf
+		}
+		
 		
 		public function openPDF(PDR_URL:String):void
 		{
 			trace(">>>> > >> > >> > > >> > >Show this pdf : "+PDR_URL);
 			
-			var view:* = PDFReader.service.createView( 
+			view = PDFReader.service.createView( 
 				new PDFViewBuilder()
 				.setPath( PDR_URL )
 				.showDoneButton( true )

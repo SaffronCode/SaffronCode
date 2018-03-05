@@ -30,6 +30,10 @@ package darkBox
 		override public function hide():void
 		{
 			super.hide();
+			
+			if(distriqtPDF)
+				distriqtPDF.dispose();
+			
 			if(stageVewIsOpened && this.stage!=null)
 			{
 				myStageWeb.dispose();
@@ -95,6 +99,7 @@ package darkBox
 			{
 				myStageWeb.viewPort = this.getBounds(stage);
 				distriqtPDF = new DistriqtPDFReader(this.width,this.height);
+				this.addChild(distriqtPDF);
 			}
 			else
 			{
