@@ -153,6 +153,18 @@ package contents.displayPages
 			dynamicHeight = loadAllLinksInstantly = status ;
 		}
 		
+		/**Return the default linkItem's width of the list*/
+		public function linkItemWidths():Number
+		{
+			return sampleLink.width+deltaX ;
+		}
+		
+		/**Return the default linkItem's height of the list*/
+		public function linkItemHeight():Number
+		{
+			return sampleLink.height+deltaY ;
+		}
+		
 		public function activateAtoScroll(scrollSpeed:Number=0):void
 		{
 			autoScrollSpeed = scrollSpeed ;
@@ -703,6 +715,16 @@ package contents.displayPages
 		{
 			linkScroller.setPose(X,Y);
 			linkScroller.lock();
+		}
+		
+		public function getScrollPositionX():Number
+		{
+			return linksContainer.x ;
+		}
+		
+		public function getScrollPositionY():Number
+		{
+			return linksContainer.y ;
 		}
 		
 		public function scrollReset():void
