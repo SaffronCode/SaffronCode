@@ -126,7 +126,7 @@ public class PermissionControl {
 			Caution(appleHintText+leftPermission);
 	}
 	
-	private static function Caution(str:String):void
+	public static function Caution(str:String):void
 	{
 		if(DevicePrefrence.isItPC)
 		{
@@ -143,6 +143,21 @@ public class PermissionControl {
 			trace('***********************************************************');
 			trace('***********************************************************');
 			trace('***********************************************************');
+		}
+	}
+	
+	/**Returns '' if the native was added to the project befor otherwise it return the required line of extensionID*/
+	public static function checkTheNativeLibrary(nativeLibraryName:String):String
+	{
+		var descriptString:String = StringFunctions.clearSpacesAndTabsAndArrows(DevicePrefrence.appDescriptor.toString()) ;
+		var requiredParameterOnManifest:String = "<extensionID>"+nativeLibraryName+"</extensionID>" ;
+		if(descriptString.indexOf(requiredParameterOnManifest)==-1)
+		{
+			return requiredParameterOnManifest ;
+		}
+		else
+		{
+			return '' ;
 		}
 	}
 	
