@@ -181,7 +181,7 @@
 		public function DistriqtPDFReader(W:Number,H:Number)
 		{
 			super();
-			this.graphics.beginFill(0xff0000,1);
+			this.graphics.beginFill(0xffffff,1);
 			this.graphics.drawRect(0,0,W,H);
 		}
 		
@@ -307,7 +307,7 @@
 		public function openPDF(PDR_URL:String):void
 		{
 			trace(">>>> > >> > >> > > >> > >Show this pdf : "+PDR_URL);
-			trace("The PDF target is changig with "+(PDR_URL="http://oncolinq.ir/UploadImages/Pdf/Pdf48641pdf%20test.pdf"));
+			//trace("The PDF target is changig with "+(PDR_URL="http://oncolinq.ir/UploadImages/Pdf/Pdf48641pdf%20test.pdf"));
 			
 			dispose();
 			

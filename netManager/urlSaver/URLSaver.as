@@ -366,13 +366,14 @@ package netManager.urlSaver
 			}
 			else if(fileExtention!=null && fileExtention.toLowerCase().indexOf('pdf')!=-1)
 			{
+				//This is PDF
 				if(DevicePrefrence.isIOS())
 				{
 					oflineFolder = File.applicationStorageDirectory.resolvePath(offlineFolderName);
 				}
 				else
 				{
-					oflineFolder = File.documentsDirectory.resolvePath(offlineFolderName);
+					oflineFolder = File.userDirectory.resolvePath(offlineFolderName);
 				}
 			}
 			else
@@ -386,7 +387,7 @@ package netManager.urlSaver
 			var nameCash:String = onlineURL.split('\\').join('/');
 			//trace("oflineFolder : "+oflineFolder.nativePath); 
 			var offlineURLFileName:String = nameCash.substring(nameCash.indexOf('/')+1);
-			offlineURLFileName = offlineURLFileName.split('?').join('Q').split('/').join('').split('=').join('').split(':').join('');
+			offlineURLFileName = offlineURLFileName.split('?').join('Q').split('/').join('').split('=').join('').split(':').join('').split(' ').join('');
 			offlineURLFileName = offlineURLFileName.substr(offlineURLFileName.length-Math.min(maxNameLength,offlineURLFileName.length),offlineURLFileName.length);
 			//offlineURLFileName = Base64.Encode(offlineURLFileName);
 			//trace("offlineURLFileName : "+offlineURLFileName);
@@ -402,7 +403,7 @@ package netManager.urlSaver
 				offlineFileNameWithExtention = offlineURLFileName;
 			}
 			
-			if(fileExtention!=null/* && offlineFileNameWithExtention.indexOf(fileExtention)==-1*/)
+			if(fileExtention!=null && offlineFileNameWithExtention.lastIndexOf(fileExtention)!=(offlineFileNameWithExtention.length-fileExtention.length)/* && offlineFileNameWithExtention.indexOf(fileExtention)==-1*/)
 			{
 				offlineFileNameWithExtention+=(fileExtention.indexOf('.')==-1)?'.'+fileExtention:fileExtention;
 			}

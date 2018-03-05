@@ -114,7 +114,7 @@ package darkBox
 			pdftarget = new File(target);
 			if(DistriqtPDFReader.isSupport)
 			{
-				distriqtPDF.openPDF(pdftarget.url);
+				distriqtPDF.openPDF(pdftarget.nativePath);
 			}
 			else if(DevicePrefrence.isAndroid())
 			{
