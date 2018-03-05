@@ -49,7 +49,7 @@ package popForm
 		}
 		
 		
-		public static function getText(title:String,question:String,tagLable:String,onDone:Function,OnNotAccepted:Function=null,keyboardType:String=SoftKeyboardType.DEFAULT,isPassword:Boolean=false,innerDisplayObject:DisplayObject=null,ButtonFrameYes:int=1,ButtonFrameNo:int=1):void
+		public static function getText(title:String,question:String,tagLable:String,onDone:Function,OnNotAccepted:Function=null,keyboardType:String=SoftKeyboardType.DEFAULT,isPassword:Boolean=false,innerDisplayObject:DisplayObject=null,ButtonFrameYes:int=1,ButtonFrameNo:int=1,defaultTextOnField:String=''):void
 		{
 			onQuestionAccepted = onDone;
 			onNotAccepted = OnNotAccepted;
@@ -57,7 +57,7 @@ package popForm
 			var buttons:Array = [new PopButtonData(Contents.lang.t[id_submit],ButtonFrameYes,null,true,true)
 				,new PopButtonData(Contents.lang.t[id_no],ButtonFrameNo,null,true,true)] ;
 			var popFields:PopMenuFields = new PopMenuFields();
-			popFields.addField(tagLable,'',keyboardType,isPassword,true,true);
+			popFields.addField(tagLable,defaultTextOnField,keyboardType,isPassword,true,true);
 			var popText:PopMenuContent = new PopMenuContent(question,popFields,buttons,innerDisplayObject);
 			PopMenu1.popUp(title,null,popText,0,textCatched);
 		}
