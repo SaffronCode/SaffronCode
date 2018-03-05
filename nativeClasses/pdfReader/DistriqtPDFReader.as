@@ -188,9 +188,12 @@
 		public function dispose():void
 		{
 			//TODO dispose the pdf
-			view.dispose();
 			this.removeEventListener(Event.ENTER_FRAME,updatePDFPosition);
-			view = null ;
+			if(view)
+			{
+				view.dispose();
+				view = null ;
+			}
 		}
 		
 		private function createViewPort():Rectangle
