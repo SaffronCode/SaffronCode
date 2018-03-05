@@ -9,6 +9,8 @@ package darkBox
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
 	
+	import nativeClasses.pdfReader.DistriqtPDFReader;
+	
 	internal class WebOpener extends DefaultImage
 	{
 		private var myStageWeb:StageWebView ;
@@ -16,6 +18,7 @@ package darkBox
 		private var pdftarget:File;
 		
 		private var stageVewIsOpened:Boolean = false ;
+		private var distriqtPDF:DistriqtPDFReader;
 		
 		
 		public function WebOpener()
@@ -91,6 +94,7 @@ package darkBox
 			if(this.stage)
 			{
 				myStageWeb.viewPort = this.getBounds(stage);
+				distriqtPDF = new DistriqtPDFReader(this.width,this.height);
 			}
 			else
 			{
@@ -103,7 +107,11 @@ package darkBox
 			this.visible = true ;
 			this.mouseEnabled = this.mouseChildren = true ;
 			pdftarget = new File(target);
-			if(DevicePrefrence.isAndroid())
+			if(DistriqtPDFReader.isSupport)
+			{
+				distriqtPDF.openPDF(pdftarget.url);
+			}
+			else if(DevicePrefrence.isAndroid())
 			{
 				if(NativePDF.isSupports())
 				{

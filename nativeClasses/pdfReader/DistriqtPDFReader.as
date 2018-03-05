@@ -1,6 +1,9 @@
-package nativeClasses.pdfReader
+﻿package nativeClasses.pdfReader
 {
 	
+	import com.distriqt.extension.pdfreader.PDFReader;
+	import com.distriqt.extension.pdfreader.builders.PDFViewBuilder;
+	import com.distriqt.extension.pdfreader.events.PDFViewEvent;
 	import com.mteamapp.StringFunctions;
 	
 	import flash.display.Sprite;
@@ -10,6 +13,8 @@ package nativeClasses.pdfReader
 	public class DistriqtPDFReader extends Sprite
 	{
 		private static var satUp:Boolean = false ;
+		
+		public static var isSupport:Boolean = false ;
 		
 		public static function setUp(DistriqtId:String):void
 		{
@@ -65,7 +70,7 @@ package nativeClasses.pdfReader
 			var appleManifestMustUpdate:Boolean = false ;
 			var androidManifestMustUpdate:Boolean = false ;
 			
-			for(var i:int = 0 ; i<allSplittedPermission.length ; i++)
+			for(i = 0 ; i<allSplittedPermission.length ; i++)
 			{
 				isNessesaryToShow = isNessesaryLine(allSplittedPermission[i]);
 				if(descriptString.indexOf(StringFunctions.clearSpacesAndTabsAndArrows(removeNecessaryBoolet(allSplittedPermission[i])))==-1)
@@ -137,11 +142,69 @@ package nativeClasses.pdfReader
 		//////////////////////////Android permission check over ↑
 			
 			satUp = true ;
+			
+			
+			
+			
+			
+			//////PDF native
+			
+			try
+			{
+				PDFReader.init( DistriqtId );
+				if (PDFReader.isSupported)
+				{
+					// Functionality here
+					isSupport = true ;
+				}
+			}
+			catch (e:Error)
+			{
+				trace("*******************\n\n\n"+ e );
+				isSupport = false ;
+			}
+
 		}
 		
-		public function DistriqtPDFReader()
+		public function DistriqtPDFReader(W:Number,H:Number)
 		{
 			super();
+			this.graphics.beginFill(0xff0000,1);
+			this.graphics.drawRect(0,0,W,H);
+		}
+		
+		
+		public function openPDF(PDR_URL:String):void
+		{
+			trace(">>>> > >> > >> > > >> > >Show this pdf : "+PDR_URL);
+			
+			var view:* = PDFReader.service.createView( 
+				new PDFViewBuilder()
+				.setPath( PDR_URL )
+				.showDoneButton( true )
+				.showTitle( false )
+				.build()
+			);
+			
+			trace("**** **** **** PDFview : "+view);
+			
+			view.setViewport( 50, 100, 400, 500 );
+			view.addEventListener( PDFViewEvent.SHOWN, pdfView_shownHandler );
+			view.addEventListener( PDFViewEvent.HIDDEN, pdfView_hiddenHandler );
+			
+			function pdfView_shownHandler( event:PDFViewEvent ):void
+			{
+				trace( "** ** ** ** * view shown" );
+			}
+			
+			function pdfView_hiddenHandler( event:PDFViewEvent ):void
+			{
+				trace( "** ** ** ** * view hidden" );
+			}
+
+			
+			view.show();
+
 		}
 	}
 }
