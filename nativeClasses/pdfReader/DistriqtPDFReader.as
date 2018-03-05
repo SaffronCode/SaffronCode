@@ -33,6 +33,8 @@
 		private static var 	scl:Number = 0,
 							deltaX:Number,
 							deltaY:Number;
+							private var isShowing:Boolean;
+							private var lastArea:Rectangle;
 		
 		public static function setUp(DistriqtId:String):void
 		{
@@ -325,6 +327,9 @@
 				.setPath( PDR_URL )
 				.showDoneButton( false )
 				.showTitle( false )
+				.setFitMode(1)
+				.setScrollDirection(1)
+				.showSearch(true)
 				.showExport(true)
 				.build()
 			);
@@ -334,7 +339,7 @@
 			//view.addEventListener( PDFViewEvent.SHOWN, pdfView_shownHandler );
 			//view.addEventListener( PDFViewEvent.HIDDEN, pdfView_hiddenHandler );
 			this.addEventListener(Event.ENTER_FRAME,updatePDFPosition);
-			
+			lastArea = null ;
 			updatePDFPosition();
 			
 			/*function pdfView_shownHandler( event:PDFViewEvent ):void
@@ -347,24 +352,29 @@
 				trace( "** ** ** ** * view hidden" );
 			}*/
 
-			
-			view.show();
-
 		}
 		
 		/**Set tue pdf position*/
 		private function updatePDFPosition(e:*=null):void
 		{
 			var currentArea:Rectangle = createViewPort();
-			view.setViewport( currentArea.x, currentArea.y, currentArea.width, currentArea.height );
+			
+			if(lastArea==null || lastArea.x != currentArea.x || lastArea.y != currentArea.y || lastArea.width != currentArea.width || lastArea.height!=currentArea.height)
+				view.setViewport( currentArea.x, currentArea.y, currentArea.width, currentArea.height );
+			
+			lastArea = currentArea.clone();
 			
 			if(Obj.isAccesibleByMouse(this))
 			{
-				view.show();
+				if(!isShowing)
+					view.show();
+				isShowing = true ;
 			}
 			else
 			{
-				view.hide();
+				if(isShowing)
+					view.hide();
+				isShowing = false ;
 			}
 		}
 	}
