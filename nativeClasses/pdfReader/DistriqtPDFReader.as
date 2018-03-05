@@ -7,8 +7,12 @@
 	import com.mteamapp.StringFunctions;
 	
 	import flash.display.Sprite;
+	import flash.events.Event;
+	import flash.geom.Rectangle;
 	
 	import permissionControlManifestDiscriptor.PermissionControl;
+	
+	import stageManager.StageManager;
 	
 	public class DistriqtPDFReader extends Sprite
 	{
@@ -17,6 +21,11 @@
 		public static var isSupport:Boolean = false ;
 
 		private var view:*;
+		
+		
+		private static var 	scl:Number = 0,
+							deltaX:Number,
+							deltaY:Number;
 		
 		public static function setUp(DistriqtId:String):void
 		{
@@ -179,26 +188,142 @@
 		public function dispose():void
 		{
 			//TODO dispose the pdf
+			view.dispose();
+			this.removeEventListener(Event.ENTER_FRAME,updatePDFPosition);
+			view = null ;
 		}
 		
+		private function createViewPort():Rectangle
+		{
+			var rect:Rectangle = this.getBounds(stage);
+			//trace("****Create view port");
+			if(scl==0)
+			{
+				var stageRect:Rectangle = StageManager.stageRect ;
+				trace("stageRect : "+stageRect);
+				var sclX:Number ;
+				var sclY:Number ;
+				deltaX = 0 ;
+				deltaY = 0 ;
+				var _fullScreenWidth:Number,
+				_fullScreenHeight:Number;
+				if(stageRect.width==0)
+				{
+					trace("+++default size detection")
+					sclX = (stage.fullScreenWidth/stage.stageWidth);
+					sclY = (stage.fullScreenHeight/stage.stageHeight);
+					if(sclX<=sclY)
+					{
+						scl = sclX ;
+						deltaY = stage.fullScreenHeight-(stage.stageHeight)*scl ;
+					}
+					else
+					{
+						scl = sclY ;
+						deltaX = stage.fullScreenWidth-(stage.stageWidth)*scl ;
+					}
+				}
+				else
+				{
+					trace("+++advvanced size detection");
+					_fullScreenWidth = stageRect.width*StageManager.stageScaleFactor() ;
+					_fullScreenHeight = stageRect.height*StageManager.stageScaleFactor() ;
+					sclX = (_fullScreenWidth/stage.stageWidth);
+					sclY = (_fullScreenHeight/stage.stageHeight);
+					trace("sclX : "+sclX);
+					trace("sclY : "+sclY);
+					if(sclX<=sclY)
+					{
+						scl = sclX ;
+						deltaY = _fullScreenHeight-(stage.stageHeight)*scl ;
+					}
+					else
+					{
+						scl = sclY ;
+						deltaX = _fullScreenWidth-(stage.stageWidth)*scl ;
+					}
+					trace("deltaX : "+deltaX);
+					trace("deltaY : "+deltaY);
+					trace("scl : "+scl);
+				}
+			}
+			
+			//trace("Old rect : " +rect);
+			//trace("scl : "+scl);
+			//trace("deltaX : "+deltaX);
+			//trace("deltaY : "+deltaY);
+			
+			rect.x*=scl;
+			rect.y*=scl;
+			rect.x += deltaX/2;
+			rect.y += deltaY/2;
+			rect.width*=scl;
+			rect.height*=scl;
+			
+			rect.x = round(rect.x);
+			rect.y = round(rect.y);
+			rect.width = round(rect.width);
+			rect.height = round(rect.height);
+			
+			//trace("new rect : " +rect);
+			
+			if(rect.x<0)
+			{
+				if(-rect.x<rect.width)
+				{
+					rect.width += rect.x ;
+					rect.x = 0 ;
+				}
+				else
+				{
+					rect = null ;
+				}
+			}
+			
+			if(rect!=null && rect.y<0)
+			{
+				if(-rect.y<rect.height)
+				{
+					rect.height += rect.y ;
+					rect.y = 0 ;
+				}
+				else
+				{
+					rect = null ;
+				}
+			}
+			
+			return rect;
+		}
+		
+		private function round(num:Number):Number
+		{
+			return Math.round(num);
+		}
 		
 		public function openPDF(PDR_URL:String):void
 		{
 			trace(">>>> > >> > >> > > >> > >Show this pdf : "+PDR_URL);
+			trace("The PDF target is changig with "+(PDR_URL="http://oncolinq.ir/UploadImages/Pdf/Pdf48641pdf%20test.pdf"));
+			
+			dispose();
 			
 			view = PDFReader.service.createView( 
 				new PDFViewBuilder()
 				.setPath( PDR_URL )
-				.showDoneButton( true )
+				.showDoneButton( false )
 				.showTitle( false )
+				.showExport(true)
 				.build()
 			);
 			
 			trace("**** **** **** PDFview : "+view);
 			
-			view.setViewport( 50, 100, 400, 500 );//TODO
 			view.addEventListener( PDFViewEvent.SHOWN, pdfView_shownHandler );
 			view.addEventListener( PDFViewEvent.HIDDEN, pdfView_hiddenHandler );
+			this.addEventListener(Event.ENTER_FRAME,updatePDFPosition);
+			
+			updatePDFPosition();
 			
 			function pdfView_shownHandler( event:PDFViewEvent ):void
 			{
@@ -213,6 +338,22 @@
 			
 			view.show();
 
+		}
+		
+		/**Set tue pdf position*/
+		private function updatePDFPosition(e:*=null):void
+		{
+			var currentArea:Rectangle = createViewPort();
+			view.setViewport( currentArea.x, currentArea.y, currentArea.width, currentArea.height );
+			
+			if(Obj.isAccesibleByMouse(this))
+			{
+				view.show();
+			}
+			else
+			{
+				view.hide();
+			}
 		}
 	}
 }
