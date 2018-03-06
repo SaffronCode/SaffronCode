@@ -58,9 +58,12 @@
 				}
 			}
 			
+			var nativeCheck:String = '' ;
+			
 			if(nativesToAdd!='')
 			{
-				trace("******* You should add below extentions to your project for PDF to work\n\n\n"+nativesToAdd+"\n\n\n*********************");
+				nativeCheck = "\n\n\n******* You should add below extentions to your project for PDF to work\n\n\n"+nativesToAdd+"\n\n\n*********************" ;
+				trace(nativeCheck);
 			}
 			
 		//////////////////////////Android permission check ↓
@@ -109,7 +112,7 @@
 				}
 			}
 			if(androidManifestMustUpdate)
-				PermissionControl.Caution(hintText+leftPermission);
+				PermissionControl.Caution(hintText+leftPermission+nativeCheck);
 			
 			function isNessesaryLine(line:String):Boolean
 			{
@@ -156,7 +159,7 @@
 			}
 			
 			if(appleManifestMustUpdate)
-				PermissionControl.Caution(appleHintText+leftPermission);
+				PermissionControl.Caution(appleHintText+leftPermission+nativeCheck);
 			
 		//////////////////////////Android permission check over ↑
 			
@@ -199,7 +202,9 @@
 		public function dispose():void
 		{
 			//TODO dispose the pdf
+			this.visible = false ;
 			this.removeEventListener(Event.ENTER_FRAME,updatePDFPosition);
+			isShowing = false ;
 			if(view)
 			{
 				view.dispose();
@@ -321,7 +326,7 @@
 			//trace("The PDF target is changig with "+(PDR_URL="http://oncolinq.ir/UploadImages/Pdf/Pdf48641pdf%20test.pdf"));
 			
 			dispose();
-			
+			this.visible = true ;
 			view = (PDFReaderClass as Object).service.createView( 
 				new PDFViewBuilderClass()
 				.setPath( PDR_URL )
