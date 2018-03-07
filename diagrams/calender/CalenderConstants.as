@@ -6,13 +6,13 @@ package diagrams.calender
 		public static const Debug_instantShow:Boolean = true;
 
 		/**Calender box contents will apear under masked area. You will loose performance*/
-		public static const maskAvailable:Boolean = false;
+		public static const maskAvailable:Boolean = true;
 		
 		/**Inner box parameters*/
 		public static var 	padding:Number = 1,
 							maskPadding:Number = 5,
 							maskPaddingT:Number = 20,
-							ellipse:Number = 10 ;
+							ellipse:Number = 5 ;
 		
 		private static const 	d0:String = "شنبه",
 								d1:String = "یک شنبه",

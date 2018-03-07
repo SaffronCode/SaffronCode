@@ -53,28 +53,34 @@ package diagrams.calender
 			
 			var color:uint;
 			var colorText:uint;
+			var colorLine:uint;
 			
 			if(data.isCurrentDay)
 			{
-				color = CalenderConstants.Color_boxBackGround_currentDay;
+				color = CalenderConstants.Color_boxBackGround;
 				colorText = CalenderConstants.Color_boxNames_currentDay;
+				colorLine = CalenderConstants.Color_boxBackGround_currentDay
 			}
 			else if(data.isFriday)
 			{
-				color = CalenderConstants.Color_boxBackGround_friday;
+				colorLine = color = CalenderConstants.Color_boxBackGround_friday;
 				colorText = CalenderConstants.Color_boxNames_friday;
 			}
 			else
 			{
-				color = CalenderConstants.Color_boxBackGround;
+				colorLine = color = CalenderConstants.Color_boxBackGround;
 				colorText = CalenderConstants.Color_boxNames;
 			}
 			
 			this.graphics.beginFill(color,1);
+			if(colorLine!=color)
+				this.graphics.lineStyle(2,colorLine);
 			this.graphics.drawRoundRect(padding,padding,Width-padding*2,Height-padding*2,ellipse);
 			
 			dateTitle = new CalenderText(colorText,CalenderConstants.Font_size_dates,CalenderConstants.Font_boxNames/*,TextFormatAlign.LEFT*/);
 			this.addChild(dateTitle);
+			
+			maskPaddingT = Math.max(maskPaddingT,dateTitle.height+dateTitle.y) ;
 			
 			/*
 			contentInterface = new CelenderBoxContent(Width-20,Height-20);
