@@ -16,6 +16,7 @@
 		
 		private var H:Number,
 					W:Number ;
+					
 		
 		private var scrollMC:ScrollMT;
 		private var nativeText:FarsiInputCorrection;
@@ -44,6 +45,7 @@
 				this.addChild(myText);
 				myText.x = myText.y = 0 ;
 			}
+			
 			
 			H = super.height+moreHight;
 			W = super.width ;
