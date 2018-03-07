@@ -17,6 +17,7 @@
 		private var H:Number,
 					W:Number ;
 					
+		private var textHeight0:Number ;
 		
 		private var scrollMC:ScrollMT;
 		private var nativeText:FarsiInputCorrection;
@@ -46,6 +47,7 @@
 				myText.x = myText.y = 0 ;
 			}
 			
+			textHeight0 = myTextTF.height ;
 			
 			H = super.height+moreHight;
 			W = super.width ;
@@ -95,6 +97,7 @@
 		
 		public function setUp(myText:String,isArabic:Boolean = true,align:Boolean=true,knownAsHTML:Boolean=false,activateLinks:Boolean=false,useNativeText:Boolean=false,addScroller:Boolean=true,generateLinksForURLs:Boolean=false,scrollEffect:Boolean=true,userBitmap:Boolean=true,VerticalAlign:Boolean=false,useCash:Boolean=false,captureResolution:uint=0,splitIfToLong:Boolean=false):void
 		{
+			myTextTF.height = textHeight0 ;
 			if(!isNaN(X0))
 			{
 				this.x = X0 ;
