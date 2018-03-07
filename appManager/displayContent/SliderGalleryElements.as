@@ -130,6 +130,7 @@ package appManager.displayContent
 			}
 			else
 			{
+				removeOldInterface();
 				if((imageItem==null && lastImage!=null) || imageItem!=lastImage)
 				{
 					if(imageItem==null)
