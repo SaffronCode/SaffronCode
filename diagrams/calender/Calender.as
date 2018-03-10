@@ -267,7 +267,8 @@ package diagrams.calender
 							calenderData.contents[j].title,
 							calenderData.contents[j].begin,
 							calenderData.contents[j].end,
-							calenderData.contents[j].color
+							calenderData.contents[j].color,
+							calenderData.contents[j].data
 						);
 
 					}
