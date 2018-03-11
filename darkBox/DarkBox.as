@@ -13,6 +13,7 @@
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
 	import flash.ui.Keyboard;
+	import flash.utils.ByteArray;
 	import flash.utils.clearTimeout;
 	import flash.utils.getTimer;
 	import flash.utils.setTimeout;
@@ -570,13 +571,19 @@
 		
 		public static function saveCurrentImageToGallery():void
 		{
+			var currentTargetFileByte:ByteArray = ME.images[ME.currentImage].targetBytes ;
+			if(currentTargetFileByte == null)
+			{
+				currentTargetFileByte = FileManager.loadFile(new File(ME.images[ME.currentImage].target));
+			}
+			
 			if(DevicePrefrence.isItPC)
 			{
-				FileManager.seveFile(File.desktopDirectory.resolvePath('SavedFileFrom'+DevicePrefrence.appName+'.jpg'),ME.images[ME.currentImage].targetBytes,true,onImageSaved);
+				FileManager.seveFile(File.desktopDirectory.resolvePath('SavedFileFrom'+DevicePrefrence.appName+'.jpg'),currentTargetFileByte,true,onImageSaved);
 			}
 			else
 			{
-				DeviceImage.saveImageToGallery(ME.images[ME.currentImage].targetBytes,onImageSaved);
+				DeviceImage.saveImageToGallery(currentTargetFileByte,onImageSaved);
 			}
 		}
 		
