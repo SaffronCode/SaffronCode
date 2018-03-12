@@ -244,20 +244,13 @@ package contents.displayPages
 			{
 				noLinksMC = Obj.findThisClass(DynamicLinksNoList,this,true) ;
 			}
-			else
-			{
-				Obj.remove(noLinksMC);
-			}
 			
+			areaRect = this.getBounds(this);
 			
 			sampleLink = Obj.findThisClass(LinkItem,this,true);
 			if(sampleLink ==null)
 			{
 				throw "Dynamic manu class shouldent be empty of linkItem!";
-			}
-			else
-			{
-				Obj.remove(sampleLink);
 			}
 			
 			sampleLinkButton = Obj.findThisClass(LinkItemButtons,this,true);
@@ -266,10 +259,8 @@ package contents.displayPages
 				linkItemButtonsWidth = sampleLinkButton.width ;
 				linkButtonClass = getDefinitionByName(getQualifiedClassName(sampleLinkButton)) as Class;
 				activeSlideButtons = true ;
-				Obj.remove(sampleLinkButton);
 			}
 			
-			areaRect = this.getBounds(this);
 			linkClass = getDefinitionByName(getQualifiedClassName(sampleLink)) as Class;
 			trace('link class is : '+linkClass);
 			
