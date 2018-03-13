@@ -215,7 +215,7 @@
 					{
 						trace("* cashed data for "+myId+" : "+savedData);
 					}
-					parsLoadedData(savedData,true);
+					parsLoadedData(savedData,true,true);
 					return ;
 				}
 			}
@@ -280,7 +280,7 @@
 			parsLoadedData(requestLoader.data);
 		}
 		
-		protected function parsLoadedData(loadedData:*,alreadyLoadedFromCash:Boolean=false):void
+		protected function parsLoadedData(loadedData:*,alreadyLoadedFromCash:Boolean=false,ignoreHTTPStatus:Boolean=false):void
 		{
 			var serverErrorBool:Boolean = false ;
 			var pureRecevedData:String = String(loadedData);
@@ -288,7 +288,7 @@
 			var correctedLoadedData:String = pureRecevedData;//pureRecevedData.substring(1,pureRecevedData.length-1).split('\\"').join('\"').split("\\\\u003cbr\\\\u003e").join('\\n').split("<br>").join('\\n');
 			//correctedLoadedData = StringFunctions.clearDoubleQuartmarksOnJSON(correctedLoadedData);
 			//trace("Corrected data is : "+correctedLoadedData);
-			if(HTTPStatus!=502 && requestedData!=null)
+			if((ignoreHTTPStatus || HTTPStatus!=502) && requestedData!=null)
 			{
 				if(loadedData is String)
 				{
