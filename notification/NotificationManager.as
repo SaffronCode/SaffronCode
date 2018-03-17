@@ -60,7 +60,6 @@
 		public static function setup(ONESIGNAL_APP_ID_p:String='',GCM_PROJECT_NUMBER_p:String='',autoAlerOnNativeBox:Boolean=true):NotificationManager
 		{
 			autoAlertBox = autoAlerOnNativeBox ;
-			Alert.show("autoAlertBox 1 : "+autoAlertBox);
 			trace("SetUp easy push");
 			Notification_Event = new NotificationManager(ONESIGNAL_APP_ID_p,GCM_PROJECT_NUMBER_p,autoAlerOnNativeBox)
 			ONESIGNAL_APP_ID = ONESIGNAL_APP_ID_p
