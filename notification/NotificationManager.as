@@ -12,6 +12,7 @@
 	[Event(name="TOKEN_REGISTER_COMPELETED", type="notification.NotificationEvent")]
 	/**Notification receved*/
 	[Event(name="NOTIFICATION", type="notification.NotificationEvent")]
+	[Event(name="FOREGROUND_NOTIFICATION", type="notification.NotificationEvent")]
 	public class NotificationManager extends EventDispatcher
 	{
 		public static var ONESIGNAL_APP_ID:String;
@@ -59,8 +60,9 @@
 		public static function setup(ONESIGNAL_APP_ID_p:String='',GCM_PROJECT_NUMBER_p:String='',autoAlerOnNativeBox:Boolean=true):NotificationManager
 		{
 			autoAlertBox = autoAlerOnNativeBox ;
+			Alert.show("autoAlertBox 1 : "+autoAlertBox);
 			trace("SetUp easy push");
-			Notification_Event = new NotificationManager()
+			Notification_Event = new NotificationManager(ONESIGNAL_APP_ID_p,GCM_PROJECT_NUMBER_p,autoAlerOnNativeBox)
 			ONESIGNAL_APP_ID = ONESIGNAL_APP_ID_p
 			GCM_PROJECT_NUMBER = GCM_PROJECT_NUMBER_p
 		
@@ -251,14 +253,14 @@
 		private function onNotification(e:*):void
 		{
 			log(e.type+"="+e.rawPayload+","+e.badgeValue+","+e.title+" customPayload : "+e.customPayload+" : "+JSON.stringify(e.customPayload,null,' '));	
-			this.dispatchEvent(new NotificationEvent(NotificationEvent.NOTIFICATION,pnEvent(e),false,false,e.customPayload))
+			this.dispatchEvent(new NotificationEvent(NotificationEvent.NOTIFICATION,pnEvent(e),true,false,e.customPayload))
 		}
 		
 		//com.milkmangames.nativeextensions.events.PNEvent
 		private function onForegroundNotification(e:*):void
 		{
 			log(e.type+"="+e.rawPayload+","+e.badgeValue+","+e.title+" customPayload : "+e.customPayload+" : "+JSON.stringify(e.customPayload,null,' '));	
-			this.dispatchEvent(new NotificationEvent(NotificationEvent.FOREGROUND_NOTIFICATION,pnEvent(e),false,false,e.customPayload))
+			this.dispatchEvent(new NotificationEvent(NotificationEvent.FOREGROUND_NOTIFICATION,pnEvent(e),true,false,e.customPayload))
 		}
 		
 		///////////////////end event
