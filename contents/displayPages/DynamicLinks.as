@@ -779,7 +779,28 @@ package contents.displayPages
 				var precent:Number = 0 ;
 				if(revertedX)
 				{
-					trace("Reloader on non horizontal but reverted menu");
+					if(horizontalMenu)
+					{
+						if(revertedByMovieclipUI)
+						{
+							precent = Math.max(0,Math.min(2,(0-linksContainer.x)/reloaderMC.width));
+						}
+						else
+						{
+							precent = Math.max(0,Math.min(2,(areaRect.width-linksContainer.x)/reloaderMC.width));
+						}
+					}
+					else
+					{
+						if(revertedY)
+						{
+							precent = Math.max(0,Math.min(2,(linksContainer.y)/-reloaderMC.height));
+						}
+						else
+						{
+							precent = Math.max(0,Math.min(2,(linksContainer.y)/reloaderMC.height));
+						}
+					}
 				}
 				else
 				{
@@ -798,27 +819,26 @@ package contents.displayPages
 							precent = Math.max(0,Math.min(2,(linksContainer.y)/reloaderMC.height));
 						}
 					}
-					//trace("linksContainer.y : "+linksContainer.y);
-					if(precent>0)
+				}
+				if(precent>0)
+				{
+					reloaderMCFrame += ((1+Math.floor(precent*reloaderMC.totalFrames)-reloaderMCFrame))/4;
+					reloaderMC.gotoAndStop(Math.floor(reloaderMCFrame));
+					//reloaderMC.play();
+					
+					if(precent>=1)
 					{
-						reloaderMCFrame += ((1+Math.floor(precent*reloaderMC.totalFrames)-reloaderMCFrame))/4;
-						reloaderMC.gotoAndStop(Math.floor(reloaderMCFrame));
-						//reloaderMC.play();
-						
-						if(precent>=1)
-						{
-							stage.addEventListener(MouseEvent.MOUSE_UP,reloadRequired);
-						}
-						else
-						{
-							stage.removeEventListener(MouseEvent.MOUSE_UP,reloadRequired);
-						}
+						stage.addEventListener(MouseEvent.MOUSE_UP,reloadRequired);
 					}
 					else
 					{
-						reloaderMCFrame = 1 ;
-						reloaderMC.gotoAndStop(1);
+						stage.removeEventListener(MouseEvent.MOUSE_UP,reloadRequired);
 					}
+				}
+				else
+				{
+					reloaderMCFrame = 1 ;
+					reloaderMC.gotoAndStop(1);
 				}
 			}
 			
