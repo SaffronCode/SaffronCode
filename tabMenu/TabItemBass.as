@@ -15,19 +15,21 @@ package tabMenu
 					_defaultTabe:String,
 					_selected:Boolean,
 					_activeCurrentTab:Boolean,
-					_sendOnLoadEvent:Boolean;
+					_sendOnLoadEvent:Boolean,
+					_selectableInActive:Boolean;
 					
 					
 		private var _timerId:uint;	
 		
 		
-		public function TabItemBass(GroupName_p:String=null,ActiveCurrentTab_p:Boolean=false,SendOnLoadEvent_p:Boolean=true)
+		public function TabItemBass(GroupName_p:String=null,ActiveCurrentTab_p:Boolean=false,SendOnLoadEvent_p:Boolean=true,SelectableInActive_p:Boolean=false)
 		{
 			super();
 			_group = GroupName_p;
 			_activeCurrentTab = ActiveCurrentTab_p;		
 			_name = this.name.split('_')[0];
 			_sendOnLoadEvent = SendOnLoadEvent_p;
+			_selectableInActive = SelectableInActive_p;
 			try
 			{			
 				this.gotoAndStop(_name);
@@ -38,7 +40,7 @@ package tabMenu
 				trace('<<<Frame label '+_name+' not found in scene '+_name+'.>>>');
 			}
 			_defaultTabe = this.name.split('_')[1];	
-			TabMenuManager.event.addEventListener(TabMenuEvent.SELECT,onSelected);			
+			TabMenuManager.event.addEventListener(TabMenuEvent.SELECT,onSelected);	
 			if(_activeCurrentTab && TabMenuManager.getCurrentTabe(GroupName_p,_name)==true)
 			{
 				_timerId = setTimeout(sendEventBytimer,5);
@@ -53,6 +55,12 @@ package tabMenu
 			}
 
 			this.addEventListener(MouseEvent.CLICK,click_fun);
+			this.addEventListener(Event.REMOVED_FROM_STAGE,unload);
+		}
+		
+		protected function unload(event:Event):void
+		{
+			TabMenuManager.event.removeEventListener(TabMenuEvent.SELECT,onSelected);	
 		}
 		
 		private function sendEventBytimer():void
@@ -76,14 +84,6 @@ package tabMenu
 		
 		protected function onSelected(event:TabMenuEvent):void
 		{
-			trace('--------------------------------------------------')
-			trace('--------------------------------------------------')
-			trace('--------------------------------------------------')
-			trace('--------------------------------------------------')
-			trace('group name :',event.group,'name :',event.name, 'myName :',_name);
-			trace('--------------------------------------------------')
-			trace('--------------------------------------------------')
-			trace('--------------------------------------------------')
 			if(event.group == _group)
 			{
 				if(event.name == _name && _bg!=null)
@@ -93,21 +93,18 @@ package tabMenu
 				else if(_bg!=null)
 				{
 					_selected = false;
-					if(_activeCurrentTab && TabMenuManager.getAtiveGroup(event.group))
-					{
-						TabMenuManager.setCurrentTabe(_group,_name,false);
-					}
 				}
 				if(_bg!=null)
 				{		
 					_bg.gotoAndStop(_selected);
 				}
+
 			}
 		}
 		
 		protected function click_fun(event:MouseEvent):void
 		{	
-			if(!_selected)
+			if(!_selected || _selectableInActive)
 			{			
 				sendEvent();
 				if(_activeCurrentTab)

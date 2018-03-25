@@ -18,11 +18,18 @@ package tabMenu
 		}
 		public static function setCurrentTabe(GroupName_p:String,TabeName_p:String,status_p:Boolean):void
 		{
-			if(_currentTabe[GroupName_p]==null)
+			if(_currentTabe[GroupName_p] == null)
 			{
 				_currentTabe[GroupName_p] = new Object();
 			}
-			_currentTabe[GroupName_p][TabeName_p]= status_p; 
+		
+
+			for(var valueName in _currentTabe[GroupName_p])
+			{
+				_currentTabe[GroupName_p][valueName] = false;
+			}
+
+			if(TabeName_p!=null && TabeName_p!='')_currentTabe[GroupName_p][TabeName_p]= status_p; 
 		}
 		public static function getCurrentTabe(GroupName_p:String,TabeName_p:String):Boolean
 		{
