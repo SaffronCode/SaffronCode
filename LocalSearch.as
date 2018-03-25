@@ -19,10 +19,10 @@ package
 			_closeBtn = Obj.get('closeBtn_mc',this);
 			_icon = Obj.get('icon_mc',this);
 		}
-		public function setup(SerachFun_fun:Function):void
+		public function setup(SerachFun_fun:Function,title:String=''):void
 		{
 			_serachFun = SerachFun_fun;
-			_searchTitle.setUp('','');
+			_searchTitle.setUp('',title);
 			_searchTitle.addEventListener(Event.CHANGE,change);
 			_closeBtn.addEventListener(MouseEvent.CLICK,closeSerach);
 			_closeBtn.visible = false;
