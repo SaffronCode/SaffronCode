@@ -1,5 +1,9 @@
 package tabMenu
 {
+	import appManager.displayContentElemets.TitleText;
+	
+	import contents.Contents;
+	
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -16,7 +20,8 @@ package tabMenu
 					_selected:Boolean,
 					_activeCurrentTab:Boolean,
 					_sendOnLoadEvent:Boolean,
-					_selectableInActive:Boolean;
+					_selectableInActive:Boolean,
+					_title:TitleText;
 					
 					
 		private var _timerId:uint;	
@@ -34,6 +39,7 @@ package tabMenu
 			{			
 				this.gotoAndStop(_name);
 				_bg = Obj.get('bg',this);
+				setTitle();
 			}
 			catch(e:Error)
 			{
@@ -57,7 +63,11 @@ package tabMenu
 			this.addEventListener(MouseEvent.CLICK,click_fun);
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unload);
 		}
-		
+		protected function setTitle():void
+		{
+			if(_bg!=null)_title = Obj.findThisClass(TitleText,_bg);
+			if(_title!=null)_title.setUp(Contents.lang.t[_name]);
+		}
 		protected function unload(event:Event):void
 		{
 			TabMenuManager.event.removeEventListener(TabMenuEvent.SELECT,onSelected);	
