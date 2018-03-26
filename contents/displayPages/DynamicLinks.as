@@ -236,7 +236,7 @@ package contents.displayPages
 			super();
 			
 			this.addEventListener(UPDATE_LINKS_POSITION,updateLinksPosition);
-			if(this.stage==null)
+			if(this.stage!=null)
 			{
 				imAddedToStage();
 			}
@@ -787,7 +787,7 @@ package contents.displayPages
 		/**Reload required*/
 		protected function reloadRequired(event:MouseEvent):void
 		{
-			stage.removeEventListener(MouseEvent.MOUSE_UP,reloadRequired);
+			myStage.removeEventListener(MouseEvent.MOUSE_UP,reloadRequired);
 			this.dispatchEvent(new Event(RELOAD_REQUIRED));
 		}
 		
