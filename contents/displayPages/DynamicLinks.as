@@ -27,8 +27,10 @@ package contents.displayPages
 	
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
+	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
@@ -146,6 +148,7 @@ package contents.displayPages
 		
 		private var autoScrollSpeed:Number = 0 ;
 		
+		private var myStage:Stage ;
 		
 		/**Make the dynamic link not scrollable and show all items instantly*/
 		public function set_dynamicHeigh(status:Boolean=true):void
@@ -1150,6 +1153,8 @@ package contents.displayPages
 				newLink.y = removedLinkItem.y;
 				newLink.setUp(removedLinkItem.myLinkData) ;
 				
+				this.dispatchEvent(new DynamicLinksEvent(DynamicLinksEvent.UPDATE_LINKS_POSITION));
+				
 				linksInterfaceStorage.splice(removedLinkIndex,1,newLink);
 				
 				removedLinkItem = null ;
@@ -1172,6 +1177,52 @@ package contents.displayPages
 			
 		}
 		
+		/**Returns true if the selected linkIndex can stand on the stage*/
+		private function showOrHideLinkItemByCalculation(linkIndex:uint):Boolean
+		{
+			return false ;
+			if(horizontalMenu)
+			{
+				if(revertedX)
+				{
+					trace("!!!!!!!!!!!!!!! Control Reverted horizontal menus two");
+				}
+				else
+				{
+					trace("!!!!!!!!!!!!!!! Control horizontal menus two");
+				}
+				return true ;
+			}
+			else
+			{
+				var linkY:Number ;
+				var linkBottom:Number;
+				if(revertedY)
+				{
+					trace("!!!!!!!!!!!!!!! Control vertical reverted menu");
+					return true ;
+				}
+				else
+				{
+					linkY = linksContainer.y+Math.floor(linkIndex/iconsPerLine)*linkItemHeight();
+					linkBottom = linkY+linkItemHeight();
+					trace("* linkY : "+linkY);
+					trace("* linkBottom : "+linkBottom);
+					trace("* areaRect : "+areaRect);
+					trace("* linksContainer.y : "+linksContainer.y);
+					if(linkY<areaRect.bottom+areaRect.height*2 && linkBottom>areaRect.top-areaRect.height*2)
+					{
+						return true ;
+					}
+					else
+					{
+						return false ;
+					}
+				}
+			}
+			return true ;
+		}
+		
 		private function creatOneLink():Boolean
 		{
 			
@@ -1180,17 +1231,23 @@ package contents.displayPages
 				trace(":::::howManyLinksGenerates : "+howManyLinksGenerates);
 				for(var i = 0 ; i<howManyLinksGenerates && lastGeneratedLinkIndes<myPageData.links1.length ; i++)
 				{
-					var newLink:LinkItem = new linkClass() ;
-					linksContainer.addChild(newLink) ;
-					newLink.setSize(areaRect.width,areaRect.height);
-					newLink.setIndex(lastGeneratedLinkIndes);
-					
+					var newLink:LinkItem ;
+					newLink = new linkClass();
 					linksInterfaceStorage.push(newLink);
-					newLink.setUp(myPageData.links1[lastGeneratedLinkIndes]) ;
+					newLink.setIndex(lastGeneratedLinkIndes);
+					if(showOrHideLinkItemByCalculation(lastGeneratedLinkIndes))
+					{
+						linksContainer.addChild(newLink) ;
+						newLink.setSize(areaRect.width,areaRect.height);
+						newLink.setUp(myPageData.links1[lastGeneratedLinkIndes]) ;
+					}
+					else
+					{
+						newLink.visible = false ;
+					}
+					newLink.myLinkData = myPageData.links1[lastGeneratedLinkIndes];
 					
 					createLinkOn(newLink,linksSensor,lastGeneratedLinkIndes,howManyLinksGenerates);
-					
-					
 					updateDynamicLinsBackGround();
 					
 					lastGeneratedLinkIndes++ ;
@@ -1333,6 +1390,10 @@ package contents.displayPages
 		protected function createLinkOn(newLink:LinkItem,currentLinksSensor:Sprite,linkIndex:uint,linkPerLine:uint):void
 		{
 			var linkIndexPerLine:uint = linkIndex%linkPerLine ;
+			if(newLink == null)
+			{
+				newLink = sampleLink;
+			}
 			if(!horizontalMenu)
 			{
 				newLink.x = ((areaRect.width-newLink.width*linkPerLine)/(linkPerLine+1))*(1+linkIndexPerLine)+newLink.width*linkIndexPerLine ;
