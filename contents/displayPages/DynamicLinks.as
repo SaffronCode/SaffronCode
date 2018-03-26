@@ -233,6 +233,14 @@ package contents.displayPages
 			super();
 			
 			this.addEventListener(UPDATE_LINKS_POSITION,updateLinksPosition);
+			if(this.stage==null)
+			{
+				imAddedToStage();
+			}
+			else
+			{
+				this.addEventListener(Event.ADDED_TO_STAGE,imAddedToStage);
+			}
 			
 			myDeltaY = deltaY ;
 			myDeltaX = deltaX ;
@@ -288,6 +296,11 @@ package contents.displayPages
 			///It will make problem on online contents when its not loaded yet
 			/*if(noLinksMC!=null)
 				this.addChild(noLinksMC);*/
+		}
+		
+		private function imAddedToStage(e:Event=null):void
+		{
+			myStage = this.stage ;
 		}
 		
 		/**Reverting the list by code*/
@@ -463,7 +476,7 @@ package contents.displayPages
 			}
 		}
 		
-		/**Call this after setUp*/
+		/**Call this after setUp and to preventing this to call your function all the times, call noMoreLinks() method to stop it.*/
 		public function canGetMore(youCanRequestForMore:Function,preLoaderObject:Sprite):void
 		{
 			requestMore = youCanRequestForMore ;
@@ -539,7 +552,6 @@ package contents.displayPages
 					Obj.remove(noLinksMC);
 				createLinks();
 			}
-			this.addEventListener(Event.REMOVED_FROM_STAGE,saveLastPosition);
 			this.addEventListener(Event.REMOVED_FROM_STAGE,saveLastPosition);
 		}
 		
@@ -680,7 +692,11 @@ package contents.displayPages
 					}
 					controllSensor();
 					linkScroller.lock(true);
-					linkScroller.unLock();
+					linksContainer.addEventListener(MouseEvent.MOUSE_DOWN,unLockScroll,false,100000);
+					function unLockScroll(e:*=null):void
+					{
+						linkScroller.unLock();
+					}
 				}
 			}
 			
@@ -757,9 +773,9 @@ package contents.displayPages
 		
 		private function unLoad(ev:Event=null)
 		{
-			if(this.stage!=null)
+			if(myStage!=null)
 			{
-				this.stage.removeEventListener(MouseEvent.MOUSE_UP,reloadRequired);
+				myStage.removeEventListener(MouseEvent.MOUSE_UP,reloadRequired);
 			}
 			this.removeEventListener(Event.ENTER_FRAME,controllSensor) ;
 			this.removeEventListener(Event.REMOVED_FROM_STAGE,unLoad) ;
@@ -826,13 +842,16 @@ package contents.displayPages
 					reloaderMC.gotoAndStop(Math.floor(reloaderMCFrame));
 					//reloaderMC.play();
 					
-					if(precent>=1)
+					if(myStage!=null)
 					{
-						stage.addEventListener(MouseEvent.MOUSE_UP,reloadRequired);
-					}
-					else
-					{
-						stage.removeEventListener(MouseEvent.MOUSE_UP,reloadRequired);
+						if(precent>=1)
+						{
+							myStage.addEventListener(MouseEvent.MOUSE_UP,reloadRequired);
+						}
+						else
+						{
+							myStage.removeEventListener(MouseEvent.MOUSE_UP,reloadRequired);
+						}
 					}
 				}
 				else
