@@ -20,6 +20,8 @@ package appManager.animatedPages.pageManager
 	import flash.geom.Rectangle;
 	import flash.system.System;
 	
+	import popForm.PopMenu;
+	
 	import sliderMenu.SliderManager;
 	
 	public class PageContainer extends MovieClip
@@ -258,7 +260,7 @@ package appManager.animatedPages.pageManager
 		
 		private function backEvent():void
 		{
-			if(History.backAvailable() && !SliderManager.isOpen())
+			if(History.backAvailable() && !SliderManager.isOpen() && !PopMenu.isOpen)
 			{
 				this.dispatchEvent(History.lastPage());
 			}
