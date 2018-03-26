@@ -541,6 +541,7 @@ package sliderMenu
 		/**set or get the menu on the selected direction - this function will take menu position to the asked position for the menu*/
 		private static function addGetSlider(pose:String,menu:MovieClip=null,yourSize:Number=0,returnMenuObject:Boolean = false,returnMenuPose:Boolean=false):*
 		{
+		
 			switch(pose)
 			{
 				case(TOP_MENU):
@@ -572,6 +573,7 @@ package sliderMenu
 				{
 					if(menu!=null)
 					{
+						reset();
 						r_w = yourSize ;
 						r_p = new Point( menu.x,menu.y);
 						/*menu.x = rx ;
@@ -596,6 +598,7 @@ package sliderMenu
 				{
 					if(menu!=null)
 					{
+						reset();
 						l_w = yourSize ;
 						l_p = new Point(menu.x,menu.y);
 						/*menu.x = lx ;
@@ -661,6 +664,16 @@ package sliderMenu
 			{
 				currentDraggingPose = MenuDirection;
 			}
+		}
+		private static function reset():void
+		{
+			r_w = 0 ;
+			r_p = null;
+			slider_r = null ;
+			
+			l_w = 0 ;
+			l_p = null;
+			slider_l = null ;
 		}
 	}
 }
