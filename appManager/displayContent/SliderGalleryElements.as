@@ -2,6 +2,8 @@ package appManager.displayContent
 {
 	import appManager.displayContentElemets.LightImage;
 	
+	import contents.alert.Alert;
+	
 	import flash.display.BitmapData;
 	import flash.display.MovieClip;
 	import flash.events.Event;
@@ -109,9 +111,9 @@ package appManager.displayContent
 			return myArea.height ;
 		}
 		
-		public function load(imageItem:SliderImageItem=null,imageIndex:int=-1):void
+		public function load(imageItem:SliderImageItem=null,imageIndex:int=-1,updateItAnyWay:Boolean=false):void
 		{
-			if(lastIndex==imageIndex && lastIndex!=-1)
+			if(updateItAnyWay==false && lastIndex==imageIndex && lastIndex!=-1)
 			{
 				return ;
 			}
