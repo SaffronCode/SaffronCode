@@ -102,7 +102,7 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 		protected function exitFullscreened(event:Event):void
 		{
 			trace("*** Exit full screen !! : "+event);
-			if(!DevicePrefrence.isLandScape())
+			if(isFullScreen && !DevicePrefrence.isLandScape())
 			{
 				stage.setOrientation(StageOrientation.DEFAULT);
 				trace("StageOrientation.DEFAULT >>> "+StageOrientation.DEFAULT);
@@ -114,7 +114,7 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 		protected function isFullscreened(event:Event):void
 		{
 			trace("*** Set full screen !! : "+event);
-			if(!DevicePrefrence.isLandScape())
+			if(!isFullScreen && !DevicePrefrence.isLandScape())
 			{
 				trace("The default oriented is : "+stage.orientation);
 				stage.setOrientation(StageOrientation.ROTATED_LEFT);
