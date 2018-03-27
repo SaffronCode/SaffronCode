@@ -694,11 +694,31 @@ package contents.displayPages
 						linkScroller.setAbsolutePose(scrollPosesObject[myPageData.id],areaRect.y);
 					}
 					controllSensor();
-					linkScroller.lock(true);
-					linksContainer.addEventListener(MouseEvent.MOUSE_DOWN,unLockScroll,false,100000);
-					function unLockScroll(e:*=null):void
+					if(horizontalMenu)
 					{
-						linkScroller.unLock();
+						if(revertedX)
+						{
+							if(linksContainer.x>areaRect.right)
+								lockMyScrollerTillUserTouch();
+						}
+						else
+						{
+							if(linksContainer.x<areaRect.left)
+								lockMyScrollerTillUserTouch();
+						}
+					}
+					else
+					{
+						if(revertedY)
+						{
+							if(linksContainer.y>areaRect.bottom)
+								lockMyScrollerTillUserTouch();
+						}
+						else
+						{
+							if(linksContainer.y<areaRect.top)
+								lockMyScrollerTillUserTouch();
+						}
 					}
 				}
 			}
@@ -709,6 +729,17 @@ package contents.displayPages
 			
 			this.addEventListener(Event.ENTER_FRAME,controllSensor);
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
+		}
+		
+		/**Lock the scroller till user touch*/
+		private function lockMyScrollerTillUserTouch():void
+		{
+			linkScroller.lock(true);
+			linksContainer.addEventListener(MouseEvent.MOUSE_DOWN,unLockScroll,false,100000);
+			function unLockScroll(e:*=null):void
+			{
+				linkScroller.unLock();
+			}
 		}
 		
 		/**Returns the myDeltaY on the first position*/
