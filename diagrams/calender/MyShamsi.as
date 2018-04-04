@@ -101,6 +101,20 @@ package diagrams.calender
 			}
 			return str ;
 		}
+		/** add functoin for create miladi string format*/
+		public function showStringFormatMiladi(date:Date,showClock:Boolean=true,showSeconds:Boolean=true):String
+		{
+			var str:String = date.fullYear+'/'+TimeToString.numToString(date.month+1)+'/'+TimeToString.numToString(date.date);
+			if(showClock)
+			{
+				str+='    '+TimeToString.numToString(date.hours)+':'+TimeToString.numToString(date.minutes);//
+				if(showSeconds)
+				{
+					str+=':'+TimeToString.numToString(date.seconds);
+				}
+			}
+			return str ;
+		}
 		
 		/**Show clock format*/
 		public function showClock(showSecond:Boolean=false):String
