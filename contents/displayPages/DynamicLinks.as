@@ -1211,7 +1211,6 @@ package contents.displayPages
 		/**Returns true if the selected linkIndex can stand on the stage*/
 		private function showOrHideLinkItemByCalculation(linkIndex:uint):Boolean
 		{
-			return false ;
 			if(horizontalMenu)
 			{
 				if(revertedX)
