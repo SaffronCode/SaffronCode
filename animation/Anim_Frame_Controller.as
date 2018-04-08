@@ -17,7 +17,10 @@
 		
 		public var animSpeed:Number = 5 ;
 		
-		public function Anim_Frame_Controller(yourMovieClip:MovieClip,firstLableIndexToGo:uint = 0)
+		/**is it using built in accelerator or not*/
+		private var acc:Boolean ;
+		
+		public function Anim_Frame_Controller(yourMovieClip:MovieClip,firstLableIndexToGo:uint = 0,withAccelerator:Boolean=true)
 		{
 			mc = yourMovieClip;
 			
@@ -52,9 +55,23 @@
 		
 		protected function anim(event:Event):void
 		{
-			V = (targetFrame-mc.currentFrame)/animSpeed ;
-			currentFrame += V ;
-			mc.gotoAndStop(Math.round(currentFrame));
+			if(acc)
+			{
+				V = (targetFrame-mc.currentFrame)/animSpeed ;
+				currentFrame += V ;
+				mc.gotoAndStop(Math.round(currentFrame));
+			}
+			else
+			{
+				if(targetFrame>mc.currentFrame)
+				{
+					mc.nextFrame();
+				}
+				else if(targetFrame<mc.currentFrame)
+				{
+					mc.prevFrame();
+				}
+			}
 		}	
 		
 		public function gotoFrame(frameIndex:uint):void
