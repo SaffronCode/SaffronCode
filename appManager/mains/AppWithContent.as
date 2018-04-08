@@ -115,7 +115,11 @@
 			
 			
 			if(supportsMultiLanguage && DevicePrefrence.isItPC)
+			{
 				Hints.controlLanguages();
+				PopMenu.backEnable(Contents.lang.t.back);
+				PopMenu.staticCanselEnabled([Contents.lang.t.back]);
+			}
 			
 			if(manageStageManager)
 			{
