@@ -26,18 +26,19 @@
 
 ### <p dir="rtl">در رسانه ها</p>
 <p align="center" dir="rtl"><a href="https://www.aparat.com/v/Kc5PS"><img width="500" src="http://oi65.tinypic.com/2euiowm.jpg"/><a><br><br></p><p dir="rtl"><a href="http://nopana.ir/post/2913/%DA%A9%DB%8C%D8%AA-%D8%AA%D9%88%D8%B3%D8%B9%D9%87-%D9%86%D8%B1%D9%85%E2%80%8C%D8%A7%D9%81%D8%B2%D8%A7%D8%B1-%D8%A7%DB%8C%D8%B1%D8%A7%D9%86%DB%8C-%D8%B1%D9%88%D9%86%D9%85%D8%A7%DB%8C%DB%8C-%D8%B4%D8%AF!">کیت-توسعه-نرم‌افزار-ایرانی-رونمایی-شد!</a></p>
-
-
-### <p dir="rtl">چگونه می توانم از این مجموعه استفاده کنم؟</p>
-<p dir="rtl">
-به زودی نحوه عضویت استفاده از این کتابخانه اعلام خواهد شد. به سایت <a href="http://mteamapps.ir/">MTeam</a> سر بزنید.
-</p>
 <br>
+
 
 ### <p dir="rtl">نمونه کار های اجرا شده توسط زعفران کد</p>
  <p dir="rtl">هم اکنون تعداد بسیار زیادی نرم افزار موبایل آندروید و آی او اس توسط این کتابخانه ایجاد شده و در فروشگاه های معتبر اپ جهان برای دانلود قرار گرفته اند و هرروز به این تعداد نرم افزار اضافه می شود.<br>
 شما می توانید برخی از آخرین نرم افزار های تولید شده را در وب سایت شرکت <a href="http://mteamapps.ir/">MTeam</a> مشاهده کنید</p>
 http://mteamapps.ir/
+<br>
+<br>
+
+### <p dir="rtl">چگونه می توانم از این مجموعه استفاده کنم؟</p>
+<p align="center"><a href="https://gitter.im/Saffron-Code/Registeration"><strong><img src="https://image.flaticon.com/icons/svg/157/157949.svg" width="20px"/>درخواست آموزش و استفاده از زعفران کد</p></strong></a>
+<br>
 <br>
 <br>
 
