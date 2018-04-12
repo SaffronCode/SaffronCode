@@ -24,6 +24,10 @@
 </p>
 <br>
 
+### <p dir="rtl">در رسانه ها</p>
+<p align="center" dir="rtl"><a href="https://www.aparat.com/v/Kc5PS"><img width="500" src="http://oi65.tinypic.com/2euiowm.jpg"/><a><br><br></p><p dir="rtl"><a href="http://nopana.ir/post/2913/%DA%A9%DB%8C%D8%AA-%D8%AA%D9%88%D8%B3%D8%B9%D9%87-%D9%86%D8%B1%D9%85%E2%80%8C%D8%A7%D9%81%D8%B2%D8%A7%D8%B1-%D8%A7%DB%8C%D8%B1%D8%A7%D9%86%DB%8C-%D8%B1%D9%88%D9%86%D9%85%D8%A7%DB%8C%DB%8C-%D8%B4%D8%AF!">کیت-توسعه-نرم‌افزار-ایرانی-رونمایی-شد!</a></p>
+
+
 ### <p dir="rtl">چگونه می توانم از این مجموعه استفاده کنم؟</p>
 <p dir="rtl">
 به زودی نحوه عضویت استفاده از این کتابخانه اعلام خواهد شد. به سایت <a href="http://mteamapps.ir/">MTeam</a> سر بزنید.
