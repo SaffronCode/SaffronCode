@@ -1,7 +1,7 @@
 <p align="center" >
     <img  width="170px" src="https://www.imageupload.co.uk/images/2018/04/12/SafronCode_Logo_Fin.png" alt="Saffron Code">
     <p align="center">Powerful Action Script SDK to develope High performanced Mobile and Desctop Applications fast and easy, using Adobe Animate!</p>
-    <p align="center"><strong><a href="">Visit SafronCo.com (soon)</a></strong></p>
+    
 </p>
 
 <br>
