@@ -12,6 +12,8 @@ package netManager.urlSaver
 	//import com.mteamapp.downloadManager.DownloadManager;
 	//import com.mteamapp.downloadManager.DownloadManagerEvents;
 	
+	import com.mteamapp.StringFunctions;
+	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IOErrorEvent;
@@ -389,6 +391,10 @@ package netManager.urlSaver
 			var offlineURLFileName:String = nameCash.substring(nameCash.indexOf('/')+1);
 			offlineURLFileName = offlineURLFileName.split('?').join('Q').split('/').join('').split('=').join('').split(':').join('').split(' ').join('');
 			offlineURLFileName = offlineURLFileName.substr(offlineURLFileName.length-Math.min(maxNameLength,offlineURLFileName.length),offlineURLFileName.length);
+			if(StringFunctions.isArabic(offlineURLFileName))
+			{
+				offlineURLFileName = Base64.Encode(offlineURLFileName);
+			}
 			//offlineURLFileName = Base64.Encode(offlineURLFileName);
 			//trace("offlineURLFileName : "+offlineURLFileName);
 			
