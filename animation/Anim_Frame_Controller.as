@@ -24,6 +24,8 @@
 		{
 			mc = yourMovieClip;
 			
+			acc = withAccelerator ;
+			
 			var framesL:Array = mc.currentLabels ;
 			frameLables = new Vector.<FrameLabel>();
 			for(var i:int = 0 ; framesL!=null && i<framesL.length ; i++)
