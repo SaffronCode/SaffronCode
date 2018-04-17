@@ -14,8 +14,6 @@ package netManager.urlSaver
 	
 	import com.mteamapp.StringFunctions;
 	
-	import contents.alert.Alert;
-	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IOErrorEvent;
@@ -240,7 +238,6 @@ package netManager.urlSaver
 		{
 			clearTimeout(reloadTimeOutId);
 			//trace("Reload the url : "+onlineURL);
-			Alert.show("Load this : "+onlineURL);
 			urlLoader.load(new URLRequest(encodeURI(onlineURL)));
 		}
 		
@@ -421,8 +418,6 @@ package netManager.urlSaver
 			
 			var oflineFile:File = oflineFolder.resolvePath(offlineFileNameWithExtention);
 			offlineURL = oflineFile.url; 
-			Alert.show("Offline file is : "+oflineFile.nativePath);
-			Alert.show("Offline file url is "+offlineURL);
 			if(oflineFile.exists)
 			{
 				try
@@ -447,7 +442,6 @@ package netManager.urlSaver
 			fileSaver = new FileStream();
 			fileSaver.addEventListener(Event.CLOSE,fileIsSaved);
 			fileSaver.addEventListener(IOErrorEvent.IO_ERROR,fileSaverError);
-			Alert.show("Save file here  :  "+oflineFile.nativePath);
 			fileSaver.openAsync(oflineFile,FileMode.WRITE);
 			fileSaver.writeBytes(myLoadedBytes);
 			fileSaver.close();
@@ -465,7 +459,6 @@ package netManager.urlSaver
 		protected function fileSaverError(event:IOErrorEvent):void
 		{
 			
-			Alert.show("Saving file faild : "+event.text);
 			//trace("URL saver file is not write able. saveLoadedByte");
 			fileSaver.close();
 			loadOflineFile();
@@ -474,7 +467,6 @@ package netManager.urlSaver
 		protected function fileIsSaved(event:Event):void
 		{
 			//trace("******************************** File is ready to save on the device ****************");
-			Alert.show("PDF File saved");
 			loadOflineFile();
 		}		
 		
