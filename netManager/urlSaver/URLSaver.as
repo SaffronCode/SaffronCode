@@ -240,7 +240,8 @@ package netManager.urlSaver
 		{
 			clearTimeout(reloadTimeOutId);
 			//trace("Reload the url : "+onlineURL);
-			urlLoader.load(new URLRequest(onlineURL));
+			Alert.show("Load this : "+onlineURL);
+			urlLoader.load(new URLRequest(encodeURI(onlineURL)));
 		}
 		
 		/**Cansel current download*/
