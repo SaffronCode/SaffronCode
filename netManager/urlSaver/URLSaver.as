@@ -389,10 +389,10 @@ package netManager.urlSaver
 			var nameCash:String = onlineURL.split('\\').join('/');
 			//trace("oflineFolder : "+oflineFolder.nativePath); 
 			var offlineURLFileName:String = nameCash.substring(nameCash.indexOf('/')+1);
-			if(StringFunctions.isPersian(offlineURLFileName))
+			/*if(StringFunctions.isPersian(offlineURLFileName))
 			{
 				offlineURLFileName = Base64.Encode(offlineURLFileName);
-			}
+			}*/
 			offlineURLFileName = offlineURLFileName.split('?').join('Q').split('/').join('').split('=').join('').split(':').join('').split(' ').join('').split('\n').join('').split('\r').join('');
 			offlineURLFileName = offlineURLFileName.substr(offlineURLFileName.length-Math.min(maxNameLength,offlineURLFileName.length),offlineURLFileName.length);
 			//Alert.show("Pdf texttttttttttPDF"+offlineURLFileName)
