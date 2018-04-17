@@ -238,7 +238,7 @@ package netManager.urlSaver
 		{
 			clearTimeout(reloadTimeOutId);
 			//trace("Reload the url : "+onlineURL);
-			urlLoader.load(new URLRequest(onlineURL));
+			urlLoader.load(new URLRequest(encodeURI(onlineURL)));
 		}
 		
 		/**Cansel current download*/
@@ -389,10 +389,10 @@ package netManager.urlSaver
 			var nameCash:String = onlineURL.split('\\').join('/');
 			//trace("oflineFolder : "+oflineFolder.nativePath); 
 			var offlineURLFileName:String = nameCash.substring(nameCash.indexOf('/')+1);
-			if(StringFunctions.isPersian(offlineURLFileName))
+			/*if(StringFunctions.isPersian(offlineURLFileName))
 			{
 				offlineURLFileName = Base64.Encode(offlineURLFileName);
-			}
+			}*/
 			offlineURLFileName = offlineURLFileName.split('?').join('Q').split('/').join('').split('=').join('').split(':').join('').split(' ').join('').split('\n').join('').split('\r').join('');
 			offlineURLFileName = offlineURLFileName.substr(offlineURLFileName.length-Math.min(maxNameLength,offlineURLFileName.length),offlineURLFileName.length);
 			//Alert.show("Pdf texttttttttttPDF"+offlineURLFileName)
@@ -418,8 +418,6 @@ package netManager.urlSaver
 			
 			var oflineFile:File = oflineFolder.resolvePath(offlineFileNameWithExtention);
 			offlineURL = oflineFile.url; 
-			//trace("Offline file is : "+oflineFile.nativePath);
-			//trace("Offline file url is "+offlineURL);
 			if(oflineFile.exists)
 			{
 				try
@@ -469,7 +467,6 @@ package netManager.urlSaver
 		protected function fileIsSaved(event:Event):void
 		{
 			//trace("******************************** File is ready to save on the device ****************");
-			
 			loadOflineFile();
 		}		
 		
