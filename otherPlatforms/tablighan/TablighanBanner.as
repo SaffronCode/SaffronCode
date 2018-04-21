@@ -1,6 +1,8 @@
 package otherPlatforms.tablighan
 	//otherPlatforms.tablighan.TablighanBanner
 {
+	import flash.display.Bitmap;
+	import flash.display.BitmapData;
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
@@ -26,6 +28,8 @@ package otherPlatforms.tablighan
 		
 		private var isSatUpOnce:Boolean ;
 		
+		private var capturedBannerBitmap:BitmapData ;
+		
 		/**First you need to call TablighanBanner.setUp() function to pass main url for the Tablighan server, then pass it to the initialize function or add a textField to the object and pass the Tablighan id to it*/
 		public function TablighanBanner(Width:Number=0,Height:Number=0,bannerId:String=null)
 		{
@@ -45,10 +49,14 @@ package otherPlatforms.tablighan
 				this.graphics.drawRect(0,0,Width,Height);
 			}
 			
+			capturedBannerBitmap = new BitmapData(this.width,this.height,false,0xff0000);
+			var bitmap:Bitmap = new Bitmap(capturedBannerBitmap);
+			
 			if(bannerId==null)
 			{
 				var idTFios:TextField = Obj.get('idTFios_mc',this);
 				var idTFandroid:TextField = Obj.get('idTFandroid_mc',this);
+				
 				if(idTFios!=null && DevicePrefrence.isIOS() == true)
 				{
 					bannerId = idTFios.text ;
@@ -62,6 +70,8 @@ package otherPlatforms.tablighan
 					idTFandroid = Obj.findThisClass(TextField,this);
 					bannerId = idTFandroid.text
 				}
+				Obj.remove(idTFios);
+				Obj.remove(idTFandroid);
 			}
 			
 			if(myDomain==null || bannerId==null)
@@ -69,7 +79,8 @@ package otherPlatforms.tablighan
 				//throw "First you need to call TablighanBanner.setUp() function to pass main url for the Tablighan server, then pass it to the initialize function or add a textField to the object and pass the Tablighan id to it" ;
 				setDomain();
 			}
-			this.alpha = 0 ; 
+			//this.alpha = 0 ;
+			this.addChild(bitmap);
 			BannerId = bannerId ;
 			controlStage();
 		}
@@ -136,6 +147,8 @@ package otherPlatforms.tablighan
 			}
 			else
 			{
+				if(mySW.sw.stage!=null)
+					mySW.sw.drawViewPortToBitmapData(capturedBannerBitmap);
 				mySW.sw.stage = null ;
 			}
 			/*if(false && userAbsoluteNativeBrowser)
