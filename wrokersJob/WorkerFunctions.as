@@ -61,7 +61,7 @@
 		private static function startWorkerAfterDelay():void
 		{
 			trace("Worker stats");
-			var workerTarget:File = File.applicationDirectory.resolvePath("Data/bgWork3.swf");//new File("D://Sepehr//gitHub/sepehrEngine/SaffronEngine/Data-sample/bgWork.swf") ;
+			var workerTarget:File = File.applicationDirectory.resolvePath("Data/bgWork4.swf");//new File("D://Sepehr//gitHub/sepehrEngine/SaffronEngine/Data-sample/bgWork.swf") ;
 			if(!workerTarget.exists)
 			{
 				var moreHints:String = '';
@@ -71,6 +71,8 @@
 					moreHints += " and remove the Data/bgWork.swf now.\n";
 				if(File.applicationDirectory.resolvePath("Data/bgWork2.swf").exists)
 					moreHints += " and remove the Data/bgWork2.swf now.\n";
+				if(File.applicationDirectory.resolvePath("Data/bgWork3.swf").exists)
+					moreHints += " and remove the Data/bgWork3.swf now.\n";
 				Alert.show("Add the  "+workerTarget.name+"  file from Data-sample folder on Saffron to your Data folder"+moreHints) ;
 			}
 			var workerBytes:ByteArray = FileManager.loadFile(workerTarget);
@@ -223,6 +225,40 @@
 				trace("** File saved done!!");
 				fileStream.close();
 				var toSendValue:Array = [BgWorker.id_byteToBase64,currentId,tempFile.nativePath] ;
+				
+				if(activated && isReady)
+				{
+					selectSenderTosend().send(toSendValue);
+				}
+				else
+				{
+					setUpDebugOnce();
+					bgEmulator.handleCommandMessage(toSendValue);
+				}
+			}
+		}	
+		
+		/**You will receive your mp3 file that you can find its target from the first unit of the returned variable*/
+		public static function waveTomp3(fileByte:ByteArray,receiver:Function):void
+		{
+			var currentId:uint = lastID++ ;
+			
+			funcList.push(receiver);
+			idList.push(currentId);
+			
+			trace("** Convert wave to mp3");
+			var tempFile:File = File.createTempFile() ;
+			var fileStream:FileStream = new FileStream();
+			fileStream.addEventListener(Event.CLOSE,fileSaved);
+			fileStream.openAsync(tempFile,FileMode.WRITE);
+			fileStream.writeBytes(fileByte,0,fileByte.length);
+			fileStream.close();
+			
+			function fileSaved(event:Event):void
+			{
+				trace("** File saved done!!");
+				fileStream.close();
+				var toSendValue:Array = [BgWorker.id_wave2mp3,currentId,tempFile.nativePath] ;
 				
 				if(activated && isReady)
 				{

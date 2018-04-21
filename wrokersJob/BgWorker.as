@@ -4,8 +4,10 @@
 	import flash.display.BitmapData;
 	import flash.display.Loader;
 	import flash.display.MovieClip;
+	import flash.events.ErrorEvent;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
+	import flash.events.ProgressEvent;
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
@@ -14,6 +16,8 @@
 	import flash.system.MessageChannel;
 	import flash.system.Worker;
 	import flash.utils.ByteArray;
+	
+	import fr.kikko.lab.ShineMP3Encoder;
 	
 	import mx.utils.Base64Decoder;
 	import mx.utils.Base64Encoder;
@@ -24,6 +28,7 @@
 		public static const id_byteToBitmap:int = 2 ;
 		public static const id_base64ToByte:int = 3 ;
 		public static const id_byteToBase64:int = 4 ;
+		public static const id_wave2mp3:int = 5 ;
 		
 		
 		private var receiverChannel:MessageChannel;
@@ -143,6 +148,56 @@
 						createdData.push([null]);
 					}
 					break ;
+				case id_wave2mp3:
+					if(callerData is String)
+					{
+						trace("*** File catched by worker : "+callerData);
+						try
+						{
+							targetFile = new File(callerData as String);
+							var fileStreamByte2:FileStream = new FileStream();
+							trace("*** Read file ");
+							fileStreamByte2.open(targetFile,FileMode.READ);
+							var loadedBytes2:ByteArray = new ByteArray();
+							fileStreamByte2.readBytes(loadedBytes2,0,fileStreamByte2.bytesAvailable)
+							fileStreamByte2.close();
+							
+							try
+							{
+								targetFile.deleteFile();
+							}
+							catch(e:Error){};
+							
+							var mp3Encoder:ShineMP3Encoder = new ShineMP3Encoder(loadedBytes2);
+							mp3Encoder.addEventListener(Event.COMPLETE, mp3EncodeComplete);
+							//mp3Encoder.addEventListener(ProgressEvent.PROGRESS, mp3EncodeProgress);
+							//mp3Encoder.addEventListener(ErrorEvent.ERROR, mp3EncodeError);
+							mp3Encoder.start();
+							
+							
+							function mp3EncodeComplete(e:Event):void
+							{
+								fileStreamByte2.open(targetFile,FileMode.WRITE);
+								fileStreamByte2.writeBytes(mp3Encoder.mp3Data,0,mp3Encoder.mp3Data.length);
+								fileStreamByte2.close();
+								
+								createdData.push([targetFile.nativePath]);
+								sendTheData(createdData);
+							}
+							trace("*** File loaded");
+							//createdData.push([fdsfds]);
+							
+						}
+						catch(e:Error)
+						{
+							createdData.push([e.message]);
+						}
+					}
+					else
+					{
+						createdData.push([null]);
+					}
+					return ;
 				case id_byteToBitmap:
 					try
 					{
