@@ -49,7 +49,7 @@ package otherPlatforms.tablighan
 				this.graphics.drawRect(0,0,Width,Height);
 			}
 			
-			capturedBannerBitmap = new BitmapData(this.width,this.height,false,0xff0000);
+			capturedBannerBitmap = new BitmapData(this.width,this.height,false,stage.color);
 			var bitmap:Bitmap = new Bitmap(capturedBannerBitmap);
 			
 			if(bannerId==null)
