@@ -43,13 +43,13 @@ package otherPlatforms.tablighan
 				isSatUpOnce = true ;
 			}
 			//Tablighanmc = Obj.get("Tablighan_mc",this);
-			if(Width!=0 && Height!=0)
+			if(Width==0 || Height==0)
 			{
-				this.graphics.beginFill(0,0);
-				this.graphics.drawRect(0,0,Width,Height);
+				Width = this.width;
+				Height = this.height ;
 			}
 			
-			capturedBannerBitmap = new BitmapData(this.width,this.height,false,stage.color);
+			capturedBannerBitmap = new BitmapData(this.width,this.height,true,0x00000000);
 			var bitmap:Bitmap = new Bitmap(capturedBannerBitmap);
 			
 			if(bannerId==null)
@@ -70,8 +70,12 @@ package otherPlatforms.tablighan
 					idTFandroid = Obj.findThisClass(TextField,this);
 					bannerId = idTFandroid.text
 				}
-				Obj.remove(idTFios);
-				Obj.remove(idTFandroid);
+			}
+			this.removeChildren();
+			if(Width!=0 && Height!=0)
+			{
+				this.graphics.beginFill(0,0);
+				this.graphics.drawRect(0,0,Width,Height);
 			}
 			
 			if(myDomain==null || bannerId==null)
