@@ -71,7 +71,7 @@
 			var AndroidPermission:String = neceraryLines+'<manifest android:installLocation="auto">\n' +
 				'\t<uses-permission android:name="android.permission.INTERNET"/>\n' +
 				neceraryLines+'\t<application>\n' +
-				'\t\t<activity android:name="com.distriqt.extension.pdfreader.pdfview.activities.OpenPDFActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar" />\n' +
+				'\t\t<activity android:name="com.distriqt.extension.pdfreader.pdfview.activities.OpenPDFActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar" >\n' +
 				neceraryLines+'\t\t<provider android:name="android.support.v4.content.FileProvider" android:authorities="air.'+DevicePrefrence.appID+'.dt_files" android:grantUriPermissions="true" android:exported="false">\n' +
 				'\t\t\t<meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/distriqt_paths" />\n' +
 				neceraryLines+'\t\t</provider>\n' +
