@@ -758,7 +758,10 @@ package contents.displayPages
 		/**Set absolute pose to this scroller*/
 		public function setAbsolutePose(X:Number=NaN,Y:Number=NaN):void
 		{
-			linkScroller.setAbsolutePose(X,Y);
+			if(linkScroller!=null)
+			{
+				linkScroller.setAbsolutePose(X,Y);
+			}
 		}
 		
 		public function lockScroll(X:Number=0,Y:Number=0):void
