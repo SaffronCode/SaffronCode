@@ -2,6 +2,7 @@
 	//appManager.displayContent.SliderGallery
 {
 	
+	import flash.display.BitmapData;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -579,6 +580,10 @@
 			switchToNext = false ;
 			imagesList = images ;
 			_totalImages = imagesList.length ;
+			if(_totalImages==0)
+			{
+				return ;
+			}
 			imageIndex = (plusPages-(plusPages%_totalImages))+currentIndex ;
 			getImageUp().load(currentImage(),0,true);
 			
@@ -692,6 +697,13 @@
 			//getImageDown().load(imagesList[sliderElementIndex],sliderElementIndex);
 		}
 		
-		
+		/**Creating a bitmap data from the current display*/
+		public function getBitmapData():flash.display.BitmapData
+		{
+			var currentDisplayingObject:SliderGalleryElements = getImageUp() ;
+			var bitmapData:BitmapData = new BitmapData(currentDisplayingObject.width,currentDisplayingObject.height,false,0xffffff);
+			bitmapData.draw(currentDisplayingObject);
+			return bitmapData;
+		}
 	}
 }
