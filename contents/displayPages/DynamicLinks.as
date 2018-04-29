@@ -25,6 +25,7 @@ package contents.displayPages
 	import contents.PageData;
 	import contents.interFace.DisplayPageInterface;
 	
+	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.display.Stage;
@@ -149,6 +150,7 @@ package contents.displayPages
 		private var autoScrollSpeed:Number = 0 ;
 		
 		private var myStage:Stage ;
+		private var firstItem:DisplayObject;
 		
 		/**Make the dynamic link not scrollable and show all items instantly*/
 		public function set_dynamicHeigh(status:Boolean=true):void
@@ -521,9 +523,15 @@ package contents.displayPages
 			}
 		}
 		
+		/**You can pass an display elemet to show at the top of your list. <strong>You have to call setUp() function to make it work</strong>*/
+		public function addFirstDisplayElemntForTheList(firstElement:DisplayObject=null):void
+		{
+			firstItem = firstElement ;
+		}
+		
+		/**You can pass the first element on the list to this functiom. it will show it on the top of your list*/
 		public function setUp(pageData:PageData):void
 		{
-			
 			saveLastPosition();
 			//new functions
 			if(requestPreLoader==null)
@@ -544,6 +552,19 @@ package contents.displayPages
 			this.removeChildren();
 			myPageData = pageData;
 			linksContainer = new Sprite();
+			if(firstItem!=null)
+			{
+				linksContainer.addChild(firstItem);
+				firstItem.x = firstItem.y = 0 ;
+				if(revertedY)
+				{
+					firstItem.y = -firstItem.height ;
+				}
+				if(revertedX)
+				{
+					firstItem.x = -firstItem.width ;
+				}
+			}
 			if(pageData.links1.length == 0 && noLinksMC!=null)
 			{
 				this.addChild(noLinksMC);
@@ -630,11 +651,11 @@ package contents.displayPages
 			linksSensor = new Sprite();
 			if(!horizontalMenu)
 			{
-				linksSensor.y = myDeltaY0 ;
+				linksSensor.y = (firstItem==null)?myDeltaY0:firstItem.height+myDeltaY0 ;
 			}
 			else
 			{
-				linksSensor.x = myDeltaX0 ;
+				linksSensor.x = (firstItem==null)?myDeltaX0:firstItem.width+myDeltaX0 ;
 			}
 			linksSensor.graphics.beginFill(0xff0000,linkSensorDebug);
 			var stepSize:Number = 0 ;
