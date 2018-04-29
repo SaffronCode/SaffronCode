@@ -1,6 +1,7 @@
 ﻿package appManager.animatedPages.pageManager
 	//appManager.animatedPages.pageManager.TitleManager
 {
+	import appManager.displayContentElemets.TextParag;
 	import appManager.displayContentElemets.TitleText;
 	import appManager.event.AppEvent;
 	import appManager.event.AppEventContent;
@@ -18,7 +19,8 @@
 		
 		//protected var pageContainer:PageContainer ;
 		
-		private var myTitle:TitleText ;
+		private var myTitle:TitleText,
+					myTitleParag:TextParag;
 		
 		public function TitleManager()
 		{
@@ -26,6 +28,7 @@
 			
 			//pageContainer = Obj.findThisClass(PageContainer,this,true) as PageContainer;
 			myTitle = Obj.findThisClass(TitleText,this,true) as TitleText;
+			myTitleParag = Obj.findThisClass(TextParag,this,true) as TextParag;
 			
 			this.stop();
 			//this.visible = false;
@@ -58,10 +61,7 @@
 				if(this.currentFrame == 1)
 				{
 					//pageContainer.setUp();
-					if(myTitle.text != '')
-					{
-						myTitle.setUp('');
-					}
+					setTitle('');
 					if(toEvent.myType == AppEvent.home)
 					{
 						//this.visible = false ;
@@ -83,14 +83,11 @@
 						//pageContainer.setUp(currentEvent);
 						if(currentEvent is AppEventContent)
 						{
-							myTitle.setUp((currentEvent as AppEventContent).pageData.title,true,splitLargeTitles);
+							setTitle((currentEvent as AppEventContent).pageData.title);
 						}
 						else
 						{
-							if(myTitle.text != '')
-							{
-								myTitle.setUp('');
-							}
+							setTitle('');
 						}
 					}
 				}
@@ -100,6 +97,25 @@
 			{
 				//this.visible = true ;
 				this.nextFrame();
+			}
+		}
+		
+		/**Set the title both for parags and titletexts*/
+		public function setTitle(text:String):void
+		{
+			if(myTitle!=null)
+			{
+				if(myTitle.text != text)
+				{
+					myTitle.setUp(text,true,splitLargeTitles);
+				}
+			}
+			else if(myTitleParag!=null)
+			{
+				if(myTitleParag.text != text)
+				{
+					myTitleParag.setUp(text,true,false,false,false,false,true,false,true,true,true,false,0,splitLargeTitles);
+				}
 			}
 		}
 	}
