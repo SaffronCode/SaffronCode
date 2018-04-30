@@ -136,9 +136,11 @@
 				//Debug line ↓
 				//TextPutter.onTextArea(myTextTF,myText,isArabic,false,false,1,true) ;
 				//	trace("2 add parag on TextParag and its font is : "+myTextTF.defaultTextFormat.font+' added to textParag class : '+myTextTF.text)
-				if((!splitIfToLong) && addScroller && TextPutter.lastInfo_numLines>2)
+				//trace("TextPutter.lastInfo_numLines : "+TextPutter.lastInfo_numLines);
+				//trace("!splitIfToLong) : "+(!splitIfToLong));
+				//trace("addScroller : "+addScroller);
+				if((!splitIfToLong) && addScroller && TextPutter.lastInfo_numLines>1)//There was 2 instead of 1 here. I don't know why...
 				{
-					
 					scrollMC = new ScrollMT(this,new Rectangle(this.x,this.y,W,H),new Rectangle(0,0,W,super.height),false,false,scrollEffect) ;
 				}
 			}
