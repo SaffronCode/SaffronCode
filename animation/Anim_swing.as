@@ -5,7 +5,7 @@ package animation {
 import flash.display.Sprite;
 import flash.events.Event;
 
-public class Anim_swing extends Sprite {
+public class Anim_swing {
 
     var object:Object ;
 
@@ -15,13 +15,18 @@ public class Anim_swing extends Sprite {
 
     private var currentDeg:Number=0,
                 V:Number=0;
-    private const F:Number=8,M:Number=0.9;
+    private var F:Number,M:Number;
 
     private var firstRotation:Number;
+	
+	private var myEnterFramer:Sprite ;
 
     /**Dont pass firstDegree more than 90 or less than -90. Pass Radian instead of degree for starling*/
-    public function Anim_swing(displayObject:Object,firstDegree:Number) {
-        this.addEventListener(Event.ENTER_FRAME,animate);
+    public function Anim_swing(displayObject:Object,firstDegree:Number,Fparam:Number=8,Mparam:Number=0.9) {
+		F = Fparam ;
+		M = Mparam ;
+		myEnterFramer = new Sprite();
+		myEnterFramer.addEventListener(Event.ENTER_FRAME,animate);
         object = displayObject ;
         currentDeg = firstRotation = object.rotation ;
         object.addEventListener(Event.REMOVED_FROM_STAGE,unLoadMe);
@@ -37,7 +42,7 @@ public class Anim_swing extends Sprite {
     public function unLoadMe(event:*=null):void {
         object.rotation = firstRotation ;
         object.removeEventListener(Event.REMOVED_FROM_STAGE,unLoadMe);
-        this.removeEventListener(Event.ENTER_FRAME,animate);
+		myEnterFramer.removeEventListener(Event.ENTER_FRAME,animate);
     }
 
     private function animate(event:Event):void {
