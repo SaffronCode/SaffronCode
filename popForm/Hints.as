@@ -130,7 +130,7 @@ package popForm
 		}
 		
 		/**Show no internet connection available*/
-		public static function noInternet()
+		public static function noInternet(fakeInput:*=null)
 		{
 			show(Contents.lang.t[id_no_internet]);
 		}
