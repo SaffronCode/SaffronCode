@@ -165,6 +165,32 @@
 			
 		}
 		
+		override public function get width():Number
+		{
+			return W ;
+		}
+		
+		override public function set width(value:Number):void
+		{
+			trace("Old W was : "+W);
+			W = value ;
+			trace("Nw W is : "+W);
+			
+			if(myMask)
+			{
+				myMask.graphics.clear();
+				myMask.graphics.beginFill(0xff0000,1);
+				myMask.graphics.drawRect(0,0,W,H);
+				imageContainer.mask = myMask ;
+			}
+			if(image1)
+			{
+				image1.width = W ;
+				image2.width = W ;
+			}
+			
+		}
+		
 		protected function preventDefaultClick(event:MouseEvent):void
 		{
 			event.stopImmediatePropagation();

@@ -106,6 +106,20 @@ package appManager.displayContent
 			load();
 		}
 		
+		override public function set width(value:Number):void
+		{
+			myArea.width = value ;
+			if(myPreloader)
+			{
+				myPreloader.x = myArea.width/2;
+			}
+			//Obj.remove(lightImage);
+			//lightImage = new LightImage();
+			//this.addChild(lightImage);
+			drawBackGround();
+			load();
+		}
+		
 		override public function get height():Number
 		{
 			return myArea.height ;
