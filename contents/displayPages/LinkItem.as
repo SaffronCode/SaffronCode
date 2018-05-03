@@ -9,6 +9,7 @@
 	import contents.LinkData;
 	
 	import flash.display.MovieClip;
+	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.net.URLRequest;
@@ -46,6 +47,8 @@
 		
 		/**This is the link item index*/
 		internal var myIndex:uint ;
+		
+		private var myStage:Stage ;
 		
 		public function LinkItem(mouseChildAccept:Boolean=false,searchForElements:Boolean=true)
 		{
@@ -85,15 +88,16 @@
 		{
 			if(this.stage!=null)
 			{
+				myStage = this.stage ;
 				this.removeEventListener(MouseEvent.CLICK,imSelected);
-				stage.addEventListener(MouseEvent.MOUSE_UP,startClckAcceptingAfterScroll);
+				myStage.addEventListener(MouseEvent.MOUSE_UP,startClckAcceptingAfterScroll);
 			}
 		}
 		
 		/**Accept click from now*/
 		protected function startClckAcceptingAfterScroll(e:Event):void
 		{
-			stage.removeEventListener(MouseEvent.MOUSE_UP,startClckAcceptingAfterScroll);
+			myStage.removeEventListener(MouseEvent.MOUSE_UP,startClckAcceptingAfterScroll);
 			setTimeout(activateSelectorAgainAfterScroll,0);
 		}
 		
