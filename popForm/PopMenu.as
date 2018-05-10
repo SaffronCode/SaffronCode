@@ -65,6 +65,7 @@
 		private var cashedContents:PopMenuContent;
 		private var onButton:Function;
 		private var onTimerClose:Function;
+		private var _onClose:Function;
 		
 		private static var cancelNames:Array=[],
 					cancelEvent:PopMenuEvent;
@@ -290,6 +291,10 @@
 			{
 				this.gotoAndStop(2);
 			}
+			if(_onClose!=null)
+			{
+				_onClose();
+			}
 		}
 		
 		/**this will tell if the popMenuIsOpen*/
@@ -301,13 +306,15 @@
 		
 		
 		/**pop the pop menu up*/
-		public function popUp2(title:String='' , type:PopMenuTypes=null , content:PopMenuContent=null,closeOnTime=0,onButtonSelects:Function=null,onClosedByTimer:Function=null)
+		public function popUp2(title:String='' , type:PopMenuTypes=null , content:PopMenuContent=null,closeOnTime=0,onButtonSelects:Function=null,onClosedByTimer:Function=null,onClose:Function=null)
 		{	
 			cashedContents = content ;
 			
 			onButton = onButtonSelects ;
 			
 			onTimerClose = onClosedByTimer ;
+			
+			_onClose = onClose;
 			
 			if(closeTimer!=null)
 			{
