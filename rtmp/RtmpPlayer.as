@@ -10,7 +10,6 @@ package rtmp
 		private static var ME:RtmpPlayer;
 		private var closePlayerMc:MovieClip;
 		private var playerMc:MovieClip;
-		private var rotationPlayerMc:MovieClip;
 		private var vid:VideoClassRTMP;
 		public function RtmpPlayer()
 		{
@@ -18,9 +17,7 @@ package rtmp
 			ME = this;
 			closePlayerMc = Obj.get('closePlayer_mc',this);
 			closePlayerMc.addEventListener(MouseEvent.CLICK,closeVideo);
-			rotationPlayerMc = Obj.get('rotationPlayer_mc',this);
-			playerMc = Obj.get('player_mc',rotationPlayerMc);
-			rotationPlayerMc.rotation = -90;
+			playerMc = Obj.get('player_mc',this);
 		}
 		
 		public static function setup(Width:Number,Height:Number):void
