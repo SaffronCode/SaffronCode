@@ -26,21 +26,21 @@
 
 ## <p dir="rtl">نصب و راه اندازی</p>
 <p dir="rtl">
-    زعفران کد قابلیت گرفتن خروجی نرم افزار موبایل را به محیط <a href="https://www.adobe.com/products/animate.html">Adobe Animate</a> اضافه کرده است. برای راه اندازی سیستم به ترتیب زیر عمل کنید:
-•    نصب نسخه ی مناسب با سیستما عامل از Adobe Animate
-• دریافت کتاب خانه های زعفران
-    - <a href="https://github.com/MTeamCo/SaffronCode">نسخه ی اصلی زعفران</a>
-    - <a href="https://github.com/MTeamCo/ASPack">ASPack مجموعه کتاب خانه های کلیدی و بدون اینترفیس و کتابخانه های متفرقه</a>
-• <a href="https://github.com/MTeamCo/FlexLibs-andOthers">نسخه ی آخر Flex و چند کتابخانه swc عمومی دیگر</a>
-• <a href="https://www.adobe.com/devnet/air/air-sdk-download.html">دانلود آخرین نسخهAir SDK</a>
-    
-برای تست نمونه فایل های داخل https://github.com/MTeamCo/SaffronCode/tree/master/FLA را دریافت و فایل PureSaffron.fla را اجرا کنید.
-
-• کتابخانه ها را به محیط Adobe animate معرفی کنید
-    - Edit > Prefrence... > Compiler
-    به بخش Source path: آدرس کتاب خانه های زعفران( SaffronCode و ASPack ) که روی سیستم خودتان ذخیره کرده اید را بدهید.
-    به بخش Library path: کتابخانه Flext ی که روی سیستم شما ذیره شده است را بدهید.
-    
+    زعفران کد قابلیت گرفتن خروجی نرم افزار موبایل را به محیط <a href="https://www.adobe.com/products/animate.html">Adobe Animate</a> اضافه کرده است. برای راه اندازی سیستم به ترتیب زیر عمل کنید:<br>
+•    نصب نسخه ی مناسب با سیستما عامل از Adobe Animate<br>
+• دریافت کتاب خانه های زعفران<br>
+    - <a href="https://github.com/MTeamCo/SaffronCode">نسخه ی اصلی زعفران</a><br>
+    - <a href="https://github.com/MTeamCo/ASPack">ASPack مجموعه کتاب خانه های کلیدی و بدون اینترفیس و کتابخانه های متفرقه</a><br>
+• <a href="https://github.com/MTeamCo/FlexLibs-andOthers">نسخه ی آخر Flex و چند کتابخانه swc عمومی دیگر</a><br>
+• <a href="https://www.adobe.com/devnet/air/air-sdk-download.html">دانلود آخرین نسخهAir SDK</a><br>
+    <br>
+برای تست نمونه فایل های داخل https://github.com/MTeamCo/SaffronCode/tree/master/FLA را دریافت و فایل PureSaffron.fla را اجرا کنید.<br>
+<br>
+• کتابخانه ها را به محیط Adobe animate معرفی کنید<br>
+    - Edit > Prefrence... > Compiler<br>
+    به بخش Source path: آدرس کتاب خانه های زعفران( SaffronCode و ASPack ) که روی سیستم خودتان ذخیره کرده اید را بدهید.<br>
+    به بخش Library path: کتابخانه Flext ی که روی سیستم شما ذیره شده است را بدهید.<br>
+    <br>
 </p>
 <br>
 
