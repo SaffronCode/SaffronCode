@@ -24,6 +24,26 @@
 </p>
 <br>
 
+## <p dir="rtl">نصب و راه اندازی</p>
+<p dir="rtl">
+    زعفران کد قابلیت گرفتن خروجی نرم افزار موبایل را به محیط <a href="https://www.adobe.com/products/animate.html">Adobe Animate</a> اضافه کرده است. برای راه اندازی سیستم به ترتیب زیر عمل کنید:
+•    نصب نسخه ی مناسب با سیستما عامل از Adobe Animate
+• دریافت کتاب خانه های زعفران
+    - <a href="https://github.com/MTeamCo/SaffronCode">نسخه ی اصلی زعفران</a>
+    - <a href="https://github.com/MTeamCo/ASPack">ASPack مجموعه کتاب خانه های کلیدی و بدون اینترفیس و کتابخانه های متفرقه</a>
+• <a href="https://github.com/MTeamCo/FlexLibs-andOthers">نسخه ی آخر Flex و چند کتابخانه swc عمومی دیگر</a>
+• <a href="https://www.adobe.com/devnet/air/air-sdk-download.html">دانلود آخرین نسخهAir SDK</a>
+    
+برای تست نمونه فایل های داخل https://github.com/MTeamCo/SaffronCode/tree/master/FLA را دریافت و فایل PureSaffron.fla را اجرا کنید.
+
+• کتابخانه ها را به محیط Adobe animate معرفی کنید
+    - Edit > Prefrence... > Compiler
+    به بخش Source path: آدرس کتاب خانه های زعفران( SaffronCode و ASPack ) که روی سیستم خودتان ذخیره کرده اید را بدهید.
+    به بخش Library path: کتابخانه Flext ی که روی سیستم شما ذیره شده است را بدهید.
+    
+</p>
+<br>
+
 ## <p dir="rtl">در رسانه ها</p>
 <p align="center" dir="rtl"><a href="https://www.aparat.com/v/Kc5PS"><img width="500" src="http://oi65.tinypic.com/2euiowm.jpg"/><a><br><br></p><p dir="rtl"><a href="http://nopana.ir/post/2913/%DA%A9%DB%8C%D8%AA-%D8%AA%D9%88%D8%B3%D8%B9%D9%87-%D9%86%D8%B1%D9%85%E2%80%8C%D8%A7%D9%81%D8%B2%D8%A7%D8%B1-%D8%A7%DB%8C%D8%B1%D8%A7%D9%86%DB%8C-%D8%B1%D9%88%D9%86%D9%85%D8%A7%DB%8C%DB%8C-%D8%B4%D8%AF!">کیت-توسعه-نرم‌افزار-ایرانی-رونمایی-شد!</a></p>
 <br>
