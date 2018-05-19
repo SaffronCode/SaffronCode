@@ -209,7 +209,7 @@
 			
 			if(errorThrower!='')
 			{
-				throw errorThrower ;
+				PermissionControl.Caution(errorThrower);
 			}
 		}
 		

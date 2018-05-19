@@ -4,6 +4,8 @@
 package permissionControlManifestDiscriptor {
 import com.mteamapp.StringFunctions;
 
+import flash.system.Capabilities;
+
 /**You can pass all permission controls to this class to check the manifest file*/
 public class PermissionControl {
 
@@ -128,7 +130,7 @@ public class PermissionControl {
 	
 	public static function Caution(str:String):void
 	{
-		if(DevicePrefrence.isItPC)
+		if(Capabilities.isDebugger && DevicePrefrence.isItPC)
 		{
 			throw str ;
 		}
