@@ -88,12 +88,13 @@ package diagrams.calender
 			return time;
 		}
 		
-		public function showStringFormat(showClock:Boolean=true,showSeconds:Boolean=true):String
+		/**1397/02/19 15:23:10*/
+		public function showStringFormat(showClock:Boolean=true,showSeconds:Boolean=true,houreDateDevider:String='    '):String
 		{
 			var str:String = fullYear+'/'+TimeToString.numToString(month+1)+'/'+TimeToString.numToString(date);
 			if(showClock)
 			{
-				str+='    '+TimeToString.numToString(hours)+':'+TimeToString.numToString(minutes);//
+				str+=houreDateDevider+TimeToString.numToString(hours)+':'+TimeToString.numToString(minutes);//
 				if(showSeconds)
 				{
 					str+=':'+TimeToString.numToString(seconds);
