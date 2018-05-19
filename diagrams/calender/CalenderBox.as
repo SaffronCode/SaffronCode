@@ -57,9 +57,9 @@ package diagrams.calender
 			
 			if(data.isCurrentDay)
 			{
-				color = CalenderConstants.Color_boxBackGround;
+				color = CalenderConstants.Color_boxBackGround_currentDay;
 				colorText = CalenderConstants.Color_boxNames_currentDay;
-				colorLine = CalenderConstants.Color_boxBackGround_currentDay
+				colorLine = CalenderConstants.ColorLine_currentDay;
 			}
 			else if(data.isFriday)
 			{

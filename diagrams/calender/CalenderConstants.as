@@ -66,6 +66,7 @@ package diagrams.calender
 		public static var Color_boxBackGround:uint = 0xffffff,
 							Color_boxBackGround_friday:uint = 0x555555,
 							Color_boxBackGround_currentDay:uint = 0xF46E31,
+							ColorLine_currentDay:uint = 0xF46E31,
 							Color_TitleText:uint = 0,
 							Color_boxNames:uint = 0x0,
 							Color_boxNames_friday:uint = 0x0,
