@@ -54,7 +54,7 @@
 			if(startWorkerCalled==false)
 			{
 				startWorkerCalled = true ;
-				setTimeout(startWorkerAfterDelay,0);
+				setTimeout(startWorkerAfterDelay,5000);
 			}
 		}
 		
@@ -73,11 +73,14 @@
 					moreHints += " and remove the Data/bgWork2.swf now.\n";
 				if(File.applicationDirectory.resolvePath("Data/bgWork3.swf").exists)
 					moreHints += " and remove the Data/bgWork3.swf now.\n";
-				Alert.show("Add the  "+workerTarget.name+"  file from Data-sample folder on Saffron to your Data folder"+moreHints) ;
+				if(DevicePrefrence.isItPC)
+					Alert.show("Add the  "+workerTarget.name+"  file from Data-sample folder on Saffron to your Data folder"+moreHints) ;
+				else
+					trace(moreHints);
 			}
 			var workerBytes:ByteArray = FileManager.loadFile(workerTarget);
 			
-			if(!Capabilities.isDebugger)
+			if(workerTarget.exists && !Capabilities.isDebugger)
 			{
 				workers = new Vector.<Worker>();
 				senderChannels = new Vector.<MessageChannel>();
