@@ -5,9 +5,12 @@ package otherPlatforms.tablighan
 	import flash.display.BitmapData;
 	import flash.display.MovieClip;
 	import flash.events.Event;
+	import flash.filters.BlurFilter;
 	import flash.geom.Rectangle;
 	import flash.media.StageWebView;
 	import flash.text.TextField;
+	
+	import mx.effects.Blur;
 	
 	import permissionControlManifestDiscriptor.PermissionControl;
 	
@@ -51,6 +54,7 @@ package otherPlatforms.tablighan
 			
 			capturedBannerBitmap = new BitmapData(this.width,this.height,true,0x00000000);
 			var bitmap:Bitmap = new Bitmap(capturedBannerBitmap);
+			bitmap.filters = [new BlurFilter(20,20)] ;
 			
 			if(bannerId==null)
 			{
