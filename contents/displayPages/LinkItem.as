@@ -27,7 +27,7 @@
 		
 		public var myLinkData:LinkData ;
 		
-		public static var alignVariabel:Boolean = true;
+		public static var alignVariabel:Boolean = false;
 		
 		protected var myParentWidth:Number,myParentHeight:Number;
 		
