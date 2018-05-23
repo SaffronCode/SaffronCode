@@ -125,7 +125,7 @@
 			else
 			{
 				pureRequest.method = URLRequestMethod.POST;
-				pureRequest.contentType = 'application/json'
+				pureRequest.contentType = 'application/json';
 			}
 			
 			updateHeaders();
@@ -416,12 +416,20 @@
 				{
 					//Create post method
 					//throw "Create post method";
-					myParams = RestFullJSONParser.stringify(obj) ;
+					if(obj is ByteArray)
+					{
+						pureRequest.contentType = 'multipart/form-data';
+						pureRequest.data = obj ; 
+					}
+					else
+					{
+						myParams = RestFullJSONParser.stringify(obj) ;
+						pureRequest.data = myParams 
+					}
 									
 					//trace('myParams :',myParams)
 				//	trace('parse :',JSON.parse(myParams))
 					
-					pureRequest.data = myParams 
 					
 			//	var str:String = '{"KindRoof":15,"KindCabinet":27,"Loby":false,"Masahat":0,"Mobile":"","EmailAddress":"","Metraj":0,"Camera":false,"Nama":81,"Negahban":false,"Parking":false,"Pasio":false,"Pele":false,"Pic":["/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/2wBDAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/wAARCAMABAADASIAAhEBAxEB/"],"Pool":false,"Price1":0,"Age":"0","Price2":0,"Anten":false,"Sarmayesh":87,"Shomineh":false,"CaseSide":87,"Shooting":false,"Comment":"","Sona":false,"Confine":"","Storage":false,"CountBed":0,"Takhlie":false,"CountFloor":0,"Tel":false,"CountPoint":true,"TelUser":"","CountUnit":0,"Unit":"","Door":false,"Windows":35,"Family":"","kindService":87,"Elevator":false,"Lat":35.7137859,"Fire":false,"Lon":51.4148809,"Floor":"0","Furned":false,"Garmayesh":87,"Gas":false,"IPhone":false,"IdAgency":0,"IdArea":1,"IdCity":1,"IdKindCase":-1,"IdKindRequest":1,"IdRange":1,"IdState":1,"IdUsers":0,"Point":true,"KindKitchen":21}'	
 				//pureRequest.data  = str	
