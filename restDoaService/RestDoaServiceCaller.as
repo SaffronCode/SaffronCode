@@ -421,6 +421,10 @@
 						pureRequest.contentType = 'multipart/form-data';
 						pureRequest.data = obj ; 
 					}
+					else if(obj is String)
+					{
+						pureRequest.data = obj 
+					}
 					else
 					{
 						myParams = RestFullJSONParser.stringify(obj) ;
