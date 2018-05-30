@@ -134,6 +134,7 @@
 		
 		public static function show(Images:Vector.<ImageFile>,currentIndex:uint=0,onClosed:Function=null):void
 		{
+			updateStageSize(null);
 			ME.show(Images,currentIndex,onClosed);
 		}
 		
