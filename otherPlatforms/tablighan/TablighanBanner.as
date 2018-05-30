@@ -126,7 +126,7 @@ package otherPlatforms.tablighan
 			}
 			//if(mySW.isLoaded == false)
 			//{
-				mySW.load(myDomain,"&individual=true&App=true");
+				mySW.load(myDomain,"&individual=true&App=true&AutoPlay=false");
 			//}
 			
 			updateMyPlace(null);
