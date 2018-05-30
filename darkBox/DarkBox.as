@@ -33,7 +33,7 @@
 	{
 		
 		
-		private static var ME:DarkBox ;
+		public static var ME:DarkBox ;
 		
 		private static var noNetTitle:String,
 							noImageTitle:String;
@@ -109,6 +109,7 @@
 		/**Initialize the DarkBox area*/
 		public static function setUp(newSize:Rectangle,noNetHintText:String='No Internet Connection Available',noImageHereText:String='',downloadFunction:Function=null,titleInFullLine:Boolean=false,RightToLeft:Boolean=true,activateAutoSize:Boolean=true):void
 		{
+			trace("Update darkbox stage area : "+newSize);
 			rtf = RightToLeft ;
 			showTitleInFullLine = titleInFullLine ;
 			saveButtonFunction = downloadFunction ; 
@@ -128,7 +129,7 @@
 		{
 			ME.setUp(StageManager.stageRect);
 			ME.x = StageManager.stageDelta.width/-2;
-			ME.y = StageManager.stageDelta.height/-2;
+			ME.y = StageManager.stageDelta.height/-2+StageManager.stageDelta.y;
 		}
 		
 		public static function show(Images:Vector.<ImageFile>,currentIndex:uint=0,onClosed:Function=null):void

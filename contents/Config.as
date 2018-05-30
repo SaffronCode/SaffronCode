@@ -83,7 +83,8 @@
 		/**You can repose the stage items by this rectangle. the x and y values shows how much you should move your item on the stage*/
 		public function get stageMovedRect():Rectangle
 		{
-			return new Rectangle((_stageRect.width-_stageOrgiginalRect.width)/-2,(_stageRect.height-_stageOrgiginalRect.height)/-2,_stageRect.width,_stageRect.height);
+			trace("_stageRect.y : "+_stageRect.y);
+			return new Rectangle((_stageRect.width-_stageOrgiginalRect.width)/-2,(_stageRect.height-_stageOrgiginalRect.height)/-2+_stageRect.y,_stageRect.width,_stageRect.height);
 		}
 
 		public function set stageRect(value:Rectangle):void
