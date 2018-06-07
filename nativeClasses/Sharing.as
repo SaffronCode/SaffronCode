@@ -1,6 +1,8 @@
 package nativeClasses
 {
 	
+	import com.distriqt.extension.share.Share;
+	
 	import flash.display.BitmapData;
 	import flash.utils.getDefinitionByName;
 
@@ -34,14 +36,18 @@ package nativeClasses
 				+((DevicePrefrence.downloadLink_playStore=='')?'':'Android Play Store: '+DevicePrefrence.downloadLink_playStore+'\n\n')
 				+((DevicePrefrence.downloadLink_cafeBazar=='')?'':'کافه بازار: '+DevicePrefrence.downloadLink_cafeBazar+'\n\n')
 				+((DevicePrefrence.downloadLink_myketStore=='')?'':'مایکت: '+DevicePrefrence.downloadLink_myketStore);
-			trace("sharedString : "+sharedString);
+			trace("•distriqt• sharedString : "+sharedString);
 			if(isSupports())
 			{
 				var options:* = new shareOptionClass();
 				options.title = "Share with ...";
 				options.showOpenIn = false;
-				
+				trace("•distriqt• Call the share function");
 				shareClass.service.share(sharedString,imageBirmapData);
+			}
+			else
+			{
+				trace("•distriqt• Share is not support here");
 			}
 		}
 		
@@ -71,10 +77,11 @@ package nativeClasses
 			}
 			try
 			{
-				trace("Set the Share key : "+APP_KEY);
+				trace("•distriqt• Set the Share key : "+APP_KEY);
 				(shareClass as Object).init( APP_KEY );
 				
 				getDefinitionByName("com.distriqt.extension.core.Core").init(APP_KEY);
+				Share.init(APP_KEY);
 				
 				shareClass.service.addEventListener( shareEventClass.COMPLETE,	share_shareHandler, false, 0, true );
 				shareClass.service.addEventListener( shareEventClass.CANCELLED,	share_shareHandler, false, 0, true );
@@ -84,19 +91,19 @@ package nativeClasses
 				if (shareClass.isSupported)
 				{
 					//	Functionality here
-					trace("Share is supports");
+					trace("•distriqt• Share is supports");
 					_isSupports = true ;
 				}
 				else
 				{
-					trace("Share is not supports");
+					trace("•distriqt• Share is not supports");
 					_isSupports = false ;
 				}
 			}
 			catch (e:Error)
 			{
 				// Check if your APP_KEY is correct
-				throw "The district app id was wrong!! get a new one for this id ("+DevicePrefrence.appID+") from : airnativeextensions.com/user/2299/applications" ;
+				throw "The district app id is wrong!! get a new one for this id ("+DevicePrefrence.appID+") from : airnativeextensions.com/user/2299/applications\n\n\n"+e ;
 				_isSupports = false ;
 			}
 		}
