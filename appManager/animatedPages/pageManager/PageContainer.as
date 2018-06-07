@@ -113,7 +113,14 @@ package appManager.animatedPages.pageManager
 					if(currentPage.hasOwnProperty('setUp'))
 					{
 						trace("This page can get values");
-						(currentPage as DisplayPageInterface).setUp(currentPageData);
+						try
+						{
+							(currentPage as DisplayPageInterface).setUp(currentPageData);
+						}
+						catch(e:Error)
+						{
+							trace("**********************************************\n\n\n\n\n\n\n\nError happens :\n"+e.message+"\n\n\n\n\n\n\n\n********************************************");
+						}
 					}
 					else
 					{
