@@ -2,6 +2,7 @@ package dynamicFrame
 {
 	import flash.desktop.NativeApplication;
 	import flash.display.CapsStyle;
+	import flash.display.DisplayObject;
 	import flash.display.LineScaleMode;
 	import flash.display.Sprite;
 	import flash.display.Stage;
@@ -52,6 +53,15 @@ package dynamicFrame
 			
 			function startDragStage(e:MouseEvent):void
 			{
+				var clickedItem:Sprite = e.target as Sprite ;
+				while(clickedItem!=null && !(clickedItem is Stage))
+				{
+					if(clickedItem.buttonMode == true || clickedItem.hasEventListener(MouseEvent.CLICK))
+					{
+						return ;
+					}
+					clickedItem = clickedItem.parent as Sprite ;
+				}
 				var MouseX0:Number = e.stageX ;
 				var MouseY0:Number = e.stageY ;
 				
