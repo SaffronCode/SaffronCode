@@ -78,8 +78,8 @@ package nativeClasses.cameraUI
 					CameraUI.service.addEventListener( CameraUIEvent.CANCEL, cameraUI_cancelHandler );
 					
 					var options:CameraUIOptions = new CameraUIOptions();
-					options.videoQuality = QualityType.TYPE_640x480;
-					options.videoMaximumDuration = 6 ;
+					options.videoQuality = QualityType.TYPE_LOW;
+					options.videoMaximumDuration = 60 ;
 					trace("Launch the camera");
 					CameraUI.service.launch( MediaType.VIDEO, options );
 						
@@ -93,6 +93,7 @@ package nativeClasses.cameraUI
 						CameraUI.service.removeEventListener( CameraUIEvent.COMPLETE, cameraUI_completeHandler );
 						CameraUI.service.removeEventListener( CameraUIEvent.CANCEL, cameraUI_cancelHandler );
 						fileByte = FileManager.loadFile(new File(event.path));
+						trace("*** The file size is : "+fileByte.length);
 						onDone();
 					}
 					
