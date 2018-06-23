@@ -79,7 +79,7 @@ package nativeClasses.cameraUI
 					
 					var options:CameraUIOptions = new CameraUIOptions();
 					options.videoQuality = QualityType.TYPE_640x480;
-					options.videoMaximumDuration = 60*1000 ;
+					options.videoMaximumDuration = 6 ;
 					trace("Launch the camera");
 					CameraUI.service.launch( MediaType.VIDEO, options );
 						
