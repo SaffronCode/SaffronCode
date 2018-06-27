@@ -39,6 +39,10 @@
 					trace('notification sat up completly');
 					autorization();
 				}
+				else
+				{
+					trace("!!! Push is not supporting here");
+				}
 			}
 			catch (e:Error)
 			{
