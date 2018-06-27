@@ -11,6 +11,8 @@
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
 	
+	import nativeClasses.playServices.PlayServices;
+	
 	/**Notification tocken ready*/
 	[Event(name="TOKEN_REGISTER_COMPELETED", type="notification.NotificationEvent")]
 	/**Notification receved*/
@@ -24,7 +26,10 @@
 		public function DistriqtNotificationManager(ONESIGNAL_APP_ID_p:String='',DISTRIQT_ID:String='')
 		{
 			super();
-			trace("*********Distriqt notification")
+			trace("*********Distriqt notification");
+			
+			PlayServices.ControllDevicePlayService();
+			
 			try
 			{
 				Core.init();
