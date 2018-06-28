@@ -207,7 +207,7 @@
 				TextPutter.OnButton(tagNameTXT,tagName,true,false,true);
 			}
 			myTXT = Obj.getAllChilds('txt_txt',this,false)[0];
-			myTXT.addEventListener(Event.CHANGE,dispatchChangeForMeToo);
+			myTXT.addEventListener(Event.CLOSE,dispatchChangeForMeToo);
 			
 			myTXT.maxChars = maxChar ;
 			myTXT.borderColor = 0xD92C5C;

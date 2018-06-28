@@ -23,6 +23,7 @@ package sliderMenu
 			
 			this.addEventListener(MouseEvent.CLICK,clicked);
 			this.visible = !SliderManager.lock_flag ;
+			this.buttonMode = true ;
 		}
 		
 		protected function imUnLock(event:Event):void
