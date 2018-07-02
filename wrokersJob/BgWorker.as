@@ -235,6 +235,7 @@
 								fileLoader.open(targetFile,FileMode.READ);
 								byte = new ByteArray();
 								fileLoader.readBytes(byte,0,fileLoader.bytesAvailable);
+								fileLoader.close();
 							}
 							catch(e:Error)
 							{
