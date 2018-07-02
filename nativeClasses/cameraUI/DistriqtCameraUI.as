@@ -131,6 +131,7 @@ package nativeClasses.cameraUI
 					(CameraUIC as Object).service.addEventListener( (CameraUIEventC as Object).CANCEL, cameraUI_cancelHandler );
 					
 					var options:* = new CameraUIOptionsC();
+					options.saveToCameraRollQuality = 0 ;
 					options.videoQuality = (QualityTypeC as Object).TYPE_LOW;
 					options.videoMaximumDuration = 60 ;
 					trace("Launch the camera");
