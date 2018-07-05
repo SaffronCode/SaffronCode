@@ -276,8 +276,14 @@
 				}
 			}
 			//Alert.show("requestLoaded : "+JSON.stringify(pureRequest));
-			
-			parsLoadedData(requestLoader.data);
+			if(HTTPStatus==502 && requestLoader.data=='')
+			{
+				noInternet();
+			}
+			else
+			{
+				parsLoadedData(requestLoader.data);
+			}
 		}
 		
 		protected function parsLoadedData(loadedData:*,alreadyLoadedFromCash:Boolean=false,ignoreHTTPStatus:Boolean=false):void
@@ -319,7 +325,7 @@
 					serverErrorBool = true ;
 				}
 			}
-			else if(HTTPStatus==502)
+			else if(alreadyLoadedFromCash==false && HTTPStatus==502)
 			{
 				dispatch(new RestDoaEvent(RestDoaEvent.CONNECTION_ERROR,HTTPStatus,isConnected));
 				return;
