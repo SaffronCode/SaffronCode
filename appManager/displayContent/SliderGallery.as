@@ -701,7 +701,7 @@
 		{
 			if(sliderElementIndex<0 || sliderElementIndex>=totalImages())
 			{
-				throw "Wrong image index passed to showExactIndex() funciton\n\n" ;
+				throw "Wrong image index passed to showExactIndex() funciton\n\n : "+sliderElementIndex ;
 				return ;
 			}
 			setAnimation();

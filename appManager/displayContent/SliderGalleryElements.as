@@ -89,6 +89,10 @@ package appManager.displayContent
 		
 		protected function unLoad(e:Event):void
 		{
+			lightImageHistory = new Vector.<LightImage>();
+			lightImageLinks = new Vector.<String>();
+			lastIndex=-1;
+			this.removeChildren();
 			clearTimeout(preLoaderShowerTimeOutId);
 		}
 		
