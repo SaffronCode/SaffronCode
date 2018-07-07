@@ -9,13 +9,13 @@ package diagrams.calender
 			contents = new Vector.<CalenderContent>();
 		}
 		
-		public function addContent(id:*,title:String,begin:Date,end:Date,color:uint=0,anonimosData:Object=null)
+		public function addContent(id:*,title:String,begin:Date,end:Date,color:uint=0,anonimosData:Object=null,isHollyday:Boolean=false)
 		{
 			if(begin.hours == 0)
 			{
 				begin.hours = 1 ;
 			}
-			var newContent:CalenderContent = new CalenderContent(id,title,begin,end,color,anonimosData);
+			var newContent:CalenderContent = new CalenderContent(id,title,begin,end,color,anonimosData,isHollyday);
 			contents.push(newContent);
 		}
 	}

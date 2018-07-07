@@ -55,6 +55,7 @@ package diagrams.calender
 			var colorText:uint;
 			var colorLine:uint;
 			
+			
 			if(data.isCurrentDay)
 			{
 				color = CalenderConstants.Color_boxBackGround_currentDay;
@@ -72,6 +73,15 @@ package diagrams.calender
 				colorText = CalenderConstants.Color_boxNames;
 			}
 			
+			setBox(color,colorText,colorLine);
+			
+
+		}
+		
+		private function setBox(color:uint,colorText:uint,colorLine:uint):void
+		{
+
+			
 			this.graphics.beginFill(color,1);
 			if(colorLine!=color)
 				this.graphics.lineStyle(2,colorLine);
@@ -88,8 +98,8 @@ package diagrams.calender
 			contentInterface.x = 10 ;
 			contentInterface.y = 10 ;*/
 			
-			dateTitle.width = W ;
-			dateTitle.height = H ;
+			dateTitle.width = Width ;
+			dateTitle.height = Height ;
 			
 			/*dateTitle.x = padding ;
 			dateTitle.y = padding ;*/
@@ -105,9 +115,9 @@ package diagrams.calender
 			this.mouseEnabled = true ;
 			this.mouseChildren = false ;
 			this.addEventListener(MouseEvent.CLICK,calBoxSelected);
+			
+			
 		}
-		
-		
 		public function show( delay:uint = 0 )
 		{
 			if(!CalenderConstants.Debug_instantShow)
@@ -192,7 +202,6 @@ package diagrams.calender
 		{
 			//clear
 			
-			
 			cahsedContents = calenderContent ;
 			
 			
@@ -208,8 +217,18 @@ package diagrams.calender
 			
 			if(calenderContent.contents.length == 0)
 			{
-				return ;
+				return;
 			}
+			else if(cahsedContents.contents.some(function(item:CalenderContent,i:*,arr:*):Boolean{return item.isHollyday}))
+			{
+				var colorLine:uint;
+				var color:uint;
+				var colorText:uint;
+				colorLine = color = CalenderConstants.Color_boxBackGround_friday;
+				colorText = CalenderConstants.Color_boxNames_friday;
+				setBox(color,colorText,colorLine);
+			}
+			
 			
 			contentMask = new MovieClip();
 			this.addChild(contentMask);

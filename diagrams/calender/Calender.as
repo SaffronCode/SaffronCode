@@ -268,7 +268,8 @@ package diagrams.calender
 							calenderData.contents[j].begin,
 							calenderData.contents[j].end,
 							calenderData.contents[j].color,
-							calenderData.contents[j].data
+							calenderData.contents[j].data,
+							calenderData.contents[j].isHollyday
 						);
 
 					}
