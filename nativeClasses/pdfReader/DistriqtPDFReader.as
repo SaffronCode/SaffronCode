@@ -271,6 +271,15 @@
 			//trace("scl : "+scl);
 			//trace("deltaX : "+deltaX);
 			//trace("deltaY : "+deltaY);
+
+			if(StageManager.isIphoneX())
+			{
+				const iphoneXScale:Number = 1.4 ;
+				rect.x = rect.x*iphoneXScale;
+				rect.y = rect.y*iphoneXScale;
+				rect.width = rect.width*iphoneXScale;
+				rect.height = rect.height*iphoneXScale;
+			}
 			
 			rect.x*=scl;
 			rect.y*=scl;
