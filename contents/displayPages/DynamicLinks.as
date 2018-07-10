@@ -40,6 +40,8 @@ package contents.displayPages
 	[Event(name="RELOAD_REQUIRED", type="contents.displayPages.DynamicLinksEvent")]
 	/**The image height changed*/
 	[Event(name="NEW_LINK_ITEM_ADDED", type="contents.displayPages.DynamicLinksEvent")]
+	/**A page selected.*/
+	[Event(name="PAGE_CHANGES", type="appManager.event.AppEvent")]
 	public class DynamicLinks extends MovieClip implements DisplayPageInterface
 	{
 		public static const UPDATE_LINKS_POSITION:String = DynamicLinksEvent.UPDATE_LINKS_POSITION ;
