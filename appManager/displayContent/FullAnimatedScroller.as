@@ -1,6 +1,7 @@
 package appManager.displayContent
 	//appManager.displayContent.FullAnimatedScroller
 {
+	import flash.display.FrameLabel;
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -40,6 +41,17 @@ package appManager.displayContent
 			super();
 			this.stop();
 			_currentFrame = 1 ;
+			
+			//find begin frame
+			var allFrames:Array = this.currentLabels ;
+			
+			if(allFrames.length>0)
+			{
+				_currentFrame = (allFrames[0] as FrameLabel).frame ;
+				this.gotoAndStop(_currentFrame);
+			}
+			
+			
 			isLock = false ;
 			
 			var speeds:Array = this.name.split('_');
@@ -50,11 +62,11 @@ package appManager.displayContent
 			xSpeed = uint(speeds[1])/100;
 			ySpeed = uint(speeds[2])/100;
 			areaMC = Obj.get("area_mc",this);
-			areaMC.visible = false ;
 			if(areaMC==null)
 			{
 				throw "You have to add an object named   \"area_mc\" on the FullAnimated Class to defin the scroll area"
 			}
+			areaMC.visible = false ;
 			
 			this.addEventListener(MouseEvent.MOUSE_DOWN,startScroll);
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
