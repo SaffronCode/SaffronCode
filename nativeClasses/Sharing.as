@@ -103,7 +103,7 @@ package nativeClasses
 			catch (e:Error)
 			{
 				// Check if your APP_KEY is correct
-				throw "The district app id is wrong!! get a new one for this id ("+DevicePrefrence.appID+") from : airnativeextensions.com/user/2299/applications\n\n\n"+e ;
+				trace("The district app id is wrong!! get a new one for this id ("+DevicePrefrence.appID+") from : airnativeextensions.com/user/2299/applications\n\n\n"+e) ;
 				_isSupports = false ;
 			}
 		}
