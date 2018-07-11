@@ -7,6 +7,10 @@ package diagrams.calender
 	{
 		public static function shamsiToMiladi(date:*):Date
 		{
+			if(date==null)
+			{
+				return null ;
+			}
 			if(date is MyShamsi || date is Date)
 			{
 				var miladi:Array = Shamsi.ShamsiToMiladi(date.fullYear,date.month+1,date.date);
