@@ -85,6 +85,9 @@
 		/**List of sliders shouldnt staye on the stage*/
 		private var ignoredIndexes:Array = [] ;
 		
+		private var _lockNext:Boolean,
+					_lockPrev:Boolean;
+		
 		public function SliderGallery(myWidth:Number=0,myHeight:Number=0)
 		{
 			super();
@@ -123,6 +126,16 @@
 			
 			controllStage();
 			this.addEventListener(ScrollMTEvent.YOU_ARE_SCROLLING_FROM_YOUR_PARENT,canselDragingBecauseOfScroll);
+		}
+		
+		public function lockNext(status:Boolean=true):void
+		{
+			_lockNext = status ;
+		}
+		
+		public function lockPrev(status:Boolean=true):void
+		{
+			_lockPrev = status ;
 		}
 		
 		protected function canselDragingBecauseOfScroll(event:Event):void
@@ -537,6 +550,8 @@
 								mouseLastX = this.mouseX ;
 								diactivateClicks();
 								this.parent.dispatchEvent(new Event(ScrollMT.LOCK_SCROLL_TILL_MOUSE_UP,true));
+								//TODO revert dispatch to prevent inner scroll to close the page
+								Obj.dispatchReverse(this as Sprite,new ScrollMTEvent(ScrollMTEvent.YOU_ARE_SCROLLING_FROM_YOUR_PARENT,false,false))
 							}
 							else
 							{
@@ -545,7 +560,24 @@
 						}
 						var mouseDelta:Number = this.mouseX-mouseLastX ;
 						getImageUp().x += mouseDelta ;
-						getImageUp().x = Math.min(W,Math.max(-W,getImageUp().x));
+						if(
+							(_lockNext && RTL)
+							||
+							(_lockPrev && !RTL)
+						)
+							getImageUp().x = Math.min(0,getImageUp().x);
+						else
+							getImageUp().x = Math.min(W,getImageUp().x);
+						
+						if(
+							(_lockPrev && RTL)
+							||
+							(_lockNext && !RTL)
+						)
+							getImageUp().x = Math.max(0,getImageUp().x) ;
+						else
+							getImageUp().x = Math.max(-W,getImageUp().x);
+						
 						speed += mouseLastX-this.mouseX;
 						mouseLastX = this.mouseX;
 						animate();
@@ -664,6 +696,9 @@
 		/**Open the previus question, call showExactIndex() function to open exact page*/
 		public function preve():void
 		{
+			if(_lockPrev)
+				return ;			
+	
 			setAnimation();
 			if(prevAvailabe())
 			{
@@ -681,6 +716,9 @@
 		/**Open the next question, call showExactIndex() function to open exact page*/
 		public function next():void
 		{
+			if(_lockNext)
+				return;
+			
 			if(nextAvailable())
 			{
 				setAnimation();
