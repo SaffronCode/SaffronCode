@@ -1,8 +1,6 @@
 package nativeClasses
 {
 	
-	import com.distriqt.extension.share.Share;
-	
 	import flash.display.BitmapData;
 	import flash.utils.getDefinitionByName;
 
@@ -81,7 +79,7 @@ package nativeClasses
 				(shareClass as Object).init( APP_KEY );
 				
 				getDefinitionByName("com.distriqt.extension.core.Core").init(APP_KEY);
-				Share.init(APP_KEY);
+				(shareClass as Object).init( APP_KEY );
 				
 				shareClass.service.addEventListener( shareEventClass.COMPLETE,	share_shareHandler, false, 0, true );
 				shareClass.service.addEventListener( shareEventClass.CANCELLED,	share_shareHandler, false, 0, true );
