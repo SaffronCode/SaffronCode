@@ -507,9 +507,11 @@ package contents.displayPages
 		/**Update created linkItems with same model of pageData*/
 		public function update(pageData:PageData):void
 		{
-			if(myPageData.links1.length != pageData.links1.length)
+			if(myPageData==null || myPageData.links1.length != pageData.links1.length)
 			{
-				throw "The update function is only works for the pages with same lenght of links1!!!" ;
+				trace("**** Update function changed to setUp function ****");
+				setUp(pageData);
+				return ;
 			}
 			myPageData = pageData ;
 			for(var i:int = 0 ; i<linksInterfaceStorage.length ; i++)
@@ -938,49 +940,53 @@ package contents.displayPages
 			}*/
 
 			//Control inside links or out side links ↓
-            var l:uint = linksInterfaceStorage.length ;
-			var itWasOnStage:Boolean ;
-
-
-			itWasOnStage = showOrHideLinkItem(firstItemIndex);
-			if (itWasOnStage){
-				do
-				{
-					firstItemIndex--;
-					itWasOnStage = showOrHideLinkItem(firstItemIndex);
-				}while(firstItemIndex>=0 && itWasOnStage)
-				firstItemIndex++;
-			}
-			else{
-				do
-				{
-					firstItemIndex++;
-					itWasOnStage = showOrHideLinkItem(firstItemIndex);
-				}while(firstItemIndex<l && !itWasOnStage)
-				firstItemIndex--;
-			}
 			
-			lastItemIndex = Math.max(lastItemIndex,firstItemIndex+1);
-
-            itWasOnStage = showOrHideLinkItem(lastItemIndex);
-            if (itWasOnStage){
-                do
-                {
-                    lastItemIndex++;
-                    itWasOnStage = showOrHideLinkItem(lastItemIndex);
-                }while(lastItemIndex<l && itWasOnStage)
-                lastItemIndex--;
-            }
-            else{
-                do
-                {
-                    lastItemIndex--;
-                    itWasOnStage = showOrHideLinkItem(lastItemIndex);
-                }while(lastItemIndex>=0 && !itWasOnStage)
-                lastItemIndex++;
-            }
-			//Control inside links or out side links ↑
-			//trace("firstItemIndex,lastItemIndex : "+firstItemIndex,lastItemIndex);
+			if(!dynamicHeight)
+			{
+	            var l:uint = linksInterfaceStorage.length ;
+				var itWasOnStage:Boolean ;
+	
+	
+				itWasOnStage = showOrHideLinkItem(firstItemIndex);
+				if (itWasOnStage){
+					do
+					{
+						firstItemIndex--;
+						itWasOnStage = showOrHideLinkItem(firstItemIndex);
+					}while(firstItemIndex>=0 && itWasOnStage)
+					firstItemIndex++;
+				}
+				else{
+					do
+					{
+						firstItemIndex++;
+						itWasOnStage = showOrHideLinkItem(firstItemIndex);
+					}while(firstItemIndex<l && !itWasOnStage)
+					firstItemIndex--;
+				}
+				
+				lastItemIndex = Math.max(lastItemIndex,firstItemIndex+1);
+	
+	            itWasOnStage = showOrHideLinkItem(lastItemIndex);
+	            if (itWasOnStage){
+	                do
+	                {
+	                    lastItemIndex++;
+	                    itWasOnStage = showOrHideLinkItem(lastItemIndex);
+	                }while(lastItemIndex<l && itWasOnStage)
+	                lastItemIndex--;
+	            }
+	            else{
+	                do
+	                {
+	                    lastItemIndex--;
+	                    itWasOnStage = showOrHideLinkItem(lastItemIndex);
+	                }while(lastItemIndex>=0 && !itWasOnStage)
+	                lastItemIndex++;
+	            }
+				//Control inside links or out side links ↑
+				//trace("firstItemIndex,lastItemIndex : "+firstItemIndex,lastItemIndex);
+			}
 
 
 
