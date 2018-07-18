@@ -200,11 +200,11 @@
 			}
 			
 			if(multiLineTag){
-				TextPutter.onTextArea(tagNameTXT,tagName,true,true,true,0,false,false,-1,false,0,false);
+				TextPutter.onTextArea(tagNameTXT,tagName,IsArabic,true,true,0,false,false,-1,false,0,false);
 			}
 			else
 			{
-				TextPutter.OnButton(tagNameTXT,tagName,true,false,true);
+				TextPutter.OnButton(tagNameTXT,tagName,IsArabic,false,true);
 			}
 			myTXT = Obj.getAllChilds('txt_txt',this,false)[0];
 			myTXT.addEventListener(Event.CLOSE,dispatchChangeForMeToo);
