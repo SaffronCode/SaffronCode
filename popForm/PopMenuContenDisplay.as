@@ -578,7 +578,7 @@ package popForm
 		{
 			trace("myHieghtPlus : "+maxAreaMC.height+'+'+stagePlusHaight+'+'+myHieghtPlus);
 			var scrollRect:Rectangle = new Rectangle(this.x-maxAreaMC.width/2,thisY,maxAreaMC.width,maxAreaMC.height+stagePlusHaight+myHieghtPlus) ;
-			var areaRect:Rectangle = new Rectangle(maxAreaMC.width/-2,0,maxAreaMC.width,ylist) ;
+			var areaRect:Rectangle = new Rectangle(maxAreaMC.width/-2,0,maxAreaMC.width,this.height+ylist) ;
 			scroll = new ScrollMT(this,scrollRect,areaRect,true);
 			trace("* : this.height:"+this.height+' vs scrollRect.height:'+scrollRect.height);
 			if(this.height<=scrollRect.height+ylist)
