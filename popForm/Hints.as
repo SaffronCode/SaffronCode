@@ -1,4 +1,4 @@
-package popForm
+﻿package popForm
 {
 	import contents.Contents;
 	
@@ -247,7 +247,10 @@ package popForm
 				trace("let this menu close");
 				if(onBacked!=null)
 				{
-					onBacked();
+					if(onBacked.length==0)
+						onBacked();
+					else
+						onBacked(null);
 				}
 			}
 			else if(e.buttonTitle == Contents.lang.t[id_search])
