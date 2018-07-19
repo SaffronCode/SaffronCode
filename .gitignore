@@ -74,8 +74,6 @@ $RECYCLE.BIN/
 
 #image files
 *.psd
-*.png
-*.jpg
 *.bmp
 *.tif
 
