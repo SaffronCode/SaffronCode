@@ -109,6 +109,11 @@
 		/**Initialize the DarkBox area*/
 		public static function setUp(newSize:Rectangle,noNetHintText:String='No Internet Connection Available',noImageHereText:String='',downloadFunction:Function=null,titleInFullLine:Boolean=false,RightToLeft:Boolean=true,activateAutoSize:Boolean=true):void
 		{
+			if(!StageManager.isSatUp())
+			{
+				throw "You should sat the StageManager to use DarkBox.\n\n\n" ;
+				return ;
+			}
 			trace("Update darkbox stage area : "+newSize);
 			rtf = RightToLeft ;
 			showTitleInFullLine = titleInFullLine ;
@@ -596,6 +601,12 @@
 				{
 					AnimData.fadeIn(ME.downloadMC,showDownloadAgain,0.2);
 				}
+			}
+			
+			/**Returns true if the DarkBox was opened*/
+			public static function isOpen():Boolean
+			{
+				return ME.visible;
 			}
 	}
 }
