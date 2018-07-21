@@ -272,21 +272,22 @@
 			//trace("deltaX : "+deltaX);
 			//trace("deltaY : "+deltaY);
 
+			var iphoneXScale:Number = 1 ;
 			if(StageManager.isIphoneX())
 			{
-				const iphoneXScale:Number = 1.4 ;
-				rect.x = rect.x*iphoneXScale;
-				rect.y = rect.y*iphoneXScale;
-				rect.width = rect.width*iphoneXScale;
-				rect.height = rect.height*iphoneXScale;
+				iphoneXScale = 1.5;
 			}
 			
-			rect.x*=scl;
-			rect.y*=scl;
-			rect.x += deltaX/2;
-			rect.y += deltaY/2;
-			rect.width*=scl;
-			rect.height*=scl;
+			rect.x*=scl*iphoneXScale;
+			rect.y*=scl*iphoneXScale;
+			rect.x += (deltaX/2)*iphoneXScale;
+			rect.y += (deltaY/2)*iphoneXScale;
+			if(DevicePrefrence.isPortrait())
+			{
+				rect.y += StageManager.iPhoneXExtra()*iphoneXScale;
+			}
+			rect.width*=scl*iphoneXScale;
+			rect.height*=scl*iphoneXScale;
 			
 			rect.x = round(rect.x);
 			rect.y = round(rect.y);
