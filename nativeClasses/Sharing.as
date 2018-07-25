@@ -39,9 +39,9 @@ package nativeClasses
 			{
 				var options:* = new shareOptionClass();
 				options.title = "Share with ...";
-				options.showOpenIn = false;
+				options.showOpenIn = true;
 				trace("•distriqt• Call the share function");
-				shareClass.service.share(sharedString,imageBirmapData);
+				shareClass.service.share(sharedString,imageBirmapData,'',options);
 			}
 			else
 			{
@@ -76,9 +76,8 @@ package nativeClasses
 			try
 			{
 				trace("•distriqt• Set the Share key : "+APP_KEY);
-				(shareClass as Object).init( APP_KEY );
 				
-				getDefinitionByName("com.distriqt.extension.core.Core").init(APP_KEY);
+				(getDefinitionByName("com.distriqt.extension.core.Core") as Object).init(APP_KEY);
 				(shareClass as Object).init( APP_KEY );
 				
 				shareClass.service.addEventListener( shareEventClass.COMPLETE,	share_shareHandler, false, 0, true );
