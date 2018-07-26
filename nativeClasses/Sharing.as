@@ -2,6 +2,7 @@ package nativeClasses
 {
 	
 	import flash.display.BitmapData;
+	import flash.filesystem.File;
 	import flash.utils.getDefinitionByName;
 
 	public class Sharing
@@ -96,6 +97,12 @@ package nativeClasses
 					trace("•distriqt• Share is not supports");
 					_isSupports = false ;
 				}
+				
+				// Copy the application packaged files to an accessible location (only needed on Android but works on both)	
+				var packagedAssets:File = File.applicationDirectory.resolvePath( "assets" );
+				var accessibleAssets:File = File.applicationStorageDirectory.resolvePath( "assets" );
+				if (accessibleAssets.exists) accessibleAssets.deleteDirectory(true);
+				packagedAssets.copyTo( accessibleAssets, true );
 			}
 			catch (e:Error)
 			{
