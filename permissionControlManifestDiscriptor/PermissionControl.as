@@ -85,8 +85,10 @@ public class PermissionControl {
 			return line.split(neceraryLines).join('') ;
 		}
 		
+		var fullHintText:String = '' ;
+		
 		if(androidManifestMustUpdate)
-			Caution(hintText+leftPermission);
+			fullHintText = hintText+leftPermission;
 		
 		
 		var appleURLPermision:String = 		neceraryLines+'<key>CFBundleURLTypes</key>\n'+
@@ -125,7 +127,9 @@ public class PermissionControl {
 		}
 
 		if(appleManifestMustUpdate)
-			Caution(appleHintText+leftPermission);
+			Caution(fullHintText+'\n\n'+appleHintText+leftPermission);
+		else if(fullHintText!='')
+			Caution(fullHintText);
 	}
 	
 	public static function Caution(str:String):void
