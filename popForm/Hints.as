@@ -37,14 +37,21 @@
 			return PopMenu1.isOpen ;
 		}
 		
-		public static function ask(title:String,question:String,onDone:Function,innerDisplayObject:DisplayObject=null,OnNotAccepted:Function=null,ButtonFrameYes:int=1,ButtonFrameNo:int=1):void
+		public static function ask(title:String,question:String,onDone:Function,innerDisplayObject:DisplayObject=null,OnNotAccepted:Function=null,ButtonFrameYes:int=1,ButtonFrameNo:int=1,descriptionFieldLines:uint=0,
+								   extraDesctiptionLabel:String="توضیح:",defaultExtraDescription="",extraDescriptionKeyboard:String=SoftKeyboardType.DEFAULT):void
 		{
 			onQuestionAccepted = onDone;
 			onNotAccepted = OnNotAccepted;
 			
 			var buttons:Array = [new PopButtonData(Contents.lang.t[id_yes],ButtonFrameYes,null,true,true)
 				,new PopButtonData(Contents.lang.t[id_no],ButtonFrameNo,null,true,true)] ;
-			var popText:PopMenuContent = new PopMenuContent(question,null,buttons,innerDisplayObject);
+			var popFields:PopMenuFields;
+			if(descriptionFieldLines>0)
+			{
+				popFields = new PopMenuFields();
+				popFields.addField(extraDesctiptionLabel,defaultExtraDescription,extraDescriptionKeyboard,false,true,true,descriptionFieldLines,1,1,0,false,true);
+			}
+			var popText:PopMenuContent = new PopMenuContent(question,popFields,buttons,innerDisplayObject);
 			PopMenu1.popUp(title,null,popText,0,onQuestionAnswered);
 		}
 		
@@ -91,7 +98,14 @@
 		{
 			if(e.buttonTitle == Contents.lang.t[id_yes])
 			{
-				onQuestionAccepted();
+				if(onQuestionAccepted.length>0)
+				{
+					onQuestionAccepted(e);
+				}
+				else
+				{
+					onQuestionAccepted();
+				}
 			}
 			else
 			{
