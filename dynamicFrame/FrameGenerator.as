@@ -7,6 +7,7 @@ package dynamicFrame
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.events.MouseEvent;
+	import flash.text.TextField;
 	
 	public class FrameGenerator
 	{
@@ -54,6 +55,10 @@ package dynamicFrame
 			function startDragStage(e:MouseEvent):void
 			{
 				var clickedItem:Sprite = e.target as Sprite ;
+				if(e.target is TextField)
+				{
+					return ;
+				}
 				while(clickedItem!=null && !(clickedItem is Stage))
 				{
 					if(clickedItem.buttonMode == true || clickedItem.hasEventListener(MouseEvent.CLICK))
