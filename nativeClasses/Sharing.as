@@ -89,7 +89,7 @@ package nativeClasses
 				if (shareClass.isSupported)
 				{
 					//	Functionality here
-					trace("•distriqt• Share is supports");
+					trace("•distriqt• Share is support");
 					_isSupports = true ;
 				}
 				else
@@ -99,10 +99,12 @@ package nativeClasses
 				}
 				
 				// Copy the application packaged files to an accessible location (only needed on Android but works on both)	
-				var packagedAssets:File = File.applicationDirectory.resolvePath( "assets" );
+				/*var packagedAssets:File = File.applicationDirectory.resolvePath( "assets" );
 				var accessibleAssets:File = File.applicationStorageDirectory.resolvePath( "assets" );
-				if (accessibleAssets.exists) accessibleAssets.deleteDirectory(true);
-				packagedAssets.copyTo( accessibleAssets, true );
+				if (accessibleAssets.exists) 
+					accessibleAssets.deleteDirectory(true);
+				if(packagedAssets.exists)
+					packagedAssets.copyTo( accessibleAssets, true );*/
 			}
 			catch (e:Error)
 			{
