@@ -84,8 +84,9 @@ package contents.displayPages
 						activeSlideButtons:Boolean = false,
 						draggableLinkItem:LinkItem,
 						mouseFirstPose:Number,
-						mouseDeltaToSlide:Number=50,
-						linkItemButtonsWidth:Number;
+						mouseDeltaToSlide:Number=50;
+						
+		public var linkItemButtonsWidth:Number;
 					
 		protected var 	linkScroller:ScrollMT,
 						areaRect:Rectangle,
