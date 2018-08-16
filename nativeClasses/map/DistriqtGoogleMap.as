@@ -1,12 +1,12 @@
 package nativeClasses.map
 {
-	import com.distriqt.extension.nativemaps.AuthorisationStatus;
-	import com.distriqt.extension.nativemaps.NativeMaps;
-	import com.distriqt.extension.nativemaps.events.NativeMapEvent;
-	import com.distriqt.extension.nativemaps.objects.CustomMarkerIcon;
-	import com.distriqt.extension.nativemaps.objects.LatLng;
-	import com.distriqt.extension.nativemaps.objects.MapMarker;
-	import com.distriqt.extension.nativemaps.objects.MapType;
+	//import com.distriqt.extension.nativemaps.AuthorisationStatus;
+	//import com.distriqt.extension.nativemaps.NativeMaps;
+	//import com.distriqt.extension.nativemaps.events.NativeMapEvent;
+	//import com.distriqt.extension.nativemaps.objects.CustomMarkerIcon;
+	//import com.distriqt.extension.nativemaps.objects.LatLng;
+	//import com.distriqt.extension.nativemaps.objects.MapMarker;
+	//import com.distriqt.extension.nativemaps.objects.MapType;
 	import com.mteamapp.StringFunctions;
 	
 	import flash.display.Sprite;
@@ -14,6 +14,7 @@ package nativeClasses.map
 	import flash.events.EventDispatcher;
 	import flash.filesystem.File;
 	import flash.geom.Rectangle;
+	import flash.utils.getDefinitionByName;
 	import flash.utils.setTimeout;
 	
 	import stageManager.StageManager;
@@ -21,6 +22,21 @@ package nativeClasses.map
 	public class DistriqtGoogleMap extends Sprite
 	{
 		private static var api_key:String ;
+		
+		/**com.distriqt.extension.nativemaps.AuthorisationStatus*/
+		private static var AuthorisationStatusClass:Class ;
+		/**com.distriqt.extension.nativemaps.NativeMaps*/
+		private static var NativeMapsClass:Class ;
+		/**com.distriqt.extension.nativemaps.events.NativeMapEvent*/
+		private static var NativeMapEventClass:Class ;
+		/**com.distriqt.extension.nativemaps.objects.CustomMarkerIcon*/
+		private static var CustomMarkerIconClass:Class ;
+		/**com.distriqt.extension.nativemaps.objects.LatLng*/
+		private static var LatLngClass:Class ;
+		/**com.distriqt.extension.nativemaps.objects.MapMarker*/
+		private static var MapMarkerClass:Class ;
+		/**com.distriqt.extension.nativemaps.objects.MapType*/
+		private static var MapTypeClass:Class ;
 		
 		private static var isSupports:Boolean = false ;
 		
@@ -36,12 +52,13 @@ package nativeClasses.map
 		
 		private var mapIsShowing:Boolean = false ;
 		
-		private var myMarkers:Vector.<MapMarker>,
+		/**myMarkers is an array of MapMarker*/
+		private var myMarkers:Vector.<Object>,
 					myIcons:Vector.<MapIcon>;
 		
 		private var mapCretedOnStage:Boolean;
 
-		private var center:LatLng;
+		private var center:Object;
 		
 		private var firstZoomLevel:Number = -1 ;
 		
@@ -132,8 +149,17 @@ package nativeClasses.map
 			
 			try
 			{
-				NativeMaps.init( DistriqtId );
-				if (NativeMaps.isSupported)
+				AuthorisationStatusClass = getDefinitionByName("com.distriqt.extension.nativemaps.AuthorisationStatus") as Class ;
+				NativeMapsClass = getDefinitionByName("com.distriqt.extension.nativemaps.NativeMaps") as Class ;
+				NativeMapEventClass = getDefinitionByName("com.distriqt.extension.nativemaps.events.NativeMapEvent") as Class ;
+				CustomMarkerIconClass = getDefinitionByName("com.distriqt.extension.nativemaps.objects.CustomMarkerIcon") as Class ;
+				LatLngClass = getDefinitionByName("com.distriqt.extension.nativemaps.objects.LatLng") as Class ;
+				MapMarkerClass = getDefinitionByName("com.distriqt.extension.nativemaps.objects.MapMarker") as Class ;
+				MapTypeClass = getDefinitionByName("com.distriqt.extension.nativemaps.objects.MapType") as Class ;
+				
+				
+				(NativeMapsClass as Object).init( DistriqtId );
+				if ((NativeMapsClass as Object).isSupported)
 				{
 					isSupports = true ;
 				}
@@ -152,33 +178,33 @@ package nativeClasses.map
 		
 		private static function initializeMap():void
 		{
-			var autoriseStatus:String = NativeMaps.service.authorisationStatus();
+			var autoriseStatus:String = (NativeMapsClass as Object).service.authorisationStatus();
 			trace("*********************autoriseStatus*******************"+autoriseStatus);
 			switch (autoriseStatus)
 			{
-				case AuthorisationStatus.ALWAYS:
-				case AuthorisationStatus.IN_USE:
-					trace( "User allowed access: " + NativeMaps.service.authorisationStatus() );
+				case (AuthorisationStatusClass as Object).ALWAYS:
+				case (AuthorisationStatusClass as Object).IN_USE:
+					trace( "User allowed access: " + (NativeMapsClass as Object).service.authorisationStatus() );
 					break;
 				
-				case AuthorisationStatus.NOT_DETERMINED:
-				case AuthorisationStatus.SHOULD_EXPLAIN:
+				case (AuthorisationStatusClass as Object).NOT_DETERMINED:
+				case (AuthorisationStatusClass as Object).SHOULD_EXPLAIN:
 					trace("--requestAuthorisation");
-					NativeMaps.service.requestAuthorisation( AuthorisationStatus.IN_USE );
+					(NativeMapsClass as Object).service.requestAuthorisation( (AuthorisationStatusClass as Object).IN_USE );
 					break;
 				
-				case AuthorisationStatus.RESTRICTED:
-				case AuthorisationStatus.DENIED:
-				case AuthorisationStatus.UNKNOWN:
+				case (AuthorisationStatusClass as Object).RESTRICTED:
+				case (AuthorisationStatusClass as Object).DENIED:
+				case (AuthorisationStatusClass as Object).UNKNOWN:
 				default:
 					trace( "Request access to location services." );
-					if(NativeMaps.service.requestAuthorisation.length>0)
+					if((NativeMapsClass as Object).service.requestAuthorisation.length>0)
 					{
-						NativeMaps.service.requestAuthorisation( AuthorisationStatus.IN_USE );
+						(NativeMapsClass as Object).service.requestAuthorisation( (AuthorisationStatusClass as Object).IN_USE );
 					}
 					else
 					{
-						NativeMaps.service.requestAuthorisation();
+						(NativeMapsClass as Object).service.requestAuthorisation();
 					}
 					break;
 			}
@@ -187,7 +213,7 @@ package nativeClasses.map
 			{
 				mapInitialized = true ;
 				trace("prepareViewOrder");
-				NativeMaps.service.prepareViewOrder();
+				(NativeMapsClass as Object).service.prepareViewOrder();
 				trace("prepareViewOrder done");
 			}
 		}
@@ -214,24 +240,24 @@ package nativeClasses.map
 		public function setMap(centerLat:Number=NaN,centerLon:Number=NaN,icons:Vector.<MapIcon>=null,zoomLevel:Number=-1):void
 		{
 			//unload();
-			trace("AuthorisationStatus.ALWAYS : "+AuthorisationStatus.ALWAYS);
-			trace("AuthorisationStatus.DENIED : "+AuthorisationStatus.DENIED);
-			trace("AuthorisationStatus.IN_USE : "+AuthorisationStatus.IN_USE);
-			trace("AuthorisationStatus.NOT_DETERMINED : "+AuthorisationStatus.NOT_DETERMINED);
-			trace("AuthorisationStatus.RESTRICTED : "+AuthorisationStatus.RESTRICTED);
-			trace("AuthorisationStatus.SHOULD_EXPLAIN : "+AuthorisationStatus.SHOULD_EXPLAIN);
-			trace("AuthorisationStatus.UNKNOWN : "+AuthorisationStatus.UNKNOWN);
+			trace("AuthorisationStatus.ALWAYS : "+(AuthorisationStatusClass as Object).ALWAYS);
+			trace("AuthorisationStatus.DENIED : "+(AuthorisationStatusClass as Object).DENIED);
+			trace("AuthorisationStatus.IN_USE : "+(AuthorisationStatusClass as Object).IN_USE);
+			trace("AuthorisationStatus.NOT_DETERMINED : "+(AuthorisationStatusClass as Object).NOT_DETERMINED);
+			trace("AuthorisationStatus.RESTRICTED : "+(AuthorisationStatusClass as Object).RESTRICTED);
+			trace("AuthorisationStatus.SHOULD_EXPLAIN : "+(AuthorisationStatusClass as Object).SHOULD_EXPLAIN);
+			trace("AuthorisationStatus.UNKNOWN : "+(AuthorisationStatusClass as Object).UNKNOWN);
 			
 			trace("----");
 			
-			trace("MapType.MAP_TYPE_HYBRID : "+MapType.MAP_TYPE_HYBRID);
-			trace("MapType.MAP_TYPE_NONE : "+MapType.MAP_TYPE_NONE);
-			trace("MapType.MAP_TYPE_NORMAL : "+MapType.MAP_TYPE_NORMAL);
-			trace("MapType.MAP_TYPE_SATELLITE : "+MapType.MAP_TYPE_SATELLITE);
-			trace("MapType.MAP_TYPE_TERRAIN : "+MapType.MAP_TYPE_TERRAIN);
+			trace("MapType.MAP_TYPE_HYBRID : "+(MapTypeClass as Object).MAP_TYPE_HYBRID);
+			trace("MapType.MAP_TYPE_NONE : "+MapTypeClass.MAP_TYPE_NONE);
+			trace("MapType.MAP_TYPE_NORMAL : "+(MapTypeClass as Object).MAP_TYPE_NORMAL);
+			trace("MapType.MAP_TYPE_SATELLITE : "+(MapTypeClass as Object).MAP_TYPE_SATELLITE);
+			trace("MapType.MAP_TYPE_TERRAIN : "+(MapTypeClass as Object).MAP_TYPE_TERRAIN);
 			
 			trace("-------");
-			myMarkers = new Vector.<MapMarker>();
+			myMarkers = new Vector.<Object>();
 			myIcons = new Vector.<MapIcon>();
 			if(icons!=null)
 			{
@@ -244,7 +270,7 @@ package nativeClasses.map
 			}
 			
 			
-			if (NativeMaps.isSupported)
+			if ((NativeMapsClass as Object).isSupported)
 			{
 				var rect:Rectangle;
 				rect = createViewPort();
@@ -252,13 +278,13 @@ package nativeClasses.map
 				
 				if(!isNaN(centerLat) && !isNaN(centerLon))
 				{
-					center = new LatLng(centerLat,centerLon);
+					center = new LatLngClass(centerLat,centerLon);
 				}
 				firstZoomLevel = zoomLevel ;
 				trace("...listenning...");
-				NativeMaps.service.addEventListener( NativeMapEvent.MAP_CREATED, mapCreatedHandler );
+				(NativeMapsClass as Object).service.addEventListener( (NativeMapEventClass as Object).MAP_CREATED, mapCreatedHandler );
 				trace("---Creating...");
-				NativeMaps.service.createMap( rect, MapType.MAP_TYPE_NORMAL);
+				(NativeMapsClass as Object).service.createMap( rect, (MapTypeClass as Object).MAP_TYPE_NORMAL);
 				
 				trace("Create map done");
 				mapCreated = true ;
@@ -272,14 +298,14 @@ package nativeClasses.map
 		{
 			if(mapCreated)
 			{
-				NativeMaps.service.destroyMap();
+				(NativeMapsClass as Object).service.destroyMap();
 			}
 			dispatcher.removeEventListener(Event.REMOVED_FROM_STAGE,removeMeBecauseSomeOneElseComes);
-			NativeMaps.service.removeEventListener( NativeMapEvent.MAP_CREATED, mapCreatedHandler );
+			(NativeMapsClass as Object).service.removeEventListener( (NativeMapEventClass as Object).MAP_CREATED, mapCreatedHandler );
 			this.removeEventListener(Event.ENTER_FRAME,repose);
 		}
 		
-		private function mapCreatedHandler(e:NativeMapEvent):void
+		private function mapCreatedHandler(e:*):void
 		{
 			mapCretedOnStage = true ;
 			setCenter(center.lat,center.lon,firstZoomLevel);
@@ -290,9 +316,9 @@ package nativeClasses.map
 		public function setCenter(lat:Number,lon:Number,zoomLevel:Number=-1,animationDuration:uint=2000):void
 		{
 			trace("******* first center is : "+lat,lon,zoomLevel);
-			center = new LatLng(lat,lon);
+			center = new LatLngClass(lat,lon);
 			firstZoomLevel = zoomLevel ;
-			NativeMaps.service.setCentre(center,zoomLevel,animationDuration!=0,animationDuration)
+			(NativeMapsClass as Object).service.setCentre(center,zoomLevel,animationDuration!=0,animationDuration)
 		}
 		
 		private function createViewPort():Rectangle
@@ -408,7 +434,7 @@ package nativeClasses.map
 			var rect:Rectangle = createViewPort();
 			//trace("Repose : "+rect);
 			if(rect)
-				NativeMaps.service.setLayout(rect.width,rect.height,rect.x,rect.y);
+				(NativeMapsClass as Object).service.setLayout(rect.width,rect.height,rect.x,rect.y);
 			
 			//trace("map place is : "+rect);
 			
@@ -418,7 +444,7 @@ package nativeClasses.map
 				if(!mapIsShowing)
 				{
 					//trace("!!!!!!!!!!!!!!!!!show!!!!!!!!!!!!");
-					NativeMaps.service.showMap();
+					(NativeMapsClass as Object).service.showMap();
 					mapIsShowing = true ;
 				}
 			}
@@ -428,7 +454,7 @@ package nativeClasses.map
 				if(mapIsShowing)
 				{
 					//trace("!!!!!!!!!!!!!!!hide!!!!!!!!!!!!!!!");
-					NativeMaps.service.hideMap();
+					(NativeMapsClass as Object).service.hideMap();
 					mapIsShowing = false ;
 				}
 			}
@@ -437,7 +463,7 @@ package nativeClasses.map
 		public function addMarker(markerName:String,lat:Number,lon:Number,markerTitle:String,markerInfo:String,color:uint=0,enableInfoWindow=true,animated:Boolean=true,showInfoButton:Boolean=true,iconId:String=''):void
 		{
 			trace("****************Map marker Added : ",lat,lon,markerName,'iconId : '+iconId);
-			var myMarker:MapMarker = new MapMarker(markerName,new LatLng(lat,lon),markerTitle,markerInfo,color,false,enableInfoWindow,animated,showInfoButton,iconId)
+			var myMarker:Object = new MapMarkerClass(markerName,new LatLngClass(lat,lon),markerTitle,markerInfo,color,false,enableInfoWindow,animated,showInfoButton,iconId)
 			myMarkers.push(myMarker);
 			if(mapCretedOnStage)
 			{
@@ -447,15 +473,15 @@ package nativeClasses.map
 		
 		private function updateMarkers():void
 		{
-			NativeMaps.service.clearMap();
+			(NativeMapsClass as Object).service.clearMap();
 			
 			var i:int ;
 			var isDuplicated:Boolean = false ;
 			for(i = 0 ; i<myIcons.length ; i++)
 			{
-				for(var j = 0 ; j<NativeMaps.service.customMarkerIcons.length ; j++)
+				for(var j = 0 ; j<(NativeMapsClass as Object).service.customMarkerIcons.length ; j++)
 				{
-					if(NativeMaps.service.customMarkerIcons[j].id == myIcons[i].Id)
+					if((NativeMapsClass as Object).service.customMarkerIcons[j].id == myIcons[i].Id)
 					{
 						isDuplicated = true ;
 						break;
@@ -463,12 +489,12 @@ package nativeClasses.map
 				}
 				if(!isDuplicated)
 				{
-					NativeMaps.service.addCustomMarkerIcon(new CustomMarkerIcon(myIcons[i].Id,myIcons[i].bitmapData,2));
+					(NativeMapsClass as Object).service.addCustomMarkerIcon(new CustomMarkerIconClass(myIcons[i].Id,myIcons[i].bitmapData,2));
 				}
 			}
 			for(i = 0 ; i<myMarkers.length ; i++)
 			{
-				NativeMaps.service.addMarker(myMarkers[i]);
+				(NativeMapsClass as Object).service.addMarker(myMarkers[i]);
 			}
 		}
 	}
