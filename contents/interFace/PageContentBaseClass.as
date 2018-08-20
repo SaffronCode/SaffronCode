@@ -5,6 +5,7 @@ package contents.interFace
 	import contents.PageData;
 	
 	import flash.display.MovieClip;
+	import flash.events.Event;
 	
 	[Event(name="MENU_READY", type="appManager.event.MenuEvent")]
 	/**Animatino is ready*/
@@ -15,6 +16,7 @@ package contents.interFace
 		{
 			super();
 			this.addEventListener(MenuEvent.MENU_READY,menuIsReady);
+			this.addEventListener(Event.REMOVED_FROM_STAGE,UnLoad);
 		}
 		
 		public function setUp(pageData:PageData):void
@@ -23,6 +25,12 @@ package contents.interFace
 		
 		protected function menuIsReady(menuEvent:MenuEvent):void
 		{
+		}
+		
+		protected function UnLoad(e:Event):void
+		{
+			this.removeEventListener(MenuEvent.MENU_READY,menuIsReady);
+			this.removeEventListener(Event.REMOVED_FROM_STAGE,UnLoad);
 		}
 	}
 }
