@@ -243,7 +243,8 @@
 			//FarsiInputText.steKeyBord(myTXT,false);
 			if(editable)
 			{
-				nativeKeyBoard = FarsiInputCorrection.setUp(myTXT,KeyBordType,true,true,deleteDefautlText,justShowNativeText,true,true,returnKey,onTypedFunction);
+				nativeKeyBoard = FarsiInputCorrection.setUp(myTXT,KeyBordType,true,true,deleteDefautlText,justShowNativeText && !activeRadioMode,true,true,returnKey,onTypedFunction);
+				nativeKeyBoard.editing = !activeRadioMode ;
 				this.addEventListener(MouseEvent.CLICK,editThisText);
 			}
 			else
@@ -395,6 +396,7 @@
 					trace("Cannot find current value between enterd radio buttons : "+myTXT.text+' vs '+radioButtonArray);
 					myTXT.text = radioButtonArray[0];
 					myTXT.dispatchEvent(new Event(Event.CHANGE));
+					this.dispatchEvent(new Event(Event.CHANGE));
 					return false ;
 				}
 				else
@@ -402,6 +404,7 @@
 					I = (I+1)%radioButtonArray.length ;
 					myTXT.text = radioButtonArray[I];
 					myTXT.dispatchEvent(new Event(Event.CHANGE));
+					this.dispatchEvent(new Event(Event.CHANGE));
 					return true ;
 				}
 			}
