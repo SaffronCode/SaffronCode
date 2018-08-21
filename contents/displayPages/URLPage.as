@@ -1,6 +1,7 @@
 package contents.displayPages
 	//contents.displayPages.URLPage
 {
+	import contents.Contents;
 	import contents.PageData;
 	import contents.interFace.DisplayPageInterface;
 	
@@ -35,6 +36,13 @@ package contents.displayPages
 				this.removeChildren();
 				this.graphics.beginFill(0,0);
 				this.graphics.drawRect(0,0,newPageSize.width,newPageSize.height);
+			}
+			else if(Contents.config.pageRect.width!=0)
+			{
+				this.graphics.clear();
+				this.removeChildren();
+				this.graphics.beginFill(0,0);
+				this.graphics.drawRect(0,0,Contents.config.pageRect.width,Contents.config.pageRect.height);
 			}
 
 			if(myPreloaderMC)
