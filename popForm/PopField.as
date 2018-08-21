@@ -219,7 +219,7 @@
 				Y0 = myTXT.height;
 				myTXT.multiline = true ;
 				myTXT.wordWrap = true ;
-				for(var i = 0 ; i<numLines ; i++)
+				for(var i = 0 ; i<numLines-1 ; i++)
 				{
 					myTXT.appendText('a\n') ;
 				}
