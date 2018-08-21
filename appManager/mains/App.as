@@ -11,6 +11,8 @@
 	import appManager.event.MenuEvent;
 	import appManager.event.TitleEvent;
 	
+	import com.mteamapp.StringFunctions;
+	
 	import contents.LinkData;
 	import contents.PageData;
 	import contents.soundControll.ContentSoundManager;
@@ -22,6 +24,8 @@
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.geom.Rectangle;
+	import flash.net.URLRequest;
+	import flash.net.navigateToURL;
 	import flash.ui.Keyboard;
 	
 	import myAsCSS.MyAsCSS;
@@ -280,6 +284,11 @@
 			//Why it dosen't currentAppEvent befor???????????????????????????
 			//I had bug befot, I tried to get back to home page when the main anim is animating to external pages and it caused crash when I checked current Event with pageManager's event.
 			//I added currentAppEvent != null to prevent error when you requested to open page when it is not reached to main page.
+			if(StringFunctions.isURL(event.myID))
+			{
+				navigateToURL(new URLRequest(event.myID));
+				return false;
+			}
 			if(currentAppEvent!=null && /*pageManagerObject.toEvent*/currentAppEvent.myID == event.myID && currentAppEvent.myType!=AppEvent.refresh && event.reload==false)
 			{
 				trace("Duplicated page id : "+currentAppEvent.myID);
