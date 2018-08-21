@@ -31,7 +31,6 @@ package contents.displayPages
 	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
@@ -87,6 +86,7 @@ package contents.displayPages
 						mouseDeltaToSlide:Number=50;
 						
 		public var linkItemButtonsWidth:Number;
+		public var linkItemWidth:Number;
 					
 		protected var 	linkScroller:ScrollMT,
 						areaRect:Rectangle,
@@ -268,6 +268,7 @@ package contents.displayPages
 			{
 				throw "Dynamic manu class shouldent be empty of linkItem!";
 			}
+			linkItemWidth = sampleLink.width ;
 			
 			sampleLinkButton = Obj.findThisClass(LinkItemButtons,this,true);
 			if(sampleLinkButton)
