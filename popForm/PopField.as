@@ -244,7 +244,6 @@
 			if(editable)
 			{
 				nativeKeyBoard = FarsiInputCorrection.setUp(myTXT,KeyBordType,true,true,deleteDefautlText,justShowNativeText && !activeRadioMode,true,true,returnKey,onTypedFunction);
-				nativeKeyBoard.editing = !activeRadioMode ;
 				this.addEventListener(MouseEvent.CLICK,editThisText);
 			}
 			else
