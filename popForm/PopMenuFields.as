@@ -58,13 +58,13 @@ package popForm
 		/**add new field<br>
 		 * frameForDirection: 1 for rtl and 2 for ltr script<br>
 		 * if the field is read only, you can set numLines to 0 and make it change the lines by it's needs*/
-		public function addField(tagName:String,fieldDefault:*='',keyBoardType:String = SoftKeyboardType.DEFAULT,isPass:Boolean=false,Editable:Boolean = true,isArabic_v:Boolean=true,numLine:uint=0,frameForDirection:uint=1,fieldColorFrame:uint=1,maxChar:uint=0,MultiLineTag:Boolean=false,Align:Boolean=true)
+		public function addField(tagName:String,fieldDefault:*='',keyBoardType:String = SoftKeyboardType.DEFAULT,isPass:Boolean=false,Editable:Boolean = true,isArabic_v:Boolean=true,numLine:uint=1,frameForDirection:uint=0,fieldColorFrame:uint=1,maxChar:uint=0,MultiLineTag:Boolean=false,Align:Boolean=true)
 		{
-			if(numLine==0)
+			if(frameForDirection==0)
 			{
-				numLine = 1 ;
+				frameForDirection = 1 ;
 			}
-			else if(numLine==1 && isArabic_v==false)
+			if(frameForDirection==1 && isArabic_v==false)
 			{
 				trace("**** PopField conflict on text direction solved");
 				isArabic_v = true ;
