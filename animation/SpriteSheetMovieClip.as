@@ -7,6 +7,7 @@ package animation
 	import flash.display.BitmapData;
 	import flash.display.MovieClip;
 	import flash.events.Event;
+	import flash.geom.Matrix;
 	import flash.utils.getQualifiedClassName;
 	
 	public class SpriteSheetMovieClip extends MovieClip
@@ -24,18 +25,7 @@ package animation
 		public function SpriteSheetMovieClip()
 		{
 			super();
-			
-			reDrawMe();
-			
-			super.stop();
-			this.removeChildren();
-			this.graphics.clear();
-			view = new Bitmap();
-			this.addChild(view);
-			
 			controlStage();
-			
-			this.gotoAndPlay(1);
 		}
 		
 		private function reDrawMe():void
@@ -48,14 +38,16 @@ package animation
 				for(var i:int = 0 ; i<this.totalFrames ; i++)
 				{
 					super.gotoAndStop(i+1);
-					
-					//TODO scales should efect on bitmaps
+					var mat:Matrix = new Matrix();
 					var capturedBitmapData:BitmapData = new BitmapData(this.width,this.height,true,0x00000000);
-					capturedBitmapData.draw(this);
+					mat.scale(this.scaleX,this.scaleY);
+					capturedBitmapData.draw(this,mat);
 					myCash.frames.push(capturedBitmapData);
 				}
 				cashes.push(myCash);
-			}			
+			}
+			view.scaleX = 1/this.scaleX;
+			view.scaleY = 1/this.scaleY;
 		}
 		
 		/**Creats unique id for this elemet*/
@@ -81,6 +73,11 @@ package animation
 			_playStatus = false ;
 		}
 		
+		override public function play():void
+		{
+			_playStatus = true ;
+		}
+		
 		private function controlStage(e:*=null):void
 		{
 			if(this.stage==null)
@@ -89,9 +86,26 @@ package animation
 			}
 			else
 			{
+				
+				view = new Bitmap();
+				
+				reDrawMe();
+				
+				super.gotoAndStop(1);
+				this.goto(1);
+				
+				this.removeChildren();
+				
+				this.addChild(view);
+				
 				this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 				this.addEventListener(Event.ENTER_FRAME,anim);
 			}
+		}
+		
+		override public function get isPlaying():Boolean
+		{
+			return _playStatus ;
 		}
 		
 		override public function get currentFrame():int
