@@ -28,6 +28,7 @@ package diagrams.calender
 		{
 			var shamsi:Array = Shamsi.MiladiToShamsi(date.fullYear,date.month+1,date.date);
 			var generatedDate:MyShamsi = new MyShamsi(shamsi[0],shamsi[1]-1,shamsi[2],date.hours,date.minutes,date.seconds,date.milliseconds);
+			generatedDate.day = date.day ;
 			return generatedDate ;
 		}
 		
@@ -47,6 +48,7 @@ package diagrams.calender
 		public var 	fullYear:Number,
 					month:Number,
 					date:Number,
+					day:Number,
 					hours:Number,
 					minutes:Number,
 					seconds:Number,
