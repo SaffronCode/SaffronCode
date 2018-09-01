@@ -241,7 +241,7 @@
 			namesArray = namesArray.concat(buttonsList);
 			trace("namesArray : "+namesArray.length);
 			
-			if((addBackButton && namesArray.length <= 3) || (!addBackButton && namesArray.length == 0 ))
+			if((addBackButton && namesArray.length < 3) || (!addBackButton && namesArray.length == 0 ))
 			{
 				moreHint = Contents.lang.t[id_no_matches_found]+'\n' ;
 			}
