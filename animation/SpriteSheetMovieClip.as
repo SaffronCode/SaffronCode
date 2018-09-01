@@ -50,10 +50,38 @@ package animation
 						})
 					}
 					
-					var mat:Matrix = new Matrix();
 					var capturedBitmapData:BitmapData = new BitmapData(this.width,this.height,true,0x00000000);
-					mat.scale(this.scaleX,this.scaleY);
-					capturedBitmapData.draw(this,mat);
+					var mat:Matrix = new Matrix();
+					if(this.scale9Grid!=null && this.parent!=null)
+					{
+						mat.tx = -this.x ;
+						mat.ty = -this.y ;
+						var visStatus:Vector.<Boolean> = new Vector.<Boolean>();
+						var it:DisplayObject ;
+						for(var j:int = 0 ; j<this.parent.numChildren ; j++)
+						{
+							it = this.parent.getChildAt(j);
+							trace("this.parent.getChildAt("+j+") : "+this.parent.getChildAt(j));
+							if(it!=null)
+							{
+								visStatus.push(it.visible);
+								it.visible = false ;
+							}
+						}
+						this.visible = true ;
+						capturedBitmapData.draw(this.parent,mat);
+						for(j = 0 ; j<this.parent.numChildren ; j++)
+						{
+							it = this.parent.getChildAt(j);
+							if(it!=null)
+								it.visible = visStatus[j] ;
+						}
+					}
+					else
+					{
+						mat.scale(this.scaleX,this.scaleY);
+						capturedBitmapData.draw(this,mat);
+					}
 					myCash.frames.push(capturedBitmapData);
 					
 					if(i==0 && frame1Objects!=null)
