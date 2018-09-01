@@ -34,6 +34,7 @@ package animation
 				}
 			}
 			
+			super.stop();
 			this.removeChildren();
 			this.graphics.clear();
 			view = new Bitmap();
@@ -42,6 +43,11 @@ package animation
 			controlStage();
 			
 			this.gotoAndPlay(1);
+		}
+		
+		override public function stop():void
+		{
+			_playStatus = false ;
 		}
 		
 		private function controlStage(e:*=null):void
