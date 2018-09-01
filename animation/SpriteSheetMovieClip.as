@@ -11,7 +11,7 @@ package animation
 	
 	public class SpriteSheetMovieClip extends MovieClip
 	{
-		private static var frames:Vector.<BitmapData> = new Vector.<BitmapData>();
+		private static var cashes:Vector.<SpriteSheetCash> = new Vector.<SpriteSheetCash>();
 		
 		private var view:Bitmap ;
 		
@@ -19,20 +19,13 @@ package animation
 		
 		private var _playStatus:Boolean = true ;
 		
+		private var myCash:SpriteSheetCash ;
+		
 		public function SpriteSheetMovieClip()
 		{
 			super();
-			trace(">> "+getQualifiedClassName(this));
-			if(frames.length==0)
-			{
-				for(var i:int = 0 ; i<this.totalFrames ; i++)
-				{
-					super.gotoAndStop(i+1);
-					var capturedBitmapData:BitmapData = new BitmapData(this.width,this.height,true,0x00000000);
-					capturedBitmapData.draw(this);
-					frames.push(capturedBitmapData);
-				}
-			}
+			
+			reDrawMe();
 			
 			super.stop();
 			this.removeChildren();
@@ -43,6 +36,44 @@ package animation
 			controlStage();
 			
 			this.gotoAndPlay(1);
+		}
+		
+		private function reDrawMe():void
+		{
+			myCash = findMyCash();
+			
+			if(myCash==null)
+			{
+				myCash = new SpriteSheetCash(id());
+				for(var i:int = 0 ; i<this.totalFrames ; i++)
+				{
+					super.gotoAndStop(i+1);
+					
+					//TODO scales should efect on bitmaps
+					var capturedBitmapData:BitmapData = new BitmapData(this.width,this.height,true,0x00000000);
+					capturedBitmapData.draw(this);
+					myCash.frames.push(capturedBitmapData);
+				}
+				cashes.push(myCash);
+			}			
+		}
+		
+		/**Creats unique id for this elemet*/
+		private function id():String
+		{
+			return getQualifiedClassName(this)+this.scaleX+'.'+this.scaleY;
+		}
+		
+		private function findMyCash():SpriteSheetCash
+		{
+			for(var i:int = 0 ; i<cashes.length ; i++)
+			{
+				if(cashes[i].id==id())
+				{
+					return cashes[i] ;
+				}
+			}
+			return null ;
 		}
 		
 		override public function stop():void
@@ -93,7 +124,7 @@ package animation
 			{
 				_currentFrame = (frame as uint)%totalFrames ;
 				frame = Math.max(1,(frame as uint),Math.min(this.totalFrames,(frame as uint)));
-				view.bitmapData = frames[(frame as uint)-1];
+				view.bitmapData = myCash.frames[(frame as uint)-1];
 			}
 		}
 		
