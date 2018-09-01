@@ -8,7 +8,7 @@ package diagrams.instagram
 		public static const VTilte_width:Number = 60 ;
 		public static const VTitle_color:uint = 0x000000 ;
 		public static const VTitle_size:uint = 25 ;
-		public static const VTitle_Font:String = "B Yekan Regular";
+		public static var VTitle_Font:String = "B Yekan Regular";
 		public static const HTitle_margin:Number = 30 ;
 		public static const HTitle_width:Number = 100 ;
 		public static const DiagramMainTitles_size:Number = 25;

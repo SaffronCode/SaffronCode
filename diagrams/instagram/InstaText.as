@@ -10,12 +10,16 @@ package diagrams.instagram
 		
 		public function InstaText(color:uint=InstagramConstants.VTitle_color
 								  ,size:Number=InstagramConstants.VTitle_size
-								  ,Font:String = InstagramConstants.VTitle_Font
+								  ,Font:String = ""
 								  ,align:String = TextFormatAlign.CENTER 
 								  ,lineSpacing:Number = 0 )
 		{
 			super();
-			
+		
+			if(Font=="")
+			{
+				Font = InstagramConstants.VTitle_Font ;
+			}
 			//1 generate required textFormat
 			myFormat = this.getTextFormat() ;
 			myFormat.size = size ;
