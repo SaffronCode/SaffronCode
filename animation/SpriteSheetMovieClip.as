@@ -5,6 +5,7 @@ package animation
 	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.geom.Matrix;
@@ -22,8 +23,11 @@ package animation
 		
 		private var myCash:SpriteSheetCash ;
 		
+		private var frame1Objects:Vector.<DisplayObject> ;
+		
 		public function SpriteSheetMovieClip()
 		{
+			view = new Bitmap();
 			super();
 			controlStage();
 		}
@@ -38,16 +42,48 @@ package animation
 				for(var i:int = 0 ; i<this.totalFrames ; i++)
 				{
 					super.gotoAndStop(i+1);
+					
+					if(i==0 && frame1Objects!=null)
+					{
+						frame1Objects.forEach(function(item:DisplayObject,index,list){
+							this.addChild(item);
+						})
+					}
+					
 					var mat:Matrix = new Matrix();
 					var capturedBitmapData:BitmapData = new BitmapData(this.width,this.height,true,0x00000000);
 					mat.scale(this.scaleX,this.scaleY);
 					capturedBitmapData.draw(this,mat);
 					myCash.frames.push(capturedBitmapData);
+					
+					if(i==0 && frame1Objects!=null)
+					{
+						frame1Objects.forEach(function(item:DisplayObject,index,list){
+							this.removeChild(item);
+						})
+					}
 				}
 				cashes.push(myCash);
 			}
 			view.scaleX = 1/this.scaleX;
 			view.scaleY = 1/this.scaleY;
+		}
+		
+		override public function set height(value:Number):void
+		{
+			super.height = value ;
+			if(this.scale9Grid!=null)
+			{
+				reDrawMe();
+			}
+		}
+		override public function set width(value:Number):void
+		{
+			super.width = value ;
+			if(this.scale9Grid!=null)
+			{
+				reDrawMe();
+			}
 		}
 		
 		/**Creats unique id for this elemet*/
@@ -86,15 +122,23 @@ package animation
 			}
 			else
 			{
-				
-				view = new Bitmap();
-				
 				reDrawMe();
 				
 				super.gotoAndStop(1);
 				this.goto(1);
 				
-				this.removeChildren();
+				if(this.scale9Grid!=null)
+				{
+					frame1Objects = new Vector.<DisplayObject>();
+					while(this.numChildren>0)
+					{
+						frame1Objects.push(this.removeChildAt(0));
+					}
+				}
+				else
+				{
+					this.removeChildren();
+				}
 				
 				this.addChild(view);
 				
