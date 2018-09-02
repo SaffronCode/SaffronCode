@@ -51,7 +51,6 @@ package diagrams.dataGrid
 		
 		public function addContent(body:DisplayObject, X:int=0, Y:int=0, Wp:int=0, Hp:int=0):void
 		{
-			this.addChild(body);
 			if(body is DataGrid)
 			{
 				Wp = (body as DataGrid).Wparts ;
@@ -77,10 +76,13 @@ package diagrams.dataGrid
 					}
 					else
 					{
+						trace("Cannot add this item to the stage");
+						return ;
 						break;
 					}
 				}
 			}
+			this.addChild(body);
 			
 			makeItFull(X,Y,Wp,Hp);
 			
