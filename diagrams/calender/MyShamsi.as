@@ -148,6 +148,55 @@ package diagrams.calender
 			return str;
 		}
 		
+		public function monthName(month:int):String
+		{
+			var mounthName:String;
+			switch (month) 
+			{
+				case -1:
+					mounthName = "اسفند";
+					break;
+				case 0:
+					mounthName = "فروردین";
+					break;
+				case 1:
+					mounthName = "اردیبهشت";
+					break;
+				case 2:
+					mounthName = "خرداد";
+					break;
+				case 3:
+					mounthName = "تیر";
+					break;
+				case 4:
+					mounthName = "مرداد";
+					break;
+				case 5:
+					mounthName = "شهریور";
+					break;
+				case 6:
+					mounthName = "مهر";
+					break;
+				case 7:
+					mounthName = "آبان";
+					break;
+				case 8:
+					mounthName = "آذر";
+					break;
+				case 9:
+					mounthName = "دی";
+					break;
+				case 10:
+					mounthName = "بهمن";
+					break;
+				case 11:
+					mounthName = "اسفند";
+					break;
+				break;
+			}
+			return mounthName;
+		}
+		
 		public function toString(e = null):String
 		{
 			return fullYear + '/' + (month + 1) + '/' + date + '   ' + hours + ':' + minutes + ':' + seconds;

@@ -22,6 +22,7 @@ package diagrams.instagram
 		public static const Diagram_guide_line_thickness:Number = 0 ;
 		public static var Diagram_title_lineWidth:Number = 5;
 		public static var Diagram_title_lineHeight:Number = 5;
+		public static var fixVerticalSteps:Boolean = true;
 		
 		public static const availableCharsOnTitles:uint = 20 ;
 	}

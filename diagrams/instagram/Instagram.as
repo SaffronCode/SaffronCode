@@ -342,13 +342,17 @@ package diagrams.instagram
 				maxTitleNumber = dividableBy5(maxTitleNumber);
 				//trace("1-maxTitleNumber : "+maxTitleNumber);
 				/**n*///it doesn't need to increase 2 step from available places because, from now, titles can be at the toppest and bottomest places on the diagram.
-				var availableTitleNumbers:uint = Math.max(1,maxTitleNumber/*-2*/) ;
+				var availableTitleNumbers:uint = Math.max(1, maxTitleNumber/*-2*/) ;
 				//trace("2-availableTitleNumbers : "+availableTitleNumbers);
 				//2- delta phase on availableTitileNumbers
 				var deltaPhase:Number = maxVNumber - minVNumber ;
 				//trace("3-deltaPhase : "+deltaPhase);
 				/**m*/
-				var pureSteps:Number = deltaPhase/availableTitleNumbers ;
+				var pureSteps:Number
+				if (InstagramConstants.fixVerticalSteps)
+				pureSteps = 1 ;
+				else
+				pureSteps = deltaPhase / availableTitleNumbers ;
 				//trace("4-pureSteps : "+pureSteps);
 				//3- find steps level ( 10 , 100 , 1000 , ... )
 				/**o*/
@@ -357,9 +361,9 @@ package diagrams.instagram
 				/**p*/
 				var smallSteps:Number = pureSteps/stepsPower ;
 				//trace('6-smallSteps : '+smallSteps);
-				var steps:Number = stepsPower*Math.round(smallSteps);
+				var steps:Number = stepsPower * Math.round(smallSteps);
 				//trace('7-steps : '+steps);
-				var minStep:Number = Math.max(realMinimom,Math.floor(minVNumber/steps)*steps);
+				var minStep:Number = Math.max(realMinimom, Math.floor(minVNumber / steps) * steps);
 				//trace("8-minStep : "+minStep);
 				
 				var vTitleTemp:String ;
