@@ -1,6 +1,7 @@
 <p align="center" >
     <a href="https://github.com/MTeamCo/SaffronCode"><img  width="170px" src="https://www.imageupload.co.uk/images/2018/04/12/SafronCode_Logo_Fin.png" alt="Saffron Code"></a>
-    
+    <br/>
+    <a href="http://saffroncode.ir">http://saffroncode.ir</a>
     
 </p>
 
@@ -93,15 +94,20 @@ http://mteamapps.ir/
 <br>
 
 ## چگونه می توانم از این مجموعه استفاده کنم؟
-<p align="center"><a href="https://forum.starling-framework.org/"><strong><img src="https://image.flaticon.com/icons/svg/157/157949.svg" width="20px"/>فروم های پرسش و پاسخ اکشن اسکریپت</strong></a></p>
+<p align="center">
+    <a href="http://saffroncode.ir/dwqa-questions/">فروم پرسش و پاسخ زعفران کد</a><br>
+    <a href="https://forum.starling-framework.org/"><strong><img src="https://image.flaticon.com/icons/svg/157/157949.svg" width="20px"/>فروم های پرسش و پاسخ اکشن اسکریپت</strong></a></p>
 <p align="center"><a href="https://gitter.im/Saffron-Code/Registeration"><strong><img src="https://image.flaticon.com/icons/svg/157/157949.svg" width="20px"/>درخواست آموزش و استفاده از زعفران کد</strong></a></p>
 <br>
 <br>
 <br>
 
 ## درباره تولید کنندگان و تماس با ما
-<a href="http://mteamapps.ir/">MTeam Co.</a><br>
-<a href="mailto:info@mteamapps.ir">info@mteamapps.ir</a>
+<a href="http://saffroncode.ir/">SaffronCode.ir</a><br>
+<a href="mailto:info@saffroncode.ir">info@saffroncode.ir</a>
+
+## مشتریان ما
+<a href="http://mteamapps.ir/"><img src="http://mteamapps.ir/wp-content/uploads/2018/06/tech-1.png" alt="MTeam Co"/></a>
 
 ## usefull links
 
