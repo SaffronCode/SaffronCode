@@ -144,6 +144,18 @@
 			}			
 		}
 		
+		override public function set x(value:Number):void
+		{
+			X0 = value; 
+			super.x = value ;
+		}
+		
+		override public function set y(value:Number):void
+		{
+			Y0 = value; 
+			super.y = value ;
+		}
+		
 		protected function updateInterface(event:Event=null):void
 		{
 			myTextTF.height = textHeight0 ;
