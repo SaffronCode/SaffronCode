@@ -25,11 +25,26 @@
 		private var X0:Number,Y0:Number ;
 		public static var linkColor:int=-1;
 		
-		private var fontSize0:int ;
+		private var fontSize0:int 
+		;
+		private var myText:String;
+		private var isArabic:Boolean;
+		private var align:Boolean;
+		private var knownAsHTML:Boolean;
+		private var activateLinks:Boolean;
+		private var useNativeText:Boolean;
+		private var addScroller:Boolean;
+		private var generateLinksForURLs:Boolean;
+		private var scrollEffect:Object;
+		private var userBitmap:Boolean;
+		private var VerticalAlign:Boolean;
+		private var useCash:Boolean;
+		private var captureResolution:uint;
+		private var splitIfToLong:Boolean;
 		
 		public function get text():String
 		{
-			return myTextTF.text
+			return myTextTF.text;
 		}
 		public function TextParag(moreHight:Number=0,myText:TextField=null)
 		{
@@ -49,7 +64,7 @@
 			
 			textHeight0 = myTextTF.height ;
 			
-			H = super.height+moreHight;
+			H = super.height+moreHight ;
 			W = super.width ;
 			//Removed for debug
 			//myTextTF.text = '' ;
@@ -82,12 +97,14 @@
 		{
 			myTextTF.width = value ;
 			W = value ;
+			updateItCan();
 		}
 		
 		override public function set height(value:Number):void
 		{
 			myTextTF.height = value ;
 			H = value;
+			updateItCan();
 		}
 		
 		public function color(colorNum:uint):void
@@ -96,6 +113,38 @@
 		}
 		
 		public function setUp(myText:String,isArabic:Boolean = true,align:Boolean=true,knownAsHTML:Boolean=false,activateLinks:Boolean=false,useNativeText:Boolean=false,addScroller:Boolean=true,generateLinksForURLs:Boolean=false,scrollEffect:Boolean=true,userBitmap:Boolean=true,VerticalAlign:Boolean=false,useCash:Boolean=false,captureResolution:uint=0,splitIfToLong:Boolean=false):void
+		{
+			this.myText = myText;
+			this.isArabic = isArabic ;
+			this.align = align ;
+			this.knownAsHTML = knownAsHTML;
+			this.activateLinks = activateLinks ;
+			this.useNativeText = useNativeText ;
+			this.addScroller = addScroller ;
+			this.generateLinksForURLs = generateLinksForURLs ;
+			this.scrollEffect = this.scrollEffect ;
+			this.userBitmap = userBitmap;
+			this.VerticalAlign = VerticalAlign ;
+			this.useCash = useCash ;
+			this.captureResolution = captureResolution ;
+			this.splitIfToLong = splitIfToLong ;
+			
+			updateItCan();
+		}
+		
+		private function updateItCan():void
+		{
+			if(this.stage!=null)
+			{
+				updateInterface();
+			}
+			else
+			{
+				this.addEventListener(Event.ADDED_TO_STAGE,updateInterface);
+			}			
+		}
+		
+		protected function updateInterface(event:Event=null):void
 		{
 			myTextTF.height = textHeight0 ;
 			if(!isNaN(X0))
