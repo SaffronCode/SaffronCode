@@ -16,7 +16,7 @@ package diagrams.dataGrid
 		
 		private var matrix:Vector.<Boolean> ;
 		
-		public function DataGrid(Wparts:uint,Hparts:uint,Width:Number,Height:Number,backgroundColor:int=-1,lineColor:int=-1,body:DisplayObject=null)
+		public function DataGrid(Wparts:uint,Hparts:uint,Width:Number=10,Height:Number=10,backgroundColor:int=-1,lineColor:int=-1,body:DisplayObject=null)
 		{
 			super();
 			
@@ -49,7 +49,7 @@ package diagrams.dataGrid
 			}
 		}
 		
-		public function addContent(body:DisplayObject, X:int=0, Y:int=0, Wp:int=0, Hp:int=0):void
+		public function addContent(body:DisplayObject, X:int=0, Y:int=0, Wp:int=0, Hp:int=0,borderColor:int=-1,backgroundColor:int=-1,borderThickness:uint=0):void
 		{
 			if(body is DataGrid)
 			{
@@ -82,14 +82,29 @@ package diagrams.dataGrid
 					}
 				}
 			}
-			this.addChild(body);
 			
 			makeItFull(X,Y,Wp,Hp);
 			
-			body.x = X*Dw;
-			body.y = Y*Dh;
-			body.width = Wp*Dw ;
-			body.height = Hp*Dh ;
+			if(body)
+			{
+				body.x = X*Dw;
+				body.y = Y*Dh;
+				body.width = Wp*Dw ;
+				body.height = Hp*Dh ;
+	
+				this.addChild(body);
+			}
+			
+			
+			if(backgroundColor!=-1)
+				this.graphics.beginFill(backgroundColor);
+			
+			if(borderColor!=-1)
+				this.graphics.lineStyle(borderThickness,borderColor);
+			
+			if(backgroundColor!=-1 || borderColor!=-1)
+				this.graphics.drawRect(X*Dw,Y*Dh,Wp*Dw,Hp*Dh);
+
 		}
 		
 //////////////////////////////////////////////////////////////////////
