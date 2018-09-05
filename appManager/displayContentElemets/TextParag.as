@@ -1,6 +1,8 @@
 ﻿package appManager.displayContentElemets
 	//appManager.displayContentElemets.TextParag
 {
+	import contents.alert.Alert;
+	
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.events.Event;
@@ -200,7 +202,7 @@
 				//trace("TextPutter.lastInfo_numLines : "+TextPutter.lastInfo_numLines);
 				//trace("!splitIfToLong) : "+(!splitIfToLong));
 				//trace("addScroller : "+addScroller);
-				if((!splitIfToLong) && addScroller && TextPutter.lastInfo_numLines>1)//There was 2 instead of 1 here. I don't know why...
+				if((!splitIfToLong) && addScroller && TextPutter.lastInfo_numLines>1 && TextPutter.lastInfo_realTextHeight>H)//There was 2 instead of 1 here. I don't know why...
 				{
 					scrollMC = new ScrollMT(this,new Rectangle(this.x,this.y,W,H),new Rectangle(0,0,W,super.height),false,false,scrollEffect) ;
 				}
