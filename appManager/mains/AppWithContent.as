@@ -92,6 +92,7 @@
 		{
 			manageStageManager = activateBackSwap || manageStageManager ;
 			super(autoChangeMusics,skipAllAnimations,activateShineEffect,PlaySounOnBackGroundTo);
+			DevicePrefrence.setUp();
 			
 			if(activateWorkers)
 			{
