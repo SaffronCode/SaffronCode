@@ -1,6 +1,8 @@
 package diagrams.dataGrid
 	//diagrams.dataGrid.DataGrid
 {
+	import flash.display.Bitmap;
+	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
@@ -16,9 +18,16 @@ package diagrams.dataGrid
 		
 		private var matrix:Vector.<Boolean> ;
 		
+		private var	backGroundTexture:BitmapData ;
+		private var backGroundBitmap:Bitmap ;
+		
 		public function DataGrid(Wparts:uint,Hparts:uint,Width:Number=10,Height:Number=10,backgroundColor:int=-1,lineColor:int=-1,body:DisplayObject=null)
 		{
 			super();
+			
+			backGroundTexture = new BitmapData(Width,Height,backgroundColor==-1,backgroundColor==-1?0x00000000:backgroundColor);
+			backGroundBitmap = new Bitmap(backGroundTexture);
+			this.addChild(backGroundBitmap);
 			
 			matrix = new Vector.<Boolean>(Wparts*Hparts);
 			
@@ -34,6 +43,11 @@ package diagrams.dataGrid
 			
 			this.graphics.drawRect(0,0,Width,Height);
 			
+			backGroundTexture.lock();
+			backGroundTexture.draw(this);
+			backGroundTexture.unlock();
+			this.graphics.clear();
+			
 			this.Width = Width ;
 			this.Height = Height ;
 			
@@ -47,6 +61,7 @@ package diagrams.dataGrid
 			{
 				addContent(body)
 			}
+			
 		}
 		
 		public function addContent(body:DisplayObject, X:int=0, Y:int=0, Wp:int=0, Hp:int=0,borderColor:int=-1,backgroundColor:int=-1,borderThickness:uint=0):void
@@ -104,7 +119,21 @@ package diagrams.dataGrid
 			
 			if(backgroundColor!=-1 || borderColor!=-1)
 				this.graphics.drawRect(X*Dw,Y*Dh,Wp*Dw,Hp*Dh);
-
+			
+			backGroundTexture.lock();
+			var visibleCash:Vector.<Boolean> = new Vector.<Boolean>();
+			for(var i:int = 0 ; i<this.numChildren ; i++)
+			{
+				visibleCash.push(this.getChildAt(i).visible);
+				this.getChildAt(i).visible = false ;
+			}
+			backGroundTexture.draw(this);
+			for(i = 0 ; i<this.numChildren ; i++)
+			{
+				this.getChildAt(i).visible = visibleCash[i] ;
+			}
+			backGroundTexture.unlock();
+			this.graphics.clear();
 		}
 		
 //////////////////////////////////////////////////////////////////////
