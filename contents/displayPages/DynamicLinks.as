@@ -673,7 +673,7 @@ package contents.displayPages
 				{
 					stepSize = sampleLink.height+deltaY ;
 				}
-				linksSensor.graphics.drawRect(0,0,areaRect.width,linkSensorHeight*MenuDirectionY);
+				linksSensor.graphics.drawRect(0,0,areaRect.width*MenuDirectionX,linkSensorHeight*MenuDirectionY);
 			}
 			else
 			{
@@ -681,7 +681,7 @@ package contents.displayPages
 				{
 					stepSize = sampleLink.width+deltaX ;
 				}
-				linksSensor.graphics.drawRect(0,0,linkSensorHeight*MenuDirectionX,areaRect.height);
+				linksSensor.graphics.drawRect(0,0,linkSensorHeight*MenuDirectionX,areaRect.height*MenuDirectionY);
 			}
 			linksSensor.mouseChildren = false ;
 			linksSensor.mouseEnabled = false ;
