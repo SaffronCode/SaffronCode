@@ -99,14 +99,14 @@
 		{
 			myTextTF.width = value ;
 			W = value ;
-			updateItCan();
+			updateInterface();
 		}
 		
 		override public function set height(value:Number):void
 		{
 			myTextTF.height = value ;
 			H = value;
-			updateItCan();
+			updateInterface();
 		}
 		
 		public function color(colorNum:uint):void
@@ -131,10 +131,11 @@
 			this.captureResolution = captureResolution ;
 			this.splitIfToLong = splitIfToLong ;
 			
-			updateItCan();
+			//updateItCan();
+			updateInterface();
 		}
 		
-		private function updateItCan():void
+		/*private function updateItCan():void
 		{
 			if(this.stage!=null)
 			{
@@ -144,7 +145,7 @@
 			{
 				this.addEventListener(Event.ADDED_TO_STAGE,updateInterface);
 			}			
-		}
+		}*/
 		
 		override public function set x(value:Number):void
 		{
