@@ -5,9 +5,15 @@ package contents.alert
 	public class Alert
 	{
 		private static var sw:StageWebView ;
-		
-		public static function show(title:String):void
+
+		public function Alert(...val)
 		{
+			Alert.show(val);
+		}
+		
+		public static function show(...param):void
+		{
+            var title:String = param.join(',');
 			setUp();
 			trace("Alert:"+title);
 			sw.loadURL("javascript:alert(\""+title.split('\n').join('').split('\r').join('').split('\\').join('\\\\').split('"').join('\\"')+"\");")
