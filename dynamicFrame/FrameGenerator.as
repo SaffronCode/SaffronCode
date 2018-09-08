@@ -1,6 +1,8 @@
 package dynamicFrame
 {
-	import flash.desktop.NativeApplication;
+import contents.alert.Alert;
+
+import flash.desktop.NativeApplication;
 	import flash.display.CapsStyle;
 	import flash.display.DisplayObject;
 	import flash.display.LineScaleMode;
@@ -11,8 +13,14 @@ package dynamicFrame
 	
 	public class FrameGenerator
 	{
-		public static function createFrame(stage:Stage,color:uint=0xF0583B):void
+		private static const defaultColor:uint = 0xF0583B ;
+
+		private static const radius:Number = 5 ;
+
+		public static function createFrame(stage:Stage,color:int=-1,passRootClassToAddBackground:Sprite=null):void
 		{
+			if(color==-1)
+				color = defaultColor ;
 			var margin:uint = 1 ;
 			var extarTopMargin:uint = 0 ;
 			var roundLevel:uint = 5 ;
@@ -23,7 +31,12 @@ package dynamicFrame
 			//(stage.root as Sprite).graphics.beginFill(stage.color);
 			//(stage.root as Sprite).graphics.drawRoundRect(0,0,stage.stageWidth,stage.stageHeight,roundLevel);
 			frame.graphics.drawRoundRect(margin,margin+extarTopMargin,stage.stageWidth-margin*2,stage.stageHeight-margin*2-extarTopMargin,roundLevel);
-			
+
+			if(passRootClassToAddBackground!=null)
+			{
+                passRootClassToAddBackground.graphics.beginFill(stage.color&0x00ffffff);
+                passRootClassToAddBackground.graphics.drawRoundRect(0,0,stage.stageWidth,stage.stageHeight,5,5);
+			}
 			
 			var exitbuttonW:Number = 50 ;
 			var exitbuttonH:Number = 20 ;
@@ -32,7 +45,7 @@ package dynamicFrame
 			
 			var exitButton:Sprite = new Sprite();
 			exitButton.graphics.beginFill(color);
-			exitButton.graphics.drawRoundRectComplex(0,0,exitbuttonW,exitbuttonH,0,0,5,5);
+			exitButton.graphics.drawRoundRectComplex(0,0,exitbuttonW,exitbuttonH,0,0,radius,radius);
 			exitButton.graphics.endFill();
 			
 			exitButton.graphics.lineStyle(crossThikness,0xffffff,1,false,LineScaleMode.NORMAL,CapsStyle.NONE);
