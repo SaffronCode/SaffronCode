@@ -1,4 +1,4 @@
-package diagrams.dataGrid
+﻿package diagrams.dataGrid
 	//diagrams.dataGrid.DataGrid
 {
 	import flash.display.Bitmap;
@@ -156,6 +156,14 @@ package diagrams.dataGrid
 		/**Returns true if this point was empry*/
 		private function isEmpry(X:uint,Y:uint):Boolean
 		{
+			if(X>=Wparts)
+			{
+				return false ;
+			}
+			if(Y>=Hparts)
+			{
+				return false ;
+			}
 			return !matrix[Y*Wparts+X] ;
 		}
 		
