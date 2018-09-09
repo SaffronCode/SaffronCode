@@ -5,6 +5,7 @@
 	
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
+	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
 	import flash.text.TextField;
@@ -24,7 +25,7 @@
 		private var scrollMC:ScrollMT;
 		private var nativeText:FarsiInputCorrection;
 		
-		private var X0:Number,Y0:Number ;
+		//private var X0:Number,Y0:Number ;
 		public static var linkColor:int=-1;
 		
 		private var fontSize0:int 
@@ -44,6 +45,8 @@
 		private var captureResolution:uint;
 		private var splitIfToLong:Boolean;
 		
+		private var forScrollContainer:Sprite ;
+		
 		public function get text():String
 		{
 			return myTextTF.text;
@@ -62,6 +65,24 @@
 				myTextTF = myText ;
 				this.addChild(myText);
 				myText.x = myText.y = 0 ;
+			}
+			
+			forScrollContainer = new Sprite();
+			for(var i:int = 0 ; i<this.numChildren ; i++)
+			{
+				var item:DisplayObject = this.getChildAt(i);
+				item.addEventListener(Event.REMOVED,blockEventBuble,false,1000000);
+				item.addEventListener(Event.REMOVED_FROM_STAGE,blockEventBuble,false,1000000);
+				forScrollContainer.addChild(item);
+				item.removeEventListener(Event.REMOVED,blockEventBuble);
+				item.removeEventListener(Event.REMOVED_FROM_STAGE,blockEventBuble);
+			}
+			
+			this.addChild(forScrollContainer);
+			
+			function blockEventBuble(e:Event):void
+			{
+				e.stopImmediatePropagation();
 			}
 			
 			textHeight0 = myTextTF.height ;
@@ -124,7 +145,7 @@
 			this.useNativeText = useNativeText ;
 			this.addScroller = addScroller ;
 			this.generateLinksForURLs = generateLinksForURLs ;
-			this.scrollEffect = this.scrollEffect ;
+			this.scrollEffect = scrollEffect ;
 			this.userBitmap = userBitmap;
 			this.VerticalAlign = VerticalAlign ;
 			this.useCash = useCash ;
@@ -147,7 +168,7 @@
 			}			
 		}*/
 		
-		override public function set x(value:Number):void
+		/*override public function set x(value:Number):void
 		{
 			X0 = value; 
 			super.x = value ;
@@ -157,18 +178,18 @@
 		{
 			Y0 = value; 
 			super.y = value ;
-		}
+		}*/
 		
 		protected function updateInterface(event:Event=null):void
 		{
 			myTextTF.height = textHeight0 ;
-			if(!isNaN(X0))
+			/*if(!isNaN(X0))
 			{
 				this.x = X0 ;
 				this.y = Y0 ;
 			}
 			X0 = this.x ;
-			Y0 = this.y ;
+			Y0 = this.y ;*/
 			//This event dispatches to remove old scrollMC class
 			this.dispatchEvent(new Event(Event.REMOVED_FROM_STAGE)) ;
 			if(nativeText)
@@ -205,7 +226,7 @@
 				//trace("addScroller : "+addScroller);
 				if((!splitIfToLong) && addScroller && TextPutter.lastInfo_numLines>1 && TextPutter.lastInfo_realTextHeight>H)//There was 2 instead of 1 here. I don't know why...
 				{
-					scrollMC = new ScrollMT(this,new Rectangle(this.x,this.y,W,H),new Rectangle(0,0,W,super.height),false,false,scrollEffect) ;
+					scrollMC = new ScrollMT(forScrollContainer,new Rectangle(forScrollContainer.x,forScrollContainer.y,W,H),new Rectangle(0,0,W,super.height),false,false,scrollEffect) ;
 				}
 			}
 		}
@@ -223,11 +244,11 @@
 		/**You can do this once. no undo available*/
 		public function addChildToTop(addedItem:DisplayObject):void
 		{
-			this.graphics.beginFill(0xff0000,1);
-			this.graphics.drawRect(0,0,100,5000);
-			for(var i:int = 0 ; i<this.numChildren ;i++)
+			forScrollContainer.graphics.beginFill(0xff0000,1);
+			forScrollContainer.graphics.drawRect(0,0,100,5000);
+			for(var i:int = 0 ; i<forScrollContainer.numChildren ;i++)
 			{
-				var item:DisplayObject = this.getChildAt(i);
+				var item:DisplayObject = forScrollContainer.getChildAt(i);
 				if(item != myTextTF)
 				{
 					item.y+=addedItem.height ;
