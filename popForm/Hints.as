@@ -56,13 +56,21 @@
 		}
 		
 		
+		/** if you want to get value of text field, you must define a function with input PopMenuEvent Parameter and give result as dynamic object<br/>
+		 * for example :<br/>
+		 * Hints.getText("", "", credit, outputFunction);<br/>
+		 *  function outputFunction(evt:PopMenuEvent):void<br/>
+			{<br/>
+				Alert.show(String(evt.field[credit]));<br/>
+			}<br/>
+		*/
 		public static function getText(title:String,question:String,tagLable:String,onDone:Function,OnNotAccepted:Function=null,keyboardType:String=SoftKeyboardType.DEFAULT,isPassword:Boolean=false,innerDisplayObject:DisplayObject=null,ButtonFrameYes:int=1,ButtonFrameNo:int=1,defaultTextOnField:String=''):void
 		{
 			onQuestionAccepted = onDone;
 			onNotAccepted = OnNotAccepted;
 			
 			var buttons:Array = [new PopButtonData(Contents.lang.t[id_submit],ButtonFrameYes,null,true,true)
-				,new PopButtonData(Contents.lang.t[id_no],ButtonFrameNo,null,true,true)] ;
+				,new PopButtonData(Contents.lang.t[id_back],ButtonFrameNo,null,true,true)] ;
 			var popFields:PopMenuFields = new PopMenuFields();
 			popFields.addField(tagLable,defaultTextOnField,keyboardType,isPassword,true,true);
 			var popText:PopMenuContent = new PopMenuContent(question,popFields,buttons,innerDisplayObject);
