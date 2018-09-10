@@ -93,10 +93,13 @@
 						
 					default:
 					{
-						if(onNotAccepted.length==0)
+						if (onNotAccepted != null)
+						{
+						if (onNotAccepted.length == 0)
 							onNotAccepted()
 						else
 							onNotAccepted(e);
+						}
 						break;
 					}
 				}
