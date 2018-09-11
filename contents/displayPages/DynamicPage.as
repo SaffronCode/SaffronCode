@@ -66,7 +66,14 @@ package contents.displayPages
 			
 			if(textContainer!=null)
 			{
-				textTF = Obj.get("text_txt",textContainer) ;
+				if(textContainer is TextParag)
+				{
+					textTF = (textContainer as TextParag).getTextField();
+				}
+				else
+				{
+					textTF = Obj.get("text_txt",textContainer) ;
+				}
 				textTF.text = '' ;
 				maskArea = textContainer.getBounds(this).clone() ;
 				
