@@ -20,7 +20,7 @@
 		private var H:Number,
 					W:Number ;
 					
-		private var textHeight0:Number ;
+		//private var textHeight0:Number ;
 		
 		private var scrollMC:ScrollMT;
 		private var nativeText:FarsiInputCorrection;
@@ -85,7 +85,7 @@
 				e.stopImmediatePropagation();
 			}
 			
-			textHeight0 = myTextTF.height ;
+			//textHeight0 = myTextTF.height ;
 			
 			H = super.height+moreHight ;
 			W = super.width ;
@@ -182,7 +182,7 @@
 		
 		protected function updateInterface(event:Event=null):void
 		{
-			myTextTF.height = textHeight0 ;
+			//myTextTF.height = textHeight0 ;
 			/*if(!isNaN(X0))
 			{
 				this.x = X0 ;
@@ -226,7 +226,7 @@
 				//trace("addScroller : "+addScroller);
 				if((!splitIfToLong) && addScroller && TextPutter.lastInfo_numLines>1 && TextPutter.lastInfo_realTextHeight>H)//There was 2 instead of 1 here. I don't know why...
 				{
-					scrollMC = new ScrollMT(forScrollContainer,new Rectangle(forScrollContainer.x,forScrollContainer.y,W,H),new Rectangle(0,0,W,super.height),false,false,scrollEffect) ;
+					scrollMC = new ScrollMT(forScrollContainer,new Rectangle(0,0,W,H),new Rectangle(0,0,W,super.height),false,false,scrollEffect) ;
 				}
 			}
 		}
