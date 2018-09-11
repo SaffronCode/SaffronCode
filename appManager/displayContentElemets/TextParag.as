@@ -47,6 +47,11 @@
 		
 		private var forScrollContainer:Sprite ;
 		
+		public function getTextField():TextField
+		{
+			return myTextTF ;
+		}
+		
 		public function get text():String
 		{
 			return myTextTF.text;
