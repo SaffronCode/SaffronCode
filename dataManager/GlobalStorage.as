@@ -1,5 +1,6 @@
-package dataManager
+﻿package dataManager
 {
+	import com.mteamapp.Encrypt;
 	import com.mteamapp.JSONParser;
 	
 	import flash.net.SharedObject;
@@ -12,7 +13,7 @@ package dataManager
 		{
 			if(storage==null)
 			{
-				storage = SharedObject.getLocal("MyGlobalStorage",'/');
+				storage = SharedObject.getLocal("MyGlobalStorage2",'/');
 			}
 		}
 		
@@ -20,13 +21,14 @@ package dataManager
 		public static function load(id:String):*
 		{
 			setUp();
+			id = Encrypt.encrypt(id,DevicePrefrence.DeviceUniqueId()) ;
 			if(storage.data[id] == undefined)
 			{
 				return null ;
 			}
 			else
 			{
-				return storage.data[id] ;
+				return Encrypt.decrypt(storage.data[id],DevicePrefrence.DeviceUniqueId()) ;
 			}
 		}
 		
@@ -34,7 +36,7 @@ package dataManager
 		public static function save(id:String,value:*,flush:Boolean=true):void
 		{
 			setUp();
-			storage.data[id] = value ;
+			storage.data[Encrypt.encrypt(id,DevicePrefrence.DeviceUniqueId())] = Encrypt.encrypt(value,DevicePrefrence.DeviceUniqueId()) ;
 			if(flush)
 			{
 				storage.flush();

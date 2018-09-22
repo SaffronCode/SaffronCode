@@ -27,11 +27,15 @@ package dataManager
 		
 		private static var 	dbFolder:String = "DB",
 			dbName:String = "saves2",
+			dbNameNew:String = "saves3",
 			dbUpdatedName:String = "updatedSaves",
+			dbUpdatedNameNew:String = "updatedSaves2",
 			tableName:String = tableBaseName,
 			field_id:String = "ID",
 			field_value:String = "VALUE",
 			field_date:String = "DATE";
+		
+		private static var key:ByteArray ;
 		
 		//private static var systemCode:String ;
 		
@@ -79,6 +83,13 @@ package dataManager
 			var needToUpdate:Boolean = false ;
 			if(sql == null)
 			{
+				key = new ByteArray();
+				const code:String = DevicePrefrence.DeviceUniqueId() ;
+				for(var i:int = 0 ; key.length<16 ; i++)
+				{
+					key.writeUTFBytes(code.charAt(i%code.length));
+				}
+				
 				needToUpdate = true ;
 				checkTable = true ;
 				//temporaryObject = {};
@@ -88,8 +99,23 @@ package dataManager
 				{
 					sqlFile.createDirectory() ;
 				}
-				sqlFile = sqlFile.resolvePath(dbName);
-				updatedFile = updatedFile.resolvePath(dbUpdatedName);
+				var sqlToRemoveFile:File = sqlFile.resolvePath(dbName);
+				
+				try
+				{
+					if(sqlToRemoveFile.exists)
+						sqlToRemoveFile.deleteFile();
+				}catch(e){};
+				
+				sqlFile = sqlFile.resolvePath(dbNameNew);
+				sqlToRemoveFile = updatedFile.resolvePath(dbUpdatedName);
+				try
+				{
+					if(sqlToRemoveFile.exists)
+						sqlToRemoveFile.deleteFile();
+				}catch(e){};
+				
+				updatedFile = updatedFile.resolvePath(dbUpdatedNameNew);
 				if(updatedFile.exists)
 				{
 					try
@@ -103,7 +129,7 @@ package dataManager
 				encrypt.writeUTFBytes(setOrGetDeviceCode().substring(0,16));*/
 				
 				sql = new SQLConnection();
-				sql.open(sqlFile,SQLMode.CREATE);
+				sql.open(sqlFile,SQLMode.CREATE,false,1024,key);
 
 				
 				asyncSql = new SQLConnection();
@@ -150,7 +176,7 @@ package dataManager
 				{
 					sqlFile.copyTo(updatedFile);
 				}
-				asyncSql.openAsync(updatedFile,SQLMode.CREATE);
+				asyncSql.openAsync(updatedFile,SQLMode.CREATE,null,false,1024,key);
 			}
 		}
 		
