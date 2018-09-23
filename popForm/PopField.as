@@ -37,8 +37,14 @@
 		private var parag:TextParag;
 		private var fieldNumLines:uint;
 		
+		/**You can set the min value to prevent field numbers get below this number*/
+		public var min:Number = NaN ;
+		
 		/**The button that makes password visible to all*/
 		private var showPassMC:MovieClip ;
+		
+		private var increaseMC:MovieClip,
+					decreaseMC:MovieClip
 		
 		
 		public function get textField():TextField
@@ -199,6 +205,17 @@
 				showPassMC.visible = isPass ;
 			}
 			
+			increaseMC = Obj.getAllChilds("increase_mc",this,true)[0];
+			decreaseMC = Obj.getAllChilds("decrease_mc",this,true)[0];
+			if(increaseMC)
+			{
+				increaseMC.addEventListener(MouseEvent.CLICK,increaseValue);
+			}
+			if(decreaseMC)
+			{
+				decreaseMC.addEventListener(MouseEvent.CLICK,decreaseValue);
+			}
+			
 			if(multiLineTag){
 				TextPutter.onTextArea(tagNameTXT,tagName,IsArabic,true,true,0,false,false,-1,false,0,false);
 			}
@@ -315,6 +332,30 @@
 			}
 		}
 		
+		protected function increaseValue(event:MouseEvent):void
+		{
+			event.stopImmediatePropagation();
+			var num:Number = Number(myTXT.text) ;
+			if(!isNaN(num))
+			{
+				num++;
+				myTXT.text = num.toString();
+				myTXT.dispatchEvent(new Event(Event.CHANGE));
+			}
+		}
+		
+		protected function decreaseValue(event:MouseEvent):void
+		{
+			event.stopImmediatePropagation();
+			var num:Number = Number(myTXT.text) ;
+			if(!isNaN(num) && num>min)
+			{
+				num--;
+				myTXT.text = num.toString();
+				myTXT.dispatchEvent(new Event(Event.CHANGE));
+			}
+		}
+		
 		override public function get height():Number
 		{
 			var tagHeight:Number = Math.max(super.height,tagNameTXT.height+tagNameTXT.y);
@@ -361,7 +402,10 @@
 		/**My input text is updated, so dispatch change event on my object*/
 		protected function dispatchChangeForMeToo(event:Event):void
 		{
-			
+			if(!isNaN(min) && !isNaN(Number(myTXT.text)))
+			{
+				myTXT.text = Math.max(min,Number(myTXT.text)).toString();
+			}
 			this.dispatchEvent(new Event(Event.CHANGE));
 		}
 		
