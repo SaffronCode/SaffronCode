@@ -12,6 +12,7 @@ package contents.rollingList
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
+	[Event(name="change", type="flash.events.Event")]
 	public class RollingList extends MovieClip
 	{
 		//appManager.displayContentElemets.TitleText
@@ -20,7 +21,7 @@ package contents.rollingList
 		
 		private var rollerItemClass:Class ;
 		
-		private var myPageDataLink:Vector.<LinkData>,
+		public var myPageDataLink:Vector.<LinkData>,
 					totalPageLinks:uint;
 		
 		
@@ -45,7 +46,7 @@ package contents.rollingList
 		private var V:Number,
 					Vlist:Vector.<Number>,
 					vQueLength:uint = 20 ,
-					mu:Number = 0.9,
+					mu:Number = 0.8,
 					mu2:Number=0.4,
 					mu3:Number=0.4,
 					fu2:Number = 50 ,
