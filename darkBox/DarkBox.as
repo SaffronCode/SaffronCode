@@ -18,6 +18,7 @@
 	import flash.utils.getTimer;
 	import flash.utils.setTimeout;
 	
+	import nativeClasses.pdfReader.DistriqtPDFReader;
 	import nativeClasses.player.DistriqtMediaPlayer;
 	
 	import netManager.urlSaver.URLSaverEvent;
@@ -607,6 +608,13 @@
 			public static function isOpen():Boolean
 			{
 				return ME.visible;
+			}
+			
+			/**set Distriqt id to activate native PDF and Media player*/
+			public static function setDistriqtId(distriqtId:String):void
+			{
+				DistriqtMediaPlayer.setId(distriqtId);
+				DistriqtPDFReader.setUp(distriqtId);
 			}
 	}
 }
