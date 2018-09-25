@@ -134,7 +134,7 @@ public class PermissionControl {
 	
 	public static function Caution(str:String):void
 	{
-		if(Capabilities.isDebugger && DevicePrefrence.isItPC)
+		if(false && Capabilities.isDebugger && DevicePrefrence.isItPC)
 		{
 			throw str ;
 		}
