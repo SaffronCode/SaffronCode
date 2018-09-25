@@ -367,22 +367,22 @@
 			}
 		
 			/**The application is expired*/
-			private function stopThisVersion():void
+			private function stopThisVersion(theHint:String,appURL:String):void
 			{
-				if(isExpired(VersionController.hintText,VersionController.appStoreURL))
+				if(isExpired(theHint,appURL))
 				{
 					trace("Switch to the download url instantly");
 					resetIntro();
 					stage.addEventListener(MouseEvent.CLICK,openDownloadLink);
 					openDownloadLink(null);
 				}
+				
+				function openDownloadLink(event:MouseEvent):void
+				{
+					navigateToURL(new URLRequest(appURL));
+				}
 			}
 		
-			/**Open thie update link*/
-			protected function openDownloadLink(event:MouseEvent):void
-			{
-				navigateToURL(new URLRequest(VersionController.appStoreURL));
-			}
 			
 			/**Returns true if there is no listener on this function, so the application have to redirect to the server*/
 			protected function isExpired(hint:String,link:String):Boolean
