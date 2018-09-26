@@ -3,13 +3,14 @@ package dynamicFrame
 import contents.alert.Alert;
 
 import flash.desktop.NativeApplication;
-	import flash.display.CapsStyle;
-	import flash.display.DisplayObject;
-	import flash.display.LineScaleMode;
-	import flash.display.Sprite;
-	import flash.display.Stage;
-	import flash.events.MouseEvent;
-	import flash.text.TextField;
+import flash.display.CapsStyle;
+import flash.display.DisplayObject;
+import flash.display.LineScaleMode;
+import flash.display.Sprite;
+import flash.display.Stage;
+import flash.events.Event;
+import flash.events.MouseEvent;
+import flash.text.TextField;
 	
 	public class FrameGenerator
 	{
@@ -60,15 +61,36 @@ import flash.desktop.NativeApplication;
 			
 			exitButton.x = frame.width-exitButton.width-roundLevel ;
 			frame.addChild(exitButton);
+			
+			
+			
+			var minimizeButton:Sprite = new Sprite();
+			minimizeButton.graphics.beginFill(color);
+			minimizeButton.graphics.drawRoundRectComplex(0,0,exitbuttonW,exitbuttonH,0,0,radius,radius);
+			minimizeButton.graphics.endFill();
+			
+			minimizeButton.graphics.lineStyle(crossThikness,0xffffff,1,false,LineScaleMode.NORMAL,CapsStyle.NONE);
+			x0 = (exitbuttonW-exitCrossW)/2;
+			y0 = (exitbuttonH-exitCrossW)/2;
+			minimizeButton.graphics.moveTo(x0+exitCrossW,y0+exitCrossW/2);
+			minimizeButton.graphics.lineTo(x0,y0+exitCrossW/2);
+			minimizeButton.buttonMode = true ;
+			minimizeButton.addEventListener(MouseEvent.CLICK,function(){stage.nativeWindow.minimize();});
+			
+			minimizeButton.x = frame.width-minimizeButton.width*2;
+			frame.addChild(minimizeButton);
 
 			
 			//positioning the stage
+			var dragLocked:Boolean = false ;
 			stage.addEventListener(MouseEvent.MOUSE_DOWN,startDragStage);
+			stage.addEventListener(ScrollMTEvent.TOUCHED_TO_SCROLL,function(e){dragLocked=true;});
+			stage.addEventListener(MouseEvent.MOUSE_UP,function(e){dragLocked=false;});
 			
 			function startDragStage(e:MouseEvent):void
 			{
 				var clickedItem:Sprite = e.target as Sprite ;
-				if(e.target is TextField)
+				if(e.target is TextField || dragLocked)
 				{
 					return ;
 				}
