@@ -32,7 +32,7 @@ package appManager.event
 			}
 			else
 			{
-				updateMyPageData(pageLink.id);
+				updateMyPageData(pageLink.id,pageLink.dynamicData);
 			}
 			
 			SkipHistory = skipHistory ;
@@ -48,13 +48,15 @@ package appManager.event
 			super(pageData.type, PAGE_CHANGES,pageLink.id,reload);
 		}
 		
-		public function updateMyPageData(pageId:String=null):void
+		public function updateMyPageData(pageId:String=null,dynamicData:Object=null):void
 		{
 			if(pageId==null)
 			{
 				pageId = linkData.id ;
 			}
 			pageData = Contents.getPage(pageId);
+			if (dynamicData)
+				pageData.dynamicData = dynamicData ;
 		}
 		
 		/*private static function resetHistory():void
