@@ -1,8 +1,5 @@
 ﻿package wrokersJob
 {
-	
-	import contents.alert.Alert;
-	
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.filesystem.File;
@@ -14,6 +11,7 @@
 	import flash.system.WorkerDomain;
 	import flash.system.WorkerState;
 	import flash.utils.ByteArray;
+	import flash.utils.clearTimeout;
 	import flash.utils.getQualifiedClassName;
 	import flash.utils.getTimer;
 	import flash.utils.setTimeout;
@@ -44,6 +42,9 @@
 		private static var numberOfWorkersWaitnigToStart:int = 0 ;
 		
 		private static var startWorkerCalled:Boolean = false ;
+		private static var starterTimeOutId:uint;
+
+		private static var receiverChannel:MessageChannel;
 		
 		
 		public static function setUp(TotalWorkers:uint = 4):void
@@ -54,8 +55,14 @@
 			if(startWorkerCalled==false)
 			{
 				startWorkerCalled = true ;
-				setTimeout(startWorkerAfterDelay,5000);
+				restart();
 			}
+		}
+		
+		private static function restart():void
+		{
+			clearTimeout(starterTimeOutId);
+			starterTimeOutId = setTimeout(startWorkerAfterDelay,5000);
 		}
 		
 		private static function startWorkerAfterDelay():void
@@ -74,7 +81,7 @@
 				if(File.applicationDirectory.resolvePath("Data/bgWork3.swf").exists)
 					moreHints += " and remove the Data/bgWork3.swf now.\n";
 				if(DevicePrefrence.isItPC)
-					Alert.show("Add the  "+workerTarget.name+"  file from Data-sample folder on Saffron to your Data folder"+moreHints) ;
+					trace("Add the  "+workerTarget.name+"  file from Data-sample folder on Saffron to your Data folder"+moreHints) ;
 				else
 					trace(moreHints);
 			}
@@ -82,6 +89,7 @@
 			
 			if(workerTarget.exists && !Capabilities.isDebugger)
 			{
+				numberOfWorkersWaitnigToStart = 0 ;
 				workers = new Vector.<Worker>();
 				senderChannels = new Vector.<MessageChannel>();
 				receiverChallens = new Vector.<MessageChannel>();
@@ -94,8 +102,15 @@
 					var senderChannel:MessageChannel = Worker.current.createMessageChannel(worker);
 					worker.setSharedProperty("senderChannel_fromMainProject", senderChannel);
 					
-					var receiverChannel:MessageChannel = worker.createMessageChannel(Worker.current);
-					receiverChannel.addEventListener(Event.CHANNEL_MESSAGE, handlecustomeChannel)
+					if(receiverChannel)
+					{
+						receiverChannel.removeEventListener(Event.CHANNEL_MESSAGE, handlecustomeChannel);
+						receiverChannel.removeEventListener(Event.DEACTIVATE, workerDeactivated);
+					}
+					receiverChannel = worker.createMessageChannel(Worker.current);
+					receiverChannel.addEventListener(Event.CHANNEL_MESSAGE, handlecustomeChannel);
+					receiverChannel.addEventListener(Event.DEACTIVATE, workerDeactivated);
+					receiverChannel.addEventListener(Event.CHANNEL_STATE, function(e:Event){trace(e)});
 					worker.setSharedProperty("receiverChannel_fromMainProject", receiverChannel);
 					worker.start();
 					
@@ -110,7 +125,17 @@
 				setUpDebugOnce();
 			}
 		}
+			
 		
+		protected static function workerDeactivated(event:Event):void
+		{
+			trace(event);
+			totalWorkers=1;
+			isReady = false ;
+			activated = false ;
+			//restart();
+		}
+			
 		/**Set up the back groun emolator dfirst*/
 		private static function setUpDebugOnce():void
 		{
@@ -118,11 +143,17 @@
 				bgEmulator = new BgWorker(handlecustomeChannel);
 		}
 		
+		/**Returns true if the worker was in debug mode and not real workers was enabled*/
+		public static function isDebugMode():Boolean
+		{
+			return !activated || !isReady ;
+		}
+		
 		/**Select a sender channel*/
 		private static function selectSenderTosend():MessageChannel
 		{
 			currentWorker++ ;
-			//Alert.show("Selected Worker is : "+(currentWorker%totalWorkers));
+			//trace("Selected Worker is : "+(currentWorker%totalWorkers));
 			return senderChannels[currentWorker%totalWorkers] ;
 		}
 		
@@ -137,7 +168,7 @@
 			if(numberOfWorkersWaitnigToStart<=0)
 			{
 				isReady = true ;
-				//Alert.show("All workers ready");
+				trace("All workers ready");
 			}
 		}
 		
@@ -145,7 +176,7 @@
 		/**The receiver function will receive array of byteOfBitmap,Width,Heigh or null to make a bitmapData with BitmapData.setPixels() function. if the file is local, pass the native path for it*/
 		public static function createBitmapFromByte(byteOrURLString:*,receiver:Function,loadInThisArea:Boolean=false, imageW:Number=0, imageH:Number=0, keepRatio:Boolean=true,blur:Number=0):void
 		{
-			//Alert.show("Worker Bitmap ");
+			trace("Worker Bitmap ");
 			var currentId:uint = lastID++ ;
 			
 			funcList.push(receiver);
@@ -164,11 +195,11 @@
 				//var tim:Number = getTimer();
 				//It takes time to pass big bytes here
 				selectSenderTosend().send(toSendValue);
-				//Alert.show("Get timer : "+(getTimer()-tim));
+				//trace("Get timer : "+(getTimer()-tim));
 			}
 			else
 			{
-				//Alert.show("Worker DEBUG ");
+				//trace("Worker DEBUG ");
 				setUpDebugOnce();
 				bgEmulator.handleCommandMessage(toSendValue);
 			}
@@ -177,7 +208,7 @@
 		/**You will receive your encoded bytes in a file that will target on the first unit of receiver array. so receiver must take an array*/
 		public static function base64ToByte(base64String:String,receiver:Function):void
 		{
-			//Alert.show("Worker Bitmap ");
+			//trace("Worker Bitmap ");
 			var currentId:uint = lastID++ ;
 			
 			funcList.push(receiver);
@@ -286,15 +317,15 @@
 			trace("Function id list updated : "+idList+' vs currentId :'+currentId);
 			
 			var toSendValue:Array = [BgWorker.id_jsonParser,currentId,str] ;
-			//Alert.show("JSOn called, activated:"+activated+" isReady:"+isReady);
+			//trace("JSOn called, activated:"+activated+" isReady:"+isReady);
 			if(activated && isReady)
 			{
-				//Alert.show("JSOn called used worker");
+				//trace("JSOn called used worker");
 				selectSenderTosend().send(toSendValue);
 			}
 			else
 			{
-				//Alert.show("JSOn called used debug worker");
+				//trace("JSOn called used debug worker");
 				setUpDebugOnce();
 				bgEmulator.handleCommandMessage(toSendValue);
 			}
@@ -303,7 +334,7 @@
 		/**Received data from worker*/
 		private static function handlecustomeChannel(eventOrDebugValue:*):void
 		{
-			trace('Receved event on worker caller ');
+			trace('Receved event on worker caller. is it in debug moede?'+isDebugMode());
 			var received:Array;
 			if(eventOrDebugValue is Array)
 			{
@@ -324,7 +355,7 @@
 		/**Send this data to its recever*/
 		private static function callFunction(callerId:uint,data:Object):void
 		{
-			//Alert.show(callerId+' function id receved '+((data.hasOwnProperty('length'))?"[data length is : "+data.length+"]":data)+' function ids are : '+idList);
+			//trace(callerId+' function id receved '+((data.hasOwnProperty('length'))?"[data length is : "+data.length+"]":data)+' function ids are : '+idList);
 			var I:int = idList.indexOf(callerId) ;
 			trace("Function founded : "+I);
 			if(I!=-1)
