@@ -4,6 +4,8 @@ package appManager.displayContentElemets
 	import flash.display.MovieClip;
 	import flash.text.TextField;
 	
+	import wrokersJob.WorkerFunctions;
+	
 	public class VersionTracer extends MovieClip
 	{
 		private var tf:TextField ;
@@ -15,7 +17,7 @@ package appManager.displayContentElemets
 			tf = Obj.findThisClass(TextField,this,true);
 			if(tf)
 			{
-				tf.text = DevicePrefrence.appVersion ;
+				tf.text = DevicePrefrence.appVersion+(WorkerFunctions.isDebugMode()?'-w':'') ;
 			}
 		}
 	}
