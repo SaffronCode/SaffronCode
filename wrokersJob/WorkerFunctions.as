@@ -46,14 +46,11 @@
 		private static var startWorkerCalled:Boolean = false ;
 		private static var starterTimeOutId:uint;
 
-		private static var receiverChannel:MessageChannel;
-		
 		
 		/**From now (Air 29) you cannot user more than one worker for your projects*/
-		public static function setUp(TotalWorkers:uint = 1):void
+		public static function setUp(TotalWorkers:uint = 4):void
 		{
 			activated = true ;
-			totalWorkers = 1 ;
 			
 			if(startWorkerCalled==false)
 			{
@@ -105,12 +102,7 @@
 					var senderChannel:MessageChannel = Worker.current.createMessageChannel(worker);
 					worker.setSharedProperty("senderChannel_fromMainProject", senderChannel);
 					
-					if(receiverChannel)
-					{
-						receiverChannel.removeEventListener(Event.CHANNEL_MESSAGE, handlecustomeChannel);
-						//receiverChannel.removeEventListener(Event.DEACTIVATE, workerDeactivated);
-					}
-					receiverChannel = worker.createMessageChannel(Worker.current);
+					var receiverChannel:MessageChannel = worker.createMessageChannel(Worker.current);
 					receiverChannel.addEventListener(Event.CHANNEL_MESSAGE, handlecustomeChannel);
 					//receiverChannel.addEventListener(Event.DEACTIVATE, workerDeactivated);
 					receiverChannel.addEventListener(Event.CHANNEL_STATE, function(e:Event){trace(e)});
