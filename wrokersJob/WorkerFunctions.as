@@ -52,6 +52,8 @@
 		{
 			activated = true ;
 			
+			totalWorkers = TotalWorkers ;
+			
 			if(startWorkerCalled==false)
 			{
 				startWorkerCalled = true ;
@@ -87,14 +89,19 @@
 			}
 			var workerBytes:ByteArray = FileManager.loadFile(workerTarget);
 			
+			trace("workerTarget.exists : "+workerTarget.exists);
+			trace("Capabilities.isDebugger : "+Capabilities.isDebugger);
+			
 			if(workerTarget.exists && !Capabilities.isDebugger)
 			{
+				trace("Start Creating threads");
 				numberOfWorkersWaitnigToStart = 0 ;
 				workers = new Vector.<Worker>();
 				senderChannels = new Vector.<MessageChannel>();
 				receiverChallens = new Vector.<MessageChannel>();
 				for(var i:int = 0 ; i<totalWorkers ; i++)
 				{
+					trace("Create thread "+i);
 					numberOfWorkersWaitnigToStart++ ;
 					var worker:Worker = WorkerDomain.current.createWorker(workerBytes,true);
 					worker.addEventListener(Event.WORKER_STATE, workerStateHandler);
