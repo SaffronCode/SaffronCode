@@ -1,5 +1,7 @@
 ﻿package wrokersJob
 {
+	//import contents.alert.Alert;
+	
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.filesystem.File;
@@ -47,10 +49,11 @@
 		private static var receiverChannel:MessageChannel;
 		
 		
-		public static function setUp(TotalWorkers:uint = 4):void
+		/**From now (Air 29) you cannot user more than one worker for your projects*/
+		public static function setUp(TotalWorkers:uint = 1):void
 		{
 			activated = true ;
-			totalWorkers = TotalWorkers ;
+			totalWorkers = 1 ;
 			
 			if(startWorkerCalled==false)
 			{
@@ -105,11 +108,11 @@
 					if(receiverChannel)
 					{
 						receiverChannel.removeEventListener(Event.CHANNEL_MESSAGE, handlecustomeChannel);
-						receiverChannel.removeEventListener(Event.DEACTIVATE, workerDeactivated);
+						//receiverChannel.removeEventListener(Event.DEACTIVATE, workerDeactivated);
 					}
 					receiverChannel = worker.createMessageChannel(Worker.current);
 					receiverChannel.addEventListener(Event.CHANNEL_MESSAGE, handlecustomeChannel);
-					receiverChannel.addEventListener(Event.DEACTIVATE, workerDeactivated);
+					//receiverChannel.addEventListener(Event.DEACTIVATE, workerDeactivated);
 					receiverChannel.addEventListener(Event.CHANNEL_STATE, function(e:Event){trace(e)});
 					worker.setSharedProperty("receiverChannel_fromMainProject", receiverChannel);
 					worker.start();
@@ -127,14 +130,14 @@
 		}
 			
 		
-		protected static function workerDeactivated(event:Event):void
+		/*protected static function workerDeactivated(event:Event):void
 		{
-			trace(event);
-			totalWorkers=1;
+			trace("*** Deactivated! "+event);
+			//totalWorkers=1;
 			isReady = false ;
 			activated = false ;
 			//restart();
-		}
+		}*/
 			
 		/**Set up the back groun emolator dfirst*/
 		private static function setUpDebugOnce():void
@@ -208,7 +211,7 @@
 		/**You will receive your encoded bytes in a file that will target on the first unit of receiver array. so receiver must take an array*/
 		public static function base64ToByte(base64String:String,receiver:Function):void
 		{
-			//trace("Worker Bitmap ");
+			trace("Worker base64ToByte ");
 			var currentId:uint = lastID++ ;
 			
 			funcList.push(receiver);
@@ -345,7 +348,10 @@
 				var receiverChannel:MessageChannel = eventOrDebugValue.currentTarget as MessageChannel ;
 				received = receiverChannel.receive();
 			}
-			trace("Received data type is : "+getQualifiedClassName(received[1]));
+			if((received[1] is Array) && (received[1] as Array).length>0 && ((received[1] as Array)[0] is String) && ((received[1] as Array)[0].length<300))
+			{
+				trace('Receved Data is'+received[1]);
+			}
 			var callerId:uint = received[0] ;
 			
 		

@@ -26,9 +26,11 @@ package contents.alert
 			{
 				debugField1.appendText(title+'\n');
 				debugField2.appendText(title+'\n');
+				debugField3.appendText(title+'\n');
 				
 				debugField1.scrollV++;
 				debugField2.scrollV++;
+				debugField3.scrollV++;
 			}
 			else
 			{
@@ -57,7 +59,9 @@ package contents.alert
 			debugField3.width = stage.stageWidth ;
 			debugField3.height = stage.stageHeight ;
 			
-			debugField2.textColor = 0xffffff ;
+			debugField1.textColor = 0xffffff ;
+			debugField3.textColor = 0xffffff ;
+			debugField2.textColor = 0x222222 ;
 			
 			debugField1.x = 1;
 			debugField1.y = 1;
