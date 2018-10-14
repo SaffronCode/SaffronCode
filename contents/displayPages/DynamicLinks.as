@@ -31,6 +31,7 @@ package contents.displayPages
 	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
@@ -791,6 +792,20 @@ package contents.displayPages
 			{
 				linkScroller.setAbsolutePose(X,Y);
 			}
+		}
+		
+		public function getAbsolutePose():Point
+		{
+			if(linkScroller!=null)
+			{
+				return new Point(linksContainer.x,linksContainer.y);
+			}
+			return new Point();
+		}
+		
+		public function getLinkItemsSize():Rectangle
+		{
+			return new Rectangle(0,0,sampleLink.height+deltaY,sampleLink.width+deltaX);
 		}
 		
 		public function lockScroll(X:Number=0,Y:Number=0):void
