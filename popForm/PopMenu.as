@@ -264,7 +264,9 @@
 			var buttonEvent:PopMenuEvent = new PopMenuEvent(e.type,e.buttonID,e.field,e.buttonTitle,false,e.buttonData) ;
 			if(onButton!=null)
 			{
-				onButton(buttonEvent);
+				var cash:Function = onButton ;
+				onButton = null ;
+				cash(buttonEvent);
 			}
 			popDispatcher.dispatchEvent(buttonEvent);
 		}
