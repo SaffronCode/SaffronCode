@@ -276,7 +276,7 @@
 				}
 			}
 			//Alert.show("requestLoaded : "+JSON.stringify(pureRequest));
-			if(HTTPStatus==502 && requestLoader.data=='')
+			if(HTTPStatus==502/* && requestLoader.data==''*/)
 			{
 				noInternet();
 			}
