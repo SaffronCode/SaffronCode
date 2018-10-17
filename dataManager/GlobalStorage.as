@@ -8,12 +8,17 @@
 	public class GlobalStorage
 	{
 		private static var storage:SharedObject ; 
+		private static var bigDataStorage:SharedObject ;
+		
+		/**Do not encrypt strings with length of more than this*/
+		private static const maxLengthForEncryptableStrings:uint = 200 ;
 		
 		private static function setUp():void
 		{
 			if(storage==null)
 			{
 				storage = SharedObject.getLocal("MyGlobalStorage2",'/');
+				bigDataStorage = SharedObject.getLocal("MyGlobalStoragebigData",'/');
 			}
 		}
 		
@@ -22,13 +27,27 @@
 		{
 			setUp();
 			id = Encrypt.encrypt(id,DevicePrefrence.DeviceUniqueId()) ;
-			if(storage.data[id] == undefined)
+			var loadedString:* = storage.data[id] ; 
+			if( loadedString == undefined)
 			{
-				return null ;
+				loadedString = bigDataStorage.data[id] ;
+				if(loadedString == undefined)
+				{
+					return null ;
+				}
+				return loadedString ;
 			}
 			else
 			{
-				return Encrypt.decrypt(storage.data[id],DevicePrefrence.DeviceUniqueId()) ;
+				if(loadedString != null)
+				{
+					return Encrypt.decrypt(loadedString,DevicePrefrence.DeviceUniqueId()) ;
+				}
+				else
+				{
+					loadedString = bigDataStorage.data[id] ;
+					return loadedString ;
+				}
 			}
 		}
 		
@@ -36,10 +55,27 @@
 		public static function save(id:String,value:*,flush:Boolean=true):void
 		{
 			setUp();
-			storage.data[Encrypt.encrypt(id,DevicePrefrence.DeviceUniqueId())] = Encrypt.encrypt(value,DevicePrefrence.DeviceUniqueId()) ;
-			if(flush)
+			id = Encrypt.encrypt(id,DevicePrefrence.DeviceUniqueId());
+			if(value is String && value.length>maxLengthForEncryptableStrings)
 			{
-				storage.flush();
+				bigDataStorage.data[id] = value ;
+				if(storage.data[id]!=undefined)
+				{
+					storage.data[id] = undefined ;
+					storage.flush();
+				}
+				if(flush)
+				{
+					bigDataStorage.flush();
+				}
+			}
+			else
+			{
+				storage.data[id] = Encrypt.encrypt(value,DevicePrefrence.DeviceUniqueId()) ;
+				if(flush)
+				{
+					storage.flush();
+				}
 			}
 		}
 		
@@ -51,7 +87,7 @@
 			{
 				return null ;
 			}
-			trace("jsonObject : "+jsonObject);
+			//trace("jsonObject : "+jsonObject);
 			return JSONParser.parse(jsonObject,catcherObject);
 		}
 		public static function loadObject2(id:String):Vector.<uint>
@@ -61,7 +97,7 @@
 			{
 				return null ;
 			}
-			trace('jsonObject :',jsonObject)
+			//trace('jsonObject :',jsonObject)
 			var obj:Object = JSON.parse(jsonObject);
 			var _list:Vector.<uint> = new Vector.<uint>
 			for each(var value:uint in obj)
