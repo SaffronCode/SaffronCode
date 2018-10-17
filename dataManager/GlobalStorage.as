@@ -4,6 +4,8 @@
 	import com.mteamapp.JSONParser;
 	
 	import flash.net.SharedObject;
+	import flash.utils.ByteArray;
+	import flash.utils.getQualifiedClassName;
 
 	public class GlobalStorage
 	{
@@ -12,6 +14,8 @@
 		
 		/**Do not encrypt strings with length of more than this*/
 		private static const maxLengthForEncryptableStrings:uint = 200 ;
+		
+		private static var myId:String ;
 		
 		private static function setUp():void
 		{
@@ -22,11 +26,20 @@
 			}
 		}
 		
+		private static function getId():String
+		{
+			if(myId==undefined)
+			{
+				myId = DevicePrefrence.DeviceUniqueId() ;
+			}
+			return myId ;
+		}
+		
 		/**Boolean, Number, String supported*/
 		public static function load(id:String):*
 		{
 			setUp();
-			id = Encrypt.encrypt(id,DevicePrefrence.DeviceUniqueId()) ;
+			id = Encrypt.encrypt(id,getId()) ;
 			var loadedString:* = storage.data[id] ; 
 			if( loadedString == undefined)
 			{
@@ -41,7 +54,7 @@
 			{
 				if(loadedString != null)
 				{
-					return Encrypt.decrypt(loadedString,DevicePrefrence.DeviceUniqueId()) ;
+					return Encrypt.decrypt(loadedString,getId()) ;
 				}
 				else
 				{
@@ -55,7 +68,7 @@
 		public static function save(id:String,value:*,flush:Boolean=true):void
 		{
 			setUp();
-			id = Encrypt.encrypt(id,DevicePrefrence.DeviceUniqueId());
+			id = Encrypt.encrypt(id,getId());
 			if(value is String && value.length>maxLengthForEncryptableStrings)
 			{
 				bigDataStorage.data[id] = value ;
@@ -71,7 +84,7 @@
 			}
 			else
 			{
-				storage.data[id] = Encrypt.encrypt(value,DevicePrefrence.DeviceUniqueId()) ;
+				storage.data[id] = Encrypt.encrypt(value,getId()) ;
 				if(flush)
 				{
 					storage.flush();
@@ -82,7 +95,8 @@
 		
 		public static function loadObject(id:String,catcherObject:*):*
 		{
-			var jsonObject:String = load(id);
+			var jsonObject:* = load(id);
+			trace(getQualifiedClassName(jsonObject));
 			if(jsonObject==null)
 			{
 				return null ;
@@ -109,7 +123,11 @@
 
 		public static function saveObject(id:String,saverObject:*,flush:Boolean=true):void
 		{
-			var jsonString:String = JSONParser.stringify(saverObject);
+			var jsonString:String //= JSONParser.stringify(saverObject);
+			var data:ByteArray = new ByteArray();
+			data.writeObject(saverObject);
+			data.position = 0 ;
+			jsonString = data.toString();
 			save(id,jsonString,flush);
 		}
 		public static function Delete(id:String):void
