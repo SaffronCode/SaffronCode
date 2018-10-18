@@ -95,13 +95,16 @@
 		public static function loadObject(id:String,catcherObject:*):*
 		{
 			var jsonObject:* = load(id);
-			trace(getQualifiedClassName(jsonObject));
+			trace("object type is : "+getQualifiedClassName(jsonObject));
 			if(jsonObject==null)
 			{
 				return null ;
 			}
 			//trace("jsonObject : "+jsonObject);
-			return JSONParser.parse(jsonObject,catcherObject);
+			if(jsonObject is String)
+				return JSONParser.parse(jsonObject,catcherObject);
+			else
+				return JSONParser.parsParams(jsonObject,catcherObject);
 		}
 		public static function loadObject2(id:String):Vector.<uint>
 		{
@@ -122,17 +125,12 @@
 
 		public static function saveObject(id:String,saverObject:*,flush:Boolean=true):void
 		{
-			var jsonString:String //= JSONParser.stringify(saverObject);
-			var data:ByteArray = new ByteArray();
-			data.writeObject(saverObject);
-			data.position = 0 ;
-			jsonString = data.toString();
-			save(id,jsonString,flush);
+			save(id,saverObject,flush);
 		}
 		public static function Delete(id:String):void
 		{
-				setUp();
-				delete storage.data[id];
+			setUp();
+			delete storage.data[id];
 		}
 		
 		public function Clear(id:String):void
