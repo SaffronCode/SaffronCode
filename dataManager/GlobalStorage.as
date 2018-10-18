@@ -52,15 +52,10 @@
 			}
 			else
 			{
-				if(loadedString != null)
-				{
+				if(loadedString is String)
 					return Encrypt.decrypt(loadedString,getId()) ;
-				}
 				else
-				{
-					loadedString = bigDataStorage.data[id] ;
 					return loadedString ;
-				}
 			}
 		}
 		
@@ -84,7 +79,11 @@
 			}
 			else
 			{
-				storage.data[id] = Encrypt.encrypt(value,getId()) ;
+				if(value is String)
+					storage.data[id] = Encrypt.encrypt(value,getId()) ;
+				else
+					storage.data[id] = value ;
+					
 				if(flush)
 				{
 					storage.flush();
