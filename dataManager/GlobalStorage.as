@@ -42,7 +42,7 @@
 		
 		private static function getId():String
 		{
-			if(myId==undefined)
+			if(myId==null)
 			{
 				myId = DevicePrefrence.DeviceUniqueId() ;
 			}
@@ -120,7 +120,10 @@
 			else if(jsonObject is Obj.getObjectClass(catcherObject))
 				return JSONParser.parse(JSON.stringify(jsonObject),catcherObject);
 			else
-				return JSONParser.parsParams(jsonObject,catcherObject);
+			{
+				JSONParser.parsParams({data:jsonObject},{data:catcherObject});
+				return catcherObject ;
+			}
 		}
 		public static function loadObject2(id:String):Vector.<uint>
 		{
