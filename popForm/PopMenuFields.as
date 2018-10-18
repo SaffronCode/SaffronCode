@@ -1,4 +1,4 @@
-package popForm
+﻿package popForm
 {
 	import flash.text.SoftKeyboardType;
 
@@ -64,11 +64,11 @@ package popForm
 			{
 				frameForDirection = 1 ;
 			}
-			if(frameForDirection==1 && isArabic_v==false)
+			/*if(frameForDirection==1 && isArabic_v==false)
 			{
 				trace("**** PopField conflict on text direction solved");
 				isArabic_v = true ;
-			}
+			}*/
 			keyBoardType = (keyBoardType==null)?SoftKeyboardType.DEFAULT:keyBoardType;
 			
 			tagNames.push(tagName);
