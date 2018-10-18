@@ -3,6 +3,8 @@
 	import com.mteamapp.Encrypt;
 	import com.mteamapp.JSONParser;
 	
+	import flash.desktop.NativeApplication;
+	import flash.events.Event;
 	import flash.net.SharedObject;
 	import flash.utils.ByteArray;
 	import flash.utils.getQualifiedClassName;
@@ -17,12 +19,24 @@
 		
 		private static var myId:String ;
 		
+		private static var flushNeeded:Boolean = false ;
+		
 		private static function setUp():void
 		{
 			if(storage==null)
 			{
 				storage = SharedObject.getLocal("MyGlobalStorage2",'/');
 				bigDataStorage = SharedObject.getLocal("MyGlobalStoragebigData",'/');
+				NativeApplication.nativeApplication.addEventListener(Event.DEACTIVATE,flushAllIfNeeded);
+			}
+		}
+		
+		protected static function flushAllIfNeeded(event:Event):void
+		{
+			if(flushNeeded)
+			{
+				storage.flush();
+				bigDataStorage.flush();
 			}
 		}
 		
@@ -70,11 +84,11 @@
 				if(storage.data[id]!=undefined)
 				{
 					storage.data[id] = undefined ;
-					storage.flush();
+					flushNeeded = true ;
 				}
 				if(flush)
 				{
-					bigDataStorage.flush();
+					flushNeeded = true ;
 				}
 			}
 			else
@@ -86,7 +100,7 @@
 					
 				if(flush)
 				{
-					storage.flush();
+					flushNeeded = true ;
 				}
 			}
 		}
@@ -139,7 +153,7 @@
 		{
 			setUp();
 			storage.data[id] = null ;
-			storage.flush();
+			flushNeeded = true ;
 		}
 	}
 }
