@@ -89,7 +89,7 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 			
 			trace("Play the video : "+videoURL);
 			
-			(MediaPlayerClass as Object).service.createPlayer(videoURL,rect.x,rect.y,rect.width,rect.height,autoPlay,controlls,true);
+			(MediaPlayerClass as Object).service.createPlayer(encodeURI(videoURL),rect.x,rect.y,rect.width,rect.height,autoPlay,controlls,true);
 			(MediaPlayerClass as Object).service.addEventListener(FULLSCREEN_ENTER,isFullscreened);
 			(MediaPlayerClass as Object).service.addEventListener(FULLSCREEN_EXIT,exitFullscreened);
 			//(MediaPlayerClass as Object).service.addEventListener(com.distriqt.extension.mediaplayer.events.MediaPlayerEvent.STOPPED,exitFullscreened);
