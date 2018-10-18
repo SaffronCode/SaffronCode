@@ -1,4 +1,4 @@
-package diagrams.calender
+﻿package diagrams.calender
 {
 	import com.mteamapp.StringFunctions;
 	
@@ -26,7 +26,12 @@ package diagrams.calender
 		
 		public static function miladiToShamsi(date:Date):MyShamsi
 		{
+			if (date == null)
+			{
+					return null;
+			}
 			var shamsi:Array = Shamsi.MiladiToShamsi(date.fullYear, date.month + 1, date.date);
+			
 			var generatedDate:MyShamsi = new MyShamsi(shamsi[0], shamsi[1] - 1, shamsi[2], date.hours, date.minutes, date.seconds, date.milliseconds);
 			generatedDate.day = date.day;
 			switch (date.day)
