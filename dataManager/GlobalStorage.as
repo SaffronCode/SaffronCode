@@ -103,6 +103,8 @@
 			//trace("jsonObject : "+jsonObject);
 			if(jsonObject is String)
 				return JSONParser.parse(jsonObject,catcherObject);
+			else if(jsonObject is Obj.getObjectClass(catcherObject))
+				return JSONParser.parse(JSON.stringify(jsonObject),catcherObject);
 			else
 				return JSONParser.parsParams(jsonObject,catcherObject);
 		}
