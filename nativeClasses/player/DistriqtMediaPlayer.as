@@ -192,8 +192,16 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 			trace("*** Set full screen !! : "+event);
 			if(/*!isFullScreen && */DevicePrefrence.isPortrait())
 			{
-				stage.setOrientation(lastLandscapeOrientation);
-				trace("StageOrientation. >>> "+lastLandscapeOrientation);
+				var toLanscapeOrientation:String ;
+				switch(lastLandscapeOrientation)
+				{
+					case StageOrientation.ROTATED_LEFT :
+						toLanscapeOrientation = StageOrientation.ROTATED_RIGHT ;
+					case StageOrientation.ROTATED_RIGHT :
+						toLanscapeOrientation = StageOrientation.ROTATED_LEFT ;
+				}
+				stage.setOrientation(toLanscapeOrientation);
+				trace("StageOrientation. >>> "+toLanscapeOrientation);
 			}
 			isFullScreen = true ;
 		}
