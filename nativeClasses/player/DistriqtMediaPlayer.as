@@ -8,12 +8,9 @@
 	import flash.desktop.SystemIdleMode;
 	import flash.display.Sprite;
 	import flash.display.StageOrientation;
-	import flash.events.AccelerometerEvent;
 	import flash.events.Event;
-	import flash.events.StageOrientationEvent;
 	import flash.filesystem.File;
 	import flash.geom.Rectangle;
-	import flash.sensors.Accelerometer;
 	import flash.utils.clearInterval;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.setInterval;
@@ -64,16 +61,23 @@
 			isFullScreen = false ;
 			this.graphics.beginFill(0x222222,0);
 			this.graphics.drawRect(0,0,Width,Height);
-			if(isNaN(appStageWidth))
+			/*if(isNaN(appStageWidth))
+			{*/
+			if(this.stage!=null)
+			{
+				saveStageWidthHeighOnce();
+			}
+			else
 			{
 				this.addEventListener(Event.ADDED_TO_STAGE,saveStageWidthHeighOnce);
 			}
+			//}
 			
 		}
 		
 		
 		/**Save the stage widh and height once*/
-		private function saveStageWidthHeighOnce(e:*):void
+		private function saveStageWidthHeighOnce(e:*=null):void
 		{
 			appStageWidth = stage.stageWidth ;
 			appStageHeight = stage.stageHeight ;
@@ -93,25 +97,44 @@
 			else
 				lastLandscapeOrientation = stage.deviceOrientation;
 			
-			if(player)
+			trace("lastPortrateOrientetion : "+lastPortrateOrientetion);
+			trace("lastLandscapeOrientation : "+lastLandscapeOrientation);
+			
+			trace(" stage.orientation : "+stage.orientation+" vs "+stage.deviceOrientation);
+			
+			try
 			{
 				trace("listen to rotation: isFullScreen : "+isFullScreen);
-				if(isFullScreen && (stage.deviceOrientation == StageOrientation.DEFAULT || stage.deviceOrientation == StageOrientation.UPSIDE_DOWN))
+				if(isFullScreen)
 				{
-					trace("Make it exit from full screen : "+player);
-					//Make it exit from full screen ;
-					player.setFullscreen( false );
+					if(stage.deviceOrientation == StageOrientation.DEFAULT || stage.deviceOrientation == StageOrientation.UPSIDE_DOWN)
+					{
+						trace("Make it exit from full screen : "+player);
+						//Make it exit from full screen ;
+						//player.setFullscreen( false );
+						(MediaPlayerClass as Object).service.setFullscreen(false);
+					}
+					else if(stage.orientation != stage.deviceOrientation)
+					{
+						trace("Need to rotate to : "+stage.deviceOrientation);
+						stage.setOrientation(stage.deviceOrientation);
+					}
 				}
-				else if(stage.deviceOrientation == StageOrientation.ROTATED_RIGHT || stage.deviceOrientation == StageOrientation.ROTATED_LEFT)
+				else
 				{
-					//Enter full screen
-					trace("Make it full screen : "+player);
-					player.setFullscreen( true );
+					if(stage.deviceOrientation == StageOrientation.ROTATED_RIGHT || stage.deviceOrientation == StageOrientation.ROTATED_LEFT)
+					{
+						//Enter full screen
+						trace("Make it full screen : "+player);
+						//player.setFullscreen( true );
+						(MediaPlayerClass as Object).service.setFullscreen(true);
+					}
 				}
+			}catch(e:Error){
+				trace("!!!!! Something happend: "+e.message);
 			}
 				
 			
-			trace(" stage.orientation : "+stage.orientation+" vs "+stage.deviceOrientation);
 			
 			lastDeviceOriention = stage.deviceOrientation ;
 		}
@@ -155,7 +178,7 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 		protected function exitFullscreened(event:Event):void
 		{
 			trace("*** Exit full screen !! : "+event);
-			if(isFullScreen && !DevicePrefrence.isLandScape())
+			if(/*isFullScreen && */DevicePrefrence.isPortrait())
 			{
 				stage.setOrientation(lastPortrateOrientetion);
 				trace("StageOrientation. >>> "+lastPortrateOrientetion);
@@ -167,9 +190,8 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 		protected function isFullscreened(event:Event):void
 		{
 			trace("*** Set full screen !! : "+event);
-			if(!isFullScreen && !DevicePrefrence.isLandScape())
+			if(/*!isFullScreen && */DevicePrefrence.isPortrait())
 			{
-				trace("The default oriented is : "+stage.orientation);
 				stage.setOrientation(lastLandscapeOrientation);
 				trace("StageOrientation. >>> "+lastLandscapeOrientation);
 			}
