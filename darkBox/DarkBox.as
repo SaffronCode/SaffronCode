@@ -324,6 +324,14 @@
 			
 			backMC.width = newSize.width;
 			backMC.height = newSize.height ;
+			
+			
+			this.graphics.clear();
+			this.graphics.beginFill(0,1);
+			var maxW:Number = Math.max(newSize.width,newSize.height) ;
+			this.graphics.drawRect(-maxW,-maxW,maxW*3,maxW*3);
+			
+			
 			if(showTitleInFullLine)
 			{
 				titleMC.width = newSize.width ;
