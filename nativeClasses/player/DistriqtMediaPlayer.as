@@ -2,7 +2,7 @@
 {
 	//import com.distriqt.extension.mediaplayer.MediaPlayer;
 	
-	import contents.alert.Alert;
+	//import contents.alert.Alert;
 	
 	import flash.desktop.NativeApplication;
 	import flash.desktop.SystemIdleMode;
@@ -42,6 +42,7 @@
 		private var debugIntervalId:uint;
 		
 		private var lastDeviceOriention:String,
+					lastStageorientetion:String = StageOrientation.DEFAULT,
 					lastPortrateOrientetion:String = StageOrientation.DEFAULT,
 					lastLandscapeOrientation:String = StageOrientation.ROTATED_RIGHT;
 
@@ -89,7 +90,7 @@
 		}
 		
 		private function controlOrientationPortrate(){
-			if(stage.deviceOrientation == StageOrientation.UNKNOWN || lastDeviceOriention == stage.deviceOrientation)
+			if(stage.deviceOrientation == StageOrientation.UNKNOWN || (lastDeviceOriention == stage.deviceOrientation && lastStageorientetion == stage.orientation))
 				return ;
 			
 			if(stage.deviceOrientation == StageOrientation.UPSIDE_DOWN || stage.deviceOrientation == StageOrientation.DEFAULT)
@@ -112,12 +113,13 @@
 						trace("Make it exit from full screen : "+player);
 						//Make it exit from full screen ;
 						//player.setFullscreen( false );
+						//isFullScreen = false ;
 						(MediaPlayerClass as Object).service.setFullscreen(false);
 					}
-					else if(stage.orientation != stage.deviceOrientation)
+					else if(isLandScape(stage.orientation))// if(stage.orientation != revertLandScape(stage.deviceOrientation))
 					{
 						trace("Need to rotate to : "+stage.deviceOrientation);
-						stage.setOrientation(stage.deviceOrientation);
+						stage.setOrientation(revertLandScape(stage.deviceOrientation));
 					}
 				}
 				else
@@ -127,6 +129,7 @@
 						//Enter full screen
 						trace("Make it full screen : "+player);
 						//player.setFullscreen( true );
+						//isFullScreen = true ;
 						(MediaPlayerClass as Object).service.setFullscreen(true);
 					}
 				}
@@ -135,7 +138,7 @@
 			}
 				
 			
-			
+			lastStageorientetion = stage.orientation ;
 			lastDeviceOriention = stage.deviceOrientation ;
 		}
 		
@@ -146,7 +149,6 @@ MediaPlayer.CONTROLS_FULLSCREEN : controls:fullscreen
 MediaPlayer.CONTROLS_NONE : controls:none*/
 		public function playVideo(videoURL:String,autoPlay:Boolean=true,controlls:String="controls:fullscreen"):void
 		{
-			NativeApplication.nativeApplication.systemIdleMode = SystemIdleMode.KEEP_AWAKE ;
 			if(this.stage==null)
 			{
 				throw "Add the player to the stage first";
@@ -156,14 +158,15 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 				
 			close();
 		
+			//Alert.show("KEEP_AWAKEplayVideo");
+			NativeApplication.nativeApplication.systemIdleMode = SystemIdleMode.KEEP_AWAKE ;
+			
 			isOpen = true ;
 			
 			if(videoURL.indexOf('http')!=0)
 			{
 				videoURL = new File(videoURL).nativePath;
 			}
-			
-			Alert.show("Play the video : "+videoURL);
 			
 			player = (MediaPlayerClass as Object).service.createPlayer(videoURL,rect.x,rect.y,rect.width,rect.height,autoPlay,controlls,true);
 			(MediaPlayerClass as Object).service.addEventListener(FULLSCREEN_ENTER,isFullscreened);
@@ -181,7 +184,7 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 			if(/*isFullScreen && */DevicePrefrence.isPortrait())
 			{
 				stage.setOrientation(lastPortrateOrientetion);
-				trace("StageOrientation. >>> "+lastPortrateOrientetion);
+				trace("StageOrientation1. >>> "+lastPortrateOrientetion);
 			}
 			isFullScreen = false ;
 		}
@@ -190,20 +193,39 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 		protected function isFullscreened(event:Event):void
 		{
 			trace("*** Set full screen !! : "+event);
-			if(/*!isFullScreen && */DevicePrefrence.isPortrait())
+			if(/*!isFullScreen && */DevicePrefrence.isPortrait() && isFullScreen!=true)
 			{
-				var toLanscapeOrientation:String ;
-				switch(lastLandscapeOrientation)
-				{
-					case StageOrientation.ROTATED_LEFT :
-						toLanscapeOrientation = StageOrientation.ROTATED_RIGHT ;
-					case StageOrientation.ROTATED_RIGHT :
-						toLanscapeOrientation = StageOrientation.ROTATED_LEFT ;
-				}
+				var toLanscapeOrientation:String = revertLandScape(lastLandscapeOrientation) ;
+				
 				stage.setOrientation(toLanscapeOrientation);
-				trace("StageOrientation. >>> "+toLanscapeOrientation);
+				trace("StageOrientation2. >>> "+toLanscapeOrientation);
 			}
 			isFullScreen = true ;
+		}
+		
+		
+		private function revertLandScape(current:String):String
+		{
+			switch(current)
+			{
+				case StageOrientation.ROTATED_LEFT :
+					return StageOrientation.ROTATED_RIGHT ;
+				default:
+					return StageOrientation.ROTATED_LEFT ;
+			}
+		}
+		
+		
+		private function isLandScape(current:String):Boolean
+		{
+			switch(current)
+			{
+				case StageOrientation.ROTATED_LEFT :
+					return true ;
+				case StageOrientation.ROTATED_RIGHT :
+					return true ;
+			}
+			return false ;
 		}
 		
 		private function createVewPort():Rectangle
@@ -261,6 +283,7 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 		/**Close player*/
 		public function close():void
 		{
+			//Alert.show("NORMALclose");
 			NativeApplication.nativeApplication.systemIdleMode = SystemIdleMode.NORMAL ;
 			trace("Hide the player");
 			try
@@ -277,6 +300,7 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 		protected function unLoad(event:Event):void
 		{
 			clearInterval(debugIntervalId);
+			//Alert.show("NORMALunLoad");
 			NativeApplication.nativeApplication.systemIdleMode = SystemIdleMode.NORMAL ;
 			try
 			{
