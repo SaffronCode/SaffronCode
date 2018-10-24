@@ -42,7 +42,7 @@
 		private var debugIntervalId:uint;
 		
 		private var lastDeviceOriention:String,
-					lastStageorientetion:String = StageOrientation.DEFAULT,
+					lastStageorientetion:String,
 					lastPortrateOrientetion:String = StageOrientation.DEFAULT,
 					lastLandscapeOrientation:String = StageOrientation.ROTATED_RIGHT;
 
@@ -85,12 +85,12 @@
 			
 			if(DevicePrefrence.isPortrait())
 			{
-				debugIntervalId = setInterval(controlOrientationPortrate,1000);
+				debugIntervalId = setInterval(controlOrientationPortrate,500);
 			}
 		}
 		
 		private function controlOrientationPortrate(){
-			if(stage.deviceOrientation == StageOrientation.UNKNOWN || (lastDeviceOriention == stage.deviceOrientation && lastStageorientetion == stage.orientation))
+			if(stage.deviceOrientation == StageOrientation.UNKNOWN || (lastDeviceOriention == stage.deviceOrientation && lastStageorientetion == stage.orientation && (isLandScape(stage.orientation)!=isLandScape(stage.deviceOrientation))))
 				return ;
 			
 			if(stage.deviceOrientation == StageOrientation.UPSIDE_DOWN || stage.deviceOrientation == StageOrientation.DEFAULT)
