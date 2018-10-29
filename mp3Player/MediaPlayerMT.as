@@ -95,6 +95,7 @@ package mp3Player
 		override public function stop():void
 		{
 			SoundPlayer.pause(mediaSoundID);
+			urlController.cansel();
 			SoundPlayer.removeSound(mediaSoundID);
 		}
 		
