@@ -24,6 +24,7 @@ package photoEditor
 		private var backMC:MovieClip ;
 		
 		private static var onDone:Function ;
+		private static var onCanceeld:Function ;
 		
 		internal static var ME:PhotoEdit ;
 		
@@ -182,10 +183,11 @@ package photoEditor
 		 * Acceptable types are : BitmapData, File and ByteArray<br><br>
 		 * 
 		 * defaultTool had to be the tool icon name such as pen_tools_mc*/
-		public static function Edit(image:*,onEdited:Function,defaultTool:String=''):void
+		public static function Edit(image:*,onEdited:Function,defaultTool:String='',onCanceeld:Function=null):void
 		{
 			selectedToolOnStartUp = defaultTool ;
 			onDone = onEdited ;
+			this.onCanceeld = onCanceeld ;
 			if(image is BitmapData)
 			{
 				ME.StartEditing(image);
@@ -298,6 +300,10 @@ package photoEditor
 				imageHistory[i].dispose();
 			}
 			imageHistory = new Vector.<BitmapData>();
+			if(!this.mouseEnabled && this.onCanceeld!=null)
+			{
+				this.onCanceeld();
+			}
 			//onDone(); // do not call onDone() function when user closed the win
 			ME.disable();
 		}
