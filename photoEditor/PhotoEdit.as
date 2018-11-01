@@ -1,4 +1,4 @@
-package photoEditor
+﻿package photoEditor
 {
 	import flash.desktop.NativeApplication;
 	import flash.display.BitmapData;
@@ -183,11 +183,11 @@ package photoEditor
 		 * Acceptable types are : BitmapData, File and ByteArray<br><br>
 		 * 
 		 * defaultTool had to be the tool icon name such as pen_tools_mc*/
-		public static function Edit(image:*,onEdited:Function,defaultTool:String='',onCanceeld:Function=null):void
+		public static function Edit(image:*,onEdited:Function,defaultTool:String='',onCanceld:Function=null):void
 		{
 			selectedToolOnStartUp = defaultTool ;
 			onDone = onEdited ;
-			this.onCanceeld = onCanceeld ;
+			onCanceeld = onCanceld ;
 			if(image is BitmapData)
 			{
 				ME.StartEditing(image);
@@ -300,9 +300,9 @@ package photoEditor
 				imageHistory[i].dispose();
 			}
 			imageHistory = new Vector.<BitmapData>();
-			if(!this.mouseEnabled && this.onCanceeld!=null)
+			if(ME.mouseEnabled && onCanceeld!=null)
 			{
-				this.onCanceeld();
+				onCanceeld();
 			}
 			//onDone(); // do not call onDone() function when user closed the win
 			ME.disable();
