@@ -222,7 +222,7 @@
 			//this.dispatchEvent(new RestEvent(RestEvent.CONNECTION_ERROR));
 			//RestService.eventDispatcher.dispatchEvent(new RestEvent(RestEvent.CONNECTION_ERROR,null,ErrorEnum.ConnectionError));
 			
-			if(controllData && requestLoader.data!=null && requestLoader.data!='' && HTTPStatus!=502)
+			if(controllData && requestLoader.data!=null && requestLoader.data!='' && HTTPStatus!=502 && HTTPStatus!=500)
 			{
 				_isLoading = false ;
 				isConnected = true ;
@@ -276,7 +276,7 @@
 				}
 			}
 			//Alert.show("requestLoaded : "+JSON.stringify(pureRequest));
-			if(HTTPStatus==502/* && requestLoader.data==''*/)
+			if(HTTPStatus==502 || HTTPStatus==500/* && requestLoader.data==''*/)
 			{
 				noInternet();
 			}
@@ -294,7 +294,7 @@
 			var correctedLoadedData:String = pureRecevedData;//pureRecevedData.substring(1,pureRecevedData.length-1).split('\\"').join('\"').split("\\\\u003cbr\\\\u003e").join('\\n').split("<br>").join('\\n');
 			//correctedLoadedData = StringFunctions.clearDoubleQuartmarksOnJSON(correctedLoadedData);
 			//trace("Corrected data is : "+correctedLoadedData);
-			if((ignoreHTTPStatus || HTTPStatus!=502) && requestedData!=null)
+			if((ignoreHTTPStatus || (HTTPStatus!=502 && HTTPStatus!=500)) && requestedData!=null)
 			{
 				if(loadedData is String)
 				{
@@ -325,7 +325,7 @@
 					serverErrorBool = true ;
 				}
 			}
-			else if(alreadyLoadedFromCash==false && HTTPStatus==502)
+			else if(alreadyLoadedFromCash==false && (HTTPStatus==502 || HTTPStatus==500))
 			{
 				dispatch(new RestDoaEvent(RestDoaEvent.CONNECTION_ERROR,HTTPStatus,isConnected));
 				return;
