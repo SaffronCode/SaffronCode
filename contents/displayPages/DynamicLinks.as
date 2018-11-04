@@ -156,6 +156,9 @@ package contents.displayPages
 		private var myStage:Stage ;
 		private var firstItem:DisplayObject;
 		
+		/**Make the list freeze*/
+		private var isFreezed:Boolean = false ;
+		
 		/**Make the dynamic link not scrollable and show all items instantly*/
 		public function set_dynamicHeigh(status:Boolean=true):void
 		{
@@ -701,6 +704,8 @@ package contents.displayPages
 				
 				linkScroller = new ScrollMT(linksContainer,areaRect,/*areaRect*/null,!horizontalMenu,horizontalMenu,acceptAnimation&&(!revertedX && !revertedY),revertedY,revertedX,stepSize,forseScrollEffect);
 				
+				freezeScroll(isFreezed);
+				
 				activateAtoScroll(autoScrollSpeed);
 				
 				if(myPageData.id!='' && scrollPosesObject[myPageData.id]!=null)
@@ -806,6 +811,19 @@ package contents.displayPages
 		public function getLinkItemsSize():Rectangle
 		{
 			return new Rectangle(0,0,sampleLink.height+deltaY,sampleLink.width+deltaX);
+		}
+		
+		public function freezeScroll(status:Boolean=true):void
+		{
+			isFreezed = status ;
+			if(status)
+			{
+				linkScroller.lock();
+			}
+			else
+			{
+				linkScroller.unLock();
+			}
 		}
 		
 		public function lockScroll(X:Number=0,Y:Number=0):void
