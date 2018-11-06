@@ -9,10 +9,14 @@ package componentStatic
 	{
 		public var title:String=null
 		private var titleText:TextField;	
+
+		private var _textbox:TextBox;
+		private var valueTextMc:TextField;
 		public function Password()
 		{
 			super();
 			titleText = Obj.get('defaultValue',this)
+			valueTextMc = Obj.get('valueText',this);
 			update()
 			ComponentManager.evt.addEventListener(ComponentManagerEvent.UPDATE,getUpdate)
 		}
@@ -36,7 +40,7 @@ package componentStatic
 			{
 				titleText.mouseEnabled = false	
 			}
-			var _textbox:TextBox = new TextBox(this,value,SoftKeyboardType.DEFAULT,false,false,false)
+			_textbox = new TextBox(this,value,SoftKeyboardType.DEFAULT,false,false,false)
 			_textbox.addEventListener(TextBoxEvent.TEXT,textBoxEvent_fun)
 			this.addEventListener(MouseEvent.CLICK,selectFild)
 			setObj(this.name,value)	
@@ -45,7 +49,11 @@ package componentStatic
 		protected function selectFild(event:MouseEvent):void
 		{
 			
-			setDefaultPass('')
+			setDefaultPass('');
+		}
+		public function get text():String
+		{
+			return valueTextMc.text;
 		}
 		protected function textBoxEvent_fun(event:TextBoxEvent):void
 		{
@@ -54,11 +62,11 @@ package componentStatic
 
 			if(event.text!='')
 			{
-				setDefaultPass('')
+				setDefaultPass('');
 			}
 			else if(event.text=='' && title!=null)
 			{
-				setDefaultPass(title)
+				setDefaultPass(title);
 			}
 		}
 		private function setDefaultPass(DefaultValue_p:String):void

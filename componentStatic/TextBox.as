@@ -18,7 +18,7 @@ package componentStatic
 	{
 		private var target:MovieClip;
 		
-		private var value:String;
+		public var value:String;
 		private var softKeyFormat:String,
 					priceMode:Boolean;
 		

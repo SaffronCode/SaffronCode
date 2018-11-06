@@ -1,15 +1,19 @@
 package componentStatic
 {
 	import flash.events.Event;
+	import flash.text.TextField;
+
 	public class Mobile extends ComponentManager
 	{
 
 		private var _textbox:TextBox;
+		private var valueTextMc:TextField;
 		import flash.text.SoftKeyboardType;
 		
 		public function Mobile()
 		{
 			super()
+			valueTextMc = Obj.get('valueText',this);
 			update()
 			ComponentManager.evt.addEventListener(ComponentManagerEvent.UPDATE,getUpdate)
 		}	
@@ -28,6 +32,10 @@ package componentStatic
 			_textbox = new TextBox(this,value,SoftKeyboardType.NUMBER)
 			_textbox.addEventListener(TextBoxEvent.TEXT,textBoxEvent_fun)
 			setObj(this.name,value,ErrorManager.MOBILE)
+		}
+		public function get text():String
+		{
+			return valueTextMc.text;
 		}
 		protected function textBoxEvent_fun(event:TextBoxEvent):void
 		{

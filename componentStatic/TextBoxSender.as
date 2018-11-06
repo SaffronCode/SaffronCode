@@ -3,13 +3,16 @@ package componentStatic
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.text.SoftKeyboardType;
+	import flash.text.TextField;
 	
 	public class TextBoxSender extends ComponentManager
 	{
 		private var _textbox:TextBox;
+		private var valueTextMc:TextField;
 		public function TextBoxSender()
 		{
-			update()
+			valueTextMc = Obj.get('valueText',this);
+			update();
 			ComponentManager.evt.addEventListener(ComponentManagerEvent.UPDATE,getUpdate)
 		}
 		
@@ -17,6 +20,10 @@ package componentStatic
 		{
 			
 			update()
+		}
+		public function get text():String
+		{
+			return valueTextMc.text;
 		}
 		public function update():void
 		{

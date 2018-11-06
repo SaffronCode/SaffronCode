@@ -160,7 +160,7 @@
 			
 			if(DevicePrefrence.isItPC && androidManifestMustUpdate)
 			{
-				throw "Add bellow permission to <android> <manifestAdditions><![CDATA[\n\n\n"+leftPermission+"\n\n]]>\n\n"; 
+				//throw "Add bellow permission to <android> <manifestAdditions><![CDATA[\n\n\n"+leftPermission+"\n\n]]>\n\n"; 
 			}
 			//Controll permissions↑
 			
