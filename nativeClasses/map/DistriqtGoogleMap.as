@@ -65,6 +65,7 @@ package nativeClasses.map
 		public static function setUp(GoogleAPIKey:String,DistriqtId:String):void
 		{
 			api_key = GoogleAPIKey ;
+			//trace('*********GoogleAPIKey*******'+GoogleAPIKey);
 			var neceraryLines:String = '•' ;
 			
 			var AndroidPermission:String = neceraryLines+'<manifest android:installLocation="auto">\n' +
@@ -299,9 +300,12 @@ package nativeClasses.map
 			if(mapCreated)
 			{
 				(NativeMapsClass as Object).service.destroyMap();
+				(NativeMapsClass as Object).service.removeEventListener( (NativeMapEventClass as Object).MAP_CREATED, mapCreatedHandler );
+				trace('map*************'+NativeMapsClass);
+				trace('event***********'+NativeMapEventClass)
 			}
 			dispatcher.removeEventListener(Event.REMOVED_FROM_STAGE,removeMeBecauseSomeOneElseComes);
-			(NativeMapsClass as Object).service.removeEventListener( (NativeMapEventClass as Object).MAP_CREATED, mapCreatedHandler );
+			
 			this.removeEventListener(Event.ENTER_FRAME,repose);
 		}
 		
