@@ -2,6 +2,8 @@
 {
 	import appManager.displayContentElemets.TextParag;
 	
+	import com.mteamapp.StringFunctions;
+	
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -217,11 +219,11 @@
 			}
 			
 			if(multiLineTag){
-				TextPutter.onTextArea(tagNameTXT,tagName,IsArabic,true,true,0,false,false,-1,false,0,false);
+				TextPutter.onTextArea(tagNameTXT,tagName,StringFunctions.isPersian(tagName),true,true,0,false,false,-1,false,0,false);
 			}
 			else
 			{
-				TextPutter.OnButton(tagNameTXT,tagName,IsArabic,false,true);
+				TextPutter.OnButton(tagNameTXT,tagName,StringFunctions.isPersian(tagName),false,true);
 			}
 			myTXT = Obj.getAllChilds('txt_txt',this,false)[0];
 			myTXT.addEventListener(Event.CLOSE,dispatchChangeForMeToo);
