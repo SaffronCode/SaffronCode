@@ -47,6 +47,8 @@
 		
 		private var increaseMC:MovieClip,
 					decreaseMC:MovieClip
+
+					private var textContainerMC:MovieClip;
 		
 		
 		public function get textField():TextField
@@ -276,12 +278,15 @@
 				}
 				backMC.visible = false ;
 				
-				var textContainerMC:MovieClip = new MovieClip();
-				myTXT.parent.addChild(textContainerMC);
-				textContainerMC.addChild(myTXT);
-				textContainerMC.x = myTXT.x;
-				textContainerMC.y = myTXT.y;
-				myTXT.x = myTXT.y = 0 ;
+				if(textContainerMC==null)
+				{
+					textContainerMC = new MovieClip();
+					myTXT.parent.addChild(textContainerMC);
+					textContainerMC.addChild(myTXT);
+					textContainerMC.x = myTXT.x;
+					textContainerMC.y = myTXT.y;
+					myTXT.x = myTXT.y = 0 ;
+				}
 				
 				if(isAraic)
 				{
