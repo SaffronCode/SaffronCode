@@ -128,7 +128,7 @@
 		public static function loadObject2(id:String):Vector.<uint>
 		{
 			var jsonObject:String = load(id);
-			if(jsonObject==null)
+			if(jsonObject==null || jsonObject=='')
 			{
 				return null ;
 			}
