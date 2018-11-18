@@ -1,5 +1,5 @@
 <p align="center" >
-    <a href="https://github.com/MTeamCo/SaffronCode"><img  width="170px" src="https://www.imageupload.co.uk/images/2018/04/12/SafronCode_Logo_Fin.png" alt="Saffron Code"></a>
+    <a href="https://github.com/MTeamCo/SaffronCode"><img  width="170px" src="https://github.com/SaffronCode/SaffronCode/blob/master/logo.png?raw=true" alt="Saffron Code"></a>
     <br/>
     <a href="http://saffroncode.ir">http://saffroncode.ir</a>
     
