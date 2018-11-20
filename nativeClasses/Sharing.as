@@ -57,17 +57,15 @@ package nativeClasses
 			
 			if(isSupports())
 			{
-				
 				var options:* = new shareOptionClass();
-				options.title = "Share with ...";
-				//options.showOpenIn = true;
+				options.title = "Open with ...";
+				options.showOpenIn = true;
 				shareClass.service.showOpenIn(yourFile.nativePath,fileName,'application/vnd.openxmlformats-officedocument.wordprocessingml.document',options);
-				return 'Share done' ;
-				//shareClass.service.share(sharedString,imageBirmapData,'',options);
+				return 'Open done' ;
 			}
 			else
 			{
-				return "Share not support" ;
+				return "Open file not support" ;
 			}
 		}
 		
