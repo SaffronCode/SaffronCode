@@ -17,8 +17,6 @@
 		
 		public static var splitLargeTitles:Boolean = false ;
 		
-		public static var ShowHomeTitle:Boolean = true ;
-		
 		//protected var pageContainer:PageContainer ;
 		
 		private var myTitle:TitleText,
@@ -57,14 +55,14 @@
 			
 			
 			//Have to change like pageContainer
-			if((ShowHomeTitle || toEvent.myType == AppEvent.home) || toEvent.myID!=currentEvent.myID || toEvent.myType == AppEvent.refresh)
+			if(toEvent.myType == AppEvent.home || toEvent.myID!=currentEvent.myID || toEvent.myType == AppEvent.refresh)
 			{
 				this.prevFrame() ;
 				if(this.currentFrame == 1)
 				{
 					//pageContainer.setUp();
 					setTitle('');
-					if(!ShowHomeTitle && toEvent.myType == AppEvent.home)
+					if(toEvent.myType == AppEvent.home)
 					{
 						//this.visible = false ;
 						if(currentEvent != toEvent )
