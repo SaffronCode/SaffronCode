@@ -69,8 +69,7 @@ package socketJ
 		
 		protected static function socketConnected(event:Event):void
 		{
-			trace("* SocketJ connection faild, try to connect again");
-			tryToConnectLater();
+			trace("* SocketJ connected!! *");
 		}
 		
 		protected static function socketDataRecevied(event:ProgressEvent):void
@@ -90,7 +89,7 @@ package socketJ
 		{
 			disconnect();
 
-			trace("* SocketJ try connect *");
+			trace("* SocketJ try connect "+Ip+":"+Port+" *");
 			if(shouldBeConnect==false)
 			{
 				dispatcher.dispatchEvent(new Event(Event.CONNECT));
@@ -126,7 +125,7 @@ package socketJ
 				clearTimeout(connectionRetrierTimeOutId);
 			}
 			
-			private static function internetConnectionIsOK()
+			private static function internetConnectionIsOK(e:Event)
 			{
 				trace("* SocketJ is connected to web, try to conect to your socket now");
 				socketListener.connect(Ip,Port);
@@ -137,13 +136,27 @@ package socketJ
 		{
 			stopConnecting();
 			shouldBeConnect = false ;
-			socketListener.close();
+			if(socketListener.connected)
+				socketListener.close();
 			
 			trace("* SockjetJ Disconnected *");
 			
 			if(shouldBeConnect==false)
 			{
 				dispatcher.dispatchEvent(new Event(Event.CLOSE));
+			}
+		}
+		
+		
+		
+		////////////////////////////////////////////////////////////////////////////
+		
+		
+		public static function sendData():void
+		{
+			if(socketListener.connected)
+			{
+				
 			}
 		}
 	}
