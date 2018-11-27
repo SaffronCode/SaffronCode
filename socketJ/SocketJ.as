@@ -3,6 +3,7 @@ package socketJ
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IOErrorEvent;
+	import flash.events.OutputProgressEvent;
 	import flash.events.ProgressEvent;
 	import flash.events.SecurityErrorEvent;
 	import flash.net.Socket;
@@ -24,6 +25,9 @@ package socketJ
 		private static var connectionRetrierInterval:uint = 5000 ;
 		private static var connectionRetrierTimeOutId:uint;
 		
+		
+		private static var dataToSendList:Vector.<SocketJRequestModel> ;
+		
 		/**Pass true for ConnectInstantly variable to make it connect to server isntantly, otherwise, you should call Connect function by your self*/
 		public static function setUp(ip:String,port:uint,connectInstantly:Boolean=false):void
 		{
@@ -37,6 +41,8 @@ package socketJ
 				disconnect();
 			}
 			
+			dataToSendList = new Vector.<SocketJRequestModel>();
+			
 			Ip = ip ;
 			Port = port ;
 			
@@ -45,6 +51,7 @@ package socketJ
 			socketListener.addEventListener(IOErrorEvent.IO_ERROR,noConnectionAvailable);
 			socketListener.addEventListener(Event.CLOSE,socketClosed);
 			socketListener.addEventListener(SecurityErrorEvent.SECURITY_ERROR,sercurityError);
+			socketListener.addEventListener(OutputProgressEvent.OUTPUT_PROGRESS,socketDataOutputOk);
 			
 			if(connectInstantly)
 			{
@@ -70,6 +77,7 @@ package socketJ
 		protected static function socketConnected(event:Event):void
 		{
 			trace("* SocketJ connected!! *");
+			tryToSendLastData();
 		}
 		
 		protected static function socketDataRecevied(event:ProgressEvent):void
@@ -151,13 +159,56 @@ package socketJ
 		
 		////////////////////////////////////////////////////////////////////////////
 		
-		
-		public static function sendData():void
+		/**Send data to server, it will open the connection if the connection was closed.*/
+		public static function sendData(functinoId:uint,dataToSend:Object,replaceWithUnSentCommand:Boolean=true):void
 		{
+			if(replaceWithUnSentCommand)
+			{
+				for(var i:int = 0 ; i<dataToSendList.length ; i++)
+				{
+					if(functinoId == dataToSendList[i].FunctionId)
+					{
+						dataToSendList.splice(i,1);
+						i--;
+					}
+				}
+			}
+			dataToSendList.push(new SocketJRequestModel(functinoId,dataToSend));
 			if(socketListener.connected)
 			{
-				
+				tryToSendLastData();
+			}
+			else
+			{
+				connect();
 			}
 		}
+		
+			/**Try to send data que*/
+			private static function tryToSendLastData():void
+			{
+				if(dataToSendList.length>0)
+				{
+					trace("* SocketJ try to send first data *");
+					socketListener.writeUTFBytes(JSON.stringify(dataToSendList[0]));
+					socketListener.flush();
+				}
+				else
+				{
+					trace("* SocketJ No data left to send *");
+				}
+			}
+			
+			/**Socket data sent*/
+			protected static function socketDataOutputOk(event:OutputProgressEvent):void
+			{
+				// TODO Auto-generated method stub
+				trace("* Socket data sent *");
+				if(event.bytesPending==0)
+				{
+					dataToSendList.shift();
+					tryToSendLastData();
+				}
+			}
 	}
 }
