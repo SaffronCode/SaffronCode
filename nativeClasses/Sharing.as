@@ -50,6 +50,25 @@ package nativeClasses
 			}
 		}
 		
+		/**Share this text*/
+		public function openFile(yourFile:File,fileName:String=''):String
+		{
+			fileName = fileName==''?yourFile.name:fileName ;
+			
+			if(isSupports())
+			{
+				var options:* = new shareOptionClass();
+				options.title = "Open with ...";
+				options.showOpenIn = true;
+				shareClass.service.showOpenIn(yourFile.nativePath,fileName,'application/vnd.openxmlformats-officedocument.wordprocessingml.document',options);
+				return 'Open done' ;
+			}
+			else
+			{
+				return "Open file not support" ;
+			}
+		}
+		
 		/**You have to call Setup function to make it work*/
 		public function Sharing()
 		{
