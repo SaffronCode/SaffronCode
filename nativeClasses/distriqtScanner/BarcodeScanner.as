@@ -14,6 +14,8 @@ package nativeClasses.distriqtScanner
 		private var ButtonColor:uint ;
 		private var OnScan:Function ;
 		
+		public  var lastScannedCode:String;
+		
 		public function BarcodeScanner(distriqtId:String)
 		{
 			super();
@@ -32,11 +34,17 @@ package nativeClasses.distriqtScanner
 
 		}
 		
+		/**The scanner will put scanned barcode throw the first input of onScanned*/
 		public function scan(onScanned:Function,buttonColor:int=0xffffff,cancelButtonLabel:String = "Cancel"):void
 		{
 			CancelButtonLabel = cancelButtonLabel ;
 			OnScan = onScanned ;
 			ButtonColor = buttonColor;
+			
+			if(onScanned.length==0)
+			{
+				trace("********* You should receive a paramerer throw your onScanned *********");
+			}
 			
 			if (Scanner.isSupported)
 			{
@@ -114,7 +122,15 @@ package nativeClasses.distriqtScanner
 		private function codeFoundHandler( event:ScannerEvent ):void
 		{
 			trace("Data scanned : "+event.data);
-			OnScan(event.data);
+			lastScannedCode = event.data ;
+			if(OnScan.length>0)
+			{
+				OnScan(event.data);
+			}
+			else
+			{
+				OnScan();
+			}
 		}
 	}
 }
