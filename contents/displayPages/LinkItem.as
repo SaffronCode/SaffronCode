@@ -22,9 +22,9 @@
 		protected var myImage:Image;
 		
 		protected var myTitle:TitleText ;
-		
+		public var emtiaz:TitleText;
 		protected var myParag:TextParag ;
-		
+		public static var showemtiaz:Boolean=false;
 		public var myLinkData:LinkData ;
 		
 		public static var alignVariabel:Boolean = false;
@@ -53,6 +53,11 @@
 		public function LinkItem(mouseChildAccept:Boolean=false,searchForElements:Boolean=true)
 		{
 			super();
+			emtiaz = Obj.get("emtiaz_mc", this);
+			/*if (showemtiaz==true && emtiaz != null)
+			{
+				
+			}*/
 			if(searchForElements)
 			{
 				var images:Array = Obj.findAllClass(Image,this);
@@ -230,6 +235,19 @@
 			{
 				myParag.setUp(linkData.name,true,alignVariabel);
 			}
+			if (showemtiaz==true && emtiaz != null)
+			{
+				emtiaz.setUp(linkData.id);
+			}
+			if (linkData.x == 1)
+			{
+				this.gotoAndStop(2);
+			}
+			else
+			{
+				this.gotoAndStop(1);
+			}
+			
 		}
 		
 		public function imSelected(event:MouseEvent=null):void
@@ -274,6 +292,7 @@
 				//trace("Dispatch linkData");
 				this.dispatchEvent(new AppEventContent(myLinkData));
 			}
+			
 		}
 	}
 }
