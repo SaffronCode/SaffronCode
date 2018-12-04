@@ -14,6 +14,8 @@
 	
 	/**Text field is changed*/
 	[Event(name="change", type="flash.events.Event")]
+	/**Text field is changing*/
+	[Event(name="render", type="flash.events.Event")]
 	public class PopField extends PopFieldInterface
 	{
 		private var myTXT:TextField ;
@@ -133,6 +135,7 @@
 		
 		override public function get data():*
 		{
+			text = myTXT.text;
 			if(phoneControl)
 			{
 				var cash:String = PhoneNumberEditor.clearPhoneNumber(text);
@@ -228,7 +231,8 @@
 				TextPutter.OnButton(tagNameTXT,tagName,StringFunctions.isPersian(tagName),false,true);
 			}
 			myTXT = Obj.getAllChilds('txt_txt',this,false)[0];
-			myTXT.addEventListener(Event.CLOSE,dispatchChangeForMeToo);
+			myTXT.addEventListener(Event.CLOSE, dispatchChangeForMeToo);
+			myTXT.addEventListener(Event.CHANGE, dispatchRenderEventForMe);
 			
 			myTXT.maxChars = maxChar ;
 			myTXT.borderColor = 0xD92C5C;
@@ -337,6 +341,11 @@
 				this.addEventListener(MouseEvent.CLICK,switchRadioButton);
 				this.removeEventListener(MouseEvent.CLICK,editThisText);
 			}
+		}
+		
+		private function dispatchRenderEventForMe(e:Event):void 
+		{
+			this.dispatchEvent(new Event(Event.RENDER));
 		}
 		
 		protected function increaseValue(event:MouseEvent):void
