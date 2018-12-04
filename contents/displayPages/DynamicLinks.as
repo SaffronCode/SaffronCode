@@ -1028,25 +1028,38 @@ package contents.displayPages
 
 
             var sens:Rectangle = linksSensor.getBounds(this);
-			if(!addingLinksOver
+			if(
+				!addingLinksOver
 				&&
-				(loadAllLinksInstantly ||
-					(!horizontalMenu
-						&& !revertedY
-						&& sens.top-areaRect.height<areaRect.bottom
-					) || (
-						!horizontalMenu
-						&& revertedY
-						&& sens.bottom+areaRect.height>areaRect.top
-					)
-					|| (
-						horizontalMenu 
-						&& !revertedX 
-						&& sens.left-areaRect.width<areaRect.right
-					) || (
-						horizontalMenu 
-						&& revertedX 
-						&& sens.right+areaRect.width>areaRect.left
+				(
+					dynamicHeight
+					||
+					(
+						loadAllLinksInstantly 
+						||
+						(
+							!horizontalMenu
+							&& !revertedY
+							&& sens.top-areaRect.height<areaRect.bottom
+						) 
+						|| 
+						(
+							!horizontalMenu
+							&& revertedY
+							&& sens.bottom+areaRect.height>areaRect.top
+						)
+						|| 
+						(
+							horizontalMenu 
+							&& !revertedX 
+							&& sens.left-areaRect.width<areaRect.right
+						) 
+						|| 
+						(
+							horizontalMenu 
+							&& revertedX 
+							&& sens.right+areaRect.width>areaRect.left
+						)
 					)
 				)
 			)
@@ -1282,6 +1295,10 @@ package contents.displayPages
 		/**Returns true if the selected linkIndex can stand on the stage*/
 		private function showOrHideLinkItemByCalculation(linkIndex:uint):Boolean
 		{
+			if(dynamicHeight)
+			{
+				return true ;
+			}
 			if(horizontalMenu)
 			{
 				if(revertedX)
