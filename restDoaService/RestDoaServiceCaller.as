@@ -294,7 +294,7 @@
 			var correctedLoadedData:String = pureRecevedData;//pureRecevedData.substring(1,pureRecevedData.length-1).split('\\"').join('\"').split("\\\\u003cbr\\\\u003e").join('\\n').split("<br>").join('\\n');
 			//correctedLoadedData = StringFunctions.clearDoubleQuartmarksOnJSON(correctedLoadedData);
 			//trace("Corrected data is : "+correctedLoadedData);
-			if((ignoreHTTPStatus || (HTTPStatus!=502 && HTTPStatus!=500)) && requestedData!=null)
+			if((ignoreHTTPStatus || (HTTPStatus!=502 && HTTPStatus!=500)) && requestedData!=null && pureRecevedData!='')
 			{
 				if(loadedData is String)
 				{
