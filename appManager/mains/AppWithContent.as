@@ -340,6 +340,8 @@
 					trace("History changed");
 					History.pushHistory((event as AppEventContent).linkData);
 				}
+				
+				StageManager.StopControllStageSize();
 			}
 			
 			return duplicatePageController ;
