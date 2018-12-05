@@ -341,7 +341,10 @@
 					History.pushHistory((event as AppEventContent).linkData);
 				}
 				
-				StageManager.StopControllStageSize();
+				if(!DevicePrefrence.isItPC)
+				{
+					StageManager.StopControllStageSize();
+				}
 			}
 			
 			return duplicatePageController ;
