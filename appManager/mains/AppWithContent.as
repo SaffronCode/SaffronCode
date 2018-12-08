@@ -70,6 +70,8 @@
 
 		public var URISchemId:String;
 		
+		private var mouseClickCounter:uint ;
+		
 		/**This is the contentManager rectangle size. it will generate from the content w and h on the home xml tag*/
 		public static function get contentRect():Rectangle
 		{
@@ -93,6 +95,10 @@
 			manageStageManager = activateBackSwap || manageStageManager ;
 			super(autoChangeMusics,skipAllAnimations,activateShineEffect,PlaySounOnBackGroundTo);
 			DevicePrefrence.setUp();
+			
+			stage.addEventListener(MouseEvent.MOUSE_DOWN, function(e){
+				mouseClickCounter++;
+			})
 			
 			if(activateWorkers)
 			{
@@ -341,9 +347,9 @@
 					History.pushHistory((event as AppEventContent).linkData);
 				}
 				
-				if(!DevicePrefrence.isItPC)
+				if((!DevicePrefrence.isItPC) && mouseClickCounter>0)
 				{
-					StageManager.StopControllStageSize();
+					StageManager.StopControllStageSize(event.myID != Contents.homeID);
 				}
 			}
 			
