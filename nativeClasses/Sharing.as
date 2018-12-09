@@ -60,7 +60,8 @@ package nativeClasses
 				var options:* = new shareOptionClass();
 				options.title = "Open with ...";
 				options.showOpenIn = true;
-				shareClass.service.showOpenIn(yourFile.nativePath,fileName,'application/vnd.openxmlformats-officedocument.wordprocessingml.document',options);
+				//'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+				shareClass.service.showOpenIn(yourFile.nativePath,fileName,null,options);
 				return 'Open done' ;
 			}
 			else
