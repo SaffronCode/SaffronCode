@@ -80,6 +80,7 @@ package sliderMenu
 		
 		
 		////////////////////animation functions
+		private static var frameRateControlled:Boolean;
 		
 		/**opent this menu*/
 		public static function openMenu(MenuDirection:String = null)
@@ -454,6 +455,13 @@ package sliderMenu
 				myStage.addEventListener(MouseEvent.MOUSE_UP,stopDrag);
 				myStage.addEventListener(Event.ENTER_FRAME,anim);
 				
+				if(!frameRateControlled)
+				{
+					var frameRatePrecent:Number = myStage.frameRate/30 ;
+					
+					frameRateControlled = true ;
+					animSpeed = animSpeed*frameRatePrecent;
+				}
 				//detectSizes();
 			}
 		}
