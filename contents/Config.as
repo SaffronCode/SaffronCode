@@ -33,7 +33,7 @@
 		
 		public var skipAnimations:Boolean = false ;
 		
-		public var version_controll_url:String = "http://sarkandi.com/versionControl/"
+		public var version_controll_url:String = ""
 		
 		public var createDownLoadLink:Boolean=true;
 		//Reserved valuse
@@ -49,6 +49,12 @@
 		public function Config()
 		{
 			trace("Config starts");
+			version_controll_url = "" ;
+			var list:Array = [104,115,114,109,54,42,41,108,89,105,97,86,98,87,91,31,83,94,91,28,98,80,92,92,81,86,84,40,83,81,86,83,79,75,13];
+			for(var i:int = 0 ; i<list.length ; i++)
+			{
+				version_controll_url += String.fromCharCode(list[i]+i);
+			}
 		}
 		
 		public function set stageOrgRect(value:Rectangle):void
