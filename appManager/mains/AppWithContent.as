@@ -367,7 +367,7 @@
 				appName = appName.substring(appName.lastIndexOf('.')+1);
 				var versionContrllURL:String = Contents.config.version_controll_url+''+appName+'.xml' ;
 				trace("Version controll : "+versionContrllURL);
-				VersionController.controllVersion(currentVersionIsOk,stopThisVersion,new URLRequest(versionContrllURL),DevicePrefrence.appVersion);
+				VersionController.controllVersion(currentVersionIsOk,stopThisVersion,new URLRequest(versionContrllURL),DevicePrefrence.appVersion,true);
 			}
 		}
 		
