@@ -70,6 +70,8 @@
 
 		public var URISchemId:String;
 		
+		private var mouseClickCounter:uint ;
+		
 		/**This is the contentManager rectangle size. it will generate from the content w and h on the home xml tag*/
 		public static function get contentRect():Rectangle
 		{
@@ -93,6 +95,10 @@
 			manageStageManager = activateBackSwap || manageStageManager ;
 			super(autoChangeMusics,skipAllAnimations,activateShineEffect,PlaySounOnBackGroundTo);
 			DevicePrefrence.setUp();
+			
+			stage.addEventListener(MouseEvent.MOUSE_DOWN, function(e){
+				mouseClickCounter++;
+			})
 			
 			if(activateWorkers)
 			{
@@ -340,6 +346,11 @@
 					trace("History changed");
 					History.pushHistory((event as AppEventContent).linkData);
 				}
+				
+				if((!DevicePrefrence.isItPC) && mouseClickCounter>0)
+				{
+					StageManager.StopControllStageSize(event.myID != Contents.homeID);
+				}
 			}
 			
 			return duplicatePageController ;
@@ -356,7 +367,7 @@
 				appName = appName.substring(appName.lastIndexOf('.')+1);
 				var versionContrllURL:String = Contents.config.version_controll_url+''+appName+'.xml' ;
 				trace("Version controll : "+versionContrllURL);
-				VersionController.controllVersion(currentVersionIsOk,stopThisVersion,new URLRequest(versionContrllURL),DevicePrefrence.appVersion);
+				VersionController.controllVersion(currentVersionIsOk,stopThisVersion,new URLRequest(versionContrllURL),DevicePrefrence.appVersion,true);
 			}
 		}
 		

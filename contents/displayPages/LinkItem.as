@@ -22,9 +22,7 @@
 		protected var myImage:Image;
 		
 		protected var myTitle:TitleText ;
-		
 		protected var myParag:TextParag ;
-		
 		public var myLinkData:LinkData ;
 		
 		public static var alignVariabel:Boolean = false;
@@ -230,6 +228,7 @@
 			{
 				myParag.setUp(linkData.name,true,alignVariabel);
 			}
+			
 		}
 		
 		public function imSelected(event:MouseEvent=null):void
@@ -274,6 +273,7 @@
 				//trace("Dispatch linkData");
 				this.dispatchEvent(new AppEventContent(myLinkData));
 			}
+			
 		}
 	}
 }
