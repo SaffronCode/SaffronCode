@@ -72,7 +72,7 @@
 • <a href="https://github.com/MTeamCo/FlexLibs-andOthers">نسخه ی آخر Flex و چند کتابخانه swc عمومی دیگر</a><br>
 • <a href="https://www.adobe.com/devnet/air/air-sdk-download.html">دانلود آخرین نسخهAir SDK</a><br>
     <br>
-برای تست نمونه فایل های داخل https://github.com/MTeamCo/SaffronCode/tree/master/FLA را دریافت و فایل PureSaffron.fla را اجرا کنید.<br>
+برای تست نمونه فایل های داخل https://github.com/SaffronCode/SaffronSamples را دریافت و فایل PureSaffron.fla را اجرا کنید.<br>
 <br>
 • کتابخانه ها را به محیط Adobe animate معرفی کنید<br>
     - Edit > Prefrence... > Compiler<br>
