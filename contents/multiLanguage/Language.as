@@ -262,15 +262,22 @@
 			//trace("Manage all calls");
 			for(var i = 0  ; i<targ.numChildren ; i++)
 			{
-				var targ2:* = targ.getChildAt(i);
-				if(targ2 is DisplayObjectContainer)
-				{
-					(targ2 as DisplayObject).dispatchEvent(new Event(Event.ADDED,true));
-					manageAll(targ2);
+				try
+				{	
+					var targ2:* = targ.getChildAt(i);
+					if(targ2 is DisplayObjectContainer)
+					{
+						(targ2 as DisplayObject).dispatchEvent(new Event(Event.ADDED,true));
+						manageAll(targ2);
+					}
+					if(targ2 is TextField)
+					{
+						(targ2 as TextField).dispatchEvent(new Event(Event.ADDED,true));
+					}
 				}
-				if(targ2 is TextField)
+				catch(e)
 				{
-					(targ2 as TextField).dispatchEvent(new Event(Event.ADDED,true));
+					trace('manageAll Error');
 				}
 			}	
 		}
