@@ -240,6 +240,8 @@
 			trace("Math.abs(this.x-X0)"+Math.abs(this.x-X0));
 			if(
 				myLinkData!=null 
+				&&
+				myLinkData.id != ''
 				&& 
 				(
 					!slideAnimationActivated 

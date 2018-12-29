@@ -70,7 +70,7 @@ package sliderMenu
 		private static var mouseFirstPose:Point;
 		
 		
-		private static var animSpeed:uint = 2;
+		public static var animSpeed:uint = 2;
 		
 		
 	/////////////////////////////////

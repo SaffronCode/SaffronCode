@@ -126,7 +126,7 @@
 		{
 			setUp(StageManager.stageRect);
 			ME.x = StageManager.stageDelta.width/-2;
-			ME.y = StageManager.stageDelta.height/-2;
+			ME.y = StageManager.stageDelta.height/-2+StageManager.stageDelta.y;
 		}
 		
 		private function setUp(pageRectangle:Rectangle):void
