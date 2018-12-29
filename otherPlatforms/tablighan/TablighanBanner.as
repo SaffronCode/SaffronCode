@@ -1,60 +1,47 @@
 package otherPlatforms.tablighan
 	//otherPlatforms.tablighan.TablighanBanner
 {
+	import appManager.displayContentElemets.LightImage;
+	
+	import contents.alert.Alert;
+	
+	import flash.desktop.NativeApplication;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.MovieClip;
 	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.filters.BlurFilter;
 	import flash.geom.Rectangle;
-	import flash.media.StageWebView;
+	import flash.net.URLRequest;
+	import flash.net.navigateToURL;
+	import flash.text.Font;
 	import flash.text.TextField;
-	
-	import mx.effects.Blur;
 	
 	import permissionControlManifestDiscriptor.PermissionControl;
 	
-	import stageManager.StageManager;
+	import restDoaService.RestDoaEvent;
 	
 	/**First you need to call TablighanBanner.setUp() function to pass main url for the Tablighan server, then pass it to the initialize function or add a textField to the object and pass the Tablighan id to it*/
 	public class TablighanBanner extends MovieClip
 	{
-		private static var myDomain:String ;
-		//private var Tablighanmc:MovieClip;
-		//private static var swList:Vector.<SWObject> = new Vector.<SWObject>();
-		
-		public static var userAbsoluteNativeBrowser:Boolean = true ; 
-		
 		private var BannerId:String ;
 		
-		internal var mySW:SWObject ;
+		private var service_tablighanAPI:TablighanAPI ;
 		
-		private var isSatUpOnce:Boolean ;
-		
-		private var capturedBannerBitmap:BitmapData ;
+		private var bannerImage:LightImage ;
 		
 		/**First you need to call TablighanBanner.setUp() function to pass main url for the Tablighan server, then pass it to the initialize function or add a textField to the object and pass the Tablighan id to it*/
 		public function TablighanBanner(Width:Number=0,Height:Number=0,bannerId:String=null)
 		{
 			super();
 			
-			if(!isSatUpOnce)
-			{
-				PermissionControl.VideoTagForStageWebView();
-				if(DevicePrefrence.isItPC)
-					userAbsoluteNativeBrowser = false ; 
-				isSatUpOnce = true ;
-			}
-			//Tablighanmc = Obj.get("Tablighan_mc",this);
+			
 			if(Width==0 || Height==0)
 			{
 				Width = this.width;
 				Height = this.height ;
 			}
-			
-			capturedBannerBitmap = new BitmapData(this.width,this.height,true,0x00000000);
-			var bitmap:Bitmap = new Bitmap(capturedBannerBitmap);
-			bitmap.filters = [new BlurFilter(20,20)] ;
 			
 			if(bannerId==null)
 			{
@@ -78,108 +65,64 @@ package otherPlatforms.tablighan
 			this.removeChildren();
 			if(Width!=0 && Height!=0)
 			{
-				this.graphics.beginFill(0,0);
-				this.graphics.drawRect(0,0,Width,Height);
+				this.graphics.beginFill(0xff0000,0);
+				this.graphics.drawRect(0,0,Width/this.scaleX,Height/this.scaleY);
 			}
+			bannerImage = new LightImage(0x000000,0);
+			this.addChild(bannerImage);
 			
-			if(myDomain==null || bannerId==null)
-			{
-				//throw "First you need to call TablighanBanner.setUp() function to pass main url for the Tablighan server, then pass it to the initialize function or add a textField to the object and pass the Tablighan id to it" ;
-				setDomain();
-			}
-			//this.alpha = 0 ;
-			this.addChild(bitmap);
 			BannerId = bannerId ;
-			controlStage();
+			loadService();
+			NativeApplication.nativeApplication.addEventListener(Event.ACTIVATE,loadService);
+			this.addEventListener(MouseEvent.CLICK,openURL);
+			this.buttonMode = true ;
 		}
 		
-		private function controlStage():void
+		protected function openURL(event:MouseEvent):void
 		{
-			if(stage==null)
+			if(service_tablighanAPI.data.length>0)
 			{
-				this.addEventListener(Event.ADDED_TO_STAGE,setUp);
-			}
-			else
-			{
-				setUp();
+				navigateToURL(new URLRequest(service_tablighanAPI.data[0].ReferenceURL));
 			}
 		}
 		
-		/**Set my banner*/
-		private function setUp(e:*=null):void
-		{
-			//Debug line
-				mySW = null ;
-			/*for(var i:int = 0 ; i<swList.length ; i++)
+			private function loadService(e:*=null):void
 			{
-				if(swList[i].id == BannerId)
+				if(service_tablighanAPI)
 				{
-					mySW = swList[i] ;
-					break;
+					service_tablighanAPI.cansel();
+					service_tablighanAPI = null ;
 				}
-			}*/
-			if(mySW==null)
-			{
-				var newSW:SWObject = new SWObject(BannerId,userAbsoluteNativeBrowser);
-				//swList.push(newSW);
-				mySW = newSW ;
+				service_tablighanAPI = new TablighanAPI();
+				service_tablighanAPI.addEventListener(RestDoaEvent.SERVER_RESULT,tablighanLoaded);
+				service_tablighanAPI.addEventListener(RestDoaEvent.CONNECTION_ERROR,reloadTablighan);
+				
+				this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
+				
+				service_tablighanAPI.load(BannerId);
 			}
-			//if(mySW.isLoaded == false)
-			//{
-				mySW.load(myDomain,"&individual=true&App=true&AutoPlay=false");
-			//}
-			
-			updateMyPlace(null);
-			
-			this.addEventListener(Event.ENTER_FRAME,updateMyPlace);
-			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
-			//Tablighanmc.height = this.y
+		
+				protected function reloadTablighan(event:Event):void
+				{
+					service_tablighanAPI.reLoad(10000);
+				}
+		
+		protected function tablighanLoaded(event:Event):void
+		{
+			if(service_tablighanAPI.data.length>0)
+			{
+				//bannerImage.setUp("http://tablighon.com/Uploads/"+service_tablighanAPI.data[0].AdFileName,true,this.width/this.scaleX,this.height/this.scaleY,0,0,false);
+				bannerImage.setUp("http://tablighon.com/Uploads/ab643bb7-eb23-490c-b983-a66703e7207e.jpg?"+new Date().time,true,this.width/this.scaleX,this.height/this.scaleY,0,0,false);;
+			}
 		}
 		
 		/**Removed from stage*/
 		protected function unLoad(event:Event):void
 		{
-			this.removeEventListener(Event.ENTER_FRAME,updateMyPlace);
-			this.removeEventListener(Event.REMOVED_FROM_STAGE,unLoad);
-			mySW.sw.stage = null ;
-			mySW.sw.dispose();
-			//mySW.reload();
+			service_tablighanAPI.cansel();
+			NativeApplication.nativeApplication.removeEventListener(Event.ACTIVATE,loadService);
 		}
 		
-		/**Update place of banner*/
-		protected function updateMyPlace(event:Event):void
-		{
-			if(mySW.isLoaded && Obj.isAccesibleByMouse(this))
-			{
-				mySW.sw.stage = this.stage ;
-			}
-			else
-			{
-				if(mySW.sw.stage!=null)
-					mySW.sw.drawViewPortToBitmapData(capturedBannerBitmap);
-				mySW.sw.stage = null ;
-			}
-			/*if(false && userAbsoluteNativeBrowser)
-			{
-				//mySW.sw.viewPort = StageManager.createViewPortForNatives(this.getBounds(stage));
-			}
-			else
-			{*/
-			var rect:Rectangle = this.getBounds(stage); 
-				rect.x = Math.round(rect.x);
-				rect.y = Math.round(rect.y);
-				rect.width = Math.round(rect.width);
-				rect.height = Math.round(rect.height);
-			mySW.sw.viewPort = rect ;
-			//}
-		}
 		
-	//////////////////////////////////////////////////////
-		
-		/**http://185.83.208.175:9095/api/feed?HostId=1d9163b3-fd60-415a-be59-6e92f832ff23*/
-		private static function setDomain():void
-		{
-			myDomain = 'http://api.tablighon.com/'+"api/feed?HostId=" ;
-		}
 	}
 }
