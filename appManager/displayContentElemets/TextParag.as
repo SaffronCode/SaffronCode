@@ -203,6 +203,7 @@
 			}
 			if(scrollMC)
 			{
+				scrollMC.setPose(0, 0);
 				scrollMC.unLoad();
 			}
 			if(useNativeText)
