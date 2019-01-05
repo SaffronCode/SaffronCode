@@ -86,6 +86,7 @@
 					
 		private var isGet:Boolean ;
 		private var _isLoading:Boolean;
+		private var getRequestedData:Object;
 		
 		
 		/**Do not pass null value as RequestedData, it will cause an Error!!<br>
@@ -235,7 +236,7 @@
 			}
 			else
 			{
-				dispatch(new RestDoaEvent(RestDoaEvent.CONNECTION_ERROR,HTTPStatus,isConnected));
+				dispatch(new RestDoaEvent(RestDoaEvent.CONNECTION_ERROR,HTTPStatus,isConnected,getRequestedData,requestedData));
 			}
 			/*try
 			{
@@ -327,7 +328,7 @@
 			}
 			else if(alreadyLoadedFromCash==false && (HTTPStatus==502 || HTTPStatus==500))
 			{
-				dispatch(new RestDoaEvent(RestDoaEvent.CONNECTION_ERROR,HTTPStatus,isConnected));
+				dispatch(new RestDoaEvent(RestDoaEvent.CONNECTION_ERROR,HTTPStatus,isConnected,getRequestedData,requestedData));
 				return;
 			}
 			//the receved data is not converted correctly
@@ -340,7 +341,7 @@
 			{
 				trace("Server problem");
 				//if(this.hasEventListener(RestEvent.SERVER_ERROR))
-				var serverError:RestDoaEvent = new RestDoaEvent(RestDoaEvent.SERVER_ERROR,HTTPStatus,isConnected) ;
+				var serverError:RestDoaEvent = new RestDoaEvent(RestDoaEvent.SERVER_ERROR,HTTPStatus,isConnected,getRequestedData,requestedData) ;
 				if(hasErrorListenerAndDispatchOnglobal(serverError))
 				{	
 					//this.dispatchEvent(new RestEvent(RestEvent.SERVER_ERROR,parser.msgs));
@@ -370,18 +371,18 @@
 						//I have to upste lastPureData befor dispatching the event
 						if(this.hasEventListener(RestDoaEvent.SERVER_RESULT_UPDATE))
 						{
-							dispatch(new RestDoaEvent(RestDoaEvent.SERVER_RESULT_UPDATE,HTTPStatus,isConnected));
+							dispatch(new RestDoaEvent(RestDoaEvent.SERVER_RESULT_UPDATE,HTTPStatus,isConnected,getRequestedData,requestedData));
 						}
 						else
 						{
-							dispatch(new RestDoaEvent(RestDoaEvent.SERVER_RESULT,HTTPStatus,isConnected))
+							dispatch(new RestDoaEvent(RestDoaEvent.SERVER_RESULT,HTTPStatus,isConnected,getRequestedData,requestedData))
 						}
 						//this.dispatchEvent(new RestEvent(RestEvent.SERVER_RESULT_UPDATE));
 					}
 					else
 					{
 						trace("* Nothing change on this update");
-						dispatch(new RestDoaEvent(RestDoaEvent.SERVER_WAS_UPDATED,HTTPStatus,isConnected));
+						dispatch(new RestDoaEvent(RestDoaEvent.SERVER_WAS_UPDATED,HTTPStatus,isConnected,getRequestedData,requestedData));
 					}
 				}
 				else
@@ -389,7 +390,7 @@
 					//this.dispatchEvent(new RestEvent(RestEvent.SERVER_RESULT));
 					//I have to upste lastPureData befor dispatching the event
 					trace("Result event dispatching");
-					dispatch(new RestDoaEvent(RestDoaEvent.SERVER_RESULT,HTTPStatus,isConnected))
+					dispatch(new RestDoaEvent(RestDoaEvent.SERVER_RESULT,HTTPStatus,isConnected,getRequestedData,requestedData))
 				}
 			}
 		}
@@ -404,6 +405,7 @@
 			onUpdateProccess = false ;
 			if(obj!=null)
 			{
+				getRequestedData = obj;
 				var urlVars:URLVariables;
 				//trace("Send this data : "+JSON.stringify(myParams,null,'\t'));
 				if(isGet)
