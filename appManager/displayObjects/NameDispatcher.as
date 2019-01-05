@@ -1,5 +1,5 @@
 package appManager.displayObjects
-{
+{//appManager.displayObjects
 	import appManager.event.AppEvent;
 	
 	import flash.display.MovieClip;
