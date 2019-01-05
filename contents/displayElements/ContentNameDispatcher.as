@@ -21,9 +21,16 @@ package contents.displayElements
 		
 		private var isInHistory:Boolean = false ;
 		
-		public function ContentNameDispatcher(defaultLinkLevel:Number=NaN)
+		private var maxDepthToSearchOnHistory:uint = uint.MAX_VALUE ;
+		
+		public function ContentNameDispatcher(defaultLinkLevel:Number = NaN, maxDepthToSearchOnHistory:uint = 0 )
 		{
 			super();
+			
+			if (maxDepthToSearchOnHistory > 0)
+			{
+				this.maxDepthToSearchOnHistory = maxDepthToSearchOnHistory ;
+			}
 			
 			if(!isNaN(defaultLinkLevel))
 			{
@@ -65,7 +72,7 @@ package contents.displayElements
 			}
 			else
 			{
-				isInHistory = History.isHistoryContainsThePageNamed(this.name);
+				isInHistory = History.isHistoryContainsThePageNamed(this.name,maxDepthToSearchOnHistory);
 			}
 		}
 		

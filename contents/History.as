@@ -127,13 +127,13 @@
 	///////////////////////////////////
 		
 		/**Returns true if this page was on history*/
-		public static function isHistoryContainsThePageNamed(pageId:String):Boolean
+		public static function isHistoryContainsThePageNamed(pageId:String,maxDepthToSearch:uint=uint.MAX_VALUE):Boolean
 		{
 			if(pageId == Contents.homeID)
 			{
 				return (history==null || history.length==0 || (history.length==1 && history[0].id == pageId)) ;
 			}
-			for(var i:int = 0 ; history!=null && i<history.length ; i++)
+			for(var i:int = 0 ; history!=null && i<Math.min(maxDepthToSearch,history.length) ; i++)
 			{
 				if(history[i].id == pageId)
 				{
