@@ -56,20 +56,24 @@ package restDoaService
 		 * 502:Connection Failed<br>
 		 * For read full list, please visit <a href="https://en.wikipedia.org/wiki/List_of_HTTP_status_codes">https://en.wikipedia.org/wiki/List_of_HTTP_status_codes</a>*/
 		public var errorCode:int,
-					isConnect:Boolean;
+					isConnect:Boolean,
+					getRequestedData:Object,
+					resultData:Object;
 		//public static var SERVER_RESULT_puInquiry_fun:String;
 		
 		/***ErrorEnum.noError**/
-		public function RestDoaEvent(type:String,ErrorCode:int=0,isConnected:Boolean=true)
+		public function RestDoaEvent(type:String,ErrorCode:int=0,isConnected:Boolean=true,RequestData:Object=null,ResultData:Object=null)
 		{
 			errorCode = ErrorCode ;
 			isConnect = isConnected ;
+			getRequestedData = RequestData;
+			resultData = ResultData;
 			super(type,false);
 		}
 		
 		override public function clone():Event
 		{
-			return new RestDoaEvent(type,errorCode,isConnect);
+			return new RestDoaEvent(type,errorCode,isConnect,getRequestedData,resultData);
 		}
 	}
 }
