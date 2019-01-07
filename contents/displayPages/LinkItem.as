@@ -7,6 +7,7 @@
 	import appManager.event.AppEventContent;
 	
 	import contents.LinkData;
+	import contents.alert.Alert;
 	
 	import flash.display.MovieClip;
 	import flash.display.Stage;
@@ -241,7 +242,11 @@
 			if(
 				myLinkData!=null 
 				&&
-				myLinkData.id != ''
+				(
+					myLinkData.id != ''
+					||
+					myLinkData.dynamicData != null
+				)
 				&& 
 				(
 					!slideAnimationActivated 
