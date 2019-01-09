@@ -32,6 +32,10 @@ package saffronEvents
 		/**Password changing error*/
 		public static const PASSWORD_ERROR:String = "PASSWORD_ERROR" ;
 		
+		public static const INPUT_PASSWORD:String = "INPUT_PASSWORD" ;	
+		
+		public static const NEW_PASSWORD:String = "NEW_PASSSWORD";
+		
 		/**This is the request to open the loggin page*/
 		public static const OPEN_LOGIN_PAGE:String = "OPEN_LOGIN_PAGE" ;
 		
