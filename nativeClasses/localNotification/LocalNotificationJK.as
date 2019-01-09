@@ -71,7 +71,7 @@ package nativeClasses.localNotification
 				notification.title = DevicePrefrence.appName;
 				notification.body = WakeMessage;
 				notification.fireDate = new Date((new Date()).time + resetNotification);
-				notification.numberAnnotation = 1;
+				notification.numberAnnotation = 0;
 				notification.priority = NotificationPriority.HIGH;
 				notification.showInForeground = false;
 				notification.allowWhileIdle = true;
