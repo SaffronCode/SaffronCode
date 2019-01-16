@@ -18,7 +18,7 @@ package otherPlatforms.tablighan
 		
 		public function load(hostid:String):void
 		{
-			super.loadParam({hostid:hostid});
+			super.loadParam({hostid:hostid,Individual:true});
 		}
 	}
 }
