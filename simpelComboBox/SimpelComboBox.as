@@ -45,6 +45,7 @@ package simpelComboBox
 				if(_titleText!=null)
 				{
 					_titleText.addEventListener(Event.ADDED_TO_STAGE,titleAddToStage);	
+					_titleText.setUp(list[_defualtIndex].title,true,_splitTitle);
 				}
 				Item.Id = list_p[0].id;
 				Item.Title = list_p[0].title;
