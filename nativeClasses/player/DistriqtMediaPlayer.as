@@ -4,6 +4,7 @@
 	
 	//import contents.alert.Alert;
 	
+	import com.distriqt.extension.mediaplayer.MediaPlayerOptions;
 	import flash.desktop.NativeApplication;
 	import flash.desktop.SystemIdleMode;
 	import flash.display.Sprite;
@@ -25,6 +26,8 @@
 		
 		/**com.distriqt.extension.mediaplayer.MediaPlayer*/
 		private static var MediaPlayerClass:Class ;
+		
+		private static var MediaPlayerOptions:Class;
 		
 		private static var myDistriqtId:String ;
 		
@@ -168,7 +171,13 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 				videoURL = new File(videoURL).nativePath;
 			}
 
-			player = (MediaPlayerClass as Object).service.createPlayer(videoURL,rect.x,rect.y,rect.width,rect.height,autoPlay,controlls,true);
+			//player = (MediaPlayerClass as Object).service.createPlayer(	videoURL,rect.x,rect.y,rect.width,rect.height,autoPlay,controlls,true);
+			
+			player = (MediaPlayerClass as Object).service.createPlayerView(new MediaPlayerOptions().setViewport(rect).setAutoPlay(true).showControls(true));
+			player.load(videoURL);
+			//player = (MediaPlayerClass as Object).service.createPlayerView(new (MediaPlayerOptions as Object)().setViewport(new Rectangle( rect.x, rect.x, rect.width, rect.height)));
+			//var options:MediaPlayerOptions = new MediaPlayerOptions()
+			//setAutoPlay( true );
 
 			(MediaPlayerClass as Object).service.addEventListener(FULLSCREEN_ENTER,isFullscreened);
 			(MediaPlayerClass as Object).service.addEventListener(FULLSCREEN_EXIT,exitFullscreened);
@@ -353,11 +362,13 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 			try
 			{
 				MediaPlayerClass = getDefinitionByName("com.distriqt.extension.mediaplayer.MediaPlayer") as Class ;
+				MediaPlayerOptions = getDefinitionByName("com.distriqt.extension.mediaplayer.MediaPlayerOptions") as Class;
 				trace("+++Media player starts+++");
 			}
 			catch(e)
 			{
 				MediaPlayerClass = null ;
+				MediaPlayerOptions = null;
 				isSupports = false ;
 				trace('*********************** You dont have com.distriqt.extension.mediaplayer.MediaPlayer embeded in your project **************************');
 				return ;
