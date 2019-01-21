@@ -227,7 +227,7 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 		protected function isFullscreened(event:Event):void
 		{
 			trace("*** Set full screen !! : "+event);
-			if(/*!isFullScreen && */DevicePrefrence.isPortrait() && isFullScreen!=true)
+			if(false && /*!isFullScreen && */DevicePrefrence.isPortrait() && isFullScreen!=true)
 			{
 				var toLanscapeOrientation:String = revertLandScape(lastLandscapeOrientation) ;
 				
