@@ -4,6 +4,9 @@
 	
 	//import contents.alert.Alert;
 	
+	//import com.distriqt.extension.mediaplayer.MediaPlayerOptions;
+	import contents.alert.Alert;
+	
 	import flash.desktop.NativeApplication;
 	import flash.desktop.SystemIdleMode;
 	import flash.display.Sprite;
@@ -25,6 +28,8 @@
 		
 		/**com.distriqt.extension.mediaplayer.MediaPlayer*/
 		private static var MediaPlayerClass:Class ;
+		/**com.distriqt.extension.mediaplayer.MediaPlayerOptions*/
+		private static var MediaPlayerOptionsClass:Class ;
 		
 		private static var myDistriqtId:String ;
 		
@@ -47,6 +52,7 @@
 					lastLandscapeOrientation:String = StageOrientation.ROTATED_RIGHT;
 
 					private var player:Object;
+					private var manualFullscreen:Boolean;
 		
 		public function DistriqtMediaPlayer(Width:Number,Height:Number)
 		{
@@ -82,10 +88,32 @@
 		{
 			appStageWidth = stage.stageWidth ;
 			appStageHeight = stage.stageHeight ;
-			
+			trace("DevicePrefrence.isPortrait() : "+DevicePrefrence.isPortrait());
 			if(DevicePrefrence.isPortrait())
 			{
 				debugIntervalId = setInterval(controlOrientationPortrate,500);
+			}
+			NativeApplication.nativeApplication.addEventListener(Event.ACTIVATE,applicationActivated);
+			NativeApplication.nativeApplication.addEventListener(Event.DEACTIVATE,applicationDeactivated);
+		}
+		
+		protected function applicationDeactivated(event:Event):void
+		{
+			if(player!=null)
+			{
+				try{
+					player.pause();
+				}catch(e){};
+			}
+		}
+		
+		protected function applicationActivated(event:Event):void
+		{
+			if(player!=null)
+			{
+				try{
+					player.play();
+				}catch(e){};
 			}
 		}
 		
@@ -114,7 +142,8 @@
 						//Make it exit from full screen ;
 						//player.setFullscreen( false );
 						//isFullScreen = false ;
-						(MediaPlayerClass as Object).service.setFullscreen(false);
+						if(manualFullscreen==false)
+							player.setFullscreen(false);
 					}
 					else if(isLandScape(stage.orientation))// if(stage.orientation != revertLandScape(stage.deviceOrientation))
 					{
@@ -130,7 +159,7 @@
 						trace("Make it full screen : "+player);
 						//player.setFullscreen( true );
 						//isFullScreen = true ;
-						(MediaPlayerClass as Object).service.setFullscreen(true);
+						player.setFullscreen(true);
 					}
 				}
 			}catch(e:Error){
@@ -168,11 +197,17 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 				videoURL = new File(videoURL).nativePath;
 			}
 
-			player = (MediaPlayerClass as Object).service.createPlayer(videoURL,rect.x,rect.y,rect.width,rect.height,autoPlay,controlls,true);
+			//player = player.createPlayer(	videoURL,rect.x,rect.y,rect.width,rect.height,autoPlay,controlls,true);
+			
+			player = (MediaPlayerClass as Object).service.createPlayerView(new MediaPlayerOptionsClass().setViewport(rect).setAutoPlay(true).showControls(true).enableBackgroundAudio(false));
+			player.load(videoURL);
+			//player = player.createPlayerView(new (MediaPlayerOptions as Object)().setViewport(new Rectangle( rect.x, rect.x, rect.width, rect.height)));
+			//var options:MediaPlayerOptions = new MediaPlayerOptions()
+			//setAutoPlay( true );
 
-			(MediaPlayerClass as Object).service.addEventListener(FULLSCREEN_ENTER,isFullscreened);
-			(MediaPlayerClass as Object).service.addEventListener(FULLSCREEN_EXIT,exitFullscreened);
-			//(MediaPlayerClass as Object).service.addEventListener(com.distriqt.extension.mediaplayer.events.MediaPlayerEvent.STOPPED,exitFullscreened);
+			player.addEventListener(FULLSCREEN_ENTER,isFullscreened);
+			player.addEventListener(FULLSCREEN_EXIT,exitFullscreened);
+			//player.addEventListener(com.distriqt.extension.mediaplayer.events.MediaPlayerEvent.STOPPED,exitFullscreened);
 			this.removeEventListener(Event.ENTER_FRAME,controlPlayerViewPort);
 			this.addEventListener(Event.ENTER_FRAME,controlPlayerViewPort);
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
@@ -181,6 +216,7 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 		/**is exited from full screen*/
 		protected function exitFullscreened(event:Event):void
 		{
+			manualFullscreen = false ;
 			trace("*** Exit full screen !! : "+event);
 			if(/*isFullScreen && */DevicePrefrence.isPortrait())
 			{
@@ -196,10 +232,11 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 			trace("*** Set full screen !! : "+event);
 			if(/*!isFullScreen && */DevicePrefrence.isPortrait() && isFullScreen!=true)
 			{
-				var toLanscapeOrientation:String = revertLandScape(lastLandscapeOrientation) ;
+				/*var toLanscapeOrientation:String = revertLandScape(lastLandscapeOrientation) ;
 				
 				stage.setOrientation(toLanscapeOrientation);
-				trace("StageOrientation2. >>> "+toLanscapeOrientation);
+				trace("StageOrientation2. >>> "+toLanscapeOrientation);*/
+				manualFullscreen = true ;
 			}
 			isFullScreen = true ;
 		}
@@ -289,11 +326,12 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 			trace("Hide the player");
 			try
 			{
-				(MediaPlayerClass as Object).service.removeEventListener(FULLSCREEN_ENTER,isFullscreened);
-				(MediaPlayerClass as Object).service.removeEventListener(FULLSCREEN_EXIT,exitFullscreened);
+				player.removeEventListener(FULLSCREEN_ENTER,isFullscreened);
+				player.removeEventListener(FULLSCREEN_EXIT,exitFullscreened);
 				exitFullscreened(null);
 				isOpen = false ;
-				(MediaPlayerClass as Object).service.removePlayer();
+				player.destroy();
+				player = null ;
 			}catch(e){};
 			this.removeEventListener(Event.ENTER_FRAME,controlPlayerViewPort);
 		}
@@ -303,20 +341,27 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 			clearInterval(debugIntervalId);
 			//Alert.show("NORMALunLoad");
 			NativeApplication.nativeApplication.systemIdleMode = SystemIdleMode.NORMAL ;
-			try
+			if(player!=null)
 			{
-				(MediaPlayerClass as Object).service.removeEventListener(FULLSCREEN_ENTER,isFullscreened);
-				(MediaPlayerClass as Object).service.removeEventListener(FULLSCREEN_EXIT,exitFullscreened);
-				exitFullscreened(null);
-				trace("Remove player");
-				//(MediaPlayerClass as Object).service.removeEventListener(com.distriqt.extension.mediaplayer.events.MediaPlayerEvent.STOPPED,exitFullscreened);
-				(MediaPlayerClass as Object).service.removePlayer();
-			}
-			catch(e)
-			{
-				trace(">>e"+e);
+				try
+				{
+					player.removeEventListener(FULLSCREEN_ENTER,isFullscreened);
+					player.removeEventListener(FULLSCREEN_EXIT,exitFullscreened);
+					exitFullscreened(null);
+					trace("Remove player");
+					//player.removeEventListener(com.distriqt.extension.mediaplayer.events.MediaPlayerEvent.STOPPED,exitFullscreened);
+					player.destroy();
+					player = null ;
+				}
+				catch(e)
+				{
+					trace(">>e"+e);
+				}
 			}
 			this.removeEventListener(Event.ENTER_FRAME,controlPlayerViewPort);
+			
+			NativeApplication.nativeApplication.removeEventListener(Event.ACTIVATE,applicationActivated);
+			NativeApplication.nativeApplication.removeEventListener(Event.DEACTIVATE,applicationDeactivated);
 		}
 		
 		/**Controll the player place*/
@@ -329,11 +374,11 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 			if(Obj.isAccesibleByMouse(this))
 			{
 				var rect:Rectangle = createVewPort();
-				(MediaPlayerClass as Object).service.resize(rect.x,rect.y,rect.width,rect.height);
+				player.resize(rect.x,rect.y,rect.width,rect.height);
 			}
 			else
 			{
-				(MediaPlayerClass as Object).service.resize(0,0,0,0);
+				player.resize(0,0,0,0);
 			}
 		}
 		
@@ -353,11 +398,13 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 			try
 			{
 				MediaPlayerClass = getDefinitionByName("com.distriqt.extension.mediaplayer.MediaPlayer") as Class ;
+				MediaPlayerOptionsClass = getDefinitionByName("com.distriqt.extension.mediaplayer.MediaPlayerOptions") as Class;
 				trace("+++Media player starts+++");
 			}
 			catch(e)
 			{
 				MediaPlayerClass = null ;
+				MediaPlayerOptionsClass = null;
 				isSupports = false ;
 				trace('*********************** You dont have com.distriqt.extension.mediaplayer.MediaPlayer embeded in your project **************************');
 				return ;
