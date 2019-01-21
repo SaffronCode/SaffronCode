@@ -111,8 +111,8 @@ package otherPlatforms.tablighan
 		{
 			if(service_tablighanAPI.data.length>0)
 			{
-				//bannerImage.setUp("http://tablighon.com/Uploads/"+service_tablighanAPI.data[0].AdFileName,true,this.width/this.scaleX,this.height/this.scaleY,0,0,false);
-				bannerImage.setUp("http://tablighon.com/Uploads/ab643bb7-eb23-490c-b983-a66703e7207e.jpg?"+new Date().time,true,this.width/this.scaleX,this.height/this.scaleY,0,0,false);;
+				bannerImage.setUp("http://tablighon.com/Uploads/"+service_tablighanAPI.data[0].AdFileName,true,this.width/this.scaleX,this.height/this.scaleY,0,0,false);
+				//bannerImage.setUp("http://tablighon.com/Uploads/ab643bb7-eb23-490c-b983-a66703e7207e.jpg?"+new Date().time,true,this.width/this.scaleX,this.height/this.scaleY,0,0,false);;
 			}
 		}
 		
