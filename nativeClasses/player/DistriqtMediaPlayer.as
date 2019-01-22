@@ -52,7 +52,8 @@
 					lastLandscapeOrientation:String = StageOrientation.ROTATED_RIGHT;
 
 					private var player:Object;
-					private var manualFullscreen:Boolean;
+					private var manualFullscreen:Boolean,
+								dynamicFullscreen:Boolean;
 		
 		public function DistriqtMediaPlayer(Width:Number,Height:Number)
 		{
@@ -159,6 +160,7 @@
 						trace("Make it full screen : "+player);
 						//player.setFullscreen( true );
 						//isFullScreen = true ;
+						dynamicFullscreen = true ;
 						player.setFullscreen(true);
 					}
 				}
@@ -217,6 +219,7 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 		protected function exitFullscreened(event:Event):void
 		{
 			manualFullscreen = false ;
+			dynamicFullscreen = false ;
 			trace("*** Exit full screen !! : "+event);
 			if(/*isFullScreen && */DevicePrefrence.isPortrait())
 			{
@@ -232,11 +235,14 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 			trace("*** Set full screen !! : "+event);
 			if(/*!isFullScreen && */DevicePrefrence.isPortrait() && isFullScreen!=true)
 			{
-				/*var toLanscapeOrientation:String = revertLandScape(lastLandscapeOrientation) ;
-				
-				stage.setOrientation(toLanscapeOrientation);
-				trace("StageOrientation2. >>> "+toLanscapeOrientation);*/
-				manualFullscreen = true ;
+				if(!DevicePrefrence.isIOS())
+				{
+					var toLanscapeOrientation:String = revertLandScape(lastLandscapeOrientation) ;
+					stage.setOrientation(toLanscapeOrientation);
+				}
+				trace("StageOrientation2. >>> "+toLanscapeOrientation);
+				if(!dynamicFullscreen)
+					manualFullscreen = true ;
 			}
 			isFullScreen = true ;
 		}
