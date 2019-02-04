@@ -1,7 +1,12 @@
 package nativeClasses
 {
 	
+	import com.distriqt.extension.share.applications.Application;
+	
+	import contents.alert.Alert;
+	
 	import flash.display.BitmapData;
+	import flash.display.Stage;
 	import flash.filesystem.File;
 	import flash.utils.getDefinitionByName;
 
@@ -140,6 +145,26 @@ package nativeClasses
 		private function share_shareHandler( event:* ):void
 		{
 			trace( event.type + "::" + event.activityType + "::" + event.error );
+		}
+		
+		public function openApp(st:Stage):void
+		{
+			//trace('is supported openApp:',shareClass.isSupported);
+			Alert.setScreenDebugger(st);
+			Alert.show('is supported:'+shareClass.isSupported)
+			if(shareClass.isSupported)
+			{	
+				//var app:Application = new Application("com.bpmellat.merchant","bpmellat://");
+				//var app:Application = new Application("com.bpmellat.merchant","merchant");
+				//var app:Application = new Application("com.bpmellat.merchant","");
+				var app:Application = new Application("com.bpm.mpos","");
+				Alert.show('isInstalled:'+shareClass.service.applications.isInstalled( app ));
+				if (shareClass.service.applications.isInstalled( app ))
+				{
+					shareClass.service.applications.launch( app );
+				}
+			}	
+			
 		}
 	}
 }
