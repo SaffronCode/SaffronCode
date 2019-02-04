@@ -3,6 +3,7 @@ package contents.alert
 	import flash.display.Stage;
 	import flash.media.StageWebView;
 	import flash.text.TextField;
+	import flash.text.TextFormat;
 
 	public class Alert
 	{
@@ -52,6 +53,9 @@ package contents.alert
 			debugField2 = new TextField();
 			debugField3 = new TextField();
 			
+			
+			var textFormat:TextFormat = new TextFormat();
+			textFormat.size = 18;
 			debugField1.width = stage.stageWidth ;
 			debugField1.height = stage.stageHeight ;
 			debugField2.width = stage.stageWidth ;
@@ -61,8 +65,10 @@ package contents.alert
 			
 			debugField1.textColor = 0xffffff ;
 			debugField3.textColor = 0xffffff ;
-			debugField2.textColor = 0x222222 ;
-			
+			debugField2.textColor = 0xFFFFFF ;
+			debugField1.defaultTextFormat = textFormat;
+			debugField2.defaultTextFormat = textFormat;
+			debugField3.defaultTextFormat = textFormat;
 			debugField1.x = 1;
 			debugField1.y = 1;
 			debugField3.x = -1;
