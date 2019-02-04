@@ -98,7 +98,7 @@ http://mteamapps.ir/
 <p align="center">
     <a href="http://saffroncode.ir/dwqa-questions/"><strong>فروم پرسش و پاسخ زعفران کد</strong></a><br>
     <a href="https://forum.starling-framework.org/"><strong><img src="https://image.flaticon.com/icons/svg/157/157949.svg" width="20px"/>فروم های پرسش و پاسخ اکشن اسکریپت</strong></a></p>
-<p align="center"><a href="https://gitter.im/Saffron-Code/Registeration"><strong><img src="https://image.flaticon.com/icons/svg/157/157949.svg" width="20px"/>درخواست آموزش و استفاده از زعفران کد</strong></a></p>
+<p align="center"><a href="http://saffroncode.ir/%D8%AA%D9%85%D8%A7%D8%B3-%D8%A8%D8%A7-%D9%85%D8%A7/"><strong><img src="https://image.flaticon.com/icons/svg/157/157949.svg" width="20px"/>درخواست آموزش و استفاده از زعفران کد</strong></a></p>
 <br>
 <br>
 <br>
