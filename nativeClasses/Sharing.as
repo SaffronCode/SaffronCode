@@ -1,8 +1,12 @@
 package nativeClasses
 {
 	
+	import com.distriqt.extension.share.applications.Application;
+	import com.distriqt.extension.share.applications.ApplicationOptions;
+	
 	import flash.display.BitmapData;
 	import flash.filesystem.File;
+	import flash.net.URLVariables;
 	import flash.utils.getDefinitionByName;
 
 	public class Sharing
@@ -140,6 +144,23 @@ package nativeClasses
 		private function share_shareHandler( event:* ):void
 		{
 			trace( event.type + "::" + event.activityType + "::" + event.error );
+		}
+		
+		public function openApp(PackageName:String,Url:URLVariables)
+		{
+			if (shareClass.isSupported)
+			{
+				var app:Application = new Application(PackageName,"");
+					
+					if (shareClass.service.applications.isInstalled(app))
+					{
+						var options:ApplicationOptions = new ApplicationOptions();
+						//options.action = ApplicationOptions.ACTION_SEND;
+						//options.data = "http://instagram.com/_u/distriqt";
+						options.parameters = Url.toString();
+						shareClass.service.applications.launch(app,options);
+					}
+				}
 		}
 	}
 }
