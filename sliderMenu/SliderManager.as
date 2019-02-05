@@ -8,6 +8,8 @@ package sliderMenu
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.ui.Multitouch;
+	
+	import popForm.PopMenu;
 
 	public class SliderManager
 	{
@@ -85,6 +87,10 @@ package sliderMenu
 		/**opent this menu*/
 		public static function openMenu(MenuDirection:String = null)
 		{
+			if(PopMenu.isOpen)
+			{
+				return ;
+			}
 			unLock();
 			
 			if(MenuDirection==null)
