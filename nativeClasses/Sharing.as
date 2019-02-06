@@ -1,8 +1,8 @@
-package nativeClasses
+﻿package nativeClasses
 {
 	
-	import com.distriqt.extension.share.applications.Application;
-	import com.distriqt.extension.share.applications.ApplicationOptions;
+	/*import com.distriqt.extension.share.applications.Application;
+	import com.distriqt.extension.share.applications.ApplicationOptions;*/
 	
 	import flash.display.BitmapData;
 	import flash.filesystem.File;
@@ -18,6 +18,11 @@ package nativeClasses
 		private var _isSupports:Boolean = false ;
 		
 		private var _isClassesLoaded:Boolean = false ;
+				
+		/**import com.distriqt.extension.share.applications.Application;*/
+		private var ApplicationClass:Class;
+		/**import com.distriqt.extension.share.applications.ApplicationOptions;*/
+		private var ApplicationOptionsClass:Class;
 		
 		
 		/**You have to call setUp function first*/
@@ -89,6 +94,10 @@ package nativeClasses
 				shareOptionClass = getDefinitionByName("com.distriqt.extension.share.ShareOptions") as Class ;
 				shareEventClass = getDefinitionByName("com.distriqt.extension.share.events.ShareEvent") as Class ;
 				
+				ApplicationClass = getDefinitionByName("com.distriqt.extension.share.applications.Application") as Class ;
+				ApplicationOptionsClass = getDefinitionByName("com.distriqt.extension.share.applications.Application") as Class ;
+	
+				
 				if(shareClass!=null)
 				{
 					_isClassesLoaded = true ;
@@ -150,11 +159,11 @@ package nativeClasses
 		{
 			if (shareClass.isSupported)
 			{
-				var app:Application = new Application(PackageName,"");
+				var app:* = new ApplicationClass(PackageName,"");
 					
 					if (shareClass.service.applications.isInstalled(app))
 					{
-						var options:ApplicationOptions = new ApplicationOptions();
+						var options:* = new ApplicationOptionsClass();
 						//options.action = ApplicationOptions.ACTION_SEND;
 						//options.data = "http://instagram.com/_u/distriqt";
 						options.parameters = Url.toString();
