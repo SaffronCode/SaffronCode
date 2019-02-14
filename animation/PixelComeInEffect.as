@@ -3,6 +3,7 @@ package animation
 {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -16,11 +17,11 @@ package animation
 		private static var W:Number = 30 ;
 		
 		/**Pixel delay to change in miliseconds*/
-		private static var pixelDelay:uint = 50 ;
+		private static var pixelDelay:uint = 40 ;
 		/**Number of pixels that comes in in a single time*/
-		private static var pixelPerTime:uint = 4 ;
+		private static var pixelPerTime:uint = 20 ;
 		/**Pixels color*/
-		private static var pixelsColor:uint = 0xE15E3A;
+		private static var pixelsColor:uint = 0xffffff;//0xE15E3A;
 		
 		private var myBitmapData:BitmapData,
 					myBitmap:Bitmap;
@@ -38,6 +39,8 @@ package animation
 		private var maskedPixels:Vector.<Sprite> ;
 		
 		private var intervalId:uint ;
+		
+		private var myParent:DisplayObjectContainer ;
 		
 		public function PixelComeInEffect()
 		{
@@ -86,39 +89,107 @@ package animation
 				}
 			}
 			
-			clearInterval(intervalId);
-			intervalId = setInterval(showOnePixel,pixelDelay);
+			
+			this.addEventListener(Event.ADDED_TO_STAGE,controlStage);
 		}
 		
-		
-		/**Activate a pixel*/
-		private function showOnePixel():void
+		/**Control when object joined to the stage*/
+		private function controlStage(e:Event):void
 		{
-			var currentPixel:Sprite ;
-			var i:int ;
-			
-			for(i = 0 ; i<lastPixels.length ; i++)
+			if(this.stage!=null)
 			{
-				currentPixel = lastPixels[i] ;
-				maskSprite.addChild(currentPixel);
-			}
-			//Clear visible sprite list, all of them moved to the mask sprite
-			lastPixels = new Vector.<Sprite>();
-			
-			if(pixels.length<=0)
-			{
+				myParent = this.parent as DisplayObjectContainer;
 				clearInterval(intervalId);
-				return ;
+				intervalId = setInterval(showOnePixel,pixelDelay);
+				
+				this.addEventListener(Event.REMOVED_FROM_STAGE,handleRemoveEffect);
 			}
-			
-			for(i = 0 ; i<Math.min(pixels.length,pixelPerTime) ; i++)
-			{
-				currentPixel = pixels.removeAt(Math.floor(Math.random()*pixels.length)) as Sprite ; 
-				lastPixels.push(currentPixel);
-				currentPixel.visible = true ;
-			}
-			
-			
 		}
+		
+			/**Remove object with effect*/
+			private function handleRemoveEffect(e:Event):void
+			{
+				trace("Item removed");
+				clearInterval(intervalId);
+				this.removeEventListener(Event.REMOVED_FROM_STAGE,handleRemoveEffect);
+				//Prevent saffron code to remove my bitmap
+				e.stopImmediatePropagation();
+				try
+				{
+					//Cause a crash!!
+					myBitmap.x = maskSprite.x = this.x;
+					myBitmap.y = maskSprite.y = this.y;
+					myParent.addChild(myBitmap);
+					myParent.addChild(maskSprite);
+					
+					lastPixels = new Vector.<Sprite>();
+					intervalId = setInterval(removeThemOneByOnePixel,pixelDelay);
+				}catch(e)
+				{
+					trace("Error : "+e);
+				}
+			}
+		
+		
+			/**Activate a pixel*/
+			private function showOnePixel():void
+			{
+				var currentPixel:Sprite ;
+				var i:int ;
+				
+				for(i = 0 ; i<lastPixels.length ; i++)
+				{
+					currentPixel = lastPixels[i] ;
+					maskSprite.addChild(currentPixel);
+				}
+				//Clear visible sprite list, all of them moved to the mask sprite
+				lastPixels = new Vector.<Sprite>();
+				
+				if(pixels.length<=0)
+				{
+					clearInterval(intervalId);
+					return ;
+				}
+				
+				for(i = 0 ; i<Math.min(pixels.length,pixelPerTime) ; i++)
+				{
+					currentPixel = pixels.removeAt(Math.floor(Math.random()*pixels.length)) as Sprite ; 
+					lastPixels.push(currentPixel);
+					currentPixel.visible = true ;
+				}
+				
+				
+			}
+			
+			/**Remove pixels one by one*/
+			private function removeThemOneByOnePixel():void
+			{
+				var i:int ;
+				var currentPixel:Sprite ;
+				
+				for(i = 0 ; i<lastPixels.length ; i++)
+				{
+					myParent.removeChild(lastPixels[i]);
+				}
+				lastPixels = new Vector.<Sprite>();
+				
+				for(i = 0 ; i<Math.min(pixelPerTime,maskSprite.numChildren) ; i++)
+				{
+					currentPixel = maskSprite.removeChildAt(i) as Sprite ;
+					lastPixels.push(currentPixel);
+					myParent.addChild(currentPixel);
+					currentPixel.visible = true ;
+					currentPixel.x = currentPixel.x+maskSprite.x ;
+					currentPixel.y = currentPixel.y+maskSprite.y ;
+				}
+				
+				if(maskSprite.numChildren==0 && lastPixels.length == 0)
+				{
+					clearInterval(intervalId);
+					myParent.removeChild(maskSprite);
+					myBitmap.bitmapData.dispose();
+					myParent.removeChild(myBitmap);
+				}
+			}
 	}
 }
