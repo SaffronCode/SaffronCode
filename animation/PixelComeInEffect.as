@@ -11,17 +11,22 @@ package animation
 	import flash.utils.clearInterval;
 	import flash.utils.setInterval;
 	
+	import contents.alert.Alert;
+	
 	public class PixelComeInEffect extends MovieClip
 	{
 		/**Pixel widths*/
-		private static var W:Number = 30 ;
+		public static var W:Number = 30 ;
 		
 		/**Pixel delay to change in miliseconds*/
-		private static var pixelDelay:uint = 40 ;
+		public static var pixelDelay:uint = 40 ;
 		/**Number of pixels that comes in in a single time*/
-		private static var pixelPerTime:uint = 20 ;
+		public static var pixelPerTimePrecent:Number = 0.1 ;
 		/**Pixels color*/
-		private static var pixelsColor:uint = 0xffffff;//0xE15E3A;
+		public static var pixelsColor:uint = 0xffffff;//0xE15E3A;
+		
+		/**Dynamic variable*/
+		private static var pixelPerTime:uint ;
 		
 		private var myBitmapData:BitmapData,
 					myBitmap:Bitmap;
@@ -89,9 +94,18 @@ package animation
 				}
 			}
 			
+			pixels.sort(randomSort);
+			
+			pixelPerTime = Math.ceil(pixels.length*pixelPerTimePrecent);
 			
 			this.addEventListener(Event.ADDED_TO_STAGE,controlStage);
 		}
+		
+			/**Random sort function*/
+			private function randomSort(a:*=null,b:*=null):int
+			{
+				return Math.floor(3*Math.random())-1;
+			}
 		
 		/**Control when object joined to the stage*/
 		private function controlStage(e:Event):void
@@ -151,9 +165,9 @@ package animation
 					return ;
 				}
 				
-				for(i = 0 ; i<Math.min(pixels.length,pixelPerTime) ; i++)
+				for(i = Math.min(pixels.length,pixelPerTime) ; i>0 ; i--)
 				{
-					currentPixel = pixels.removeAt(Math.floor(Math.random()*pixels.length)) as Sprite ; 
+					currentPixel = pixels.removeAt(0) as Sprite ; 
 					lastPixels.push(currentPixel);
 					currentPixel.visible = true ;
 				}
@@ -173,9 +187,9 @@ package animation
 				}
 				lastPixels = new Vector.<Sprite>();
 				
-				for(i = 0 ; i<Math.min(pixelPerTime,maskSprite.numChildren) ; i++)
+				for(i = Math.min(pixelPerTime,maskSprite.numChildren) ; i>0 ; i--)
 				{
-					currentPixel = maskSprite.removeChildAt(i) as Sprite ;
+					currentPixel = maskSprite.removeChildAt(0) as Sprite ;
 					lastPixels.push(currentPixel);
 					myParent.addChild(currentPixel);
 					currentPixel.visible = true ;
