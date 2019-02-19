@@ -54,6 +54,8 @@
 					
 		private var clearMC:MovieClip ;
 		
+		public static var borderColor:uint = 0xD92C5C;
+		
 		
 		public function get textField():TextField
 		{
@@ -244,7 +246,7 @@
 			myTXT.addEventListener(Event.CHANGE, dispatchRenderEventForMe);
 			
 			myTXT.maxChars = maxChar ;
-			myTXT.borderColor = 0xD92C5C;
+			myTXT.borderColor = borderColor;
 			myTXT.displayAsPassword = isPass ;
 			myTXT.mouseEnabled = myTXT.selectable = editable ;
 			
