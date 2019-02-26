@@ -71,6 +71,8 @@
     - <a href="https://github.com/MTeamCo/ASPack">ASPack مجموعه کتاب خانه های کلیدی و بدون اینترفیس و کتابخانه های متفرقه</a><br>
 • <a href="https://github.com/MTeamCo/FlexLibs-andOthers">نسخه ی آخر Flex و چند کتابخانه swc عمومی دیگر</a><br>
 • <a href="https://www.adobe.com/devnet/air/air-sdk-download.html">دانلود آخرین نسخهAir SDK</a><br>
+• <a href="https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html">JDK</a><br>
+   
     <br>
 برای تست نمونه فایل های داخل https://github.com/SaffronCode/SaffronSamples را دریافت و فایل PureSaffron.fla را اجرا کنید.<br>
 <br>
