@@ -18,7 +18,7 @@
 	{
 		private static var notificationManager:NotificationManager;
 		/**Set a wake up notification every ... miliseconds*/
-		private static const resetNotification:uint = 10 * 1000;
+		private static const resetNotification:uint = 60 * 1000;
 		private static const NOTIFICATION_IS_CLOSE:String = "NOTIFICATION_IS_CLOSE";
 		private static const NOTIFICATION_MESSAGE:String = "NOTIFICATION_MESSAGE";
 		
@@ -109,7 +109,8 @@
 		private static function removeEarlierWakeUpNotificationAndAddNewNotification():void
 		{
 			trace("Notif2:" + WakeMessage);
-			notificationManager.cancel(NOTIFICATION_IS_CLOSE);
+			if(notificationManager)
+				notificationManager.cancel(NOTIFICATION_IS_CLOSE);
 			var notification:Notification = new Notification();
 			notification.title = DevicePrefrence.appName;
 			notification.body = WakeMessage;
@@ -118,7 +119,8 @@
 			notification.priority = NotificationPriority.HIGH;
 			notification.showInForeground = false;
 			notification.allowWhileIdle = true;
-			notificationManager.notifyUser(NOTIFICATION_IS_CLOSE, notification);
+			if(notificationManager)
+				notificationManager.notifyUser(NOTIFICATION_IS_CLOSE, notification);
 		}
 		
 		public static function sendNotification(message:String):void
