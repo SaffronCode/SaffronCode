@@ -66,11 +66,13 @@ package darkBox
 			}
 		}
 		
-		/**TYPE_FLAT:int = 1,
-							TYPE_PANORAMA:int = 2,
-							TYPE_SPHERE:int = 3,
-							TYPE_VIDEO:int = 4
-							TYPE_PDF:int = 5
+		/**For online videos, you can pass multiple qualities starting from the best to the smallest with | seperator<br><br>
+		 * 
+		 * TYPE_FLAT:int = 1,<br>
+							TYPE_PANORAMA:int = 2,<br>
+							TYPE_SPHERE:int = 3,<br>
+							TYPE_VIDEO:int = 4<br>
+							TYPE_PDF:int = 5<br><br>
 		 * 
 		 * @see darkBox.ImageFile*/
 		public function ImageFile(Target:String='',Title:String='',Type:int=ImageFile.TYPE_FLAT,StoreOffline:Boolean=true)
@@ -95,7 +97,7 @@ package darkBox
 		
 		public function download(timeOut:uint=0):void
 		{
-			onlineTarget = target ;
+			onlineTarget = target.split('|')[0] ;
 			if(timeOut>0)
 			{
 				clearTimeout(timeOutId);
