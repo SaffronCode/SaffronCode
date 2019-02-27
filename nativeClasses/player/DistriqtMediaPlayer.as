@@ -213,13 +213,17 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 			
 			if(videoURL.indexOf('http')!=0)
 			{
+				videoURL = new File(videoURL).nativePath;
+			}
+			else
+			{
 				if(!DevicePrefrence.isTablet && videoQualities.length>1)
 				{
-					videoURL = new File(videoQualities[1]).nativePath;
+					videoURL = videoQualities[1];
 				}
 				else
 				{
-					videoURL = new File(videoQualities[0]).nativePath;
+					videoURL = videoQualities[0];
 				}
 			}
 
@@ -244,13 +248,13 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 			/**Is loading*/
 			private function isLoading(e:*):void
 			{
-				trace("*** *** ***** isLoading : "+isLoading);
+				trace("*** *** ***** isLoading 1 : "+isLoading);
 			}
 			
 			/**Is Loaded*/
 			private function isLoaded(e:*):void
 			{
-				trace("*** *** ***** isLoaded : "+isLoaded);
+				trace("*** *** ***** isLoaded 2 : "+isLoaded);
 			}
 		
 		/**is exited from full screen*/
