@@ -70,6 +70,7 @@
 		private var bt:BandwidthTester;
 		private var nc:NetConnection;
 		private var stream:NetStream; 
+		private var videoURL:String;
 		public function DistriqtMediaPlayer(Width:Number, Height:Number)
 		{
 			super();
@@ -206,6 +207,7 @@
 		   MediaPlayer.CONTROLS_NONE : controls:none*/
 		public function playVideo(videoURL:String, autoPlay:Boolean = true, controlls:String = "controls:fullscreen"):void
 		{
+			this.videoURL = videoURL;
 			videoQualities = videoURL.split('|');
 			if (this.stage == null)
 			{
@@ -276,7 +278,6 @@
 			
 			trace("Final bandwidth: " + bw + ' kb/s');
 			trace("Peak bandwidth: " + e.target.getPeak() + ' kb/s');
-			
 			if (bw > 400)
 			{
 				videoURL = videoQualities[0];

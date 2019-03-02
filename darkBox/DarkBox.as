@@ -584,7 +584,7 @@
 					break;
 			}
 		}
-		public static function set checkBandWith(value:Boolean):void
+		public static function set checkBandWidth(value:Boolean):void
 		{
 			DistriqtMediaPlayer.checkBandWidth = true;
 		}
