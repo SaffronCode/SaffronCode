@@ -584,6 +584,10 @@
 					break;
 			}
 		}
+		public static function set checkBandWith(value:Boolean):void
+		{
+			DistriqtMediaPlayer.checkBandWidth = true;
+		}
 		
 		public static function saveCurrentImageToGallery():void
 		{
