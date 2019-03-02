@@ -19,6 +19,7 @@
 	import flash.utils.clearInterval;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.setInterval;
+	import flash.utils.setTimeout;
 	
 	import contents.alert.Alert;
 	
@@ -71,6 +72,7 @@
 		private var nc:NetConnection;
 		private var stream:NetStream; 
 		private var videoURL:String;
+		private var position:Number=0;
 		public function DistriqtMediaPlayer(Width:Number, Height:Number)
 		{
 			super();
@@ -260,7 +262,8 @@
 			player.addEventListener(MediaPlayerEventClass.FULLSCREEN_ENTER, isFullscreened);
 			player.addEventListener(MediaPlayerEventClass.FULLSCREEN_EXIT, exitFullscreened);
 			player.addEventListener(MediaPlayerEventClass.LOADING, isLoading);
-			player.addEventListener(MediaPlayerEventClass.LOADED, isLoaded);
+			//player.addEventListener(MediaPlayerEventClass.LOADED, isPlaying);
+			//player.addEventListener(MediaPlayerEventClass.CLICK, isPlaying);
 			//player.addEventListener(com.distriqt.extension.mediaplayer.events.MediaPlayerEvent.STOPPED,exitFullscreened);
 			this.removeEventListener(Event.ENTER_FRAME, controlPlayerViewPort);
 			this.addEventListener(Event.ENTER_FRAME, controlPlayerViewPort);
@@ -318,6 +321,28 @@
 			});
 			
 			player.load(videoURL);
+			setTimeout(gotoLowQuaily,15000)
+		}
+		
+		private function gotoLowQuaily():void 
+		{
+			position = player.position;
+			videoURL = videoQualities[2];
+			player.addEventListener(MediaPlayerEventClass.READY, isReady);
+			player.load(videoURL);
+			
+			
+		}
+		
+		/**Is ready*/
+		private function isReady(e:*=null):void
+		{
+			setTimeout(seekPlayer, 0);
+		}
+		private function seekPlayer(e:*=null):void
+		{
+			var seekSuccess:Boolean = player.seek(position);
+			player.play();
 		}
 		
 		/**Is loading*/
@@ -330,6 +355,7 @@
 		private function isLoaded(e:*):void
 		{
 			trace("*** *** ***** isLoaded 2 : " + isLoaded);
+			
 		}
 		
 		/**is exited from full screen*/

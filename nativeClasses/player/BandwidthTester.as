@@ -13,7 +13,7 @@ package nativeClasses.player
 		private var peak_bandwidth = 0;     //peak bandwidth
 		private var curr_bandwidth = 0;     //current take bandwidth
 		
-		private var testfile = 'https://hw1.cdn.asset.aparat.com/aparat-video/48ef703aa368a5f8c017dd83634f187b13927939-1080p__92203.mp4';
+		private var testfile = 'http://quranlms.mteamtest.ir/UploadImages/NewsVideo/News_Video69256a.mp4';
 		private var l;                      //loader
 		private var tm;                     //timer
 		private var last_bytes = 0;         //bytes loaded last time
