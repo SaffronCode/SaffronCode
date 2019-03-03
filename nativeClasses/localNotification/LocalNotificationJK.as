@@ -18,7 +18,7 @@ package nativeClasses.localNotification
 	{
 		private static var notificationManager:NotificationManager;
 		/**Set a wake up notification every ... miliseconds*/
-		private static const resetNotification:uint = 2 * 60 * 1000;
+		private static const resetNotification:uint = 10 * 1000;
 		private static const NOTIFICATION_CODE:String = "NOTIFICATION_CODE_001";
 		
 		private static var wakeUpIntervalId:uint;
@@ -58,7 +58,7 @@ package nativeClasses.localNotification
 			clearInterval(wakeUpIntervalId);
 			WakeMessage = wakeUpMessage;
 			setUp(function(){
-				wakeUpIntervalId = setInterval(removeEarlierWakeUpNotificationAndAddNewNotification, resetNotification / 4);
+				wakeUpIntervalId = setInterval(removeEarlierWakeUpNotificationAndAddNewNotification, resetNotification / 2);
 				removeEarlierWakeUpNotificationAndAddNewNotification();
 			});
 		}
