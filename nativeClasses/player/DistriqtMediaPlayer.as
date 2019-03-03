@@ -5,8 +5,6 @@
 	//import contents.alert.Alert;
 	
 	//import com.distriqt.extension.mediaplayer.MediaPlayerOptions;
-	import contents.alert.Alert;
-	
 	import flash.desktop.NativeApplication;
 	import flash.desktop.SystemIdleMode;
 	import flash.display.Sprite;
@@ -17,19 +15,35 @@
 	import flash.utils.clearInterval;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.setInterval;
+	
+	import contents.alert.Alert;
 
 	
 	public class DistriqtMediaPlayer extends Sprite
 	{
-		private static const FULLSCREEN_ENTER:String = "fullscreen:enter";
-		private static const FULLSCREEN_EXIT:String = "fullscreen:exit";
-		
 		private var isFullScreen:Boolean = false ;
 		
 		/**com.distriqt.extension.mediaplayer.MediaPlayer*/
 		private static var MediaPlayerClass:Class ;
 		/**com.distriqt.extension.mediaplayer.MediaPlayerOptions*/
-		private static var MediaPlayerOptionsClass:Class ;
+		private static var MediaPlayerOptionsClass:Object ;
+		
+		/**com.distriqt.extension.mediaplayer.events.MediaPlayerEvent<br/><br/>
+		 * FULLSCREEN_ENTER<br/>
+		 * FULLSCREEN_EXIT<br/>
+		 * CLICK<br/>
+		 * COMPLETE<br/>
+		 * ERROR<br/>
+		 * LOADED<br/>
+		 * LOADING<br/>
+		 * PAUSED<br/>
+		 * PLAYING<br/>
+		 * PROGRESS<br/>
+		 * READY<br/>
+		 * SEEKING<br/>
+		 * STOPPED<br/>
+		 * */
+		private static var MediaPlayerEventClass:Class ;
 		
 		private static var myDistriqtId:String ;
 		
@@ -54,6 +68,8 @@
 					private var player:Object;
 					private var manualFullscreen:Boolean,
 								dynamicFullscreen:Boolean;
+								
+		private var videoQualities:Array = [] ;
 		
 		public function DistriqtMediaPlayer(Width:Number,Height:Number)
 		{
@@ -180,6 +196,7 @@ MediaPlayer.CONTROLS_FULLSCREEN : controls:fullscreen
 MediaPlayer.CONTROLS_NONE : controls:none*/
 		public function playVideo(videoURL:String,autoPlay:Boolean=true,controlls:String="controls:fullscreen"):void
 		{
+			videoQualities = videoURL.split('|');
 			if(this.stage==null)
 			{
 				throw "Add the player to the stage first";
@@ -198,6 +215,17 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 			{
 				videoURL = new File(videoURL).nativePath;
 			}
+			else
+			{
+				if(!DevicePrefrence.isTablet && videoQualities.length>1)
+				{
+					videoURL = videoQualities[1];
+				}
+				else
+				{
+					videoURL = videoQualities[0];
+				}
+			}
 
 			//player = player.createPlayer(	videoURL,rect.x,rect.y,rect.width,rect.height,autoPlay,controlls,true);
 			
@@ -207,13 +235,27 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 			//var options:MediaPlayerOptions = new MediaPlayerOptions()
 			//setAutoPlay( true );
 
-			player.addEventListener(FULLSCREEN_ENTER,isFullscreened);
-			player.addEventListener(FULLSCREEN_EXIT,exitFullscreened);
+			player.addEventListener(MediaPlayerEventClass.FULLSCREEN_ENTER,isFullscreened);
+			player.addEventListener(MediaPlayerEventClass.FULLSCREEN_EXIT,exitFullscreened);
+			player.addEventListener(MediaPlayerEventClass.LOADING,isLoading);
+			player.addEventListener(MediaPlayerEventClass.LOADED,isLoaded);
 			//player.addEventListener(com.distriqt.extension.mediaplayer.events.MediaPlayerEvent.STOPPED,exitFullscreened);
 			this.removeEventListener(Event.ENTER_FRAME,controlPlayerViewPort);
 			this.addEventListener(Event.ENTER_FRAME,controlPlayerViewPort);
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 		}
+			
+			/**Is loading*/
+			private function isLoading(e:*):void
+			{
+				trace("*** *** ***** isLoading 1 : "+isLoading);
+			}
+			
+			/**Is Loaded*/
+			private function isLoaded(e:*):void
+			{
+				trace("*** *** ***** isLoaded 2 : "+isLoaded);
+			}
 		
 		/**is exited from full screen*/
 		protected function exitFullscreened(event:Event):void
@@ -332,8 +374,8 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 			trace("Hide the player");
 			try
 			{
-				player.removeEventListener(FULLSCREEN_ENTER,isFullscreened);
-				player.removeEventListener(FULLSCREEN_EXIT,exitFullscreened);
+				player.removeEventListener(MediaPlayerEventClass.FULLSCREEN_ENTER,isFullscreened);
+				player.removeEventListener(MediaPlayerEventClass.FULLSCREEN_EXIT,exitFullscreened);
 				exitFullscreened(null);
 				isOpen = false ;
 				player.destroy();
@@ -351,8 +393,8 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 			{
 				try
 				{
-					player.removeEventListener(FULLSCREEN_ENTER,isFullscreened);
-					player.removeEventListener(FULLSCREEN_EXIT,exitFullscreened);
+					player.removeEventListener(MediaPlayerEventClass.FULLSCREEN_ENTER,isFullscreened);
+					player.removeEventListener(MediaPlayerEventClass.FULLSCREEN_EXIT,exitFullscreened);
 					exitFullscreened(null);
 					trace("Remove player");
 					//player.removeEventListener(com.distriqt.extension.mediaplayer.events.MediaPlayerEvent.STOPPED,exitFullscreened);
@@ -405,12 +447,14 @@ MediaPlayer.CONTROLS_NONE : controls:none*/
 			{
 				MediaPlayerClass = getDefinitionByName("com.distriqt.extension.mediaplayer.MediaPlayer") as Class ;
 				MediaPlayerOptionsClass = getDefinitionByName("com.distriqt.extension.mediaplayer.MediaPlayerOptions") as Class;
+				MediaPlayerEventClass = getDefinitionByName("com.distriqt.extension.mediaplayer.events.MediaPlayerEvent") as Class;
 				trace("+++Media player starts+++");
 			}
 			catch(e)
 			{
 				MediaPlayerClass = null ;
-				MediaPlayerOptionsClass = null;
+				MediaPlayerOptionsClass = null ;
+				MediaPlayerEventClass = null ;
 				isSupports = false ;
 				trace('*********************** You dont have com.distriqt.extension.mediaplayer.MediaPlayer embeded in your project **************************');
 				return ;

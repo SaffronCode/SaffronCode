@@ -48,6 +48,11 @@
 			currentFrame = targetFrame = mc.currentFrame ;
 		}
 		
+		public function get totalFrames():uint
+		{
+			return mc.totalFrames;
+		}
+		
 		protected function unLoad(event:Event):void
 		{
 			trace("Animation for "+mc+" is removed");

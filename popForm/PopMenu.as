@@ -15,6 +15,8 @@
 	import flash.ui.Keyboard;
 	import flash.utils.Timer;
 	
+	import sliderMenu.SliderManager;
+	
 	public class PopMenu extends MovieClip
 	{
 		private static const CANCEL_ELEMENT_NAME:String = "cancel_mc" ;
@@ -310,6 +312,7 @@
 		/**pop the pop menu up*/
 		public function popUp2(title:String='' , type:PopMenuTypes=null , content:PopMenuContent=null,closeOnTime=0,onButtonSelects:Function=null,onClosedByTimer:Function=null,onClose:Function=null)
 		{	
+			SliderManager.hide();
 			cashedContents = content ;
 			
 			onButton = onButtonSelects ;

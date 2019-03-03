@@ -51,6 +51,10 @@
 					decreaseMC:MovieClip
 
 					private var textContainerMC:MovieClip;
+					
+		private var clearMC:MovieClip ;
+		
+		public static var borderColor:uint = 0xD92C5C;
 		
 		
 		public function get textField():TextField
@@ -222,6 +226,13 @@
 			{
 				decreaseMC.addEventListener(MouseEvent.CLICK,decreaseValue);
 			}
+			clearMC = Obj.get("clear_mc",this);
+			if(clearMC)
+			{
+				clearMC.buttonMode = true ;
+				clearMC.addEventListener(MouseEvent.CLICK,clearText);
+				clearMC.visible = false ;
+			}
 			
 			if(multiLineTag){
 				TextPutter.onTextArea(tagNameTXT,tagName,StringFunctions.isPersian(tagName),true,true,0,false,false,-1,false,0,false);
@@ -235,7 +246,7 @@
 			myTXT.addEventListener(Event.CHANGE, dispatchRenderEventForMe);
 			
 			myTXT.maxChars = maxChar ;
-			myTXT.borderColor = 0xD92C5C;
+			myTXT.borderColor = borderColor;
 			myTXT.displayAsPassword = isPass ;
 			myTXT.mouseEnabled = myTXT.selectable = editable ;
 			
@@ -343,8 +354,18 @@
 			}
 		}
 		
+		protected function clearText(event:MouseEvent):void
+		{
+			event.stopImmediatePropagation();
+			trace("Clear****************");
+			myTXT.text = '';
+			myTXT.dispatchEvent(new Event(Event.CHANGE));
+		}
+		
 		private function dispatchRenderEventForMe(e:Event):void 
 		{
+			if(clearMC)
+				clearMC.visible = myTXT.text.length>0 ; 
 			this.dispatchEvent(new Event(Event.RENDER));
 		}
 		
