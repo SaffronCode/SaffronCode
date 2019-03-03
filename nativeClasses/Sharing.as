@@ -1,8 +1,8 @@
 package nativeClasses
 {
 	
-	import com.distriqt.extension.share.applications.Application;
-	import com.distriqt.extension.share.applications.ApplicationOptions;
+	//import com.distriqt.extension.share.applications.Application;
+	//import com.distriqt.extension.share.applications.ApplicationOptions;
 	
 	import flash.display.BitmapData;
 	import flash.filesystem.File;
@@ -148,7 +148,7 @@ package nativeClasses
 		
 		public function openApp(PackageName:String,Url:URLVariables)
 		{
-			if (shareClass.isSupported)
+		/*	if (shareClass.isSupported)
 			{
 				var app:Application = new Application(PackageName,"");
 					
@@ -160,7 +160,7 @@ package nativeClasses
 						options.parameters = Url.toString();
 						shareClass.service.applications.launch(app,options);
 					}
-				}
+				}*/
 		}
 	}
 }
