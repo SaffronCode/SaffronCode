@@ -1,4 +1,4 @@
-package nativeClasses.player
+﻿package nativeClasses.player
 {
 	import flash.net.*;
 	import flash.utils.*;
@@ -13,16 +13,17 @@ package nativeClasses.player
 		private var peak_bandwidth = 0;     //peak bandwidth
 		private var curr_bandwidth = 0;     //current take bandwidth
 		
-		private var testfile = 'http://quranlms.mteamtest.ir/UploadImages/NewsVideo/News_Video69256a.mp4';
+		private var testfile = '';
 		private var l;                      //loader
 		private var tm;                     //timer
 		private var last_bytes = 0;         //bytes loaded last time
 		private var bands;                  //recorded byte speeds
 		private var _latency = 1;       //network utilization approximation
 		
-		public function BandwidthTester(latency = 0)
+		public function BandwidthTester(latency = 0,URL_Path:String="")
 		{
 			tm = new Timer(1000, 3);
+			testfile = URL_Path;
 			tm.addEventListener(TimerEvent.TIMER, get_band);
 			tm.addEventListener(TimerEvent.TIMER_COMPLETE, timer_complete);
 			bands = new Array();
@@ -64,6 +65,8 @@ package nativeClasses.player
 		
 		private function end_download(e)
 		{
+			tm.removeEventListener(TimerEvent.TIMER, get_band);
+			tm.removeEventListener(TimerEvent.TIMER_COMPLETE, timer_complete);
 			tm.stop();
 			l.close();
 			bands.sort(Array.NUMERIC | Array.DESCENDING);

@@ -5,6 +5,7 @@
 	//import contents.alert.Alert;
 	
 	//import com.distriqt.extension.mediaplayer.MediaPlayerOptions;
+	import darkBox.DarkBox;
 	import flash.desktop.NativeApplication;
 	import flash.desktop.SystemIdleMode;
 	import flash.display.Sprite;
@@ -17,6 +18,7 @@
 	import flash.net.NetConnection;
 	import flash.net.NetStream;
 	import flash.utils.clearInterval;
+	import flash.utils.clearTimeout;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.setInterval;
 	import flash.utils.setTimeout;
@@ -67,12 +69,19 @@
 		
 		private var videoQualities:Array = [];
 		
-		public static var checkBandWidth:Boolean = false;
+		public static var checkBandWidth:Boolean = true;
 		private var bt:BandwidthTester;
 		private var nc:NetConnection;
-		private var stream:NetStream; 
+		private var stream:NetStream;
 		private var videoURL:String;
-		private var position:Number=0;
+		private var position:Number = 0;
+		private var index:int = 0;
+		private var changeIndex:Boolean = true;
+		private var lastIndex:int;
+		private var playFirstVideo:Boolean = true;
+		private var checkQuailyID:int;
+		private var checkSeekID:int;
+		
 		public function DistriqtMediaPlayer(Width:Number, Height:Number)
 		{
 			super();
@@ -220,14 +229,13 @@
 			
 			close();
 			
-			//Alert.show("KEEP_AWAKEplayVideo");
 			NativeApplication.nativeApplication.systemIdleMode = SystemIdleMode.KEEP_AWAKE;
 			
 			isOpen = true;
 			player = (MediaPlayerClass as Object).service.createPlayerView(new MediaPlayerOptionsClass().setViewport(rect).setAutoPlay(true).showControls(true).enableBackgroundAudio(false));
-			if (checkBandWidth == true)
+			if (checkBandWidth == true && videoQualities.length>1)
 			{
-				bt = new BandwidthTester(0);
+				bt = new BandwidthTester(0, videoQualities[index]);
 				bt.addEventListener(BandwidthTester.BAND_TESTED, play_video);
 				bt.addEventListener(BandwidthTester.TEST, band_test);
 				bt.start();
@@ -254,7 +262,6 @@
 			}
 			//player = player.createPlayer(	videoURL,rect.x,rect.y,rect.width,rect.height,autoPlay,controlls,true);
 			
-			
 			//player = player.createPlayerView(new (MediaPlayerOptions as Object)().setViewport(new Rectangle( rect.x, rect.x, rect.width, rect.height)));
 			//var options:MediaPlayerOptions = new MediaPlayerOptions()
 			//setAutoPlay( true );
@@ -262,6 +269,7 @@
 			player.addEventListener(MediaPlayerEventClass.FULLSCREEN_ENTER, isFullscreened);
 			player.addEventListener(MediaPlayerEventClass.FULLSCREEN_EXIT, exitFullscreened);
 			player.addEventListener(MediaPlayerEventClass.LOADING, isLoading);
+			player.addEventListener(MediaPlayerEventClass.READY, isReady);
 			//player.addEventListener(MediaPlayerEventClass.LOADED, isPlaying);
 			//player.addEventListener(MediaPlayerEventClass.CLICK, isPlaying);
 			//player.addEventListener(com.distriqt.extension.mediaplayer.events.MediaPlayerEvent.STOPPED,exitFullscreened);
@@ -270,36 +278,47 @@
 			this.addEventListener(Event.REMOVED_FROM_STAGE, unLoad);
 		}
 		
-		private function band_test(e):void 
+		private function band_test(e):void
 		{
 			trace("testSpeed:" + e.target.last_speed() + ' kb/s')
 		}
 		
-		private function play_video(e):void 
+		private function play_video(e):void
 		{
 			var bw = e.target.getBandwidth();
 			
 			trace("Final bandwidth: " + bw + ' kb/s');
 			trace("Peak bandwidth: " + e.target.getPeak() + ' kb/s');
+			lastIndex = index;
 			if (bw > 400)
 			{
-				videoURL = videoQualities[0];
+				index = 0;
 			}
 			else if (bw > 128)
 			{
-				videoURL = videoQualities[1];
+				index = 1;
 			}
 			else
 			{
-				videoURL = videoQualities[2];
+				index = 2;
 			}
 			
+			if (lastIndex != index)
+			{
+				changeIndex = true;
+			}
+			else
+			{
+				changeIndex = false;
+			}
+			
+			videoURL = videoQualities[index];
 			nc = new NetConnection();
 			nc.addEventListener(NetStatusEvent.NET_STATUS, nc_status);
 			nc.connect(null);
 		}
 		
-		private function nc_status(e:NetStatusEvent):void 
+		private function nc_status(e:NetStatusEvent):void
 		{
 			switch (e.info.code)
 			{
@@ -312,37 +331,68 @@
 			}
 		}
 		
-		private function connect_stream():void 
+		private function connect_stream():void
 		{
 			stream = new NetStream(nc);
 			stream.addEventListener(NetStatusEvent.NET_STATUS, nc_status);
 			stream.addEventListener(AsyncErrorEvent.ASYNC_ERROR, function(e)
 			{
 			});
-			
-			player.load(videoURL);
-			setTimeout(gotoLowQuaily,15000)
+			if (playFirstVideo == true) // play for first time
+			{
+				player.load(videoURL);
+				playFirstVideo = false;
+			}
+			else
+			{
+				if (changeIndex == true)// if video quaily change
+				{
+					position = player.position;
+					player.load(videoURL);
+				}
+			}
+			checkQuailyID = setTimeout(checkQuaily, 10000);
 		}
 		
-		private function gotoLowQuaily():void 
+		private function checkQuaily():void
+		{
+			bt = new BandwidthTester(0, videoQualities[index]);
+			bt.addEventListener(BandwidthTester.BAND_TESTED, play_video);
+			bt.addEventListener(BandwidthTester.TEST, band_test);
+			bt.start();
+		
+		}
+		
+		public function loadVideoWithQuality(degree:int):void
 		{
 			position = player.position;
-			videoURL = videoQualities[2];
-			player.addEventListener(MediaPlayerEventClass.READY, isReady);
-			player.load(videoURL);
+			index = degree;
 			
-			
+			if (degree != 0)
+			{
+				videoURL = videoQualities[degree-1];
+				player.load(videoURL);
+			}
+			else
+			{
+				bt = new BandwidthTester(0, videoQualities[index]);
+				bt.addEventListener(BandwidthTester.BAND_TESTED, play_video);
+				bt.addEventListener(BandwidthTester.TEST, band_test);
+				bt.start();
+			}
 		}
 		
 		/**Is ready*/
-		private function isReady(e:*=null):void
+		private function isReady(e:* = null):void
 		{
-			setTimeout(seekPlayer, 0);
+			checkSeekID = setTimeout(seekPlayer, 1000);
 		}
-		private function seekPlayer(e:*=null):void
+		
+		private function seekPlayer(e:* = null):void
 		{
-			var seekSuccess:Boolean = player.seek(position);
-			player.play();
+			//var seekSuccess:Boolean = player.seek(position);
+			//player.play();
+			player.seek(position);
 		}
 		
 		/**Is loading*/
@@ -355,7 +405,7 @@
 		private function isLoaded(e:*):void
 		{
 			trace("*** *** ***** isLoaded 2 : " + isLoaded);
-			
+		
 		}
 		
 		/**is exited from full screen*/
@@ -468,9 +518,10 @@
 		/**Close player*/
 		public function close():void
 		{
-			//Alert.show("NORMALclose");
 			NativeApplication.nativeApplication.systemIdleMode = SystemIdleMode.NORMAL;
 			trace("Hide the player");
+			clearTimeout(checkSeekID);
+					clearTimeout(checkQuailyID);
 			try
 			{
 				player.removeEventListener(MediaPlayerEventClass.FULLSCREEN_ENTER, isFullscreened);
@@ -490,6 +541,8 @@
 		protected function unLoad(event:Event):void
 		{
 			clearInterval(debugIntervalId);
+			clearTimeout(checkSeekID);
+					clearTimeout(checkQuailyID);
 			//Alert.show("NORMALunLoad");
 			NativeApplication.nativeApplication.systemIdleMode = SystemIdleMode.NORMAL;
 			if (player != null)
@@ -503,6 +556,8 @@
 					//player.removeEventListener(com.distriqt.extension.mediaplayer.events.MediaPlayerEvent.STOPPED,exitFullscreened);
 					player.destroy();
 					player = null;
+					
+					
 				}
 				catch (e)
 				{

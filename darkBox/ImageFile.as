@@ -109,6 +109,11 @@ package darkBox
 			}
 		}
 		
+		public function qualityCount():uint
+		{
+			return target.split('|').length
+		}
+		
 		private function startDownload():void
 		{
 			if(onlineTarget=='')
