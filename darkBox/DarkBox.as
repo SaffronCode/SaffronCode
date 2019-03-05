@@ -213,23 +213,23 @@
 			{
 			case 0: 
 			case 1: 
-				autoQ.visible = false;
-				HQ.visible = false;
-				MQ.visible = false;
-				LQ.visible = false;
+				if(autoQ)autoQ.visible = false;
+				if(HQ)HQ.visible = false;
+				if(MQ)MQ.visible = false;
+				if(LQ)LQ.visible = false;
 				break;
 			case 2: 
-				autoQ.visible = true;
-				HQ.visible = true;
-				MQ.visible = true;
-				LQ.visible = false;
+				if(autoQ)autoQ.visible = true;
+				if(HQ)HQ.visible = true;
+				if(MQ)MQ.visible = true;
+				if(LQ)LQ.visible = false;
 				break;
 			case 3: 
 			default: 
-				autoQ.visible = true;
-				HQ.visible = true;
-				MQ.visible = true;
-				LQ.visible = true;
+				if(autoQ)autoQ.visible = true;
+				if(HQ)HQ.visible = true;
+				if(MQ)MQ.visible = true;
+				if(LQ)LQ.visible = true;
 				break;
 			}
 		}
