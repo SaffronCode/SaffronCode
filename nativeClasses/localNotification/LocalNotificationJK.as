@@ -78,11 +78,18 @@
 			}
 		}
 		
+		/**Return true if this component is supporting*/
+		public static function isSupport():Boolean
+		{
+			loadClasses();
+			return NotificationManagerClass != null && (NotificationManagerClass as Object).isSupported ;
+		}
+		
 		private static function setUp(onReady:Function = null):void
 		{
 			if (satUpOnce)
 			{
-				if (onReady != null)
+				if (onReady != null && isSupport())
 				{
 					onReady();
 				}
@@ -95,8 +102,8 @@
 			{
 				readyFunctionsQue.push(onReady);
 			}
-			
-			if (NotificationManagerClass!=null && (NotificationManagerClass as Object).isSupported)
+			trace("isSupport() : " + isSupport());
+			if (isSupport())
 			{
 				//NativeApplication.nativeApplication.executeInBackground = true;
 				if (notificationManager == null)
@@ -123,7 +130,7 @@
 				trace("!!!!!!!!!!!!!!! Notification is not supporting here !!!!!!!!!!!!!!!!!");
 				
 				satUpOnce = true;
-				callAllReadies()
+				//callAllReadies()
 			}
 		}
 		
