@@ -70,7 +70,7 @@
 				NotificationCategoryClass = getDefinitionByName("com.juankpro.ane.localnotif.NotificationCategory") as Class ;
 				NotificationEventClass = getDefinitionByName("com.juankpro.ane.localnotif.NotificationEvent") as Class ;
 				NotificationIconTypeClass = getDefinitionByName("com.juankpro.ane.localnotif.NotificationIconType") as Class ;
-				NotificationManagerClass = getDefinitionByName("com.juankpro.ane.localnotif.NotificationManager;") as Class ;
+				NotificationManagerClass = getDefinitionByName("com.juankpro.ane.localnotif.NotificationManager") as Class ;
 				NotificationPriorityClass = getDefinitionByName("com.juankpro.ane.localnotif.NotificationPriority") as Class ;
 				TextInputNotificationActionClass = getDefinitionByName("com.juankpro.ane.localnotif.TextInputNotificationAction") as Class ;
 			}catch(e){
@@ -144,6 +144,7 @@
 		
 		public static function preventApplicationClose(wakeUpMessage:String):void
 		{
+			loadClasses();
 			clearInterval(wakeUpIntervalId);
 			WakeMessage = wakeUpMessage;
 			setUp(function()
@@ -155,6 +156,7 @@
 		
 		private static function removeEarlierWakeUpNotificationAndAddNewNotification():void
 		{
+			loadClasses();
 			trace("Notif2:" + WakeMessage);
 			if(notificationManager)
 				notificationManager.cancel(NOTIFICATION_IS_CLOSE);
