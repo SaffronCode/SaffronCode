@@ -1,6 +1,6 @@
 ﻿package nativeClasses.localNotification
 {
-	import com.juankpro.ane.localnotif.LocalNotifierSubscribeOptions;
+	/*import com.juankpro.ane.localnotif.LocalNotifierSubscribeOptions;
 	import com.juankpro.ane.localnotif.Notification;
 	import com.juankpro.ane.localnotif.NotificationAction;
 	import com.juankpro.ane.localnotif.NotificationCategory;
@@ -8,15 +8,38 @@
 	import com.juankpro.ane.localnotif.NotificationIconType;
 	import com.juankpro.ane.localnotif.NotificationManager;
 	import com.juankpro.ane.localnotif.NotificationPriority;
-	import com.juankpro.ane.localnotif.TextInputNotificationAction;
-	import contents.alert.Alert;
-	import flash.desktop.NativeApplication;
+	import com.juankpro.ane.localnotif.TextInputNotificationAction;*/
 	import flash.utils.clearInterval;
+	import flash.utils.getDefinitionByName;
 	import flash.utils.setInterval;
+	
+	import notification.NotificationEvent;
+	import notification.NotificationManager;
 	
 	public class LocalNotificationJK
 	{
-		private static var notificationManager:NotificationManager;
+		/**com.juankpro.ane.localnotif.LocalNotifierSubscribeOptions*/
+		private static var LocalNotifierSubscribeOptionsClass:Class;
+		/**com.juankpro.ane.localnotif.Notification*/
+		private static var NotificationClass:Class;
+		/**com.juankpro.ane.localnotif.NotificationAction*/
+		private static var NotificationActionClass:Class;
+		/**com.juankpro.ane.localnotif.NotificationCategory*/
+		private static var NotificationCategoryClass:Class;
+		/**com.juankpro.ane.localnotif.NotificationEvent*/
+		private static var NotificationEventClass:Class;
+		/**com.juankpro.ane.localnotif.NotificationIconType*/
+		private static var NotificationIconTypeClass:Class;
+		/**com.juankpro.ane.localnotif.NotificationManager;*/
+		private static var NotificationManagerClass:Class;
+		/**com.juankpro.ane.localnotif.NotificationPriority*/
+		private static var NotificationPriorityClass:Class;
+		/**com.juankpro.ane.localnotif.TextInputNotificationAction*/
+		private static var TextInputNotificationActionClass:Class;
+		
+		
+		/**NotificationManager*/
+		private static var notificationManager:Object;
 		/**Set a wake up notification every ... miliseconds*/
 		private static const resetNotification:uint = 60 * 1000;
 		private static const NOTIFICATION_IS_CLOSE:String = "NOTIFICATION_IS_CLOSE";
@@ -31,7 +54,29 @@
 		
 		//public static var showNotification:Boolean = false;
 		
-		private static var readyFunctionsQue:Vector.<Function> = new Vector.<Function>()
+		private static var readyFunctionsQue:Vector.<Function> = new Vector.<Function>();
+		
+		private static function loadClasses():void
+		{
+			if(LocalNotifierSubscribeOptionsClass!=null)
+			{
+				return ;
+			}
+			try
+			{
+				LocalNotifierSubscribeOptionsClass = getDefinitionByName("com.juankpro.ane.localnotif.LocalNotifierSubscribeOptions") as Class ;
+				NotificationClass = getDefinitionByName("com.juankpro.ane.localnotif.Notification") as Class ;
+				NotificationActionClass = getDefinitionByName("com.juankpro.ane.localnotif.NotificationAction") as Class ;
+				NotificationCategoryClass = getDefinitionByName("com.juankpro.ane.localnotif.NotificationCategory") as Class ;
+				NotificationEventClass = getDefinitionByName("com.juankpro.ane.localnotif.NotificationEvent") as Class ;
+				NotificationIconTypeClass = getDefinitionByName("com.juankpro.ane.localnotif.NotificationIconType") as Class ;
+				NotificationManagerClass = getDefinitionByName("com.juankpro.ane.localnotif.NotificationManager;") as Class ;
+				NotificationPriorityClass = getDefinitionByName("com.juankpro.ane.localnotif.NotificationPriority") as Class ;
+				TextInputNotificationActionClass = getDefinitionByName("com.juankpro.ane.localnotif.TextInputNotificationAction") as Class ;
+			}catch(e){
+				LocalNotifierSubscribeOptionsClass = null ;
+			}
+		}
 		
 		private static function setUp(onReady:Function = null):void
 		{
@@ -44,21 +89,23 @@
 				return;
 			}
 			
+			loadClasses();
+			
 			if (onReady != null)
 			{
 				readyFunctionsQue.push(onReady);
 			}
 			
-			if (NotificationManager.isSupported)
+			if (NotificationManagerClass!=null && (NotificationManagerClass as Object).isSupported)
 			{
-				NativeApplication.nativeApplication.executeInBackground = true;
+				//NativeApplication.nativeApplication.executeInBackground = true;
 				if (notificationManager == null)
 				{
-					notificationManager = new NotificationManager();
-					var options:LocalNotifierSubscribeOptions = new LocalNotifierSubscribeOptions();
-					options.notificationStyles = NotificationManager.supportedNotificationStyles;
+					notificationManager = new NotificationManagerClass();
+					var options:Object = new LocalNotifierSubscribeOptionsClass();
+					options.notificationStyles = (NotificationManagerClass as Object).supportedNotificationStyles;
 					//notificationManager.addEventListener(NotificationEvent.NOTIFICATION_ACTION, notificationActionHandler);
-					notificationManager.addEventListener(NotificationEvent.SETTINGS_SUBSCRIBED, function(e)
+					notificationManager.addEventListener((NotificationEventClass as Object).SETTINGS_SUBSCRIBED, function(e)
 					{
 						satUpOnce = true;
 						callAllReadies()
@@ -111,16 +158,16 @@
 			trace("Notif2:" + WakeMessage);
 			if(notificationManager)
 				notificationManager.cancel(NOTIFICATION_IS_CLOSE);
-			var notification:Notification = new Notification();
-			notification.title = DevicePrefrence.appName;
-			notification.body = WakeMessage;
-			notification.fireDate = new Date((new Date()).time + resetNotification);
-			notification.numberAnnotation = 0;
-			notification.priority = NotificationPriority.HIGH;
-			notification.showInForeground = false;
-			notification.allowWhileIdle = true;
+			var notificati:Object = new NotificationClass();
+			notificati.title = DevicePrefrence.appName;
+			notificati.body = WakeMessage;
+			notificati.fireDate = new Date((new Date()).time + resetNotification);
+			notificati.numberAnnotation = 0;
+			notificati.priority = (NotificationPriorityClass as Object).HIGH;
+			notificati.showInForeground = false;
+			notificati.allowWhileIdle = true;
 			if(notificationManager)
-				notificationManager.notifyUser(NOTIFICATION_IS_CLOSE, notification);
+				notificationManager.notifyUser(NOTIFICATION_IS_CLOSE, notificati);
 		}
 		
 		public static function sendNotification(message:String):void
@@ -129,17 +176,17 @@
 			{
 				cancelCustomNotification();
 				
-				var notification:Notification = new Notification();
-				notification.title = DevicePrefrence.appName;
-				notification.body = message;
-				notification.fireDate = new Date(new Date().time+1000);
-				notification.numberAnnotation = 0;
-				notification.priority = NotificationPriority.MAX;
-				notification.showInForeground = true;
-				notification.allowWhileIdle = true;
-				notification.hasAction = true;
+				var notificati:Object = new NotificationClass();
+				notificati.title = DevicePrefrence.appName;
+				notificati.body = message;
+				notificati.fireDate = new Date(new Date().time+1000);
+				notificati.numberAnnotation = 0;
+				notificati.priority = (NotificationPriorityClass as Object).MAX;
+				notificati.showInForeground = true;
+				notificati.allowWhileIdle = true;
+				notificati.hasAction = true;
 				if(notificationManager!=null)
-				notificationManager.notifyUser(NOTIFICATION_MESSAGE, notification);
+				notificationManager.notifyUser(NOTIFICATION_MESSAGE, notificati);
 				//showNotification = true;
 				trace("**** Please send notification");
 			})
