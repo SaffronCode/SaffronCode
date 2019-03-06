@@ -1,6 +1,9 @@
 package 
 {
+	import appManager.event.PageControllEvent;
+	
 	import flash.display.BitmapData;
+	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.display.Stage;
 	import flash.events.Event;
@@ -20,11 +23,12 @@ package
 		private var _stage:Stage;
 		private var _loadStatus:String;
 		private var _bitmapData:BitmapData;
+		private var _preventerDisplayObject:DisplayObject;
 		public function WebView()
 		{
 			super();
 		}
-		public static function setup(area_p:MovieClip,url_p:String,stage_p:Stage,loadStatus_p:String=LOAD_URL,bitmapData_p:BitmapData=null):void
+		public static function setup(area_p:MovieClip,url_p:String,stage_p:Stage,loadStatus_p:String=LOAD_URL,bitmapData_p:BitmapData=null,PreventerDisplayObject:DisplayObject=null):void
 		{
 			Me = new WebView();
 			Me._area = area_p;	
@@ -32,9 +36,28 @@ package
 			Me._stage = stage_p;
 			Me._loadStatus = loadStatus_p;
 			Me._bitmapData = bitmapData_p;
-			Me.load();		
+			Me._preventerDisplayObject = PreventerDisplayObject;
+			if(PreventerDisplayObject!=null)
+			{
+				PreventerDisplayObject.dispatchEvent(new PageControllEvent(PageControllEvent.PREVENT_PAGE_CHANGING,letPageChange,PreventerDisplayObject));
+			}
+			
+			Me.load();	
+
 		}
-		
+		protected static function letPageChange():void
+		{
+			if(isActive())
+			{
+				unload();
+			}
+			else
+			{
+				Me._preventerDisplayObject.dispatchEvent(new PageControllEvent(PageControllEvent.LET_PAGE_CHANGE));	
+			}
+			
+			
+		}
 		private function chekArea(event:Event):void
 		{
 			// TODO Auto-generated method stub
