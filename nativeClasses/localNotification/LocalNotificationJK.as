@@ -170,6 +170,7 @@
 			var notificati:Object = new NotificationClass();
 			notificati.title = DevicePrefrence.appName;
 			notificati.body = WakeMessage;
+			notificati.tickerText = WakeMessage; 
 			notificati.fireDate = new Date((new Date()).time + resetNotification);
 			notificati.numberAnnotation = 0;
 			notificati.priority = (NotificationPriorityClass as Object).HIGH;
@@ -187,6 +188,7 @@
 				
 				var notificati:Object = new NotificationClass();
 				notificati.title = DevicePrefrence.appName;
+				notificati.tickerText = message; 
 				notificati.body = message;
 				notificati.fireDate = new Date(new Date().time+1000);
 				notificati.numberAnnotation = 0;
