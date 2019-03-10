@@ -1,4 +1,4 @@
-package darkBox
+﻿package darkBox
 {
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -8,6 +8,7 @@ package darkBox
 	import flash.media.StageWebView;
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
+	import flash.utils.setTimeout;
 	
 	import nativeClasses.pdfReader.DistriqtPDFReader;
 	
@@ -90,7 +91,7 @@ package darkBox
 			this.graphics.drawRect(0,0,newSize.width,newSize.height);
 			
 			
-			controllStageRect();
+			setTimeout(controllStageRect,0);
 		}
 		
 		private function controllStageRect(e:Event=null):void
@@ -98,8 +99,11 @@ package darkBox
 			if(this.stage)
 			{
 				myStageWeb.viewPort = this.getBounds(stage);
-				distriqtPDF = new DistriqtPDFReader(this.width,this.height);
-				this.addChild(distriqtPDF);
+				if(DistriqtPDFReader.isSupport)
+				{
+					distriqtPDF = new DistriqtPDFReader(this.width,this.height);
+					this.addChild(distriqtPDF);
+				}
 			}
 			else
 			{
@@ -110,13 +114,17 @@ package darkBox
 		override public function show(target:String=''):void
 		{
 			this.visible = true ;
-			this.mouseEnabled = this.mouseChildren = true ;
-			pdftarget = new File(target);
+			var onlineShow:Boolean = target.indexOf('http')!=-1;
+			this.mouseEnabled = this.mouseChildren = !onlineShow ;
+			if(!onlineShow)
+			{
+				pdftarget = new File(target);
+			}
 			if(DistriqtPDFReader.isSupport)
 			{
-				distriqtPDF.openPDF(pdftarget.nativePath);
+				distriqtPDF.openPDF(onlineShow?target:pdftarget.nativePath);
 			}
-			else if(DevicePrefrence.isAndroid())
+			else if(!onlineShow && DevicePrefrence.isAndroid())
 			{
 				if(NativePDF.isSupports())
 				{
@@ -135,8 +143,8 @@ package darkBox
 			{
 				stageVewIsOpened = true ;
 				myStageWeb.stage = stage ;
-				trace("PDF path : "+pdftarget.nativePath);
-				myStageWeb.loadURL(pdftarget.url);
+				//trace("PDF path : "+pdftarget.nativePath);
+				myStageWeb.loadURL(onlineShow?target:pdftarget.url);
 			}
 		}
 	}

@@ -660,6 +660,9 @@
 			case ImageFile.TYPE_PDF: 
 				box_stageWeb.show(imageItem.target);
 				break;
+			case ImageFile.TYPE_WEB: 
+				box_stageWeb.show(imageItem.target);
+				break;
 			
 			default: 
 				trace("This image is unknown");
