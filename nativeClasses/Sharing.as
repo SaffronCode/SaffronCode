@@ -4,6 +4,9 @@
 	/*import com.distriqt.extension.share.applications.Application;
 	import com.distriqt.extension.share.applications.ApplicationOptions;*/
 	
+	import com.distriqt.extension.share.applications.Application;
+	import com.distriqt.extension.share.applications.ApplicationOptions;
+	
 	import flash.display.BitmapData;
 	import flash.filesystem.File;
 	import flash.net.URLVariables;
@@ -95,7 +98,7 @@
 				shareEventClass = getDefinitionByName("com.distriqt.extension.share.events.ShareEvent") as Class ;
 				
 				ApplicationClass = getDefinitionByName("com.distriqt.extension.share.applications.Application") as Class ;
-				ApplicationOptionsClass = getDefinitionByName("com.distriqt.extension.share.applications.Application") as Class ;
+				ApplicationOptionsClass = getDefinitionByName("com.distriqt.extension.share.applications.ApplicationOptions") as Class ;
 	
 				
 				if(shareClass!=null)
@@ -155,7 +158,7 @@
 			trace( event.type + "::" + event.activityType + "::" + event.error );
 		}
 		
-		public function openApp(PackageName:String,Url:URLVariables)
+		/*public function openApp(PackageName:String,Url:URLVariables)
 		{
 			if (shareClass.isSupported)
 			{
@@ -169,7 +172,46 @@
 						options.parameters = Url.toString();
 						shareClass.service.applications.launch(app,options);
 					}
+			}
+		}*/
+		
+		public function openApp(PackageName:String,Type:String = "",extras:Object=null)
+		{
+			if (shareClass.isSupported)
+			{
+				var app:* = new ApplicationClass(PackageName,"");
+				
+				if (shareClass.service.applications.isInstalled(app))
+				{
+					var options:* = new ApplicationOptionsClass();
+					options.action = ApplicationOptions.ACTION_SEND;
+														//ACTION_MAIN																
+														//ACTION_SEND
+														//ACTION_SENDTO
+														//ACTION_VIEW
+					
+					
+					//options.data = "http://instagram.com/_u/distriqt";
+					//options.parameters = "user?username=distriqt"
+					
+					
+					//Any extras you wish to send to the application. Common examples are "text", "subject", see the Android documentation for more: http://developer.android.com/reference/android/content/Intent.html
+					options.extras = extras;
+					
+					/*This is passed as the type of the intent to start on Android. This can be used to set the mime type of the data passed to the intent.*/
+					options.type = Type;
+				
+					trace('extras :',JSON.stringify(options.extras));
+					trace('type of the intent :',options.type);
+					
+					shareClass.service.applications.launch(app,options);
+					
+					
+
+					
+					
 				}
+			}
 		}
 	}
 }
