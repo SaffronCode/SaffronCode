@@ -115,9 +115,9 @@
 		
 		protected static function updateStageSize(event:Event):void
 		{
+			ME.setUp(StageManager.stageRect);
 			ME.x = StageManager.stageDelta.width / -2;
 			ME.y = StageManager.stageDelta.height / -2 + StageManager.stageDelta.y;
-			ME.setUp(StageManager.stageRect);
 		}
 		
 		public static function show(Images:Vector.<ImageFile>, currentIndex:uint = 0, onClosed:Function = null):void

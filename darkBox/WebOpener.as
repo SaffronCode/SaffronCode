@@ -8,6 +8,7 @@
 	import flash.media.StageWebView;
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
+	import flash.utils.setTimeout;
 	
 	import nativeClasses.pdfReader.DistriqtPDFReader;
 	
@@ -90,7 +91,7 @@
 			this.graphics.drawRect(0,0,newSize.width,newSize.height);
 			
 			
-			controllStageRect();
+			setTimeout(controllStageRect,0);
 		}
 		
 		private function controllStageRect(e:Event=null):void
