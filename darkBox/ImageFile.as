@@ -20,6 +20,7 @@ package darkBox
 							TYPE_SPHERE:int = 3,
 							TYPE_VIDEO:int = 4,
 							TYPE_PDF:int = 5,
+							TYPE_WEB:int = 7,
 							TYPE_BINARY:int = 6;
 		/**Uses to catch offline file*/
 		private var saver:URLSaver ;
