@@ -25,7 +25,7 @@
 		/**com.distriqt.extension.pdfreader.builders.PDFViewBuilder*/
 		private static var PDFViewBuilderClass:Class
 		
-		public static var isSupport:Boolean = false ;
+		private static var _isSupport:Boolean = false ;
 
 		private var view:*;
 		
@@ -179,16 +179,16 @@
 				if ((PDFReaderClass as Object).isSupported)
 				{
 					// Functionality here
-					isSupport = true ;
+					_isSupport = true ;
 				}
 			}
 			catch (e:Error)
 			{
 				trace("*******************\n\n\n"+ e );
-				isSupport = false ;
+				_isSupport = false ;
 			}
 
-			trace("****\n\n\n\nPDF support status is : "+isSupport+"\n\n\n********");
+			trace("****\n\n\n\nPDF support status is : "+_isSupport+"\n\n\n********");
 			
 		}
 		
@@ -391,6 +391,11 @@
 					view.hide();
 				isShowing = false ;
 			}
+		}
+		
+		static public function get isSupport():Boolean 
+		{
+			return _isSupport && !DevicePrefrence.isIOS();
 		}
 	}
 }
