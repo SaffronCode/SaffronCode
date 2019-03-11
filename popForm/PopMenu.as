@@ -80,6 +80,12 @@
 			backButtonName = backString ;
 		}
 		
+		/**Activate the static cancel button*/
+		public static function staticCancelEnabled(CancelNames:Array):void
+		{
+			staticCanselEnabled(CancelNames);
+		}
+		
 		/**Activate the static cansel button*/
 		public static function staticCanselEnabled(CancelNames:Array):void
 		{

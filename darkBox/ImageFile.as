@@ -148,7 +148,7 @@ package darkBox
 		/**This will delete the temprary file*/
 		public function deleteFile():void
 		{
-			cansel();
+			cancel();
 			if(onlineTarget!=null && onlineTarget!='')
 			{
 				saver.deletFileIfExists(onlineTarget);
@@ -187,13 +187,18 @@ package darkBox
 			this.dispatchEvent(new URLSaverEvent(URLSaverEvent.LOAD_COMPLETE,1));
 		}
 		
-		/**cansel downloading*/
+		/**cancel downloading*/
+		public function cancel():void
+		{
+			cansel();
+		}
+		/**cancel downloading*/
 		public function cansel():void
 		{
 			clearTimeout(timeOutId);
 			if(saver)
 			{
-				saver.cansel()
+				saver.cancel()
 			}
 		}
 	}

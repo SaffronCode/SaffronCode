@@ -134,7 +134,7 @@
 		{
 			this.removeEventListener(Event.ENTER_FRAME,drawLines);
 			this.removeEventListener(Event.REMOVED_FROM_STAGE,unLoad);
-			canselCaptureDilay();
+			cancelCaptureDilay();
 		}
 		
 		public function set backVisible(value:Boolean):void
@@ -190,7 +190,7 @@
 		 * rubber is a drawing with the color of background*/
 		public function startDraw(color:uint,thickness:Number,X:Number,Y:Number,bitmapData:BitmapData=null,isRubber:Boolean = false ):void
 		{
-			canselCaptureDilay();
+			cancelCaptureDilay();
 			//trace("start drawing to : "+X,Y+' > '+thickness);
 			if(isRubber)
 			{
@@ -340,10 +340,15 @@
 			return capturedBitmap ;
 		}
 		
-		/**cansel and delete current open drawing*/
+		/**cancel and delete current open drawing*/
+		public function cancelCurrentOpenDraw():void
+		{
+			canselCurrentOpenDraw();
+		}
+		/**cancel and delete current open drawing*/
 		public function canselCurrentOpenDraw():void
 		{
-			//Cansel open drawing and delete currentPen line
+			//Cancel open drawing and delete currentPen line
 			//Settig up a new penLine Object on stage and add it here and set it stand by to draw
 			if(DrawingPlace!=null)
 			{
@@ -372,7 +377,7 @@
 			captureTimer.addEventListener(TimerEvent.TIMER_COMPLETE,captureAndSaveDrawing);
 		}
 		
-		private function canselCaptureDilay():void
+		private function cancelCaptureDilay():void
 		{
 			captureTimer.reset();
 		}
@@ -385,7 +390,7 @@
 		
 		private function captureAndSaveDrawing(e:TimerEvent=null):void
 		{
-			canselCaptureDilay()
+			cancelCaptureDilay()
 			
 			var currentDrawnBitmap:Bitmap = exportBitmap(true,false,autoCaptureResolution);
 			

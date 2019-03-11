@@ -23,7 +23,7 @@ package contents.displayPages
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 		}
 		
-		/**Cansel the listeners*/
+		/**Cancel the listeners*/
 		protected function unLoad(event:Event):void
 		{
 			this.removeEventListener(Event.ENTER_FRAME,animTimeLine);

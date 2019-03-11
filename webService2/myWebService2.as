@@ -239,7 +239,7 @@ package webService2
 		}
 		
 		/**new function to make easier to check internet connection with less addEventListeners<br>
-		 * callDisconnect whenever you needs to cansel the checking*/
+		 * callDisconnect whenever you needs to cancel the checking*/
 		public static function Connect(onConnected:Function,onDisconnected:Function)
 		{
 			if(isitConnected)
@@ -254,7 +254,7 @@ package webService2
 			}
 		}
 		
-		/**Cansel these listeners from listenning to webservice connection from Connect function*/
+		/**Cancel these listeners from listenning to webservice connection from Connect function*/
 		public static function Disconnect(onConnected:Object, noInternet:Object):void
 		{
 			
@@ -849,8 +849,12 @@ package webService2
 ///////////////////////////////////////////////////////TOOLS	↓
 		
 		
-		
-		/**cansel this operation with this token*/
+		/**cancel this operation with this token*/
+		public static function CancelThisToken(token:AsyncToken)
+		{
+			CanselThisToken(token);
+		}
+		/**cancel this operation with this token*/
 		public static function CanselThisToken(token:AsyncToken)
 		{
 			//var operation:AbstractOperation = ws.getOperation("GetContentListTotals");

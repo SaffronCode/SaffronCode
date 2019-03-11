@@ -135,8 +135,8 @@
 		 * This is on beta testing yet*/
 		public function reLoad(delay:uint=20000):void
 		{
-			//I prefer to dont cansel the current webservice
-			//cansel();
+			//I prefer to dont cancel the current webservice
+			//cancel();
 			clearTimeout(timerId);
 			
 			//LoadForDoubleControll = false,
@@ -152,6 +152,10 @@
 			}
 		}
 		
+		public function cancel()
+		{
+			cansel();
+		}
 		public function cansel()
 		{
 			clearTimeout(timerId);
@@ -159,7 +163,7 @@
 			myWebService2.eventListen.removeEventListener(WebEvent2.NO_CONNECTTION,noInternet);
 			myWebService2.eventListen.removeEventListener(WebEvent2.RESULT,loaded);
 			myWebService2.Disconnect(onConnected,noInternet);
-			myWebService2.CanselThisToken(myToken);
+			myWebService2.CancelThisToken(myToken);
 		}
 		
 		private function onConnected()
@@ -177,7 +181,7 @@
 			//TODO: implement function
 			if(e == null || myToken == e.token)
 			{
-				cansel();
+				cancel();
 				connectinError = new WebEvent2(WebEvent2.NO_CONNECTTION) ;
 				if(e!=null)
 				{
@@ -212,7 +216,7 @@
 			if(myToken == e.token)
 			{
 				connected = true ;
-				cansel();
+				cancel();
 				generateDataAndDispatchEvent(e.pureData);
 			}
 		}

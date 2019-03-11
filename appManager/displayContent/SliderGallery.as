@@ -482,7 +482,7 @@
 					this.addEventListener(ScrollMT.LOCK_SCROLL_TILL_MOUSE_UP,canselDragging);
 				}
 				
-				/**Cansel dragging*/
+				/**Cancel dragging*/
 				protected function canselDragging(event:*,dispatchClick:Boolean=true):void
 				{
 					isDragging = false ;

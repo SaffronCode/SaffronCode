@@ -129,8 +129,8 @@ package webService3
 		 * This is on beta testing yet*/
 		public function reLoad(delay:uint=20000):void
 		{
-			//I prefer to dont cansel the current webservice
-			//cansel();
+			//I prefer to dont cancel the current webservice
+			//cancel();
 			clearTimeout(timerId);
 			
 			//LoadForDoubleControll = false,
@@ -146,6 +146,10 @@ package webService3
 			}
 		}
 		
+		public function cancel()
+		{
+			cansel();
+		}
 		public function cansel()
 		{
 			clearTimeout(timerId);
@@ -153,7 +157,7 @@ package webService3
 			myWebService3.eventListen.removeEventListener(WebEvent3.NO_CONNECTTION,noInternet);
 			myWebService3.eventListen.removeEventListener(WebEvent3.RESULT,loaded);
 			myWebService3.Disconnect(onConnected,noInternet);
-			myWebService3.CanselThisToken(myToken);
+			myWebService3.CancelThisToken(myToken);
 		}
 		
 		private function onConnected()
@@ -171,7 +175,7 @@ package webService3
 			//TODO: implement function
 			if(e == null || myToken == e.token)
 			{
-				cansel();
+				cancel();
 				connectinError = new WebEvent3(WebEvent3.NO_CONNECTTION) ;
 				if(e!=null)
 				{
@@ -203,7 +207,7 @@ package webService3
 			if(myToken == e.token)
 			{
 				connected = true ;
-				cansel();
+				cancel();
 				generateDataAndDispatchEvent(e.pureData);
 			}
 		}

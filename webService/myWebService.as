@@ -111,7 +111,7 @@ package webService
 		}
 		
 		/**new function to make easier to check internet connection with less addEventListeners<br>
-		 * callDisconnect whenever you needs to cansel the checking*/
+		 * callDisconnect whenever you needs to cancel the checking*/
 		public static function Connect(onConnected:Function,onDisconnected:Function)
 		{
 			if(isitConnected)
@@ -126,7 +126,7 @@ package webService
 			}
 		}
 		
-		/**Cansel these listeners from listenning to webservice connection from Connect function*/
+		/**Cancel these listeners from listenning to webservice connection from Connect function*/
 		public static function Disconnect(onConnected:Object, noInternet:Object):void
 		{
 			
@@ -267,6 +267,11 @@ package webService
 		
 		
 		
+		/**cansel this operation with this token*/
+		public static function CancelThisToken(token:AsyncToken)
+		{
+			CanselThisToken(token);
+		}
 		/**cansel this operation with this token*/
 		public static function CanselThisToken(token:AsyncToken)
 		{

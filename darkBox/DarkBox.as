@@ -322,7 +322,7 @@
 		{
 			for (var i = 0; images != null && i < images.length; i++)
 			{
-				images[i].cansel();
+				images[i].cancel();
 			}
 			box_flat.hide();
 			box_pano.hide();
@@ -478,7 +478,7 @@
 			
 			if (images != null && images.length > currentImage)
 			{
-				images[currentImage].cansel();
+				images[currentImage].cancel();
 			}
 			
 			this.mouseChildren = false;

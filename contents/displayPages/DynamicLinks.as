@@ -392,6 +392,13 @@ package contents.displayPages
 			}
 		}
 		
+		
+			/**Cansel sliding proccess*/
+			protected function cancelSliding(event:MouseEvent):void
+			{
+				canselSliding(event);
+			}
+			
 			/**Cansel sliding proccess*/
 			protected function canselSliding(event:MouseEvent):void
 			{

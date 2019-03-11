@@ -241,7 +241,12 @@ package netManager.urlSaver
 			urlLoader.load(new URLRequest(encodeURI(onlineURL)));
 		}
 		
-		/**Cansel current download*/
+		/**Cancel current download*/
+		public function cancel()
+		{
+			cansel();
+		}
+		/**Cancel current download*/
 		public function cansel()
 		{
 			//trace('Cansel donwload manager : '+onlineURL);

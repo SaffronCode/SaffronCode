@@ -96,8 +96,8 @@
 		 * After few tests, I noticed that the 10 second delay is not enaugh*/
 		public function reLoad(delay:uint=20000):void
 		{
-			//I prefer to dont cansel the current webservice
-				//cansel();
+			//I prefer to dont cancel the current webservice
+				//cancel();
 				clearTimeout(timerId);
 			
 			LoadForDoubleControll = false,
@@ -134,7 +134,7 @@
 		/**Create load function on extended class to call this function with its own parameters*/
 		protected function loadParams(...params):void
 		{
-			cansel();
+			cancel();
 			offlineValuesToSend = null ;
 			//You have permition to dispatch events now.
 			//doNotDispatchEventsAgain = false ;
@@ -170,6 +170,10 @@
 			}
 		}
 		
+		public function cancel()
+		{
+			cansel();
+		}
 		public function cansel()
 		{
 			//TODO: implement function
@@ -185,7 +189,7 @@
 			myWebService.eventListen.removeEventListener(WebEvent.EVENT_DISCONNECTED,noInternet);
 			myWebService.eventListen.removeEventListener(WebEvent.Result,loaded);
 			myWebService.Disconnect(onConnected,noInternet);
-			myWebService.CanselThisToken(myToken);
+			myWebService.CancelThisToken(myToken);
 		}
 		
 		private function onConnected()
@@ -203,7 +207,7 @@
 			//TODO: implement function
 			if(e == null || myToken == e.token)
 			{
-				cansel();
+				cancel();
 				
 				//#2
 				if(offlineDataIsOK)
@@ -223,7 +227,7 @@
 			if(myToken == e.token)
 			{
 				connected = true ;
-				cansel();
+				cancel();
 				generateDataAndDispatchEvent(e.pureData);
 				this.dispatchEvent(new Event(Event.CONNECT));
 			}

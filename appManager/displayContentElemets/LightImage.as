@@ -44,7 +44,7 @@
 		/**This will make image to load in the stage with fade in animation*/
 		public static var acitvateAnimation:Boolean = true ;
 		
-		/**You can cansel all animation by changing the static value activateAnimation*/
+		/**You can cancel all animation by changing the static value activateAnimation*/
 		public var animated:Boolean = true ;
 		
 		/**Pass numbers to this variable befor setup function to make it blur the image*/

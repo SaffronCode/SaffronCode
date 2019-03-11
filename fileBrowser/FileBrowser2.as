@@ -72,7 +72,7 @@
 			
 			var neededLang:String = "" ;
 			
-			neededLang+=controlLang("cansel","لغو") ;
+			neededLang+=controlLang("cancel","لغو") ;
 			neededLang+=controlLang("back_folder","بازگشت به بالا") ;
 			neededLang+=controlLang("save","ذخیره") ;
 			neededLang+=controlLang("search","جستجو") ;
@@ -134,7 +134,7 @@
 		public static function showBrowser(target:File,hint:String='',addBackButton:Boolean=true):void
 		{
 			lastLocation = target ;
-			//var buttons:Array = [Contents.lang.t.cansel,''] ;
+			//var buttons:Array = [Contents.lang.t.cancel,''] ;
 			var buttons:Array = new Array();
 		
 			buttons.push(new PopButtonData(Contents.lang.t.cansel,defaultButtonFrame,null,true,true)) ;

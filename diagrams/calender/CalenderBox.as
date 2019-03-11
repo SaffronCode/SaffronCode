@@ -125,13 +125,13 @@ package diagrams.calender
 				this.alpha = 0 ;
 				
 				myDelay = delay ;
-				canselTimer();
+				cancelTimer();
 				
 				myTimer = new Timer(delay,1);
 				myTimer.addEventListener(TimerEvent.TIMER_COMPLETE,showMe);
 				myTimer.start();
 				
-				this.addEventListener(Event.REMOVED_FROM_STAGE,canselTimer);
+				this.addEventListener(Event.REMOVED_FROM_STAGE,cancelTimer);
 			}
 		}
 		
@@ -153,7 +153,7 @@ package diagrams.calender
 				Obj.remove(this);
 				return ;
 			}
-			canselTimer();
+			cancelTimer();
 			if(delay < 0)
 			{
 				delay = myDelay;
@@ -164,7 +164,7 @@ package diagrams.calender
 			myTimer.addEventListener(TimerEvent.TIMER_COMPLETE,hideMe);
 			myTimer.start();
 			
-			this.addEventListener(Event.REMOVED_FROM_STAGE,canselTimer);
+			this.addEventListener(Event.REMOVED_FROM_STAGE,cancelTimer);
 		}
 		
 		protected function hideMe(event:TimerEvent):void
@@ -179,8 +179,8 @@ package diagrams.calender
 			Obj.remove(this);
 		}
 		
-		/**Cansel timer*/
-		private function canselTimer(e=null)
+		/**Cancel timer*/
+		private function cancelTimer(e=null)
 		{
 			if(myTimer != null)
 			{
