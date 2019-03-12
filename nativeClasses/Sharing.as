@@ -4,8 +4,7 @@
 	/*import com.distriqt.extension.share.applications.Application;
 	import com.distriqt.extension.share.applications.ApplicationOptions;*/
 	
-	import com.distriqt.extension.share.applications.Application;
-	import com.distriqt.extension.share.applications.ApplicationOptions;
+
 	
 	import flash.display.BitmapData;
 	import flash.filesystem.File;
@@ -184,7 +183,7 @@
 				if (shareClass.service.applications.isInstalled(app))
 				{
 					var options:* = new ApplicationOptionsClass();
-					options.action = ApplicationOptions.ACTION_SEND;
+					options.action = ApplicationOptionsClass.ACTION_SEND;
 														//ACTION_MAIN																
 														//ACTION_SEND
 														//ACTION_SENDTO
