@@ -175,7 +175,8 @@
 			}
 		}*/
 		
-		public function openApp(PackageName:String,Type:String = "",extras:Object=null)
+		/**https://distriqt.github.io/ANE-Share/u.Launch%20Applications*/
+		public function openApp(PackageName:String,Type:String = "",extras:Object=null,Url:URLVariables=null)
 		{
 			if (shareClass.isSupported)
 			{
@@ -184,9 +185,10 @@
 				if (shareClass.service.applications.isInstalled(app))
 				{
 					var options:* = new ApplicationOptionsClass();
-					options.action = ApplicationOptions.ACTION_SEND;
-														//ACTION_MAIN																
-														//ACTION_SEND
+					
+					options.action = ApplicationOptions.ACTION_MAIN;
+														//ACTION_MAIN			-->ok													
+														//ACTION_SEND	
 														//ACTION_SENDTO
 														//ACTION_VIEW
 					
@@ -196,19 +198,44 @@
 					
 					
 					//Any extras you wish to send to the application. Common examples are "text", "subject", see the Android documentation for more: http://developer.android.com/reference/android/content/Intent.html
-					options.extras = extras;
 					
-					/*This is passed as the type of the intent to start on Android. This can be used to set the mime type of the data passed to the intent.*/
-					options.type = Type;
+					var extras2:Object = {};
+					//JSON.stringify({versionName:"1.0.0",totalAmount:10000,sessionId:[12345678],applicationId:100021,TransactionType:"PURCHASE",printPaymentDetails:false});
+					extras2["versionName"] = "1.0.0";
+					extras2["totalAmount"] = 10000;
+					extras2["sessionId"] = [12345678];
+					extras2["applicationId"] = 100021;
+					extras2["TransactionType"] = "PURCHASE";
+					extras2["printPaymentDetails"] = false;
+					
+					//options.extras = extras2;
+					options.data = extras2;
+						
+						//{
+						//versionName:"1.0.0",
+						//byte:[],
+						//applicationId:3562,
+					//totalAmount:10000,
+					//	payerId:0,
+						//TransactionType:"PURCHASE",
+						//paymentDetail:"",
+						//merchantMessage:"",
+						//merchantAdditionalData:"",
+						//cardHolderMobile:"",
+						//extras:[],
+						//printPaymentDetails:false	
+					//}	
+					//extras;
+					
+					//This is passed as the type of the intent to start on Android. This can be used to set the mime type of the data passed to the intent.
+					options.type = "*/*";
 				
-					trace('extras :',JSON.stringify(options.extras));
-					trace('type of the intent :',options.type);
+					//trace('extras :',JSON.stringify(options.extras));
+					//trace('type of the intent :',options.type);
 					
+					
+					//options.parameters = Url.toString();
 					shareClass.service.applications.launch(app,options);
-					
-					
-
-					
 					
 				}
 			}
