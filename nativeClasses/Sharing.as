@@ -186,7 +186,7 @@
 				{
 					var options:* = new ApplicationOptionsClass();
 					
-					options.action = ApplicationOptions.ACTION_MAIN;
+					options.action = ApplicationOptions.ACTION_VIEW;
 														//ACTION_MAIN			-->ok													
 														//ACTION_SEND	
 														//ACTION_SENDTO
