@@ -4,8 +4,8 @@
 	/*import com.distriqt.extension.share.applications.Application;
 	import com.distriqt.extension.share.applications.ApplicationOptions;*/
 	
-	import com.distriqt.extension.share.applications.Application;
-	import com.distriqt.extension.share.applications.ApplicationOptions;
+//	import com.distriqt.extension.share.applications.Application;
+//	import com.distriqt.extension.share.applications.ApplicationOptions;
 	
 	import flash.display.BitmapData;
 	import flash.filesystem.File;
@@ -186,7 +186,7 @@
 				{
 					var options:* = new ApplicationOptionsClass();
 					
-					options.action = ApplicationOptions.ACTION_VIEW;
+					options.action = ApplicationOptionsClass.ACTION_VIEW;
 														//ACTION_MAIN			-->ok													
 														//ACTION_SEND	
 														//ACTION_SENDTO
@@ -203,7 +203,7 @@
 					//JSON.stringify({versionName:"1.0.0",totalAmount:10000,sessionId:[12345678],applicationId:100021,TransactionType:"PURCHASE",printPaymentDetails:false});
 					extras2["versionName"] = "1.0.0";
 					extras2["totalAmount"] = 10000;
-					extras2["sessionId"] = [12345678];
+					extras2["sessionId"] = [1,2,3,4,5,6,7,8];
 					extras2["applicationId"] = 100021;
 					extras2["TransactionType"] = "PURCHASE";
 					extras2["printPaymentDetails"] = false;
@@ -236,6 +236,7 @@
 					
 					//options.parameters = Url.toString();
 					shareClass.service.applications.launch(app,options);
+					
 					
 				}
 			}
