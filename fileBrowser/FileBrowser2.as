@@ -2,8 +2,6 @@
 {
 	import com.mteamapp.StringFunctions;
 	
-	import contents.Contents;
-	
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -12,6 +10,9 @@
 	import flash.text.TextField;
 	import flash.utils.ByteArray;
 	import flash.utils.getTimer;
+	
+	import contents.Contents;
+	import contents.multiLanguage.Language;
 	
 	import popForm.Hints;
 	import popForm.PopButtonData;
@@ -74,6 +75,7 @@
 			
 			neededLang+=controlLang("cansel","لغو") ;
 			neededLang+=controlLang("back_folder","بازگشت به بالا") ;
+			neededLang+=controlLang("back","بازگشت") ;
 			neededLang+=controlLang("save","ذخیره") ;
 			neededLang+=controlLang("search","جستجو") ;
 			neededLang+=controlLang("no_file_here","هیچ فایلی در این مسیر وجود ندارد") ;
@@ -85,7 +87,7 @@
 			
 			if(neededLang!='')
 			{
-				throw "Please add below tags to the Language.xml file for FileBrowser class.\n\n"+neededLang ;
+				trace( "Please add below tags to the Language.xml file for FileBrowser class.\n\n"+neededLang );
 			}
 			
 			lastLocation = File.userDirectory ;
@@ -99,8 +101,13 @@
 		
 		private static function controlLang(langName:String,defaultText:String):String
 		{
+			if(Contents.lang==null)
+			{
+				Contents.lang = new Language();
+			}
 			if(Contents.lang.t[langName] == null)
 			{
+				Contents.lang.t[langName] = defaultText ;
 				return "\t<"+langName+">\n\t\t<fa>"+defaultText+"</fa>\n\t</"+langName+">\n";
 			}
 			return '' ;
@@ -134,7 +141,7 @@
 		public static function showBrowser(target:File,hint:String='',addBackButton:Boolean=true):void
 		{
 			lastLocation = target ;
-			//var buttons:Array = [Contents.lang.t.cansel,''] ;
+			//var buttons:Array = [cancelLabel,''] ;
 			var buttons:Array = new Array();
 		
 			buttons.push(new PopButtonData(Contents.lang.t.cansel,defaultButtonFrame,null,true,true)) ;

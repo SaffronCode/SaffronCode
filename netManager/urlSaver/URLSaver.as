@@ -35,7 +35,6 @@ package netManager.urlSaver
 	[Event(name="LOADING", type="netManager.urlSaver.URLSaverEvent")]
 	[Event(name="NO_INTERNET", type="netManager.urlSaver.URLSaverEvent")]
 	[Event(name="LOAD_COMPLETE", type="netManager.urlSaver.URLSaverEvent")]
-	[Event(name="UPDATED", type="netManager.urlSaver.URLSaverEvent")]
 	
 	public class URLSaver extends EventDispatcher
 	{
