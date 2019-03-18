@@ -3,6 +3,7 @@
 	
 	/*import com.distriqt.extension.share.applications.Application;
 	   import com.distriqt.extension.share.applications.ApplicationOptions;*/
+	   import com.distriqt.extension.share.applications.Intent;
 	
 	//	import com.distriqt.extension.share.applications.Application;
 	//	import com.distriqt.extension.share.applications.ApplicationOptions;
@@ -189,6 +190,17 @@
 					shareClass.service.applications.launch(app, options);
 				}
 			}
+		}
+		/**open and send data to an intetnt of applicatios
+		 * @param intent  like com.bpmellat.merchant
+		 * @param extras send object data to chnage as json file
+		 * */
+		public function openIntent(intentAddress:String,extras:Object= null):*
+		{
+			var intent:Intent = new Intent(intentAddress);
+			intent.extras = {PaymentData: JSON.stringify(extras)};
+			
+			return shareClass.service.applications.startActivity(intent);
 		}
 	}
 }
