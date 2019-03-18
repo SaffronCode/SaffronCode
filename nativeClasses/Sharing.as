@@ -2,8 +2,8 @@
 {
 	
 	/*import com.distriqt.extension.share.applications.Application;
-	   import com.distriqt.extension.share.applications.ApplicationOptions;*/
-	   import com.distriqt.extension.share.applications.Intent;
+	   import com.distriqt.extension.share.applications.ApplicationOptions;
+	   import com.distriqt.extension.share.applications.Intent;*/
 	
 	//	import com.distriqt.extension.share.applications.Application;
 	//	import com.distriqt.extension.share.applications.ApplicationOptions;
@@ -25,6 +25,8 @@
 		private var ApplicationClass:Class;
 		/**import com.distriqt.extension.share.applications.ApplicationOptions;*/
 		private var ApplicationOptionsClass:Class;
+		/**com.distriqt.extension.share.applications.Intent*/
+		private var IntentClass:Class ;
 		
 		/**You have to call setUp function first*/
 		public function isSupports():Boolean
@@ -90,7 +92,7 @@
 				shareClass = getDefinitionByName("com.distriqt.extension.share.Share") as Class;
 				shareOptionClass = getDefinitionByName("com.distriqt.extension.share.ShareOptions") as Class;
 				shareEventClass = getDefinitionByName("com.distriqt.extension.share.events.ShareEvent") as Class;
-				
+				IntentClass = getDefinitionByName("com.distriqt.extension.share.applications.Intent") as Class;
 				ApplicationClass = getDefinitionByName("com.distriqt.extension.share.applications.Application") as Class;
 				ApplicationOptionsClass = getDefinitionByName("com.distriqt.extension.share.applications.ApplicationOptions") as Class;
 				
@@ -193,12 +195,17 @@
 		}
 		/**open and send data to an intetnt of applicatios
 		 * @param intent  like com.bpmellat.merchant
-		 * @param extras send object data to chnage as json file
+		 * @param extras send object data to chnage as json file(like {PaymentData: JSON.stringify(extras)})
 		 * */
 		public function openIntent(intentAddress:String,extras:Object= null):*
 		{
-			var intent:Intent = new Intent(intentAddress);
-			intent.extras = {PaymentData: JSON.stringify(extras)};
+			if (IntentClass == null)
+			{
+				trace("********************\nopenIntent Error!!!\n You should call the setUp method first");
+				return false ;
+			}
+			var intent:IntentClass = new IntentClass(intentAddress);
+			intent.extras = extras;
 			
 			return shareClass.service.applications.startActivity(intent);
 		}
