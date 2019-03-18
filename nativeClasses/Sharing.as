@@ -204,7 +204,7 @@
 				trace("********************\nopenIntent Error!!!\n You should call the setUp method first");
 				return false ;
 			}
-			var intent:IntentClass = new IntentClass(intentAddress);
+			var intent:* = new IntentClass(intentAddress);
 			intent.extras = extras;
 			
 			return shareClass.service.applications.startActivity(intent);
