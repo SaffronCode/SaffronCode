@@ -9,9 +9,7 @@ package contents.alert
 	{
 		private static var sw:StageWebView ;
 		
-		private static var 	debugField1:TextField,
-							debugField2:TextField,
-							debugField3:TextField;
+		private static var 	debugField1:TextField;
 
 		public function Alert(...val)
 		{
@@ -26,12 +24,10 @@ package contents.alert
 			if(debugField1!=null)
 			{
 				debugField1.appendText(title+'\n');
-				debugField2.appendText(title+'\n');
-				debugField3.appendText(title+'\n');
+				
 				
 				debugField1.scrollV++;
-				debugField2.scrollV++;
-				debugField3.scrollV++;
+			
 			}
 			else
 			{
@@ -50,8 +46,6 @@ package contents.alert
 		public static function setScreenDebugger(stage:Stage):void
 		{
 			debugField1 = new TextField();
-			debugField2 = new TextField();
-			debugField3 = new TextField();
 			
 			
 			var textFormat:TextFormat = new TextFormat();
@@ -59,30 +53,22 @@ package contents.alert
 			
 			debugField1.width = stage.stageWidth ;
 			debugField1.height = stage.stageHeight ;
-			debugField2.width = stage.stageWidth ;
-			debugField2.height = stage.stageHeight ;
-			debugField3.width = stage.stageWidth ;
-			debugField3.height = stage.stageHeight ;
 			
-			debugField1.textColor = 0xffffff ;
-			debugField3.textColor = 0xffffff ;
-			debugField2.textColor = 0x222222 ;
 			
-			debugField2.textColor = 0xFFFFFF ;
+			debugField1.textColor = 0xFF0000 ;
+			
+			
+			
 			debugField1.defaultTextFormat = textFormat;
-			debugField2.defaultTextFormat = textFormat;
-			debugField3.defaultTextFormat = textFormat;
+			
 			
 			debugField1.x = 1;
 			debugField1.y = 1;
-			debugField3.x = -1;
-			debugField3.y = -1;
 			
-			debugField3.mouseEnabled = debugField1.mouseEnabled = debugField2.mouseEnabled = false ;
+			
+			debugField1.mouseEnabled = false ;
 			
 			stage.addChild(debugField1);
-			stage.addChild(debugField3);
-			stage.addChild(debugField2);
 		}
 	}
 }

@@ -95,7 +95,7 @@ package nativeClasses.pushNotification
 				// For example: You can redirect to the settings page on iOS 
 				if (PushNotifications.service.canOpenDeviceSettings)
 				{
-					PushNotifications.service.openDeviceSettings();
+					//PushNotifications.service.openDeviceSettings();
 				}
 				break;
 			}

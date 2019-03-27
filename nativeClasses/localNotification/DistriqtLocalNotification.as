@@ -163,7 +163,7 @@ package nativeClasses.localNotification
 				// For example: You can redirect to the settings page on iOS 
 				if (Notifications.service.canOpenDeviceSettings)
 				{
-					Notifications.service.openDeviceSettings();
+					//Notifications.service.openDeviceSettings();
 				}
 				break;
 			}
