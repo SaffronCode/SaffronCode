@@ -87,9 +87,13 @@ package sliderMenu
 		/**opent this menu*/
 		public static function openMenu(MenuDirection:String = null)
 		{
-			if(PopMenu.isOpen)
+			if (PopMenu==null)
 			{
-				return ;
+				if(PopMenu.isOpen)
+				{
+					return ;
+				}
+				
 			}
 			unLock();
 			
