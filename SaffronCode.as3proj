@@ -53,6 +53,7 @@
   <!-- SWC Libraries -->
   <libraryPaths>
     <element path="lib\LocalNotificationLib.ane" />
+    <element path="lib\com.distriqt.Share.ane" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>

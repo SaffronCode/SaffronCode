@@ -2,9 +2,12 @@
 {
 	
 	/*import com.distriqt.extension.share.applications.Application;
+	
 	   import com.distriqt.extension.share.applications.ApplicationOptions;
 	   import com.distriqt.extension.share.applications.Intent;*/
-	
+	import contents.alert.Alert;
+	// import com.distriqt.extension.share.events.ApplicationEvent;
+	// import com.distriqt.extension.share.Share;
 	//	import com.distriqt.extension.share.applications.Application;
 	//	import com.distriqt.extension.share.applications.ApplicationOptions;
 	
@@ -26,7 +29,10 @@
 		/**import com.distriqt.extension.share.applications.ApplicationOptions;*/
 		private var ApplicationOptionsClass:Class;
 		/**com.distriqt.extension.share.applications.Intent*/
-		private var IntentClass:Class ;
+		private var IntentClass:Class;
+		
+		/** import com.distriqt.extension.share.events.ApplicationEvent*/
+		private var ApplicationEventClass:Class;
 		
 		/**You have to call setUp function first*/
 		public function isSupports():Boolean
@@ -95,6 +101,7 @@
 				IntentClass = getDefinitionByName("com.distriqt.extension.share.applications.Intent") as Class;
 				ApplicationClass = getDefinitionByName("com.distriqt.extension.share.applications.Application") as Class;
 				ApplicationOptionsClass = getDefinitionByName("com.distriqt.extension.share.applications.ApplicationOptions") as Class;
+				ApplicationEventClass = getDefinitionByName("com.distriqt.extension.share.events.ApplicationEvent") as Class
 				
 				if (shareClass != null)
 				{
@@ -193,21 +200,32 @@
 				}
 			}
 		}
+		
 		/**open and send data to an intetnt of applicatios
 		 * @param intent  like com.bpmellat.merchant
 		 * @param extras send object data to chnage as json file(like {PaymentData: JSON.stringify(extras)})
 		 * */
-		public function openIntent(intentAddress:String,extras:Object= null):*
+		public function openIntent(intentAddress:String, extras:Object = null, onResult:Function = null):*
 		{
 			if (IntentClass == null)
 			{
 				trace("********************\nopenIntent Error!!!\n You should call the setUp method first");
-				return false ;
+				return false;
 			}
+			
 			var intent:* = new IntentClass(intentAddress);
 			intent.extras = extras;
+			if(onResult!=null)
+				shareClass.service.applications.addEventListener(ApplicationEventClass.ACTIVITY_RESULT, activityResultHandler);
+			
+			function activityResultHandler(event:*):void
+			{
+				if (event.data)
+					onResult(event.data);
+			}
 			
 			return shareClass.service.applications.startActivity(intent);
 		}
+	
 	}
 }
