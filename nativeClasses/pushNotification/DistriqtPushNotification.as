@@ -1,4 +1,4 @@
-package nativeClasses.pushNotification
+﻿package nativeClasses.pushNotification
 {
 	import com.distriqt.extension.core.Core;
 	import com.distriqt.extension.pushnotifications.AuthorisationStatus;
@@ -9,6 +9,7 @@ package nativeClasses.pushNotification
 	import com.distriqt.extension.pushnotifications.builders.ChannelBuilder;
 	import com.distriqt.extension.pushnotifications.events.AuthorisationEvent;
 	import com.distriqt.extension.pushnotifications.events.RegistrationEvent;
+	
 	/**
 	 * ...
 	 * @author Younes Mashayekhi
@@ -16,11 +17,13 @@ package nativeClasses.pushNotification
 	public class DistriqtPushNotification
 	{
 		private static var deviceToken:String;
+		
 		public function DistriqtPushNotification()
 		{
-			
+		
 		}
-		public static function setup():void
+		
+		public static function setup(onResult:Function = null):void
 		{
 			try
 			{
@@ -37,34 +40,67 @@ package nativeClasses.pushNotification
 						
 						service.channels.push(new ChannelBuilder().setId("app_channel").setName("App Channel").build());
 						
-						
 						PushNotifications.service.addEventListener(RegistrationEvent.REGISTERING, registeringHandler);
 						PushNotifications.service.addEventListener(RegistrationEvent.REGISTER_SUCCESS, registerSuccessHandler);
 						PushNotifications.service.addEventListener(RegistrationEvent.CHANGED, registrationChangedHandler);
 						PushNotifications.service.addEventListener(RegistrationEvent.REGISTER_FAILED, registerFailedHandler);
 						PushNotifications.service.addEventListener(RegistrationEvent.ERROR, errorHandler);
-						PushNotifications.service.addEventListener(AuthorisationEvent.CHANGED, authorisationChangedHandler );
+						PushNotifications.service.addEventListener(AuthorisationEvent.CHANGED, authorisationChangedHandler);
 						PushNotifications.service.setup(service);
 						requestAuthorisation();
+						
+						function registeringHandler(event:RegistrationEvent):void
+						{
+							trace("Registration started");
+						}
+						
+						function registerSuccessHandler(event:RegistrationEvent):void
+						{
+							trace("Registration succeeded with ID: " + event.data);
+							deviceToken = event.data;
+							onResult(event.data);
+						}
+						
+						function registrationChangedHandler(event:RegistrationEvent):void
+						{
+							trace("Registration ID has changed: " + event.data);
+							deviceToken = event.data;
+							onResult(event.data);
+						}
+						
+						function registerFailedHandler(event:RegistrationEvent):void
+						{
+							trace("Registration failed");
+							onResult("Registration failed");
+						}
+						
+						function errorHandler(event:RegistrationEvent):void
+						{
+							trace("Registration error: " + event.data);
+							onResult("Registration error");
+						}
 						
 					}
 					else
 					{
 						trace("fcm notification is not support");
+						onResult("FCM Not Support");
 					}
 				}
 				else
 				{
 					trace("notification is not support");
+					onResult("windows Debug");
 				}
 			}
 			catch (e:Error)
 			{
 				trace("ERROR:" + e.message);
+				onResult("error occured");
 			}
 		}
 		
-		private static function authorisationChangedHandler(e:AuthorisationEvent):void 
+		private static function authorisationChangedHandler(e:AuthorisationEvent):void
 		{
 			requestAuthorisation();
 		}
@@ -100,34 +136,7 @@ package nativeClasses.pushNotification
 				break;
 			}
 		}
-		
-		private static function registeringHandler(event:RegistrationEvent):void
-		{
-			trace("Registration started");
-		}
-		
-		private static function registerSuccessHandler(event:RegistrationEvent):void
-		{
-			trace("Registration succeeded with ID: " + event.data);
-			deviceToken = event.data;
-		}
-		
-		private static function registrationChangedHandler(event:RegistrationEvent):void
-		{
-			trace("Registration ID has changed: " + event.data);
-			deviceToken = event.data;
-		}
-		
-		private static function registerFailedHandler(event:RegistrationEvent):void
-		{
-			trace("Registration failed");
-		}
-		
-		private static function errorHandler(event:RegistrationEvent):void
-		{
-			trace("Registration error: " + event.data);
-		}
-		
+	
 	}
 
 }
