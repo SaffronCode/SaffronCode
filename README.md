@@ -1,7 +1,6 @@
 <p align="center" >
     <a href="https://github.com/MTeamCo/SaffronCode"><img  width="170px" src="https://github.com/SaffronCode/SaffronCode/blob/master/logo.png?raw=true" alt="Saffron Code"></a>
     <br/>
-    <a href="https://www.instagram.com/saffron_code/">instagram.com/saffron_code</a>
 </p>
 
 <br>
@@ -51,7 +50,6 @@
 <br>
 
 <p align="center">
-    <a href="http://saffroncode.ir/dwqa-questions/"><strong>فروم پرسش و پاسخ زعفران کد</strong></a><br>
     <a href="https://forum.starling-framework.org/"><strong><img src="https://image.flaticon.com/icons/svg/157/157949.svg" width="20px"/>فروم های پرسش و پاسخ اکشن اسکریپت</strong></a></p>
 <br>
 <br>
