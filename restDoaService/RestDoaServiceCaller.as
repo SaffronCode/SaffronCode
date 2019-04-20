@@ -333,6 +333,13 @@
 						}
 					}
 				}
+				else if(loadedData is ByteArray && requestedData is ByteArray)
+				{
+					try
+					{
+						(requestedData as ByteArray).writeBytes(loadedData as ByteArray);
+					}catch(e){};
+				}
 				else
 				{
 					trace("I Cannot receive any other types");
