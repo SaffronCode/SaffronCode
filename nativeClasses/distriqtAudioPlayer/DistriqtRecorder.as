@@ -5,6 +5,8 @@
 	import flash.utils.clearTimeout;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.setTimeout;
+	
+	import contents.alert.SaffronLogger;
 
 	public class DistriqtRecorder
 	{
@@ -19,7 +21,10 @@
 		/**import com.distriqt.extension.audiorecorder.AuthorisationStatus;*/
 		private static var AuthorisationStatusClass:Class ;
 		/**import com.distriqt.extension.audiorecorder.events.AuthorisationEvent;*/
-		private static var AuthorisationEventClass:Class
+		private static var AuthorisationEventClass:Class;
+		
+		
+		public static var logger:Boolean = false ;
 		
 		public static function setUp():Boolean
 		{
@@ -31,11 +36,15 @@
 				AudioRecorderOptionsClass = getDefinitionByName("com.distriqt.extension.audiorecorder.AudioRecorderOptions") as Class;
 				AuthorisationStatusClass = getDefinitionByName("com.distriqt.extension.audiorecorder.AuthorisationStatus") as Class;
 				trace("\n\n\n\n\n\n\n*************************** Distriqt recorder is supports ****************************\n\n\n\n\n\n\n");
+				if(logger)
+					SaffronLogger.log("\n\n\n\n\n\n\n*************************** Distriqt recorder is supports ****************************\n\n\n\n\n\n\n");
 			}catch(e){
 				AudioRecorderClass = null ;
 				AudioRecorderOptionsClass = null ;
 				AuthorisationStatusClass = null ;
 				trace("\n\n\n\n\n\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Distriqt recorder is NOT supports !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n\n\n\n\n\n");
+				if(logger)
+					SaffronLogger.log("\n\n\n\n\n\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Distriqt recorder is NOT supports !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n\n\n\n\n\n");
 				return false ;
 			}
 			
@@ -43,6 +52,8 @@
 			{
 				case AuthorisationStatusClass.AUTHORISED:
 					trace( "authorised" );
+					if(logger)
+						SaffronLogger.log( "authorised" );
 					break;
 				
 				case AuthorisationStatusClass.SHOULD_EXPLAIN:
@@ -55,6 +66,8 @@
 				case AuthorisationStatusClass.RESTRICTED:
 				case AuthorisationStatusClass.UNKNOWN:
 					trace( "denied or restricted" );
+					if(logger)
+						SaffronLogger.log( "denied or restricted" );
 			}
 			return true ;
 		}
@@ -82,6 +95,9 @@
 				_file = whereToSave ;
 			}
 			trace("save on : "+_file.nativePath);
+			if(logger)
+				SaffronLogger.log("save on : "+_file.nativePath);
+				
 
 			if(rcorderTimeout!=0)
 			{
@@ -96,11 +112,17 @@
 				var success:Boolean = AudioRecorderClass.service.start( options ) as Boolean;
 				
 				trace("start(): " + success );
+				
+				if(logger)
+					SaffronLogger.log("start(): " + success );
+				
 				return success ;
 			}
 			else
 			{
 				trace( "Not authorised for start" );
+				if(logger)
+					SaffronLogger.log("Not authorised for start" );
 			}
 			return false ;
 		}
@@ -126,6 +148,8 @@
 			else
 			{
 				trace( "Not authorised for stop" );
+				if(logger)
+					SaffronLogger.log( "Not authorised for stop" );
 			}
 			return false ;
 		}

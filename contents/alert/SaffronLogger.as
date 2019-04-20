@@ -16,7 +16,7 @@ package contents.alert
 			{
 				return ;
 			}
-			var fileName:String = "SaffronCodeLog"+new Date().time;
+			var fileName:String = "SaffronCodeLog"+new Date().time+".txt";
 			if(DevicePrefrence.isIOS())
 			{
 				todayFile = File.applicationStorageDirectory.resolvePath(fileName);
