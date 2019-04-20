@@ -4,8 +4,9 @@
 	import com.mteamapp.StringFunctions;
 	
 	import contents.Contents;
-	
-	import flash.events.Event;
+import contents.alert.Alert;
+
+import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.HTTPStatusEvent;
 	import flash.events.IOErrorEvent;
@@ -22,7 +23,7 @@
 	import flash.utils.ByteArray;
 	import flash.utils.clearTimeout;
 	import flash.utils.setTimeout;
-	
+
 	/**Cannot connect to server*/
 	[Event(name="CONNECTION_ERROR", type="restDoaService.RestDoaEvent")]
 	/**Server returns error, use Error code or msg list*/
@@ -396,7 +397,7 @@
 		}
 		
 		/**Values are not case sencitive*/
-		protected function loadParam(obj:Object=null):void
+		protected function loadParam(obj:Object=null,isDataForm:Boolean=false):void
 		{
 			HTTPStatus = 0 ;
 			cansel();
@@ -405,49 +406,78 @@
 			onUpdateProccess = false ;
 			if(obj!=null)
 			{
-				getRequestedData = obj;
-				var urlVars:URLVariables;
-				//trace("Send this data : "+JSON.stringify(myParams,null,'\t'));
-				if(isGet)
+				if(isDataForm)
 				{
-					myParams = JSONParser.stringify(obj) ;
-					var readableObject:Object = Obj.createReadAbleObject(obj);// .myParams ; 
-					urlVars = new URLVariables();
-					
-					for(var i in readableObject)
+					var urlParam:String = '';
+					var boundryKey:String = "WebKitFormBoundaryWYIDHkbUgs0p7KUx"
+					for(var objVars:String in obj)
 					{
-						urlVars[i] = readableObject[i] ;//a1=123&a2=32   ||   CaseTbl=(a1=123&a2=32)
+						var data:String = '' ;
+						if(obj[objVars] is ByteArray)
+						{
+							var byte:ByteArray = obj[objVars] as ByteArray ;
+							byte.position = 0 ;
+							data = byte.readUTFBytes(byte.length);
+						}
+						else
+						{
+							data = obj[objVars] ;
+						}
+						urlParam+="------"+boundryKey+"\n" +
+								"Content-Disposition: form-data; name=\""+objVars+"\"\n\n" +
+								obj[objVars]+
+								'\n';
 					}
-					pureRequest.data = urlVars;
+					urlParam+="------"+boundryKey+"--"
+					pureRequest.contentType = 'multipart/form-data ; boundary=----'+boundryKey;
+					pureRequest.data = urlParam;
 				}
 				else
 				{
-					//Create post method
-					//throw "Create post method";
-					if(obj is ByteArray)
+					getRequestedData = obj;
+					var urlVars:URLVariables;
+					//trace("Send this data : "+JSON.stringify(myParams,null,'\t'));
+					if(isGet)
 					{
-						pureRequest.contentType = 'multipart/form-data';
-						pureRequest.data = obj ; 
-					}
-					else if(obj is String)
-					{
-						pureRequest.data = obj 
+						myParams = JSONParser.stringify(obj) ;
+						var readableObject:Object = Obj.createReadAbleObject(obj);// .myParams ;
+						urlVars = new URLVariables();
+
+						for(var i in readableObject)
+						{
+							urlVars[i] = readableObject[i] ;//a1=123&a2=32   ||   CaseTbl=(a1=123&a2=32)
+						}
+						pureRequest.data = urlVars;
 					}
 					else
 					{
-						myParams = RestFullJSONParser.stringify(obj) ;
-						pureRequest.data = myParams 
+						//Create post method
+						//throw "Create post method";
+						if(obj is ByteArray)
+						{
+							pureRequest.contentType = 'multipart/form-data';
+							pureRequest.data = obj ;
+						}
+						else if(obj is String)
+						{
+							pureRequest.data = obj
+						}
+						else
+						{
+							myParams = RestFullJSONParser.stringify(obj) ;
+							pureRequest.data = myParams
+						}
+
+						//trace('myParams :',myParams)
+						//	trace('parse :',JSON.parse(myParams))
+
+
+						//	var str:String = '{"KindRoof":15,"KindCabinet":27,"Loby":false,"Masahat":0,"Mobile":"","EmailAddress":"","Metraj":0,"Camera":false,"Nama":81,"Negahban":false,"Parking":false,"Pasio":false,"Pele":false,"Pic":["/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/2wBDAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/wAARCAMABAADASIAAhEBAxEB/"],"Pool":false,"Price1":0,"Age":"0","Price2":0,"Anten":false,"Sarmayesh":87,"Shomineh":false,"CaseSide":87,"Shooting":false,"Comment":"","Sona":false,"Confine":"","Storage":false,"CountBed":0,"Takhlie":false,"CountFloor":0,"Tel":false,"CountPoint":true,"TelUser":"","CountUnit":0,"Unit":"","Door":false,"Windows":35,"Family":"","kindService":87,"Elevator":false,"Lat":35.7137859,"Fire":false,"Lon":51.4148809,"Floor":"0","Furned":false,"Garmayesh":87,"Gas":false,"IPhone":false,"IdAgency":0,"IdArea":1,"IdCity":1,"IdKindCase":-1,"IdKindRequest":1,"IdRange":1,"IdState":1,"IdUsers":0,"Point":true,"KindKitchen":21}'
+						//pureRequest.data  = str
+
 					}
-									
-					//trace('myParams :',myParams)
-				//	trace('parse :',JSON.parse(myParams))
-					
-					
-			//	var str:String = '{"KindRoof":15,"KindCabinet":27,"Loby":false,"Masahat":0,"Mobile":"","EmailAddress":"","Metraj":0,"Camera":false,"Nama":81,"Negahban":false,"Parking":false,"Pasio":false,"Pele":false,"Pic":["/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/2wBDAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/wAARCAMABAADASIAAhEBAxEB/"],"Pool":false,"Price1":0,"Age":"0","Price2":0,"Anten":false,"Sarmayesh":87,"Shomineh":false,"CaseSide":87,"Shooting":false,"Comment":"","Sona":false,"Confine":"","Storage":false,"CountBed":0,"Takhlie":false,"CountFloor":0,"Tel":false,"CountPoint":true,"TelUser":"","CountUnit":0,"Unit":"","Door":false,"Windows":35,"Family":"","kindService":87,"Elevator":false,"Lat":35.7137859,"Fire":false,"Lon":51.4148809,"Floor":"0","Furned":false,"Garmayesh":87,"Gas":false,"IPhone":false,"IdAgency":0,"IdArea":1,"IdCity":1,"IdKindCase":-1,"IdKindRequest":1,"IdRange":1,"IdState":1,"IdUsers":0,"Point":true,"KindKitchen":21}'	
-				//pureRequest.data  = str	
-						
 				}
-				
+
 			}
 			trace("instantOfflineData : "+instantOfflineData);
 			if(instantOfflineData)
