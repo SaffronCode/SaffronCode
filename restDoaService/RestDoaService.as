@@ -67,9 +67,10 @@ package restDoaService
 			return serverDomain;
 		}
 		
-		
-		public static function setUp(ServerDomain:String):void
+		/**logger will make application to save all connection status to a saffronLogFile*/
+		public static function setUp(ServerDomain:String,activateLogger:Boolean=false):void
 		{
+			RestDoaServiceCaller.logger = activateLogger ;
 			if(ServerDomain.charAt(ServerDomain.length-1)!='/')
 			{
 				ServerDomain+='/';

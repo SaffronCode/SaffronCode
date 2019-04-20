@@ -3,8 +3,6 @@
 	import com.mteamapp.JSONParser;
 	import com.mteamapp.StringFunctions;
 	
-	import contents.Contents;
-	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.HTTPStatusEvent;
@@ -22,6 +20,9 @@
 	import flash.utils.ByteArray;
 	import flash.utils.clearTimeout;
 	import flash.utils.setTimeout;
+	
+	import contents.Contents;
+	import contents.alert.SaffronLogger;
 	
 	/**Cannot connect to server*/
 	[Event(name="CONNECTION_ERROR", type="restDoaService.RestDoaEvent")]
@@ -53,6 +54,9 @@
 					onUpdateProccess:Boolean;
 					
 		public var isConnected:Boolean = false ;
+		
+		
+		private static var webServiceId:uint = 0 ;
 					
 		public function get pureData():String
 		{
@@ -87,6 +91,9 @@
 		private var isGet:Boolean ;
 		private var _isLoading:Boolean;
 		private var getRequestedData:Object;
+		
+		/**Active or deactive web service logs for system*/
+		internal static var logger:Boolean = false ;
 		
 		
 		/**Do not pass null value as RequestedData, it will cause an Error!!<br>
@@ -152,6 +159,8 @@
 			trace("******** ***  *** * ** HTTP headers received : "+e.status);
 			HTTPStatus = e.status ;
 			RestDoaService.eventDispatcher.dispatchEvent(e.clone());
+			if(logger)
+			SaffronLogger.log("RESPOND\nRestService ID:"+webServiceId+"\nHTTP Status"+e.status);
 		}
 		
 		/**Update full headers*/
@@ -202,6 +211,8 @@
 		
 		private function noInternet(e:IOErrorEvent=null,controllData:Boolean=true)
 		{
+			if(logger)
+			SaffronLogger.log("CONNECTION PROBLEM\nRestService ID:"+webServiceId);
 			RestDoaService.isOnline = false ;
 			_isLoading = false ;
 			HTTPStatus = 502 ;
@@ -261,6 +272,8 @@
 		
 		private function requestLoaded(event:Event):void
 		{
+			if(logger)
+			SaffronLogger.log("RESPOND\nRestService ID:"+webServiceId+"\n"+requestLoader.data);
 			RestDoaService.isOnline = true ;
 			_isLoading = false ;
 			isConnected = true ;
@@ -476,7 +489,20 @@
 			
 			cansel();
 			trace(myId+" : "+myParams);
-			
+			webServiceId++ ;
+			if(logger)
+			{
+				var dataForLog:String = '' ;
+				if(pureRequest.data is ByteArray)
+				{
+					dataForLog = "[Byte ("+(pureRequest.data as ByteArray).length+")]"
+				}
+				else
+				{
+					dataForLog = String(pureRequest.data);
+				}
+				SaffronLogger.log("CALL\nRestService ID:"+webServiceId+"\n"+(isGet?"GET ":"POST ")+(pureRequest!=null?pureRequest.url:"")+"\n"+(pureRequest!=null && pureRequest.data!=null?pureRequest.data.toString():''));
+			}
 			//debug line
 			//navigateToURL(pureRequest);
 				_isLoading = true ;
