@@ -3,8 +3,6 @@
 	import com.mteamapp.JSONParser;
 	import com.mteamapp.StringFunctions;
 	
-	import contents.Contents;
-	import flash.events.Event;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.HTTPStatusEvent;
@@ -13,17 +11,17 @@
 	import flash.net.URLLoader;
 	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequest;
-	import flash.net.URLRequestDefaults;
 	import flash.net.URLRequestHeader;
 	import flash.net.URLRequestMethod;
-	import flash.net.URLStream;
 	import flash.net.URLVariables;
-	import flash.net.navigateToURL;
 	import flash.utils.ByteArray;
+	import flash.utils.Endian;
 	import flash.utils.clearTimeout;
 	import flash.utils.setTimeout;
 	
-	import contents.Contents;
+	import mx.utils.Base64Encoder;
+	
+	import contents.alert.Alert;
 	import contents.alert.SaffronLogger;
 	
 	/**Cannot connect to server*/
@@ -422,27 +420,27 @@
 			{
 				if(isDataForm)
 				{
-					var urlParam:String = '';
-					var boundryKey:String = "WebKitFormBoundaryWYIDHkbUgs0p7KUx"
+					requestLoader.dataFormat = URLLoaderDataFormat.BINARY ;
+					var urlParam:ByteArray = new ByteArray();
+					var boundryKey:String = StringFunctions.randomString(34);//"WebKitFormBoundaryWYIDHkbUgs0p7KUx"
 					for(var objVars:String in obj)
 					{
-						var data:String = '' ;
+						urlParam.writeUTFBytes("------"+boundryKey+"\n");
+						urlParam.writeUTFBytes("Content-Disposition: form-data; name=\""+objVars+"\"; " );
 						if(obj[objVars] is ByteArray)
 						{
+							urlParam.writeUTFBytes("Content-Type: image/png; filename=\""+objVars+".png\";\n\n" );
 							var byte:ByteArray = obj[objVars] as ByteArray ;
 							byte.position = 0 ;
-							data = byte.readUTFBytes(byte.length);
+							urlParam.writeBytes(byte);
+							urlParam.writeUTFBytes("\n");
 						}
 						else
 						{
-							data = obj[objVars] ;
+							urlParam.writeUTFBytes("\n\n"+obj[objVars]+"\n");
 						}
-						urlParam+="------"+boundryKey+"\n" +
-								"Content-Disposition: form-data; name=\""+objVars+"\"\n\n" +
-								obj[objVars]+
-								'\n';
 					}
-					urlParam+="------"+boundryKey+"--"
+					urlParam.writeUTFBytes("------"+boundryKey+"--");
 					pureRequest.contentType = 'multipart/form-data ; boundary=----'+boundryKey;
 					pureRequest.data = urlParam;
 				}
