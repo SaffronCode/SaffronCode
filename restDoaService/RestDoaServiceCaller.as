@@ -15,13 +15,9 @@
 	import flash.net.URLRequestMethod;
 	import flash.net.URLVariables;
 	import flash.utils.ByteArray;
-	import flash.utils.Endian;
 	import flash.utils.clearTimeout;
 	import flash.utils.setTimeout;
 	
-	import mx.utils.Base64Encoder;
-	
-	import contents.alert.Alert;
 	import contents.alert.SaffronLogger;
 	
 	/**Cannot connect to server*/
