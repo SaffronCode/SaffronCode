@@ -1,13 +1,12 @@
 ﻿package otherPlatforms.dragAndDrow
 {
+	import flash.desktop.Clipboard;
 	import flash.desktop.ClipboardFormats;
 	import flash.desktop.NativeDragManager;
+	import flash.display.BitmapData;
 	import flash.display.Sprite;
 	import flash.events.NativeDragEvent;
 	import flash.filesystem.File;
-	import flash.utils.Dictionary;
-	
-	import contents.alert.Alert;
 
 	public class DragAndDrop
 	{
@@ -89,9 +88,12 @@
 			}
 		}
 		
-		public static function startDrag(area:Sprite):void
+		/**Use can drop the file where he wanted to*/
+		public static function startDrag(area:Sprite,fileToDrop:File,bitmap:BitmapData=null):void
 		{
-			
+			var clip:Clipboard = new Clipboard();
+			clip.setData(ClipboardFormats.FILE_LIST_FORMAT,[fileToDrop],false);
+			NativeDragManager.doDrag(area,clip,bitmap);
 		}
 	}
 }

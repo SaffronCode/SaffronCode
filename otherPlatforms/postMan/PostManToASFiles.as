@@ -211,7 +211,7 @@
 		
 		/**This will save the json to as file<br>
 		 * Waring!! each class has to have a variable with a special name*/
-		public static function SaveJSONtoAs(jsonObject:Object,directory:File,rootClassName:String):void
+		public static function SaveJSONtoAs(jsonObject:Object,directory:File,rootClassName:String):File
 		{
 			trace("Target file directory is : "+directory.nativePath);
 			trace("Create class : "+rootClassName);
@@ -284,6 +284,7 @@
 				WebServiceGenerator.log(targetFile.name+" was duplicated");
 			}
 			TextFile.save(targetFile,myAsClass);
+			return targetFile ;
 		}
 		
 		/**Craetes a standard class name*/
