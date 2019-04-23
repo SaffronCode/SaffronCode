@@ -19,7 +19,7 @@ package contents
 			else
 			{
 				trace(fileTarget.name+' file is not exists');
-				return '' ;
+				return null ;
 			}
 		}
 		
