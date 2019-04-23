@@ -88,11 +88,12 @@
 			}
 		}
 		
-		/**Use can drop the file where he wanted to*/
-		public static function startDrag(area:Sprite,fileToDrop:File,bitmap:BitmapData=null):void
+		/**Use can drop the file where he wanted to.<br>
+		 * Pass files array to the fileToDropArray ( not vector! )*/
+		public static function startDrag(area:Sprite,fileToDropArray:Array,bitmap:BitmapData=null):void
 		{
 			var clip:Clipboard = new Clipboard();
-			clip.setData(ClipboardFormats.FILE_LIST_FORMAT,[fileToDrop],false);
+			clip.setData(ClipboardFormats.FILE_LIST_FORMAT,fileToDropArray,false);
 			NativeDragManager.doDrag(area,clip,bitmap);
 		}
 	}
