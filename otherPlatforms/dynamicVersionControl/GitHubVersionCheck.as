@@ -46,6 +46,7 @@ package otherPlatforms.dynamicVersionControl
 			loader.dataFormat = URLLoaderDataFormat.BINARY ;
 			
 			loader.addEventListener(Event.COMPLETE,loaded);
+			loader.addEventListener(IOErrorEvent.IO_ERROR,function(e){});
 			
 			if(downloadProgress!=null)
 			{
