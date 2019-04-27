@@ -158,6 +158,8 @@ package contents.displayPages
 		
 		/**Make the list freeze*/
 		private var isFreezed:Boolean = false ;
+
+		private var fadeTheScroller:Boolean = false ;
 		
 		/**Make the dynamic link not scrollable and show all items instantly*/
 		public function set_dynamicHeigh(status:Boolean=true):void
@@ -192,6 +194,10 @@ package contents.displayPages
 					linkScroller.activateAutoScroll(0,autoScrollSpeed*-MenuDirectionY);
 				}
 			}
+		}
+		public function set fadeScroll(value:Boolean):void
+		{
+			fadeTheScroller = true ;
 		}
 
 		
@@ -702,7 +708,7 @@ package contents.displayPages
 				trace("linksContainer : "+linksContainer.getBounds(stage));
 				trace("areaRect : "+areaRect);
 				
-				linkScroller = new ScrollMT(linksContainer,areaRect,/*areaRect*/null,!horizontalMenu,horizontalMenu,acceptAnimation&&(!revertedX && !revertedY),revertedY,revertedX,stepSize,forseScrollEffect);
+				linkScroller = new ScrollMT(linksContainer,areaRect,/*areaRect*/null,!horizontalMenu,horizontalMenu,acceptAnimation&&(!revertedX && !revertedY),revertedY,revertedX,stepSize,forseScrollEffect,fadeTheScroller);
 				
 				freezeScroll(isFreezed);
 				
