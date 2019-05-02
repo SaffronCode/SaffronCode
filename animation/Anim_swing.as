@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Created by mes on 20/10/2017.
  */
 package animation {
@@ -21,16 +21,33 @@ public class Anim_swing {
 	
 	private var myEnterFramer:Sprite ;
 
+    private const minSpeed:Number = 0.01;
+
     /**Dont pass firstDegree more than 90 or less than -90. Pass Radian instead of degree for starling*/
     public function Anim_swing(displayObject:Object,firstDegree:Number,Fparam:Number=8,Mparam:Number=0.9) {
 		F = Fparam ;
 		M = Mparam ;
-		myEnterFramer = new Sprite();
-		myEnterFramer.addEventListener(Event.ENTER_FRAME,animate);
+        if(displayObject is Sprite)
+        {
+            myEnterFramer = displayObject as Sprite;
+        }
+        else
+        {
+            myEnterFramer = new Sprite();
+        }
+        myEnterFramer.dispatchEvent(new Event(Event.BROWSER_ZOOM_CHANGE))
+        myEnterFramer.addEventListener(Event.ENTER_FRAME,animate);
+        myEnterFramer.addEventListener(Event.BROWSER_ZOOM_CHANGE,removeCurrentAnimation);
         object = displayObject ;
         currentDeg = firstRotation = object.rotation ;
         object.addEventListener(Event.REMOVED_FROM_STAGE,unLoadMe);
         deg = firstDegree ;
+    }
+
+    private function removeCurrentAnimation(e:Event):void
+    {
+        myEnterFramer.removeEventListener(Event.ENTER_FRAME,animate);
+        object.rotation = firstRotation;
     }
 
     /**Update the rotation animation*/
@@ -53,6 +70,11 @@ public class Anim_swing {
         currentDeg += V ;
 
         object.rotation = currentDeg ;
+
+        if(Math.abs(V)<minSpeed && (object.rotation-firstRotation)<1)
+        {
+            removeCurrentAnimation(null);
+        }
     }
 }
 }
