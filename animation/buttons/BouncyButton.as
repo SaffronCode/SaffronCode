@@ -22,7 +22,7 @@ public class BouncyButton extends MovieClip
     /**This parameter will prevent Click event to dispatch*/
     private var preventClick:Boolean = true ;
 
-    private const clickAfterThisTime:Number = 200 ;
+    private const clickAfterThisTime:Number = 500 ;
 
     private static var lastTimeOutId:uint ;
 
