@@ -48,6 +48,8 @@ package saffronEvents
 		/**Verify code is not accepted by server*/
 		public static const VERIFY_CODE_NOT_ACCEPTED:String = "VERIFY_CODE_NOT_ACCEPTED" ;
 		
+		public static const RECOVER_PASSWORD:String = "RECOVERY_PASSWORD";
+		
 		/**0: no error*/
 		public var errorCode:int ;
 		
