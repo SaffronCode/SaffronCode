@@ -3,7 +3,7 @@
 	import appManager.displayContentElemets.TextParag;
 	
 	import com.mteamapp.StringFunctions;
-	
+
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -53,6 +53,7 @@
 					private var textContainerMC:MovieClip;
 					
 		private var clearMC:MovieClip ;
+		private var _multiLineTag:Boolean=false;
 		
 		public static var borderColor:uint = 0xD92C5C;
 		
@@ -106,11 +107,11 @@
 			{
 				if(fieldNumLines==1)
 				{
-					TextPutter.OnButton(myTXT,lastTXT,true,true,false,true);
+					TextPutter.OnButton(myTXT,lastTXT,IsArabic,true,false,true);
 				}
 				else
 				{
-					parag.setUp(lastTXT,true,true);
+					parag.setUp(lastTXT,IsArabic,true);
 				}
 				/*if(IsArabic)
 				{
@@ -171,6 +172,22 @@
 		public function colorChange(colorFrame:uint):void
 		{
 			changeColor(colorFrame);
+		}
+		public function set tagText(value:String):void
+		{
+			if(value==null)
+			{
+				value = '' ;
+			}
+
+			if(_multiLineTag){
+				TextPutter.onTextArea(tagNameTXT,value,StringFunctions.isPersian(value),true,true,0,false,false,-1,false,0,false);
+			}
+			else
+			{
+				TextPutter.OnButton(tagNameTXT,value,StringFunctions.isPersian(value),false,true);
+			}
+
 		}
 		
 		public function setUp(tagName:String,defaultText:String,KeyBordType:String = SoftKeyboardType.DEFAULT,isPass:Boolean = false,editable:Boolean = true,isAraic:Boolean=true,numLines:uint = 1,color:uint=1,frame:uint=1,maxChar:uint=0,otherOptions:Array=null,deleteDefautlText:Boolean=false,activateRadioSwitcher:Boolean=false,returnKey:String=ReturnKeyLabel.DEFAULT,onTypedFunction:Function=null,justShowNativeText:Boolean=false,multiLineTag:Boolean=false,justify:Boolean=true):void
@@ -233,7 +250,7 @@
 				clearMC.addEventListener(MouseEvent.CLICK,clearText);
 				clearMC.visible = false ;
 			}
-			
+			_multiLineTag = multiLineTag;
 			if(multiLineTag){
 				TextPutter.onTextArea(tagNameTXT,tagName,StringFunctions.isPersian(tagName),true,true,0,false,false,-1,false,0,false);
 			}
