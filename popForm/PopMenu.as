@@ -26,7 +26,7 @@
 		
 		public var popDispatcher:PopMenuDispatcher = new PopMenuDispatcher();
 		
-		private static var backButtonName:String ; 
+		private static var backButtonName:* ; 
 		
 		
 		/**main textfield from pop menu
@@ -74,8 +74,8 @@
 		
 		private var cancelButton:MovieClip;
 		
-		
-		public static function backEnable(backString:String)
+		/**Enter a String or an Array of Strings*/
+		public static function backEnable(backString:*)
 		{
 			backButtonName = backString ;
 		}
@@ -242,9 +242,29 @@
 						currentButtonId = (cashedContents.buttonList[i] as PopButtonData).id ;
 					}
 					//trace("Control this button : "+currentButtonName);
-					if(currentButtonName == backButtonName || currentButtonId == backButtonName)
+					if(
+						(
+							backButtonName is String
+							&&
+							(
+								currentButtonName == backButtonName 
+								|| 
+								currentButtonId == backButtonName
+							)
+						)
+						||
+						(
+							backButtonName is Array
+							&&
+							(
+								backButtonName.indexOf(currentButtonName)!=-1 
+								|| 
+								backButtonName.indexOf(currentButtonId)!=-1
+							)
+						)
+					)
 					{
-						popMenuitemsAreSelected(new PopMenuEvent(PopMenuEvent.POP_BUTTON_SELECTED,currentButtonId,null,backButtonName));
+						popMenuitemsAreSelected(new PopMenuEvent(PopMenuEvent.POP_BUTTON_SELECTED,currentButtonId,null,currentButtonName));
 						trace('back button selected');
 						return true;
 					}
