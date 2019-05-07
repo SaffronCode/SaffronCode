@@ -1046,25 +1046,25 @@ package contents.displayPages
 						(
 							!horizontalMenu
 							&& !revertedY
-							&& sens.top<areaRect.bottom
+							&& sens.top-areaRect.height<areaRect.bottom
 						) 
 						|| 
 						(
 							!horizontalMenu
 							&& revertedY
-							&& sens.bottom>areaRect.top
+							&& sens.bottom+areaRect.height>areaRect.top
 						)
 						|| 
 						(
 							horizontalMenu 
 							&& !revertedX 
-							&& sens.left<areaRect.right
+							&& sens.left-areaRect.width<areaRect.right
 						) 
 						|| 
 						(
 							horizontalMenu 
 							&& revertedX 
-							&& sens.right>areaRect.left
+							&& sens.right+areaRect.width>areaRect.left
 						)
 					)
 				)
