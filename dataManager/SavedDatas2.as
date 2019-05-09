@@ -1,4 +1,4 @@
-package dataManager
+﻿package dataManager
 {
 	import flash.data.SQLConnection;
 	import flash.data.SQLMode;
@@ -129,7 +129,27 @@ package dataManager
 				encrypt.writeUTFBytes(setOrGetDeviceCode().substring(0,16));*/
 				
 				sql = new SQLConnection();
-				sql.open(sqlFile,SQLMode.CREATE,false,1024,key);
+				try
+				{
+					trace("Is DB exists? "+sqlFile.exists);
+					sql.open(sqlFile,SQLMode.CREATE,false,1024,key);
+				}
+				catch(e:Error)
+				{
+					trace("Error happend : "+e.message);
+					sql = null ;
+					var lostDB:File = updatedFile.parent.resolvePath('lostDB'+new Date().time);
+					//trace("updatedFile : "+updatedFile.nativePath);
+					if(updatedFile.exists)
+					{
+						//trace("lostDB : "+lostDB.nativePath);
+						updatedFile.moveTo(lostDB);
+					}
+					if(sqlFile.exists)
+						sqlFile.deleteFile();
+					setUp(checkTable);
+					return;
+				}
 
 				
 				asyncSql = new SQLConnection();
