@@ -3,9 +3,6 @@ package contents.displayElements
 {
 	import com.mteamapp.StringFunctions;
 	
-	import contents.Contents;
-	
-	import flash.display.Bitmap;
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
 	import flash.net.URLRequest;
@@ -13,6 +10,8 @@ package contents.displayElements
 	import flash.text.TextField;
 	
 	import popForm.PopMenu;
+	
+	import wrokersJob.WorkerFunctions;
 	
 	public class DeveloperPage extends MovieClip
 	{
@@ -64,7 +63,7 @@ package contents.displayElements
 			TextPutter.OnButton(appNameTF,convertedTitle,false,true,false,false);
 			if(versionTF)
 			{
-				versionTF.text = DevicePrefrence.appVersion ;
+				versionTF.text = DevicePrefrence.appVersion + (WorkerFunctions.isDebugMode()?'-w':'');
 			}
 		}
 		
