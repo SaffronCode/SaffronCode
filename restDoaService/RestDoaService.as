@@ -1,4 +1,4 @@
-package restDoaService
+﻿package restDoaService
 {
 	import flash.net.SharedObject;
 	import flash.net.URLRequestHeader;
@@ -62,7 +62,7 @@ package restDoaService
 		{
 			if(serverDomain==null)
 			{
-				throw "You Should setUp RestService first!\nUse RestService.setUp() function.";	
+				throw "You Should setUp RestDoaService first!\nUse RestService.setUp() function.";	
 			}
 			return serverDomain;
 		}
