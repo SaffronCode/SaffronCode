@@ -13,6 +13,9 @@
 	{
 		private static var storage:SharedObject ; 
 		private static var bigDataStorage:SharedObject ;
+
+
+		private static var cash:Object = {} ;
 		
 		/**Do not encrypt strings with length of more than this*/
 		private static const maxLengthForEncryptableStrings:uint = 200 ;
@@ -52,6 +55,10 @@
 		/**Boolean, Number, String supported*/
 		public static function load(id:String):*
 		{
+			if(cash[id]!=undefined)
+			{
+				return cash[id];
+			}
 			setUp();
 			id = Encrypt.encrypt(id,getId()) ;
 			var loadedString:* = storage.data[id] ; 
@@ -77,6 +84,7 @@
 		public static function save(id:String,value:*,flush:Boolean=true):void
 		{
 			setUp();
+			cash[id] = value ;
 			id = Encrypt.encrypt(id,getId());
 			if(value is String && value.length>maxLengthForEncryptableStrings)
 			{
