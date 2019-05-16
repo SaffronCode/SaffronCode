@@ -1,9 +1,7 @@
 ﻿package popForm
 {
-	import appManager.displayContentElemets.TextParag;
-	
 	import com.mteamapp.StringFunctions;
-
+	
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -11,6 +9,8 @@
 	import flash.text.ReturnKeyLabel;
 	import flash.text.SoftKeyboardType;
 	import flash.text.TextField;
+	
+	import appManager.displayContentElemets.TextParag;
 	
 	/**Text field is changed*/
 	[Event(name="change", type="flash.events.Event")]
@@ -196,7 +196,8 @@
 			var Y0:Number ;
 			var Y1:Number ;
 			
-			lastTXT = defaultText ;
+			if(defaultText!=null)
+				lastTXT = defaultText ;
 			
 			radioButtonArray = otherOptions ;
 			
@@ -289,8 +290,8 @@
 				myTXT.multiline = false ;
 				myTXT.wordWrap = false ;
 			}
-			defaultText = (defaultText==null)?'': defaultText ;
-			myTXT.text = defaultText;
+			lastTXT = (lastTXT==null)?'': lastTXT ;
+			myTXT.text = lastTXT;
 			
 			
 			//FarsiInputText.steKeyBord(myTXT,false);
@@ -326,7 +327,7 @@
 					{
 						myTXT.multiline = false ;
 						myTXT.wordWrap = false ;
-						TextPutter.OnButton(myTXT,defaultText,true,true,false,true);
+						TextPutter.OnButton(myTXT,lastTXT,true,true,false,true);
 					}
 					else
 					{
@@ -335,7 +336,7 @@
 						parag.x = textContainerMC.x ;
 						parag.y = textContainerMC.y ;
 						this.addChild(parag);
-						parag.setUp(defaultText,true,justify,false,false,false,false);
+						parag.setUp(lastTXT,true,justify,false,false,false,false);
 						//TextPutter.onStaticArea(myTXT,defaultText,true,true,false);
 					}
 				}
@@ -343,11 +344,11 @@
 				{
 					if(numLines==1)
 					{
-						TextPutter.OnButton(myTXT,defaultText,false,true,false,true);
+						TextPutter.OnButton(myTXT,lastTXT,false,true,false,true);
 					}
 					else
 					{
-						myTXT.text = defaultText ;
+						myTXT.text = lastTXT ;
 					}
 				}
 				
@@ -369,6 +370,19 @@
 				this.addEventListener(MouseEvent.CLICK,switchRadioButton);
 				this.removeEventListener(MouseEvent.CLICK,editThisText);
 			}
+		}
+		
+		/**Return true if the field is in password mode*/
+		public function isPassword():Boolean
+		{
+			if(myTXT!=null)
+				return myTXT.displayAsPassword ;
+			return false ;
+		}
+		
+		public function set backgroundVisible(value:Boolean):void
+		{
+			backMC.visible = value ;
 		}
 		
 		protected function clearText(event:MouseEvent):void
