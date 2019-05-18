@@ -233,7 +233,7 @@
 		
 		
 		/**this function will dispatches whenever intro is over*/
-		protected function intoIsOver(e=null)
+		protected function intoIsOver(e=null):void
 		{
 			Obj.remove(introMC);
 			//introMC = null ;
@@ -241,7 +241,7 @@
 		}
 		
 		/**now the application is ready for client to use*/
-		protected function appIsStarts()
+		protected function appIsStarts():void
 		{
 			ContentSoundManager.setUp(stage,playSounOnBackGroundTo);
 			this.dispatchEvent(new AppEvent(null,AppEvent.APP_STARTS));
