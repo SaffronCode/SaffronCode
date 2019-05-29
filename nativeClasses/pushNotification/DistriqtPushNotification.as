@@ -74,28 +74,36 @@
 			}
 			try
 			{
+				trace("Init")
 				(CoreClass as Object).init();
+				trace("Core CLass:"+CoreClass);
 				if (PushNotificationsClass.isSupported)
 				{
+					trace("Push Notification supported")
 					if (PushNotificationsClass.service.isServiceSupported((ServiceClass as Object).FCM))
 					{
+						trace(PushNotificationsClass.service.isServiceSupported((ServiceClass as Object).FCM));
 						var service:* = new ServiceClass((ServiceClass as Object).FCM, "");
+						trace(service)
 						service.sandboxMode = false;
+						trace("A")
 						service.enableNotificationsWhenActive = true;
-						
+						trace("B")
 						service.categories.push(new CategoryBuilderClass().setIdentifier("MESSAGE_CATEGORY").addAction(new ActionBuilderClass().setTitle("OK").setWillLaunchApplication(true).setIdentifier("OPEN_APP_BTN").build()).addAction(new ActionBuilderClass().setTitle("Cancel").setDestructive(true).setShouldCancelOnAction(true).setIdentifier("CANCEL_APP_BTN").build()).build());
-						
+						trace("C")
 						service.channels.push(new ChannelBuilderClass().setId("app_channel").setName("App Channel").build());
-						
+						trace("D")
 						PushNotificationsClass.service.addEventListener(RegistrationEventClass.REGISTERING, registeringHandler);
 						PushNotificationsClass.service.addEventListener(RegistrationEventClass.REGISTER_SUCCESS, registerSuccessHandler);
 						PushNotificationsClass.service.addEventListener(RegistrationEventClass.CHANGED, registrationChangedHandler);
 						PushNotificationsClass.service.addEventListener(RegistrationEventClass.REGISTER_FAILED, registerFailedHandler);
 						PushNotificationsClass.service.addEventListener(RegistrationEventClass.ERROR, errorHandler);
 						PushNotificationsClass.service.addEventListener(AuthorisationEventClass.CHANGED, authorisationChangedHandler);
+						trace("E")
 						PushNotificationsClass.service.setup(service);
+						trace("F")
 						requestAuthorisation();
-						
+						trace("G")
 						function registeringHandler(event:*):void
 						{
 							trace("Registration started");
