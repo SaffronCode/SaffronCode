@@ -10,7 +10,6 @@
 	   import com.distriqt.extension.pushnotifications.events.AuthorisationEvent;
 	   import com.distriqt.extension.pushnotifications.events.RegistrationEvent;*/
 	import flash.utils.getDefinitionByName;
-	
 	/**
 	 * ...
 	 * @author Younes Mashayekhi
@@ -39,15 +38,26 @@
 			{
 				try
 				{
+					trace("start");
 					CoreClass = getDefinitionByName("com.distriqt.extension.core.Core") as Class;
+					trace(">>>>>>>>>>>>>>>>>>>> CoreClass : "+CoreClass);
+					//trace(">>>>>>>>>>>>>>>>>>>> >>>>>>>>> : "+JSON.stringify(CoreClass));
 					AuthorisationStatusClass = getDefinitionByName("com.distriqt.extension.pushnotifications.AuthorisationStatus") as Class;
+					trace(AuthorisationStatusClass);
 					PushNotificationsClass = getDefinitionByName("com.distriqt.extension.pushnotifications.PushNotifications") as Class;
+					trace(PushNotificationsClass);
 					ServiceClass = getDefinitionByName("com.distriqt.extension.pushnotifications.Service") as Class;
+					trace(ServiceClass);
 					ActionBuilderClass = getDefinitionByName("com.distriqt.extension.pushnotifications.builders.ActionBuilder") as Class;
+					trace(ActionBuilderClass);
 					CategoryBuilderClass = getDefinitionByName("com.distriqt.extension.pushnotifications.builders.CategoryBuilder") as Class;
+					trace(CategoryBuilderClass);
 					ChannelBuilderClass = getDefinitionByName("com.distriqt.extension.pushnotifications.builders.ChannelBuilder") as Class;
+					trace(ChannelBuilderClass);
 					AuthorisationEventClass = getDefinitionByName("com.distriqt.extension.pushnotifications.events.AuthorisationEvent") as Class;
+					trace(AuthorisationEventClass);
 					RegistrationEventClass = getDefinitionByName("com.distriqt.extension.pushnotifications.events.RegistrationEvent") as Class;
+					trace((RegistrationEventClass as Object));
 				}
 				catch (e)
 				{
@@ -66,23 +76,33 @@
 		
 		public static function setup(onResult:Function = null):void
 		{
+			trace("setup");
 			loadClasses();
-			
+			trace("classes loaded");
+			if(onResult==null)
+			{
+				onResult = function(text:String):void
+				{
+					trace(text);
+				}
+			}
 			if (PushNotificationsClass == null)
 			{
+				trace("push notification is null");
 				return;
 			}
 			try
 			{
 				trace("Init")
-				(CoreClass as Object).init();
-				trace("Core CLass:"+CoreClass);
+				//(CoreClass as Object).init();
+				trace("Core CLass!!!!:"+CoreClass);
 				if (PushNotificationsClass.isSupported)
 				{
+					//PushNotifications.init()
 					trace("Push Notification supported")
-					if (PushNotificationsClass.service.isServiceSupported((ServiceClass as Object).FCM))
+					if ((PushNotificationsClass as Object).service.isServiceSupported((ServiceClass as Object).FCM))
 					{
-						trace(PushNotificationsClass.service.isServiceSupported((ServiceClass as Object).FCM));
+						trace((PushNotificationsClass as Object).service.isServiceSupported((ServiceClass as Object).FCM));
 						var service:* = new ServiceClass((ServiceClass as Object).FCM, "");
 						trace(service)
 						service.sandboxMode = false;
@@ -92,15 +112,24 @@
 						service.categories.push(new CategoryBuilderClass().setIdentifier("MESSAGE_CATEGORY").addAction(new ActionBuilderClass().setTitle("OK").setWillLaunchApplication(true).setIdentifier("OPEN_APP_BTN").build()).addAction(new ActionBuilderClass().setTitle("Cancel").setDestructive(true).setShouldCancelOnAction(true).setIdentifier("CANCEL_APP_BTN").build()).build());
 						trace("C")
 						service.channels.push(new ChannelBuilderClass().setId("app_channel").setName("App Channel").build());
-						trace("D")
-						PushNotificationsClass.service.addEventListener(RegistrationEventClass.REGISTERING, registeringHandler);
-						PushNotificationsClass.service.addEventListener(RegistrationEventClass.REGISTER_SUCCESS, registerSuccessHandler);
-						PushNotificationsClass.service.addEventListener(RegistrationEventClass.CHANGED, registrationChangedHandler);
-						PushNotificationsClass.service.addEventListener(RegistrationEventClass.REGISTER_FAILED, registerFailedHandler);
-						PushNotificationsClass.service.addEventListener(RegistrationEventClass.ERROR, errorHandler);
-						PushNotificationsClass.service.addEventListener(AuthorisationEventClass.CHANGED, authorisationChangedHandler);
+						trace("D1 (PushNotificationsClass as Object) : "+(PushNotificationsClass));
+						trace("D2 (PushNotificationsClass as Object).service : "+(PushNotificationsClass as Object).service);
+						trace("D3 addEventListener : "+(PushNotificationsClass as Object).service.addEventListener);
+						(PushNotificationsClass as Object).service.addEventListener((RegistrationEventClass as Object).REGISTERING, registeringHandler);
+						trace("D3");
+						(PushNotificationsClass as Object).service.addEventListener((RegistrationEventClass as Object).REGISTER_SUCCESS, registerSuccessHandler);
+						trace("D4");
+						(PushNotificationsClass as Object).service.addEventListener((RegistrationEventClass as Object).CHANGED, registrationChangedHandler);
+						trace("D5");
+						(PushNotificationsClass as Object).service.addEventListener((RegistrationEventClass as Object).REGISTER_FAILED, registerFailedHandler);
+						trace("D6 registration:error");
+						trace("D6.5 "+(PushNotificationsClass as Object).service.addEventListener);
+
+						(PushNotificationsClass as Object).service.addEventListener("registration:error", errorHandler);
+						trace("D7 authorisation:changed")
+						(PushNotificationsClass as Object).service.addEventListener("authorisation:changed", authorisationChangedHandler);
 						trace("E")
-						PushNotificationsClass.service.setup(service);
+						(PushNotificationsClass as Object).service.setup(service);
 						trace("F")
 						requestAuthorisation();
 						trace("G")
@@ -151,6 +180,8 @@
 			catch (e:Error)
 			{
 				trace("ERROR:" + e.message);
+				trace("onResult : "+onResult);
+				
 				onResult("error occured");
 			}
 		}
@@ -162,21 +193,21 @@
 		
 		private static function requestAuthorisation(e:* = null):void
 		{
-			switch (PushNotificationsClass.service.authorisationStatus())
+			switch ((PushNotificationsClass as Object).service.authorisationStatus())
 			{
 			case AuthorisationStatusClass.AUTHORISED: 
 				// This device has been authorised. 
 				// You can register this device and expect: 
 				//  - registration success/failed event, and;  
 				//  - notifications to be displayed 
-				PushNotificationsClass.service.register();
+				(PushNotificationsClass as Object).service.register();
 				break;
 			
 			case AuthorisationStatusClass.NOT_DETERMINED: 
 				// You are yet to ask for authorisation to display notifications 
 				// At this point you should consider your strategy to get your user to authorise 
 				// notifications by explaining what the application will provide 
-				PushNotificationsClass.service.requestAuthorisation();
+				(PushNotificationsClass as Object).service.requestAuthorisation();
 				break;
 			
 			case AuthorisationStatusClass.DENIED: 
@@ -184,7 +215,7 @@
 				// Advise your user of the lack of notifications as you see fit 
 				
 				// For example: You can redirect to the settings page on iOS 
-				if (PushNotificationsClass.service.canOpenDeviceSettings)
+				if ((PushNotificationsClass as Object).service.canOpenDeviceSettings)
 				{
 					//PushNotifications.service.openDeviceSettings();
 				}
