@@ -91,8 +91,8 @@
 				trace("push notification is null");
 				return;
 			}
-			try
-			{
+			//try
+			//{
 				trace("Init")
 				//(CoreClass as Object).init();
 				trace("Core CLass!!!!:"+CoreClass);
@@ -123,12 +123,18 @@
 						trace("D5");
 						(PushNotificationsClass as Object).service.addEventListener((RegistrationEventClass as Object).REGISTER_FAILED, registerFailedHandler);
 						trace("D6 registration:error");
-						trace("D6.5 "+(PushNotificationsClass as Object).service.addEventListener);
+						trace("D6.5000 "+(PushNotificationsClass as Object).service.addEventListener);
 
-						(PushNotificationsClass as Object).service.addEventListener("registration:error", errorHandler);
-						trace("D7 authorisation:changed")
-						(PushNotificationsClass as Object).service.addEventListener("authorisation:changed", authorisationChangedHandler);
-						trace("E")
+						(PushNotificationsClass as Object).service.addEventListener("registration:error", function(e){trace("Error : "+e)});
+						trace("D700223131 authorisation:changed : "+(PushNotificationsClass as Object).service.addEventListener);
+
+
+						(PushNotificationsClass as Object).service.addEventListener("authorisation:changed", 
+						function(e){requestAuthorisation();}
+						);
+						trace("E1 "+(PushNotificationsClass as Object).service);
+						trace("E2 "+(PushNotificationsClass as Object).service.setup);
+						trace("E3 "+service);
 						(PushNotificationsClass as Object).service.setup(service);
 						trace("F")
 						requestAuthorisation();
@@ -176,14 +182,14 @@
 					trace("notification is not support");
 					onResult("windows Debug");
 				}
-			}
+			/*}
 			catch (e:Error)
 			{
 				trace("ERROR:" + e.message);
 				trace("onResult : "+onResult);
 				
 				onResult("error occured");
-			}
+			}*/
 		}
 		
 		private static function authorisationChangedHandler(e:*):void
@@ -193,9 +199,10 @@
 		
 		private static function requestAuthorisation(e:* = null):void
 		{
+			trace("Autori***************");
 			switch ((PushNotificationsClass as Object).service.authorisationStatus())
 			{
-			case AuthorisationStatusClass.AUTHORISED: 
+			case (AuthorisationStatusClass as Object).AUTHORISED: 
 				// This device has been authorised. 
 				// You can register this device and expect: 
 				//  - registration success/failed event, and;  
@@ -203,14 +210,14 @@
 				(PushNotificationsClass as Object).service.register();
 				break;
 			
-			case AuthorisationStatusClass.NOT_DETERMINED: 
+			case (AuthorisationStatusClass as Object).NOT_DETERMINED: 
 				// You are yet to ask for authorisation to display notifications 
 				// At this point you should consider your strategy to get your user to authorise 
 				// notifications by explaining what the application will provide 
 				(PushNotificationsClass as Object).service.requestAuthorisation();
 				break;
 			
-			case AuthorisationStatusClass.DENIED: 
+			case (AuthorisationStatusClass as Object).DENIED: 
 				// The user has disabled notifications 
 				// Advise your user of the lack of notifications as you see fit 
 				
