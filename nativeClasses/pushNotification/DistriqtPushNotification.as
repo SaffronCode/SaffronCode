@@ -38,26 +38,15 @@
 			{
 				try
 				{
-					trace("start");
 					CoreClass = getDefinitionByName("com.distriqt.extension.core.Core") as Class;
-					trace(">>>>>>>>>>>>>>>>>>>> CoreClass : "+CoreClass);
-					//trace(">>>>>>>>>>>>>>>>>>>> >>>>>>>>> : "+JSON.stringify(CoreClass));
 					AuthorisationStatusClass = getDefinitionByName("com.distriqt.extension.pushnotifications.AuthorisationStatus") as Class;
-					trace(AuthorisationStatusClass);
 					PushNotificationsClass = getDefinitionByName("com.distriqt.extension.pushnotifications.PushNotifications") as Class;
-					trace(PushNotificationsClass);
 					ServiceClass = getDefinitionByName("com.distriqt.extension.pushnotifications.Service") as Class;
-					trace(ServiceClass);
 					ActionBuilderClass = getDefinitionByName("com.distriqt.extension.pushnotifications.builders.ActionBuilder") as Class;
-					trace(ActionBuilderClass);
 					CategoryBuilderClass = getDefinitionByName("com.distriqt.extension.pushnotifications.builders.CategoryBuilder") as Class;
-					trace(CategoryBuilderClass);
 					ChannelBuilderClass = getDefinitionByName("com.distriqt.extension.pushnotifications.builders.ChannelBuilder") as Class;
-					trace(ChannelBuilderClass);
 					AuthorisationEventClass = getDefinitionByName("com.distriqt.extension.pushnotifications.events.AuthorisationEvent") as Class;
-					trace(AuthorisationEventClass);
 					RegistrationEventClass = getDefinitionByName("com.distriqt.extension.pushnotifications.events.RegistrationEvent") as Class;
-					trace((RegistrationEventClass as Object));
 				}
 				catch (e)
 				{
