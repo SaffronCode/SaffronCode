@@ -65,9 +65,7 @@
 		
 		public static function setup(onResult:Function = null):void
 		{
-			trace("setup");
 			loadClasses();
-			trace("classes loaded");
 			if(onResult==null)
 			{
 				onResult = function(text:String):void
@@ -80,54 +78,27 @@
 				trace("push notification is null");
 				return;
 			}
-			//try
-			//{
-				trace("Init")
-				//(CoreClass as Object).init();
-				trace("Core CLass!!!!:"+CoreClass);
+			try
+			{
 				if (PushNotificationsClass.isSupported)
 				{
 					//PushNotifications.init()
 					trace("Push Notification supported")
 					if ((PushNotificationsClass as Object).service.isServiceSupported((ServiceClass as Object).FCM))
 					{
-						trace((PushNotificationsClass as Object).service.isServiceSupported((ServiceClass as Object).FCM));
 						var service:* = new ServiceClass((ServiceClass as Object).FCM, "");
-						trace(service)
 						service.sandboxMode = false;
-						trace("A")
 						service.enableNotificationsWhenActive = true;
-						trace("B")
 						service.categories.push(new CategoryBuilderClass().setIdentifier("MESSAGE_CATEGORY").addAction(new ActionBuilderClass().setTitle("OK").setWillLaunchApplication(true).setIdentifier("OPEN_APP_BTN").build()).addAction(new ActionBuilderClass().setTitle("Cancel").setDestructive(true).setShouldCancelOnAction(true).setIdentifier("CANCEL_APP_BTN").build()).build());
-						trace("C")
 						service.channels.push(new ChannelBuilderClass().setId("app_channel").setName("App Channel").build());
-						trace("D1 (PushNotificationsClass as Object) : "+(PushNotificationsClass));
-						trace("D2 (PushNotificationsClass as Object).service : "+(PushNotificationsClass as Object).service);
-						trace("D3 addEventListener : "+(PushNotificationsClass as Object).service.addEventListener);
 						(PushNotificationsClass as Object).service.addEventListener((RegistrationEventClass as Object).REGISTERING, registeringHandler);
-						trace("D3");
 						(PushNotificationsClass as Object).service.addEventListener((RegistrationEventClass as Object).REGISTER_SUCCESS, registerSuccessHandler);
-						trace("D4");
 						(PushNotificationsClass as Object).service.addEventListener((RegistrationEventClass as Object).CHANGED, registrationChangedHandler);
-						trace("D5");
 						(PushNotificationsClass as Object).service.addEventListener((RegistrationEventClass as Object).REGISTER_FAILED, registerFailedHandler);
-						trace("D6 registration:error");
-						trace("D6.5000 "+(PushNotificationsClass as Object).service.addEventListener);
-
-						(PushNotificationsClass as Object).service.addEventListener("registration:error", function(e){trace("Error : "+e)});
-						trace("D700223131 authorisation:changed : "+(PushNotificationsClass as Object).service.addEventListener);
-
-
-						(PushNotificationsClass as Object).service.addEventListener("authorisation:changed", 
-						function(e){requestAuthorisation();}
-						);
-						trace("E1 "+(PushNotificationsClass as Object).service);
-						trace("E2 "+(PushNotificationsClass as Object).service.setup);
-						trace("E3 "+service);
+						(PushNotificationsClass as Object).service.addEventListener((RegistrationEventClass as Object).ERROR,errorHandler);
+						(PushNotificationsClass as Object).service.addEventListener((AuthorisationEventClass as Object).CHANGED,authorisationChangedHandler);
 						(PushNotificationsClass as Object).service.setup(service);
-						trace("F")
 						requestAuthorisation();
-						trace("G")
 						function registeringHandler(event:*):void
 						{
 							trace("Registration started");
@@ -171,14 +142,12 @@
 					trace("notification is not support");
 					onResult("windows Debug");
 				}
-			/*}
+			}
 			catch (e:Error)
 			{
 				trace("ERROR:" + e.message);
-				trace("onResult : "+onResult);
-				
 				onResult("error occured");
-			}*/
+			}
 		}
 		
 		private static function authorisationChangedHandler(e:*):void
@@ -188,7 +157,6 @@
 		
 		private static function requestAuthorisation(e:* = null):void
 		{
-			trace("Autori***************");
 			switch ((PushNotificationsClass as Object).service.authorisationStatus())
 			{
 			case (AuthorisationStatusClass as Object).AUTHORISED: 
