@@ -123,32 +123,32 @@
 						function registerFailedHandler(event:*):void
 						{
 							trace("Registration failed");
-							onResult("Registration failed");
+							// onResult("Registration failed");
 						}
 						
 						function errorHandler(event:*):void
 						{
 							trace("Registration error: " + event.data);
-							onResult("Registration error");
+							// onResult("Registration error");
 						}
 						
 					}
 					else
 					{
 						trace("fcm notification is not support");
-						onResult("FCM Not Support");
+						// onResult("FCM Not Support");
 					}
 				}
 				else
 				{
 					trace("notification is not support");
-					onResult("windows Debug");
+					// onResult("windows Debug");
 				}
 			}
 			catch (e:Error)
 			{
 				trace("ERROR:" + e.message);
-				onResult("error occured");
+				// onResult("error occured");
 			}
 		}
 		
