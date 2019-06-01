@@ -10,6 +10,7 @@
 	   import com.distriqt.extension.pushnotifications.events.AuthorisationEvent;
 	   import com.distriqt.extension.pushnotifications.events.RegistrationEvent;*/
 	import flash.utils.getDefinitionByName;
+	import contents.alert.Alert;
 	/**
 	 * ...
 	 * @author Younes Mashayekhi
@@ -70,19 +71,20 @@
 			{
 				onResult = function(text:String):void
 				{
+					//show registration ID :
 					trace(text);
 				}
 			}
 			if (PushNotificationsClass == null)
 			{
 				trace("push notification is null");
+				//onResult("windows Debug");
 				return;
 			}
 			try
 			{
 				if (PushNotificationsClass.isSupported)
 				{
-					//PushNotifications.init()
 					trace("Push Notification supported")
 					if ((PushNotificationsClass as Object).service.isServiceSupported((ServiceClass as Object).FCM))
 					{
@@ -121,20 +123,20 @@
 						function registerFailedHandler(event:*):void
 						{
 							trace("Registration failed");
-							onResult("Registration failed");
+							//onResult("Registration failed");
 						}
 						
 						function errorHandler(event:*):void
 						{
 							trace("Registration error: " + event.data);
-							onResult("Registration error");
+							//onResult("Registration error");
 						}
 						
 					}
 					else
 					{
 						trace("fcm notification is not support");
-						onResult("FCM Not Support");
+						//onResult("FCM Not Support");
 					}
 				}
 				else
@@ -146,7 +148,7 @@
 			catch (e:Error)
 			{
 				trace("ERROR:" + e.message);
-				onResult("error occured");
+				//onResult("error occured");
 			}
 		}
 		
