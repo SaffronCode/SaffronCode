@@ -100,7 +100,7 @@
 				mouseClickCounter++;
 			})
 			
-			if(activateWorkers && !DevicePrefrence.isFirstRun())
+			if(activateWorkers && ( !DevicePrefrence.isAndroid() || !DevicePrefrence.isFirstRun()))
 			{
 				//setTimeout(startWorker,1000);
 				startWorker();

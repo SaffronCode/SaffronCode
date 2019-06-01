@@ -10,7 +10,6 @@
 	   import com.distriqt.extension.pushnotifications.events.AuthorisationEvent;
 	   import com.distriqt.extension.pushnotifications.events.RegistrationEvent;*/
 	import flash.utils.getDefinitionByName;
-	
 	/**
 	 * ...
 	 * @author Younes Mashayekhi
@@ -67,35 +66,39 @@
 		public static function setup(onResult:Function = null):void
 		{
 			loadClasses();
-			
+			if(onResult==null)
+			{
+				onResult = function(text:String):void
+				{
+					trace(text);
+				}
+			}
 			if (PushNotificationsClass == null)
 			{
+				trace("push notification is null");
 				return;
 			}
 			try
 			{
-				(CoreClass as Object).init();
 				if (PushNotificationsClass.isSupported)
 				{
-					if (PushNotificationsClass.service.isServiceSupported((ServiceClass as Object).FCM))
+					//PushNotifications.init()
+					trace("Push Notification supported")
+					if ((PushNotificationsClass as Object).service.isServiceSupported((ServiceClass as Object).FCM))
 					{
 						var service:* = new ServiceClass((ServiceClass as Object).FCM, "");
 						service.sandboxMode = false;
 						service.enableNotificationsWhenActive = true;
-						
 						service.categories.push(new CategoryBuilderClass().setIdentifier("MESSAGE_CATEGORY").addAction(new ActionBuilderClass().setTitle("OK").setWillLaunchApplication(true).setIdentifier("OPEN_APP_BTN").build()).addAction(new ActionBuilderClass().setTitle("Cancel").setDestructive(true).setShouldCancelOnAction(true).setIdentifier("CANCEL_APP_BTN").build()).build());
-						
 						service.channels.push(new ChannelBuilderClass().setId("app_channel").setName("App Channel").build());
-						
-						PushNotificationsClass.service.addEventListener(RegistrationEventClass.REGISTERING, registeringHandler);
-						PushNotificationsClass.service.addEventListener(RegistrationEventClass.REGISTER_SUCCESS, registerSuccessHandler);
-						PushNotificationsClass.service.addEventListener(RegistrationEventClass.CHANGED, registrationChangedHandler);
-						PushNotificationsClass.service.addEventListener(RegistrationEventClass.REGISTER_FAILED, registerFailedHandler);
-						PushNotificationsClass.service.addEventListener(RegistrationEventClass.ERROR, errorHandler);
-						PushNotificationsClass.service.addEventListener(AuthorisationEventClass.CHANGED, authorisationChangedHandler);
-						PushNotificationsClass.service.setup(service);
+						(PushNotificationsClass as Object).service.addEventListener((RegistrationEventClass as Object).REGISTERING, registeringHandler);
+						(PushNotificationsClass as Object).service.addEventListener((RegistrationEventClass as Object).REGISTER_SUCCESS, registerSuccessHandler);
+						(PushNotificationsClass as Object).service.addEventListener((RegistrationEventClass as Object).CHANGED, registrationChangedHandler);
+						(PushNotificationsClass as Object).service.addEventListener((RegistrationEventClass as Object).REGISTER_FAILED, registerFailedHandler);
+						(PushNotificationsClass as Object).service.addEventListener((RegistrationEventClass as Object).ERROR,errorHandler);
+						(PushNotificationsClass as Object).service.addEventListener((AuthorisationEventClass as Object).CHANGED,authorisationChangedHandler);
+						(PushNotificationsClass as Object).service.setup(service);
 						requestAuthorisation();
-						
 						function registeringHandler(event:*):void
 						{
 							trace("Registration started");
@@ -154,29 +157,29 @@
 		
 		private static function requestAuthorisation(e:* = null):void
 		{
-			switch (PushNotificationsClass.service.authorisationStatus())
+			switch ((PushNotificationsClass as Object).service.authorisationStatus())
 			{
-			case AuthorisationStatusClass.AUTHORISED: 
+			case (AuthorisationStatusClass as Object).AUTHORISED: 
 				// This device has been authorised. 
 				// You can register this device and expect: 
 				//  - registration success/failed event, and;  
 				//  - notifications to be displayed 
-				PushNotificationsClass.service.register();
+				(PushNotificationsClass as Object).service.register();
 				break;
 			
-			case AuthorisationStatusClass.NOT_DETERMINED: 
+			case (AuthorisationStatusClass as Object).NOT_DETERMINED: 
 				// You are yet to ask for authorisation to display notifications 
 				// At this point you should consider your strategy to get your user to authorise 
 				// notifications by explaining what the application will provide 
-				PushNotificationsClass.service.requestAuthorisation();
+				(PushNotificationsClass as Object).service.requestAuthorisation();
 				break;
 			
-			case AuthorisationStatusClass.DENIED: 
+			case (AuthorisationStatusClass as Object).DENIED: 
 				// The user has disabled notifications 
 				// Advise your user of the lack of notifications as you see fit 
 				
 				// For example: You can redirect to the settings page on iOS 
-				if (PushNotificationsClass.service.canOpenDeviceSettings)
+				if ((PushNotificationsClass as Object).service.canOpenDeviceSettings)
 				{
 					//PushNotifications.service.openDeviceSettings();
 				}
