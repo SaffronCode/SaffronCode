@@ -58,6 +58,7 @@
 		
 		public static function isSupport():Boolean
 		{
+			loadClasses();
 			if (PushNotificationsClass == null || PushNotificationsClass.isSupported == false)
 				return false
 			else
