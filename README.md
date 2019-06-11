@@ -34,7 +34,7 @@
 • دریافت کتاب خانه های زعفران<br>
     - <a href="https://github.com/saffroncode/SaffronCode">نسخه ی اصلی زعفران</a><br>
     - <a href="https://github.com/MTeamapps/ASPack">ASPack مجموعه کتاب خانه های کلیدی و بدون اینترفیس و کتابخانه های متفرقه</a><br>
-• <a href="https://github.com/MTeamapps/FlexLibs-andOthers">نسخه ی آخر Flex و چند کتابخانه swc عمومی دیگر</a><br>
+• <a href="https://github.com/MTeamapps/FlexLibs-andOthers">نسخه ی آخر Flex و چند کتابخانه swc عمومی دیگر (در صورت نیاز به وب سرویس های soap)</a><br>
 • <a href="https://www.adobe.com/devnet/air/air-sdk-download.html">دانلود آخرین نسخهAir SDK</a><br>
 • <a href="https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html">JDK</a><br>
    
