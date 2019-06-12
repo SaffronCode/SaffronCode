@@ -33,7 +33,7 @@ SaffronCode is adding to the Adobe Animate environment to build mobile applicati
 <a href="http://saffroncodesdk.com/">SaffronCodeSDK.com</a>
 
 ### Customers
-<a href="http://mteamapps.ir/"><img src="http://mteamapps.ir/wp-content/uploads/2018/06/tech-1.png" alt="MTeam Co"/></a>
+<a href="http://mteamapps.ir/"></a>
 
 ### Usefull Links
 
