@@ -144,7 +144,7 @@
 			{
 				return super.height;
 			}
-			return H ;
+			return H*this.scaleY ;
 		}
 		
 		override public function get width():Number
@@ -153,7 +153,7 @@
 			{
 				return super.width;
 			}
-			return W ;
+			return W*this.scaleY ;
 		}
 		
 		/**Second setting up the LightImage class*/

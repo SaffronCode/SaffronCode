@@ -98,7 +98,14 @@
 		{
 			if(this.stage)
 			{
-				myStageWeb.viewPort = this.getBounds(stage);
+				try
+				{
+					myStageWeb.viewPort = this.getBounds(stage);
+				}
+				catch(e:Error)
+				{
+					trace(e.message);
+				}
 				if(DistriqtPDFReader.isSupport)
 				{
 					distriqtPDF = new DistriqtPDFReader(this.width,this.height);
