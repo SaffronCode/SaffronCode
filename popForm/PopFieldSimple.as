@@ -25,7 +25,7 @@ package popForm
 		/**This will make this popField run as switcher*/
 		private var activeRadioMode:Boolean ;
 		
-		private var backMC:MovieClip ;
+
 
 		
 		/**If this was true, data function will controll the phone correction befor returning the value*/
@@ -153,10 +153,7 @@ package popForm
 			return text ;
 		}
 		
-		public function changeColor(colorFrame:uint)
-		{
-			backMC.gotoAndStop(colorFrame);
-		}
+
 		
 		public function PopFieldSimple()
 		{
@@ -164,11 +161,7 @@ package popForm
 			stop();
 		}
 		
-		/**Changing the form color without making effect on other values*/
-		public function colorChange(colorFrame:uint):void
-		{
-			changeColor(colorFrame);
-		}
+
 		
 		public function setUp(defaultText:String,KeyBordType:String = SoftKeyboardType.DEFAULT,isPass:Boolean = false,editable:Boolean = true,isAraic:Boolean=true,numLines:uint = 1,width:Number=-1,color:uint=1,frame:uint=1,maxChar:uint=0,otherOptions:Array=null,deleteDefautlText:Boolean=false,activateRadioSwitcher:Boolean=false,returnKey:String=ReturnKeyLabel.DEFAULT,onTypedFunction:Function=null,justShowNativeText:Boolean=false,multiLineTag:Boolean=false,justify:Boolean=true):void
 		{
@@ -195,11 +188,9 @@ package popForm
 			//New lines to manage language style ( like rtl and ltr )
 			this.gotoAndStop(frame);
 			
-			backMC = Obj.getAllChilds("back_mc",this,true)[0];
+
 			
-			//New Line to manage textfield background color 
-			changeColor(color);
-			
+	
 
 			
 			showPassMC = Obj.get("show_pass_mc",this);
@@ -258,8 +249,7 @@ package popForm
 				myTXT.text = myTXT.text.substring(0,myTXT.text.length-1);
 				myTXT.height = myTXT.textHeight+10;
 				Y1 = myTXT.height;
-				backMC.height += Y1-Y0 ;
-				backMC.y+=(Y1-Y0)/2;
+
 				myTXT.text = '' ;
 			}
 			else
@@ -287,7 +277,7 @@ package popForm
 					myTXT.multiline = true ;
 					myTXT.wordWrap = true ;
 				}
-				backMC.visible = false ;
+
 				
 				if(textContainerMC==null)
 				{
@@ -315,7 +305,6 @@ package popForm
 						parag.y = textContainerMC.y ;
 						this.addChild(parag);
 						parag.setUp(defaultText,true,justify,false,false,false,false);
-						//TextPutter.onStaticArea(myTXT,defaultText,true,true,false);
 					}
 				}
 				else
@@ -335,8 +324,7 @@ package popForm
 					Y0 = myTXT.height;
 					myTXT.height = myTXT.textHeight+10;
 					Y1 = myTXT.height ;
-					backMC.height += Y1-Y0 ;
-					backMC.y+=(Y1-Y0)/2;
+	
 				}
 			}
 			
@@ -389,15 +377,7 @@ package popForm
 			}
 		}
 		
-	/*	override public function get height():Number
-		{
-			var tagHeight:Number = Math.max(super.height,tagNameTXT.height+tagNameTXT.y);
-			if(myTXT==null)
-			{
-				return Math.max(tagNameTXT.height,tagHeight) ;
-			}
-			return Math.max(myTXT.y+myTXT.height,backMC.y+backMC.height,tagHeight);
-		}*/
+
 		
 		protected function showPassNow(event:MouseEvent):void
 		{
