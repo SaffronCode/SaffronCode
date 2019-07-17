@@ -63,7 +63,7 @@
 		private var backBitmapData:BitmapData,
 					backBitmap:Bitmap;
 
-		public static var activateBlurForBackground:Boolean = true ;
+		public static var activateBlurForBackground:Boolean = false ;
 					
 		private var Y0:Number ;
 					
