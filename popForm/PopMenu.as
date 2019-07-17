@@ -506,7 +506,7 @@
 
 		private function updateBackgroundBitmapPosition(e:*=null):void
 		{
-			if(this.visible==false && backBitmap!=null)
+			if(this.visible==false || backBitmap==null)
 			{
 				//There is no need to update background position;
 				return;
