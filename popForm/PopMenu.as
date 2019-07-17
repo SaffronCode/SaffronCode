@@ -16,6 +16,16 @@
 	import flash.utils.Timer;
 	
 	import sliderMenu.SliderManager;
+	import flash.display.BitmapData;
+	import flash.display.Bitmap;
+	import stageManager.StageManager;
+	import flash.geom.Rectangle;
+	import flash.display.Sprite;
+	import flash.display.DisplayObjectContainer;
+	import flash.geom.Point;
+	import stageManager.StageManagerEvent;
+	import flash.filters.BlurFilter;
+	import flash.geom.Matrix;
 	
 	public class PopMenu extends MovieClip
 	{
@@ -49,6 +59,11 @@
 		private var backMC:MovieClip,
 					backMinH:Number,
 					backMaxH:Number=600;
+
+		private var backBitmapData:BitmapData,
+					backBitmap:Bitmap;
+
+		public static var activateBlurForBackground:Boolean = true ;
 					
 		private var Y0:Number ;
 					
@@ -159,6 +174,16 @@
 			var backContainer:MovieClip = Obj.get('backGround_mc',this) ;
 			if(backContainer)
 			{
+				if(activateBlurForBackground)
+				{
+					backBitmap = new Bitmap();
+					backContainer.addChildAt(backBitmap,0);
+				}
+
+				this.addEventListener(Event.ENTER_FRAME,updateBackgroundBitmapPosition,false,-190);
+				StageManager.eventDispatcher.addEventListener(StageManagerEvent.STAGE_RESIZED,updateBackgroundBitmapPosition);
+
+				updateBackgroundBitmapPosition();
 				backMC = Obj.get('backGround_mc',backContainer);
 			}
 			var mainBackMC:MovieClip ;
@@ -475,6 +500,56 @@
 					this.prevFrame();
 				}
 			}
+		}
+
+		private var lastRect:Rectangle ;
+
+		private function updateBackgroundBitmapPosition(e:*=null):void
+		{
+			if(this.visible==false && backBitmap!=null)
+			{
+				//There is no need to update background position;
+				return;
+			}
+
+			var resizeImage:Number = 0.2 ;
+			var area:Rectangle = StageManager.stageVisibleArea;
+			var reposeArea:Rectangle = StageManager.stageDelta ;
+
+			
+			if(lastRect==null || area.width != lastRect.width || lastRect.height == area.height)
+			{
+				var imageW:Number = area.width*resizeImage ;
+				var imageH:Number = area.height*resizeImage ;
+				if(backBitmapData)
+				{
+					backBitmapData.dispose();
+				}
+				backBitmapData = new BitmapData(imageW,imageH,false,0xffffff);
+				backBitmap.bitmapData = backBitmapData ;
+			}
+
+
+
+			
+			var scl:Number = Obj.getScale(this);
+			var backContainer:DisplayObjectContainer = backBitmap.parent ;
+			if(backContainer==null)
+			{
+				return;
+			}
+			this.visible = false ;
+			var backCaptureMatrix:Matrix = new Matrix(resizeImage,0,0,resizeImage,reposeArea.width/2*resizeImage,reposeArea.height/2*resizeImage);
+			backBitmapData.draw(backContainer.stage,backCaptureMatrix,null,null,null,true);
+			this.visible = true ;
+			backBitmapData.applyFilter(backBitmapData,backBitmapData.rect,new Point(),new BlurFilter(10,10,2))
+			
+			var newPosition:Point = backContainer.globalToLocal(new Point(area.x,area.y));
+			backBitmap.x = newPosition.x ;
+			backBitmap.y = newPosition.y ;
+
+			backBitmap.scaleX = (1/Obj.getScale(backContainer,true))/resizeImage;
+			backBitmap.scaleY = (1/Obj.getScale(backContainer,false))/resizeImage;
 		}
 	}
 }
