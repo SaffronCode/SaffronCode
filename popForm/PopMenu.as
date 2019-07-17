@@ -63,6 +63,7 @@
 		private var backBitmapData:BitmapData,
 					backBitmap:Bitmap;
 
+		/**You can activate Blur Effect by setting this value to true. you should change it right befor super() call on your main project class */
 		public static var activateBlurForBackground:Boolean = false ;
 					
 		private var Y0:Number ;
