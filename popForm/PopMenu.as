@@ -549,7 +549,7 @@
 			backBitmap.x = newPosition.x ;
 			backBitmap.y = newPosition.y ;
 
-			backBitmap.scaleX = (1/Obj.getScale(backContainer,true))/resizeImage;
+			backBitmap.scaleX = (1.01/Obj.getScale(backContainer,true))/resizeImage;
 			backBitmap.scaleY = (1/Obj.getScale(backContainer,false))/resizeImage;
 		}
 	}
