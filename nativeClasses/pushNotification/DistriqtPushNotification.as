@@ -11,6 +11,8 @@
 	   import com.distriqt.extension.pushnotifications.events.RegistrationEvent;*/
 	import flash.utils.getDefinitionByName;
 	import contents.alert.Alert;
+	//import com.distriqt.extension.pushnotifications.events.PushNotificationEvent;
+	//import com.distriqt.extension.pushnotifications.events.PushNotificationGroupEvent;
 	/**
 	 * ...
 	 * @author Younes Mashayekhi
@@ -27,6 +29,13 @@
 		public static var ChannelBuilderClass:Class;
 		public static var AuthorisationEventClass:Class;
 		public static var RegistrationEventClass:Class;
+		/**com.distriqt.extension.pushnotifications.events.PushNotificationEvent */
+		public static var PushNotificationEventClass:Class;
+		/**com.distriqt.extension.pushnotifications.events.PushNotificationGroupEvent */
+		public static var PushNotificationGroupEventClass:Class;
+
+
+		private static var NotifReceived:Function ;
 		
 		public function DistriqtPushNotification()
 		{
@@ -48,6 +57,9 @@
 					ChannelBuilderClass = getDefinitionByName("com.distriqt.extension.pushnotifications.builders.ChannelBuilder") as Class;
 					AuthorisationEventClass = getDefinitionByName("com.distriqt.extension.pushnotifications.events.AuthorisationEvent") as Class;
 					RegistrationEventClass = getDefinitionByName("com.distriqt.extension.pushnotifications.events.RegistrationEvent") as Class;
+					PushNotificationEventClass = getDefinitionByName("com.distriqt.extension.pushnotifications.events.PushNotificationEvent") as Class;
+					PushNotificationGroupEventClass = getDefinitionByName("com.distriqt.extension.pushnotifications.events.PushNotificationGroupEvent") as Class;
+					trace("RegistrationEventClass : "+RegistrationEventClass);
 				}
 				catch (e)
 				{
@@ -65,8 +77,15 @@
 				return true;
 		}
 		
-		public static function setup(onResult:Function = null):void
+		/**
+		 * You can receive server data on onNotifReceived function as a String
+		 * @param onResult 
+		 * @param onNotifReceived 
+		 */
+		public static function setup(onResult:Function = null,onNotifReceived:Function=null):void
 		{
+			NotifReceived = onNotifReceived ;
+			var PushNotifications:Object;
 			loadClasses();
 			if(onResult==null)
 			{
@@ -100,6 +119,12 @@
 						(PushNotificationsClass as Object).service.addEventListener((RegistrationEventClass as Object).REGISTER_FAILED, registerFailedHandler);
 						(PushNotificationsClass as Object).service.addEventListener((RegistrationEventClass as Object).ERROR,errorHandler);
 						(PushNotificationsClass as Object).service.addEventListener((AuthorisationEventClass as Object).CHANGED,authorisationChangedHandler);
+
+						(PushNotificationsClass as Object).service.addEventListener( (PushNotificationEventClass as Object).NOTIFICATION, notificationHandler );
+						(PushNotificationsClass as Object).service.addEventListener( (PushNotificationEventClass as Object).NOTIFICATION_SELECTED, notificationHandler );
+						(PushNotificationsClass as Object).service.addEventListener( (PushNotificationEventClass as Object).ACTION, actionHandler );
+						(PushNotificationsClass as Object).service.addEventListener( (PushNotificationGroupEventClass as Class).GROUP_SELECTED, groupSelectedHandler );
+						
 						(PushNotificationsClass as Object).service.setup(service);
 						requestAuthorisation();
 						function registeringHandler(event:*):void
@@ -151,6 +176,42 @@
 				trace("ERROR:" + e.message);
 				// onResult("error occured");
 			}
+		}
+
+
+		private static function notificationHandler( event:* ):void
+		{
+			trace( "Notification: ["+event.type+"] state="+event.applicationState+" startup="+event.startup );
+			trace( event.payload );//{"google.delivered_priority":"high","TypeId":"2","google.ttl":2419200,"google.original_priority":"high","Id":"2096"}
+			trace(">>Complete data : "+JSON.stringify(event));
+			if(NotifReceived!=null)
+			{
+				if(NotifReceived.length>0)
+				{
+					NotifReceived(event.payload);
+				}
+				else
+				{
+					NotifReceived();
+				}
+			}
+		}
+
+		private static function actionHandler( event:* ):void
+		{
+			trace( "Action: ["+event.type+"] identifier="+event.identifier+" state="+event.applicationState+" startup="+event.startup );
+			trace( event.payload );
+			trace(">>Complete data : "+JSON.stringify(event));
+		}
+
+		private static function groupSelectedHandler( event:* ):void
+		{
+			trace( "Group Selected: ["+event.type+"] groupKey="+event.groupKey+" state="+event.applicationState+" startup="+event.startup );
+			for each (var payload:String in event.payloads)
+			{
+				trace( "PAYLOAD: "+ payload );
+			}
+			trace(">>Complete data : "+JSON.stringify(event));
 		}
 		
 		private static function authorisationChangedHandler(e:*):void
