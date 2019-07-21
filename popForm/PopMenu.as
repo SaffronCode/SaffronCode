@@ -513,39 +513,47 @@
 				return;
 			}
 
-			var resizeImage:Number = 0.2 ;
+			var resizeImage:Number = 0.1 ;
 			var area:Rectangle = StageManager.stageVisibleArea;
 			var reposeArea:Rectangle = StageManager.stageDelta ;
 
-			
-			if(lastRect==null || area.width != lastRect.width || lastRect.height == area.height)
-			{
-				var imageW:Number = area.width*resizeImage ;
-				var imageH:Number = area.height*resizeImage ;
-				if(backBitmapData)
-				{
-					backBitmapData.dispose();
-				}
-				backBitmapData = new BitmapData(imageW,imageH,false,0xffffff);
-				backBitmap.bitmapData = backBitmapData ;
-			}
 
 
 
 			
-			var scl:Number = Obj.getScale(this);
+			//var scl:Number = Obj.getScale(this);
 			var backContainer:DisplayObjectContainer = backBitmap.parent ;
 			if(backContainer==null)
 			{
 				return;
 			}
-			this.visible = false ;
-			var backCaptureMatrix:Matrix = new Matrix(resizeImage,0,0,resizeImage,reposeArea.width/2*resizeImage,reposeArea.height/2*resizeImage);
-			backBitmapData.draw(backContainer.stage,backCaptureMatrix,null,null,null,true);
-			this.visible = true ;
-			backBitmapData.applyFilter(backBitmapData,backBitmapData.rect,new Point(),new BlurFilter(10,10,2))
-			
+
+
 			var newPosition:Point = backContainer.globalToLocal(new Point(area.x,area.y));
+			if(frameCounter%5==0 || !newPosition.equals(lastPose))
+			{
+				if(lastRect==null || area.width != lastRect.width || lastRect.height == area.height)
+				{
+					var imageW:Number = area.width*resizeImage ;
+					var imageH:Number = area.height*resizeImage ;
+					if(backBitmapData)
+					{
+						backBitmapData.dispose();
+					}
+					backBitmapData = new BitmapData(imageW,imageH,false,0xffffff);
+					backBitmap.bitmapData = backBitmapData ;
+				}
+				this.visible = false ;
+				var backCaptureMatrix:Matrix = new Matrix(resizeImage,0,0,resizeImage,reposeArea.width/2*resizeImage,reposeArea.height/2*resizeImage);
+				backBitmapData.lock();
+				backBitmapData.draw(backContainer.stage,backCaptureMatrix,null,null,null,true);
+				this.visible = true ;
+				backBitmapData.applyFilter(backBitmapData,backBitmapData.rect,new Point(),new BlurFilter(5,5,2))
+				backBitmapData.unlock();
+			}
+			lastPose = newPosition.clone();
+			frameCounter++;
+
 			backBitmap.x = newPosition.x ;
 			backBitmap.y = newPosition.y ;
 
