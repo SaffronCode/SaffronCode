@@ -541,10 +541,12 @@
 			}
 			this.visible = false ;
 			var backCaptureMatrix:Matrix = new Matrix(resizeImage,0,0,resizeImage,reposeArea.width/2*resizeImage,reposeArea.height/2*resizeImage);
+			backBitmapData.lock();
 			backBitmapData.draw(backContainer.stage,backCaptureMatrix,null,null,null,true);
 			this.visible = true ;
-			backBitmapData.applyFilter(backBitmapData,backBitmapData.rect,new Point(),new BlurFilter(10,10,2))
-			
+			backBitmapData.applyFilter(backBitmapData,backBitmapData.rect,new Point(),new BlurFilter(5,5,2))
+			backBitmapData.unlock();
+
 			var newPosition:Point = backContainer.globalToLocal(new Point(area.x,area.y));
 			backBitmap.x = newPosition.x ;
 			backBitmap.y = newPosition.y ;
