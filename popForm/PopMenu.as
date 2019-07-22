@@ -62,6 +62,8 @@
 
 		private var backBitmapData:BitmapData,
 					backBitmap:Bitmap;
+		private var frameCounter:uint = 0,
+					lastPose:Point ;
 
 		/**You can activate Blur Effect by setting this value to true. you should change it right befor super() call on your main project class */
 		public static var activateBlurForBackground:Boolean = false ;
