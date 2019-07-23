@@ -402,7 +402,7 @@
 			/**Returns true if there is no listener on this function, so the application have to redirect to the server*/
 			protected function isExpired(hint:String,link:String):Boolean
 			{
-				Alert.show(hint);
+				Alert.show(hint.replace("ID","ID ("+DevicePrefrence.appID+")"));
 				return true ;
 			}
 	}
