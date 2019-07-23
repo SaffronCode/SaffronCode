@@ -51,6 +51,7 @@
 	import stageManager.StageManagerEvent;
 	
 	import wrokersJob.WorkerFunctions;
+	import flash.net.URLRequestMethod;
 	
 	public class AppWithContent extends App
 	{
@@ -361,13 +362,16 @@
 		{
 			stage.dispatchEvent(new ContentsEvent());
 			playIntro();
-			if(!(skipAnimations || Contents.config.skipAnimations) && activeVersionControll)
+			if(!(skipAnimations || Contents.config.skipAnimations))
 			{
-				var appName:String = DevicePrefrence.appID ;
-				appName = appName.substring(appName.lastIndexOf('.')+1);
-				var versionContrllURL:String = Contents.config.version_controll_url+''+appName+'.xml' ;
+				var versionContrllURL:String = Contents.config.version_controll_url ;
 				trace("Version controll : "+versionContrllURL);
-				VersionController.controllVersion(currentVersionIsOk,stopThisVersion,new URLRequest(versionContrllURL),DevicePrefrence.appVersion,true);
+				var versionRequest:URLRequest = new URLRequest(versionContrllURL);
+				versionRequest.contentType = 'application/json';
+				versionRequest.method = URLRequestMethod.POST ;
+				versionRequest.data = JSON.stringify({AppId:DevicePrefrence.appID}) ;
+
+				VersionController.controllVersion(currentVersionIsOk,stopThisVersion,versionRequest,DevicePrefrence.appVersion,true);
 			}
 		}
 		
