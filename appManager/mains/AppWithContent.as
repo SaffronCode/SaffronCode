@@ -389,10 +389,10 @@
 					trace("Switch to the download url instantly");
 					resetIntro();
 					stage.addEventListener(MouseEvent.CLICK,openDownloadLink);
-					openDownloadLink(null);
+					setTimeout(openDownloadLink,3000);
 				}
 				
-				function openDownloadLink(event:MouseEvent):void
+				function openDownloadLink(event:MouseEvent=null):void
 				{
 					navigateToURL(new URLRequest(appURL));
 				}
