@@ -379,6 +379,7 @@
 			private function currentVersionIsOk():void
 			{
 				trace("*** The versions are ok ***");
+				playIntro();
 			}
 		
 			/**The application is expired*/
