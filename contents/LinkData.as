@@ -1,5 +1,7 @@
 ﻿package contents
 {
+	import appManager.event.AppEventContent;
+
 	public class LinkData
 	{
 		/**some links can have submenu on them*/
@@ -59,6 +61,37 @@
 					}
 				}
 			}
+		}
+
+		/**
+		 * This function will create PageChange event
+		 * @return 
+		 */
+		public function event(skipHistory:Boolean=false,reload:Boolean=false):AppEventContent
+		{
+			return new AppEventContent(this,skipHistory,reload)
+		}
+
+		/**
+		 * You can pass String or PageData for the pageData param
+		 * @param pageData 
+		 * @param dynamicData 
+		 * @param level 
+		 * @return 
+		 */
+		public function createLinkFor(pageData:*,dynamicData:Object=null,level:int=-1):LinkData
+		{
+			if(pageData is PageData)
+			{
+				id = pageData.id;
+			}
+			else
+			{
+				id = pageData.toString();
+			}
+			this.dynamicData = dynamicData;
+			this.level = level ;
+			return this ;
 		}
 		
 		/**export the link*/
