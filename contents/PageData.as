@@ -9,6 +9,7 @@
 package contents
 {
 	import flash.utils.getQualifiedClassName;
+	import flash.utils.getTimer;
 
 	public class PageData
 	{
@@ -178,6 +179,19 @@ package contents
 					images.push(newImg);
 				}
 			}
+		}
+
+		public function createPageFor(PageType:Class,pageContent:String='',dynamicData:Object=null,pageId:String=null):PageData
+		{
+			type = getQualifiedClassName(PageType);
+			content = pageContent ;
+			this.dynamicData = dynamicData ;
+			if(pageId==null)
+			{
+				pageId = getTimer().toString()
+			}
+			id = pageId ;
+			return this ;
 		}
 		
 		/*<page id="homePage">
