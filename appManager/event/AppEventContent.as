@@ -17,6 +17,8 @@ package appManager.event
 		public var pageData:PageData ;
 		
 		public var SkipHistory:Boolean ;
+
+		public static const PAGE_CHANGES:String = AppEvent.PAGE_CHANGES ;
 		
 		//public var myID:String ;
 		
