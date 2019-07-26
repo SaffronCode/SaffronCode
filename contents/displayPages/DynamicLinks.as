@@ -1290,7 +1290,8 @@ package contents.displayPages
 		public function noMoreLinks():void
 		{
 			//linksContainer.removeChild(requestPreLoader);
-			requestPreLoader.visible = false ;
+			if(requestPreLoader)
+				requestPreLoader.visible = false ;
 			
 			//New lines to prevent any more requests till canGetMore functin calls again.
 			requestMore = new Function() ;

@@ -51,6 +51,7 @@
 	import stageManager.StageManagerEvent;
 	
 	import wrokersJob.WorkerFunctions;
+	import flash.net.URLRequestMethod;
 	
 	public class AppWithContent extends App
 	{
@@ -100,7 +101,7 @@
 				mouseClickCounter++;
 			})
 			
-			if(activateWorkers)
+			if(activateWorkers && ( !DevicePrefrence.isAndroid() || !DevicePrefrence.isFirstRun()))
 			{
 				//setTimeout(startWorker,1000);
 				startWorker();
@@ -361,13 +362,16 @@
 		{
 			stage.dispatchEvent(new ContentsEvent());
 			playIntro();
-			if(!(skipAnimations || Contents.config.skipAnimations) && activeVersionControll)
+			if(!(skipAnimations || Contents.config.skipAnimations))
 			{
-				var appName:String = DevicePrefrence.appID ;
-				appName = appName.substring(appName.lastIndexOf('.')+1);
-				var versionContrllURL:String = Contents.config.version_controll_url+''+appName+'.xml' ;
+				var versionContrllURL:String = Contents.config.version_controll_url ;
 				trace("Version controll : "+versionContrllURL);
-				VersionController.controllVersion(currentVersionIsOk,stopThisVersion,new URLRequest(versionContrllURL),DevicePrefrence.appVersion,true);
+				var versionRequest:URLRequest = new URLRequest(versionContrllURL);
+				versionRequest.contentType = 'application/json';
+				versionRequest.method = URLRequestMethod.POST ;
+				versionRequest.data = JSON.stringify({AppId:DevicePrefrence.appID}) ;
+
+				VersionController.controllVersion(currentVersionIsOk,stopThisVersion,versionRequest,DevicePrefrence.appVersion,true);
 			}
 		}
 		
@@ -375,6 +379,7 @@
 			private function currentVersionIsOk():void
 			{
 				trace("*** The versions are ok ***");
+				playIntro();
 			}
 		
 			/**The application is expired*/
@@ -385,10 +390,10 @@
 					trace("Switch to the download url instantly");
 					resetIntro();
 					stage.addEventListener(MouseEvent.CLICK,openDownloadLink);
-					openDownloadLink(null);
+					setTimeout(openDownloadLink,3000);
 				}
 				
-				function openDownloadLink(event:MouseEvent):void
+				function openDownloadLink(event:MouseEvent=null):void
 				{
 					navigateToURL(new URLRequest(appURL));
 				}
@@ -398,7 +403,7 @@
 			/**Returns true if there is no listener on this function, so the application have to redirect to the server*/
 			protected function isExpired(hint:String,link:String):Boolean
 			{
-				Alert.show(hint);
+				Alert.show(hint.replace("ID","ID ("+DevicePrefrence.appID+")"));
 				return true ;
 			}
 	}

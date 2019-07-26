@@ -3,64 +3,39 @@
     <br/>
 </p>
 
-<br>
-<br>
-<br>
 
 
-## About
-<p dir="rtl">زعفران کد، مجموعه کد های آماده برای تولید نرم افزار های قدرت مند و سریع برای انواع سیستم عامل های آندروید، iOS و دسکتاپ می باشد. شما می توانید به راحتی در محیط گرافیکی Adobe Animate و Flash نرم افزار های موبایل خود را ایجاد کنید. شما به کمک فایل های نمونه در پوشه Fla و مطالعه راهنمای تولید هر نوع فرم می توانید در کوتاه ترین زمان نرم افزار هایی با ظاهر گرافیکی بسیار انعطاف پذیر داشته باشد. زعفران شامل بیش از 1000 کتابخانه ی آماده است که بار ها در نرم افزار های مختلف استفاده و آزمایش خود را پس داده اند. زعفران به Animate امکان اضافه نمودن متن های راست چین را اضافه کرده است.
-</p>
+
+## About SaffronCode SDK
+SaffronCode is a collection of codes & libraries for producing powerful and flexible softwares for various operating systems as Android, iOS and desktop. You can easily create your own mobile application in the Adobe Animate and Flash graphic environment. By taking help from sample files and studying guide and join the SaffronCodeSDK.com forums, you can build softwares with very flexible graphic interfaces in the shortest time. SaffronCode contains more than 1,000 ready-made libraries that have been using and testing several times in various software. SaffronCode provided the possibility to convert default Flash TextFields to a GPU friendly and RTL texts in the Adobe Animate.
 
 
-<br>
 
+## You can be an app developer by using Adobe Animate & SaffronCode SDK
 
-### You can be an app developer by using SaffronCode SDk and Adobe Animate
-
-
-<p dir="rtl">
-• برای تولید نرم افزار نیاز به دانش برنامه نویسی ندارید، شما می توانید انواع نرم افزار معرفی و بروشور را بدون نیاز به نوشتن یک خط کد اجرا کنید. شما به راحتی می توانید صفحات گرافیکی و انیمیشنی طراحی شده در محیط گرافیکی Adobe Animate را برای تولید نرم افزار موبایل آماده سازی کنید. <br><br>
-• برای استفاده از کتابخانه های گسترده و متنوع موجود در این مجموعه تنها باید با Ecma Script 6 و یا Action Script آشنا باشید تا بتوانید تقویم، لیست ها تصاویر داینامیک و ... را به نرم افزار خود اضافه کنید.
-با دانش بالای نرم افزاری می توانید به راحتی نرم افزار های متنوع و متصل به انواع وب سرویس ها را بدون دردسر  مدیریت دسترسی به اینترنت و ذخیره سازی کش ایجاد کنید.<br><br>
-• هیچ نگرانی در مورد مدیریت منابع سخت افزاری نداشته باشید. زعفران کد نرم افزار شما را برای اجرا شدن روی دستگاه های موبایل برای استفاده از منابع GPU بهینه می کند.
-</p>
-<br>
+• You do not need programming knowledge to be a software developer, you can build a variety of software and brochures without having to write a line of code. You can easily prepare graphical and animated pages in Adobe Animate’s graphic environment for the production of mobile software.
+• To use the extensive and diverse libraries in this set, you should only be familiar with Ecma Script 6 or Action Script so you can add calendars, lists, dynamic images and ... to your software. With a higher level of software knowledge, you can easily create a variety of software that connects to a lot of different web services without any hassle of managing Internet access and cache storage.
+• Do not worry about managing hardware resources. SaffronCode will optimize your software code to run on mobile devices by using GPU resources.
 
 ## How To Start?
-<p dir="rtl">
-    زعفران کد قابلیت گرفتن خروجی نرم افزار موبایل را به محیط <a href="https://www.adobe.com/products/animate.html">Adobe Animate</a> اضافه کرده است. برای راه اندازی سیستم به ترتیب زیر عمل کنید:<br>
-•    نصب نسخه ی مناسب با سیستما عامل از Adobe Animate<br>
-• دریافت کتاب خانه های زعفران<br>
-    - <a href="https://github.com/saffroncode/SaffronCode">نسخه ی اصلی زعفران</a><br>
-    - <a href="https://github.com/MTeamapps/ASPack">ASPack مجموعه کتاب خانه های کلیدی و بدون اینترفیس و کتابخانه های متفرقه</a><br>
-• <a href="https://github.com/MTeamapps/FlexLibs-andOthers">نسخه ی آخر Flex و چند کتابخانه swc عمومی دیگر</a><br>
-• <a href="https://www.adobe.com/devnet/air/air-sdk-download.html">دانلود آخرین نسخهAir SDK</a><br>
-• <a href="https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html">JDK</a><br>
-   
-    <br>
-برای تست نمونه فایل های داخل https://github.com/SaffronCode/SaffronSamples را دریافت و فایل PureSaffron.fla را اجرا کنید.<br>
-<br>
-• کتابخانه ها را به محیط Adobe animate معرفی کنید<br>
-    - Edit > Prefrence... > Compiler<br>
-    به بخش Source path: آدرس کتاب خانه های زعفران( SaffronCode و ASPack ) که روی سیستم خودتان ذخیره کرده اید را بدهید.<br>
-    به بخش Library path: کتابخانه Flext ی که روی سیستم شما ذیره شده است را بدهید.<br>
-    <br>
-</p>
-<br>
 
-<p align="center">
-    <a href="https://forum.starling-framework.org/"><strong><img src="https://image.flaticon.com/icons/svg/157/157949.svg" width="20px"/>فروم های پرسش و پاسخ اکشن اسکریپت</strong></a></p>
-<br>
-<br>
+SaffronCode is adding to the Adobe Animate environment to build mobile applications output. To get ready the environment, follow these steps:
+• Install the appropriate version of <a href="https://www.adobe.com/products/animate.html">Adobe Animate</a>
+• Download <a href="https://github.com/saffroncode/SaffronCode">SaffronCode</a> SDK
+• ASPack (Collection of key libraries)
+• <a href="https://github.com/MTeamapps/FlexLibs-andOthers">Flex and other general swc libraries</a> (if you need soap web services)
+• Download the latest version of the <a href="https://www.adobe.com/devnet/air/air-sdk-download.html">Air SDK</a>
+• <a href="https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html">JDK</a>
+
 
 ## Contact Us
 <a href="mailto:saffroncodesdk@gmail.com">SaffronCodeSDK@gmail.com</a>
+<a href="http://saffroncodesdk.com/">SaffronCodeSDK.com</a>
 
-## Customers
-<a href="http://mteamapps.ir/"><img src="http://mteamapps.ir/wp-content/uploads/2018/06/tech-1.png" alt="MTeam Co"/></a>
+### Customers
+<a href="http://mteamapps.ir/"></a>
 
-## Usefull Links
+### Usefull Links
 
-<a href="http://www.applicationloader.net">applicationloader.net ( ابزار های کمکی تولید نرم افزار مثل تولید آیکون نرم افزار )</a>
-<a href="https://airnativeextensions.com/extensions">airnativeextensions.com ( تهیه انواع کتابخانه native )</a>
+<a href="http://www.applicationloader.net">applicationloader.net (Software auxiliary tools such as software icon production)</a>
+<a href="https://airnativeextensions.com/extensions">airnativeextensions.com (Provide a variety of native libraries)</a>

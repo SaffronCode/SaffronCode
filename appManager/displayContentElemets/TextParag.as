@@ -237,7 +237,7 @@
 			}
 		}
 		
-		public function increase(newFontSize:int):void
+		public function increase(newFontSize:int,updateInterfaceInstantly:Boolean=false):void
 		{
 			var textFormat:TextFormat = myTextTF.defaultTextFormat ;
 			trace("Old text size : "+textFormat.size);
@@ -245,6 +245,8 @@
 			trace("New text size : "+textFormat.size);
 			myTextTF.setTextFormat(textFormat);
 			myTextTF.defaultTextFormat = textFormat ;
+			if(updateInterfaceInstantly)
+				updateInterface();
 		}
 		
 		/**You can do this once. no undo available*/
