@@ -289,7 +289,7 @@
 				navigateToURL(new URLRequest(event.myID));
 				return false;
 			}
-			if(currentAppEvent!=null && /*pageManagerObject.toEvent*/currentAppEvent.myID == event.myID && AppEvent.home == event.myID && currentAppEvent.myType!=AppEvent.refresh && event.reload==false)
+			if(currentAppEvent!=null && /*pageManagerObject.toEvent*/currentAppEvent.myID == event.myID && AppEvent.home != event.myID && currentAppEvent.myType!=AppEvent.refresh && event.reload==false)
 			{
 				trace("Duplicated page id : "+currentAppEvent.myID);
 				return false;
