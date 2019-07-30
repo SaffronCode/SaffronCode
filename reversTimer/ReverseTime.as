@@ -6,6 +6,7 @@ package reversTimer
 	import flash.utils.getTimer;
 	import flash.utils.setInterval;
 	[Event(name="REVERSE",type="reversTimer.ReverseTimerEvent")]
+	[Event(name="REVERSE_END",type="reversTimer.ReverseTimerEvent")]
 	public class ReverseTime extends EventDispatcher
 	{
 		private var _setIntervalId:uint;
@@ -49,7 +50,16 @@ package reversTimer
 			{
 				_showTime = Add_Zero_Behind.add(2,_s);
 			}
-			this.dispatchEvent(new ReverseTimerEvent(ReverseTimerEvent.REVERSE,_showTime,_h,_m,_s));
+			
+			if(_revertTime>=0)
+			{
+				this.dispatchEvent(new ReverseTimerEvent(ReverseTimerEvent.REVERSE,_showTime,_h,_m,_s));
+			}
+			else
+			{
+				dispos();
+				this.dispatchEvent(new ReverseTimerEvent(ReverseTimerEvent.REVERSE_END));
+			}
 		}
 	}
 }
