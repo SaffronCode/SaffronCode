@@ -16,7 +16,9 @@
 		private var V:Number = 0 ;
 		
 		public var animSpeed:Number = 5 ;
-		
+
+		private var autoPlay:int = 0 ;
+
 		/**is it using built in accelerator or not*/
 		private var acc:Boolean ;
 		
@@ -62,7 +64,23 @@
 		
 		protected function anim(event:Event):void
 		{
-			if(acc)
+			if(autoPlay>0)
+			{
+				mc.nextFrame();
+				if(mc.currentFrame==mc.totalFrames)
+				{
+					mc.gotoAndStop(1);
+				}
+			}
+			else if(autoPlay<0)
+			{
+				mc.prevFrame();
+				if(mc.currentFrame==1)
+				{
+					mc.gotoAndStop(mc.totalFrames);
+				}
+			}
+			else if(acc)
 			{
 				V = (targetFrame-mc.currentFrame)/animSpeed ;
 				currentFrame += V ;
@@ -83,12 +101,23 @@
 		
 		public function gotoFrame(frameIndex:uint):void
 		{
+			autoPlay = 0 ;
 			targetFrame = frameIndex ;
 		}
 		
 		public function gotoFrameLableIndex(index:uint):void
 		{
 			targetFrame = frameLables[index].frame ;
+		}
+
+		public function play():void
+		{
+			autoPlay = 1; 
+		}
+
+		public function revet():void
+		{
+			autoPlay = -1 ;
 		}
 	}
 }
