@@ -67,10 +67,18 @@
 			if(autoPlay>0)
 			{
 				mc.nextFrame();
+				if(mc.currentFrame==mc.totalFrames)
+				{
+					mc.gotoAndStop(1);
+				}
 			}
 			else if(autoPlay<0)
 			{
 				mc.prevFrame();
+				if(mc.currentFrame==1)
+				{
+					mc.gotoAndStop(mc.totalFrames);
+				}
 			}
 			else if(acc)
 			{
