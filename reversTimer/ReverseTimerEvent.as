@@ -5,7 +5,7 @@ package reversTimer
 	public class ReverseTimerEvent extends Event
 	{
 		public static const REVERSE:String = "REVERSE";
-		
+		public static const REVERSE_END:String = "REVERSE_END";
 		
 		private var _hour:Number;
 		public function get hour():Number
@@ -30,7 +30,7 @@ package reversTimer
 		{
 			return _showTime;
 		}
-		public function ReverseTimerEvent(type:String,showTime:String,hour:Number,minutes:Number,second:Number, bubbles:Boolean=false, cancelable:Boolean=false)
+		public function ReverseTimerEvent(type:String,showTime:String=null,hour:Number=0,minutes:Number=0,second:Number=0, bubbles:Boolean=false, cancelable:Boolean=false)
 		{
 			_showTime = showTime;
 			_hour = hour;
