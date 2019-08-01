@@ -18,9 +18,7 @@
 	import flash.utils.ByteArray;
 	
 	import fr.kikko.lab.ShineMP3Encoder;
-	
-	import mx.utils.Base64Decoder;
-	import mx.utils.Base64Encoder;
+	import com.Base64;
 	
 	public class BgWorker extends MovieClip
 	{
@@ -86,9 +84,7 @@
 							trace("*** Read file ");
 							fileStreamBase64.open(targetFile,FileMode.READ);
 							var loadedString:String = fileStreamBase64.readUTFBytes(fileStreamBase64.bytesAvailable)  ;
-							var baseDecoder:Base64Decoder = new Base64Decoder();
-							baseDecoder.decode(loadedString);
-							var decodedBytes:ByteArray = baseDecoder.toByteArray() ;
+							var decodedBytes:ByteArray = Base64.DecodeToByte(loadedString) ;
 							fileStreamBase64.close();
 							trace("*** File loaded");
 							try
@@ -125,13 +121,11 @@
 							var fileStreamByte:FileStream = new FileStream();
 							trace("*** Read file ");
 							fileStreamByte.open(targetFile,FileMode.READ);
-							var baseEncoder:Base64Encoder = new Base64Encoder();
 							var loadedBytes:ByteArray = new ByteArray();
-							fileStreamByte.readBytes(loadedBytes,0,fileStreamByte.bytesAvailable)
-							baseEncoder.encodeBytes(loadedBytes);
+							fileStreamByte.readBytes(loadedBytes,0,fileStreamByte.bytesAvailable);
 							fileStreamByte.close();
 							trace("*** File loaded");
-							createdData.push([baseEncoder.toString()]);
+							createdData.push([Base64.EncodeByte(loadedBytes)]);
 							try
 							{
 								targetFile.deleteFile();
