@@ -673,9 +673,26 @@
 				this.addChild(sliderBoolet);
 				sliderBoolet.scaleX = 1/this.scaleX ;
 				sliderBoolet.scaleY = 1/this.scaleY ;
-				sliderBoolet.y = H ;
-				sliderBoolet.x = W/2 ;
+				if(!isNaN(addSliderEffect.y))
+				{
+					sliderBoolet.y = addSliderEffect.y ;
+				}
+				else
+				{
+					sliderBoolet.y = H ;
+				}
+				
+				if(!isNaN(addSliderEffect.x))
+				{
+					sliderBoolet.x = addSliderEffect.x;
+				}
+				else
+				{
+					sliderBoolet.x = W/2 ;
+				}
+			
 			}
+		
 		}
 		
 		/**Start animation timer*/
