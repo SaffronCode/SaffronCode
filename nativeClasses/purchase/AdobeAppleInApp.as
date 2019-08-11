@@ -10,6 +10,7 @@ package nativeClasses.purchase
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.net.URLRequestMethod;
+	import com.Base64;
 
 	public class AdobeAppleInApp
 	{

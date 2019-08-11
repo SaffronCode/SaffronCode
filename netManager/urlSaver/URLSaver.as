@@ -29,7 +29,6 @@ package netManager.urlSaver
 	import flash.utils.clearTimeout;
 	import flash.utils.setTimeout;
 	
-	import mx.utils.Base64Encoder;
 	
 	
 	[Event(name="LOADING", type="netManager.urlSaver.URLSaverEvent")]
