@@ -65,7 +65,14 @@ package simpelComboBox
 		{	
 			Item.Id = event.buttonID;
 			Item.Title = event.buttonTitle;	
-			onSeletItem.call();
+			if(onSeletItem.length>0)
+			{
+				onSeletItem(event);
+			}
+			else
+			{
+				onSeletItem();
+			}
 			_titleText.setUp(event.buttonTitle)
 		}
 	}
