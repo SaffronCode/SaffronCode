@@ -85,7 +85,7 @@
 				"\t</array>";
 			if(DevicePrefrence.isItPC && currentPermissions.indexOf("<key>application-identifier</key>")==-1)
 			{
-				throw "You have to add below permission on <iPhone><Entitlements>  <![CDATA[ \n\n\n"+requiredPermissionIos+'\n\n]]>\n\n' ;
+				trace("You have to add below permission on <iPhone><Entitlements>  <![CDATA[ \n\n\n"+requiredPermissionIos+'\n\n]]>\n\n') ;
 			}
 			//control android permission  :  <android> <manifestAdditions><![CDATA[ 
 			var neceraryLines:String = '•' ;
