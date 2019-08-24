@@ -79,7 +79,7 @@
 		 * @param level 
 		 * @return 
 		 */
-		public function createLinkFor(pageData:*,dynamicData:Object=null,level:int=-1):LinkData
+		public function createLinkFor(pageData:*,dynamicData:Object=null,level:int=-1,name:String=''):LinkData
 		{
 			if(pageData is PageData)
 			{
@@ -91,6 +91,7 @@
 			}
 			this.dynamicData = dynamicData;
 			this.level = level ;
+			this.name = name ;
 			return this ;
 		}
 		

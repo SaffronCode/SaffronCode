@@ -5,6 +5,7 @@
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.text.SoftKeyboardType;
+	import contents.multiLanguage.Language;
 	
 
 	public class Hints
@@ -37,12 +38,30 @@
 			return PopMenu1.isOpen ;
 		}
 		
+		
+		private static function controllConfig():void
+		{
+			if(Contents.lang==null)
+			{
+				Contents.lang = new Language();
+				Contents.lang.t[id_no_internet] = "Connection Error" ;
+				Contents.lang.t[id_yes] = "Yes";
+				Contents.lang.t[id_submit] = "Submit";
+				Contents.lang.t[id_back] = "Back";
+				Contents.lang.t[id_please_wait] = "Please wait";
+				Contents.lang.t[id_search] = "Search";
+				Contents.lang.t[id_no] = "No";
+			}
+		}
+		
 		public static function ask(title:String,question:String,onDone:Function,innerDisplayObject:DisplayObject=null,OnNotAccepted:Function=null,ButtonFrameYes:int=1,ButtonFrameNo:int=1,descriptionFieldLines:uint=0,
 								   extraDesctiptionLabel:String="توضیح:",defaultExtraDescription="",extraDescriptionKeyboard:String=SoftKeyboardType.DEFAULT):void
 		{
 			onQuestionAccepted = onDone;
 			onNotAccepted = OnNotAccepted;
-			
+		
+			controllConfig();
+
 			var buttons:Array = [new PopButtonData(Contents.lang.t[id_yes],ButtonFrameYes,null,true,true)
 				,new PopButtonData(Contents.lang.t[id_no],ButtonFrameNo,null,true,true)] ;
 			var popFields:PopMenuFields;
@@ -53,6 +72,7 @@
 			}
 			var popText:PopMenuContent = new PopMenuContent(question,popFields,buttons,innerDisplayObject);
 			PopMenu1.popUp(title,null,popText,0,onQuestionAnswered);
+
 		}
 		
 		
@@ -66,6 +86,7 @@
 		*/
 		public static function getText(title:String,question:String,tagLable:String,onDone:Function,OnNotAccepted:Function=null,keyboardType:String=SoftKeyboardType.DEFAULT,isPassword:Boolean=false,innerDisplayObject:DisplayObject=null,ButtonFrameYes:int=1,ButtonFrameNo:int=1,defaultTextOnField:String=''):void
 		{
+			controllConfig();
 			onQuestionAccepted = onDone;
 			onNotAccepted = OnNotAccepted;
 			
@@ -133,6 +154,7 @@
 		 * */
 		public static function show(str:String,canselable:Boolean=true,delyTime:int=-1,displayObject:MovieClip=null,title:String='',onClose:Function=null,backButtonFrame:uint=1)
 		{
+			controllConfig();
 			var buttons:Array ;
 			_onClose = onClose;
 			if(canselable)
@@ -157,6 +179,7 @@
 		/**Show no internet connection available*/
 		public static function noInternet(fakeInput:*=null,onClosed:Function=null)
 		{
+			controllConfig();
 			show(Contents.lang.t[id_no_internet],true,-1,null,'',onClosed);
 		}
 		
@@ -172,6 +195,7 @@
 		 * The onCloded function had to get popDataEvent*/
 		public static function pleaseWait( onClosed:Function = null )
 		{
+			controllConfig();
 			var buttons:Array ;
 			
 			var closeTime:uint = 0 ;
@@ -186,7 +210,6 @@
 				buttons = [Contents.lang.t[id_back]] ;
 			}
 			onWaitClosedUserFunctoin = onClosed ;
-			trace("Contents.lang.t[id_please_wait] : "+Contents.lang.t[id_please_wait]);
 			var popText:PopMenuContent = new PopMenuContent(Contents.lang.t[id_please_wait],null,buttons,myPreLoader);
 			
 			PopMenu1.popUp('',null,popText,closeTime,onWaitClosed);
@@ -217,6 +240,7 @@
 		 * the function "onJobSelected" must have a variable based on PopMenuEvent */
 		public static function selector(title:String,text:String,buttonsList:Array,onButtonSelected:Function,onSearchButton:Function=null,defButtonFrame:uint=1,itemFrame:uint=2,onBackFUnction:Function = null,backButtonFrame:int=1,addBackButton:Boolean=true):void
 		{
+			controllConfig();
 			var moreHint:String = '' ;
 			var namesArray:Array ;
 			var popField:PopMenuFields = new PopMenuFields();
@@ -291,15 +315,14 @@
 		
 		public static function setPreLoader(preLoaderMC:MovieClip):void
 		{
+			controllConfig();
 			
 			myPreLoader = preLoaderMC ;
 		}
 		
 		public static function controlLanguages():void
 		{
-			trace("+Contents.lang.t[id_submit] : "+Contents.lang.t[id_submit]);
-			trace("+Contents.lang.t.id_submit : "+Contents.lang.t.id_submit);
-			trace("+id_submit : "+id_submit);
+			controllConfig();
 			if(Contents.lang.t[id_submit]==undefined)
 			{
 				throw "Add below tag to language.xml\n\n\t<id_submit>\n\t\t<fa>ثبت</fa>\n\t</id_submit>\n\n\n";
