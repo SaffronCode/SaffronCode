@@ -57,14 +57,17 @@
 			if(startWorkerCalled==false)
 			{
 				startWorkerCalled = true ;
-				restart();
+				if(DevicePrefrence.isIOS())
+					restart();
+				else
+					FileManager.controlFilePermission(restart,false);
 			}
 		}
 		
 		private static function restart():void
 		{
 			clearTimeout(starterTimeOutId);
-			starterTimeOutId = setTimeout(startWorkerAfterDelay,5000);
+			starterTimeOutId = setTimeout(startWorkerAfterDelay,100);
 		}
 		
 		private static function startWorkerAfterDelay():void
