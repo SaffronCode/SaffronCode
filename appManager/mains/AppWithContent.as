@@ -97,11 +97,11 @@
 			super(autoChangeMusics,skipAllAnimations,activateShineEffect,PlaySounOnBackGroundTo);
 			DevicePrefrence.setUp();
 			
-			stage.addEventListener(MouseEvent.MOUSE_DOWN, function(e){
+			stage.addEventListener(MouseEvent.MOUSE_DOWN, function(e):*{
 				mouseClickCounter++;
 			})
 			
-			if(activateWorkers && ( !DevicePrefrence.isAndroid() || !DevicePrefrence.isFirstRun()))
+			if(activateWorkers && ( !DevicePrefrence.isAndroid()))
 			{
 				//setTimeout(startWorker,1000);
 				startWorker();
@@ -358,7 +358,7 @@
 		}
 		
 		/**Contents are load now*/
-		protected function startApp()
+		protected function startApp():void
 		{
 			stage.dispatchEvent(new ContentsEvent());
 			playIntro();
