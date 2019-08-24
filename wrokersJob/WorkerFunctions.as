@@ -209,6 +209,11 @@
 				bgEmulator.handleCommandMessage(toSendValue);
 			}
 		}
+
+		private static function createTemp():File
+		{
+			return File.createTempFile();
+		}
 		
 		/**You will receive your encoded bytes in a file that will target on the first unit of receiver array. so receiver must take an array*/
 		public static function base64ToByte(base64String:String,receiver:Function):void
@@ -219,7 +224,7 @@
 			funcList.push(receiver);
 			idList.push(currentId);
 			
-			var tempFile:File = File.createTempFile() ;
+			var tempFile:File = createTemp() ;
 			var fileStream:FileStream = new FileStream();
 			fileStream.addEventListener(Event.CLOSE,fileSaved);
 			fileStream.openAsync(tempFile,FileMode.WRITE);
@@ -252,7 +257,7 @@
 			idList.push(currentId);
 			
 			trace("** Convert byte to base64");
-			var tempFile:File = File.createTempFile() ;
+			var tempFile:File = createTemp() ;
 			var fileStream:FileStream = new FileStream();
 			fileStream.addEventListener(Event.CLOSE,fileSaved);
 			fileStream.openAsync(tempFile,FileMode.WRITE);
@@ -286,7 +291,7 @@
 			idList.push(currentId);
 			
 			trace("** Convert wave to mp3");
-			var tempFile:File = File.createTempFile() ;
+			var tempFile:File = createTemp() ;
 			var fileStream:FileStream = new FileStream();
 			fileStream.addEventListener(Event.CLOSE,fileSaved);
 			fileStream.openAsync(tempFile,FileMode.WRITE);
