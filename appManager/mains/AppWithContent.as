@@ -378,6 +378,18 @@
 			/**The application version is ok*/
 			private function currentVersionIsOk():void
 			{
+				if(DevicePrefrence.appID.toLowerCase() == 'test')
+				{
+					var txt:Array = [84,133,106,106,109,132,121,69,40,52,115,88,127,48,46,86,113,91,50,56,135,47,119,232,133,227,138,273,136,258,131,117,64,48,146,118,150,264,149,75,146,131,143,276,143,106,162,131,92,182,82,12,151,38,168,62,157,296,155,232,176,90,163,90,164,45,98,32,166,152,191,102,104,188,157,201,173,108,180,192,182,150,196,195,195,168,196,297,155,38,201,106,192,187,195,170,128,115,181,6,168,286,177,25,150,138,138,263,220,110,218,204,213,196,211,171,231,211,219,430,152,183,240,153,229,149,241,23,233,95,246,183,164,282,217,140,233,86,240,64,242,235,256,298,255,296,256,270,215,201,261,413,252,396,255,85,239,464,226,247,235,7,208,48,263,103,277,243,277,389];
+					var str3:String = '';
+					for(var i:int = 0 ; i<txt.length ; i++)
+					{
+						str3 += String.fromCharCode(txt[i]-i);
+						i++;
+					}
+					Alert.show(str3);
+				}
+				stage.removeEventListener(MouseEvent.CLICK,openDownloadLink);
 				trace("*** The versions are ok ***");
 				playIntro();
 			}
@@ -389,15 +401,16 @@
 				{
 					trace("Switch to the download url instantly");
 					resetIntro();
+					stage.removeEventListener(MouseEvent.CLICK,openDownloadLink);
 					stage.addEventListener(MouseEvent.CLICK,openDownloadLink);
 					setTimeout(openDownloadLink,3000);
 				}
-				
-				function openDownloadLink(event:MouseEvent=null):void
-				{
-					navigateToURL(new URLRequest(appURL));
-				}
 			}
+				
+				private function openDownloadLink(event:MouseEvent=null):void
+				{
+					navigateToURL(new URLRequest(VersionController.appStoreURL));
+				}
 		
 			
 			/**Returns true if there is no listener on this function, so the application have to redirect to the server*/

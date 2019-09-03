@@ -20,21 +20,21 @@ package tabMenu
 					_selected:Boolean,
 					_activeCurrentTab:Boolean,
 					_sendOnLoadEvent:Boolean,
-					_selectableInActive:Boolean,
+					_selectTableInActive:Boolean,
 					_title:TitleText;
 					
 					
 		private var _timerId:uint;	
 		
 		
-		public function TabItemBass(GroupName_p:String=null,ActiveCurrentTab_p:Boolean=false,SendOnLoadEvent_p:Boolean=true,SelectableInActive_p:Boolean=false)
+		public function TabItemBass(GroupName_p:String=null,ActiveCurrentTab_p:Boolean=false,SendOnLoadEvent_p:Boolean=true,SelectTableInActive_p:Boolean=false)
 		{
 			super();
 			_group = GroupName_p;
 			_activeCurrentTab = ActiveCurrentTab_p;		
 			_name = this.name.split('_')[0];
 			_sendOnLoadEvent = SendOnLoadEvent_p;
-			_selectableInActive = SelectableInActive_p;
+			_selectTableInActive = SelectTableInActive_p;
 			try
 			{			
 				this.gotoAndStop(_name);
@@ -114,7 +114,7 @@ package tabMenu
 		
 		protected function click_fun(event:MouseEvent):void
 		{	
-			if(!_selected || _selectableInActive)
+			if(!_selected || _selectTableInActive)
 			{			
 				sendEvent();
 				if(_activeCurrentTab)

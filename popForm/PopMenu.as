@@ -66,7 +66,7 @@
 					lastPose:Point ;
 
 		/**You can activate Blur Effect by setting this value to true. you should change it right befor super() call on your main project class */
-		public static var activateBlurForBackground:Boolean = false ;
+		public static var activateBlurForBackground:Boolean = true ;
 					
 		private var Y0:Number ;
 					
