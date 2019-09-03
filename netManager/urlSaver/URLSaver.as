@@ -373,7 +373,14 @@ package netManager.urlSaver
 				}
 				else
 				{
-					oflineFolder = File.userDirectory.resolvePath(offlineFolderName);
+					if(FileManager.havePermission())
+					{
+						oflineFolder = File.userDirectory.resolvePath(offlineFolderName);
+					}
+					else
+					{
+						oflineFolder = File.applicationStorageDirectory.resolvePath(offlineFolderName);
+					}
 				}
 			}
 			else
