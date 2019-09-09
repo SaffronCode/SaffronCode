@@ -248,6 +248,17 @@
 			if(updateInterfaceInstantly)
 				updateInterface();
 		}
+
+		public function changeFontSize(newFontSize:int,updateInterfaceInstantly:Boolean=false):void
+		{
+			var textFormat:TextFormat = myTextTF.defaultTextFormat ;
+			textFormat.size = newFontSize;
+			myTextTF.setTextFormat(textFormat);
+			myTextTF.defaultTextFormat = textFormat ;
+			if(updateInterfaceInstantly)
+				updateInterface();
+		}
+
 		
 		/**You can do this once. no undo available*/
 		public function addChildToTop(addedItem:DisplayObject):void
