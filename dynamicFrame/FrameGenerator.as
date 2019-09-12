@@ -18,7 +18,7 @@ import flash.text.TextField;
 
 		private static const radius:Number = 5 ;
 
-		public static function createFrame(stage:Stage,color:int=-1,passRootClassToAddBackground:Sprite=null):void
+		public static function createFrame(stage:Stage,color:int=-1,passRootClassToAddBackground:Sprite=null,fullScreen:Boolean=false):void
 		{
 			if(color==-1)
 				color = defaultColor ;
@@ -28,15 +28,27 @@ import flash.text.TextField;
 			var frame:Sprite = new Sprite();
 			stage.addChild(frame);
 			frame.graphics.beginFill(color);
-			frame.graphics.drawRoundRect(0,0,stage.stageWidth,stage.stageHeight,roundLevel);
+
+			var scale:Number = Math.max((stage.stageWidth/stage.fullScreenWidth),(stage.stageHeight/stage.fullScreenHeight));
+			var customWidth:Number = stage.fullScreenWidth*scale;
+			var customHeight:Number = stage.fullScreenHeight*scale;
+
+			var appWidth:Number = !fullScreen?stage.stageWidth:customWidth ;
+			var appHeight:Number = !fullScreen?stage.stageHeight:customHeight ;
+
+
+			var frameX0:Number = fullScreen?-(customWidth-stage.stageWidth)/2:0 ;
+			var frameY0:Number = fullScreen?-(customHeight-stage.stageHeight)/2:0 ;
+
+			frame.graphics.drawRoundRect(frameX0,frameY0,appWidth,appHeight,roundLevel);
 			//(stage.root as Sprite).graphics.beginFill(stage.color);
-			//(stage.root as Sprite).graphics.drawRoundRect(0,0,stage.stageWidth,stage.stageHeight,roundLevel);
-			frame.graphics.drawRoundRect(margin,margin+extarTopMargin,stage.stageWidth-margin*2,stage.stageHeight-margin*2-extarTopMargin,roundLevel);
+			//(stage.root as Sprite).graphics.drawRoundRect(0,0,appWidth,appHeight,roundLevel);
+			frame.graphics.drawRoundRect(margin+frameX0,margin+extarTopMargin+frameY0,appWidth-margin*2,appHeight-margin*2-extarTopMargin,roundLevel);
 
 			if(passRootClassToAddBackground!=null)
 			{
                 passRootClassToAddBackground.graphics.beginFill(stage.color&0x00ffffff);
-                passRootClassToAddBackground.graphics.drawRoundRect(0,0,stage.stageWidth,stage.stageHeight,5,5);
+                passRootClassToAddBackground.graphics.drawRoundRect(frameX0,frameY0,appWidth,appHeight,5,5);
 			}
 			
 			var exitbuttonW:Number = 50 ;
@@ -59,7 +71,7 @@ import flash.text.TextField;
 			exitButton.buttonMode = true ;
 			exitButton.addEventListener(MouseEvent.CLICK,function(){NativeApplication.nativeApplication.exit();});
 			
-			exitButton.x = frame.width-exitButton.width-roundLevel ;
+			exitButton.x = frame.width-exitButton.width-roundLevel+frameX0 ;
 			frame.addChild(exitButton);
 			
 			
@@ -77,46 +89,49 @@ import flash.text.TextField;
 			minimizeButton.buttonMode = true ;
 			minimizeButton.addEventListener(MouseEvent.CLICK,function(){stage.nativeWindow.minimize();});
 			
-			minimizeButton.x = frame.width-minimizeButton.width*2;
+			minimizeButton.x = frame.width-minimizeButton.width*2+frameX0;
 			frame.addChild(minimizeButton);
 
 			
 			//positioning the stage
-			var dragLocked:Boolean = false ;
-			stage.addEventListener(MouseEvent.MOUSE_DOWN,startDragStage);
-			stage.addEventListener(ScrollMTEvent.TOUCHED_TO_SCROLL,function(e){dragLocked=true;});
-			stage.addEventListener(MouseEvent.MOUSE_UP,function(e){dragLocked=false;});
-			
-			function startDragStage(e:MouseEvent):void
+			if(!fullScreen)
 			{
-				var clickedItem:Sprite = e.target as Sprite ;
-				if(e.target is TextField || dragLocked)
+				var dragLocked:Boolean = false ;
+				stage.addEventListener(MouseEvent.MOUSE_DOWN,startDragStage);
+				stage.addEventListener(ScrollMTEvent.TOUCHED_TO_SCROLL,function(e){dragLocked=true;});
+				stage.addEventListener(MouseEvent.MOUSE_UP,function(e){dragLocked=false;});
+				
+				function startDragStage(e:MouseEvent):void
 				{
-					return ;
-				}
-				while(clickedItem!=null && !(clickedItem is Stage))
-				{
-					if(clickedItem.buttonMode == true || clickedItem.hasEventListener(MouseEvent.CLICK))
+					var clickedItem:Sprite = e.target as Sprite ;
+					if(e.target is TextField || dragLocked)
 					{
 						return ;
 					}
-					clickedItem = clickedItem.parent as Sprite ;
+					while(clickedItem!=null && !(clickedItem is Stage))
+					{
+						if(clickedItem.buttonMode == true || clickedItem.hasEventListener(MouseEvent.CLICK))
+						{
+							return ;
+						}
+						clickedItem = clickedItem.parent as Sprite ;
+					}
+					var MouseX0:Number = e.stageX ;
+					var MouseY0:Number = e.stageY ;
+					
+					stage.addEventListener(MouseEvent.MOUSE_MOVE,moveStagePlace);
+					
+					function moveStagePlace(e:MouseEvent):void
+					{
+						var deltaX:Number = e.stageX-MouseX0 ;
+						var deltaY:Number = e.stageY-MouseY0 ;
+						NativeApplication.nativeApplication.activeWindow.x += deltaX ;
+						NativeApplication.nativeApplication.activeWindow.y += deltaY ;
+					}
+					stage.addEventListener(MouseEvent.MOUSE_UP,function(e){
+						stage.removeEventListener(MouseEvent.MOUSE_MOVE,moveStagePlace);
+					});
 				}
-				var MouseX0:Number = e.stageX ;
-				var MouseY0:Number = e.stageY ;
-				
-				stage.addEventListener(MouseEvent.MOUSE_MOVE,moveStagePlace);
-				
-				function moveStagePlace(e:MouseEvent):void
-				{
-					var deltaX:Number = e.stageX-MouseX0 ;
-					var deltaY:Number = e.stageY-MouseY0 ;
-					NativeApplication.nativeApplication.activeWindow.x += deltaX ;
-					NativeApplication.nativeApplication.activeWindow.y += deltaY ;
-				}
-				stage.addEventListener(MouseEvent.MOUSE_UP,function(e){
-					stage.removeEventListener(MouseEvent.MOUSE_MOVE,moveStagePlace);
-				});
 			}
 		}
 	}
