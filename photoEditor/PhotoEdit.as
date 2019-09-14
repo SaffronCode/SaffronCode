@@ -52,6 +52,8 @@
 		
 		internal static function get mainRectangle():Rectangle
 		{
+			if(_mainRectangle==null)
+				throw "You should call PhotoEdit.setUp() first.";
 			return _mainRectangle.clone();
 		}
 		
