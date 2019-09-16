@@ -73,7 +73,7 @@ package
 		}
 		private  function load():void
 		{
-			_stageWebView = new StageWebView();
+			_stageWebView = new StageWebView(true);
 			_stageWebView.stage = _stage;
 			_stageWebView.viewPort = getArea();
 			if(_loadStatus==LOAD_URL)
