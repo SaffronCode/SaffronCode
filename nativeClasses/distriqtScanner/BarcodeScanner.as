@@ -107,9 +107,10 @@ package nativeClasses.distriqtScanner
 			
 			var options:ScannerOptions = new ScannerOptions();
 			options.singleResult = true;
-			options.colour = ButtonColor;
-			options.cancelLabel = CancelButtonLabel;
-			options.symbologies = [] ;
+			options.torchMode = "off";
+			//options.colour = ButtonColor;
+			//options.cancelLabel = CancelButtonLabel;
+			//options.symbologies = [] ;
 			
 			Scanner.service.startScan( options );
 		}
