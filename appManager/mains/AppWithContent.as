@@ -52,6 +52,7 @@
 	
 	import wrokersJob.WorkerFunctions;
 	import flash.net.URLRequestMethod;
+	import flash.events.Event;
 	
 	public class AppWithContent extends App
 	{
@@ -177,6 +178,9 @@
 				
 				NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE, URICalled);
 			}
+			NativeApplication.nativeApplication.addEventListener(Event.DEACTIVATE,function(e){
+				SliderManager.hide(true);
+			})
 			if(!DevicePrefrence.isAndroid() && appDescriptorString.indexOf("NSAllowsArbitraryLoads")==-1)
 			{
 				errorThrower += "Add xml below to \"<iPhone><InfoAdditions><![CDATA[... \" make iOS version able to connect the internet:\n\n<key>NSAppTransportSecurity</key>\n<dict>\n\t<key>NSAllowsArbitraryLoads</key><true/>\n</dict>\n\n"
