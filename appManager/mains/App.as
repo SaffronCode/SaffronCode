@@ -61,6 +61,12 @@
 		{
 			return _currentMenu;
 		}
+
+		public static function changePage(pageId:String,level:int=-1,dunamicData:Object=null,forceToRefreshPage:Boolean=false):void
+		{
+			var link:LinkData = new LinkData().createLinkFor(pageId,dunamicData,level);
+			ME.dispatchEvent(new AppEventContent(link,false,forceToRefreshPage));
+		}
 		
 		protected var titleManager:TitleManager ;
 		
