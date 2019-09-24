@@ -320,7 +320,7 @@
 		/**Hide all boxes*/
 		private function hideAll():void
 		{
-			for (var i = 0; images != null && i < images.length; i++)
+			for (var i:int = 0; images != null && i < images.length; i++)
 			{
 				images[i].cansel();
 			}
@@ -440,7 +440,7 @@
 			}
 		}
 		
-		private function mouseDraggedLeft()
+		private function mouseDraggedLeft():void
 		{
 			if (this.visible && nextMC.visible && mouseSwipEnambed())
 			{
@@ -454,7 +454,7 @@
 			return this.mouseEnabled && imageItem.type != ImageFile.TYPE_PANORAMA && imageItem.type != ImageFile.TYPE_SPHERE;
 		}
 		
-		private function mouseDragedRight()
+		private function mouseDragedRight():void
 		{
 			if (this.visible && prevMC.visible && mouseSwipEnambed())
 			{

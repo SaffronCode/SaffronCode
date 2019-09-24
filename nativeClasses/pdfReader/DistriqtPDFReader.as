@@ -207,8 +207,15 @@
 			isShowing = false ;
 			if(view)
 			{
-				view.dispose();
-				view = null ;
+				try
+				{
+					view.dispose();
+					view = null ;
+				}
+				catch(e:Error)
+				{
+					trace(e.message);
+				}
 			}
 		}
 		
@@ -275,7 +282,7 @@
 			var iphoneXScale:Number = 1 ;
 			if(StageManager.isIphoneX())
 			{
-				iphoneXScale = 1.5;
+				iphoneXScale = 1;
 			}
 			
 			rect.x*=scl*iphoneXScale;
