@@ -282,7 +282,8 @@
 			}
 		}	
 		
-		/**You will receive your mp3 file that you can find its target from the first unit of the returned variable*/
+		//Shine MP3 removed
+		/**You will receive your mp3 file that you can find its target from the first unit of the returned variable
 		public static function waveTomp3(fileByte:ByteArray,receiver:Function):void
 		{
 			var currentId:uint = lastID++ ;
@@ -314,7 +315,7 @@
 					bgEmulator.handleCommandMessage(toSendValue);
 				}
 			}
-		}	
+		}	*/
 		
 		/**You will recevie your objec on your receiver function on the first unit of an Array.*/
 		public static function JSONPars(str:String,receiver:Function):void

@@ -17,7 +17,6 @@
 	import flash.system.Worker;
 	import flash.utils.ByteArray;
 	
-	import fr.kikko.lab.ShineMP3Encoder;
 	import com.Base64;
 	
 	public class BgWorker extends MovieClip
@@ -26,7 +25,8 @@
 		public static const id_byteToBitmap:int = 2 ;
 		public static const id_base64ToByte:int = 3 ;
 		public static const id_byteToBase64:int = 4 ;
-		public static const id_wave2mp3:int = 5 ;
+		//Shine MP3 removed from BgWorker
+		/*public static const id_wave2mp3:int = 5 ;*/
 		
 		
 		private var receiverChannel:MessageChannel;
@@ -142,7 +142,7 @@
 						createdData.push([null]);
 					}
 					break ;
-				case id_wave2mp3:
+				/*case id_wave2mp3:
 					if(callerData is String)
 					{
 						trace("*** File catched by worker : "+callerData);
@@ -192,6 +192,7 @@
 						createdData.push([null]);
 					}
 					return ;
+				*/
 				case id_byteToBitmap:
 					try
 					{
