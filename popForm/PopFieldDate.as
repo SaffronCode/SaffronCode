@@ -117,14 +117,18 @@
 			protected function upTheMonth(event:MouseEvent):void
 			{
 				var currentDate:Date = date ;
-				if(IsArabic)
-				{
-					var shams:MyShamsi = MyShamsi.miladiToShamsi(date);
-				}
 				if(currentDate!=null)
 				{
-					currentDate.month++;
-					currentDate = keepTheShamsiDate(shams,currentDate);
+					if(IsArabic)
+					{
+						var shams:MyShamsi = MyShamsi.miladiToShamsi(date);
+						shams.month++;
+						currentDate = MyShamsi.shamsiToMiladi(shams);
+					}
+					else
+					{
+						currentDate.month++;
+					}
 					update(currentDate);
 					this.dispatchEvent(new Event(Event.CHANGE));
 				}
@@ -132,14 +136,18 @@
 			protected function upTheYear(event:MouseEvent):void
 			{
 				var currentDate:Date = date ;
-				if(IsArabic)
-				{
-					var shams:MyShamsi = MyShamsi.miladiToShamsi(date);
-				}
 				if(currentDate!=null)
 				{
-					currentDate.fullYear++;
-					currentDate = keepTheShamsiDate(shams,currentDate);
+					if(IsArabic)
+					{
+						var shams:MyShamsi = MyShamsi.miladiToShamsi(date);
+						shams.fullYear++;
+						currentDate = MyShamsi.shamsiToMiladi(shams);
+					}
+					else
+					{
+						currentDate.fullYear++;
+					}
 					update(currentDate);
 					this.dispatchEvent(new Event(Event.CHANGE));
 				}
@@ -158,14 +166,18 @@
 			protected function downTheMonth(event:MouseEvent):void
 			{
 				var currentDate:Date = date ;
-				if(IsArabic)
-				{
-					var shams:MyShamsi = MyShamsi.miladiToShamsi(date);
-				}
 				if(currentDate!=null)
 				{
-					currentDate.month--;
-					currentDate = keepTheShamsiDate(shams,currentDate);
+					if(IsArabic)
+					{
+						var shams:MyShamsi = MyShamsi.miladiToShamsi(date);
+						shams.month--;
+						currentDate = MyShamsi.shamsiToMiladi(shams);
+					}
+					else
+					{
+						currentDate.month--;
+					}
 					update(currentDate);
 					this.dispatchEvent(new Event(Event.CHANGE));
 				}
@@ -173,40 +185,23 @@
 			protected function downTheYear(event:MouseEvent):void
 			{
 				var currentDate:Date = date ;
-				if(IsArabic)
-				{
-					var shams:MyShamsi = MyShamsi.miladiToShamsi(date);
-				}
 				if(currentDate!=null)
 				{
-					currentDate.fullYear--;
-					currentDate = keepTheShamsiDate(shams,currentDate);
+					if(IsArabic)
+					{
+						var shams:MyShamsi = MyShamsi.miladiToShamsi(date);
+						shams.fullYear--;
+						currentDate = MyShamsi.shamsiToMiladi(shams);
+					}
+					else
+					{
+						currentDate.fullYear--;
+					}
 					update(currentDate);
 					this.dispatchEvent(new Event(Event.CHANGE));
 				}
 			}
 
-			private function keepTheShamsiDate(shamsi:MyShamsi,miladi:Date):Date
-			{
-				if(IsArabic)
-				{
-					var firstShamsiDate:uint = shamsi.date ;
-					var shams2:MyShamsi = MyShamsi.miladiToShamsi(miladi);
-					var targetMonth:uint = shams2.month ;
-					trace("Month should be "+targetMonth);
-					shams2.date = firstShamsiDate ;
-					trace("But month changed to "+shams2.month);
-					while(shams2.month!=targetMonth)
-					{
-						trace("Reading");
-						shams2 = MyShamsi.miladiToShamsi(miladi);
-						shams2.date = --firstShamsiDate ;
-					}
-					var aDate:Date = MyShamsi.shamsiToMiladi(shams2)
-					return MyShamsi.shamsiToMiladi(shams2);
-				}
-				return miladi ;
-			}
 		
 		override public function update(data:*):void
 		{

@@ -68,9 +68,27 @@
 		}
 		
 		////////////////////////////////////
+		private var _month:Number;
+		public var fullYear:Number, date:Number, day:Number, hours:Number, minutes:Number, seconds:Number, milliseconds:Number;
 		
-		public var fullYear:Number, month:Number, date:Number, day:Number, hours:Number, minutes:Number, seconds:Number, milliseconds:Number;
-		
+		public function get month():Number
+		{
+			return _month ;
+		}
+
+		public function set month(value:Number):void
+		{
+			if(value<0)
+			{
+				_month = 11;
+				fullYear--;
+			}
+			else
+			{
+				_month = value ;
+			}
+		}
+
 		public function MyShamsi(year_v:* = null, month_v:* = null, date_v:* = null, hours_v:* = null, minutes_v:* = null, seconds_v:* = null, ms_v:* = null)
 		{
 			fullYear = (year_v == null) ? 0 : year_v;
