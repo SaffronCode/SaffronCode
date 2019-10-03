@@ -1,4 +1,4 @@
-package popForm
+﻿package popForm
 {
 	import DateManager.DateShamsi;
 	
@@ -45,6 +45,10 @@ package popForm
 		public function PopFieldDate(tagName:String=null,defaultDate:Date=null,isArabic:Boolean=false,languageFrame:uint=1,color:uint=1)
 		{
 			super();
+			this.stop();
+			
+			backMC = Obj.get("back_mc",this);
+			backMC.stop();
 			
 			if(tagName!=null)
 			{
@@ -60,9 +64,6 @@ package popForm
 			myTitle = tagName ;
 			
 			this.gotoAndStop(languageFrame);
-			
-			backMC = Obj.get("back_mc",this);
-			backMC.stop();
 			changeColor(color);
 			
 			up_datMC = Obj.get("up_dat_mc",this);
@@ -116,9 +117,14 @@ package popForm
 			protected function upTheMonth(event:MouseEvent):void
 			{
 				var currentDate:Date = date ;
+				if(IsArabic)
+				{
+					var shams:MyShamsi = MyShamsi.miladiToShamsi(date);
+				}
 				if(currentDate!=null)
 				{
 					currentDate.month++;
+					currentDate = keepTheShamsiDate(shams,currentDate);
 					update(currentDate);
 					this.dispatchEvent(new Event(Event.CHANGE));
 				}
@@ -126,9 +132,14 @@ package popForm
 			protected function upTheYear(event:MouseEvent):void
 			{
 				var currentDate:Date = date ;
+				if(IsArabic)
+				{
+					var shams:MyShamsi = MyShamsi.miladiToShamsi(date);
+				}
 				if(currentDate!=null)
 				{
 					currentDate.fullYear++;
+					currentDate = keepTheShamsiDate(shams,currentDate);
 					update(currentDate);
 					this.dispatchEvent(new Event(Event.CHANGE));
 				}
@@ -147,9 +158,14 @@ package popForm
 			protected function downTheMonth(event:MouseEvent):void
 			{
 				var currentDate:Date = date ;
+				if(IsArabic)
+				{
+					var shams:MyShamsi = MyShamsi.miladiToShamsi(date);
+				}
 				if(currentDate!=null)
 				{
 					currentDate.month--;
+					currentDate = keepTheShamsiDate(shams,currentDate);
 					update(currentDate);
 					this.dispatchEvent(new Event(Event.CHANGE));
 				}
@@ -157,12 +173,39 @@ package popForm
 			protected function downTheYear(event:MouseEvent):void
 			{
 				var currentDate:Date = date ;
+				if(IsArabic)
+				{
+					var shams:MyShamsi = MyShamsi.miladiToShamsi(date);
+				}
 				if(currentDate!=null)
 				{
 					currentDate.fullYear--;
+					currentDate = keepTheShamsiDate(shams,currentDate);
 					update(currentDate);
 					this.dispatchEvent(new Event(Event.CHANGE));
 				}
+			}
+
+			private function keepTheShamsiDate(shamsi:MyShamsi,miladi:Date):Date
+			{
+				if(IsArabic)
+				{
+					var firstShamsiDate:uint = shamsi.date ;
+					var shams2:MyShamsi = MyShamsi.miladiToShamsi(miladi);
+					var targetMonth:uint = shams2.month ;
+					trace("Month should be "+targetMonth);
+					shams2.date = firstShamsiDate ;
+					trace("But month changed to "+shams2.month);
+					while(shams2.month!=targetMonth)
+					{
+						trace("Reading");
+						shams2 = MyShamsi.miladiToShamsi(miladi);
+						shams2.date = --firstShamsiDate ;
+					}
+					var aDate:Date = MyShamsi.shamsiToMiladi(shams2)
+					return MyShamsi.shamsiToMiladi(shams2);
+				}
+				return miladi ;
 			}
 		
 		override public function update(data:*):void
