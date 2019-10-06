@@ -542,7 +542,7 @@
 					{
 						backBitmapData.dispose();
 					}
-					backBitmapData = new BitmapData(imageW,imageH,false,0xffffff);
+					backBitmapData = new BitmapData(Math.max(1,imageW),Math.max(1,imageH),false,0xffffff);
 					backBitmap.bitmapData = backBitmapData ;
 				}
 				this.visible = false ;
