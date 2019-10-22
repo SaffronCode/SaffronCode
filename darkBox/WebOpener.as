@@ -106,7 +106,7 @@
 				{
 					trace(e.message);
 				}
-				if(DistriqtPDFReader.isSupport)
+				if(DistriqtPDFReader.isSupport && distriqtPDF==null)
 				{
 					distriqtPDF = new DistriqtPDFReader(this.width,this.height);
 					this.addChild(distriqtPDF);
