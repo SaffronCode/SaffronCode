@@ -160,7 +160,7 @@
 			delete storage.data[id];
 		}
 		
-		public function Clear(id:String):void
+		public static function Clear(id:String):void
 		{
 			setUp();
 			storage.data[id] = null ;
