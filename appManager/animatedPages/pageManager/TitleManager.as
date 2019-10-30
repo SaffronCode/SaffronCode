@@ -16,6 +16,8 @@
 		public var toEvent:AppEvent = new AppEvent() ;
 		
 		public static var splitLargeTitles:Boolean = false ;
+
+		public var isArabic:Boolean =true;
 		
 		//protected var pageContainer:PageContainer ;
 		
@@ -25,7 +27,6 @@
 		public function TitleManager()
 		{
 			super();
-			
 			//pageContainer = Obj.findThisClass(PageContainer,this,true) as PageContainer;
 			myTitle = Obj.findThisClass(TitleText,this,true) as TitleText;
 			myTitleParag = Obj.findThisClass(TextParag,this,true) as TextParag;
@@ -107,14 +108,14 @@
 			{
 				if(myTitle.text != text)
 				{
-					myTitle.setUp(text,true,splitLargeTitles);
+					myTitle.setUp(text,isArabic,splitLargeTitles);
 				}
 			}
 			else if(myTitleParag!=null)
 			{
 				if(myTitleParag.text != text)
 				{
-					myTitleParag.setUp(text,true,false,false,false,false,true,false,true,true,true,false,0,splitLargeTitles);
+					myTitleParag.setUp(text,isArabic,false,false,false,false,true,false,true,true,true,false,0,splitLargeTitles);
 				}
 			}
 		}
