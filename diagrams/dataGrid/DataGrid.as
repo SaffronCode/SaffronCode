@@ -25,7 +25,7 @@
 		{
 			super();
 			
-			backGroundTexture = new BitmapData(Width,Height,backgroundColor==-1,backgroundColor==-1?0x00000000:backgroundColor);
+			backGroundTexture = new BitmapData(Width+1,Height+1,backgroundColor==-1,backgroundColor==-1?0x00000000:backgroundColor);
 			backGroundBitmap = new Bitmap(backGroundTexture);
 			this.addChild(backGroundBitmap);
 			
