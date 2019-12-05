@@ -6,6 +6,7 @@
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
+	import contents.alert.Alert;
 	
 	public class DataGrid extends Sprite
 	{
@@ -20,6 +21,7 @@
 		
 		private var	backGroundTexture:BitmapData ;
 		private var backGroundBitmap:Bitmap ;
+		private var temp:Array = new Array();
 		
 		public function DataGrid(Wparts:uint,Hparts:uint,Width:Number=10,Height:Number=10,backgroundColor:int=-1,lineColor:int=-1,body:DisplayObject=null)
 		{
@@ -57,11 +59,20 @@
 			this.Dw = Width/Wparts ;
 			this.Dh = Height/Hparts ;
 			
+			temp = [];
 			if(body!=null)
 			{
 				addContent(body)
 			}
 			
+		}
+
+		public function reverseLevelDataGrid():void
+		{
+			for(var j:int = temp.length-1;j>=0;j--)
+			{
+				this.addChild(temp[j]);
+			}
 		}
 		
 		public function addContent(body:DisplayObject, X:int=0, Y:int=0, Wp:int=0, Hp:int=0,borderColor:int=-1,backgroundColor:int=-1,borderThickness:uint=0):void
@@ -106,7 +117,7 @@
 				body.y = Y*Dh;
 				body.width = Wp*Dw ;
 				body.height = Hp*Dh ;
-	
+				temp.push(body);
 				this.addChild(body);
 			}
 			
