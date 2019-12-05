@@ -88,6 +88,8 @@
 		private static var AutoPlayThePageMusics:Boolean ;
 		
 		private var _appIsReady:Boolean = false ;
+
+		public static var isArabic:Boolean =true;
 		
 		public static function get isInHome():Boolean
 		{
@@ -172,6 +174,7 @@
 				fakePageData.title = event.title;
 				var fakeAppEvent:AppEventContent = new AppEventContent(new LinkData(),true,true);
 				fakeAppEvent.pageData = fakePageData ;
+				titleManager.isArabic=isArabic;
 				titleManager.setUp(fakeAppEvent,true);
 			}
 		}
