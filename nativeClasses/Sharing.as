@@ -12,7 +12,6 @@
 
     import flash.display.BitmapData;
     import flash.filesystem.File;
-    import flash.net.URLVariables;
     import flash.utils.getDefinitionByName;
 
     public class Sharing {
@@ -83,7 +82,7 @@
         }
 
         /**If your code was wrong, it will throw an error*/
-        public function setUp(APP_KEY:String):void {
+        public function setUp(APP_KEY:String=""):void {
             DevicePrefrence.createDownloadLink();
             try {
                 shareClass = getDefinitionByName("com.distriqt.extension.share.Share") as Class;
@@ -156,13 +155,11 @@
            }*/
 
         /**https://distriqt.github.io/ANE-Share/u.Launch%20Applications*/
-        public function openApp(PackageName:String, Type:String = "*/*", extras:Object = null):void {
-            if (shareClass.isSupported) {
-                var app:* = new ApplicationClass(PackageName, "");
-
+        public function openApp(PackageName:String, Type:String = "*/*", extras:Object = null,url:String=''):void {
+            if (_isSupports) {
+                var app:* = new ApplicationClass(PackageName, url+"://");
                 if (shareClass.service.applications.isInstalled(app)) {
                     var options:* = new ApplicationOptionsClass();
-
                     options.action = ApplicationOptionsClass.ACTION_MAIN;
                     //ACTION_MAIN			-->ok													
                     //ACTION_SEND	
@@ -174,6 +171,8 @@
 
                     //This is passed as the type of the intent to start on Android. This can be used to set the mime type of the data passed to the intent.
                     options.type = Type;
+                    options.parameters = "";
+                    
                     shareClass.service.applications.launch(app, options);
                 }
             }
