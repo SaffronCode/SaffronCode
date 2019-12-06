@@ -13,6 +13,7 @@
     import flash.display.BitmapData;
     import flash.filesystem.File;
     import flash.utils.getDefinitionByName;
+    import contents.alert.Alert;
 
     public class Sharing {
         private var shareClass:Class, shareOptionClass:Class, shareEventClass:Class;
@@ -82,7 +83,7 @@
         }
 
         /**If your code was wrong, it will throw an error*/
-        public function setUp(APP_KEY:String=""):void {
+        public function setUp(APP_KEY:String = ""):void {
             DevicePrefrence.createDownloadLink();
             try {
                 shareClass = getDefinitionByName("com.distriqt.extension.share.Share") as Class;
@@ -155,26 +156,51 @@
            }*/
 
         /**https://distriqt.github.io/ANE-Share/u.Launch%20Applications*/
-        public function openApp(PackageName:String, Type:String = "*/*", extras:Object = null,url:String=''):void {
+        public function openApp(PackageName:String, Type:String = "*/*", Extras:Object = null, URL:String = '', Intent:String = 'ACTION_MAIN', Parameters:String = ''):void {
             if (_isSupports) {
-                var app:* = new ApplicationClass(PackageName, url+"://");
+                var app:* = new ApplicationClass(PackageName, URL);
                 if (shareClass.service.applications.isInstalled(app)) {
                     var options:* = new ApplicationOptionsClass();
-                    options.action = ApplicationOptionsClass.ACTION_MAIN;
-                    //ACTION_MAIN			-->ok													
-                    //ACTION_SEND	
-                    //ACTION_SENDTO
-                    //ACTION_VIEW
-
+                    switch (Intent) {
+                        case "ACTION_MAIN":
+                            options.action = ApplicationOptionsClass.ACTION_MAIN;
+                            break;
+                        case "ACTION_SEND":
+                            options.action = ApplicationOptionsClass.ACTION_SEND;
+                            break;
+                        case "ACTION_SENDTO":
+                            options.action = ApplicationOptionsClass.ACTION_SENDTO;
+                            break;
+                        case "ACTION_VIEW":
+                            options.action = ApplicationOptionsClass.ACTION_VIEW;
+                            break;
+                    }
                     //Any extras you wish to send to the application. Common examples are "text", "subject", see the Android documentation for more: http://developer.android.com/reference/android/content/Intent.html
-                    options.data = extras;
-
+                    options.data = Extras;
                     //This is passed as the type of the intent to start on Android. This can be used to set the mime type of the data passed to the intent.
                     options.type = Type;
-                    options.parameters = "";
-                    
+
+                    options.parameters = Parameters;
+
                     shareClass.service.applications.launch(app, options);
                 }
+            }
+        }
+
+        public function existApp(PackageName:String):Boolean {
+            if (_isSupports) {
+                var app:* = new ApplicationClass(PackageName, "");
+                if (shareClass.service.applications.isInstalled(app)) {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
             }
         }
 
@@ -202,10 +228,9 @@
         }
 
 
-		public function set addStoreMarket(addStore:Boolean):void
-		{
-			_addStoreMarket = addStore
-		}
+        public function set addStoreMarket(addStore:Boolean):void {
+            _addStoreMarket = addStore
+        }
 
     }
 }
