@@ -7,6 +7,7 @@ package nativeClasses.map
 	//import com.distriqt.extension.nativemaps.objects.LatLng;
 	//import com.distriqt.extension.nativemaps.objects.MapMarker;
 	//import com.distriqt.extension.nativemaps.objects.MapType;
+
 	import com.mteamapp.StringFunctions;
 	
 	import flash.display.Sprite;
@@ -35,6 +36,8 @@ package nativeClasses.map
 		private static var LatLngClass:Class ;
 		/**com.distriqt.extension.nativemaps.objects.MapMarker*/
 		private static var MapMarkerClass:Class ;
+		/**import com.distriqt.extension.nativemaps.objects.MapStyleOptions*/
+		private static var MapStyleOptionsClass:Class;
 		/**com.distriqt.extension.nativemaps.objects.MapType*/
 		private static var MapTypeClass:Class ;
 		
@@ -156,10 +159,12 @@ package nativeClasses.map
 				CustomMarkerIconClass = getDefinitionByName("com.distriqt.extension.nativemaps.objects.CustomMarkerIcon") as Class ;
 				LatLngClass = getDefinitionByName("com.distriqt.extension.nativemaps.objects.LatLng") as Class ;
 				MapMarkerClass = getDefinitionByName("com.distriqt.extension.nativemaps.objects.MapMarker") as Class ;
+				MapStyleOptionsClass = getDefinitionByName("com.distriqt.extension.nativemaps.objects.MapStyleOptions") as Class;
 				MapTypeClass = getDefinitionByName("com.distriqt.extension.nativemaps.objects.MapType") as Class ;
 				
 				
 				(NativeMapsClass as Object).init( DistriqtId );
+				
 				if ((NativeMapsClass as Object).isSupported)
 				{
 					isSupports = true ;
@@ -473,6 +478,12 @@ package nativeClasses.map
 			{
 				updateMarkers();
 			}
+		}
+		
+		public function style(style:String):void
+		{
+			var mapStyle:Object = new MapStyleOptionsClass(style);
+			
 		}
 		
 		private function updateMarkers():void
