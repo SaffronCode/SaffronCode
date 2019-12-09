@@ -11,7 +11,16 @@ package popForm
 		private var _close:CloseSearchButton;
 		private var _onSearch:Function;
 		private var _onClose:Function;
-		public var text:String;
+		private var _text:String;
+		public function get text():String
+		{
+			return _text;
+		}
+		public function set text(text:String):void
+		{
+			_field.text = text;
+			_text = _field.text;
+		}
 		public function PopFieldSearchBox()
 		{
 			super();
@@ -43,7 +52,7 @@ package popForm
 		
 		protected function onChangeText(event:Event):void
 		{
-			text = _field.text;
+			_text = _field.text;
 			checkClose();
 			if(_onSearch!=null)
 			{
