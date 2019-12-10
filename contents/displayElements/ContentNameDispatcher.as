@@ -22,6 +22,8 @@ package contents.displayElements
 		private var isInHistory:Boolean = false ;
 		
 		private var maxDepthToSearchOnHistory:uint = uint.MAX_VALUE ;
+
+		protected var forceToActLikeBack:Boolean = false ;
 		
 		public function ContentNameDispatcher(defaultLinkLevel:Number = NaN, maxDepthToSearchOnHistory:uint = 0 )
 		{
@@ -100,7 +102,7 @@ package contents.displayElements
 		protected function generateLink(e:MouseEvent)
 		{
 			var ev:AppEventContent ;
-			if(this.name == backButtonDispatcher)
+			if(this.name == backButtonDispatcher || forceToActLikeBack)
 			{
 				ev = AppEventContent.lastPage();
 				trace("ev  : "+ev.myType);
