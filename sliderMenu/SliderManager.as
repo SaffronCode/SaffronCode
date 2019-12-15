@@ -161,7 +161,6 @@ package sliderMenu
 			private static function contolMovement(e:MouseEvent):void
 			{
 				var currentPose:Point = new Point(myStage.mouseX,myStage.mouseY);
-				trace(currentPose.x+" vs "+tempMouseFirstPose.x+" = "+(currentPose.x-tempMouseFirstPose.x));
 				//ScrollMT.minScrollToLock = 200 ;
 				if(((slider_l!=null || slider_r!=null ) && Math.abs(currentPose.x-tempMouseFirstPose.x)>ScrollMT.minScrollToLock) || ((slider_t!=null || slider_b!=null) && Math.abs(currentPose.y-tempMouseFirstPose.y)>ScrollMT.minScrollToLock))
 				{
@@ -212,7 +211,7 @@ package sliderMenu
 							}
 							else
 							{
-								mouseFirstPose.x-=slider_l.x;
+								mouseFirstPose.x-=slider_l.x-l_p.x;
 							}
 						}
 						currentDraggingPose = LEFT_MENU;
