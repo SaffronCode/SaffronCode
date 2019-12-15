@@ -623,6 +623,7 @@ package sliderMenu
 			
 			addGetSlider(menuPosition,yourMenu,deltaSlide);
 			unLock();
+			moveMenuseAgain(null);
 		}
 		
 		/**lock the slider menus*/
