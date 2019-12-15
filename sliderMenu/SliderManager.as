@@ -511,6 +511,18 @@ package sliderMenu
 			{
 				r_p = new Point(r_p0.x+delta.width/2,r_p0.y-delta.height/2) ;
 			}
+			if(l_p0!=null)
+			{
+				l_p = new Point(l_p0.x-delta.width/2,l_p0.y-delta.height/2) ;
+			}
+			if(t_p0!=null)
+			{
+				t_p = new Point(t_p0.x-delta.width/2,t_p0.y-delta.height/2) ;
+			}
+			if(b_p0!=null)
+			{
+				b_p = new Point(b_p0.x-delta.width/2,b_p0.y+delta.height/2) ;
+			}
 		}
 		
 		/**set up a slider menu for the stage on selected position and with yourMenu<br>
