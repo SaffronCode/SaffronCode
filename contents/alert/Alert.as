@@ -35,6 +35,16 @@ package contents.alert
 			}
 		}
 		
+		public static function vibrate(duration:uint=1000):void
+		{
+            sw.loadURL("javascript:navigator.vibrate("+duration+");")
+		}
+		
+		public static function vibratePuls():void
+		{
+            vibrate(100);
+		}
+		
 		/**Create the sw for allerts*/
 		private static function setUp():void	
 		{

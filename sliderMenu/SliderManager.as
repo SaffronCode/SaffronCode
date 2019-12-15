@@ -10,6 +10,10 @@ package sliderMenu
 	import flash.ui.Multitouch;
 	
 	import popForm.PopMenu;
+	import stageManager.StageManager;
+	import stageManager.StageManagerEvent;
+	import flash.geom.Rectangle;
+	import contents.alert.Alert;
 
 	public class SliderManager
 	{
@@ -38,17 +42,23 @@ package sliderMenu
 		private static var 	slider_l:MovieClip,
 							l_w:Number,
 							l_p:Point,
+							l_p0:Point,
 							slider_r:MovieClip,
 							r_w:Number,
 							r_p:Point,
+							r_p0:Point,
 							slider_t:MovieClip,
 							t_w:Number,
 							t_p:Point,
+							t_p0:Point,
 							slider_b:MovieClip,
 							b_p:Point,
+							b_p0:Point,
 							b_w:Number;
 		
 		private static var manageMenusFrames:Boolean;
+
+		private static var moveItByStageRepositioning:Boolean;
 							
 	/////////////////////////////////// numerical variables↓
 		/**this variable tells the number of the accepted pixel from the stage */
@@ -493,14 +503,28 @@ package sliderMenu
 				//detectSizes();
 			}
 		}
+
+		private static function moveMenuseAgain(e:StageManagerEvent):void
+		{
+			var delta:Rectangle = StageManager.stageDelta ;
+			if(r_p0!=null)
+			{
+				r_p = new Point(r_p0.x+delta.width/2,r_p0.y-delta.height/2) ;
+			}
+		}
 		
 		/**set up a slider menu for the stage on selected position and with yourMenu<br>
 		 * you have only one stage*/
-		public static function setMenu(yourMenu:MovieClip,deltaSlide:Number,menuPosition:String = LEFT_MENU,manageFrames:Boolean=true,moveTheStage:Boolean=true)
+		public static function setMenu(yourMenu:MovieClip,deltaSlide:Number,menuPosition:String = LEFT_MENU,
+		manageFrames:Boolean=true,moveTheStage:Boolean=true,moveItByStageRepositioning:Boolean=true)
 		{
 			lock_flag = true ;
 			moveStage = moveTheStage ;
 			manageMenusFrames = manageFrames ;
+			if(moveItByStageRepositioning)
+			{
+				StageManager.eventDispatcher.addEventListener(StageManagerEvent.STAGE_RESIZED,moveMenuseAgain);
+			}
 			if(manageMenusFrames)
 			{
 				yourMenu.stop();
@@ -586,6 +610,7 @@ package sliderMenu
 					{
 						t_w = yourSize ;
 						t_p = new Point(menu.x,menu.y) ;
+						t_p0 = new Point(menu.x,menu.y) ;
 						/*menu.x = lx ;
 						menu.y = ty;*/
 						slider_t = menu ;
@@ -612,6 +637,7 @@ package sliderMenu
 						reset();
 						r_w = yourSize ;
 						r_p = new Point( menu.x,menu.y);
+						r_p0 = new Point( menu.x,menu.y);
 						/*menu.x = rx ;
 						menu.y = ty;*/
 						slider_r = menu ;
@@ -637,6 +663,7 @@ package sliderMenu
 						reset();
 						l_w = yourSize ;
 						l_p = new Point(menu.x,menu.y);
+						l_p0 = new Point(menu.x,menu.y);
 						/*menu.x = lx ;
 						menu.y = ty;*/
 						slider_l = menu ;
@@ -662,6 +689,7 @@ package sliderMenu
 					{
 						b_w = yourSize ;
 						b_p = new Point(menu.x,menu.y) ;
+						b_p0 = new Point(menu.x,menu.y) ;
 						/*menu.x = lx ;
 						menu.y = by;*/
 						slider_b = menu ;
