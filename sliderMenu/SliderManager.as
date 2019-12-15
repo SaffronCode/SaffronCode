@@ -70,6 +70,8 @@ package sliderMenu
 		private static var currentDraggingPose:String='';
 		
 		private static var mouseFirstPose:Point;
+
+		private static var tempMouseFirstPose:Point ;
 		
 		
 		public static var animSpeed:uint = 2;
@@ -142,7 +144,148 @@ package sliderMenu
 		{
 			return !(currentDraggingPose == '') ;
 		}
-		
+
+			private static function contolMovement(e:MouseEvent):void
+			{
+				var currentPose:Point = new Point(myStage.mouseX,myStage.mouseY);
+				trace(currentPose.x+" vs "+tempMouseFirstPose.x+" = "+(currentPose.x-tempMouseFirstPose.x));
+				//ScrollMT.minScrollToLock = 200 ;
+				if(Math.abs(currentPose.x-tempMouseFirstPose.x)>ScrollMT.minScrollToLock || Math.abs(currentPose.y-tempMouseFirstPose.y)>ScrollMT.minScrollToLock)
+				{
+					myStage.removeEventListener(MouseEvent.MOUSE_MOVE,contolMovement);
+					mouseFirstPose = new Point(myStage.mouseX,myStage.mouseY);
+					if(slider_l!=null 
+						&& 
+						(
+							(
+								moveStage 
+								&& 
+								(
+									(
+										currentDraggingPose!=LEFT_MENU 
+										&& 
+										myRoot.mouseX<resolution
+									) 
+									|| 
+									(
+										currentDraggingPose==LEFT_MENU 
+										&& 
+										myRoot.mouseX>0
+									)
+								)
+							) 
+							|| 
+							(
+								!moveStage
+								&&
+								(
+									(
+										currentDraggingPose!=LEFT_MENU 
+										&& 
+										myStage.mouseX<resolution
+									)
+									||
+									(
+										currentDraggingPose==LEFT_MENU 
+										&& 
+										myStage.mouseX>slider_l.x
+									)
+								)
+							)
+						)
+					)
+					{
+						if(currentDraggingPose==LEFT_MENU)
+						{
+							if(moveStage)
+							{
+								mouseFirstPose.x-=myRoot.x;
+							}
+							else
+							{
+								mouseFirstPose.x-=slider_l.x;
+							}
+						}
+						currentDraggingPose = LEFT_MENU;
+					}
+					else if//(slider_r!=null && myStage.mouseX>slider_r.x-resolution && currentDraggingPose != RIGHT_MENU)
+						(slider_r!=null 
+							&& 
+							(
+								(
+									moveStage 
+									&& 
+									(
+										(
+											currentDraggingPose!=RIGHT_MENU 
+											&& 
+											myRoot.mouseX>slider_r.x-resolution
+										) 
+										|| 
+										(
+											currentDraggingPose==RIGHT_MENU 
+											&& 
+											myRoot.mouseX<slider_r.x+resolution
+										)
+									)
+								) 
+								|| 
+								(
+									!moveStage
+									&&
+									(
+										(
+											currentDraggingPose!=RIGHT_MENU 
+											&& 
+											myStage.mouseX>slider_r.x-resolution
+										)
+										||
+										(
+											currentDraggingPose==RIGHT_MENU 
+											&& 
+											myStage.mouseX<slider_r.x+resolution
+										)
+									)
+								)
+							)
+						)
+					{
+						if(currentDraggingPose==RIGHT_MENU)
+						{
+							if(moveStage)
+							{
+								mouseFirstPose.x-=myRoot.x;
+							}
+							else
+							{
+								mouseFirstPose.x+=addGetSlider(currentDraggingPose);
+							}
+						}
+						currentDraggingPose = RIGHT_MENU;
+					}
+					else if(slider_t!=null && myStage.mouseY<resolution && currentDraggingPose != TOP_MENU)
+					{
+						currentDraggingPose = TOP_MENU;
+					}
+					else if(slider_b!=null && myStage.mouseY>slider_b.y-resolution && currentDraggingPose != BOTTOM_MENU)
+					{
+						currentDraggingPose = BOTTOM_MENU;
+					}
+					else
+					{
+						mouseFirstPose = null ;
+						var obj:MovieClip = addGetSlider(currentDraggingPose,null,0,true);
+						//trace("obj is : "+obj);
+						if(obj == null || !obj.hitTestPoint(myRoot.mouseX,myRoot.mouseY))
+						{
+							currentDraggingPose = '' ;
+						}
+					}
+					
+				}
+				
+			}
+			
 		
 		/**start the drag*/
 		private static function checkDrag(e:MouseEvent)
@@ -152,134 +295,10 @@ package sliderMenu
 				//menu is lock
 				return ;
 			}
-			mouseFirstPose = new Point(myStage.mouseX,myStage.mouseY);
-			if(slider_l!=null 
-				&& 
-				(
-					(
-						moveStage 
-						&& 
-						(
-							(
-								currentDraggingPose!=LEFT_MENU 
-								&& 
-								myRoot.mouseX<resolution
-							) 
-							|| 
-							(
-								currentDraggingPose==LEFT_MENU 
-								&& 
-								myRoot.mouseX>0
-							)
-						)
-					) 
-					|| 
-					(
-						!moveStage
-						&&
-						(
-							(
-								currentDraggingPose!=LEFT_MENU 
-								&& 
-								myStage.mouseX<resolution
-							)
-							||
-							(
-								currentDraggingPose==LEFT_MENU 
-								&& 
-								myStage.mouseX>slider_l.x
-							)
-						)
-					)
-				)
-			)
-			{
-				if(currentDraggingPose==LEFT_MENU)
-				{
-					if(moveStage)
-					{
-						mouseFirstPose.x-=myRoot.x;
-					}
-					else
-					{
-						mouseFirstPose.x-=slider_l.x;
-					}
-				}
-				currentDraggingPose = LEFT_MENU;
-			}
-			else if//(slider_r!=null && myStage.mouseX>slider_r.x-resolution && currentDraggingPose != RIGHT_MENU)
-				(slider_r!=null 
-					&& 
-					(
-						(
-							moveStage 
-							&& 
-							(
-								(
-									currentDraggingPose!=RIGHT_MENU 
-									&& 
-									myRoot.mouseX>slider_r.x-resolution
-								) 
-								|| 
-								(
-									currentDraggingPose==RIGHT_MENU 
-									&& 
-									myRoot.mouseX<slider_r.x+resolution
-								)
-							)
-						) 
-						|| 
-						(
-							!moveStage
-							&&
-							(
-								(
-									currentDraggingPose!=RIGHT_MENU 
-									&& 
-									myStage.mouseX>slider_r.x-resolution
-								)
-								||
-								(
-									currentDraggingPose==RIGHT_MENU 
-									&& 
-									myStage.mouseX<slider_r.x+resolution
-								)
-							)
-						)
-					)
-				)
-			{
-				if(currentDraggingPose==RIGHT_MENU)
-				{
-					if(moveStage)
-					{
-						mouseFirstPose.x-=myRoot.x;
-					}
-					else
-					{
-						mouseFirstPose.x+=addGetSlider(currentDraggingPose);
-					}
-				}
-				currentDraggingPose = RIGHT_MENU;
-			}
-			else if(slider_t!=null && myStage.mouseY<resolution && currentDraggingPose != TOP_MENU)
-			{
-				currentDraggingPose = TOP_MENU;
-			}
-			else if(slider_b!=null && myStage.mouseY>slider_b.y-resolution && currentDraggingPose != BOTTOM_MENU)
-			{
-				currentDraggingPose = BOTTOM_MENU;
-			}
-			else
-			{
-				mouseFirstPose = null ;
-				var obj:MovieClip = addGetSlider(currentDraggingPose,null,0,true);
-				//trace("obj is : "+obj);
-				if(obj == null || !obj.hitTestPoint(myRoot.mouseX,myRoot.mouseY))
-				{
-					currentDraggingPose = '' ;
-				}
-			}
+			
+			tempMouseFirstPose = new Point(myStage.mouseX,myStage.mouseY);
+			myStage.addEventListener(MouseEvent.MOUSE_MOVE,contolMovement);
+
 			
 				 
 			///continure other drag detections
@@ -288,6 +307,7 @@ package sliderMenu
 		/**stop the dragging */
 		private static function stopDrag(e:MouseEvent)
 		{
+			myStage.removeEventListener(MouseEvent.MOUSE_MOVE,contolMovement);
 			if(mouseFirstPose!=null && !lock_flag)
 			{
 				var deltaPoseNumber = addGetSlider(currentDraggingPose);
