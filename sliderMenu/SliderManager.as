@@ -169,8 +169,6 @@ package sliderMenu
 									|| 
 									(
 										currentDraggingPose==LEFT_MENU 
-										&& 
-										myRoot.mouseX>0
 									)
 								)
 							) 
@@ -224,8 +222,6 @@ package sliderMenu
 										|| 
 										(
 											currentDraggingPose==RIGHT_MENU 
-											&& 
-											myRoot.mouseX<slider_r.x+resolution
 										)
 									)
 								) 
@@ -298,16 +294,22 @@ package sliderMenu
 			
 			tempMouseFirstPose = new Point(myStage.mouseX,myStage.mouseY);
 			myStage.addEventListener(MouseEvent.MOUSE_MOVE,contolMovement);
+			myStage.addEventListener(ScrollMTEvent.LOCK_SCROLL_TILL_MOUSE_UP,stopMovmentControl)
 
 			
 				 
 			///continure other drag detections
 		}
+
+		private function stopMovmentControl(e:ScrollMTEvent=null):void
+		{
+			myStage.removeEventListener(MouseEvent.MOUSE_MOVE,contolMovement);
+		}
 		
 		/**stop the dragging */
 		private static function stopDrag(e:MouseEvent)
 		{
-			myStage.removeEventListener(MouseEvent.MOUSE_MOVE,contolMovement);
+			stopMovmentControl();
 			if(mouseFirstPose!=null && !lock_flag)
 			{
 				var deltaPoseNumber = addGetSlider(currentDraggingPose);
