@@ -150,7 +150,7 @@ package sliderMenu
 				var currentPose:Point = new Point(myStage.mouseX,myStage.mouseY);
 				trace(currentPose.x+" vs "+tempMouseFirstPose.x+" = "+(currentPose.x-tempMouseFirstPose.x));
 				//ScrollMT.minScrollToLock = 200 ;
-				if(Math.abs(currentPose.x-tempMouseFirstPose.x)>ScrollMT.minScrollToLock || Math.abs(currentPose.y-tempMouseFirstPose.y)>ScrollMT.minScrollToLock)
+				if(((slider_l!=null || slider_r!=null ) && Math.abs(currentPose.x-tempMouseFirstPose.x)>ScrollMT.minScrollToLock) || ((slider_t!=null || slider_b!=null) && Math.abs(currentPose.y-tempMouseFirstPose.y)>ScrollMT.minScrollToLock))
 				{
 					myStage.removeEventListener(MouseEvent.MOUSE_MOVE,contolMovement);
 					mouseFirstPose = new Point(myStage.mouseX,myStage.mouseY);
@@ -185,8 +185,6 @@ package sliderMenu
 									||
 									(
 										currentDraggingPose==LEFT_MENU 
-										&& 
-										myStage.mouseX>slider_l.x
 									)
 								)
 							)
@@ -238,8 +236,6 @@ package sliderMenu
 										||
 										(
 											currentDraggingPose==RIGHT_MENU 
-											&& 
-											myStage.mouseX<slider_r.x+resolution
 										)
 									)
 								)
@@ -301,7 +297,7 @@ package sliderMenu
 			///continure other drag detections
 		}
 
-		private function stopMovmentControl(e:ScrollMTEvent=null):void
+		private static function stopMovmentControl(e:ScrollMTEvent=null):void
 		{
 			myStage.removeEventListener(MouseEvent.MOUSE_MOVE,contolMovement);
 		}
