@@ -59,7 +59,7 @@ package sliderMenu
 		
 		private static var manageMenusFrames:Boolean;
 
-		private static var moveItByStageRepositioning:Boolean;
+		private static var onlyFrameAnimation:Boolean;
 							
 	/////////////////////////////////// numerical variables↓
 		/**this variable tells the number of the accepted pixel from the stage */
@@ -306,17 +306,23 @@ package sliderMenu
 
 
 			var currentMenu:MovieClip = addGetSlider(currentDraggingPose,null,0,true);
-			if(currentMenu!=null && //!currentMenu.hitTestPoint(myStage.mouseX,myStage.mouseY,true))
+			if(
+				currentMenu!=null 
+				/*&&
+				onlyFrameAnimation==false */
+				&& //!currentMenu.hitTestPoint(myStage.mouseX,myStage.mouseY,true))
 				(
-					currentDraggingPose == LEFT_MENU
-					&&
-					currentMenu.mouseX>0
-				)
-				||
-				(
-					currentDraggingPose == RIGHT_MENU
-					&&
-					currentMenu.mouseX<0
+					(
+						currentDraggingPose == LEFT_MENU
+						&&
+						currentMenu.mouseX>0
+					)
+					||
+					(
+						currentDraggingPose == RIGHT_MENU
+						&&
+						currentMenu.mouseX<0
+					)
 				)
 			)
 			{
@@ -485,17 +491,37 @@ package sliderMenu
 							{
 								cprecent = Math.min(obj.totalFrames,Math.ceil(Math.min(1,deltaPose.length/deltaW)*obj.totalFrames));
 							}
-							obj.gotoAndStop(cprecent);
+
+
+							if(onlyFrameAnimation)
+							{
+								if(cprecent<obj.currentFrame)
+									obj.prevFrame();
+								else if(cprecent!=obj.currentFrame)
+									obj.nextFrame();
+							}
+							else
+								obj.gotoAndStop(cprecent);
 						}
 						else
 						{
-							obj.gotoAndStop(1);
+							if(onlyFrameAnimation)
+							{
+								obj.prevFrame();
+								obj.prevFrame();
+							}
+							else
+								obj.gotoAndStop(1);
 						}
 					}
 					
 					if(!moveStage)
 					{
 						var pose:Point = addGetSlider(allPose[i],null,0,false,true);
+						if(onlyFrameAnimation)
+						{
+							deltaPose = new Point();
+						}
 						if(currentDraggingPose == allPose[i])
 						{
 							obj.x += ((pose.x+deltaPose.x)-obj.x)/animSpeed ;
@@ -572,11 +598,13 @@ package sliderMenu
 		/**set up a slider menu for the stage on selected position and with yourMenu<br>
 		 * you have only one stage*/
 		public static function setMenu(yourMenu:MovieClip,deltaSlide:Number,menuPosition:String = LEFT_MENU,
-		manageFrames:Boolean=true,moveTheStage:Boolean=true,moveItByStageRepositioning:Boolean=true)
+		manageFrames:Boolean=true,moveTheStage:Boolean=true,moveItByStageRepositioning:Boolean=true,onlyFrameAnimationVar:Boolean=false)
 		{
 			lock_flag = true ;
 			moveStage = moveTheStage ;
 			manageMenusFrames = manageFrames ;
+			onlyFrameAnimation = onlyFrameAnimationVar ;
+			manageFrames = manageFrames || onlyFrameAnimation ;
 			if(moveItByStageRepositioning)
 			{
 				StageManager.eventDispatcher.addEventListener(StageManagerEvent.STAGE_RESIZED,moveMenuseAgain);
