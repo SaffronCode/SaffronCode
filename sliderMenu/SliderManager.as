@@ -14,6 +14,7 @@ package sliderMenu
 	import stageManager.StageManagerEvent;
 	import flash.geom.Rectangle;
 	import contents.alert.Alert;
+	import flash.utils.getTimer;
 
 	public class SliderManager
 	{
@@ -74,6 +75,8 @@ package sliderMenu
 							by:Number;*/
 		
 		internal static var lock_flag:Boolean = false;
+
+		private static var readyToCloseMenuOnMouseUp:uint = 0 ;
 							
 		
 		/**this variable tells that from witch side the slider menu is dragging*/
@@ -302,7 +305,28 @@ package sliderMenu
 			myStage.addEventListener(MouseEvent.MOUSE_MOVE,contolMovement);
 			myStage.addEventListener(ScrollMTEvent.LOCK_SCROLL_TILL_MOUSE_UP,stopMovmentControl)
 
-			
+
+			var currentMenu:MovieClip = addGetSlider(currentDraggingPose,null,0,true);
+			if(currentMenu!=null && //!currentMenu.hitTestPoint(myStage.mouseX,myStage.mouseY,true))
+				(
+					currentDraggingPose == LEFT_MENU
+					&&
+					currentMenu.mouseX>0
+				)
+				||
+				(
+					currentDraggingPose == RIGHT_MENU
+					&&
+					currentMenu.mouseX<0
+				)
+			)
+			{
+				readyToCloseMenuOnMouseUp = getTimer() ;
+			}
+			else
+			{
+				readyToCloseMenuOnMouseUp = 0 ;
+			}
 				 
 			///continure other drag detections
 		}
@@ -316,6 +340,25 @@ package sliderMenu
 		private static function stopDrag(e:MouseEvent)
 		{
 			stopMovmentControl();
+			var currentMenu:MovieClip = addGetSlider(currentDraggingPose,null,0,true);
+			
+			if(readyToCloseMenuOnMouseUp!=0 && getTimer()-readyToCloseMenuOnMouseUp<200 && //currentMenu!=null && !currentMenu.hitTestPoint(myStage.mouseX,myStage.mouseY)
+				(
+					currentDraggingPose == LEFT_MENU
+					&&
+					currentMenu.mouseX>0
+				)
+				||
+				(
+					currentDraggingPose == RIGHT_MENU
+					&&
+					currentMenu.mouseX<0
+				)
+			)
+			{
+				hide();
+				mouseFirstPose = null ;
+			}
 			if(mouseFirstPose!=null && !lock_flag)
 			{
 				var deltaPoseNumber = addGetSlider(currentDraggingPose);
