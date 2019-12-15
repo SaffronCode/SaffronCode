@@ -10,6 +10,11 @@ package sliderMenu
 	import flash.ui.Multitouch;
 	
 	import popForm.PopMenu;
+	import stageManager.StageManager;
+	import stageManager.StageManagerEvent;
+	import flash.geom.Rectangle;
+	import contents.alert.Alert;
+	import flash.utils.getTimer;
 
 	public class SliderManager
 	{
@@ -38,17 +43,23 @@ package sliderMenu
 		private static var 	slider_l:MovieClip,
 							l_w:Number,
 							l_p:Point,
+							l_p0:Point,
 							slider_r:MovieClip,
 							r_w:Number,
 							r_p:Point,
+							r_p0:Point,
 							slider_t:MovieClip,
 							t_w:Number,
 							t_p:Point,
+							t_p0:Point,
 							slider_b:MovieClip,
 							b_p:Point,
+							b_p0:Point,
 							b_w:Number;
 		
 		private static var manageMenusFrames:Boolean;
+
+		private static var onlyFrameAnimation:Boolean;
 							
 	/////////////////////////////////// numerical variables↓
 		/**this variable tells the number of the accepted pixel from the stage */
@@ -64,12 +75,16 @@ package sliderMenu
 							by:Number;*/
 		
 		internal static var lock_flag:Boolean = false;
+
+		private static var readyToCloseMenuOnMouseUp:uint = 0 ;
 							
 		
 		/**this variable tells that from witch side the slider menu is dragging*/
 		private static var currentDraggingPose:String='';
 		
 		private static var mouseFirstPose:Point;
+
+		private static var tempMouseFirstPose:Point ;
 		
 		
 		public static var animSpeed:uint = 2;
@@ -142,7 +157,139 @@ package sliderMenu
 		{
 			return !(currentDraggingPose == '') ;
 		}
-		
+
+			private static function contolMovement(e:MouseEvent):void
+			{
+				var currentPose:Point = new Point(myStage.mouseX,myStage.mouseY);
+				//ScrollMT.minScrollToLock = 200 ;
+				if(((slider_l!=null || slider_r!=null ) && Math.abs(currentPose.x-tempMouseFirstPose.x)>ScrollMT.minScrollToLock) || ((slider_t!=null || slider_b!=null) && Math.abs(currentPose.y-tempMouseFirstPose.y)>ScrollMT.minScrollToLock))
+				{
+					myStage.removeEventListener(MouseEvent.MOUSE_MOVE,contolMovement);
+					mouseFirstPose = new Point(myStage.mouseX,myStage.mouseY);
+					if(slider_l!=null 
+						&& 
+						(
+							(
+								moveStage 
+								&& 
+								(
+									(
+										currentDraggingPose!=LEFT_MENU 
+										&& 
+										myRoot.mouseX<resolution
+									) 
+									|| 
+									(
+										currentDraggingPose==LEFT_MENU 
+									)
+								)
+							) 
+							|| 
+							(
+								!moveStage
+								&&
+								(
+									(
+										currentDraggingPose!=LEFT_MENU 
+										&& 
+										myStage.mouseX<resolution
+									)
+									||
+									(
+										currentDraggingPose==LEFT_MENU 
+									)
+								)
+							)
+						)
+					)
+					{
+						if(currentDraggingPose==LEFT_MENU)
+						{
+							if(moveStage)
+							{
+								mouseFirstPose.x-=myRoot.x;
+							}
+							else
+							{
+								mouseFirstPose.x-=slider_l.x-l_p.x;
+							}
+						}
+						currentDraggingPose = LEFT_MENU;
+					}
+					else if//(slider_r!=null && myStage.mouseX>slider_r.x-resolution && currentDraggingPose != RIGHT_MENU)
+						(slider_r!=null 
+							&& 
+							(
+								(
+									moveStage 
+									&& 
+									(
+										(
+											currentDraggingPose!=RIGHT_MENU 
+											&& 
+											myRoot.mouseX>slider_r.x-resolution
+										) 
+										|| 
+										(
+											currentDraggingPose==RIGHT_MENU 
+										)
+									)
+								) 
+								|| 
+								(
+									!moveStage
+									&&
+									(
+										(
+											currentDraggingPose!=RIGHT_MENU 
+											&& 
+											myStage.mouseX>slider_r.x-resolution
+										)
+										||
+										(
+											currentDraggingPose==RIGHT_MENU 
+										)
+									)
+								)
+							)
+						)
+					{
+						if(currentDraggingPose==RIGHT_MENU)
+						{
+							if(moveStage)
+							{
+								mouseFirstPose.x-=myRoot.x;
+							}
+							else
+							{
+								mouseFirstPose.x+=addGetSlider(currentDraggingPose);
+							}
+						}
+						currentDraggingPose = RIGHT_MENU;
+					}
+					else if(slider_t!=null && myStage.mouseY<resolution && currentDraggingPose != TOP_MENU)
+					{
+						currentDraggingPose = TOP_MENU;
+					}
+					else if(slider_b!=null && myStage.mouseY>slider_b.y-resolution && currentDraggingPose != BOTTOM_MENU)
+					{
+						currentDraggingPose = BOTTOM_MENU;
+					}
+					else
+					{
+						mouseFirstPose = null ;
+						var obj:MovieClip = addGetSlider(currentDraggingPose,null,0,true);
+						//trace("obj is : "+obj);
+						if(obj == null || !obj.hitTestPoint(myRoot.mouseX,myRoot.mouseY))
+						{
+							currentDraggingPose = '' ;
+						}
+					}
+					
+				}
+				
+			}
+			
 		
 		/**start the drag*/
 		private static function checkDrag(e:MouseEvent)
@@ -152,142 +299,73 @@ package sliderMenu
 				//menu is lock
 				return ;
 			}
-			mouseFirstPose = new Point(myStage.mouseX,myStage.mouseY);
-			if(slider_l!=null 
-				&& 
+			
+			tempMouseFirstPose = new Point(myStage.mouseX,myStage.mouseY);
+			myStage.addEventListener(MouseEvent.MOUSE_MOVE,contolMovement);
+			myStage.addEventListener(ScrollMTEvent.LOCK_SCROLL_TILL_MOUSE_UP,stopMovmentControl)
+
+
+			var currentMenu:MovieClip = addGetSlider(currentDraggingPose,null,0,true);
+			if(
+				currentMenu!=null 
+				/*&&
+				onlyFrameAnimation==false */
+				&& //!currentMenu.hitTestPoint(myStage.mouseX,myStage.mouseY,true))
 				(
 					(
-						moveStage 
-						&& 
-						(
-							(
-								currentDraggingPose!=LEFT_MENU 
-								&& 
-								myRoot.mouseX<resolution
-							) 
-							|| 
-							(
-								currentDraggingPose==LEFT_MENU 
-								&& 
-								myRoot.mouseX>0
-							)
-						)
-					) 
-					|| 
-					(
-						!moveStage
+						currentDraggingPose == LEFT_MENU
 						&&
-						(
-							(
-								currentDraggingPose!=LEFT_MENU 
-								&& 
-								myStage.mouseX<resolution
-							)
-							||
-							(
-								currentDraggingPose==LEFT_MENU 
-								&& 
-								myStage.mouseX>slider_l.x
-							)
-						)
+						currentMenu.mouseX>0
+					)
+					||
+					(
+						currentDraggingPose == RIGHT_MENU
+						&&
+						currentMenu.mouseX<0
 					)
 				)
 			)
 			{
-				if(currentDraggingPose==LEFT_MENU)
-				{
-					if(moveStage)
-					{
-						mouseFirstPose.x-=myRoot.x;
-					}
-					else
-					{
-						mouseFirstPose.x-=slider_l.x;
-					}
-				}
-				currentDraggingPose = LEFT_MENU;
-			}
-			else if//(slider_r!=null && myStage.mouseX>slider_r.x-resolution && currentDraggingPose != RIGHT_MENU)
-				(slider_r!=null 
-					&& 
-					(
-						(
-							moveStage 
-							&& 
-							(
-								(
-									currentDraggingPose!=RIGHT_MENU 
-									&& 
-									myRoot.mouseX>slider_r.x-resolution
-								) 
-								|| 
-								(
-									currentDraggingPose==RIGHT_MENU 
-									&& 
-									myRoot.mouseX<slider_r.x+resolution
-								)
-							)
-						) 
-						|| 
-						(
-							!moveStage
-							&&
-							(
-								(
-									currentDraggingPose!=RIGHT_MENU 
-									&& 
-									myStage.mouseX>slider_r.x-resolution
-								)
-								||
-								(
-									currentDraggingPose==RIGHT_MENU 
-									&& 
-									myStage.mouseX<slider_r.x+resolution
-								)
-							)
-						)
-					)
-				)
-			{
-				if(currentDraggingPose==RIGHT_MENU)
-				{
-					if(moveStage)
-					{
-						mouseFirstPose.x-=myRoot.x;
-					}
-					else
-					{
-						mouseFirstPose.x+=addGetSlider(currentDraggingPose);
-					}
-				}
-				currentDraggingPose = RIGHT_MENU;
-			}
-			else if(slider_t!=null && myStage.mouseY<resolution && currentDraggingPose != TOP_MENU)
-			{
-				currentDraggingPose = TOP_MENU;
-			}
-			else if(slider_b!=null && myStage.mouseY>slider_b.y-resolution && currentDraggingPose != BOTTOM_MENU)
-			{
-				currentDraggingPose = BOTTOM_MENU;
+				readyToCloseMenuOnMouseUp = getTimer() ;
 			}
 			else
 			{
-				mouseFirstPose = null ;
-				var obj:MovieClip = addGetSlider(currentDraggingPose,null,0,true);
-				//trace("obj is : "+obj);
-				if(obj == null || !obj.hitTestPoint(myRoot.mouseX,myRoot.mouseY))
-				{
-					currentDraggingPose = '' ;
-				}
+				readyToCloseMenuOnMouseUp = 0 ;
 			}
-			
 				 
 			///continure other drag detections
+		}
+
+		private static function stopMovmentControl(e:ScrollMTEvent=null):void
+		{
+			myStage.removeEventListener(MouseEvent.MOUSE_MOVE,contolMovement);
 		}
 		
 		/**stop the dragging */
 		private static function stopDrag(e:MouseEvent)
 		{
+			stopMovmentControl();
+			var currentMenu:MovieClip = addGetSlider(currentDraggingPose,null,0,true);
+			
+			if(readyToCloseMenuOnMouseUp!=0 && getTimer()-readyToCloseMenuOnMouseUp<200 && //currentMenu!=null && !currentMenu.hitTestPoint(myStage.mouseX,myStage.mouseY)
+				(
+					(
+					currentDraggingPose == LEFT_MENU
+					&&
+					currentMenu.mouseX>0
+					)
+					||
+					(
+						currentDraggingPose == RIGHT_MENU
+						&&
+						currentMenu.mouseX<0
+					)
+				)
+			)
+			{
+				hide();
+				mouseFirstPose = null ;
+			}
 			if(mouseFirstPose!=null && !lock_flag)
 			{
 				var deltaPoseNumber = addGetSlider(currentDraggingPose);
@@ -413,17 +491,37 @@ package sliderMenu
 							{
 								cprecent = Math.min(obj.totalFrames,Math.ceil(Math.min(1,deltaPose.length/deltaW)*obj.totalFrames));
 							}
-							obj.gotoAndStop(cprecent);
+
+
+							if(onlyFrameAnimation)
+							{
+								if(cprecent<obj.currentFrame)
+									obj.prevFrame();
+								else if(cprecent!=obj.currentFrame)
+									obj.nextFrame();
+							}
+							else
+								obj.gotoAndStop(cprecent);
 						}
 						else
 						{
-							obj.gotoAndStop(1);
+							if(onlyFrameAnimation)
+							{
+								obj.prevFrame();
+								obj.prevFrame();
+							}
+							else
+								obj.gotoAndStop(1);
 						}
 					}
 					
 					if(!moveStage)
 					{
 						var pose:Point = addGetSlider(allPose[i],null,0,false,true);
+						if(onlyFrameAnimation)
+						{
+							deltaPose = new Point();
+						}
 						if(currentDraggingPose == allPose[i])
 						{
 							obj.x += ((pose.x+deltaPose.x)-obj.x)/animSpeed ;
@@ -475,14 +573,42 @@ package sliderMenu
 				//detectSizes();
 			}
 		}
+
+		private static function moveMenuseAgain(e:StageManagerEvent):void
+		{
+			var delta:Rectangle = StageManager.stageDelta ;
+			if(r_p0!=null)
+			{
+				r_p = new Point(r_p0.x+delta.width/2,r_p0.y-delta.height/2) ;
+			}
+			if(l_p0!=null)
+			{
+				l_p = new Point(l_p0.x-delta.width/2,l_p0.y-delta.height/2) ;
+			}
+			if(t_p0!=null)
+			{
+				t_p = new Point(t_p0.x-delta.width/2,t_p0.y-delta.height/2) ;
+			}
+			if(b_p0!=null)
+			{
+				b_p = new Point(b_p0.x-delta.width/2,b_p0.y+delta.height/2) ;
+			}
+		}
 		
 		/**set up a slider menu for the stage on selected position and with yourMenu<br>
 		 * you have only one stage*/
-		public static function setMenu(yourMenu:MovieClip,deltaSlide:Number,menuPosition:String = LEFT_MENU,manageFrames:Boolean=true,moveTheStage:Boolean=true)
+		public static function setMenu(yourMenu:MovieClip,deltaSlide:Number,menuPosition:String = LEFT_MENU,
+		manageFrames:Boolean=true,moveTheStage:Boolean=true,moveItByStageRepositioning:Boolean=true,onlyFrameAnimationVar:Boolean=false)
 		{
 			lock_flag = true ;
 			moveStage = moveTheStage ;
 			manageMenusFrames = manageFrames ;
+			onlyFrameAnimation = onlyFrameAnimationVar || (deltaSlide==0) ;
+			manageFrames = manageFrames || onlyFrameAnimation ;
+			if(moveItByStageRepositioning)
+			{
+				StageManager.eventDispatcher.addEventListener(StageManagerEvent.STAGE_RESIZED,moveMenuseAgain);
+			}
 			if(manageMenusFrames)
 			{
 				yourMenu.stop();
@@ -497,6 +623,7 @@ package sliderMenu
 			
 			addGetSlider(menuPosition,yourMenu,deltaSlide);
 			unLock();
+			moveMenuseAgain(null);
 		}
 		
 		/**lock the slider menus*/
@@ -568,6 +695,7 @@ package sliderMenu
 					{
 						t_w = yourSize ;
 						t_p = new Point(menu.x,menu.y) ;
+						t_p0 = new Point(menu.x,menu.y) ;
 						/*menu.x = lx ;
 						menu.y = ty;*/
 						slider_t = menu ;
@@ -594,6 +722,7 @@ package sliderMenu
 						reset();
 						r_w = yourSize ;
 						r_p = new Point( menu.x,menu.y);
+						r_p0 = new Point( menu.x,menu.y);
 						/*menu.x = rx ;
 						menu.y = ty;*/
 						slider_r = menu ;
@@ -619,6 +748,7 @@ package sliderMenu
 						reset();
 						l_w = yourSize ;
 						l_p = new Point(menu.x,menu.y);
+						l_p0 = new Point(menu.x,menu.y);
 						/*menu.x = lx ;
 						menu.y = ty;*/
 						slider_l = menu ;
@@ -644,6 +774,7 @@ package sliderMenu
 					{
 						b_w = yourSize ;
 						b_p = new Point(menu.x,menu.y) ;
+						b_p0 = new Point(menu.x,menu.y) ;
 						/*menu.x = lx ;
 						menu.y = by;*/
 						slider_b = menu ;
