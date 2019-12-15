@@ -603,7 +603,7 @@ package sliderMenu
 			lock_flag = true ;
 			moveStage = moveTheStage ;
 			manageMenusFrames = manageFrames ;
-			onlyFrameAnimation = onlyFrameAnimationVar ;
+			onlyFrameAnimation = onlyFrameAnimationVar || (deltaSlide==0) ;
 			manageFrames = manageFrames || onlyFrameAnimation ;
 			if(moveItByStageRepositioning)
 			{
