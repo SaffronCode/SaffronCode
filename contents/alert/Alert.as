@@ -35,6 +35,27 @@ package contents.alert
 			}
 		}
 		
+		/**
+		 * You need vibration permission:  
+		 * <uses-permission android:name="android.permission.VIBRATE" />
+		 * @param duration 
+		 */
+		public static function vibrate(duration:uint=1000):void
+		{
+			setUp();
+            sw.loadURL("javascript:navigator.vibrate("+duration+");")
+		}
+		
+		/**
+		 * You need vibration permission:  
+		 * <uses-permission android:name="android.permission.VIBRATE" />
+		 * @param duration 
+		 */
+		public static function vibratePuls():void
+		{
+            vibrate(30);
+		}
+		
 		/**Create the sw for allerts*/
 		private static function setUp():void	
 		{

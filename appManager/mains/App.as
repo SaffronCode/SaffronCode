@@ -31,6 +31,7 @@
 	import myAsCSS.MyAsCSS;
 	
 	import soundPlayer.SoundPlayer;
+	import contents.alert.Alert;
 	
 	/**Now its ready to call other pages*/
 	[Event(name="MAIN_ANIM_IS_READY", type="appManager.event.AppEvent")]
@@ -284,6 +285,7 @@
 		/**Returnd true if the current page is not same as the last page*/
 		protected function managePages(event:AppEvent):Boolean
 		{
+			Alert.vibratePuls();
 			if(event.target!=null && event.target is Sprite)
 			{
 				showShineEffect(event.target as Sprite);
