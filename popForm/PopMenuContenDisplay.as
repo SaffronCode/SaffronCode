@@ -415,6 +415,8 @@ package popForm
 					if(butData.buttonFrame==0)
 					{
 						buttonList.push(null);
+						butData.ignoreButtonFrameOnLining = false ;
+						butData.singleLine = false ;
 						continue;
 					}
 				}
@@ -455,7 +457,7 @@ package popForm
 						if(butW*inLineButtons<menuW)
 						{
 							//trace("lastInLineButton : "+lastInLineButton+' buttonList.length : '+buttonList.length);
-							for(var k = lastInLineButton ; k<buttonList.length ; k++)
+							for(var k = lastInLineButton ; k<buttonList.length && buttonList[k]!=null ; k++)
 							{
 								//trace("Manage button "+k);
 								buttonList[k].y = lineY ;
