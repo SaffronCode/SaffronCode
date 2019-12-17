@@ -336,7 +336,7 @@ package sliderMenu
 			///continure other drag detections
 		}
 
-		private static function stopMovmentControl(e:ScrollMTEvent=null):void
+		private static function stopMovmentControl(e:*=null):void
 		{
 			myStage.removeEventListener(MouseEvent.MOUSE_MOVE,contolMovement);
 		}
