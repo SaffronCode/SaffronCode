@@ -181,6 +181,11 @@ package contents
 			}
 		}
 
+		public function createLinkForMe():LinkData
+		{
+			return new LinkData().createLinkFor(this);
+		}
+
 		public function createPageFor(PageType:Class,pageContent:String='',dynamicData:Object=null,pageId:String=null):PageData
 		{
 			type = getQualifiedClassName(PageType);
