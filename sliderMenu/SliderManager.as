@@ -15,6 +15,7 @@ package sliderMenu
 	import flash.geom.Rectangle;
 	import contents.alert.Alert;
 	import flash.utils.getTimer;
+	import flash.utils.setTimeout;
 
 	public class SliderManager
 	{
@@ -336,7 +337,7 @@ package sliderMenu
 			///continure other drag detections
 		}
 
-		private static function stopMovmentControl(e:ScrollMTEvent=null):void
+		private static function stopMovmentControl(e:*=null):void
 		{
 			myStage.removeEventListener(MouseEvent.MOUSE_MOVE,contolMovement);
 		}
@@ -350,9 +351,9 @@ package sliderMenu
 			if(readyToCloseMenuOnMouseUp!=0 && getTimer()-readyToCloseMenuOnMouseUp<200 && //currentMenu!=null && !currentMenu.hitTestPoint(myStage.mouseX,myStage.mouseY)
 				(
 					(
-					currentDraggingPose == LEFT_MENU
-					&&
-					currentMenu.mouseX>0
+						currentDraggingPose == LEFT_MENU
+						&&
+						currentMenu.mouseX>0
 					)
 					||
 					(
@@ -363,7 +364,7 @@ package sliderMenu
 				)
 			)
 			{
-				hide();
+				setTimeout(hide,0);
 				mouseFirstPose = null ;
 			}
 			if(mouseFirstPose!=null && !lock_flag)
