@@ -265,7 +265,7 @@ package contents.displayPages
 			
 			//This will automaticaly removes at the last line
 			
-			noLinksMC = Obj.get(noLinkInstanceName,this);
+			noLinksMC = Obj.getAllChilds(noLinkInstanceName,this)[0];
 			if(noLinksMC==null)
 			{
 				noLinksMC = Obj.findThisClass(DynamicLinksNoList,this,true) ;
