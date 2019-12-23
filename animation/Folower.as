@@ -37,9 +37,10 @@ package animation
             var sames:Array = Obj.getAllChilds(this.name,this.stage);
             for(var i:int = 0 ; i<sames.length ; i++)
             {
-                leader = sames[i] as MovieClip ;
-                if(this!=leader && leader!=null)
+                var leaderTemp:MovieClip = sames[i] as MovieClip ;
+                if(this!=leaderTemp && leaderTemp!=null)
                 {
+                    leader = leaderTemp;
                     break;
                 }
             }
