@@ -219,7 +219,7 @@
 			
 			if(myImage!=null)
 			{
-				myImage.setUp(linkData.iconURL);
+				myImage.setUp(linkData.iconURL,false,0,0,0,0,false);
 			}
 			if(myTitle!=null)
 			{
