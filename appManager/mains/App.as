@@ -51,6 +51,8 @@
 		private static var _currentMenu:DisplayObject = null ;
 		
 		private static var shineAreaMC:Shiner ;
+
+		public static var pageVibrate:Boolean =true;
 		
 		/**It will be true when APP_IS_READY event calls*/
 		public function get appIsReady():Boolean
@@ -285,7 +287,8 @@
 		/**Returnd true if the current page is not same as the last page*/
 		protected function managePages(event:AppEvent):Boolean
 		{
-			Alert.vibratePuls();
+			if(pageVibrate)
+				Alert.vibratePuls();
 			if(event.target!=null && event.target is Sprite)
 			{
 				showShineEffect(event.target as Sprite);
