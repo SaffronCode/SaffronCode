@@ -280,7 +280,7 @@
 			//trace("deltaY : "+deltaY);
 
 			var iphoneXScale:Number = 1 ;
-			if(StageManager.isIphoneX)
+			if(StageManager.isIphoneX())
 			{
 				iphoneXScale = 1;
 			}
