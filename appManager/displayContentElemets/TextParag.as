@@ -45,8 +45,12 @@
 		private var captureResolution:uint;
 		private var splitIfToLong:Boolean;
 		private var textSplitter:String ;
+		private var imagesList:Array ;
 		
 		private var forScrollContainer:Sprite ;
+
+		private var splitedParags:Vector.<Sprite>,
+					lightImagesList:Vector.<LightImage> ;
 		
 		public function getTextField():TextField
 		{
@@ -159,6 +163,7 @@
 			this.captureResolution = captureResolution ;
 			this.splitIfToLong = splitIfToLong ;
 			this.textSplitter = textSplitter ;
+			this.imagesList = imagesList ;
 			
 			//updateItCan();
 			updateInterface();
@@ -235,10 +240,12 @@
 				else
 				{
 				 	texts = myText.split(textSplitter) ;
+					splitedParags = new Vector.<Sprite>() ;
 				}
 				setTextPutter(myTextTF,texts[0]);
 				//TextPutter.onTextArea(myTextTF,texts[0],isArabic,userBitmap && !activateLinks,useCash,captureResolution,align,activateLinks,linkColor,generateLinksForURLs,verticalHeight,splitIfToLong);
 				var Y:Number = myTextTF.height ;
+				var Y0:Number = myTextTF.height ;
 				for(var i:int = 1 ; i<texts.length ; i++)
 				{
 					var nextParag:TextField = Obj.copyTextField(myTextTF,false);
@@ -246,6 +253,7 @@
 					paragContainer.addChild(nextParag);
 					forScrollContainer.addChild(paragContainer);
 					paragContainer.y = Y ;
+					splitedParags.push(paragContainer);
 					setTextPutter(nextParag,texts[i]);
 					Y+=nextParag.height;
 				}
@@ -254,6 +262,20 @@
 				{
 					TextPutter.onTextArea(myTextTF,text,isArabic,userBitmap && !activateLinks,useCash,captureResolution,align,activateLinks,linkColor,generateLinksForURLs,verticalHeight,splitIfToLong);
 				}
+
+				if(imagesList!=null)
+				{
+					lightImagesList = new Vector.<LightImage>();
+					for(i=0 ; i<imagesList.length ; i++)
+					{
+						var image:LightImage = new LightImage();
+						image.setUp(imagesList[i],true,myTextTF.width,0,0,0,true);
+						image.addEventListener(Event.COMPLETE,updateImagePositions);
+						image.y = Y0 ;
+						forScrollContainer.addChild(image);
+						lightImagesList.push(image);
+					}
+				}
 				
 				//Debug line ↓
 				//TextPutter.onTextArea(myTextTF,myText,isArabic,false,false,1,true) ;
@@ -261,9 +283,30 @@
 				//trace("TextPutter.lastInfo_numLines : "+TextPutter.lastInfo_numLines);
 				//trace("!splitIfToLong) : "+(!splitIfToLong));
 				//trace("addScroller : "+addScroller);
-				if((!splitIfToLong) && addScroller && ((TextPutter.lastInfo_numLines>1 && TextPutter.lastInfo_realTextHeight>H) || Y>H))//There was 2 instead of 1 here. I don't know why...
+				if((!splitIfToLong) && addScroller && ((TextPutter.lastInfo_numLines>1 && TextPutter.lastInfo_realTextHeight>H) || Y>H || imagesList!=null))//There was 2 instead of 1 here. I don't know why...
 				{
-					scrollMC = new ScrollMT(forScrollContainer,new Rectangle(0,0,W,H),new Rectangle(0,0,W,super.height),false,false,scrollEffect) ;
+					scrollMC = new ScrollMT(forScrollContainer,new Rectangle(0,0,W,H),null,true,false,scrollEffect) ;
+				}
+			}
+		}
+
+		private function updateImagePositions(e:Event):void
+		{
+			var paragL:uint = splitedParags.length ;
+			var imageL:uint = lightImagesList.length ;
+			var maxL:uint = Math.max(imageL,paragL) ;
+			var Y:Number = lightImagesList[0].y+lightImagesList[0].height ;
+			for(var i:int = 0 ; i<maxL ; i++)
+			{
+				if(paragL>i)
+				{
+					splitedParags[i].y = Y ;
+					Y += splitedParags[i].height ;
+				}
+				if(imageL>i+1)
+				{
+					lightImagesList[i+1].y = Y ;
+					Y += lightImagesList[i+1].height ;
 				}
 			}
 		}
