@@ -44,6 +44,7 @@
 		private var useCash:Boolean;
 		private var captureResolution:uint;
 		private var splitIfToLong:Boolean;
+		private var textSplitter:String ;
 		
 		private var forScrollContainer:Sprite ;
 		
@@ -140,7 +141,8 @@
 			myTextTF.textColor = colorNum;
 		}
 		
-		public function setUp(myText:String,isArabic:Boolean = true,align:Boolean=true,knownAsHTML:Boolean=false,activateLinks:Boolean=false,useNativeText:Boolean=false,addScroller:Boolean=true,generateLinksForURLs:Boolean=false,scrollEffect:Boolean=true,userBitmap:Boolean=true,VerticalAlign:Boolean=false,useCash:Boolean=false,captureResolution:uint=0,splitIfToLong:Boolean=false):void
+		public function setUp(myText:String,isArabic:Boolean = true,align:Boolean=true,knownAsHTML:Boolean=false,activateLinks:Boolean=false,useNativeText:Boolean=false,addScroller:Boolean=true,generateLinksForURLs:Boolean=false,scrollEffect:Boolean=true,userBitmap:Boolean=true,VerticalAlign:Boolean=false,useCash:Boolean=false,captureResolution:uint=0,splitIfToLong:Boolean=false,
+								textSplitter:String=null,imagesList:Array=null):void
 		{
 			this.myText = myText;
 			this.isArabic = isArabic ;
@@ -156,6 +158,7 @@
 			this.useCash = useCash ;
 			this.captureResolution = captureResolution ;
 			this.splitIfToLong = splitIfToLong ;
+			this.textSplitter = textSplitter ;
 			
 			//updateItCan();
 			updateInterface();
@@ -223,14 +226,42 @@
 				{
 					verticalHeight = H ;
 				}
-				TextPutter.onTextArea(myTextTF,myText,isArabic,userBitmap && !activateLinks,useCash,captureResolution,align,activateLinks,linkColor,generateLinksForURLs,verticalHeight,splitIfToLong);
+				
+				var texts:Array ;
+				if(textSplitter==null)
+				{
+					texts = [myText];
+				}
+				else
+				{
+				 	texts = myText.split(textSplitter) ;
+				}
+				setTextPutter(myTextTF,texts[0]);
+				//TextPutter.onTextArea(myTextTF,texts[0],isArabic,userBitmap && !activateLinks,useCash,captureResolution,align,activateLinks,linkColor,generateLinksForURLs,verticalHeight,splitIfToLong);
+				var Y:Number = myTextTF.height ;
+				for(var i:int = 1 ; i<texts.length ; i++)
+				{
+					var nextParag:TextField = Obj.copyTextField(myTextTF,false);
+					var paragContainer:Sprite = new Sprite();
+					paragContainer.addChild(nextParag);
+					forScrollContainer.addChild(paragContainer);
+					paragContainer.y = Y ;
+					setTextPutter(nextParag,texts[i]);
+					Y+=nextParag.height;
+				}
+
+				function setTextPutter(myTextTF:TextField,text:String):void
+				{
+					TextPutter.onTextArea(myTextTF,text,isArabic,userBitmap && !activateLinks,useCash,captureResolution,align,activateLinks,linkColor,generateLinksForURLs,verticalHeight,splitIfToLong);
+				}
+				
 				//Debug line ↓
 				//TextPutter.onTextArea(myTextTF,myText,isArabic,false,false,1,true) ;
 				//	trace("2 add parag on TextParag and its font is : "+myTextTF.defaultTextFormat.font+' added to textParag class : '+myTextTF.text)
 				//trace("TextPutter.lastInfo_numLines : "+TextPutter.lastInfo_numLines);
 				//trace("!splitIfToLong) : "+(!splitIfToLong));
 				//trace("addScroller : "+addScroller);
-				if((!splitIfToLong) && addScroller && TextPutter.lastInfo_numLines>1 && TextPutter.lastInfo_realTextHeight>H)//There was 2 instead of 1 here. I don't know why...
+				if((!splitIfToLong) && addScroller && ((TextPutter.lastInfo_numLines>1 && TextPutter.lastInfo_realTextHeight>H) || Y>H))//There was 2 instead of 1 here. I don't know why...
 				{
 					scrollMC = new ScrollMT(forScrollContainer,new Rectangle(0,0,W,H),new Rectangle(0,0,W,super.height),false,false,scrollEffect) ;
 				}
