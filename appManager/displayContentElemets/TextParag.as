@@ -266,7 +266,7 @@
 
 				function setTextPutter(myTextTF:TextField,text:String):void
 				{
-					TextPutter.onTextArea(myTextTF,text,isArabic,userBitmap && !activateLinks,useCash,captureResolution,align,activateLinks,linkColor,generateLinksForURLs,verticalHeight,splitIfToLong);
+					TextPutter.onTextArea(myTextTF,text,isArabic,userBitmap && !activateLinks,useCash,captureResolution,align,activateLinks || knownAsHTML,linkColor,generateLinksForURLs,verticalHeight,splitIfToLong);
 				}
 
 				if(imagesList!=null)
