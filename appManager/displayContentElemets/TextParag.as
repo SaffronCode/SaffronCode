@@ -285,7 +285,7 @@
 					}
 					function enterParagText():void
 					{
-						TextPutter.onTextArea(myTextTF,text,isArabic,userBitmap && !activateLinks,useCash,captureResolution,align,activateLinks || knownAsHTML,linkColor,generateLinksForURLs,verticalHeight,splitIfToLong);
+						TextPutter.onTextArea(myTextTF,text,isArabic,userBitmap,useCash,captureResolution,align,activateLinks || knownAsHTML,linkColor,generateLinksForURLs,verticalHeight,splitIfToLong);
 						updateImagePositions(null);
 					}
 				}
