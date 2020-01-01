@@ -249,7 +249,7 @@
 				 	texts = myText.split(textSplitter) ;
 					splitedParags = new Vector.<Sprite>() ;
 				}
-				setTextPutter(myTextTF,texts[0]);
+				setTextPutter(myTextTF,texts[0],false);
 				//TextPutter.onTextArea(myTextTF,texts[0],isArabic,userBitmap && !activateLinks,useCash,captureResolution,align,activateLinks,linkColor,generateLinksForURLs,verticalHeight,splitIfToLong);
 				var Y:Number = myTextTF.height ;
 				var Y0:Number = myTextTF.height ;
@@ -265,9 +265,16 @@
 					Y+=nextParag.height;
 				}
 
-				function setTextPutter(myTextTF:TextField,text:String):void
+				function setTextPutter(myTextTF:TextField,text:String,activateAsync:Boolean=true):void
 				{
-					FuncManager.callAsyncOnFrame(enterParagText);
+					if(activateAsync)
+					{
+						FuncManager.callAsyncOnFrame(enterParagText);
+					}
+					else
+					{
+						enterParagText();
+					}
 					function enterParagText():void
 					{
 						TextPutter.onTextArea(myTextTF,text,isArabic,userBitmap && !activateLinks,useCash,captureResolution,align,activateLinks || knownAsHTML,linkColor,generateLinksForURLs,verticalHeight,splitIfToLong);
