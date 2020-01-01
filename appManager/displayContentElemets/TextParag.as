@@ -51,6 +51,7 @@
 		private var forScrollContainer:Sprite ;
 
 		private var splitedParags:Vector.<Sprite>,
+					splitedTextsInSprite:Vector.<TextField>,
 					lightImagesList:Vector.<LightImage> ;
 		
 		public function getTextField():TextField
@@ -155,6 +156,11 @@
 		public function setUp(myText:String,isArabic:Boolean = true,align:Boolean=true,knownAsHTML:Boolean=false,activateLinks:Boolean=false,useNativeText:Boolean=false,addScroller:Boolean=true,generateLinksForURLs:Boolean=false,scrollEffect:Boolean=true,userBitmap:Boolean=true,VerticalAlign:Boolean=false,useCash:Boolean=false,captureResolution:uint=0,splitIfToLong:Boolean=false,
 								textSplitter:String=null,imagesList:Array=null):void
 		{
+			if(scrollEffect && textSplitter==null)
+			{
+				textSplitter = '\n';
+			}
+
 			this.myText = myText;
 			this.isArabic = isArabic ;
 			this.align = align ;
@@ -248,6 +254,7 @@
 				{
 				 	texts = myText.split(textSplitter) ;
 					splitedParags = new Vector.<Sprite>() ;
+					splitedTextsInSprite = new Vector.<TextField>();
 				}
 				setTextPutter(myTextTF,texts[0],false);
 				//TextPutter.onTextArea(myTextTF,texts[0],isArabic,userBitmap && !activateLinks,useCash,captureResolution,align,activateLinks,linkColor,generateLinksForURLs,verticalHeight,splitIfToLong);
@@ -261,6 +268,7 @@
 					forScrollContainer.addChild(paragContainer);
 					paragContainer.y = Y ;
 					splitedParags.push(paragContainer);
+					splitedTextsInSprite.push(nextParag);
 					setTextPutter(nextParag,texts[i]);
 					Y+=nextParag.height;
 				}
@@ -339,19 +347,25 @@
 
 		private function updateImagePositions(e:Event):void
 		{
-			if(lightImagesList==null || lightImagesList.length==0)
-				return;
-			var paragL:uint = splitedParags.length ;
-			var imageL:uint = lightImagesList.length ;
+			var paragL:uint = splitedParags==null?0:splitedParags.length ;
+			var imageL:uint = lightImagesList==null?0:lightImagesList.length ;
 			var maxL:uint = Math.max(imageL,paragL) ;
-			lightImagesList[0].y = myTextTF.height ;
-			var Y:Number = lightImagesList[0].y+lightImagesList[0].height ;
+			var Y:Number;
+			if(lightImagesList!=null && lightImagesList.length>0)
+			{
+				lightImagesList[0].y = myTextTF.textHeight ;
+			 	Y = lightImagesList[0].y+lightImagesList[0].height ;
+			}
+			else
+			{
+				Y = myTextTF.textHeight ;
+			}
 			for(var i:int = 0 ; i<maxL ; i++)
 			{
 				if(paragL>i)
 				{
 					splitedParags[i].y = Y ;
-					Y += splitedParags[i].height ;
+					Y += splitedTextsInSprite[i].textHeight ;
 				}
 				if(imageL>i+1)
 				{
