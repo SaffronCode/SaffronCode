@@ -218,9 +218,18 @@
 			Y0 = this.y ;*/
 			//This event dispatches to remove old scrollMC class
 			this.dispatchEvent(new Event(Event.REMOVED_FROM_STAGE)) ;
+			var i:int ;
 			if(nativeText)
 			{
 				nativeText.unLoad();
+			}
+			if(splitedParags!=null && splitedParags.length>0)
+			{
+				for(i = 0 ; i<splitedParags.length ; i++)
+				{
+					forScrollContainer.removeChild(splitedParags[i]);
+				}
+				splitedParags = null ;
 			}
 			if(scrollMC)
 			{
@@ -260,7 +269,7 @@
 				//TextPutter.onTextArea(myTextTF,texts[0],isArabic,userBitmap && !activateLinks,useCash,captureResolution,align,activateLinks,linkColor,generateLinksForURLs,verticalHeight,splitIfToLong);
 				var Y:Number = myTextTF.height ;
 				var Y0:Number = myTextTF.height ;
-				for(var i:int = 1 ; i<texts.length ; i++)
+				for(i = 1 ; i<texts.length ; i++)
 				{
 					var nextParag:TextField = Obj.copyTextField(myTextTF,false);
 					var paragContainer:Sprite = new Sprite();
