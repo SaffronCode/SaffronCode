@@ -312,7 +312,25 @@
 				//trace("TextPutter.lastInfo_numLines : "+TextPutter.lastInfo_numLines);
 				//trace("!splitIfToLong) : "+(!splitIfToLong));
 				//trace("addScroller : "+addScroller);
-				if((!splitIfToLong) && addScroller && ((TextPutter.lastInfo_numLines>1 && TextPutter.lastInfo_realTextHeight>H) || Y>H || imagesList!=null))//There was 2 instead of 1 here. I don't know why...
+				if(
+					(
+						!splitIfToLong
+					) 
+					&& 
+					addScroller 
+					&& 
+					(
+						(
+							TextPutter.lastInfo_numLines>1 
+							&& 
+							TextPutter.lastInfo_realTextHeight>H
+						) 
+						|| 
+						Y>H 
+						|| 
+						imagesList!=null
+					)
+				)//There was 2 instead of 1 here. I don't know why...
 				{
 					scrollMC = new ScrollMT(forScrollContainer,new Rectangle(0,0,W,H),null,true,false,scrollEffect) ;
 				}
