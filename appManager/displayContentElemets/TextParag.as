@@ -10,6 +10,7 @@
 	import flash.geom.Rectangle;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
+	import mteam.FuncManager;
 	
 
 	
@@ -266,7 +267,12 @@
 
 				function setTextPutter(myTextTF:TextField,text:String):void
 				{
-					TextPutter.onTextArea(myTextTF,text,isArabic,userBitmap && !activateLinks,useCash,captureResolution,align,activateLinks || knownAsHTML,linkColor,generateLinksForURLs,verticalHeight,splitIfToLong);
+					FuncManager.callAsyncOnFrame(enterParagText);
+					function enterParagText():void
+					{
+						TextPutter.onTextArea(myTextTF,text,isArabic,userBitmap && !activateLinks,useCash,captureResolution,align,activateLinks || knownAsHTML,linkColor,generateLinksForURLs,verticalHeight,splitIfToLong);
+						updateImagePositions(null);
+					}
 				}
 
 				if(imagesList!=null)
@@ -275,11 +281,21 @@
 					for(i=0 ; i<imagesList.length ; i++)
 					{
 						var image:LightImage = new LightImage();
-						image.setUp(imagesList[i],true,myTextTF.width,0,0,0,true);
+						//image.animated = false ;
+						setImage(image,imagesList[i])
 						image.addEventListener(Event.COMPLETE,updateImagePositions);
 						image.y = Y0 ;
 						forScrollContainer.addChild(image);
 						lightImagesList.push(image);
+					}
+				}
+
+				function setImage(theImage:LightImage,imageLocation:String):void
+				{
+					FuncManager.callAsyncOnFrame(setUpImage);
+					function setUpImage():void
+					{
+						theImage.setUp(imageLocation,true,myTextTF.width,0,0,0,true);
 					}
 				}
 				
@@ -298,9 +314,12 @@
 
 		private function updateImagePositions(e:Event):void
 		{
+			if(lightImagesList==null || lightImagesList.length==0)
+				return;
 			var paragL:uint = splitedParags.length ;
 			var imageL:uint = lightImagesList.length ;
 			var maxL:uint = Math.max(imageL,paragL) ;
+			lightImagesList[0].y = myTextTF.height ;
 			var Y:Number = lightImagesList[0].y+lightImagesList[0].height ;
 			for(var i:int = 0 ; i<maxL ; i++)
 			{
