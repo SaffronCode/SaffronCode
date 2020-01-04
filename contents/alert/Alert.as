@@ -46,6 +46,7 @@ package contents.alert
 			setUp();
 			if(VibrationDistriqt.isSupported())
 			{
+				trace("Distriqt vibratin is supported");
 				VibrationDistriqt.vibrate(duration);
 			}
 			else if(DevicePrefrence.isAndroid())
@@ -63,6 +64,7 @@ package contents.alert
 			setUp();
 			if(VibrationDistriqt.isSupported())
 			{
+				trace("Distriqt vibratin is supported");
 				VibrationDistriqt.vibrateDynamic(patternArray);
 			}
 			if(DevicePrefrence.isAndroid())
@@ -80,10 +82,12 @@ package contents.alert
 		{
 			if(VibrationDistriqt.isSupported())
 			{
+				trace("Distriqt supported")
 				VibrationDistriqt.puls();
 			}
 			else if(DevicePrefrence.isAndroid())
 			{
+				trace("NO! Distriqt")
             	vibrate(30);
 			}
 		}
