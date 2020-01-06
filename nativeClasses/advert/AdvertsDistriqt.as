@@ -9,6 +9,8 @@
 	import com.distriqt.extension.adverts.events.AdViewEvent;
 	import contents.alert.Alert;
 	import com.distriqt.extension.adverts.AdvertPlatform;
+	import com.distriqt.extension.adverts.events.InterstitialAdEvent;
+	import com.distriqt.extension.adverts.InterstitialAd;
 
 	public class AdvertsDistriqt
 	{
@@ -17,7 +19,7 @@
 			return Adverts.isSupported;
 		}
 
-		private static function controlGooglePlayService():void
+		public static function controlGooglePlayService():void
 		{
 			var result:int = GoogleApiAvailability.instance.isGooglePlayServicesAvailable();
 			if (result != ConnectionResult.SUCCESS)
@@ -28,13 +30,19 @@
 				}
 				else
 				{
-					trace( "Google Play Services aren't available on this device" );
+					Alert.show( "Google Play Services aren't available on this device" );
 				}
 			}
 			else
 			{
-				trace( "Google Play Services are Available" );
+				Alert.show( "Google Play Services are Available" );
 			}
+		}
+
+		public static function sayHelo():void
+		{
+			Adverts.service.initialisePlatform( AdvertPlatform.PLATFORM_ADMOB, "ca-app-pub-7960976491848372~7008260662" );
+			Alert.show("initialisePlatform");
 		}
 
 		public static function showAdvert():void
@@ -44,12 +52,24 @@
 			//Adverts.service.getAdvertisingId();
 
 
-//interstitial = Adverts.service.interstitials.createInterstitialAd();
-//interstitial.setAdUnitId( "ca-app-pub-3940256099942544/1033173712" );
+			//interstitial = Adverts.service.interstitials.createInterstitialAd();
+			//interstitial.setAdUnitId( "ca-app-pub-3940256099942544/1033173712" );
 
 			var adView:AdView = Adverts.service.createAdView();
-			adView.setAdSize( AdSize.SMART_BANNER );
-			adView.setAdUnitId( "ca-app-pub-7960976491848372/4730130424" );
+			/**AUTO_HEIGHT : int = -2
+			BANNER : AdSize
+			FLUID : AdSize
+			FULL_BANNER : AdSize
+			FULL_WIDTH : int = -1
+			LARGE_BANNER : AdSize
+			LEADERBOARD : AdSize
+			MEDIUM_RECTANGLE : AdSize
+			SEARCH : AdSize
+			SMART_BANNER : AdSize
+			WIDE_SKYSCRAPER */
+
+			adView.setAdSize( AdSize.FULL_BANNER );
+			adView.setAdUnitId( "ca-app-pub-3940256099942544/6300978111" );
 			adView.addEventListener( AdViewEvent.LOADED, loadedHandler );
 			adView.addEventListener( AdViewEvent.ERROR, errorHandler );
 			adView.load( new AdRequestBuilder().build() );
@@ -65,10 +85,42 @@
 			function errorHandler( event:AdViewEvent ):void
 			{
 				// Load error occurred. The errorCode will contain more information
-				Alert.show( "Error" + event. );
+				Alert.show( "Error" + event.errorCode );
 			}
 			adView.load( new AdRequestBuilder().build() );
 		}
-		
+
+
+		public static function fullScreenBanner():void
+		{
+			if (Adverts.service.interstitials.isSupported)
+			{
+				Alert.show("Show full banner now");
+				var interstitial:InterstitialAd = Adverts.service.interstitials.createInterstitialAd();
+				interstitial.setAdUnitId( "ca-app-pub-3940256099942544/1033173712" );
+
+				Alert.show("setAdUnitId");
+				interstitial.addEventListener( InterstitialAdEvent.LOADED, loadedHandler );
+				interstitial.addEventListener( InterstitialAdEvent.ERROR, errorHandler );
+
+				function loadedHandler( event:InterstitialAdEvent ):void
+				{
+					// interstitial loaded and ready to be displayed
+					interstitial.show();
+				}
+
+				function errorHandler( event:InterstitialAdEvent ):void
+				{
+					// Load error occurred. The errorCode will contain more information
+					Alert.show( "Error" + event.errorCode );
+				}
+
+				interstitial.load( new AdRequestBuilder().build() );
+			}
+			else
+			{
+				Alert.show("No supported");
+			}
+		}
 	}
 }
