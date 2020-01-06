@@ -156,7 +156,7 @@
 		public function setUp(myText:String,isArabic:Boolean = true,align:Boolean=true,knownAsHTML:Boolean=false,activateLinks:Boolean=false,useNativeText:Boolean=false,addScroller:Boolean=true,generateLinksForURLs:Boolean=false,scrollEffect:Boolean=true,userBitmap:Boolean=true,VerticalAlign:Boolean=false,useCash:Boolean=false,captureResolution:uint=0,splitIfToLong:Boolean=false,
 								textSplitter:String=null,imagesList:Array=null):void
 		{
-			if(scrollEffect && textSplitter==null)
+			if(addScroller && textSplitter==null)
 			{
 				textSplitter = '\n';
 			}
