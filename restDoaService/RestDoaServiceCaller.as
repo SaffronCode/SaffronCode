@@ -165,7 +165,7 @@
 			pureRequest.requestHeaders = [] ;
 			addHeader();
 			
-			for(var i = 0 ; i<RestDoaService.headers.length ; i++)
+			for(var i:int = 0 ; i<RestDoaService.headers.length ; i++)
 			{
 				pureRequest.requestHeaders.push(RestDoaService.headers[i]);
 			}
@@ -205,7 +205,7 @@
 			offlineDate = newDate ;
 		}
 		
-		private function noInternet(e:IOErrorEvent=null,controllData:Boolean=true)
+		private function noInternet(e:IOErrorEvent=null,controllData:Boolean=true):void
 		{
 			if(logger)
 			SaffronLogger.log("CONNECTION PROBLEM\nRestService ID:"+webServiceId);
