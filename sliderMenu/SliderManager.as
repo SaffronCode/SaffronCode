@@ -480,8 +480,10 @@ package sliderMenu
 			//trace("myStage : "+myStage.x++);
 			if(moveStage)
 			{
-				myRoot.x += (deltaPose.x-myRoot.x)/animSpeed;
-				myRoot.y += (deltaPose.y-myRoot.y)/animSpeed;
+				if(slider_l!=null || slider_r!=null)
+					myRoot.x += (deltaPose.x-myRoot.x)/animSpeed;
+				if(slider_t!=null || slider_t!=null)
+					myRoot.y += (deltaPose.y-myRoot.y)/animSpeed;
 			}
 			
 			var i:int;
