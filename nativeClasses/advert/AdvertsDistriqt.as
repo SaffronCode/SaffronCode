@@ -14,12 +14,45 @@
 
 	public class AdvertsDistriqt
 	{
+		private static var satUp:Boolean = false ;
+
 		public static function isSupported():Boolean
 		{
 			return Adverts.isSupported;
 		}
 
-		public static function controlGooglePlayService():void
+		public static function setUp(ANDROID_ACCOUNT_ID:String=null,IOS_ACCOUNT_ID:String=null):void
+		{
+			if (Adverts.isSupported) {
+                var result:int = GoogleApiAvailability.instance.isGooglePlayServicesAvailable();
+                if (result != ConnectionResult.SUCCESS) 
+				{
+                    if (GoogleApiAvailability.instance.isUserRecoverableError(result)) 
+					{
+                        GoogleApiAvailability.instance.showErrorDialog(result);
+                    } else {
+                        trace("Google Play Services aren't available on this device");
+                    }
+                } 
+				else 
+				{
+                    trace("Google Play Services are Available");
+                }
+
+                if (DevicePrefrence.isAndroid() && ANDROID_ACCOUNT_ID!=null) 
+				{
+					satUp = true ;
+                    Adverts.service.initialisePlatform(AdvertPlatform.PLATFORM_ADMOB, ANDROID_ACCOUNT_ID);
+                } 
+				else if(DevicePrefrence.isIOS() && IOS_ACCOUNT_ID!=null)
+				{
+					satUp = true ;
+                    Adverts.service.initialisePlatform(AdvertPlatform.PLATFORM_ADMOB, IOS_ACCOUNT_ID);
+                }
+            }
+		}
+
+		public static function isGoogleServiceAvailable():void
 		{
 			var result:int = GoogleApiAvailability.instance.isGooglePlayServicesAvailable();
 			if (result != ConnectionResult.SUCCESS)
