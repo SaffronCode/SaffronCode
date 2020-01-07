@@ -1,37 +1,70 @@
 ﻿package nativeClasses.advert
 {
-	import com.distriqt.extension.adverts.Adverts;
-	import com.distriqt.extension.playservices.base.GoogleApiAvailability;
-	import com.distriqt.extension.playservices.base.ConnectionResult;
-	import com.distriqt.extension.adverts.AdView;
-	import com.distriqt.extension.adverts.AdSize;
-	import com.distriqt.extension.adverts.builders.AdRequestBuilder;
-	import com.distriqt.extension.adverts.events.AdViewEvent;
+	
 	import contents.alert.Alert;
-	import com.distriqt.extension.adverts.AdvertPlatform;
-	import com.distriqt.extension.adverts.events.InterstitialAdEvent;
-	import com.distriqt.extension.adverts.InterstitialAd;
 
 	public class AdvertsDistriqt
 	{
+		/**com.distriqt.extension.adverts.Adverts*/
+		private static var AdvertsClass:Class ;
+		/**com.distriqt.extension.playservices.base.GoogleApiAvailability*/
+		private static var GoogleApiAvailabilityClass:Class ;
+		/**com.distriqt.extension.playservices.base.ConnectionResult*/
+		private static var ConnectionResultClass:Class ;
+		/**com.distriqt.extension.adverts.AdView*/
+		private static var AdViewClass:Class ;
+		/**com.distriqt.extension.adverts.AdSize*/
+		private static var AdSizeClass:Class ;
+		/**com.distriqt.extension.adverts.builders.AdRequestBuilder*/
+		private static var AdRequestBuilderClass:Class ;
+		/**com.distriqt.extension.adverts.events.AdViewEvent*/
+		private static var AdViewEventClass:Class ;
+		/**com.distriqt.extension.adverts.AdvertPlatform*/
+		private static var AdvertPlatformClass:Class ;
+		/**com.distriqt.extension.adverts.events.InterstitialAdEvent*/
+		private static var InterstitialAdEventClass:Class ;
+		/**com.distriqt.extension.adverts.InterstitialAd*/
+		private static var InterstitialAdClass:Class ;
+
+
 		private static var satUp:Boolean = false ;
 
-		private static var interstitial:InterstitialAd ;
+		private static var interstitial:* ;
+
+		private static function init():void
+		{
+			if(AdvertsClass==null)
+			{
+				AdvertsClass = Obj.generateClass("com.distriqt.extension.adverts.Adverts");
+				GoogleApiAvailabilityClass = Obj.generateClass("com.distriqt.extension.playservices.base.GoogleApiAvailability");
+				ConnectionResultClass = Obj.generateClass("com.distriqt.extension.playservices.base.ConnectionResult");
+				AdViewClass = Obj.generateClass("com.distriqt.extension.adverts.AdView");
+				AdSizeClass = Obj.generateClass("com.distriqt.extension.adverts.AdSize");
+				AdRequestBuilderClass = Obj.generateClass("com.distriqt.extension.adverts.builders.AdRequestBuilder");
+				AdViewEventClass = Obj.generateClass("com.distriqt.extension.adverts.events.AdViewEvent");
+				AdvertPlatformClass = Obj.generateClass("com.distriqt.extension.adverts.AdvertPlatform");
+				InterstitialAdEventClass = Obj.generateClass("com.distriqt.extension.adverts.events.InterstitialAdEvent");
+				InterstitialAdClass = Obj.generateClass("com.distriqt.extension.adverts.InterstitialAd");
+			}
+		}
+		
 
 		public static function isSupported():Boolean
 		{
-			return Adverts.isSupported;
+			init();
+			return AdvertsClass!=null && (AdvertsClass as Object).isSupported;
 		}
 
 		public static function setUp(ANDROID_ACCOUNT_ID:String=null,IOS_ACCOUNT_ID:String=null):void
 		{
-			if (Adverts.isSupported) {
-                var result:int = GoogleApiAvailability.instance.isGooglePlayServicesAvailable();
-                if (result != ConnectionResult.SUCCESS) 
+			init();
+			if ((AdvertsClass as Object).isSupported) {
+                var result:int = (GoogleApiAvailabilityClass as Object).instance.isGooglePlayServicesAvailable();
+                if (result != (ConnectionResultClass as Object).SUCCESS) 
 				{
-                    if (GoogleApiAvailability.instance.isUserRecoverableError(result)) 
+                    if ((GoogleApiAvailabilityClass as Object).instance.isUserRecoverableError(result)) 
 					{
-                        GoogleApiAvailability.instance.showErrorDialog(result);
+                        (GoogleApiAvailabilityClass as Object).instance.showErrorDialog(result);
                     } else {
                         trace("Google Play Services aren't available on this device");
                     }
@@ -44,12 +77,12 @@
                 if (DevicePrefrence.isAndroid() && ANDROID_ACCOUNT_ID!=null) 
 				{
 					satUp = true ;
-                    Adverts.service.initialisePlatform(AdvertPlatform.PLATFORM_ADMOB, ANDROID_ACCOUNT_ID);
+                    (AdvertsClass as Object).service.initialisePlatform((AdvertPlatformClass as Object).PLATFORM_ADMOB, ANDROID_ACCOUNT_ID);
                 } 
 				else if(DevicePrefrence.isIOS() && IOS_ACCOUNT_ID!=null)
 				{
 					satUp = true ;
-                    Adverts.service.initialisePlatform(AdvertPlatform.PLATFORM_ADMOB, IOS_ACCOUNT_ID);
+                    (AdvertsClass as Object).service.initialisePlatform((AdvertPlatformClass as Object).PLATFORM_ADMOB, IOS_ACCOUNT_ID);
                 }
             }
 		}
@@ -63,6 +96,7 @@
 		 */
 		public static function showAdvert(unitId:String):void
 		{
+			init();
 			if(!isSupported())
 			{
 				trace("AdMob is not supported here");
@@ -73,7 +107,7 @@
 				Alert.show("AdMob is not setUp() yet");
 				return ;
 			}
-			var adView:AdView = Adverts.service.createAdView();
+			var adView:* = (AdvertsClass as Object).service.createAdView();
 			/**AUTO_HEIGHT : int = -2
 			BANNER : AdSize
 			FLUID : AdSize
@@ -86,25 +120,24 @@
 			SMART_BANNER : AdSize
 			WIDE_SKYSCRAPER */
 
-			adView.setAdSize( AdSize.FULL_BANNER );
+			adView.setAdSize( (AdSizeClass as Object).FULL_BANNER );
 			adView.setAdUnitId( unitId );
-			adView.addEventListener( AdViewEvent.LOADED, loadedHandler );
-			adView.addEventListener( AdViewEvent.ERROR, errorHandler );
-			adView.load( new AdRequestBuilder().build() );
+			adView.addEventListener( (AdViewEventClass as Class).LOADED, loadedHandler );
+			adView.addEventListener( (AdViewEventClass as Class).ERROR, errorHandler );
 
 
-			function loadedHandler( event:AdViewEvent ):void
+			function loadedHandler( event:* ):void
 			{
 				// Ad loaded and ready to be displayed
 				adView.show();
 			}
 
-			function errorHandler( event:AdViewEvent ):void
+			function errorHandler( event:* ):void
 			{
 				// Load error occurred. The errorCode will contain more information
 				trace( "Error" + event.errorCode );
 			}
-			adView.load( new AdRequestBuilder().build() );
+			adView.load( (new AdRequestBuilderClass() as Object).build() );
 		}
 
 
@@ -119,6 +152,7 @@
 		 */
 		public static function fullScreenBanner(unitId:String,showWhenLoaded:Boolean=true):void
 		{
+			init();
 			if(!isSupported())
 			{
 				trace("AdMob is not supported here");
@@ -130,15 +164,15 @@
 				return ;
 			}
 			showInterstitialIfReady = showWhenLoaded ;
-			if (Adverts.service.interstitials.isSupported)
+			if ((AdvertsClass as Object).service.interstitials.isSupported)
 			{
 				if(interstitial==null)
 				{
-					interstitial = Adverts.service.interstitials.createInterstitialAd();
+					interstitial = (AdvertsClass as Object).service.interstitials.createInterstitialAd();
 					interstitial.setAdUnitId( unitId );
 
-					interstitial.addEventListener( InterstitialAdEvent.LOADED, loadedHandler );
-					interstitial.addEventListener( InterstitialAdEvent.ERROR, errorHandler );
+					interstitial.addEventListener( (InterstitialAdEventClass as Object).LOADED, loadedHandler );
+					interstitial.addEventListener( (InterstitialAdEventClass as Object).ERROR, errorHandler );
 				}
 
 				if(showInterstitialIfReady && anInterstitialBannerWaitingToShow)
@@ -148,7 +182,7 @@
 				else
 				{
 					anInterstitialBannerWaitingToShow = false ;
-					interstitial.load( new AdRequestBuilder().build() );
+					interstitial.load( (new AdRequestBuilderClass() as Object).build() );
 				}
 
 			}
@@ -158,16 +192,19 @@
 			}
 		}
 		
-				private static function loadedHandler( event:InterstitialAdEvent ):void
+				private static function loadedHandler( event:* ):void
 				{
 					// interstitial loaded and ready to be displayed
 					if(showInterstitialIfReady)
+					{
 						interstitial.show();
+						anInterstitialBannerWaitingToShow = false ;
+					}
 					else
 						anInterstitialBannerWaitingToShow = true ;
 				}
 
-				private static function errorHandler( event:InterstitialAdEvent ):void
+				private static function errorHandler( event:* ):void
 				{
 					// Load error occurred. The errorCode will contain more information
 					anInterstitialBannerWaitingToShow = false ;
