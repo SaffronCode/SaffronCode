@@ -1,61 +1,113 @@
 ﻿package nativeClasses.advert
 {
-	import com.distriqt.extension.adverts.Adverts;
-	import com.distriqt.extension.playservices.base.GoogleApiAvailability;
-	import com.distriqt.extension.playservices.base.ConnectionResult;
-	import com.distriqt.extension.adverts.AdView;
-	import com.distriqt.extension.adverts.AdSize;
-	import com.distriqt.extension.adverts.builders.AdRequestBuilder;
-	import com.distriqt.extension.adverts.events.AdViewEvent;
+	
 	import contents.alert.Alert;
-	import com.distriqt.extension.adverts.AdvertPlatform;
-	import com.distriqt.extension.adverts.events.InterstitialAdEvent;
-	import com.distriqt.extension.adverts.InterstitialAd;
 
 	public class AdvertsDistriqt
 	{
+		/**com.distriqt.extension.adverts.Adverts*/
+		private static var AdvertsClass:Class ;
+		/**com.distriqt.extension.playservices.base.GoogleApiAvailability*/
+		private static var GoogleApiAvailabilityClass:Class ;
+		/**com.distriqt.extension.playservices.base.ConnectionResult*/
+		private static var ConnectionResultClass:Class ;
+		/**com.distriqt.extension.adverts.AdView*/
+		private static var AdViewClass:Class ;
+		/**com.distriqt.extension.adverts.AdSize*/
+		private static var AdSizeClass:Class ;
+		/**com.distriqt.extension.adverts.builders.AdRequestBuilder*/
+		private static var AdRequestBuilderClass:Class ;
+		/**com.distriqt.extension.adverts.events.AdViewEvent*/
+		private static var AdViewEventClass:Class ;
+		/**com.distriqt.extension.adverts.AdvertPlatform*/
+		private static var AdvertPlatformClass:Class ;
+		/**com.distriqt.extension.adverts.events.InterstitialAdEvent*/
+		private static var InterstitialAdEventClass:Class ;
+		/**com.distriqt.extension.adverts.InterstitialAd*/
+		private static var InterstitialAdClass:Class ;
+
+
+		private static var satUp:Boolean = false ;
+
+		private static var interstitial:* ;
+
+		private static function init():void
+		{
+			if(AdvertsClass==null)
+			{
+				AdvertsClass = Obj.generateClass("com.distriqt.extension.adverts.Adverts");
+				GoogleApiAvailabilityClass = Obj.generateClass("com.distriqt.extension.playservices.base.GoogleApiAvailability");
+				ConnectionResultClass = Obj.generateClass("com.distriqt.extension.playservices.base.ConnectionResult");
+				AdViewClass = Obj.generateClass("com.distriqt.extension.adverts.AdView");
+				AdSizeClass = Obj.generateClass("com.distriqt.extension.adverts.AdSize");
+				AdRequestBuilderClass = Obj.generateClass("com.distriqt.extension.adverts.builders.AdRequestBuilder");
+				AdViewEventClass = Obj.generateClass("com.distriqt.extension.adverts.events.AdViewEvent");
+				AdvertPlatformClass = Obj.generateClass("com.distriqt.extension.adverts.AdvertPlatform");
+				InterstitialAdEventClass = Obj.generateClass("com.distriqt.extension.adverts.events.InterstitialAdEvent");
+				InterstitialAdClass = Obj.generateClass("com.distriqt.extension.adverts.InterstitialAd");
+			}
+		}
+		
+
 		public static function isSupported():Boolean
 		{
-			return Adverts.isSupported;
+			init();
+			return AdvertsClass!=null && (AdvertsClass as Object).isSupported;
 		}
 
-		public static function controlGooglePlayService():void
+		public static function setUp(ANDROID_ACCOUNT_ID:String=null,IOS_ACCOUNT_ID:String=null):void
 		{
-			var result:int = GoogleApiAvailability.instance.isGooglePlayServicesAvailable();
-			if (result != ConnectionResult.SUCCESS)
-			{
-				if (GoogleApiAvailability.instance.isUserRecoverableError( result ))
+			init();
+			if ((AdvertsClass as Object).isSupported) {
+                var result:int = (GoogleApiAvailabilityClass as Object).instance.isGooglePlayServicesAvailable();
+                if (result != (ConnectionResultClass as Object).SUCCESS) 
 				{
-					GoogleApiAvailability.instance.showErrorDialog( result );
-				}
-				else
+                    if ((GoogleApiAvailabilityClass as Object).instance.isUserRecoverableError(result)) 
+					{
+                        (GoogleApiAvailabilityClass as Object).instance.showErrorDialog(result);
+                    } else {
+                        trace("Google Play Services aren't available on this device");
+                    }
+                } 
+				else 
 				{
-					Alert.show( "Google Play Services aren't available on this device" );
-				}
-			}
-			else
+                    trace("Google Play Services are Available");
+                }
+
+                if (DevicePrefrence.isAndroid() && ANDROID_ACCOUNT_ID!=null) 
+				{
+					satUp = true ;
+                    (AdvertsClass as Object).service.initialisePlatform((AdvertPlatformClass as Object).PLATFORM_ADMOB, ANDROID_ACCOUNT_ID);
+                } 
+				else if(DevicePrefrence.isIOS() && IOS_ACCOUNT_ID!=null)
+				{
+					satUp = true ;
+                    (AdvertsClass as Object).service.initialisePlatform((AdvertPlatformClass as Object).PLATFORM_ADMOB, IOS_ACCOUNT_ID);
+                }
+            }
+		}
+
+
+
+		/**
+		 * Sample unitId:
+		 * "ca-app-pub-3940256099942544/6300978111"
+		 * @param unitId 
+		 */
+		public static function showAdvert(unitId:String):void
+		{
+			init();
+			if(!isSupported())
 			{
-				Alert.show( "Google Play Services are Available" );
+				trace("AdMob is not supported here");
+				return ;
 			}
-		}
-
-		public static function sayHelo():void
-		{
-			Adverts.service.initialisePlatform( AdvertPlatform.PLATFORM_ADMOB, "ca-app-pub-7960976491848372~7008260662" );
-			Alert.show("initialisePlatform");
-		}
-
-		public static function showAdvert():void
-		{
-			Alert.show("Show adverts now");
-			Adverts.service.initialisePlatform( AdvertPlatform.PLATFORM_ADMOB, "ca-app-pub-7960976491848372~7008260662" );
-			//Adverts.service.getAdvertisingId();
-
-
-			//interstitial = Adverts.service.interstitials.createInterstitialAd();
-			//interstitial.setAdUnitId( "ca-app-pub-3940256099942544/1033173712" );
-
-			var adView:AdView = Adverts.service.createAdView();
+			if(satUp==false)
+			{
+				Alert.show("AdMob is not setUp() yet");
+				return ;
+			}
+			var adView:* = (AdvertsClass as Object).service.createAdView();
 			/**AUTO_HEIGHT : int = -2
 			BANNER : AdSize
 			FLUID : AdSize
@@ -68,59 +120,95 @@
 			SMART_BANNER : AdSize
 			WIDE_SKYSCRAPER */
 
-			adView.setAdSize( AdSize.FULL_BANNER );
-			adView.setAdUnitId( "ca-app-pub-3940256099942544/6300978111" );
-			adView.addEventListener( AdViewEvent.LOADED, loadedHandler );
-			adView.addEventListener( AdViewEvent.ERROR, errorHandler );
-			adView.load( new AdRequestBuilder().build() );
+			adView.setAdSize( (AdSizeClass as Object).FULL_BANNER );
+			adView.setAdUnitId( unitId );
+			adView.addEventListener( (AdViewEventClass as Class).LOADED, loadedHandler );
+			adView.addEventListener( (AdViewEventClass as Class).ERROR, errorHandler );
 
 
-			function loadedHandler( event:AdViewEvent ):void
+			function loadedHandler( event:* ):void
 			{
 				// Ad loaded and ready to be displayed
-				Alert.show("Adverts is ready")
 				adView.show();
 			}
 
-			function errorHandler( event:AdViewEvent ):void
+			function errorHandler( event:* ):void
 			{
 				// Load error occurred. The errorCode will contain more information
-				Alert.show( "Error" + event.errorCode );
+				trace( "Error" + event.errorCode );
 			}
-			adView.load( new AdRequestBuilder().build() );
+			adView.load( (new AdRequestBuilderClass() as Object).build() );
 		}
 
 
-		public static function fullScreenBanner():void
+
+		private static var showInterstitialIfReady:Boolean=true,
+							anInterstitialBannerWaitingToShow:Boolean=false;
+
+		/**
+		 * Sample UnitId : 
+		 * "ca-app-pub-3940256099942544/1033173712"
+		 * @param unitId 
+		 */
+		public static function fullScreenBanner(unitId:String,showWhenLoaded:Boolean=true):void
 		{
-			if (Adverts.service.interstitials.isSupported)
+			init();
+			if(!isSupported())
 			{
-				Alert.show("Show full banner now");
-				var interstitial:InterstitialAd = Adverts.service.interstitials.createInterstitialAd();
-				interstitial.setAdUnitId( "ca-app-pub-3940256099942544/1033173712" );
-
-				Alert.show("setAdUnitId");
-				interstitial.addEventListener( InterstitialAdEvent.LOADED, loadedHandler );
-				interstitial.addEventListener( InterstitialAdEvent.ERROR, errorHandler );
-
-				function loadedHandler( event:InterstitialAdEvent ):void
+				trace("AdMob is not supported here");
+				return ;
+			}
+			if(satUp==false)
+			{
+				Alert.show("AdMob is not setUp() yet");
+				return ;
+			}
+			showInterstitialIfReady = showWhenLoaded ;
+			if ((AdvertsClass as Object).service.interstitials.isSupported)
+			{
+				if(interstitial==null)
 				{
-					// interstitial loaded and ready to be displayed
-					interstitial.show();
+					interstitial = (AdvertsClass as Object).service.interstitials.createInterstitialAd();
+					interstitial.setAdUnitId( unitId );
+
+					interstitial.addEventListener( (InterstitialAdEventClass as Object).LOADED, loadedHandler );
+					interstitial.addEventListener( (InterstitialAdEventClass as Object).ERROR, errorHandler );
 				}
 
-				function errorHandler( event:InterstitialAdEvent ):void
+				if(showInterstitialIfReady && anInterstitialBannerWaitingToShow)
 				{
-					// Load error occurred. The errorCode will contain more information
-					Alert.show( "Error" + event.errorCode );
+					loadedHandler(null);
+				}
+				else
+				{
+					anInterstitialBannerWaitingToShow = false ;
+					interstitial.load( (new AdRequestBuilderClass() as Object).build() );
 				}
 
-				interstitial.load( new AdRequestBuilder().build() );
 			}
 			else
 			{
-				Alert.show("No supported");
+				trace("interstitials is not supported");
 			}
 		}
+		
+				private static function loadedHandler( event:* ):void
+				{
+					// interstitial loaded and ready to be displayed
+					if(showInterstitialIfReady)
+					{
+						interstitial.show();
+						anInterstitialBannerWaitingToShow = false ;
+					}
+					else
+						anInterstitialBannerWaitingToShow = true ;
+				}
+
+				private static function errorHandler( event:* ):void
+				{
+					// Load error occurred. The errorCode will contain more information
+					anInterstitialBannerWaitingToShow = false ;
+					trace( "Error" + event.errorCode );
+				}
 	}
 }
