@@ -57,7 +57,10 @@
 
 		public static function setUp(ANDROID_ACCOUNT_ID:String=null,IOS_ACCOUNT_ID:String=null):void
 		{
-			init();
+			if(!isSupported())
+			{
+				return ;
+			}
 			if ((AdvertsClass as Object).isSupported) {
                 var result:int = (GoogleApiAvailabilityClass as Object).instance.isGooglePlayServicesAvailable();
                 if (result != (ConnectionResultClass as Object).SUCCESS) 
@@ -150,7 +153,7 @@
 		 * "ca-app-pub-3940256099942544/1033173712"
 		 * @param unitId 
 		 */
-		public static function fullScreenBanner(unitId:String,showWhenLoaded:Boolean=true):void
+		public static function fullScreenBanner(unitIdAndroid:String,unitIdiOS:String,showWhenLoaded:Boolean=true):void
 		{
 			init();
 			if(!isSupported())
@@ -169,7 +172,7 @@
 				if(interstitial==null)
 				{
 					interstitial = (AdvertsClass as Object).service.interstitials.createInterstitialAd();
-					interstitial.setAdUnitId( unitId );
+					interstitial.setAdUnitId( DevicePrefrence.isAndroid()?unitIdAndroid:unitIdiOS );
 
 					interstitial.addEventListener( (InterstitialAdEventClass as Object).LOADED, loadedHandler );
 					interstitial.addEventListener( (InterstitialAdEventClass as Object).ERROR, errorHandler );
