@@ -25,7 +25,21 @@
 		private static var InterstitialAdEventClass:Class ;
 		/**com.distriqt.extension.adverts.InterstitialAd*/
 		private static var InterstitialAdClass:Class ;
+		/**com.distriqt.extension.adverts.AdViewParams*/
+		private static var AdViewParamsClass:Class ;
 
+
+		public static const AUTO_HEIGHT : String = "AUTO_HEIGHT",
+							BANNER : String = "BANNER",
+							FLUID : String = "FLUID",
+							FULL_BANNER : String = "FULL_BANNER",
+							FULL_WIDTH : String = "FULL_WIDTH",
+							LARGE_BANNER : String = "LARGE_BANNER",
+							LEADERBOARD : String = "LEADERBOARD",
+							MEDIUM_RECTANGLE : String = "MEDIUM_RECTANGLE",
+							SEARCH : String = "SEARCH",
+							SMART_BANNER : String = "SMART_BANNER",
+							WIDE_SKYSCRAPER:String = "WIDE_SKYSCRAPER";
 
 		private static var satUp:Boolean = false ;
 
@@ -45,6 +59,7 @@
 				AdvertPlatformClass = Obj.generateClass("com.distriqt.extension.adverts.AdvertPlatform");
 				InterstitialAdEventClass = Obj.generateClass("com.distriqt.extension.adverts.events.InterstitialAdEvent");
 				InterstitialAdClass = Obj.generateClass("com.distriqt.extension.adverts.InterstitialAd");
+				AdViewParamsClass = Obj.generateClass("com.distriqt.extension.adverts.AdViewParams");
 			}
 		}
 		
@@ -97,7 +112,10 @@
 		 * "ca-app-pub-3940256099942544/6300978111"
 		 * @param unitId 
 		 */
-		public static function showAdvert(unitId:String):void
+		public static function showAdvert(unitIdAndroid:String="ca-app-pub-3940256099942544/6300978111",
+			unitIdiOS:String="ca-app-pub-3940256099942544/6300978111",
+			bannerSize:String = AdvertsDistriqt.FULL_WIDTH,
+			alignX:int = 0 ,alignY:int=0):void
 		{
 			init();
 			if(!isSupported())
@@ -111,23 +129,83 @@
 				return ;
 			}
 			var adView:* = (AdvertsClass as Object).service.createAdView();
-			/**AUTO_HEIGHT : int = -2
-			BANNER : AdSize
-			FLUID : AdSize
-			FULL_BANNER : AdSize
-			FULL_WIDTH : int = -1
-			LARGE_BANNER : AdSize
-			LEADERBOARD : AdSize
-			MEDIUM_RECTANGLE : AdSize
-			SEARCH : AdSize
-			SMART_BANNER : AdSize
-			WIDE_SKYSCRAPER */
+			
+			var asSize:* ;
+			switch(bannerSize)
+			{
+				case WIDE_SKYSCRAPER:
+					asSize = (AdSizeClass as Object).WIDE_SKYSCRAPER;
+					break;
+				case SMART_BANNER:
+					asSize = (AdSizeClass as Object).SMART_BANNER;
+					break;
+				case SEARCH:
+					asSize = (AdSizeClass as Object).SEARCH;
+					break;
+				case MEDIUM_RECTANGLE:
+					asSize = (AdSizeClass as Object).MEDIUM_RECTANGLE;
+					break;
+				case LEADERBOARD:
+					asSize = (AdSizeClass as Object).LEADERBOARD;
+					break;
+				case LARGE_BANNER:
+					asSize = (AdSizeClass as Object).LARGE_BANNER;
+					break;
+				case FULL_WIDTH:
+					asSize = (AdSizeClass as Object).FULL_WIDTH;
+					break;
+				case FULL_BANNER:
+					asSize = (AdSizeClass as Object).FULL_BANNER;
+					break;
+				case AUTO_HEIGHT:
+					asSize = (AdSizeClass as Object).AUTO_HEIGHT;
+					break;
+				case BANNER:
+					asSize = (AdSizeClass as Object).BANNER;
+					break;
+				case FLUID:
+					asSize = (AdSizeClass as Object).FLUID;
+					break;
+			}
 
 			adView.setAdSize( (AdSizeClass as Object).FULL_BANNER );
-			adView.setAdUnitId( unitId );
+			if(DevicePrefrence.isAndroid())
+				adView.setAdUnitId( unitIdAndroid );
+			else
+				adView.setAdUnitId( unitIdiOS );
+				
 			adView.addEventListener( (AdViewEventClass as Class).LOADED, loadedHandler );
 			adView.addEventListener( (AdViewEventClass as Class).ERROR, errorHandler );
+			
 
+			//position
+			var params:* = new AdViewParamsClass();
+			switch(alignX)
+			{
+				case -1:
+					params.horizontalAlign = (AdViewParamsClass as Object).ALIGN_LEFT;
+					break;
+				case 1:
+					params.horizontalAlign = (AdViewParamsClass as Object).ALIGN_RIGHT;
+					break;
+				default:
+					params.horizontalAlign = (AdViewParamsClass as Object).ALIGN_CENTER;
+					break;
+			}
+			switch(alignY)
+			{
+				case -1:
+					params.verticalAlign = (AdViewParamsClass as Object).ALIGN_TOP;
+					break;
+				case 1:
+					params.verticalAlign = (AdViewParamsClass as Object).ALIGN_BOTTOM;
+					break;
+				default:
+					params.verticalAlign = (AdViewParamsClass as Object).ALIGN_CENTER;
+					break;
+			}
+
+			adView.setViewParams( params );
 
 			function loadedHandler( event:* ):void
 			{
