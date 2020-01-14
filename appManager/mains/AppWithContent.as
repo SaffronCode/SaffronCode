@@ -53,6 +53,9 @@
 	import wrokersJob.WorkerFunctions;
 	import flash.net.URLRequestMethod;
 	import flash.events.Event;
+	import flash.events.KeyboardEvent;
+	import assistant.screenShot.ScreenShotGenerator;
+	import flash.ui.Keyboard;
 	
 	public class AppWithContent extends App
 	{
@@ -223,7 +226,32 @@
 			{
 				PermissionControl.Caution(errorThrower);
 			}
+
+			if(DevicePrefrence.isDebuggingMode())
+			{
+				NativeApplication.nativeApplication.addEventListener(KeyboardEvent.KEY_DOWN,listenToScreenShotButtons);
+				NativeApplication.nativeApplication.addEventListener(KeyboardEvent.KEY_UP,listenToScreenShotButtonsUp);
+			}
 		}
+
+			private var C_IsDown:Boolean = false ;
+
+			private function listenToScreenShotButtons(e:KeyboardEvent):void
+			{
+				if(e.keyCode == Keyboard.C)
+				{
+					C_IsDown = true ;
+				}
+				if(C_IsDown && e.keyCode == Keyboard.NUMBER_1)
+				{
+					ScreenShotGenerator.appleStoreShot();
+				}
+			}
+
+			private function listenToScreenShotButtonsUp(e:KeyboardEvent):void
+			{
+				C_IsDown = false ;
+			}
 		
 		/**Start the worker with delay*/
 		private function startWorker():void
