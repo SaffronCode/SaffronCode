@@ -8,6 +8,7 @@
 	import flash.utils.ByteArray;
 	import stageManager.StageManager;
 	import contents.alert.Alert;
+	import flash.utils.getTimer;
 
 	public class ScreenShotGenerator
 	{
@@ -36,11 +37,9 @@
 
 
 			var screenShotFolder:File = File.desktopDirectory.resolvePath("ScreenShots");
-			if(screenShotFolder.exists)
-			{
-				FileManager.deleteAllFiles(screenShotFolder);
-			}
+			
 			screenShotFolder.createDirectory();
+			var timeStamp:Number = getTimer();
 			for(var i:int = 0 ; i<sizes.length ; i++)
 			{
 				var direct:File = screenShotFolder.resolvePath(sizes[i].name);
@@ -49,14 +48,22 @@
 				{
 					var W:Number = sizes[i].sizes[j][0];
 					var H:Number = sizes[i].sizes[j][1];
-					var screenShotFile:File = direct.resolvePath(W+"X"+H+".jpg");
-					DevicePrefrence.setNativeWindowSizeAndPositino(-1,-1,W,H);
-					ScreenShot.shot(StageManager.myStage,StageManager.stageVisibleArea,W,H,screenShotFile);
+					var screenShotFile:File = direct.resolvePath(W+"X"+H+"_"+timeStamp+".jpg");
+					if(
+						(DevicePrefrence.isPortrait() && W<H)
+						||
+						(DevicePrefrence.isLandScape() && H>W)
+						||
+						(!DevicePrefrence.isLandScape() && !DevicePrefrence.isPortrait())
+					 )
+					{
+						DevicePrefrence.setNativeWindowSizeAndPositino(-1,-1,W,H);
+						ScreenShot.shot(StageManager.myStage,StageManager.stageVisibleArea,W,H,screenShotFile);
+					}
 				}
 			}
 			DevicePrefrence.DetectApplicationSizes();
-
-			Alert.show("All Apple screen shots created on desktop.");
+			screenShotFolder.openWithDefaultApplication();
 		}
 
 	}
