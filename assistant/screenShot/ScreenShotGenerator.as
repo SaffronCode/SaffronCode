@@ -56,7 +56,7 @@
 			}
 			DevicePrefrence.DetectApplicationSizes();
 
-			Alert.show("All Apple screen shots created on desctop.");
+			Alert.show("All Apple screen shots created on desktop.");
 		}
 
 	}
