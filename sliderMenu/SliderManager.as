@@ -482,7 +482,7 @@ package sliderMenu
 			{
 				if(slider_l!=null || slider_r!=null)
 					myRoot.x += (deltaPose.x-myRoot.x)/animSpeed;
-				if(slider_t!=null || slider_t!=null)
+				if(slider_t!=null || slider_b!=null)
 					myRoot.y += (deltaPose.y-myRoot.y)/animSpeed;
 			}
 			
