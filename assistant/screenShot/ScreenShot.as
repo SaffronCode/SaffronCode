@@ -27,7 +27,7 @@
 
 			caputedBitmap.draw(stage,resizeMatrix);
 
-			var bitmapFile:ByteArray = BitmapEffects.createJPG(caputedBitmap);
+			var bitmapFile:ByteArray = BitmapEffects.createJPG(caputedBitmap,70);
 			FileManager.saveFile(storeTarget,bitmapFile);
 
 			return caputedBitmap ;
