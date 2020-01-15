@@ -12,6 +12,7 @@ package contents.displayPages
 	import flash.media.StageWebView;
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
+	import com.mteamapp.StringFunctions;
 	
 	public class URLPage extends MovieClip implements DisplayPageInterface
 	{
@@ -44,7 +45,6 @@ package contents.displayPages
 				this.graphics.beginFill(0,0);
 				this.graphics.drawRect(0,0,Contents.config.pageRect.width,Contents.config.pageRect.height);
 			}
-
 			if(myPreloaderMC)
 			{
 				myPreLoader = myPreloaderMC ;
@@ -55,7 +55,6 @@ package contents.displayPages
 			}
 			
 			//this.visible = false ;
-			
 			openInWeb = Obj.get("open_mc",this);
 			if(openInWeb)
 			{
@@ -98,8 +97,14 @@ package contents.displayPages
 			{
 				myPreLoader.visible = true ;
 			}
-			trace("********** Open the page : "+myPage.content);
-			sw.loadURL(myPage.content);
+			if(StringFunctions.isNullOrEmpty(myPage.content)==false){
+				trace("********** Open the page : "+myPage.content);
+				sw.loadURL(myPage.content);
+			}
+			else if(StringFunctions.isNullOrEmpty(myPage.dynamicData as String)==false){
+				trace("********** Open the page : "+myPage.dynamicData as String);
+				sw.loadURL(myPage.dynamicData as String);
+			}
 			
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 			this.addEventListener(Event.ENTER_FRAME,controllStagePlace);
