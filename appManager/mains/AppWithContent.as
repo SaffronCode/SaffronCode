@@ -282,9 +282,10 @@
 				if(stageMask==null)
 				{
 					stageMask = new Sprite();
-					stageMask.graphics.beginFill(stage.color&0x00ffffff);//stage.color
-					stageMask.graphics.drawRect(0,0,StageManager.stageRect.width,keyBoardHeight)
 				}
+				stageMask.graphics.clear();
+				stageMask.graphics.beginFill(StageManager.getColorOfPartOfStage(2,StageManager.stageVisibleArea.bottom,StageManager.stageVisibleArea.width-4,1)&0x00ffffff);//stage.color
+				stageMask.graphics.drawRect(0,0,StageManager.stageRect.width,keyBoardHeight)
 				stageMask.visible = moveStageTo!=0 ;
 				(root as DisplayObjectContainer).addChild(stageMask);
 				stageMask.y = StageManager.stageVisibleArea.bottom;//stage.stageHeight;//StageManager.stageVisibleArea.bottom;
