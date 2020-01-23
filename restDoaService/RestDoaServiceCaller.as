@@ -550,9 +550,14 @@
 			instantOfflineData = false ;
 			timerId = setTimeout(loadParam,delay)
 		}
+
+		public function cancel():void
+		{
+			cansel();
+		}
 		
 		/**Cansel all process*/
-		public function cansel()
+		public function cansel():void
 		{
 			clearTimeout(timerId);
 			if(requestLoader!=null)
