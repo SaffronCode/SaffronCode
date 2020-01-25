@@ -12,12 +12,12 @@ package diagrams.table
 		
 		public static var margin:Number = 2 ;
 		
-		public static var fontName:String = "B Yekan Bold Bold";
+		public static var fontName:String = "B Yekan Bold";
 		
 		public static var titleFontSize:Number = 25 ;
 		
 		public static var contentFontSize:Number=25;
-		public static var contentFontName:String = "B Yekan Regular";
+		public static var contentFontName:String = "B Yekan";
 		
 		public static var fixH:Number = 50;
 		public static var fixW:Number = 150;
