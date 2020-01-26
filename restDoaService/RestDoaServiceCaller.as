@@ -557,7 +557,7 @@
 		}
 		
 		/**Cansel all process*/
-		public function cansel():void
+		public function cansel():*
 		{
 			clearTimeout(timerId);
 			if(requestLoader!=null)
