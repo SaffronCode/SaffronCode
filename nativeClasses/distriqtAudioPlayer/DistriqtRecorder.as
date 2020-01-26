@@ -6,6 +6,7 @@
     import flash.utils.setTimeout;
 
     import contents.alert.SaffronLogger;
+    import contents.alert.Alert;
 
     public class DistriqtRecorder {
         public static var _file:File;
@@ -44,9 +45,9 @@
                     SaffronLogger.log("\n\n\n\n\n\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Distriqt recorder is NOT supports !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n\n\n\n\n\n");
                 return false;
             }
-
             switch (AudioRecorderClass.service.authorisationStatus()) {
                 case AuthorisationStatusClass.AUTHORISED:
+                case AuthorisationStatusClass.UNKNOWN:
                     trace("authorised");
                     if (logger)
                         SaffronLogger.log("authorised");
@@ -60,7 +61,6 @@
 
                 case AuthorisationStatusClass.DENIED:
                 case AuthorisationStatusClass.RESTRICTED:
-                case AuthorisationStatusClass.UNKNOWN:
                     trace("denied or restricted");
                     if (logger)
                         SaffronLogger.log("denied or restricted");
@@ -139,7 +139,7 @@
             if (DevicePrefrence.isItPC) {
                 return true
             }
-            if (AudioRecorderClass.service.authorisationStatus() == AuthorisationStatusClass.AUTHORISED) {
+            if (AudioRecorderClass.service.authorisationStatus() == AuthorisationStatusClass.AUTHORISED || AudioRecorderClass.service.authorisationStatus() == AuthorisationStatusClass.UNKNOWN) {
                 return true;
             } else {
                 return false;
