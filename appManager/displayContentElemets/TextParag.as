@@ -1,8 +1,6 @@
 ﻿package appManager.displayContentElemets
 	//appManager.displayContentElemets.TextParag
 {
-	import contents.alert.Alert;
-	
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
@@ -11,6 +9,9 @@
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import mteam.FuncManager;
+	import flash.events.MouseEvent;
+	import flash.net.navigateToURL;
+	import flash.net.URLRequest;
 	
 
 	
@@ -306,10 +307,19 @@
 					{
 						var image:LightImage = new LightImage();
 						//image.animated = false ;
-						setImage(image,imagesList[i])
+						setImage(image,imagesList[i]);
 						image.addEventListener(Event.COMPLETE,updateImagePositions);
 						image.y = Y0 ;
 						forScrollContainer.addChild(image);
+						if(texts.length>i)
+						{
+							var link:String = getLastLinkOfParag(texts[i]);
+							if(link!=null)
+							{
+								//Alert.show('link founded : '+link);
+								setLinkForImage(image,link);
+							}
+						}
 						lightImagesList.push(image);
 					}
 				}
@@ -352,6 +362,44 @@
 					scrollMC = new ScrollMT(forScrollContainer,new Rectangle(0,0,W,H),null,true,false,scrollEffect) ;
 				}
 			}
+		}
+
+
+		private function getLastLinkOfParag(paragraph:String):String
+		{
+			paragraph = paragraph.split('[[').join('<').split(']]').join('>');
+			var linkStarted:int = paragraph.lastIndexOf('<a');
+			if(linkStarted!=-1)
+			{
+				var linkEnded:int = paragraph.lastIndexOf('</a');
+				//Alert.show("Link first <a> founced");
+				if(linkEnded<linkStarted)
+				{
+					//Alert.show("Yes yes");
+					//Activate link
+					var linkContainerPart:String = paragraph.substring(linkStarted);
+					var hrefFinder:RegExp = /<a[\s]+href=['"][^'^"]*['"]/gi;
+					var links:Array = linkContainerPart.match(hrefFinder);
+					if(links.length>0)
+					{
+						//Alert.show('matches');
+						var linkIsHere:String = String(links[0]).toLowerCase();
+						linkIsHere = linkIsHere.substring(linkIsHere.lastIndexOf('href=')+6,linkIsHere.length-1);
+						trace("Link is : "+linkIsHere);
+						return linkIsHere ;
+					}
+				}
+			}
+			return null ;
+		}
+
+		private function setLinkForImage(image:LightImage,link:String):void
+		{
+			image.buttonMode = true ;
+			image.addEventListener(MouseEvent.CLICK,function(e:MouseEvent):void
+			{
+				navigateToURL(new URLRequest(link));
+			})
 		}
 
 		private function updateImagePositions(e:Event):void
