@@ -12,6 +12,8 @@
 	import flash.events.MouseEvent;
 	import flash.net.navigateToURL;
 	import flash.net.URLRequest;
+	import darkBox.DarkBox;
+	import darkBox.ImageFile;
 	
 
 	
@@ -314,11 +316,11 @@
 						if(texts.length>i)
 						{
 							var link:String = getLastLinkOfParag(texts[i]);
-							if(link!=null)
-							{
+							//if(link!=null)
+							//{
 								//Alert.show('link founded : '+link);
-								setLinkForImage(image,link);
-							}
+								setLinkForImage(image,link,imagesList[i]);
+							//}
 						}
 						lightImagesList.push(image);
 					}
@@ -393,12 +395,15 @@
 			return null ;
 		}
 
-		private function setLinkForImage(image:LightImage,link:String):void
+		private function setLinkForImage(image:LightImage,link:String,imageLocation:String):void
 		{
 			image.buttonMode = true ;
 			image.addEventListener(MouseEvent.CLICK,function(e:MouseEvent):void
 			{
-				navigateToURL(new URLRequest(link));
+				if(link!=null)
+					navigateToURL(new URLRequest(link));
+				else
+					DarkBox.showSingleImage(new ImageFile(imageLocation,'',ImageFile.TYPE_FLAT,true));
 			})
 		}
 
