@@ -35,7 +35,13 @@
 			{
 				if(inputObject==null)
 				{
-					inputObject = new URLVariables(myWebServiceLocation.substring(myWebServiceLocation.lastIndexOf('?')+1));
+					var par:String = myWebServiceLocation.substring(myWebServiceLocation.lastIndexOf('?')+1);
+					trace("par: "+par);
+					for(var ii:int = 0 ; ii<100 ; ii++){
+						par = par.replace(/\&([\w]+)([&]|$)/i,'&$1=$2');
+					}
+					trace("par : "+par);
+					inputObject = new URLVariables(par);
 					//Split extra variables from the web service url at all
 					myWebServiceLocation = myWebServiceLocation.substring(0,myWebServiceLocation.lastIndexOf('?'));
 				}

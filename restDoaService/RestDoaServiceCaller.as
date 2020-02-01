@@ -19,6 +19,7 @@
 	import flash.utils.setTimeout;
 	
 	import contents.alert.SaffronLogger;
+	import mteam.FuncManager;
 	
 	/**Cannot connect to server*/
 	[Event(name="CONNECTION_ERROR", type="restDoaService.RestDoaEvent")]
@@ -50,6 +51,9 @@
 					onUpdateProccess:Boolean;
 					
 		public var isConnected:Boolean = false ;
+
+		private var connectionErrorFunc:Function = null,
+					resultReturnedFunc:Function = null ;
 		
 		
 		private static var webServiceId:uint = 0 ;
@@ -148,6 +152,18 @@
 			requestLoader.addEventListener(HTTPStatusEvent.HTTP_RESPONSE_STATUS,serverHeaderReceived);
 			requestLoader.addEventListener(IOErrorEvent.IO_ERROR,noInternet);
 			requestLoader.addEventListener(ProgressEvent.PROGRESS,dispatchProgress);
+		}
+
+		public function then(onConnectionError:Function):RestDoaServiceCaller
+		{
+			resultReturnedFunc = onConnectionError ;
+			return this ;
+		}
+
+		public function catch2(onConnectionError:Function):RestDoaServiceCaller
+		{
+			connectionErrorFunc = onConnectionError ;
+			return this ;
 		}
 		
 		private function serverHeaderReceived(e:HTTPStatusEvent):void
@@ -505,16 +521,18 @@
 					{
 						trace("* instant cashed data for "+myId+" : "+savedData);
 					}
-					parsLoadedData(savedData);
-					if(expired)
-					{
-						onUpdateProccess = true ;
-					}
-					else
-					{
-						trace("* no need to update instant data")
-						return ;
-					}
+					FuncManager.callAsyncOnFrame(function(){
+							parsLoadedData(savedData);
+							if(expired)
+							{
+								onUpdateProccess = true ;
+							}
+							else
+							{
+								trace("* no need to update instant data")
+								return ;
+							}
+					})
 				}
 			}
 			
@@ -559,6 +577,8 @@
 		/**Cansel all process*/
 		public function cansel():*
 		{
+			resultReturnedFunc = null ;
+			connectionErrorFunc = null ;
 			clearTimeout(timerId);
 			if(requestLoader!=null)
 			{
@@ -582,6 +602,17 @@
 			}
 			else
 			{
+				if(connectionErrorFunc!=null)
+				{
+					if(connectionErrorFunc.length>0)
+					{
+						connectionErrorFunc(event);
+					}
+					else
+					{
+						connectionErrorFunc();
+					}
+				}
 				RestDoaService.eventDispatcher.dispatchEvent(event);
 				return false ;
 			}
@@ -589,6 +620,32 @@
 		
 		private function dispatch(event:Event):void
 		{
+			var functToCall:Function ;
+			switch(event.type)
+			{
+				case ProgressEvent.PROGRESS:
+				case RestDoaEvent.SERVER_WAS_UPDATED:
+					break;
+				case RestDoaEvent.SERVER_RESULT:
+				case RestDoaEvent.SERVER_RESULT_UPDATE:
+					functToCall = resultReturnedFunc ;
+					break;
+				default:
+					functToCall = connectionErrorFunc ;
+					return ;
+			}
+			//trace("*** *** ***** DispatchEvent : "+event.type+" > "+functToCall);
+			if(functToCall!=null)
+			{
+				if(functToCall.length>0)
+				{
+					functToCall(event);
+				}
+				else
+				{
+					functToCall();
+				}
+			}
 			this.dispatchEvent(event.clone());
 			RestDoaService.eventDispatcher.dispatchEvent(event);
 		}
