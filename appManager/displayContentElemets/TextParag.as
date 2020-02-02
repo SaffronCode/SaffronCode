@@ -1,8 +1,6 @@
 ﻿package appManager.displayContentElemets
 	//appManager.displayContentElemets.TextParag
 {
-	import contents.alert.Alert;
-	
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
@@ -10,6 +8,12 @@
 	import flash.geom.Rectangle;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
+	import mteam.FuncManager;
+	import flash.events.MouseEvent;
+	import flash.net.navigateToURL;
+	import flash.net.URLRequest;
+	import darkBox.DarkBox;
+	import darkBox.ImageFile;
 	
 
 	
@@ -44,8 +48,14 @@
 		private var useCash:Boolean;
 		private var captureResolution:uint;
 		private var splitIfToLong:Boolean;
+		private var textSplitter:String ;
+		private var imagesList:Array ;
 		
 		private var forScrollContainer:Sprite ;
+
+		private var splitedParags:Vector.<Sprite>,
+					splitedTextsInSprite:Vector.<TextField>,
+					lightImagesList:Vector.<LightImage> ;
 		
 		public function getTextField():TextField
 		{
@@ -140,8 +150,20 @@
 			myTextTF.textColor = colorNum;
 		}
 		
-		public function setUp(myText:String,isArabic:Boolean = true,align:Boolean=true,knownAsHTML:Boolean=false,activateLinks:Boolean=false,useNativeText:Boolean=false,addScroller:Boolean=true,generateLinksForURLs:Boolean=false,scrollEffect:Boolean=true,userBitmap:Boolean=true,VerticalAlign:Boolean=false,useCash:Boolean=false,captureResolution:uint=0,splitIfToLong:Boolean=false):void
+		/**
+		 * You can pass HTML texts like below:
+		 * <font color="#ff0000">text</font>
+		 * or
+		 * [[font color="ff0000"]]text[[/font]]
+		 */
+		public function setUp(myText:String,isArabic:Boolean = true,align:Boolean=true,knownAsHTML:Boolean=false,activateLinks:Boolean=false,useNativeText:Boolean=false,addScroller:Boolean=true,generateLinksForURLs:Boolean=false,scrollEffect:Boolean=true,userBitmap:Boolean=true,VerticalAlign:Boolean=false,useCash:Boolean=false,captureResolution:uint=0,splitIfToLong:Boolean=false,
+								textSplitter:String=null,imagesList:Array=null):void
 		{
+			if(addScroller && textSplitter==null)
+			{
+				textSplitter = '\n';
+			}
+
 			this.myText = myText;
 			this.isArabic = isArabic ;
 			this.align = align ;
@@ -156,6 +178,8 @@
 			this.useCash = useCash ;
 			this.captureResolution = captureResolution ;
 			this.splitIfToLong = splitIfToLong ;
+			this.textSplitter = textSplitter ;
+			this.imagesList = imagesList ;
 			
 			//updateItCan();
 			updateInterface();
@@ -197,9 +221,18 @@
 			Y0 = this.y ;*/
 			//This event dispatches to remove old scrollMC class
 			this.dispatchEvent(new Event(Event.REMOVED_FROM_STAGE)) ;
+			var i:int ;
 			if(nativeText)
 			{
 				nativeText.unLoad();
+			}
+			if(splitedParags!=null && splitedParags.length>0)
+			{
+				for(i = 0 ; i<splitedParags.length ; i++)
+				{
+					forScrollContainer.removeChild(splitedParags[i]);
+				}
+				splitedParags = null ;
 			}
 			if(scrollMC)
 			{
@@ -223,16 +256,183 @@
 				{
 					verticalHeight = H ;
 				}
-				TextPutter.onTextArea(myTextTF,myText,isArabic,userBitmap && !activateLinks,useCash,captureResolution,align,activateLinks,linkColor,generateLinksForURLs,verticalHeight,splitIfToLong);
+				
+				var texts:Array ;
+				if(textSplitter==null)
+				{
+					texts = [myText];
+				}
+				else
+				{
+				 	texts = myText.split(textSplitter) ;
+					splitedParags = new Vector.<Sprite>() ;
+					splitedTextsInSprite = new Vector.<TextField>();
+				}
+				setTextPutter(myTextTF,texts[0],false);
+				//TextPutter.onTextArea(myTextTF,texts[0],isArabic,userBitmap && !activateLinks,useCash,captureResolution,align,activateLinks,linkColor,generateLinksForURLs,verticalHeight,splitIfToLong);
+				var Y:Number = myTextTF.height ;
+				var Y0:Number = myTextTF.height ;
+				for(i = 1 ; i<texts.length ; i++)
+				{
+					var nextParag:TextField = Obj.copyTextField(myTextTF,false);
+					var paragContainer:Sprite = new Sprite();
+					paragContainer.addChild(nextParag);
+					forScrollContainer.addChild(paragContainer);
+					paragContainer.y = Y ;
+					splitedParags.push(paragContainer);
+					splitedTextsInSprite.push(nextParag);
+					setTextPutter(nextParag,texts[i]);
+					Y+=nextParag.height;
+				}
+
+				function setTextPutter(myTextTF:TextField,text:String,activateAsync:Boolean=true):void
+				{
+					if(activateAsync)
+					{
+						FuncManager.callAsyncOnFrame(enterParagText);
+					}
+					else
+					{
+						enterParagText();
+					}
+					function enterParagText():void
+					{
+						TextPutter.onTextArea(myTextTF,text,isArabic,userBitmap,useCash,captureResolution,align,activateLinks || knownAsHTML,linkColor,generateLinksForURLs,verticalHeight,splitIfToLong);
+						updateImagePositions(null);
+					}
+				}
+
+				if(imagesList!=null)
+				{
+					lightImagesList = new Vector.<LightImage>();
+					for(i=0 ; i<imagesList.length ; i++)
+					{
+						var image:LightImage = new LightImage();
+						//image.animated = false ;
+						setImage(image,imagesList[i]);
+						image.addEventListener(Event.COMPLETE,updateImagePositions);
+						image.y = Y0 ;
+						forScrollContainer.addChild(image);
+						if(texts.length>i)
+						{
+							var link:String = getLastLinkOfParag(texts[i]);
+							//if(link!=null)
+							//{
+								//Alert.show('link founded : '+link);
+								setLinkForImage(image,link,imagesList[i]);
+							//}
+						}
+						lightImagesList.push(image);
+					}
+				}
+
+				function setImage(theImage:LightImage,imageLocation:String):void
+				{
+					FuncManager.callAsyncOnFrame(setUpImage);
+					function setUpImage():void
+					{
+						theImage.setUp(imageLocation,true,myTextTF.width,0,0,0,true);
+					}
+				}
+				
 				//Debug line ↓
 				//TextPutter.onTextArea(myTextTF,myText,isArabic,false,false,1,true) ;
 				//	trace("2 add parag on TextParag and its font is : "+myTextTF.defaultTextFormat.font+' added to textParag class : '+myTextTF.text)
 				//trace("TextPutter.lastInfo_numLines : "+TextPutter.lastInfo_numLines);
 				//trace("!splitIfToLong) : "+(!splitIfToLong));
 				//trace("addScroller : "+addScroller);
-				if((!splitIfToLong) && addScroller && TextPutter.lastInfo_numLines>1 && TextPutter.lastInfo_realTextHeight>H)//There was 2 instead of 1 here. I don't know why...
+				if(
+					(
+						!splitIfToLong
+					) 
+					&& 
+					addScroller 
+					&& 
+					(
+						(
+							TextPutter.lastInfo_numLines>1 
+							&& 
+							TextPutter.lastInfo_realTextHeight>H
+						) 
+						|| 
+						Y>H 
+						|| 
+						imagesList!=null
+					)
+				)//There was 2 instead of 1 here. I don't know why...
 				{
-					scrollMC = new ScrollMT(forScrollContainer,new Rectangle(0,0,W,H),new Rectangle(0,0,W,super.height),false,false,scrollEffect) ;
+					scrollMC = new ScrollMT(forScrollContainer,new Rectangle(0,0,W,H),null,true,false,scrollEffect) ;
+				}
+			}
+		}
+
+
+		private function getLastLinkOfParag(paragraph:String):String
+		{
+			paragraph = paragraph.split('[[').join('<').split(']]').join('>');
+			var linkStarted:int = paragraph.lastIndexOf('<a');
+			if(linkStarted!=-1)
+			{
+				var linkEnded:int = paragraph.lastIndexOf('</a');
+				//Alert.show("Link first <a> founced");
+				if(linkEnded<linkStarted)
+				{
+					//Alert.show("Yes yes");
+					//Activate link
+					var linkContainerPart:String = paragraph.substring(linkStarted);
+					var hrefFinder:RegExp = /<a[\s]+href=['"][^'^"]*['"]/gi;
+					var links:Array = linkContainerPart.match(hrefFinder);
+					if(links.length>0)
+					{
+						//Alert.show('matches');
+						var linkIsHere:String = String(links[0]).toLowerCase();
+						linkIsHere = linkIsHere.substring(linkIsHere.lastIndexOf('href=')+6,linkIsHere.length-1);
+						trace("Link is : "+linkIsHere);
+						return linkIsHere ;
+					}
+				}
+			}
+			return null ;
+		}
+
+		private function setLinkForImage(image:LightImage,link:String,imageLocation:String):void
+		{
+			image.buttonMode = true ;
+			image.addEventListener(MouseEvent.CLICK,function(e:MouseEvent):void
+			{
+				if(link!=null)
+					navigateToURL(new URLRequest(link));
+				else
+					DarkBox.showSingleImage(new ImageFile(imageLocation,'',ImageFile.TYPE_FLAT,true));
+			})
+		}
+
+		private function updateImagePositions(e:Event):void
+		{
+			var paragL:uint = splitedParags==null?0:splitedParags.length ;
+			var imageL:uint = lightImagesList==null?0:lightImagesList.length ;
+			var maxL:uint = Math.max(imageL,paragL) ;
+			var Y:Number;
+			if(lightImagesList!=null && lightImagesList.length>0)
+			{
+				lightImagesList[0].y = myTextTF.textHeight ;
+			 	Y = lightImagesList[0].y+lightImagesList[0].height ;
+			}
+			else
+			{
+				Y = myTextTF.textHeight ;
+			}
+			for(var i:int = 0 ; i<maxL ; i++)
+			{
+				if(paragL>i)
+				{
+					splitedParags[i].y = Y ;
+					Y += splitedTextsInSprite[i].textHeight ;
+				}
+				if(imageL>i+1)
+				{
+					lightImagesList[i+1].y = Y ;
+					Y += lightImagesList[i+1].height ;
 				}
 			}
 		}

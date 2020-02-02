@@ -53,6 +53,12 @@
 	import wrokersJob.WorkerFunctions;
 	import flash.net.URLRequestMethod;
 	import flash.events.Event;
+	import flash.events.KeyboardEvent;
+	import assistant.screenShot.ScreenShotGenerator;
+	import flash.ui.Keyboard;
+	import flash.display.Sprite;
+	import flash.text.TextField;
+	import flash.display.DisplayObjectContainer;
 	
 	public class AppWithContent extends App
 	{
@@ -73,6 +79,9 @@
 		public var URISchemId:String;
 		
 		private var mouseClickCounter:uint ;
+
+		/**StageMask is using to cover the bottom of the page, when a keboard moves stage to up */
+		private var stageMask:Sprite ;
 		
 		/**This is the contentManager rectangle size. it will generate from the content w and h on the home xml tag*/
 		public static function get contentRect():Rectangle
@@ -223,7 +232,97 @@
 			{
 				PermissionControl.Caution(errorThrower);
 			}
+
+			if(DevicePrefrence.isDebuggingMode())
+			{
+				NativeApplication.nativeApplication.addEventListener(KeyboardEvent.KEY_DOWN,listenToScreenShotButtons);
+				NativeApplication.nativeApplication.addEventListener(KeyboardEvent.KEY_UP,listenToScreenShotButtonsUp);
+			}
+
+			if(DevicePrefrence.isAndroid() &&!DevicePrefrence.isLandScape())
+			{
+				//Here we are going to correct keyboard interaction when textfield selected.
+				stage.addEventListener(FarsiInputCorrectionEvent.TEXT_FIELD_SELECTED,checkFocusedItem);
+				stage.addEventListener(FarsiInputCorrectionEvent.TEXT_FIELD_CLOSED,noFocusedText);
+			}
 		}
+
+		private function noFocusedText(e:FarsiInputCorrectionEvent):void
+		{
+			trace("Focused out");
+			root.y = 0 ;
+			if(stageMask!=null)
+			{
+				stageMask.visible = false ;
+			}
+		}
+
+
+		private function checkFocusedItem(e:FarsiInputCorrectionEvent):void
+		{
+			trace("Event distatched");
+			var focucedTF:TextField = e.textField;
+			var keyBoardHeight:Number = stage.softKeyboardRect.height ;
+			//Debug line
+				if(DevicePrefrence.isPortrait())
+					keyBoardHeight = 400 ;
+			if(keyBoardHeight>0 && StageManager.isSatUp())
+			{
+				var extraHeight:Number = 100 ;//100
+
+				var stageScale:Number = stage.fullScreenWidth/stage.stageWidth ;
+				keyBoardHeight = keyBoardHeight*stageScale+extraHeight*stageScale;
+				var stageFullscreenH:Number = StageManager.stageVisibleArea.height;
+				var textFieldBottomBasedOnRoot:Number = focucedTF.getBounds(root).bottom ;
+				var textFeildBottom:Number = textFieldBottomBasedOnRoot+StageManager.stageDelta.height/2;
+
+				var moveStageTo:Number = Math.round(-1*Math.max(0,keyBoardHeight - ( stageFullscreenH - textFeildBottom ))*2)/2 ;
+
+				
+				if(stageMask==null)
+				{
+					stageMask = new Sprite();
+				}
+				stageMask.graphics.clear();
+				stageMask.graphics.beginFill(StageManager.getColorOfPartOfStage(2,StageManager.stageVisibleArea.bottom,StageManager.stageVisibleArea.width-4,1)&0x00ffffff);//stage.color
+				stageMask.graphics.drawRect(0,0,StageManager.stageRect.width,keyBoardHeight)
+				stageMask.visible = moveStageTo!=0 ;
+				(root as DisplayObjectContainer).addChild(stageMask);
+				stageMask.y = StageManager.stageVisibleArea.bottom;//stage.stageHeight;//StageManager.stageVisibleArea.bottom;
+
+				/*trace("stageScale : "+stageScale);
+				trace("keyBoardHeight : "+keyBoardHeight);
+				trace("stageFullscreenH : "+stageFullscreenH);
+				trace("textFeildBottom : "+textFeildBottom);
+				trace("focucedTF.getBounds(root) : "+focucedTF.getBounds(root));
+				trace("StageManager.stageDelta.height : "+StageManager.stageDelta.height);*/
+
+				root.y = moveStageTo;
+			}
+			else
+			{
+				root.y = 0 ;
+			}
+		}
+
+			private var C_IsDown:Boolean = false ;
+
+			private function listenToScreenShotButtons(e:KeyboardEvent):void
+			{
+				if(e.keyCode == Keyboard.C)
+				{
+					C_IsDown = true ;
+				}
+				if(C_IsDown && e.keyCode == Keyboard.NUMBER_1)
+				{
+					ScreenShotGenerator.appleStoreShot();
+				}
+			}
+
+			private function listenToScreenShotButtonsUp(e:KeyboardEvent):void
+			{
+				C_IsDown = false ;
+			}
 		
 		/**Start the worker with delay*/
 		private function startWorker():void

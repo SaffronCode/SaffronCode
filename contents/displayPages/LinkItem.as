@@ -52,6 +52,7 @@
 		public function LinkItem(mouseChildAccept:Boolean=false,searchForElements:Boolean=true)
 		{
 			super();
+			this.buttonMode = true ;
 			if(searchForElements)
 			{
 				var images:Array = Obj.findAllClass(Image,this);

@@ -54,6 +54,11 @@
 			popFieldType = new Vector.<uint>();
 			maxCharacters = new Vector.<uint>();
 		}
+
+		public function length():uint
+		{
+			return tagNames.length ;
+		}
 		
 		/**add new field<br>
 		 * frameForDirection: 1 for rtl and 2 for ltr script<br>

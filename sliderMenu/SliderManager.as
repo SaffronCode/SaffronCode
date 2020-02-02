@@ -162,8 +162,29 @@ package sliderMenu
 			private static function contolMovement(e:MouseEvent):void
 			{
 				var currentPose:Point = new Point(myStage.mouseX,myStage.mouseY);
+				//trace("currentPose.x"+currentPose.x+" tempMouseFirstPose.x"+tempMouseFirstPose.x+" >> "+Math.abs(currentPose.x-tempMouseFirstPose.x));
 				//ScrollMT.minScrollToLock = 200 ;
-				if(((slider_l!=null || slider_r!=null ) && Math.abs(currentPose.x-tempMouseFirstPose.x)>ScrollMT.minScrollToLock) || ((slider_t!=null || slider_b!=null) && Math.abs(currentPose.y-tempMouseFirstPose.y)>ScrollMT.minScrollToLock))
+				if(
+					(
+						(
+							slider_l!=null 
+							|| 
+							slider_r!=null 
+						) 
+						&& 
+						Math.abs(currentPose.x-tempMouseFirstPose.x)>ScrollMT.minScrollToLock
+					)
+					|| 
+					(
+						(
+							slider_t!=null 
+							|| 
+							slider_b!=null
+						) 
+						&& 
+						Math.abs(currentPose.y-tempMouseFirstPose.y)>ScrollMT.minScrollToLock
+					)
+				)
 				{
 					myStage.removeEventListener(MouseEvent.MOUSE_MOVE,contolMovement);
 					mouseFirstPose = new Point(myStage.mouseX,myStage.mouseY);
@@ -177,7 +198,7 @@ package sliderMenu
 									(
 										currentDraggingPose!=LEFT_MENU 
 										&& 
-										myRoot.mouseX<resolution
+										tempMouseFirstPose.x<resolution
 									) 
 									|| 
 									(
@@ -193,7 +214,7 @@ package sliderMenu
 									(
 										currentDraggingPose!=LEFT_MENU 
 										&& 
-										myStage.mouseX<resolution
+										tempMouseFirstPose.x<resolution
 									)
 									||
 									(
@@ -208,7 +229,7 @@ package sliderMenu
 						{
 							if(moveStage)
 							{
-								mouseFirstPose.x-=myRoot.x;
+								mouseFirstPose.x-=tempMouseFirstPose.x;
 							}
 							else
 							{
@@ -228,7 +249,7 @@ package sliderMenu
 										(
 											currentDraggingPose!=RIGHT_MENU 
 											&& 
-											myRoot.mouseX>slider_r.x-resolution
+											tempMouseFirstPose.x>slider_r.x-resolution
 										) 
 										|| 
 										(
@@ -244,7 +265,7 @@ package sliderMenu
 										(
 											currentDraggingPose!=RIGHT_MENU 
 											&& 
-											myStage.mouseX>slider_r.x-resolution
+											tempMouseFirstPose.x>slider_r.x-resolution
 										)
 										||
 										(
@@ -259,7 +280,7 @@ package sliderMenu
 						{
 							if(moveStage)
 							{
-								mouseFirstPose.x-=myRoot.x;
+								mouseFirstPose.x-=tempMouseFirstPose.x;
 							}
 							else
 							{
@@ -323,7 +344,7 @@ package sliderMenu
 						currentDraggingPose == RIGHT_MENU
 						&&
 						currentMenu.mouseX<0
-					)
+					) 
 				)
 			)
 			{
@@ -343,7 +364,7 @@ package sliderMenu
 		}
 		
 		/**stop the dragging */
-		private static function stopDrag(e:MouseEvent)
+		private static function stopDrag(e:MouseEvent):void
 		{
 			stopMovmentControl();
 			var currentMenu:MovieClip = addGetSlider(currentDraggingPose,null,0,true);
@@ -459,8 +480,10 @@ package sliderMenu
 			//trace("myStage : "+myStage.x++);
 			if(moveStage)
 			{
-				myRoot.x += (deltaPose.x-myRoot.x)/animSpeed;
-				myRoot.y += (deltaPose.y-myRoot.y)/animSpeed;
+				if(slider_l!=null || slider_r!=null)
+					myRoot.x += (deltaPose.x-myRoot.x)/animSpeed;
+				if(slider_t!=null || slider_b!=null)
+					myRoot.y += (deltaPose.y-myRoot.y)/animSpeed;
 			}
 			
 			var i:int;

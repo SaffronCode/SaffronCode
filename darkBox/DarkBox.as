@@ -125,6 +125,14 @@
 			updateStageSize(null);
 			ME.show(Images, currentIndex, onClosed);
 		}
+
+		public static function showSingleImage(Image:ImageFile, onClosed:Function = null):void
+		{
+			updateStageSize(null);
+			var imgs:Vector.<ImageFile> = new Vector.<ImageFile>();
+			imgs.push(Image);
+			ME.show(imgs, 0, onClosed);
+		}
 		
 		public function DarkBox()
 		{

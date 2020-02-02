@@ -7,14 +7,15 @@ package contents
 
 	public class TextFile
 	{
-		public static function load(fileTarget:File):String
+		public static function load(fileTarget:File,skipChar:uint=0):String
 		{
 			if(fileTarget.exists)
 			{
 				var fileLoader:FileStream = new FileStream();
 				fileLoader.open(fileTarget,FileMode.READ);
 				//trace("2. debug time : "+getTimer());
-				return fileLoader.readUTFBytes(fileLoader.bytesAvailable);
+				fileLoader.position = skipChar ;
+				return fileLoader.readUTFBytes(fileLoader.bytesAvailable-skipChar);
 			}
 			else
 			{

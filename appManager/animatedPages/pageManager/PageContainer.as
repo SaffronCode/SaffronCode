@@ -119,7 +119,7 @@ package appManager.animatedPages.pageManager
 						}
 						catch(e:Error)
 						{
-							trace("**********************************************\n\n\n\n\n\n\n\nError happens :\n"+e.message+"\n\n\n\n\n\n\n\n********************************************");
+							trace("**********************************************\n\n\n\n\n\n\n\nError happens :\n"+e.message+'\n'+e.getStackTrace()+"\n\n\n\n\n\n\n\n********************************************");
 						}
 					}
 					else
