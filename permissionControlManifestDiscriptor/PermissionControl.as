@@ -29,6 +29,18 @@ public class PermissionControl {
 		}
 	}
 	
+	/**Controll the video black screen problem*/
+	public static function controlVideoProblemReverted():Boolean
+	{
+		var appXML:String = StringFunctions.clearSpacesAndTabs(DevicePrefrence.appDescriptor);
+		if(appXML.indexOf("<containsVideo>true</containsVideo>")!=-1)
+		{
+			Caution("You shouldnt set <containsVideo> to true any more");
+			return false ;
+		}
+		return true ;
+	}
+	
 	public static function controlURLShemePermission(URISchemId:String):void
 	{
 		var neceraryLines:String = '•' ;
