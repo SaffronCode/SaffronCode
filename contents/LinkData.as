@@ -85,6 +85,10 @@
 			{
 				id = pageData.id;
 			}
+			else if(pageData==null)
+			{
+				id = '' ;
+			}
 			else
 			{
 				id = pageData.toString();
