@@ -59,6 +59,8 @@
 	import flash.display.Sprite;
 	import flash.text.TextField;
 	import flash.display.DisplayObjectContainer;
+	import com.mteamapp.BlackStageDebugger;
+	import nativeClasses.distriqtApplication.DistriqtApplication;
 	
 	public class AppWithContent extends App
 	{
@@ -106,6 +108,10 @@
 			manageStageManager = activateBackSwap || manageStageManager ;
 			super(autoChangeMusics,skipAllAnimations,activateShineEffect,PlaySounOnBackGroundTo);
 			DevicePrefrence.setUp();
+			//Solving BlackScreen problem on Android devices
+			BlackStageDebugger.setUp(stage,root);
+			//Solving Back button on Android 28
+			DistriqtApplication.solveBackButton();
 			
 			stage.addEventListener(MouseEvent.MOUSE_DOWN, function(e):*{
 				mouseClickCounter++;
