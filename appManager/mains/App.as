@@ -32,6 +32,7 @@
 	
 	import soundPlayer.SoundPlayer;
 	import contents.alert.Alert;
+	import sliderMenu.SliderManager;
 	
 	/**Now its ready to call other pages*/
 	[Event(name="MAIN_ANIM_IS_READY", type="appManager.event.AppEvent")]
@@ -188,7 +189,12 @@
 			if(ev.keyCode == Keyboard.BACK || ev.keyCode == Keyboard.PAGE_UP)
 			{
 				//trace("back button selects : "+AppEventContent.backAvailable());
-				if(AppEventContent.backAvailable())
+				if(SliderManager.isOpen())
+				{
+					ev.preventDefault();
+					SliderManager.hide();
+				}
+				else if(AppEventContent.backAvailable())
 				{
 					ev.preventDefault();
 					this.dispatchEvent(AppEventContent.lastPage());
