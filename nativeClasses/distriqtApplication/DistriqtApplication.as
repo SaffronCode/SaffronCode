@@ -1,6 +1,12 @@
 package nativeClasses.distriqtApplication
 {
 
+    import flash.display.MovieClip;
+    import flash.events.Event;
+    import flash.utils.setTimeout;
+    import flash.utils.clearTimeout;
+    import flash.utils.getTimer;
+
     public class DistriqtApplication
     {
         private static var ApplicationClass:Class;
@@ -55,11 +61,28 @@ package nativeClasses.distriqtApplication
             }
         }
 
+
+        private static var lastColorChangeTime:int,
+                            timeOutId:uint ;
+
         public static function setStatusBarColor(color:uint):void
         {
             if(isSupported())
             {
-                (ApplicationClass as Object).service.display.setStatusBarColour( color ,0.8);
+                const minTimeToChangeColor:uint = 60 ;
+                var currentTime:int = getTimer();
+                clearTimeout(timeOutId);
+                if(currentTime-lastColorChangeTime>minTimeToChangeColor)
+                {
+                    lastColorChangeTime = currentTime;
+                    (ApplicationClass as Object).service.display.setStatusBarColour( color ,0.8);
+                }
+                else
+                {
+                    timeOutId = setTimeout(function():void{
+                        (ApplicationClass as Object).service.display.setStatusBarColour( color ,0.8);
+                    },minTimeToChangeColor-(currentTime-lastColorChangeTime))
+                }
                 /*var red:uint = ((color&0xff0000)/0x010000);
                 var green:uint = ((color&0xff00)/0x0100);
                 var blue:uint = (color&0xff);
