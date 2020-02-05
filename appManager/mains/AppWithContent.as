@@ -100,13 +100,14 @@
 		
 		/**AutoLanguageConvertion will enabled just when supportsMutilanguage was true,
 		 * Pass 1 to activate effects<br>
-		 * activateURLCaller makes application be able to open from an URI from out side applications. first time it will throw the required permission */
+		 * activateURLCaller makes application be able to open from an URI from out side applications. first time it will throw the required permission
+		 * To activateVibrate, you should add Vibrate permission for Android and for iOS you have to add Distriqt native file*/
 		public function AppWithContent(supportsMultiLanguage:Boolean=false,autoLanguageConvertEnabled:Boolean=true,animagePageContents:Boolean=false,autoChangeMusics:Boolean=false,skipAllAnimations:Boolean=false,manageStageManager:Boolean=false,loadConfig:Boolean=false,addVersionControll:Boolean=true
 		,addTheDeveloperPage:Boolean=false,activateShineEffect:uint=1,PlaySounOnBackGroundTo:Boolean=false,activateRankSystem:Boolean=false,activateURLCaller:Boolean=false,
-		activateWorkers:Boolean = true, activateBackSwap:Boolean=false)
+		activateWorkers:Boolean = true, activateBackSwap:Boolean=false,activateVibrate:Boolean=true)
 		{
 			manageStageManager = activateBackSwap || manageStageManager ;
-			super(autoChangeMusics,skipAllAnimations,activateShineEffect,PlaySounOnBackGroundTo);
+			super(autoChangeMusics,skipAllAnimations,activateShineEffect,PlaySounOnBackGroundTo,activateVibrate);
 			DevicePrefrence.setUp();
 			//Solving BlackScreen problem on Android devices
 			BlackStageDebugger.setUp(stage,root);

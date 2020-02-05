@@ -53,7 +53,7 @@
 		
 		private static var shineAreaMC:Shiner ;
 
-		public static var pageVibrate:Boolean =true;
+		private static var pageVibrate:Boolean =true;
 		
 		/**It will be true when APP_IS_READY event calls*/
 		public function get appIsReady():Boolean
@@ -100,9 +100,11 @@
 			return is_in_home ;
 		}
 		
-		public function App(autoPlayThePageMusics:Boolean=false,skipAllAnimations:Boolean = false,activateShineEffect:uint=0,PlaySounOnBackGroundTo:Boolean=false)
+		public function App(autoPlayThePageMusics:Boolean=false,skipAllAnimations:Boolean = false,activateShineEffect:uint=0,PlaySounOnBackGroundTo:Boolean=false,activateVibrate:Boolean=true)
 		{
 			super();
+			
+			pageVibrate = activateVibrate ;
 			
 			playSounOnBackGroundTo = PlaySounOnBackGroundTo ;
 			
