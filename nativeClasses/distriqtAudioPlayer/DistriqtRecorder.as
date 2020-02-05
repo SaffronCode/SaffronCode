@@ -4,9 +4,7 @@
     import flash.utils.clearTimeout;
     import flash.utils.getDefinitionByName;
     import flash.utils.setTimeout;
-
     import contents.alert.SaffronLogger;
-    import contents.alert.Alert;
 
     public class DistriqtRecorder {
         public static var _file:File;
@@ -33,6 +31,7 @@
                 AudioRecorderClass = getDefinitionByName("com.distriqt.extension.audiorecorder.AudioRecorder") as Class;
                 AudioRecorderOptionsClass = getDefinitionByName("com.distriqt.extension.audiorecorder.AudioRecorderOptions") as Class;
                 AuthorisationStatusClass = getDefinitionByName("com.distriqt.extension.audiorecorder.AuthorisationStatus") as Class;
+                AuthorisationEventClass = getDefinitionByName("com.distriqt.extension.audiorecorder.events.AuthorisationEvent") as Class;
                 trace("\n\n\n\n\n\n\n*************************** Distriqt recorder is supports ****************************\n\n\n\n\n\n\n");
                 if (logger)
                     SaffronLogger.log("\n\n\n\n\n\n\n*************************** Distriqt recorder is supports ****************************\n\n\n\n\n\n\n");
@@ -47,7 +46,6 @@
             }
             switch (AudioRecorderClass.service.authorisationStatus()) {
                 case AuthorisationStatusClass.AUTHORISED:
-                case AuthorisationStatusClass.UNKNOWN:
                     trace("authorised");
                     if (logger)
                         SaffronLogger.log("authorised");
@@ -61,6 +59,7 @@
 
                 case AuthorisationStatusClass.DENIED:
                 case AuthorisationStatusClass.RESTRICTED:
+                case AuthorisationStatusClass.UNKNOWN:
                     trace("denied or restricted");
                     if (logger)
                         SaffronLogger.log("denied or restricted");
