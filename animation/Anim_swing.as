@@ -7,9 +7,9 @@ import flash.events.Event;
 
 public class Anim_swing {
 
-    var object:Object ;
+    private var object:Object ;
 
-    var deg:Number ;
+    private var deg:Number ;
 
     private const degSpeedDown:Number = 20 ;
 
