@@ -67,7 +67,7 @@
 		/**This is a time when the mouse is down and this value will controll to dispatches CLICK event*/
 		private var mouseDownTime:uint;
 		
-		private var minMoveToSpeed:Number = 15;
+		private static var minMoveToSpeed:Number;
 		
 		
 		internal static var preloaderClass:Class ;
@@ -91,7 +91,7 @@
 		public function SliderGallery(myWidth:Number=0,myHeight:Number=0)
 		{
 			super();
-			
+			minMoveToSpeed = ScrollMT.minScrollToLock;
 			
 			_totalImages = 0 ;
 			
@@ -477,9 +477,17 @@
 					
 					mouseDownTime = getTimer();
 					
+					trace("Start sliderGallery touch");
 					stage.addEventListener(MouseEvent.MOUSE_MOVE,startSliding);
 					stage.addEventListener(MouseEvent.MOUSE_UP,canselDragging);
-					this.addEventListener(ScrollMT.LOCK_SCROLL_TILL_MOUSE_UP,canselDragging);
+					this.addEventListener(ScrollMTEvent.LOCK_SCROLL_TILL_MOUSE_UP,canselDragging);
+					this.addEventListener(ScrollMTEvent.LISTEN_TO_SCROLL,checkTheScrollerDirectionToCancel);
+				}
+
+				private function checkTheScrollerDirectionToCancel(e:ScrollMTEvent):void
+				{
+					if(e.freeScrollOnTarget_LR)
+						canselDragging(null);
 				}
 				
 				/**Cansel dragging*/
@@ -488,6 +496,7 @@
 					isDragging = false ;
 					stage.removeEventListener(MouseEvent.MOUSE_MOVE,startSliding);
 					stage.removeEventListener(MouseEvent.MOUSE_UP,canselDragging);
+					this.removeEventListener(ScrollMTEvent.LISTEN_TO_SCROLL,checkTheScrollerDirectionToCancel);
 					
 					trace("speed : "+(speed));
 					
