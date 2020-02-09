@@ -101,7 +101,7 @@ package sliderMenu
 		private static var frameRateControlled:Boolean;
 		
 		/**opent this menu*/
-		public static function openMenu(MenuDirection:String = null)
+		public static function openMenu(MenuDirection:String = null):void
 		{
 			if (PopMenu==null)
 			{
@@ -138,7 +138,7 @@ package sliderMenu
 		}
 		
 		/**hide all menus*/
-		public static function hide(instanceHide:Boolean=false)
+		public static function hide(instanceHide:Boolean=false):void
 		{
 			if(myRoot!=null)
 			{
@@ -314,7 +314,7 @@ package sliderMenu
 			
 		
 		/**start the drag*/
-		private static function checkDrag(e:MouseEvent)
+		private static function checkDrag(e:MouseEvent):void
 		{
 			if(lock_flag)
 			{
@@ -390,7 +390,7 @@ package sliderMenu
 			}
 			if(mouseFirstPose!=null && !lock_flag)
 			{
-				var deltaPoseNumber = addGetSlider(currentDraggingPose);
+				var deltaPoseNumber:* = addGetSlider(currentDraggingPose);
 				if(currentDraggingPose == LEFT_MENU || currentDraggingPose == RIGHT_MENU)
 				{
 					if(currentDraggingPose == LEFT_MENU && myStage.mouseX-mouseFirstPose.x<deltaPoseNumber/2)
@@ -415,7 +415,7 @@ package sliderMenu
 		}
 		
 		/**animate the stage*/
-		private static function anim(e:Event)
+		private static function anim(e:Event):void
 		{
 			var deltaPose:Point = new Point(0,0);
 			var deltaPoseNumber:Number = addGetSlider(currentDraggingPose);
@@ -572,7 +572,7 @@ package sliderMenu
 	//////////////////////////////////////////////////////intialize functions↓
 							
 		/**fist insialize of the class - detecting the stage width and height too*/					
-		private static function intialize(appObject:DisplayObject)
+		private static function intialize(appObject:DisplayObject):void
 		{
 			if(excludesList == null)
 			{
@@ -622,7 +622,7 @@ package sliderMenu
 		/**set up a slider menu for the stage on selected position and with yourMenu<br>
 		 * you have only one stage*/
 		public static function setMenu(yourMenu:MovieClip,deltaSlide:Number,menuPosition:String = LEFT_MENU,
-		manageFrames:Boolean=true,moveTheStage:Boolean=true,moveItByStageRepositioning:Boolean=true,onlyFrameAnimationVar:Boolean=false)
+		manageFrames:Boolean=true,moveTheStage:Boolean=true,moveItByStageRepositioning:Boolean=true,onlyFrameAnimationVar:Boolean=false):void
 		{
 			lock_flag = true ;
 			moveStage = moveTheStage ;
@@ -651,7 +651,7 @@ package sliderMenu
 		}
 		
 		/**lock the slider menus*/
-		public static function lock(closeBeforLock:Boolean=true)
+		public static function lock(closeBeforLock:Boolean=true):void
 		{
 			if(closeBeforLock)
 			{
@@ -662,14 +662,14 @@ package sliderMenu
 		}
 		
 		/**unlock the app*/
-		public static function unLock()
+		public static function unLock():void
 		{
 			lock_flag = false;
 			SliderButtonSwitcher.lockDispatcher.dispatchEvent(new Event(Event.OPEN));
 		}
 		
 		/**exclude some objects from sliding with stage object*/
-		public static function doNotActOnThisObject(excludedObject:DisplayObject)
+		public static function doNotActOnThisObject(excludedObject:DisplayObject):void
 		{
 			excludesList.push(excludedObject);
 			excludesPose.push(new Point(excludedObject.x,excludedObject.y));
