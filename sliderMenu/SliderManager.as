@@ -416,7 +416,23 @@ package sliderMenu
 					{
 						currentDraggingPose = '' ;
 					}
-					else if(currentDraggingPose == RIGHT_MENU && myStage.mouseX-mouseFirstPose.x>deltaPoseNumber/-2)
+					else if(
+							currentDraggingPose == RIGHT_MENU 
+							&& 
+							(
+								(
+									moveStage
+									&&
+									myRoot.x>deltaPoseNumber/-2
+								)
+								||
+								(
+									!moveStage
+									&&
+									myStage.mouseX-mouseFirstPose.x>deltaPoseNumber/-2
+								)
+							)
+						)
 					{
 						currentDraggingPose = '' ;
 					}
