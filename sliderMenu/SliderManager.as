@@ -81,7 +81,8 @@ package sliderMenu
 							
 		
 		/**this variable tells that from witch side the slider menu is dragging*/
-		private static var currentDraggingPose:String='';
+		private static var 	currentDraggingPose:String='',
+							firstDeltaPosition:Number=0;
 		
 		private static var mouseFirstPose:Point;
 
@@ -229,7 +230,7 @@ package sliderMenu
 						{
 							if(moveStage)
 							{
-								mouseFirstPose.x-=tempMouseFirstPose.x;
+								//mouseFirstPose.x-=tempMouseFirstPose.x;
 							}
 							else
 							{
@@ -237,6 +238,7 @@ package sliderMenu
 							}
 						}
 						currentDraggingPose = LEFT_MENU;
+						firstDeltaPosition = mouseFirstPose.x-myRoot.x;
 					}
 					else if//(slider_r!=null && myStage.mouseX>slider_r.x-resolution && currentDraggingPose != RIGHT_MENU)
 						(slider_r!=null 
@@ -288,6 +290,7 @@ package sliderMenu
 							}
 						}
 						currentDraggingPose = RIGHT_MENU;
+						firstDeltaPosition = mouseFirstPose.x-myRoot.x;
 					}
 					else if(slider_t!=null && myStage.mouseY<resolution && currentDraggingPose != TOP_MENU)
 					{
@@ -393,7 +396,23 @@ package sliderMenu
 				var deltaPoseNumber:* = addGetSlider(currentDraggingPose);
 				if(currentDraggingPose == LEFT_MENU || currentDraggingPose == RIGHT_MENU)
 				{
-					if(currentDraggingPose == LEFT_MENU && myStage.mouseX-mouseFirstPose.x<deltaPoseNumber/2)
+					if(
+						currentDraggingPose == LEFT_MENU
+						&& 
+						(
+							(
+								moveStage
+								&&
+								myRoot.x<deltaPoseNumber/2
+							)
+							||
+							(
+								!moveStage
+								&&
+								myStage.mouseX-mouseFirstPose.x<deltaPoseNumber/2
+							)
+						)
+					)
 					{
 						currentDraggingPose = '' ;
 					}
@@ -423,7 +442,10 @@ package sliderMenu
 			{
 				if(mouseFirstPose!=null)
 				{
+					if(!moveStage)
 					deltaPose = new Point(myStage.mouseX-mouseFirstPose.x,deltaPose.y);
+					else
+					deltaPose = new Point(myStage.mouseX-(mouseFirstPose.x-tempMouseFirstPose.x)-firstDeltaPosition,deltaPose.y);
 				}
 				else
 				{
