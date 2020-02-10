@@ -723,7 +723,7 @@ package contents.displayPages
 						{
 							linkScroller.stopFloat();
 						}
-						linkScroller.setAbsolutePose(areaRect.x,scrollPosesObject[myPageData.id]);
+						linkScroller.setAbsolutePose(revertedX?areaRect.right:areaRect.x,scrollPosesObject[myPageData.id]);
 					}
 					else
 					{
