@@ -282,7 +282,7 @@ package sliderMenu
 						{
 							if(moveStage)
 							{
-								mouseFirstPose.x-=tempMouseFirstPose.x;
+								//mouseFirstPose.x-=tempMouseFirstPose.x;
 							}
 							else
 							{
@@ -290,7 +290,7 @@ package sliderMenu
 							}
 						}
 						currentDraggingPose = RIGHT_MENU;
-						firstDeltaPosition = mouseFirstPose.x-myRoot.x;
+						firstDeltaPosition = myRoot.mouseX;
 					}
 					else if(slider_t!=null && myStage.mouseY<resolution && currentDraggingPose != TOP_MENU)
 					{
