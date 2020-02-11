@@ -122,6 +122,8 @@
 			}
 			else
 			{
+				if(myWebServiceLocation.charAt(0)=='/')
+					myWebServiceLocation = myWebServiceLocation.substr(1);
 				pureRequest = new URLRequest(RestDoaService.domain+myWebServiceLocation);
 			}
 			
@@ -632,7 +634,7 @@
 					break;
 				default:
 					functToCall = connectionErrorFunc ;
-					return ;
+					break ;
 			}
 			//trace("*** *** ***** DispatchEvent : "+event.type+" > "+functToCall);
 			if(functToCall!=null)
