@@ -189,8 +189,16 @@
 			}
 
 		}
+
+		public function onEnterPressed(func:Function):void
+		{
+			if(nativeKeyBoard!=null)
+			{
+				nativeKeyBoard.onEnterPressed(func);
+			}
+		}
 		
-		public function setUp(tagName:String,defaultText:String,KeyBordType:String = SoftKeyboardType.DEFAULT,isPass:Boolean = false,editable:Boolean = true,isAraic:Boolean=true,numLines:uint = 1,color:uint=1,frame:uint=1,maxChar:uint=0,otherOptions:Array=null,deleteDefautlText:Boolean=false,activateRadioSwitcher:Boolean=false,returnKey:String=ReturnKeyLabel.DEFAULT,onTypedFunction:Function=null,justShowNativeText:Boolean=false,multiLineTag:Boolean=false,justify:Boolean=true):void
+		public function setUp(tagName:String,defaultText:String,KeyBordType:String = SoftKeyboardType.DEFAULT,isPass:Boolean = false,editable:Boolean = true,isAraic:Boolean=true,numLines:uint = 1,color:uint=1,frame:uint=1,maxChar:uint=0,otherOptions:Array=null,deleteDefautlText:Boolean=false,activateRadioSwitcher:Boolean=false,returnKey:String=ReturnKeyLabel.DEFAULT,onTypedFunction:Function=null,justShowNativeText:Boolean=false,multiLineTag:Boolean=false,justify:Boolean=true):PopField
 		{
 			
 			var Y0:Number ;
@@ -370,6 +378,8 @@
 				this.addEventListener(MouseEvent.CLICK,switchRadioButton);
 				this.removeEventListener(MouseEvent.CLICK,editThisText);
 			}
+
+			return this ;
 		}
 		
 		/**Return true if the field is in password mode*/
