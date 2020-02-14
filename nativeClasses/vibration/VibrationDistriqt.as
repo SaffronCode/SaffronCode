@@ -41,10 +41,13 @@ package nativeClasses.vibration
             return VibrationClass!=null && (VibrationClass as Object).isSupported;
         }
 
-        public static function vibrate(duration:uint):void
+        public static function vibrate(duration:uint=4000):void
         {
             firstSetUp();
+            if(DevicePrefrence.isAndroid())
             (VibrationClass as Object).service.vibrate( duration );
+            else
+            (VibrationClass as Object).service.vibrate();
         }
 
         public static function vibrateDynamic(pattern:Array):void
