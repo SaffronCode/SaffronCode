@@ -207,7 +207,7 @@
 /////////////////////////intro mangers ↓
 		
 		/**Stop the intro till you need*/
-		public function stopIntro()
+		public function stopIntro():void
 		{
 			if(introMC!=null)
 			{
@@ -229,10 +229,29 @@
 				AnimData.fadeIn(introMC);
 			}
 		}
+
+		private static var _introIsStoppedByOuterRequest:Boolean = false ;
+
+		public static function stopTheIntro():void
+		{
+			_introIsStoppedByOuterRequest = true ;
+			ME.stopIntro();
+		}
+
+		public static function playTheIntro():void
+		{
+			if(_introIsStoppedByOuterRequest)
+			{
+				_introIsStoppedByOuterRequest = false ;
+				ME.playIntro();
+			}
+		}
 		
 		/**Start to play intro*/
-		public function playIntro()
+		public function playIntro():void
 		{
+			if(!introMC.visible || _introIsStoppedByOuterRequest)
+				return;
 			if(introMC!=null)
 			{
 				introMC.play() ;
