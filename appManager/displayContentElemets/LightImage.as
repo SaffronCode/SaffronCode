@@ -29,6 +29,7 @@
 	import netManager.urlSaver.URLSaverEvent;
 	
 	import wrokersJob.WorkerFunctions;
+	import mteam.FuncManager;
 
 	/**Image loading completed*/
 	[Event(name="complete", type="flash.events.Event")]
@@ -87,11 +88,13 @@
 		private var _watermark:Boolean = true ;
 		private var IsLoading:Boolean;
 		private var imageLoaderTimeOutId:uint;
+
+		public static var activateAsyncImageRendered:Boolean = true ;
 		
 		/**This is the maximom delay for waiting to cpu cool down*/
-		private var maximomImageLoadingDelay:Number = 8000 ;
+		//private var maximomImageLoadingDelay:Number = 8000 ;
 		
-		private var minimomImageLoadingDelay:Number = 4000 ;
+		//private var minimomImageLoadingDelay:Number = 4000 ;
 		
 		
 		public function LightImage(BackColor:uint=0x000000,BackAlpha:Number=0)
@@ -312,13 +315,18 @@
 			{
 				startLoading();
 			}*/
-			startLoading()
+			if(activateAsyncImageRendered)
+				FuncManager.callAsyncOnFrame(startLoading);
+			else
+				startLoading();
 		}
 		
 		/**This will make images to load*/
 		public function startLoading(e:*=null):void
 		{
-			PerformanceTest.traceDelay(3);
+			//PerformanceTest.traceDelay(3);
+			if(this.stage==null)
+				return;
 			clearTimeout(imageLoaderTimeOutId);
 			/*if(CPUController.isSatUp)
 			{
