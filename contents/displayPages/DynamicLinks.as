@@ -1046,25 +1046,25 @@ package contents.displayPages
 						(
 							!horizontalMenu
 							&& !revertedY
-							&& sens.top-areaRect.height<areaRect.bottom
+							&& sens.top<areaRect.bottom
 						) 
 						|| 
 						(
 							!horizontalMenu
 							&& revertedY
-							&& sens.bottom+areaRect.height>areaRect.top
+							&& sens.bottom>areaRect.top
 						)
 						|| 
 						(
 							horizontalMenu 
 							&& !revertedX 
-							&& sens.left-areaRect.width<areaRect.right
+							&& sens.left<areaRect.right
 						) 
 						|| 
 						(
 							horizontalMenu 
 							&& revertedX 
-							&& sens.right+areaRect.width>areaRect.left
+							&& sens.right>areaRect.left
 						)
 					)
 				)
@@ -1110,6 +1110,7 @@ package contents.displayPages
 		/**Control the current link if it can be shown or hide*/
 		private function showOrHideLinkItem(linkIndex:uint):Boolean
 		{
+			const visibleArea:uint = 1 ;
 			if(linkIndex<0 || linkIndex>=linksInterfaceStorage.length)
 			{
 				return false ;
@@ -1188,9 +1189,9 @@ package contents.displayPages
 								revertedByMovieclipUI
 								&&
 								(
-									visibleItem.x+linksContainer.x+visibleItem.width>=visibleItem.width*-3-areaRect.width
+									visibleItem.x+linksContainer.x+visibleItem.width>=visibleItem.width*-visibleArea-areaRect.width
 									&&
-									visibleItem.x<visibleItem.width*3
+									visibleItem.x<visibleItem.width*visibleArea
 								)
 							)	
 							||
@@ -1198,9 +1199,9 @@ package contents.displayPages
 								!revertedByMovieclipUI
 								&&
 								(
-									visibleItem.x+linksContainer.x+visibleItem.width>=visibleItem.width*-3
+									visibleItem.x+linksContainer.x+visibleItem.width>=visibleItem.width*-visibleArea
 									&&
-									visibleItem.x+linksContainer.x<areaRect.width+visibleItem.width*3
+									visibleItem.x+linksContainer.x<areaRect.width+visibleItem.width*visibleArea
 								)
 							)
 						)
@@ -1210,9 +1211,9 @@ package contents.displayPages
 						!revertedX
 						&&
 						(
-							visibleItem.x+linksContainer.x+visibleItem.width>=visibleItem.width*-3
+							visibleItem.x+linksContainer.x+visibleItem.width>=visibleItem.width*-visibleArea
 							&&
-							visibleItem.x+linksContainer.x<areaRect.width+visibleItem.width*3
+							visibleItem.x+linksContainer.x<areaRect.width+visibleItem.width*visibleArea
 						)
 					)
 				)
