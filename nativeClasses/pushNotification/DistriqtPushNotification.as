@@ -98,7 +98,7 @@
 			if (PushNotificationsClass == null)
 			{
 				trace("push notification is null");
-				onResult("windows Debug");
+				onResult("windowsDebug");
 				return;
 			}
 			try
