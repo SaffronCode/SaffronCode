@@ -11,6 +11,7 @@
 	import flash.text.TextField;
 	
 	import appManager.displayContentElemets.TextParag;
+	import flash.utils.setTimeout;
 	
 	/**Text field is changed*/
 	[Event(name="change", type="flash.events.Event")]
@@ -19,6 +20,8 @@
 	public class PopField extends PopFieldInterface
 	{
 		private var myTXT:TextField ;
+
+		private var _letSelectByCLick:Boolean = false ;
 		
 		private var tagNameTXT:TextField ;
 		
@@ -307,6 +310,8 @@
 			{
 				nativeKeyBoard = FarsiInputCorrection.setUp(myTXT,KeyBordType,true,true,deleteDefautlText,justShowNativeText && !activeRadioMode,true,true,returnKey,onTypedFunction);
 				this.addEventListener(MouseEvent.CLICK,editThisText);
+				this.addEventListener(MouseEvent.CLICK,letEditThisText);
+
 			}
 			else
 			{
@@ -467,11 +472,23 @@
 		{
 			return this.mouseChildren ;
 		}
+
+		private function letEditThisText(e:MouseEvent):void
+		{
+			_letSelectByCLick = true ;
+			(e.target as MovieClip).stage.addEventListener(MouseEvent.MOUSE_UP,dontLetEditThisText);
+		}
+
+		private function dontLetEditThisText(e:MouseEvent):void
+		{
+			setTimeout(function():*{_letSelectByCLick=false;},0);
+			e.currentTarget.removeEventListener(MouseEvent.MOUSE_UP,dontLetEditThisText);
+		}
 		
 		/**Start editing me*/
 		protected function editThisText(event:MouseEvent):void
 		{
-			if(super.enabled && !myTXT.hitTestPoint(stage.mouseX,stage.mouseY) && (showPassMC==null || !showPassMC.hitTestPoint(stage.mouseX,stage.mouseY)))
+			if(_letSelectByCLick && super.enabled && !myTXT.hitTestPoint(stage.mouseX,stage.mouseY) && (showPassMC==null || !showPassMC.hitTestPoint(stage.mouseX,stage.mouseY)))
 			{
 				nativeKeyBoard.focuseOnStageText();
 			}
