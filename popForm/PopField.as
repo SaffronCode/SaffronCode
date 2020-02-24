@@ -476,7 +476,7 @@
 		private function letEditThisText(e:MouseEvent):void
 		{
 			_letSelectByCLick = true ;
-			(e.target as MovieClip).stage.addEventListener(MouseEvent.MOUSE_UP,dontLetEditThisText);
+			stage.addEventListener(MouseEvent.MOUSE_UP,dontLetEditThisText);
 		}
 
 		private function dontLetEditThisText(e:MouseEvent):void
