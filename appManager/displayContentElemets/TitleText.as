@@ -3,6 +3,7 @@ package appManager.displayContentElemets
 {
 	import flash.display.MovieClip;
 	import flash.text.TextField;
+	import flash.text.TextFormat;
 	
 	public class TitleText extends MovieClip
 	{
@@ -85,6 +86,16 @@ package appManager.displayContentElemets
 			trace("The color is : "+colorNum);
 			
 			myText.textColor = colorNum ;
+		}
+
+		public function changeFontSize(newFontSize:int,updateInterfaceInstantly:Boolean=false):void
+		{
+			var textFormat:TextFormat = myText.defaultTextFormat ;
+			textFormat.size = newFontSize;
+			myText.setTextFormat(textFormat);
+			myText.defaultTextFormat = textFormat ;
+			if(updateInterfaceInstantly)
+				updateInterface();
 		}
 		
 		public function setUpMultiline(content:String,arabicText:Boolean = true,resolution:uint=0):void
