@@ -163,7 +163,7 @@
 		public function showClock(showSecond:Boolean = false):String
 		{
 			var str:String = '';
-			str += TimeToString.numToString(hours) + ':' + TimeToString.numToString(minutes);
+			str += TimeToString.numToString(hours) + ' : ' + TimeToString.numToString(minutes);
 			if (showSecond)
 			{
 				str += ':' + TimeToString.numToString(seconds);
