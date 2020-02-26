@@ -79,6 +79,8 @@
 		private var activeVersionControll:Boolean = false ;
 
 		public var URISchemId:String;
+
+		public static var changeKeyboardYPostion:Boolean = true;
 		
 		private var mouseClickCounter:uint ;
 
@@ -246,7 +248,7 @@
 				NativeApplication.nativeApplication.addEventListener(KeyboardEvent.KEY_UP,listenToScreenShotButtonsUp);
 			}
 
-			if(DevicePrefrence.isAndroid() &&!DevicePrefrence.isLandScape())
+			if(DevicePrefrence.isAndroid() &&!DevicePrefrence.isLandScape() && changeKeyboardYPostion )
 			{
 				//Here we are going to correct keyboard interaction when textfield selected.
 				stage.addEventListener(FarsiInputCorrectionEvent.TEXT_FIELD_SELECTED,checkFocusedItem);
