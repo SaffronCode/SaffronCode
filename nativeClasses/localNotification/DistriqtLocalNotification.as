@@ -33,15 +33,9 @@ package nativeClasses.localNotification
 			
 		}
 		
-		public static function setDistriqtID(distriqtID)
+		public static function setUp():void
 		{
 			Core.init();
-			Notifications.init(distriqtID);
-			setup();
-		}
-		
-		private static function setup():void
-		{
 			try
 			{
 				trace("isSupported = " + Notifications.isSupported);
@@ -101,16 +95,19 @@ package nativeClasses.localNotification
 			}
 		}
 		
-		public static function sendMessage(title:String, body:String, forground:Boolean=true,vibrate:Boolean = true)
+		public static function sendMessage(title:String, body:String,time:Date=null,forground:Boolean=true,vibrate:Boolean = true):void
 		{
 			if (Notifications.isSupported)
 			{
 				service.enableNotificationsWhenActive = forground;
-				Notifications.service.notify(new NotificationBuilder().setId(MessageID).setAlert(DevicePrefrence.appName).setTitle(title).setBody(body).setCategory("MESSAGE_CATEGORY").enableVibration(vibrate).build());
+				if(time==null)
+					Notifications.service.notify(new NotificationBuilder().setId(MessageID).setAlert(DevicePrefrence.appName).setTitle(title).setBody(body).setCategory("MESSAGE_CATEGORY").enableVibration(vibrate).build());
+				else
+					Notifications.service.notify(new NotificationBuilder().setId(MessageID).setAlert(DevicePrefrence.appName).setTitle(title).setBody(body).setCategory("MESSAGE_CATEGORY").enableVibration(vibrate).setFireDate(time).build())
 			}
 		}
 		
-		public static function preventClose(title:String="Application is closed!", body:String="Please open the application", forground:Boolean = true, vibrate:Boolean = false)
+		public static function preventClose(title:String="Application is closed!", body:String="Please open the application", forground:Boolean = true, vibrate:Boolean = false):void
 		{
 			if (Notifications.isSupported)
 			{
@@ -123,7 +120,7 @@ package nativeClasses.localNotification
 			}
 		}
 		
-		public static function setBadgeNumber(number:uint)
+		public static function setBadgeNumber(number:uint):void
 		{
 			if (Notifications.isSupported)
 			{
