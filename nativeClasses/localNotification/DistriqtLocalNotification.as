@@ -51,6 +51,8 @@ package nativeClasses.localNotification
 					
 					service.categories.push(new CategoryBuilder().setIdentifier("MESSAGE_CATEGORY").addAction(new ActionBuilder().setTitle("OK").setWillLaunchApplication(true).setIdentifier("OPEN_APP_BTN").build()).addAction(new ActionBuilder().setTitle("Cancel").setDestructive(true).setShouldCancelOnAction(true).setIdentifier("CANCEL_APP_BTN").build()).build());
 					
+					service.categories.push(new CategoryBuilder().setIdentifier("OPEN_CATEGORY").addAction(new ActionBuilder().setTitle("Open App").setWillLaunchApplication(true).setIdentifier("OPEN_APP_BTN").setShouldCancelOnAction(true).build()).build());
+
 					service.categories.push(new CategoryBuilder().setIdentifier("PREVENT_SLEEEP").addAction(new ActionBuilder().setTitle("Open").setWillLaunchApplication(true).setIdentifier("OPEN_APP_BTN").build()).build());
 					
 					service.channels.push(new ChannelBuilder().setId(DevicePrefrence.appName + "_channel").setName(DevicePrefrence.appName + " Channel").build());
@@ -95,15 +97,15 @@ package nativeClasses.localNotification
 			}
 		}
 		
-		public static function sendMessage(title:String, body:String,time:Date=null,forground:Boolean=true,vibrate:Boolean = true):void
+		public static function sendMessage(title:String, body:String,date:Date=null,forground:Boolean=true,vibrate:Boolean = true,category:String="MESSAGE_CATEGORY"):void
 		{
 			if (Notifications.isSupported)
 			{
 				service.enableNotificationsWhenActive = forground;
-				if(time==null)
-					Notifications.service.notify(new NotificationBuilder().setId(MessageID).setAlert(DevicePrefrence.appName).setTitle(title).setBody(body).setCategory("MESSAGE_CATEGORY").enableVibration(vibrate).build());
+				if(date==null)
+					Notifications.service.notify(new NotificationBuilder().setId(MessageID).setAlert(DevicePrefrence.appName).setTitle(title).setBody(body).setCategory(category).enableVibration(vibrate).build());
 				else
-					Notifications.service.notify(new NotificationBuilder().setId(MessageID).setAlert(DevicePrefrence.appName).setTitle(title).setBody(body).setCategory("MESSAGE_CATEGORY").enableVibration(vibrate).setFireDate(time).build())
+					Notifications.service.notify(new NotificationBuilder().setId(MessageID).setAlert(DevicePrefrence.appName).setTitle(title).setBody(body).setCategory(category).enableVibration(vibrate).setFireDate(date).build())
 			}
 		}
 		
