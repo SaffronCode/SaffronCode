@@ -20,8 +20,13 @@ package nativeClasses.location
 			checkLocationPermission();
 		}
 
-		public static function activateLocationService():void
+		public static function activateLocationService(onActivated:Function=null,onDenied:Function=null):void
 		{
+			if(onActivated==null)
+				onActivated = new Function();
+			if(onDenied==null)
+				onDenied = new Function();
+
 			checkGooglePlay();
 			checkLocationPermission(openLocationSetting,openLocationSetting);
 
@@ -46,7 +51,12 @@ package nativeClasses.location
 							var success:Boolean = Location.service.checkLocationSettings( request );
 							if (!success)
 							{
+								onDenied();
 								Location.service.displayLocationSettings();
+							}
+							else
+							{
+								onActivated();
 							}
 
 							function checkLocationSettingsHandler( event:LocationSettingsEvent ):void
@@ -57,17 +67,20 @@ package nativeClasses.location
 						else
 						{
 							trace("********* Open location setting")
+								onDenied();
 							Location.service.displayLocationSettings(); 
 						}
 					}
 					else
 					{
-						trace("************* Locatoin service is not available *************");
+						trace("************* Locatoin service is available *************");
+							onActivated();
 					}
 				}
 				else
 				{
 					trace("************* Google play is not support")
+						onDenied();
 				}
 			}
 		}
