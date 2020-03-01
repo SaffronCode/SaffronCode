@@ -6,6 +6,7 @@ package nativeClasses.location {
     import com.distriqt.extension.location.AuthorisationStatus;
     import com.distriqt.extension.location.LocationRequest;
     import com.distriqt.extension.location.events.LocationSettingsEvent;
+    import spark.components.Alert;
 
     public class DistriqtLocation {
         private static var _googlePlyaSupport:* = null;
@@ -17,7 +18,7 @@ package nativeClasses.location {
             checkLocationPermission();
         }
 
-        public static function activateLocationService(onActivated:Function = null, onDenied:Function = null):void {
+        public static function activateLocationService(onActivated:Function = null, onDenied:Function = null, showSetting:Boolean = true):void {
             if (onActivated == null)
                 onActivated = new Function();
             if (onDenied == null)
@@ -39,10 +40,15 @@ package nativeClasses.location {
                             Location.service.removeEventListener(LocationSettingsEvent.FAILED, checkLocationSettingsHandler);
                             Location.service.addEventListener(LocationSettingsEvent.SUCCESS, checkLocationSettingsHandler);
                             Location.service.addEventListener(LocationSettingsEvent.FAILED, checkLocationSettingsHandler);
-
+                            if (showSetting == false) {
+                                onDenied();
+                                trace("onDenided")
+                                return
+                            }
                             var success:Boolean = Location.service.checkLocationSettings(request);
                             if (!success) {
                                 onDenied();
+                                trace("onDenided")
                                 Location.service.displayLocationSettings();
                             }
 
@@ -52,23 +58,24 @@ package nativeClasses.location {
                         } else {
                             trace("********* Open location setting")
                             onDenied();
-                            Location.service.displayLocationSettings();
+                            trace("onDenided")
+                            if (showSetting == true)
+                                Location.service.displayLocationSettings();
                         }
                     } else {
                         trace("************* Locatoin service is available *************");
                         onActivated();
+                        trace("onActive")
                     }
                 } else {
                     trace("************* Google play is not support")
                     onDenied();
+                    trace("onDenided")
                 }
             }
         }
 
         public static function checkLocationPermission(onPermissioned:Function = null, onDenied:Function = null):void {
-            //if(_locationSupport==true)
-            //return ;
-
             Location.service.addEventListener(AuthorisationEvent.CHANGED, function(e:*):* {
                 switch (Location.service.authorisationStatus()) {
                     case AuthorisationStatus.NOT_DETERMINED:
