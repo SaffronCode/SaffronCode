@@ -20,7 +20,7 @@
 	
 	import contents.alert.SaffronLogger;
 	import mteam.FuncManager;
-	
+
 	/**Cannot connect to server*/
 	[Event(name="CONNECTION_ERROR", type="restDoaService.RestDoaEvent")]
 	/**Server returns error, use Error code or msg list*/
@@ -35,6 +35,8 @@
 	[Event(name="TITLE_ERROR", type="restDoaService.RestDoaEvent")]
 	/**Dispatch progress event*/
 	[Event(name="progress", type="flash.events.ProgressEvent")]
+	/**Dispatch respond header*/
+	[Event(name="httpResponseStatus", type="flash.events.HTTPStatusEvent")]
 	public class RestDoaServiceCaller extends EventDispatcher 
 	{
 		/**200:Ok<br>
@@ -173,6 +175,7 @@
 			trace("******** ***  *** * ** HTTP headers received : "+e.status);
 			HTTPStatus = e.status ;
 			RestDoaService.eventDispatcher.dispatchEvent(e.clone());
+			this.dispatchEvent(e.clone());
 			if(logger)
 			SaffronLogger.log("RESPOND\nRestService ID:"+webServiceId+"\nHTTP Status"+e.status);
 		}
