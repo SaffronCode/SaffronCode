@@ -91,7 +91,7 @@
 		public function SliderGallery(myWidth:Number=0,myHeight:Number=0)
 		{
 			super();
-			minMoveToSpeed = ScrollMT.minScrollToLock;
+			minMoveToSpeed = ScrollMT.minScrollToLock*2;
 			
 			_totalImages = 0 ;
 			
