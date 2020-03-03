@@ -91,10 +91,8 @@
 			{
 			trace('history['+i+'] : '+history[i].id);
 			}*/
-			resetHistory();
 			
 			lastPopedHistory = history.concat();
-			
 			if(history.length>1)
 			{
 				history.pop();

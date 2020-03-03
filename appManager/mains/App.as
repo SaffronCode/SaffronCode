@@ -33,6 +33,7 @@
 	import soundPlayer.SoundPlayer;
 	import contents.alert.Alert;
 	import sliderMenu.SliderManager;
+	import contents.History;
 	
 	/**Now its ready to call other pages*/
 	[Event(name="MAIN_ANIM_IS_READY", type="appManager.event.AppEvent")]
@@ -103,7 +104,7 @@
 		public function App(autoPlayThePageMusics:Boolean=false,skipAllAnimations:Boolean = false,activateShineEffect:uint=0,PlaySounOnBackGroundTo:Boolean=false,activateVibrate:Boolean=true)
 		{
 			super();
-			
+			History.reset();
 			pageVibrate = activateVibrate ;
 			
 			playSounOnBackGroundTo = PlaySounOnBackGroundTo ;
