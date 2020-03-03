@@ -99,13 +99,16 @@ package contents.displayElements
 		}
 		
 		/***/
-		protected function generateLink(e:MouseEvent)
+		protected function generateLink(e:MouseEvent):void
 		{
 			var ev:AppEventContent ;
 			if(this.name == backButtonDispatcher || forceToActLikeBack)
 			{
-				ev = AppEventContent.lastPage();
-				trace("ev  : "+ev.myType);
+				if(History.length>0)
+				{
+					this.dispatchEvent(History.lastPage());
+				}
+				return;
 			}
 			else if(this.name.indexOf('instan')==-1)
 			{
@@ -129,12 +132,7 @@ package contents.displayElements
 					if(controller!=null)
 						link.id = controller ;
 				}
-					
 				ev = new AppEventContent(link,false,refresh);
-			}
-			
-			if(ev!=null)
-			{
 				this.dispatchEvent(ev);
 			}
 		}
