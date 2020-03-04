@@ -81,7 +81,7 @@
 		/**this class will generate conten input of main from this class*/
 		public var myContent:PopMenuContenDisplay ;
 		
-		private var closeTimer:Timer ;
+		private static var closeTimer:Timer ;
 		private var cashedContents:PopMenuContent;
 		private var onButton:Function;
 		private var onTimerClose:Function;
@@ -355,7 +355,13 @@
 			return ME.show ;
 		}
 		
-		
+		public static function stopTimer():void
+		{
+			if(closeTimer!=null)
+			{
+				closeTimer.stop();
+			}
+		}
 		
 		/**pop the pop menu up*/
 		public function popUp2(title:String='' , type:PopMenuTypes=null , content:PopMenuContent=null,closeOnTime=0,onButtonSelects:Function=null,onClosedByTimer:Function=null,onClose:Function=null)
