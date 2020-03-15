@@ -33,7 +33,7 @@ package nativeClasses.cameraUI
 		public static var fileByte:ByteArray;
 		private static var onDone:Function;
 		
-		public static function setUp(APPLICATION_KEY:String):void
+		public static function setUp(APPLICATION_KEY:String=null):void
 		{
 			if(!isSupport())
 			{
@@ -42,7 +42,7 @@ package nativeClasses.cameraUI
 			}
 			try
 			{
-				(CameraUIC as Object).init( APPLICATION_KEY );
+				//(CameraUIC as Object).init( APPLICATION_KEY );
 				if (CameraUIC.isSupported)
 				{
 					trace("******** Distriqt is sat up *********");

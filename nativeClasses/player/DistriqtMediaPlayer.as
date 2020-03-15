@@ -85,10 +85,7 @@
 		public function DistriqtMediaPlayer(Width:Number, Height:Number)
 		{
 			super();
-			if (myDistriqtId == null)
-			{
-				throw "Set the distriqt id first by calling DistriqtMediaPlayer.setId(...)";
-			}
+			
 			if (!isSupports)
 			{
 				trace("Distriqt media player is not supporting this device");
@@ -597,7 +594,7 @@
 		 *
 		   <extensionID>com.distriqt.Core</extensionID>
 		   <extensionID>com.distriqt.MediaPlayer</extensionID>*/
-		public static function setId(distriqtId:String):void
+		public static function setId(distriqtId:String=null):void
 		{
 			myDistriqtId = distriqtId;
 			trace("++++Distriqt media player starts+++");
@@ -619,7 +616,7 @@
 			}
 			try
 			{
-				(MediaPlayerClass as Object).init(myDistriqtId);
+				//(MediaPlayerClass as Object).init(myDistriqtId);
 				if ((MediaPlayerClass as Object).isSupported)
 				{
 					isSupports = true;

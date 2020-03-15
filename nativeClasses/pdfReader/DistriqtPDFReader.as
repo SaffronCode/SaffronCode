@@ -36,7 +36,7 @@
 							private var isShowing:Boolean;
 							private var lastArea:Rectangle;
 		
-		public static function setUp(DistriqtId:String):void
+		public static function setUp(DistriqtId:String=null):void
 		{
 			if(satUp)
 				return ;
@@ -175,7 +175,7 @@
 			{
 				PDFReaderClass = getDefinitionByName("com.distriqt.extension.pdfreader.PDFReader") as Class ;
 				PDFViewBuilderClass = getDefinitionByName("com.distriqt.extension.pdfreader.builders.PDFViewBuilder") as Class ;
-				(PDFReaderClass as Object).init( DistriqtId );
+				//(PDFReaderClass as Object).init( DistriqtId );
 				if ((PDFReaderClass as Object).isSupported)
 				{
 					// Functionality here
