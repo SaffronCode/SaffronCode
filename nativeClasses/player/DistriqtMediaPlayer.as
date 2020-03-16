@@ -501,6 +501,7 @@
 			rect.y *= scl;
 			rect.x += deltaX / 2;
 			rect.y += deltaY / 2;
+			rect.y-=30;
 			rect.width *= scl;
 			rect.height *= scl;
 			
