@@ -73,6 +73,11 @@
 			ME.dispatchEvent(new AppEventContent(link,false,forceToRefreshPage));
 		}
 		
+		public static function changePageByLink(pageLink:LinkData):void
+		{
+			ME.dispatchEvent(new AppEventContent(pageLink));
+		}
+		
 		protected var titleManager:TitleManager ;
 		
 		protected var introMC:Intro ;
