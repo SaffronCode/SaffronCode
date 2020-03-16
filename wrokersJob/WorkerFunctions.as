@@ -17,6 +17,8 @@
 	import flash.utils.getQualifiedClassName;
 	import flash.utils.getTimer;
 	import flash.utils.setTimeout;
+	import flash.utils.setInterval;
+	import flash.utils.clearInterval;
 
 	public class WorkerFunctions
 	{
@@ -45,6 +47,7 @@
 		
 		private static var startWorkerCalled:Boolean = false ;
 		private static var starterTimeOutId:uint;
+		private static var repeaterIntervalOutId:uint;
 
 		
 		/**From now (Air 29) you cannot user more than one worker for your projects*/
@@ -60,19 +63,19 @@
 				if(DevicePrefrence.isIOS())
 					restart();
 				else
-					FileManager.controlFilePermission(restart,false);
+					repeaterIntervalOutId = setInterval(FileManager.controlFilePermission,2000,restart,false);
 			}
 		}
 		
 		private static function restart():void
 		{
+			clearInterval(repeaterIntervalOutId);
 			clearTimeout(starterTimeOutId);
 			starterTimeOutId = setTimeout(startWorkerAfterDelay,100);
 		}
 		
 		private static function startWorkerAfterDelay():void
 		{
-			trace("Worker stats");
 			var workerTarget:File = File.applicationDirectory.resolvePath("Data/bgWork4.swf");//new File("D://Sepehr//gitHub/sepehrEngine/SaffronEngine/Data-sample/bgWork.swf") ;
 			if(!workerTarget.exists)
 			{
