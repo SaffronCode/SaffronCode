@@ -55,7 +55,7 @@
 		
 		public var PureData:String = '' ;
 		
-		private var myServiceName:String ;
+		protected var myServiceName:String ;
 		
 		private var offlineDate:Date,
 					LoadForDoubleControll:Boolean = false,
