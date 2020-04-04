@@ -31,6 +31,7 @@ package nativeClasses.cameraUI
 		
 		
 		public static var fileByte:ByteArray;
+		public static var VideoMaxiDuration:uint = 60 ;
 		private static var onDone:Function;
 		
 		public static function setUp(APPLICATION_KEY:String=null):void
@@ -133,7 +134,7 @@ package nativeClasses.cameraUI
 					var options:* = new CameraUIOptionsC();
 					options.saveToCameraRollQuality = (DevicePrefrence.isAndroid())?0:1 ;
 					options.videoQuality = (QualityTypeC as Object).TYPE_LOW;
-					options.videoMaximumDuration = 60 ;
+					options.videoMaximumDuration = VideoMaxiDuration ;
 					trace("Launch the camera");
 					(CameraUIC as Object).service.launch( (MediaTypeC as Object).VIDEO, options );
 						
