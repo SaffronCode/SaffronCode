@@ -150,6 +150,11 @@
 				}
 			}
 		}
+
+		public function onClick(func:Function):void
+		{
+			Obj.setButton(this,func);
+		}
 		
 		/**From now , buttonID can be both string or uint<br>
 		 * You can set the button image if it has LighiImage on its frame*/
