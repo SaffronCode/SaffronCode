@@ -226,6 +226,7 @@
 			if(URL!=null && URL == imageURL)
 			{
 				trace("current image is same as old image on lightImage");
+			this.dispatchEvent(new Event(Event.COMPLETE));
 				return ;
 			}
 			if(imageURL==null && loadedBytes==null && loadedBitmap==null)
