@@ -1,4 +1,4 @@
-package otherPlatforms.tablighan
+﻿package otherPlatforms.tablighan
 	//otherPlatforms.tablighan.TablighanBanner
 {
 	import appManager.displayContentElemets.LightImage;
@@ -69,6 +69,7 @@ package otherPlatforms.tablighan
 				this.graphics.drawRect(0,0,Width/this.scaleX,Height/this.scaleY);
 			}
 			bannerImage = new LightImage(0x000000,0);
+			bannerImage.addEventListener(Event.COMPLETE,bannerReady);
 			this.addChild(bannerImage);
 			
 			BannerId = bannerId ;
@@ -76,6 +77,11 @@ package otherPlatforms.tablighan
 			NativeApplication.nativeApplication.addEventListener(Event.ACTIVATE,loadService);
 			this.addEventListener(MouseEvent.CLICK,openURL);
 			this.buttonMode = true ;
+		}
+
+		private function bannerReady(e:Event):void
+		{
+			this.dispatchEvent(new Event(Event.COMPLETE));
 		}
 		
 		protected function openURL(event:MouseEvent):void
@@ -86,6 +92,11 @@ package otherPlatforms.tablighan
 			}
 		}
 		
+			public function reload():void
+			{
+				loadService();
+			}
+
 			private function loadService(e:*=null):void
 			{
 				if(service_tablighanAPI)
@@ -111,7 +122,7 @@ package otherPlatforms.tablighan
 		{
 			if(service_tablighanAPI.data.length>0)
 			{
-				bannerImage.setUp("http://tablighon.com/Uploads/"+service_tablighanAPI.data[0].AdFileName,true,this.width/this.scaleX,this.height/this.scaleY,0,0,false);
+				bannerImage.setUp("http://tablighon.ir/Uploads/"+service_tablighanAPI.data[0].AdFileName,true,this.width/this.scaleX,this.height/this.scaleY,0,0,false);
 				//bannerImage.setUp("http://tablighon.com/Uploads/ab643bb7-eb23-490c-b983-a66703e7207e.jpg?"+new Date().time,true,this.width/this.scaleX,this.height/this.scaleY,0,0,false);;
 			}
 		}
