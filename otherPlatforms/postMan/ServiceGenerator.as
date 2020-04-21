@@ -14,7 +14,7 @@
 		private var serviceString:String = "package\n{\n\timport restDoaService.RestDoaServiceCaller;\n\t\n\tpublic class [ServiceName] extends RestDoaServiceCaller\n\t{\n\t\tpublic var data:[outPutClassName]\n\t\t\n\t\t[description]\n\t\t" +
 			"public function [ServiceName](offlineDataIsOK_v:Boolean=true, instantOfflineData_v:Boolean=false, maximomOfflineData:Date=null)\n\t\t{\n\t\t\t" +
 			"super([myWebServiceLocation], data, offlineDataIsOK_v, instantOfflineData_v, maximomOfflineData," +
-			" [IsGet]);\n\t\t}\n\t\t\n\t\tpublic function load([inputParam]):void\n\t\t{\n\t\t\tsuper.loadParam([inputParam2]);\n\t\t}\n\t}\n}";
+			" [IsGet]);\n\t\t}\n\t\t\n\t\tpublic function load([inputParam]):RestDoaServiceCaller\n\t\t{\n\t\t\tsuper.loadParam([inputParam2]);\n\t\t\treturn this;\n\t\t}\n\t}\n}";
 		
 		public var inputObject:Object;
 		public var inputObjectClassName:String;

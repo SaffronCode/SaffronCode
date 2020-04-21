@@ -41,7 +41,7 @@
 				createRequestFiles(serviceData.item[i])
 			}*/
 			
-			searchForAllItems(serviceData.item,SaveToFolderForServices);
+			searchForAllItems(serviceData.item,saveToFolderForServices);
 		}
 		
 		private static function searchForAllItems(rootItems:Vector.<ItemModel>,mySaveToFolderForServices:File):void
@@ -61,6 +61,8 @@
 		private static function createRequestFiles(itemModel:ItemModel,mySaveToFolderForServices:File):void
 		{
 			serviceGenerator.ServiceName = correctNames(itemModel.name) ;
+			mySaveToFolderForServices = mySaveToFolderForServices.resolvePath(serviceGenerator.ServiceName);
+			var mySaveToFolderForTypes:File = saveToFolderForTypes.resolvePath(serviceGenerator.ServiceName);
 			serviceGenerator.IsGet = itemModel.request.method=="GET" ;
 			serviceGenerator.myWebServiceLocation = URLCatcher(itemModel.request.url) ;
 			serviceGenerator.description = URLCatcher(itemModel.request.description) ;
@@ -78,12 +80,12 @@
 				if(serviceGenerator.outPutObject is Array || serviceGenerator.outPutObject is Vector.<*>)
 				{
 					trace("It was vector");
-					SaveJSONtoAs(serviceGenerator.outPutObject[0],saveToFolderForTypes,serviceGenerator.outPutObjectClassName);
+					SaveJSONtoAs(serviceGenerator.outPutObject[0],mySaveToFolderForTypes,serviceGenerator.outPutObjectClassName);
 				}
 				else
 				{
 					trace("It was Object");
-					SaveJSONtoAs(serviceGenerator.outPutObject,saveToFolderForTypes,serviceGenerator.outPutObjectClassName);
+					SaveJSONtoAs(serviceGenerator.outPutObject,mySaveToFolderForTypes,serviceGenerator.outPutObjectClassName);
 				}
 			}
 			else
@@ -97,11 +99,11 @@
 			{
 				if(serviceGenerator.inputObject is Array)
 				{
-					SaveJSONtoAs(serviceGenerator.inputObject[0],saveToFolderForTypes,serviceGenerator.inputObjectClassName);
+					SaveJSONtoAs(serviceGenerator.inputObject[0],mySaveToFolderForTypes,serviceGenerator.inputObjectClassName);
 				}
 				else
 				{
-					SaveJSONtoAs(serviceGenerator.inputObject,saveToFolderForTypes,serviceGenerator.inputObjectClassName);
+					SaveJSONtoAs(serviceGenerator.inputObject,mySaveToFolderForTypes,serviceGenerator.inputObjectClassName);
 				}
 			}
 			
