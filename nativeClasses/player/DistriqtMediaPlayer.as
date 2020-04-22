@@ -24,10 +24,12 @@
 	import flash.utils.setTimeout;
 	
 	import contents.alert.Alert;
+	import flash.events.MouseEvent;
+	import contents.Contents;
 	
 	public class DistriqtMediaPlayer extends Sprite
 	{
-		private var isFullScreen:Boolean = false;
+		public var isFullScreen:Boolean = false;
 		
 		/**com.distriqt.extension.mediaplayer.MediaPlayer*/
 		private static var MediaPlayerClass:Class;
@@ -208,12 +210,7 @@
 			lastDeviceOriention = stage.deviceOrientation;
 		}
 		
-		/**Pass the video native path for local files
-		 * <br><br>MediaPlayer.CONTROLS_BASIC : controls:basic
-		   MediaPlayer.CONTROLS_EMBEDDED : controls:embedded
-		   MediaPlayer.CONTROLS_FULLSCREEN : controls:fullscreen
-		   MediaPlayer.CONTROLS_NONE : controls:none*/
-		public function playVideo(videoURL:String, autoPlay:Boolean = true, controlls:String = "controls:fullscreen"):void
+		public function playVideo(videoURL:String, autoPlay:Boolean = true, showControlls:Boolean=true,manualControl:Boolean=false,backGroundColor:uint=0xFF000000):void
 		{
 			this.videoURL = videoURL;
 			videoQualities = videoURL.split('|');
@@ -229,7 +226,7 @@
 			NativeApplication.nativeApplication.systemIdleMode = SystemIdleMode.KEEP_AWAKE;
 			
 			isOpen = true;
-			player = (MediaPlayerClass as Object).service.createPlayerView(new MediaPlayerOptionsClass().setViewport(rect).setAutoPlay(true).showControls(true).enableBackgroundAudio(false));
+			player = (MediaPlayerClass as Object).service.createPlayerView(new MediaPlayerOptionsClass().setViewport(rect).setAutoPlay(true).showControls(showControlls).enableBackgroundAudio(false).setBackgroundColour(backGroundColor));
 			if (checkBandWidth == true && videoQualities.length>1)
 			{
 				bt = new BandwidthTester(0, videoQualities[index]);
@@ -262,17 +259,56 @@
 			//player = player.createPlayerView(new (MediaPlayerOptions as Object)().setViewport(new Rectangle( rect.x, rect.x, rect.width, rect.height)));
 			//var options:MediaPlayerOptions = new MediaPlayerOptions()
 			//setAutoPlay( true );
-			
-			player.addEventListener(MediaPlayerEventClass.FULLSCREEN_ENTER, isFullscreened);
-			player.addEventListener(MediaPlayerEventClass.FULLSCREEN_EXIT, exitFullscreened);
+
+			//player.addEventListener(MediaPlayerEventClass.FULLSCREEN_ENTER, isFullscreened);
+		//	player.addEventListener(MediaPlayerEventClass.FULLSCREEN_EXIT, exitFullscreened);
 			player.addEventListener(MediaPlayerEventClass.LOADING, isLoading);
 			player.addEventListener(MediaPlayerEventClass.READY, isReady);
+			
 			//player.addEventListener(MediaPlayerEventClass.LOADED, isPlaying);
 			//player.addEventListener(MediaPlayerEventClass.CLICK, isPlaying);
 			//player.addEventListener(com.distriqt.extension.mediaplayer.events.MediaPlayerEvent.STOPPED,exitFullscreened);
 			this.removeEventListener(Event.ENTER_FRAME, controlPlayerViewPort);
-			this.addEventListener(Event.ENTER_FRAME, controlPlayerViewPort);
+			
 			this.addEventListener(Event.REMOVED_FROM_STAGE, unLoad);
+
+			if(manualControl==true){
+				player.addEventListener(MediaPlayerEventClass.CLICK,changeFullScreen);
+			}
+			else
+			{
+				player.addEventListener(MediaPlayerEventClass.FULLSCREEN_ENTER, isFullscreened);
+				player.addEventListener(MediaPlayerEventClass.FULLSCREEN_EXIT, exitFullscreened);
+				this.addEventListener(Event.ENTER_FRAME, controlPlayerViewPort);
+			}
+		}
+
+		public function changeFullScreen(e:Event=null):void
+		{
+			if(isFullScreen)
+			{
+				isFullScreen=false;
+				var rect:Rectangle = createVewPort();
+				player.resize(rect.x, rect.y, rect.width, rect.height);
+				this.dispatchEvent(new Event(Event.VIDEO_FRAME,true));
+			}
+			else
+			{
+				isFullScreen = true;
+				var sclX:Number = (stage.fullScreenWidth / appStageWidth);
+				var sclY:Number = (stage.fullScreenHeight / appStageHeight);
+				if (sclX <= sclY)
+				{
+					scl = sclX;
+				}
+				else
+				{
+					scl = sclY;
+				}
+				this.dispatchEvent(new Event(Event.FULLSCREEN,true));
+				player.resize(0, 0, Math.round(Contents.config.stageRect.width * scl),  Math.round(Contents.config.stageRect.height * scl));
+				
+			}
 		}
 		
 		private function band_test(e):void
@@ -501,7 +537,7 @@
 			rect.y *= scl;
 			rect.x += deltaX / 2;
 			rect.y += deltaY / 2;
-			rect.y-=30;
+			//rect.y-=30;
 			rect.width *= scl;
 			rect.height *= scl;
 			
@@ -585,7 +621,14 @@
 				player.resize(0, 0, 0, 0);
 			}
 		}
-		
+
+		public function PlayPauseVideo(pause:Boolean):void
+		{
+			if(pause==true)
+				player.pause();
+			else
+				player.play();
+		}
 		private function round(num:Number):Number
 		{
 			return Math.round(num);
@@ -634,5 +677,7 @@
 				isSupports = false;
 			}
 		}
+
+		
 	}
 }
