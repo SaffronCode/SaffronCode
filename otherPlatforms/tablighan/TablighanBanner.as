@@ -79,6 +79,11 @@
 			this.buttonMode = true ;
 		}
 
+		public function stopAutoReload():void
+		{
+			NativeApplication.nativeApplication.removeEventListener(Event.ACTIVATE,loadService);
+		}
+
 		private function bannerReady(e:Event):void
 		{
 			this.dispatchEvent(new Event(Event.COMPLETE));
