@@ -1,16 +1,24 @@
-package nativeClasses.location {
-    import com.distriqt.extension.playservices.base.ConnectionResult;
-    import com.distriqt.extension.playservices.base.GoogleApiAvailability;
-    import com.distriqt.extension.location.events.AuthorisationEvent;
-    import com.distriqt.extension.location.Location;
-    import com.distriqt.extension.location.AuthorisationStatus;
-    import com.distriqt.extension.location.LocationRequest;
-    import com.distriqt.extension.location.events.LocationSettingsEvent;
-    import spark.components.Alert;
+﻿package nativeClasses.location {
 
     public class DistriqtLocation {
         private static var _googlePlyaSupport:* = null;
         private static var _locationSupport:* = null;
+
+
+        /*com.distriqt.extension.location.Location;*/
+        private static var Location:Object = Obj.generateClass("com.distriqt.extension.location.Location");
+        /*com.distriqt.extension.location.events.LocationSettingsEvent*/
+        private static var LocationSettingsEvent:Object = Obj.generateClass("com.distriqt.extension.location.events.LocationSettingsEvent");
+        /*com.distriqt.extension.location.LocationRequest*/
+        private static var LocationRequest:Object = Obj.generateClass("com.distriqt.extension.location.LocationRequest");
+        /*com.distriqt.extension.location.AuthorisationStatus*/
+        private static var AuthorisationStatus:Object = Obj.generateClass("com.distriqt.extension.location.AuthorisationStatus");
+        /*com.distriqt.extension.location.events.AuthorisationEvent*/
+        private static var AuthorisationEvent:Object = Obj.generateClass("com.distriqt.extension.location.events.AuthorisationEvent");
+        /*com.distriqt.extension.playservices.base.GoogleApiAvailability*/
+        private static var GoogleApiAvailability:Object = Obj.generateClass("com.distriqt.extension.playservices.base.GoogleApiAvailability");
+        /*com.distriqt.extension.playservices.base.ConnectionResult*/
+        private static var ConnectionResult:Object = Obj.generateClass("com.distriqt.extension.playservices.base.ConnectionResult");
 
 
         public static function setUp():void {
@@ -33,7 +41,7 @@ package nativeClasses.location {
                     if (!Location.service.isAvailable()) {
                         if (DevicePrefrence.isAndroid()) {
                             trace("************** open location");
-                            var request:LocationRequest = new LocationRequest();
+                            var request:* = new LocationRequest();
                             request.priority = LocationRequest.PRIORITY_HIGH_ACCURACY;
 
                             Location.service.removeEventListener(LocationSettingsEvent.SUCCESS, checkLocationSettingsHandler);
@@ -45,14 +53,14 @@ package nativeClasses.location {
                                 trace("onDenided")
                                 return
                             }
-                            var success:Boolean = Location.service.checkLocationSettings(request);
+                            var success:Boolean = Location.service.checkLocationSettings(request) as Boolean;
                             if (!success) {
                                 onDenied();
                                 trace("onDenided")
                                 Location.service.displayLocationSettings();
                             }
 
-                            function checkLocationSettingsHandler(event:LocationSettingsEvent):void {
+                            function checkLocationSettingsHandler(event:*):void {
                                 trace("********** Location is ? " + event.type);
                             }
                         } else {
@@ -76,7 +84,12 @@ package nativeClasses.location {
         }
 
         public static function checkLocationPermission(onPermissioned:Function = null, onDenied:Function = null):void {
-            Location.service.addEventListener(AuthorisationEvent.CHANGED, function(e:*):* {
+            if(Location==null)
+            {
+                _locationSupport = false ;
+                return ;
+            }
+            Location.service.addEventListener((AuthorisationEvent as Object).CHANGED, function(e:*):* {
                 switch (Location.service.authorisationStatus()) {
                     case AuthorisationStatus.NOT_DETERMINED:
                     case AuthorisationStatus.SHOULD_EXPLAIN:
@@ -132,6 +145,10 @@ package nativeClasses.location {
         private static function checkGooglePlay():void {
             if (_googlePlyaSupport != null)
                 return;
+            if(GoogleApiAvailability==null)
+            {
+                _googlePlyaSupport = false ;
+            }
             var result:int = GoogleApiAvailability.instance.isGooglePlayServicesAvailable();
             if (result != ConnectionResult.SUCCESS) {
                 if (GoogleApiAvailability.instance.isUserRecoverableError(result)) {
