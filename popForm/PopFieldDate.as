@@ -55,8 +55,16 @@
 				setUp(tagName,defaultDate,isArabic,languageFrame,color);
 			}
 		}
+
+		public function onEnterPressed(func:Function):void
+		{
+			if(dayKeyboard!=null)
+			{
+				dayKeyboard.onEnterPressed(func);
+			}
+		}
 		
-		public function setUp(tagName:String,defaultDate:Date=null,isArabic:Boolean=false,languageFrame:uint=1,color:uint=1,returnKey:String=ReturnKeyLabel.DEFAULT,onTypedFunction:Function=null):void
+		public function setUp(tagName:String,defaultDate:Date=null,isArabic:Boolean=false,languageFrame:uint=1,color:uint=1,returnKey:String=ReturnKeyLabel.DEFAULT,onTypedFunction:Function=null):PopFieldDate
 		{
 			
 			IsArabic = isArabic ;
@@ -102,6 +110,8 @@
 			OnTypedFunction = onTypedFunction;
 			
 			update(defaultDate);
+
+			return this ;
 		}
 		
 			protected function upTheDay(event:MouseEvent):void
