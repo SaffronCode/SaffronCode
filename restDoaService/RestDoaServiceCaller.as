@@ -542,7 +542,7 @@
 			}
 			
 			
-			cansel();
+			cansel(false);
 			trace(myId+" : "+myParams);
 			webServiceId++ ;
 			if(logger)
@@ -567,7 +567,7 @@
 		
 		public function reLoad(delay:uint=20000,dontReturnOfflineData:Boolean=false):void
 		{
-			cansel();
+			cansel(false);
 			offlineDate = new Date() ;
 			offlineDataIsOK = !dontReturnOfflineData ;
 			instantOfflineData = false ;
@@ -580,10 +580,13 @@
 		}
 		
 		/**Cansel all process*/
-		public function cansel():*
+		public function cansel(clearFunctions:Boolean=true):*
 		{
-			resultReturnedFunc = null ;
-			connectionErrorFunc = null ;
+			if(clearFunctions)
+			{
+				resultReturnedFunc = null ;
+				connectionErrorFunc = null ;
+			}
 			clearTimeout(timerId);
 			if(requestLoader!=null)
 			{
