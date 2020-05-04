@@ -158,7 +158,7 @@
 		
 		/**From now , buttonID can be both string or uint<br>
 		 * You can set the button image if it has LighiImage on its frame*/
-		public function setUp(str:String/*,colorTrans:ColorTransform=null*/,buttonID:*=0,type:uint = 1,completeButtonObject:* = null,buttonImage:String=null)
+		public function setUp(str:String/*,colorTrans:ColorTransform=null*/,buttonID:*=0,type:uint = 1,completeButtonObject:* = null,buttonImage:String=null):PopButton
 		{
 			if(completeButtonObject != null && completeButtonObject is PopButtonData)
 			{
@@ -223,6 +223,7 @@
 			{
 				this.addEventListener(MouseEvent.CLICK,playAsound);
 			}
+			return this;
 		}
 		
 			/**Check when the button added to stage*/
