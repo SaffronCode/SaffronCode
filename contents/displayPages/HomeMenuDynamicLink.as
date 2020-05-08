@@ -4,6 +4,7 @@ package contents.displayPages
 	import contents.Contents;
 	
 	import flash.utils.setTimeout;
+	import contents.alert.Alert;
 
 	public class HomeMenuDynamicLink extends DynamicLinks
 	{
@@ -16,7 +17,14 @@ package contents.displayPages
 		private function loadHomeMenu():void
 		{
 			height = Contents.config.stageRect.height-this.y ;
-			setUp(Contents.homePage);
+			if(this.name.indexOf('instance')==-1)
+			{
+				setUp(Contents.getPage(this.name));
+			}
+			else
+			{
+				setUp(Contents.homePage);
+			}
 		}
 	}
 }
