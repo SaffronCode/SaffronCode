@@ -55,7 +55,8 @@
 		public var isConnected:Boolean = false ;
 
 		private var connectionErrorFunc:Function = null,
-					resultReturnedFunc:Function = null ;
+					resultReturnedFunc:Function = null,
+					onConnectedFunc:Function = null ;
 		
 		
 		private static var webServiceId:uint = 0 ;
@@ -168,6 +169,12 @@
 		{
 			connectionErrorFunc = onConnectionError ;
 			return this ;
+		}
+
+		public function onConnected(onConnectedFunction:Function):RestDoaServiceCaller
+		{
+			onConnectedFunc = onConnectedFunction;
+			return this;
 		}
 		
 		private function serverHeaderReceived(e:HTTPStatusEvent):void
@@ -290,7 +297,7 @@
 		private function requestLoaded(event:Event):void
 		{
 			if(logger)
-			SaffronLogger.log("RESPOND\nRestService ID:"+webServiceId+"\n"+requestLoader.data);
+				SaffronLogger.log("RESPOND\nRestService ID:"+webServiceId+"\n"+requestLoader.data);
 			RestDoaService.isOnline = true ;
 			_isLoading = false ;
 			isConnected = true ;
@@ -315,6 +322,9 @@
 			{
 				parsLoadedData(requestLoader.data);
 			}
+			
+			FuncManager.callFunction(onConnectedFunc);
+			onConnectedFunc = null ;
 		}
 		
 		protected function parsLoadedData(loadedData:*,alreadyLoadedFromCash:Boolean=false,ignoreHTTPStatus:Boolean=false):void
