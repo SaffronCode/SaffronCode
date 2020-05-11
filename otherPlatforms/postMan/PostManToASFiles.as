@@ -62,7 +62,7 @@
 		{
 			serviceGenerator.ServiceName = correctNames(itemModel.name) ;
 			mySaveToFolderForServices = mySaveToFolderForServices.resolvePath(serviceGenerator.ServiceName);
-			var mySaveToFolderForTypes:File = saveToFolderForTypes.resolvePath(serviceGenerator.ServiceName);
+			var mySaveToFolderForTypes:File = mySaveToFolderForServices.clone();//saveToFolderForTypes.resolvePath(serviceGenerator.ServiceName);
 			serviceGenerator.IsGet = itemModel.request.method=="GET" ;
 			serviceGenerator.myWebServiceLocation = URLCatcher(itemModel.request.url) ;
 			serviceGenerator.description = URLCatcher(itemModel.request.description) ;
