@@ -26,6 +26,8 @@
 	import stageManager.StageManagerEvent;
 	import flash.filters.BlurFilter;
 	import flash.geom.Matrix;
+	import flash.utils.setTimeout;
+	import contents.Contents;
 	
 	public class PopMenu extends MovieClip
 	{
@@ -218,6 +220,17 @@
 			if(menuIconMC)
 			{
 				menuIconMC.stop();
+			}
+
+			setTimeout(setStaticBacksFromSaffron,0);
+		}
+
+		private static function setStaticBacksFromSaffron():void
+		{
+			if(Contents.lang!=null && Contents.lang.t !=null && Contents.lang.t.back!=null)
+			{
+				PopMenu.backEnable(Contents.lang.t.back);
+				PopMenu.staticCanselEnabled([Contents.lang.t.back])
 			}
 		}
 		
