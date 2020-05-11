@@ -164,6 +164,15 @@
 			return this ;
 		}
 
+		public function catchAndReload(tieOut:uint=4000):RestDoaServiceCaller
+		{
+			connectionErrorFunc = function():void
+			{
+				reLoad(tieOut);
+			}
+			return this ;
+		}
+
 		public function catch2(onConnectionError:Function):RestDoaServiceCaller
 		{
 			connectionErrorFunc = onConnectionError ;
