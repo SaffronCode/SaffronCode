@@ -8,6 +8,7 @@
 	import flash.net.SharedObject;
 	import flash.utils.ByteArray;
 	import flash.utils.getQualifiedClassName;
+	import mteam.FuncManager;
 
 	public class GlobalStorage
 	{
@@ -38,10 +39,20 @@
 		{
 			if(flushNeeded)
 			{
-				storage.flush();
-				bigDataStorage.flush();
+				flushData();
+				flushBigData();
 			}
 		}
+
+			private static function flushData():void
+			{
+				storage.flush();
+			}
+
+			private static function flushBigData():void
+			{
+				bigDataStorage.flush();
+			}
 		
 		private static function getId():String
 		{
@@ -86,7 +97,7 @@
 			setUp();
 			cash[id] = value ;
 			id = Encrypt.encrypt(id,getId());
-			if(value is String && value.length>maxLengthForEncryptableStrings)
+			if((value is String && value.length>maxLengthForEncryptableStrings) || (bigDataStorage.data[id]!=undefined))
 			{
 				bigDataStorage.data[id] = value ;
 				if(storage.data[id]!=undefined)
@@ -98,6 +109,10 @@
 				{
 					flushNeeded = true ;
 				}
+				/*if(flushNeeded)
+				{
+					FuncManager.callAsyncOnFrame(flushBigData);
+				}*/
 			}
 			else
 			{
@@ -110,6 +125,10 @@
 				{
 					flushNeeded = true ;
 				}
+				/*if(flushNeeded)
+				{
+					FuncManager.callAsyncOnFrame(flushData);
+				}*/
 			}
 		}
 		
