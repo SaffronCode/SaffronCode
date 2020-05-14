@@ -264,6 +264,7 @@
 		//	player.addEventListener(MediaPlayerEventClass.FULLSCREEN_EXIT, exitFullscreened);
 			player.addEventListener(MediaPlayerEventClass.LOADING, isLoading);
 			player.addEventListener(MediaPlayerEventClass.READY, isReady);
+			player.addEventListener(MediaPlayerEventClass.COMPLETE,completeTrack)
 			
 			//player.addEventListener(MediaPlayerEventClass.LOADED, isPlaying);
 			//player.addEventListener(MediaPlayerEventClass.CLICK, isPlaying);
@@ -281,6 +282,10 @@
 				player.addEventListener(MediaPlayerEventClass.FULLSCREEN_EXIT, exitFullscreened);
 				this.addEventListener(Event.ENTER_FRAME, controlPlayerViewPort);
 			}
+		}
+
+		private function completeTrack(e:Event=null):void{
+			this.dispatchEvent(new Event(Event.COMPLETE,true));
 		}
 
 		public function changeFullScreen(e:Event=null):void
