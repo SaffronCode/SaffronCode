@@ -159,9 +159,14 @@
 		public function setUp(myText:String,isArabic:Boolean = true,align:Boolean=true,knownAsHTML:Boolean=false,activateLinks:Boolean=false,useNativeText:Boolean=false,addScroller:Boolean=true,generateLinksForURLs:Boolean=false,scrollEffect:Boolean=true,userBitmap:Boolean=true,VerticalAlign:Boolean=false,useCash:Boolean=false,captureResolution:uint=0,splitIfToLong:Boolean=false,
 								textSplitter:String=null,imagesList:Array=null):void
 		{
-			if(addScroller && textSplitter==null && splitIfToLong==false)
+			if(!addScroller && textSplitter==null && splitIfToLong==false)
 			{
 				textSplitter = '\n';
+			}
+
+			if(textSplitter=='')
+			{
+				textSplitter = null ;
 			}
 
 			if(myText==null)
@@ -189,31 +194,7 @@
 			//updateItCan();
 			updateInterface();
 		}
-		
-		/*private function updateItCan():void
-		{
-			if(this.stage!=null)
-			{
-				updateInterface();
-			}
-			else
-			{
-				this.addEventListener(Event.ADDED_TO_STAGE,updateInterface);
-			}			
-		}*/
-		
-		/*override public function set x(value:Number):void
-		{
-			X0 = value; 
-			super.x = value ;
-		}
-		
-		override public function set y(value:Number):void
-		{
-			Y0 = value; 
-			super.y = value ;
-		}*/
-		
+
 		protected function updateInterface(event:Event=null):void
 		{
 			//myTextTF.height = textHeight0 ;
