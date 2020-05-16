@@ -286,7 +286,7 @@
 				WebServiceGenerator.log(targetFile.name+" was duplicated");
 			}
 			TextFile.save(targetFile,myAsClass);
-			return targetFile ;
+			return directory ;
 		}
 		
 		/**Craetes a standard class name*/
