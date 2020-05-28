@@ -125,6 +125,8 @@ import flash.text.TextField;
 					{
 						var deltaX:Number = e.stageX-MouseX0 ;
 						var deltaY:Number = e.stageY-MouseY0 ;
+						if(NativeApplication.nativeApplication.activeWindow==null)
+							return;
 						NativeApplication.nativeApplication.activeWindow.x += deltaX ;
 						NativeApplication.nativeApplication.activeWindow.y += deltaY ;
 					}
