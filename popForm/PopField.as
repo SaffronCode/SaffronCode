@@ -12,6 +12,7 @@
 	
 	import appManager.displayContentElemets.TextParag;
 	import flash.utils.setTimeout;
+	import contents.alert.Alert;
 	
 	/**Text field is changed*/
 	[Event(name="change", type="flash.events.Event")]
@@ -478,7 +479,9 @@
 		/**Start editing me*/
 		protected function editThisText(event:MouseEvent):void
 		{
-			if(super.enabled && !myTXT.hitTestPoint(stage.mouseX,stage.mouseY) && (showPassMC==null || !showPassMC.hitTestPoint(stage.mouseX,stage.mouseY)))
+			if(!super.enabled)
+				return;
+			if(!myTXT.hitTestPoint(stage.mouseX,stage.mouseY) && (showPassMC==null || !showPassMC.hitTestPoint(stage.mouseX,stage.mouseY)))
 			{
 				nativeKeyBoard.focuseOnStageText();
 			}
@@ -497,6 +500,9 @@
 		/**Open the device key board*/
 		public function activateKeyBoard():void
 		{
+			if(!super.enabled)
+				return;
+				
 			if(nativeKeyBoard && myTXT.mouseEnabled && !activeRadioMode)
 			{
 				nativeKeyBoard.focuseOnStageText();
