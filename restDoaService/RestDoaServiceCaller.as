@@ -340,7 +340,7 @@
 		{
 			var serverErrorBool:Boolean = false ;
 			var pureRecevedData:String = String(loadedData);
-			trace("Receved data is : "+((pureRecevedData.length<1000)?pureRecevedData:"[larg file : "+pureRecevedData.length+"]"));
+			trace("Receved data "+myId+": "+((pureRecevedData.length<1000)?pureRecevedData:"[larg file : "+pureRecevedData.length+"]"));
 			var correctedLoadedData:String = pureRecevedData;//pureRecevedData.substring(1,pureRecevedData.length-1).split('\\"').join('\"').split("\\\\u003cbr\\\\u003e").join('\\n').split("<br>").join('\\n');
 			//correctedLoadedData = StringFunctions.clearDoubleQuartmarksOnJSON(correctedLoadedData);
 			//trace("Corrected data is : "+correctedLoadedData);
