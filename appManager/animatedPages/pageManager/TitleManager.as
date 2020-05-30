@@ -11,6 +11,8 @@
 	
 	public class TitleManager extends MovieClip
 	{
+		public static var ME:Vector.<TitleManager> = new Vector.<TitleManager>() ;
+
 		public static var currentEvent:AppEvent = new AppEvent();
 		
 		public var toEvent:AppEvent = new AppEvent() ;
@@ -27,6 +29,7 @@
 		public function TitleManager()
 		{
 			super();
+			ME.push(this);
 			//pageContainer = Obj.findThisClass(PageContainer,this,true) as PageContainer;
 			myTitle = Obj.findThisClass(TitleText,this,true) as TitleText;
 			myTitleParag = Obj.findThisClass(TextParag,this,true) as TextParag;

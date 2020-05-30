@@ -78,7 +78,8 @@
 			ME.dispatchEvent(new AppEventContent(pageLink));
 		}
 		
-		protected var titleManager:TitleManager ;
+		//replaced with TitleManager.ME
+		//protected var titleManager:TitleManager ;
 		
 		protected var introMC:Intro ;
 		
@@ -129,7 +130,7 @@
 			
 			pageManagerObject = Obj.findThisClass(PageManager,this,true) as PageManager;
 			menuManagerObject = Obj.findThisClass(MenuManager,this,true) as MenuManager;
-			titleManager = Obj.findThisClass(TitleManager,this,true) as TitleManager;
+			//titleManager = Obj.findThisClass(TitleManager,this,true) as TitleManager;
 			
 			introMC = Obj.findThisClass(Intro,this,true) as Intro;
 			mainAnim = Obj.findThisClass(MainAnim,this,true) ;
@@ -180,14 +181,17 @@
 		protected function changeTheTitle(event:TitleEvent):void
 		{
 			
-			if(titleManager)
+			if(TitleManager.ME.length>0)
 			{
 				var fakePageData:PageData = new PageData();
 				fakePageData.title = event.title;
 				var fakeAppEvent:AppEventContent = new AppEventContent(new LinkData(),true,true);
 				fakeAppEvent.pageData = fakePageData ;
-				titleManager.isArabic=isArabic;
-				titleManager.setUp(fakeAppEvent,true);
+				for(var i:int = 0 ; i<TitleManager.ME.length ; i++)
+				{
+					TitleManager.ME[i].isArabic=isArabic;
+					TitleManager.ME[i].setUp(fakeAppEvent,true);
+				}
 			}
 		}
 		
@@ -438,9 +442,12 @@
 			{
 				menuManagerObject.setUp(selectedEvent as AppEventContent);
 			}
-			if(titleManager!=null && !AppEvent.isRefereshEvent(selectedEvent))
+			if(TitleManager.ME.length>0 && !AppEvent.isRefereshEvent(selectedEvent))
 			{
-				titleManager.setUp(selectedEvent);
+				for(var i:int = 0 ; i<TitleManager.ME.length ; i++)
+				{
+					TitleManager.ME[i].setUp(selectedEvent);
+				}
 			}
 		}
 		
