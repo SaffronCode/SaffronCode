@@ -95,7 +95,8 @@
 			if(dw_yearMC)
 				dw_yearMC.addEventListener(MouseEvent.CLICK,downTheYear);
 			
-			tagTF = Obj.get("tag_txt",Obj.get("tag_txt",this));
+			var tagContainer:MovieClip = Obj.getAllChilds("tag_txt",this,true)[0];
+			tagTF = Obj.getAllChilds("tag_txt",tagContainer,true)[0];
 			
 			TextPutter.OnButton(tagTF,tagName,isArabic,true,false);
 			

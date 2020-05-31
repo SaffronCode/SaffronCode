@@ -239,10 +239,6 @@
 			changeColor(color);
 			
 			tagContainer = Obj.getAllChilds("tag_txt",this,true)[0];
-			if(tagContainer.totalFrames>1)
-			{
-				tagFrameControl = new Anim_Frame_Controller(tagContainer,0,false);
-			}
 			tagNameTXT = Obj.getAllChilds("tag_txt",tagContainer,true)[0];
 			tagNameTXT.text = "" ;
 			
@@ -288,6 +284,21 @@
 			myTXT.displayAsPassword = isPass ;
 			myTXT.mouseEnabled = myTXT.selectable = editable ;
 			
+			if(tagContainer.totalFrames>1)
+			{
+				tagFrameControl = new Anim_Frame_Controller(tagContainer,defaultText==''?0:uint.MAX_VALUE,false);
+				Obj.addEventListner(myTXT,FarsiInputCorrectionEvent.TEXT_FIELD_SELECTED,function():void
+				{
+					tagFrameControl.gotoFrame(uint.MAX_VALUE);
+				});
+				Obj.addEventListner(myTXT,FarsiInputCorrectionEvent.TEXT_FIELD_CLOSED,function():void
+				{
+					if(myTXT.text=='')
+						tagFrameControl.gotoFrame(0);
+				});
+			}
+
+
 			if(numLines>1)
 			{
 				Y0 = myTXT.height;
@@ -514,8 +525,6 @@
 			if(nativeKeyBoard && myTXT.mouseEnabled && !activeRadioMode)
 			{
 				nativeKeyBoard.focuseOnStageText();
-				if(tagFrameControl!=null)
-					tagFrameControl.gotoFrame(uint.MAX_VALUE);
 			}
 		}
 		

@@ -50,8 +50,9 @@ package popForm
 			backMC = Obj.get("back_mc",this);
 			backMC.stop();
 			changeColor(color);
-			
-			tagTF = Obj.get("tag_txt",Obj.get("tag_txt",this));
+					
+			var tagContainer:MovieClip = Obj.getAllChilds("tag_txt",this,true)[0];
+			tagTF = Obj.getAllChilds("tag_txt",tagContainer,true)[0];
 			
 			TextPutter.OnButton(tagTF,tagName,isArabic,true,false);
 

@@ -42,7 +42,7 @@
 			}
 			else
 			{
-				mc.gotoAndStop(firstLableIndexToGo);
+				mc.gotoAndStop(Math.min(mc.totalFrames,firstLableIndexToGo));
 			}
 			mc.addEventListener(Event.ENTER_FRAME,anim);
 			mc.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
@@ -102,7 +102,7 @@
 		public function gotoFrame(frameIndex:uint):void
 		{
 			autoPlay = 0 ;
-			targetFrame = frameIndex ;
+			targetFrame = Math.min(mc.totalFrames,frameIndex) ;
 		}
 		
 		public function gotoFrameLableIndex(index:uint):void
