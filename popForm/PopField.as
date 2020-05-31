@@ -13,6 +13,7 @@
 	import appManager.displayContentElemets.TextParag;
 	import flash.utils.setTimeout;
 	import contents.alert.Alert;
+	import animation.Anim_Frame_Controller;
 	
 	/**Text field is changed*/
 	[Event(name="change", type="flash.events.Event")]
@@ -24,7 +25,9 @@
 
 		//private var _letSelectByCLick:Boolean = false ;
 		
-		private var tagNameTXT:TextField ;
+		private var tagNameTXT:TextField,
+					tagFrameControl:Anim_Frame_Controller,
+					tagContainer:MovieClip ;
 		
 		/**This will make this popField run as switcher*/
 		private var activeRadioMode:Boolean ;
@@ -235,7 +238,12 @@
 			//New Line to manage textfield background color 
 			changeColor(color);
 			
-			tagNameTXT = Obj.get("tag_txt",Obj.getAllChilds("tag_txt",this,true)[0]);
+			tagContainer = Obj.getAllChilds("tag_txt",this,true)[0];
+			if(tagContainer.totalFrames>1)
+			{
+				tagFrameControl = new Anim_Frame_Controller(tagContainer,0,false);
+			}
+			tagNameTXT = Obj.getAllChilds("tag_txt",tagContainer,true)[0];
 			tagNameTXT.text = "" ;
 			
 			showPassMC = Obj.get("show_pass_mc",this);
@@ -483,7 +491,7 @@
 				return;
 			if(!myTXT.hitTestPoint(stage.mouseX,stage.mouseY) && (showPassMC==null || !showPassMC.hitTestPoint(stage.mouseX,stage.mouseY)))
 			{
-				nativeKeyBoard.focuseOnStageText();
+				activateKeyBoard();
 			}
 		}
 		
@@ -506,6 +514,8 @@
 			if(nativeKeyBoard && myTXT.mouseEnabled && !activeRadioMode)
 			{
 				nativeKeyBoard.focuseOnStageText();
+				if(tagFrameControl!=null)
+					tagFrameControl.gotoFrame(uint.MAX_VALUE);
 			}
 		}
 		
