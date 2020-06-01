@@ -284,7 +284,7 @@
 			myTXT.displayAsPassword = isPass ;
 			myTXT.mouseEnabled = myTXT.selectable = editable ;
 			
-			if(tagContainer.totalFrames>1)
+			if(tagContainer.totalFrames>1 && tagFrameControl==null)
 			{
 				tagFrameControl = new Anim_Frame_Controller(tagContainer,defaultText==''?0:uint.MAX_VALUE,false);
 				Obj.addEventListener(myTXT,FarsiInputCorrectionEvent.TEXT_FIELD_SELECTED,function():void
