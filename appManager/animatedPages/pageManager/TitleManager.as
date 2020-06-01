@@ -8,6 +8,7 @@
 	
 	import flash.display.MovieClip;
 	import flash.events.Event;
+	import contents.alert.Alert;
 	
 	public class TitleManager extends MovieClip
 	{
@@ -37,7 +38,14 @@
 			this.stop();
 			//this.visible = false;
 			
-			this.addEventListener(Event.ENTER_FRAME,anim);
+			Obj.addEventListener(this,Event.ENTER_FRAME,anim);
+			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
+		}
+
+		private function unLoad(e:*):void
+		{
+			var myIndex:int = ME.indexOf(this);
+			ME.removeAt(myIndex);
 		}
 		
 		/**change the page event*/
@@ -56,8 +64,6 @@
 		
 		protected function anim(event:Event):void
 		{
-			
-			
 			//Have to change like pageContainer
 			if(toEvent.myType == AppEvent.home || toEvent.myID!=currentEvent.myID || toEvent.myType == AppEvent.refresh)
 			{

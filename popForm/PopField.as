@@ -287,11 +287,11 @@
 			if(tagContainer.totalFrames>1)
 			{
 				tagFrameControl = new Anim_Frame_Controller(tagContainer,defaultText==''?0:uint.MAX_VALUE,false);
-				Obj.addEventListner(myTXT,FarsiInputCorrectionEvent.TEXT_FIELD_SELECTED,function():void
+				Obj.addEventListener(myTXT,FarsiInputCorrectionEvent.TEXT_FIELD_SELECTED,function():void
 				{
 					tagFrameControl.gotoFrame(uint.MAX_VALUE);
 				});
-				Obj.addEventListner(myTXT,FarsiInputCorrectionEvent.TEXT_FIELD_CLOSED,function():void
+				Obj.addEventListener(myTXT,FarsiInputCorrectionEvent.TEXT_FIELD_CLOSED,function():void
 				{
 					if(myTXT.text=='')
 						tagFrameControl.gotoFrame(0);
