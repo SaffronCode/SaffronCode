@@ -3,7 +3,6 @@ package movieClipAssist
 //movieClipAssist.SerialFrameClip
 {
 	import flash.display.MovieClip;
-	import contents.alert.Alert;
 
 	public class SerialFrameClip extends MovieClip
 	{
@@ -11,7 +10,6 @@ package movieClipAssist
 		public function SerialFrameClip()
 		{
 			super();
-			Alert.show("HIII "+((lastFrame%this.totalFrames)+1));
 			this.gotoAndStop((lastFrame%this.totalFrames)+1);
 			lastFrame++
 		}
