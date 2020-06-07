@@ -287,15 +287,16 @@
 			if(tagContainer.totalFrames>1 && tagFrameControl==null)
 			{
 				tagFrameControl = new Anim_Frame_Controller(tagContainer,defaultText==''?0:uint.MAX_VALUE,false);
-				Obj.addEventListener(myTXT,FarsiInputCorrectionEvent.TEXT_FIELD_SELECTED,function():void
+				Obj.addEventListener(myTXT,FarsiInputCorrectionEvent.TEXT_FIELD_SELECTED,checkTagAnimation);
+				Obj.addEventListener(myTXT,FarsiInputCorrectionEvent.TEXT_FIELD_CLOSED,checkTagAnimation);
+				Obj.addEventListener(myTXT,Event.CHANGE,checkTagAnimation);
+				function checkTagAnimation(e:Event):void
 				{
-					tagFrameControl.gotoFrame(uint.MAX_VALUE);
-				});
-				Obj.addEventListener(myTXT,FarsiInputCorrectionEvent.TEXT_FIELD_CLOSED,function():void
-				{
-					if(myTXT.text=='')
+					if(e.type!=FarsiInputCorrectionEvent.TEXT_FIELD_SELECTED && myTXT.text=='')
 						tagFrameControl.gotoFrame(0);
-				});
+					else
+						tagFrameControl.gotoFrame(uint.MAX_VALUE);
+				}
 			}
 
 
