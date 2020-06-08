@@ -80,7 +80,7 @@ package contents.displayPages
 						reloaderMCFrame:Number = 1;
 					
 		protected var 	sampleLinkButton:LinkItemButtons,
-						linkButtonClass,
+						linkButtonClass:Class,
 						activeSlideButtons:Boolean = false,
 						draggableLinkItem:LinkItem,
 						mouseFirstPose:Number,
@@ -348,7 +348,7 @@ package contents.displayPages
 			trace("Mouse clicked");
 			var itemY:Number ; 
 			var currentLinkItem:LinkItem ;
-			for(var i = 0 ; linksInterfaceStorage!=null && i<linksInterfaceStorage.length ; i++)
+			for(var i:int = 0 ; linksInterfaceStorage!=null && i<linksInterfaceStorage.length ; i++)
 			{
 				currentLinkItem = linksInterfaceStorage[i]; 
 				if(!horizontalMenu)
@@ -616,7 +616,7 @@ package contents.displayPages
 			}
 		}
 		
-		private function createLinks()
+		private function createLinks():void
 		{
 			trace("Creat links");
 			lastGeneratedLinkIndes = 0 ;
@@ -876,7 +876,7 @@ package contents.displayPages
 			return myPageData.links1.length  ;
 		}
 		
-		private function unLoad(ev:Event=null)
+		private function unLoad(ev:Event=null):void
 		{
 			if(myStage!=null)
 			{
@@ -893,7 +893,7 @@ package contents.displayPages
 			this.dispatchEvent(new Event(RELOAD_REQUIRED));
 		}
 		
-		private function controllSensor(ev:Event=null)
+		private function controllSensor(ev:Event=null):void
 		{
 			if(reloaderMC)
 			{
@@ -1355,7 +1355,7 @@ package contents.displayPages
 			if(lastGeneratedLinkIndes<myPageData.links1.length)
 			{
 				trace(":::::howManyLinksGenerates : "+howManyLinksGenerates);
-				for(var i = 0 ; i<howManyLinksGenerates && lastGeneratedLinkIndes<myPageData.links1.length ; i++)
+				for(var i:int = 0 ; i<howManyLinksGenerates && lastGeneratedLinkIndes<myPageData.links1.length ; i++)
 				{
 					var newLink:LinkItem ;
 					newLink = new linkClass();
