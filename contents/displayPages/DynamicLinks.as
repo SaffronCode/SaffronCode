@@ -1189,9 +1189,9 @@ package contents.displayPages
 								revertedByMovieclipUI
 								&&
 								(
-									visibleItem.x+linksContainer.x+visibleItem.width>=visibleItem.width*-visibleArea-areaRect.width
+									visibleItem.x+linksContainer.x+visibleItem.width>-2*areaRect.width
 									&&
-									visibleItem.x<visibleItem.width*visibleArea
+									visibleItem.x+linksContainer.x<areaRect.width
 								)
 							)	
 							||
@@ -1199,9 +1199,9 @@ package contents.displayPages
 								!revertedByMovieclipUI
 								&&
 								(
-									visibleItem.x+linksContainer.x+visibleItem.width>=visibleItem.width*-visibleArea
+									visibleItem.x+linksContainer.x<=areaRect.width*2
 									&&
-									visibleItem.x+linksContainer.x<areaRect.width+visibleItem.width*visibleArea
+									visibleItem.x+linksContainer.x+visibleItem.width>-areaRect.width
 								)
 							)
 						)
@@ -1211,9 +1211,9 @@ package contents.displayPages
 						!revertedX
 						&&
 						(
-							visibleItem.x+linksContainer.x+visibleItem.width>=visibleItem.width*-visibleArea
+							visibleItem.x+linksContainer.x+visibleItem.width>=-areaRect.width
 							&&
-							visibleItem.x+linksContainer.x<areaRect.width+visibleItem.width*visibleArea
+							visibleItem.x+linksContainer.x<areaRect.width*2
 						)
 					)
 				)
@@ -1279,7 +1279,11 @@ package contents.displayPages
 				
 				linksInterfaceStorage.splice(removedLinkIndex,1,newLink);
 
-				if(removedLinkItem.height!=newLink.height)
+				if(
+					(!horizontalMenu && removedLinkItem.height!=newLink.height)
+					||
+					(horizontalMenu && removedLinkItem.width!=newLink.width)
+				)
 				{
 					updateLinksPosition();
 				}
@@ -1425,11 +1429,25 @@ package contents.displayPages
 				{
 					if(MenuDirectionX>0)
 					{
-						linksInterfaceStorage[i].x = linksInterfaceStorage[i-1].x+(linksInterfaceStorage[i-1].width+myDeltaX);
+						if(i%iconsPerLine==0)
+						{
+							linksInterfaceStorage[i].x = linksInterfaceStorage[i-1].x+(linksInterfaceStorage[i-1].width+myDeltaX);
+						}
+						else
+						{
+							linksInterfaceStorage[i].x = linksInterfaceStorage[Math.floor(i/iconsPerLine)*iconsPerLine].x ;
+						}
 					}
 					else
 					{
-						linksInterfaceStorage[i].x = linksInterfaceStorage[i-1].x-(linksInterfaceStorage[i].width+myDeltaX);
+						if(i%iconsPerLine==0)
+						{
+							linksInterfaceStorage[i].x = linksInterfaceStorage[i-1].x-(linksInterfaceStorage[i].width+myDeltaX);
+						}
+						else
+						{
+							linksInterfaceStorage[i].x = linksInterfaceStorage[Math.floor(i/iconsPerLine)*iconsPerLine].x ;
+						}
 					}
 				}
 				else
@@ -1447,7 +1465,14 @@ package contents.displayPages
 					}
 					else
 					{
-						linksInterfaceStorage[i].y = linksInterfaceStorage[i-1].y-(linksInterfaceStorage[i].height+myDeltaY);
+						if(i%iconsPerLine==0)
+						{
+							linksInterfaceStorage[i].y = linksInterfaceStorage[i-1].y-(linksInterfaceStorage[i].height+myDeltaY);
+						}
+						else
+						{
+							linksInterfaceStorage[i].y = linksInterfaceStorage[Math.floor(i/iconsPerLine)*iconsPerLine].y ;
+						}
 					}
 				}
 			}
