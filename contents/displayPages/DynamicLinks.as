@@ -1330,7 +1330,7 @@ package contents.displayPages
 				}
 				else
 				{
-					linkY = linksContainer.y+Math.floor(linkIndex/iconsPerLine)*linkItemHeight();
+					linkY = linksInterfaceStorage.length>linkIndex?linksInterfaceStorage[linkIndex].y:linksContainer.y+Math.floor(linkIndex/iconsPerLine)*linkItemHeight();
 					linkBottom = linkY+linkItemHeight();
 					trace("* linkY : "+linkY);
 					trace("* linkBottom : "+linkBottom);
