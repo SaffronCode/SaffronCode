@@ -1278,6 +1278,11 @@ package contents.displayPages
 				this.dispatchEvent(new DynamicLinksEvent(DynamicLinksEvent.UPDATE_LINKS_POSITION));
 				
 				linksInterfaceStorage.splice(removedLinkIndex,1,newLink);
+
+				if(removedLinkItem.height!=newLink.height)
+				{
+					updateLinksPosition();
+				}
 				
 				removedLinkItem = null ;
 				
