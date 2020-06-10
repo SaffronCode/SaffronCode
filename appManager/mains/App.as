@@ -34,6 +34,8 @@
 	import contents.alert.Alert;
 	import sliderMenu.SliderManager;
 	import contents.History;
+	import mteam.FuncManager;
+	import flash.utils.setTimeout;
 	
 	/**Now its ready to call other pages*/
 	[Event(name="MAIN_ANIM_IS_READY", type="appManager.event.AppEvent")]
@@ -44,6 +46,8 @@
 	public class App extends MovieClip
 	{
 		private static var ME:App ;
+
+		private static const homePageReadyFuncId:uint = 43248407;
 		
 		protected var pageManagerObject:PageManager ;
 		
@@ -98,7 +102,7 @@
 		
 		private static var AutoPlayThePageMusics:Boolean ;
 		
-		private var _appIsReady:Boolean = false ;
+		private static var _appIsReady:Boolean = false ;
 
 		public static var isArabic:Boolean =true;
 		
@@ -375,7 +379,7 @@
 				
 				is_in_home = true ;//This value moved up
 				//I forgot to write this line of code here ↓
-				changePage(event);
+				this.changePage(event);
 				//It will close PageManger instantly
 				//This function calls with true when the home page oppened:
 				hopePageOppened(true);
@@ -415,9 +419,22 @@
 		protected function changePage(s:AppEvent):void
 		{
 			
-			trace("Main anim is ready");
+			trace("Main anim is ready!!"+currentAppEvent.myID);
+			var wasReady:Boolean = _appIsReady ;
 			_appIsReady = true ;
 			manageAllAnimatedPaged(currentAppEvent);
+			if(!wasReady)
+			{
+				setTimeout(FuncManager.callFuncList,0,homePageReadyFuncId);
+			}
+		}
+
+		public static function onReady(onReadyToCallPaged:Function):void
+		{
+			if(_appIsReady)
+				onReadyToCallPaged();
+			else
+				FuncManager.addFuncToList(onReadyToCallPaged,homePageReadyFuncId);
 		}	
 		
 		private function manageAllAnimatedPaged(selectedEvent:AppEvent):void
