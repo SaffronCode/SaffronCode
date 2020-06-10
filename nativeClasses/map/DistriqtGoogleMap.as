@@ -19,11 +19,10 @@ package nativeClasses.map
 	import flash.utils.setTimeout;
 	
 	import stageManager.StageManager;
+	import flash.display.StageScaleMode;
 	
 	public class DistriqtGoogleMap extends Sprite
 	{
-		private static var api_key:String ;
-		
 		/**com.distriqt.extension.nativemaps.AuthorisationStatus*/
 		private static var AuthorisationStatusClass:Class ;
 		/**com.distriqt.extension.nativemaps.NativeMaps*/
@@ -46,6 +45,8 @@ package nativeClasses.map
 		private static var mapInitialized:Boolean = false ;
 		
 		private static var 	scl:Number = 0,
+							statusBarSize:Number=0,
+
 							deltaX:Number,
 							deltaY:Number;
 		
@@ -65,91 +66,9 @@ package nativeClasses.map
 		
 		private var firstZoomLevel:Number = -1 ;
 		
-		public static function setUp(GoogleAPIKey:String,DistriqtId:String):void
+		public static function setUp(GoogleAPIKey:String=null,DistriqtId:String=null):void
 		{
-			api_key = GoogleAPIKey ;
 			//trace('*********GoogleAPIKey*******'+GoogleAPIKey);
-			var neceraryLines:String = '•' ;
-			
-			var AndroidPermission:String = neceraryLines+'<manifest android:installLocation="auto">\n' +
-				'\t<uses-sdk android:minSdkVersion="12" android:targetSdkVersion="24" />\n' +
-				'\t<uses-permission android:name="android.permission.INTERNET"/>\n' +
-				'\t<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>\n' +
-				'\t<uses-permission android:name="android.permission.READ_PHONE_STATE"/>\n' +
-				'\t<uses-permission android:name="android.permission.DISABLE_KEYGUARD"/>\n' +
-				'\t<uses-permission android:name="android.permission.WAKE_LOCK"/>\n' +
-				'\t<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>\n' +
-				'\t<uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>\n' +
-				'\t<uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>\n' +
-				'\t<uses-permission android:name="air.'+DevicePrefrence.appID+'.permission.MAPS_RECEIVE" android:protectionLevel="signature"/>\n' +
-				'\t<uses-feature android:glEsVersion="0x00020000" android:required="true"/>\n' +
-				neceraryLines+'\t<application>\n' +
-				'\t\t<meta-data android:name="com.google.android.geo.API_KEY" android:value="'+api_key+'" />\n' +
-				'\t\t<meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />\n' +
-				'\t\t<activity android:name="com.distriqt.extension.nativemaps.permissions.AuthorisationActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar" />\n' +
-				neceraryLines+'\t</application>\n' +
-				neceraryLines+'</manifest>';
-			
-			var hintText:String = ("*******************\n\n\n\n\nYou have to add below ane files to your project : \n	com.distriqt.androidsupport.V4.ane\n" +
-				"\n" +
-				//"com.distriqt.GooglePlayServices.ane\n" +
-				
-				"\t<extensions>\n"+
-					"\t\t<extensionID>com.distriqt.Core</extensionID>\n"+
-					"\t\t<extensionID>com.distriqt.androidsupport.V4</extensionID>\n"+
-					"\t\t<extensionID>com.distriqt.NativeMaps</extensionID>\n"+
-					"\t\t<extensionID>com.distriqt.playservices.Base</extensionID>\n"+
-					"\t\t<extensionID>com.distriqt.playservices.Maps</extensionID>\n"+
-			  	"\t</extensions>\n\n\n"+
-				
-				"And aloso controll your permission on Android manifest:\n\n" +
-				AndroidPermission+
-				'\n\n\n\n\n\n\n' +
-				"*******************");
-			
-			
-			var descriptString:String = StringFunctions.clearSpacesAndTabs(DevicePrefrence.appDescriptor.toString()) ; 
-			if(descriptString.indexOf("permission.MAPS_RECEIVE")!=-1 && descriptString.indexOf(DevicePrefrence.appID+".permission.MAPS_RECEIVE")==-1)
-			{
-				throw "Your Manifest is absolutly wrong!! controll the example";
-			}
-			
-			
-			var allAndroidPermission:Array = AndroidPermission.split('\n');
-			var leftPermission:String = '' ;
-			var androidManifestMustUpdate:Boolean = false ;
-			for(var i:int = 0 ; i<allAndroidPermission.length ; i++)
-			{
-				var isNessesaryToShow:Boolean = isNessesaryLine(allAndroidPermission[i]) ;
-				if(descriptString.indexOf(StringFunctions.clearSpacesAndTabs(removeNecessaryBoolet(allAndroidPermission[i])))==-1)
-				{
-					androidManifestMustUpdate = true ;
-					leftPermission += removeNecessaryBoolet(allAndroidPermission[i])+'\n' ;
-				}
-				else if(isNessesaryToShow)
-				{
-					leftPermission += removeNecessaryBoolet(allAndroidPermission[i])+'\n' ;
-				}
-				else
-				{
-					//leftPermission += '-'+allAndroidPermission[i]+'\n' ;
-				}
-			}
-			
-			function isNessesaryLine(line:String):Boolean
-			{
-				return line.indexOf(neceraryLines)!=-1 ;
-			}
-			
-			function removeNecessaryBoolet(line:String):String
-			{
-				return line.split(neceraryLines).join('') ;
-			}
-			
-			if(DevicePrefrence.isItPC && androidManifestMustUpdate)
-			{
-				throw hintText; 
-			}
 			
 			try
 			{
@@ -162,8 +81,6 @@ package nativeClasses.map
 				MapStyleOptionsClass = getDefinitionByName("com.distriqt.extension.nativemaps.objects.MapStyleOptions") as Class;
 				MapTypeClass = getDefinitionByName("com.distriqt.extension.nativemaps.objects.MapType") as Class ;
 				
-				
-				(NativeMapsClass as Object).init( DistriqtId );
 				
 				if ((NativeMapsClass as Object).isSupported)
 				{
@@ -270,10 +187,6 @@ package nativeClasses.map
 				myIcons = icons ;
 			}
 			mapCretedOnStage = false ;
-			if(api_key==null)
-			{
-				throw "You should set the DistriqtGoogleMap.setUp(..) first";
-			}
 			
 			
 			if ((NativeMapsClass as Object).isSupported)
@@ -296,7 +209,7 @@ package nativeClasses.map
 				mapCreated = true ;
 				mapIsShowing = true ;
 			}
-			this.addEventListener(Event.ENTER_FRAME,repose);
+			this.addEventListener(Event.ENTER_FRAME,repose,false,10000);
 
 		}
 		
@@ -317,7 +230,11 @@ package nativeClasses.map
 		private function mapCreatedHandler(e:*):void
 		{
 			mapCretedOnStage = true ;
-			setCenter(center.lat,center.lon,firstZoomLevel);
+			if(center!=null)
+				setCenter(center.lat,center.lon,firstZoomLevel);
+			else
+				setCenter(0,0,firstZoomLevel);
+
 			updateMarkers();
 		}
 		
@@ -342,10 +259,8 @@ package nativeClasses.map
 				var sclY:Number ;
 				deltaX = 0 ;
 				deltaY = 0 ;
-				var _fullScreenWidth:Number,
-					_fullScreenHeight:Number;
-				if(stageRect.width==0)
-				{
+				
+
 					trace("+++default size detection")
 					sclX = (stage.fullScreenWidth/stage.stageWidth);
 					sclY = (stage.fullScreenHeight/stage.stageHeight);
@@ -359,30 +274,13 @@ package nativeClasses.map
 						scl = sclY ;
 						deltaX = stage.fullScreenWidth-(stage.stageWidth)*scl ;
 					}
-				}
-				else
-				{
-					trace("+++advvanced size detection");
-					_fullScreenWidth = stageRect.width*StageManager.stageScaleFactor() ;
-					_fullScreenHeight = stageRect.height*StageManager.stageScaleFactor() ;
-					sclX = (_fullScreenWidth/stage.stageWidth);
-					sclY = (_fullScreenHeight/stage.stageHeight);
-					trace("sclX : "+sclX);
-					trace("sclY : "+sclY);
-					if(sclX<=sclY)
-					{
-						scl = sclX ;
-						deltaY = _fullScreenHeight-(stage.stageHeight)*scl ;
-					}
-					else
-					{
-						scl = sclY ;
-						deltaX = _fullScreenWidth-(stage.stageWidth)*scl ;
-					}
-					trace("deltaX : "+deltaX);
-					trace("deltaY : "+deltaY);
-					trace("scl : "+scl);
-				}
+				stage.scaleMode = StageScaleMode.NO_SCALE;
+				var stageHeightUnderStatusBar:Number = stage.stageHeight ;
+				stage.scaleMode = StageScaleMode.SHOW_ALL;
+				statusBarSize = (stage.fullScreenHeight-stageHeightUnderStatusBar);
+				//Alert.show("statusBarSize:"+statusBarSize+", scl:"+scl);
+				statusBarSize = Math.ceil(statusBarSize/scl);
+				//Alert.show("statusBarSize2:"+statusBarSize);
 			}
 			
 			//trace("Old rect : " +rect);
@@ -398,7 +296,7 @@ package nativeClasses.map
 			rect.height*=scl;
 			
 			rect.x = round(rect.x);
-			rect.y = round(rect.y);
+			rect.y = round(rect.y)-statusBarSize;
 			rect.width = round(rect.width);
 			rect.height = round(rect.height);
 			
