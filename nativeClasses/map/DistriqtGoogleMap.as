@@ -20,6 +20,9 @@ package nativeClasses.map
 	
 	import stageManager.StageManager;
 	import flash.display.StageScaleMode;
+	import contents.alert.Alert;
+	import com.distriqt.extension.nativemaps.NativeMaps;
+	import com.distriqt.extension.nativemaps.objects.MapStyleOptions;
 	
 	public class DistriqtGoogleMap extends Sprite
 	{
@@ -43,6 +46,8 @@ package nativeClasses.map
 		private static var isSupports:Boolean = false ;
 		
 		private static var mapInitialized:Boolean = false ;
+
+		private var map_style:String ;
 		
 		private static var 	scl:Number = 0,
 							statusBarSize:Number=0,
@@ -160,8 +165,9 @@ package nativeClasses.map
 			Obj.remove(this);
 		}
 		
-		public function setMap(centerLat:Number=NaN,centerLon:Number=NaN,icons:Vector.<MapIcon>=null,zoomLevel:Number=-1):void
+		public function setMap(centerLat:Number=NaN,centerLon:Number=NaN,icons:Vector.<MapIcon>=null,zoomLevel:Number=-1,mapStyleJSON:String=null):void
 		{
+			map_style = mapStyleJSON ;
 			//unload();
 			trace("AuthorisationStatus.ALWAYS : "+(AuthorisationStatusClass as Object).ALWAYS);
 			trace("AuthorisationStatus.DENIED : "+(AuthorisationStatusClass as Object).DENIED);
@@ -234,6 +240,13 @@ package nativeClasses.map
 				setCenter(center.lat,center.lon,firstZoomLevel);
 			else
 				setCenter(0,0,firstZoomLevel);
+
+				
+			if(map_style!=null)
+			{
+				var styleOption:MapStyleOptions = new MapStyleOptions(map_style);
+				NativeMaps.service.setMapStyle(styleOption);
+			}
 
 			updateMarkers();
 		}
