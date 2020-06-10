@@ -83,6 +83,8 @@
 		
 		
 		private static var watermarkBitmapData:BitmapData ;
+
+		private var _watermarkBitmapDataForThis:BitmapData ;
 		
 		
 		private var _watermark:Boolean = true ;
@@ -556,6 +558,12 @@
 				bitmapData.draw(myWatermark);
 				myWatermark.dispose();
 			}
+			if(_watermarkBitmapDataForThis!=null)
+			{
+				var myWatermark2:BitmapData = BitmapEffects.changeSize(_watermarkBitmapDataForThis,bitmapData.width,bitmapData.height,true,true,true);
+				bitmapData.draw(myWatermark2);
+				myWatermark2.dispose();
+			}
 			
 			if(grayScaledImage)
 			{
@@ -638,6 +646,12 @@
 		{
 			
 			DeviceImage.loadFile(onWatermarkLoaded,watermarkTarget)
+		}
+		
+		public function addWaterMark(watermarkBitmapData:BitmapData):void
+		{
+			
+			_watermarkBitmapDataForThis = watermarkBitmapData ;
 		}
 		
 			private static function onWatermarkLoaded():void
