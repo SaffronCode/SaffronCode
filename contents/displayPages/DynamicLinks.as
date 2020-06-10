@@ -673,7 +673,14 @@ package contents.displayPages
 			}
 			else
 			{
-				linksSensor.x = (firstItem==null)?myDeltaX0:firstItem.width+myDeltaX0 ;
+				if(!revertedX)
+				{
+					linksSensor.x = (firstItem==null)?myDeltaX0:firstItem.width+myDeltaX0 ;
+				}
+				else
+				{
+					linksSensor.x = (firstItem==null)?myDeltaX0:firstItem.x-myDeltaX0 ;
+				}
 			}
 			linksSensor.graphics.beginFill(0xff0000,linkSensorDebug);
 			var stepSize:Number = 0 ;
@@ -1413,7 +1420,10 @@ package contents.displayPages
 			{
 				if(MenuDirectionX<0 && l>0)
 				{
-					linksInterfaceStorage[0].x = linksInterfaceStorage[0].width*-1+myDeltaX0;
+					if(firstItem==null)
+						linksInterfaceStorage[0].x = linksInterfaceStorage[0].width*-1+myDeltaX0;
+					else
+						linksInterfaceStorage[0].x = firstItem.x-linksInterfaceStorage[0].width-myDeltaX0;
 				}
 			}
 			else
