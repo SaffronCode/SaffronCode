@@ -13,6 +13,8 @@
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import flash.ui.Keyboard;
+	import contents.LinkData;
+	import appManager.event.AppEventContent;
 	
 	
 	public class PopButton extends MovieClip
@@ -155,6 +157,16 @@
 		{
 			Obj.setButton(this,func);
 		}
+
+		public function setUpByLink(linkData:LinkData):void
+		{
+			setUp(linkData.name);
+			var ME:PopButton = this ;
+			onClick(function():void{
+				ME.dispatchEvent(new AppEventContent(linkData));
+			});
+		}
+
 		
 		/**From now , buttonID can be both string or uint<br>
 		 * You can set the button image if it has LighiImage on its frame*/
