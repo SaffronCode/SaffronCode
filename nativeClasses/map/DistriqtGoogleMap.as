@@ -1,4 +1,4 @@
-package nativeClasses.map
+﻿package nativeClasses.map
 {
 	//import com.distriqt.extension.nativemaps.AuthorisationStatus;
 	//import com.distriqt.extension.nativemaps.NativeMaps;
@@ -23,6 +23,10 @@ package nativeClasses.map
 	import contents.alert.Alert;
 	import com.distriqt.extension.nativemaps.NativeMaps;
 	import com.distriqt.extension.nativemaps.objects.MapStyleOptions;
+	import flash.display.BitmapData;
+	import flash.display.Bitmap;
+	import com.distriqt.extension.nativemaps.events.NativeMapBitmapEvent;
+	import com.distriqt.extension.nativemaps.events.NativeMapEvent;
 	
 	public class DistriqtGoogleMap extends Sprite
 	{
@@ -47,7 +51,10 @@ package nativeClasses.map
 		
 		private static var mapInitialized:Boolean = false ;
 
-		private var map_style:String ;
+		private var map_style:String,
+					user_location:Boolean ;
+
+		private var forceToHideMap:Boolean = false ;
 		
 		private static var 	scl:Number = 0,
 							statusBarSize:Number=0,
@@ -70,6 +77,9 @@ package nativeClasses.map
 		private var center:Object;
 		
 		private var firstZoomLevel:Number = -1 ;
+
+		private var catchedBitmapData:BitmapData,
+					catchedBitmap:Bitmap ;
 		
 		public static function setUp(GoogleAPIKey:String=null,DistriqtId:String=null):void
 		{
@@ -152,6 +162,9 @@ package nativeClasses.map
 			super();
 			dispatcher.dispatchEvent(new Event(Event.REMOVED_FROM_STAGE));
 			unload();
+
+			catchedBitmap = new Bitmap();
+			this.addChild(catchedBitmap);
 			
 			this.graphics.beginFill(0x222222,0);
 			this.graphics.drawRect(0,0,Width,Height);
@@ -165,9 +178,10 @@ package nativeClasses.map
 			Obj.remove(this);
 		}
 		
-		public function setMap(centerLat:Number=NaN,centerLon:Number=NaN,icons:Vector.<MapIcon>=null,zoomLevel:Number=-1,mapStyleJSON:String=null):void
+		public function setMap(centerLat:Number=NaN,centerLon:Number=NaN,icons:Vector.<MapIcon>=null,zoomLevel:Number=-1,mapStyleJSON:String=null,showUserLocation:Boolean=false):void
 		{
 			map_style = mapStyleJSON ;
+			user_location = showUserLocation ;
 			//unload();
 			trace("AuthorisationStatus.ALWAYS : "+(AuthorisationStatusClass as Object).ALWAYS);
 			trace("AuthorisationStatus.DENIED : "+(AuthorisationStatusClass as Object).DENIED);
@@ -208,8 +222,9 @@ package nativeClasses.map
 				firstZoomLevel = zoomLevel ;
 				trace("...listenning...");
 				(NativeMapsClass as Object).service.addEventListener( (NativeMapEventClass as Object).MAP_CREATED, mapCreatedHandler );
+				(NativeMapsClass as Object).service.addEventListener( NativeMapBitmapEvent.READY , updateCapturedBitmap);
 				trace("---Creating...");
-				(NativeMapsClass as Object).service.createMap( rect, (MapTypeClass as Object).MAP_TYPE_NORMAL);
+				NativeMaps.service.createMap( rect, (MapTypeClass as Object).MAP_TYPE_NORMAL);
 				
 				trace("Create map done");
 				mapCreated = true ;
@@ -217,6 +232,12 @@ package nativeClasses.map
 			}
 			this.addEventListener(Event.ENTER_FRAME,repose,false,10000);
 
+		}
+
+		private function updateCapturedBitmap(e:NativeMapBitmapEvent):void
+		{
+			var mapToBitmapData:BitmapData = e.bitmapData ;
+			catchedBitmap.bitmapData = e.bitmapData;
 		}
 		
 		public function unload(e:*=null):void
@@ -242,14 +263,30 @@ package nativeClasses.map
 				setCenter(0,0,firstZoomLevel);
 
 				
-			if(map_style!=null)
-			{
-				var styleOption:MapStyleOptions = new MapStyleOptions(map_style);
-				NativeMaps.service.setMapStyle(styleOption);
-			}
+			setMapStyle();
+
+			NativeMaps.service.showUserLocation(user_location);
 
 			updateMarkers();
 		}
+
+		private function setMapStyle():void
+		{
+			if(map_style!=null)
+			{
+				/*forceToHideMap = true ;
+				repose(null);
+				(NativeMapsClass as Object).service.addEventListener( (NativeMapEvent).MAP_RENDER_COMPLETE, showMapAgain );*/
+				var styleOption:MapStyleOptions = new MapStyleOptions(map_style);
+				NativeMaps.service.setMapStyle(styleOption);
+			}
+		}
+
+			private function showMapAgain(e:*):void
+			{
+				(NativeMapsClass as Object).service.removeEventListener( (NativeMapEvent).MAP_RENDER_COMPLETE, showMapAgain );
+				forceToHideMap = false ;
+			}
 		
 		
 		public function setCenter(lat:Number,lon:Number,zoomLevel:Number=-1,animationDuration:uint=2000):void
@@ -262,6 +299,8 @@ package nativeClasses.map
 		
 		private function createViewPort():Rectangle
 		{
+			catchedBitmap.width = 1 ;
+			catchedBitmap.height = 1 ;
 			var rect:Rectangle = this.getBounds(stage);
 			//trace("****Create view port");
 			if(scl==0)
@@ -295,6 +334,8 @@ package nativeClasses.map
 				statusBarSize = Math.ceil(statusBarSize/scl);
 				//Alert.show("statusBarSize2:"+statusBarSize);
 			}
+
+			catchedBitmap.scaleX = catchedBitmap.scaleY = 1/scl ;
 			
 			//trace("Old rect : " +rect);
 			//trace("scl : "+scl);
@@ -358,7 +399,7 @@ package nativeClasses.map
 			
 			//trace("map place is : "+rect);
 			
-			if(rect!=null && Obj.isAccesibleByMouse(this))
+			if(forceToHideMap ==false && rect!=null && Obj.isAccesibleByMouse(this))
 			{
 				//trace("Show map!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 				if(!mapIsShowing)
@@ -366,6 +407,7 @@ package nativeClasses.map
 					//trace("!!!!!!!!!!!!!!!!!show!!!!!!!!!!!!");
 					(NativeMapsClass as Object).service.showMap();
 					mapIsShowing = true ;
+					//catchedBitmap.visible = false ;
 				}
 			}
 			else
@@ -375,12 +417,14 @@ package nativeClasses.map
 				{
 					//trace("!!!!!!!!!!!!!!!hide!!!!!!!!!!!!!!!");
 					(NativeMapsClass as Object).service.hideMap();
+					NativeMaps.service.requestMapBitmapData();
 					mapIsShowing = false ;
+					catchedBitmap.visible = true ;
 				}
 			}
 		}
 		
-		public function addMarker(markerName:String,lat:Number,lon:Number,markerTitle:String,markerInfo:String,color:uint=0,enableInfoWindow=true,animated:Boolean=true,showInfoButton:Boolean=true,iconId:String=''):void
+		public function addMarker(markerName:String,lat:Number,lon:Number,markerTitle:String,markerInfo:String,color:uint=0,enableInfoWindow:Boolean=true,animated:Boolean=true,showInfoButton:Boolean=true,iconId:String=''):void
 		{
 			trace("****************Map marker Added : ",lat,lon,markerName,'iconId : '+iconId);
 			var myMarker:Object = new MapMarkerClass(markerName,new LatLngClass(lat,lon),markerTitle,markerInfo,color,false,enableInfoWindow,animated,showInfoButton,iconId)
