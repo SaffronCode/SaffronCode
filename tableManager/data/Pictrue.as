@@ -108,7 +108,7 @@
 			}
 			catch (error:Error)
 			{
-				trace("loader hasn't loaded yet");
+				SaffronLogger.log("loader hasn't loaded yet");
 			}
 			
 				
@@ -174,7 +174,7 @@
 
 			var pictrueLoader:Pictrue = this	
 			this.dispatchEvent(new TableEvents(TableEvents.PICTRUE_TALBE,null,this))
-			//trace( "nameeee =",getQualifiedClassName( evt_p.target.content) );
+			//SaffronLogger.log( "nameeee =",getQualifiedClassName( evt_p.target.content) );
 		}
 		
 		private function sizePic():Rectangle
@@ -196,7 +196,7 @@
 		}
 		public function unLoad()
 		{
-			trace("***ouLoad****");
+			SaffronLogger.log("***ouLoad****");
 			_loaderPage.unloadAndStop();
 			_loaderPage.unload()				
 		}

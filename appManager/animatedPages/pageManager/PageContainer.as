@@ -44,7 +44,7 @@ package appManager.animatedPages.pageManager
 		{
 			if(currentPage != null)
 			{
-				trace("delete current page");
+				SaffronLogger.log("delete current page");
 				this.removeChild(currentPage);
 				if(scrollerMC)
 				{
@@ -66,7 +66,7 @@ package appManager.animatedPages.pageManager
 			var pageClassType:Class ;
 			pageClassType = Obj.generateClass(myEvent.myType);
 			
-			trace("myEvent.myType : "+myEvent.myType);
+			SaffronLogger.log("myEvent.myType : "+myEvent.myType);
 			
 			
 			if(pageClassType != null)
@@ -88,10 +88,10 @@ package appManager.animatedPages.pageManager
 				/*}
 				catch(e)
 				{
-					trace("Page is not generated : "+e);
+					SaffronLogger.log("Page is not generated : "+e);
 					return;
 				}*/
-				trace("*** currentPage added to stage");
+				SaffronLogger.log("*** currentPage added to stage");
 				this.addChild(currentPage);
 				
 				if(currentPageData.scrollAble)
@@ -112,24 +112,24 @@ package appManager.animatedPages.pageManager
 				{
 					if(currentPage.hasOwnProperty('setUp'))
 					{
-						trace("This page can get values");
+						SaffronLogger.log("This page can get values");
 						try
 						{
 							(currentPage as DisplayPageInterface).setUp(currentPageData);
 						}
 						catch(e:Error)
 						{
-							trace("**********************************************\n\n\n\n\n\n\n\nError happens :\n"+e.message+'\n'+e.getStackTrace()+"\n\n\n\n\n\n\n\n********************************************");
+							SaffronLogger.log("**********************************************\n\n\n\n\n\n\n\nError happens :\n"+e.message+'\n'+e.getStackTrace()+"\n\n\n\n\n\n\n\n********************************************");
 						}
 					}
 					else
 					{
-						trace("Static page calls");
+						SaffronLogger.log("Static page calls");
 					}
 				}
 				else
 				{
-					trace("static application page");
+					SaffronLogger.log("static application page");
 				}
 				
 				if(App.currentMenu!=null)
@@ -254,7 +254,7 @@ package appManager.animatedPages.pageManager
 			if(currentPage!=null && !pageReadyDispatched)
 			{
 				pageReadyDispatched = true ;
-				trace("Dispatch page ready event");
+				SaffronLogger.log("Dispatch page ready event");
 				currentPage.dispatchEvent(new PageControllEvent(PageControllEvent.PAGE_ANIMATION_READY));
 			}
 		}

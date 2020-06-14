@@ -149,21 +149,21 @@ package mp3Player
 		protected function TryLater(event:URLSaverEvent):void
 		{
 			
-			trace("Internet connection fails , but I will try again ... ");
+			SaffronLogger.log("Internet connection fails , but I will try again ... ");
 		}
 		
 		protected function Loading(event:URLSaverEvent):void
 		{
 			
-			trace("Im downloading..1:"+event.precent );
-			trace("Im downloading..2:"+  String( event.precent*100 ).substr(0,3)  ); 
+			SaffronLogger.log("Im downloading..1:"+event.precent );
+			SaffronLogger.log("Im downloading..2:"+  String( event.precent*100 ).substr(0,3)  ); 
 			precentTF.text = Math.round(Number(String( event.precent*100 ).substr(0,3))) +' %';
 		}
 		
 		protected function SoundIsReady(event:URLSaverEvent):void
 		{
 			
-			trace("sound file is ready to use");
+			SaffronLogger.log("sound file is ready to use");
 			startToPlaySound(event.offlineTarget);
 		}
 		
@@ -176,7 +176,7 @@ package mp3Player
 			SoundIsLoaded = true ;
 			precentTF.text = '' ;
 			sliderMC.userSlideEnabled();
-			//trace("Add my sound to sound player");
+			//SaffronLogger.log("Add my sound to sound player");
 			SoundPlayer.addSound(offlineURL,mediaSoundID,false,1);
 			this.addEventListener(Event.ENTER_FRAME,checkPrecent);
 			
@@ -211,7 +211,7 @@ package mp3Player
 			}
 			
 			var precent:Number = SoundPlayer.getPlayedPrecent(mediaSoundID) ;
-			//trace("Sound precent is : "+precent);
+			//SaffronLogger.log("Sound precent is : "+precent);
 			currentTF.text = TimeToString.timeInString(Math.round(precent*(currentMuseicTotalTimeInMilisecond/1000)));
 		}
 		
@@ -252,7 +252,7 @@ package mp3Player
 		{
 			if(SoundIsLoaded)
 			{
-				//trace("new precent seleced : "+newPrecetn);
+				//SaffronLogger.log("new precent seleced : "+newPrecetn);
 				SoundPlayer.pause(mediaSoundID,true);
 				SoundPlayer.play(mediaSoundID,true,true,newPrecetn);
 				playPauseBTN.gotoAndStop(2);

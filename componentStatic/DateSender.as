@@ -55,7 +55,7 @@ package componentStatic
 			{
 				setObj(this.name,value,ErrorManager.DATE)
 			}
-			trace('_datedate:',_date)
+			SaffronLogger.log('_datedate:',_date)
 			if(yMc!=null)
 			{
 				_yyStr = getFiledDate(_date,YYYY)
@@ -190,17 +190,17 @@ package componentStatic
 				if(_yyStr == YYYY && _mmStr == MM && _ddStr == DD)
 				{
 					_dataValue = null
-					trace('Date is null')	
+					SaffronLogger.log('Date is null')	
 				}
 				else if(_shamsi)		
 				{
 					_dataValue = MyShamsi.shamsiToMiladi(_shamsiDate).time.toString()
-					trace('Date is Shamsi')
+					SaffronLogger.log('Date is Shamsi')
 				}
 				else
 				{
 					_dataValue = _date.time.toString()
-					trace('Date is miladi:')
+					SaffronLogger.log('Date is miladi:')
 				}
 				setObj(this.name,_dataValue,ErrorManager.DATE)
 			}

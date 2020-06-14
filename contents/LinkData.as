@@ -32,7 +32,7 @@
 			
 			if(linkXML!=null)
 			{
-				//trace('each link is : '+linkXML.@level+' - '+linkXML.@name);
+				//SaffronLogger.log('each link is : '+linkXML.@level+' - '+linkXML.@name);
 				name = linkXML.@name;
 				w = Number(linkXML.@w);
 				h = Number(linkXML.@h);
@@ -48,7 +48,7 @@
 				{
 					level = uint(linkXML.@level);
 				}
-				//trace('level is : '+level);
+				//SaffronLogger.log('level is : '+level);
 				if(linkXML!='')
 				{
 					if(linkXML.link != undefined)

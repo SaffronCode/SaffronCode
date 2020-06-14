@@ -73,7 +73,7 @@ public class PermissionControl {
 			isNessesaryToShow = isNessesaryLine(allSplittedPermission[i]);
 			if(descriptString.indexOf(StringFunctions.clearSpacesAndTabsAndArrows(removeNecessaryBoolet(allSplittedPermission[i])))==-1)
 			{
-				trace("I couldnt find : "+allSplittedPermission[i]);
+				SaffronLogger.log("I couldnt find : "+allSplittedPermission[i]);
 				androidManifestMustUpdate = true ;
 				leftPermission += removeNecessaryBoolet(allSplittedPermission[i])+'\n' ;
 			}
@@ -124,7 +124,7 @@ public class PermissionControl {
 			isNessesaryToShow = isNessesaryLine(allSplittedPermission[i]);
 			if(descriptString.indexOf(StringFunctions.clearSpacesAndTabsAndArrows(removeNecessaryBoolet(allSplittedPermission[i])))==-1)
 			{
-				trace("I couldnt find : "+allSplittedPermission[i]);
+				SaffronLogger.log("I couldnt find : "+allSplittedPermission[i]);
 				appleManifestMustUpdate = true ;
 				leftPermission += removeNecessaryBoolet(allSplittedPermission[i])+'\n' ;
 			}
@@ -152,15 +152,15 @@ public class PermissionControl {
 		}
 		else
 		{
-			trace('***********************************************************');
-			trace('***********************************************************');
-			trace('***********************************************************');
-			trace('***********************************************************\n\n');
-			trace(str+'\n\n');
-			trace('***********************************************************');
-			trace('***********************************************************');
-			trace('***********************************************************');
-			trace('***********************************************************');
+			SaffronLogger.log('***********************************************************');
+			SaffronLogger.log('***********************************************************');
+			SaffronLogger.log('***********************************************************');
+			SaffronLogger.log('***********************************************************\n\n');
+			SaffronLogger.log(str+'\n\n');
+			SaffronLogger.log('***********************************************************');
+			SaffronLogger.log('***********************************************************');
+			SaffronLogger.log('***********************************************************');
+			SaffronLogger.log('***********************************************************');
 		}
 	}
 	
@@ -184,7 +184,7 @@ public class PermissionControl {
 	{
 		if(DevicePrefrence.isItPC && DevicePrefrence.appDescriptor.toString().indexOf("<android>")!=-1 &&  DevicePrefrence.appDescriptor.toString().indexOf('android:hardwareAccelerated="true')==-1)
 		{
-			trace( 'You have to add below permition to Android manifest to make StageVideo works:\n<application android:enabled="true" android:hardwareAccelerated="true"/>\n\nor\n\n<application android:enabled="true" android:hardwareAccelerated="true">')
+			SaffronLogger.log( 'You have to add below permition to Android manifest to make StageVideo works:\n<application android:enabled="true" android:hardwareAccelerated="true"/>\n\nor\n\n<application android:enabled="true" android:hardwareAccelerated="true">')
 		}
 	}
 }

@@ -40,7 +40,7 @@ package darkBox
 		
 		override public function show(target:String=''):void
 		{
-			trace("show this image : "+target);
+			SaffronLogger.log("show this image : "+target);
 			
 			super.show();
 			this.removeChildren();
@@ -90,7 +90,7 @@ package darkBox
 		protected function imageNotLoaded(event:IOErrorEvent):void
 		{
 			
-			trace("Image type is unknown");
+			SaffronLogger.log("Image type is unknown");
 		}
 	}
 }

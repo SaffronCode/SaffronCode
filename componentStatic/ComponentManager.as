@@ -83,7 +83,7 @@ package componentStatic
 			{
 				return _obj[_page][Name_p];
 			}
-			trace('Component Manager is not setup ');
+			SaffronLogger.log('Component Manager is not setup ');
 			return null;
 		}
 		public function obj():*
@@ -101,7 +101,7 @@ package componentStatic
 		{	
 			/*for(var i:int=0;i<errorManager.getError().length;i++)
 			{
-				trace('component fild error id:',errorManager.getError()[i].id,'message :',errorManager.getError()[i].message);
+				SaffronLogger.log('component fild error id:',errorManager.getError()[i].id,'message :',errorManager.getError()[i].message);
 			}*/
 			return errorManager.getError();
 		}

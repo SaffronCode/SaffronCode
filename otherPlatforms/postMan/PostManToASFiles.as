@@ -34,7 +34,7 @@
 			
 			var serviceData:PostManExportModel = new PostManExportModel();
 			JSONParser.parse(service,serviceData);
-			trace("serviceData : "+serviceData.item.length);
+			SaffronLogger.log("serviceData : "+serviceData.item.length);
 			serviceGenerator = new ServiceGenerator();
 			/*for(var i:uint = 0 ; i<serviceData.item.length ; i++)
 			{
@@ -51,7 +51,7 @@
 				if(rootItems[i].request.url!=null && rootItems[i].request.url!='')
 				{
 					mySaveToFolderForServices.createDirectory();
-					trace(">>test : "+rootItems[i].request.url);
+					SaffronLogger.log(">>test : "+rootItems[i].request.url);
 					createRequestFiles(rootItems[i],mySaveToFolderForServices);
 				}
 				searchForAllItems(rootItems[i].item,mySaveToFolderForServices.resolvePath(rootItems[i].name));
@@ -72,19 +72,19 @@
 			
 			if(itemModel.response.length>0 && itemModel.response[0].body!=null)
 			{
-				trace("***** : "+itemModel.response[itemModel.response.length-1].body);
-				trace("******** : "+JSONCorrector(itemModel.response[itemModel.response.length-1].body));
+				SaffronLogger.log("***** : "+itemModel.response[itemModel.response.length-1].body);
+				SaffronLogger.log("******** : "+JSONCorrector(itemModel.response[itemModel.response.length-1].body));
 				serviceGenerator.outPutObject = JSON.parse(JSONCorrector(itemModel.response[itemModel.response.length-1].body)) ;
 				serviceGenerator.outPutObjectClassName = createClassName(serviceGenerator.ServiceName,'Respond');
-				trace("serviceGenerator.outPutObject : "+serviceGenerator.outPutObject);
+				SaffronLogger.log("serviceGenerator.outPutObject : "+serviceGenerator.outPutObject);
 				if(serviceGenerator.outPutObject is Array || serviceGenerator.outPutObject is Vector.<*>)
 				{
-					trace("It was vector");
+					SaffronLogger.log("It was vector");
 					SaveJSONtoAs(serviceGenerator.outPutObject[0],mySaveToFolderForTypes,serviceGenerator.outPutObjectClassName);
 				}
 				else
 				{
-					trace("It was Object");
+					SaffronLogger.log("It was Object");
 					SaveJSONtoAs(serviceGenerator.outPutObject,mySaveToFolderForTypes,serviceGenerator.outPutObjectClassName);
 				}
 			}
@@ -179,16 +179,16 @@
 			{
 				if(body.raw!='' && body.raw!=null)
 				{
-					//trace("JSON is : "+body.raw);
+					//SaffronLogger.log("JSON is : "+body.raw);
 					var convertedJSON:String = JSONCorrector(body.raw) ;
-					//trace("convertedJSON JSON is : "+convertedJSON);
+					//SaffronLogger.log("convertedJSON JSON is : "+convertedJSON);
 					try
 					{
 						bodyObject = JSON.parse(convertedJSON) ;
 					}
 					catch(e)
 					{
-						trace("JSON input model was wrnog : "+JSONCorrector(body.raw));
+						SaffronLogger.log("JSON input model was wrnog : "+JSONCorrector(body.raw));
 					};
 				}
 			}
@@ -198,7 +198,7 @@
 		/**This will replace dfafd:"dfds" with "dfafd":"dfds"*/
 		private static function JSONCorrector(wrongJSON:String):String
 		{
-			trace("Current entered json is : "+wrongJSON);
+			SaffronLogger.log("Current entered json is : "+wrongJSON);
 			if(wrongJSON=="True")
 			{
 				return "true" ;
@@ -215,8 +215,8 @@
 		 * Waring!! each class has to have a variable with a special name*/
 		public static function SaveJSONtoAs(jsonObject:Object,directory:File,rootClassName:String):File
 		{
-			trace("Target file directory is : "+directory.nativePath);
-			trace("Create class : "+rootClassName);
+			SaffronLogger.log("Target file directory is : "+directory.nativePath);
+			SaffronLogger.log("Create class : "+rootClassName);
 			var myAsClass:String = classFileModel ;
 			myAsClass = myAsClass.split("[ClassName]").join(rootClassName) ;
 			
@@ -228,13 +228,13 @@
 				sortedParams.push(names);
 			}
 			sortedParams.sort();
-			trace("sortedParams : "+sortedParams);
+			SaffronLogger.log("sortedParams : "+sortedParams);
 			for(var i:int=0 ; i <sortedParams.length ; i++)
 			{
 				var paramName:String = sortedParams[i] ;
 				parameters+='\t\t/**"'+paramName+'":"'+jsonObject[paramName]+'"*/\n' ;
 				parameters+='\t\tpublic var '+paramName+':' ;
-				trace(">>>>>"+paramName);
+				SaffronLogger.log(">>>>>"+paramName);
 				if(jsonObject[paramName] is String)
 				{
 					parameters+='String ;'
@@ -249,7 +249,7 @@
 				}
 				else if(jsonObject[paramName] is Array)
 				{
-					trace(">>>"+paramName);
+					SaffronLogger.log(">>>"+paramName);
 					if(jsonObject[paramName].length>0 &&
 						!(jsonObject[paramName][0] is Number) &&
 						!(jsonObject[paramName][0] is String) &&

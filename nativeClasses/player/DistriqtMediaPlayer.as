@@ -90,7 +90,7 @@
 			
 			if (!isSupports)
 			{
-				trace("Distriqt media player is not supporting this device");
+				SaffronLogger.log("Distriqt media player is not supporting this device");
 			}
 			isFullScreen = false;
 			this.graphics.beginFill(0x222222, 0);
@@ -114,7 +114,7 @@
 		{
 			appStageWidth = stage.stageWidth;
 			appStageHeight = stage.stageHeight;
-			trace("DevicePrefrence.isPortrait() : " + DevicePrefrence.isPortrait());
+			SaffronLogger.log("DevicePrefrence.isPortrait() : " + DevicePrefrence.isPortrait());
 			if (DevicePrefrence.isPortrait())
 			{
 				debugIntervalId = setInterval(controlOrientationPortrate, 500);
@@ -163,19 +163,19 @@
 			else
 				lastLandscapeOrientation = stage.deviceOrientation;
 			
-			trace("lastPortrateOrientetion : " + lastPortrateOrientetion);
-			trace("lastLandscapeOrientation : " + lastLandscapeOrientation);
+			SaffronLogger.log("lastPortrateOrientetion : " + lastPortrateOrientetion);
+			SaffronLogger.log("lastLandscapeOrientation : " + lastLandscapeOrientation);
 			
-			trace(" stage.orientation : " + stage.orientation + " vs " + stage.deviceOrientation);
+			SaffronLogger.log(" stage.orientation : " + stage.orientation + " vs " + stage.deviceOrientation);
 			
 			try
 			{
-				trace("listen to rotation: isFullScreen : " + isFullScreen);
+				SaffronLogger.log("listen to rotation: isFullScreen : " + isFullScreen);
 				if (isFullScreen)
 				{
 					if (stage.deviceOrientation == StageOrientation.DEFAULT || stage.deviceOrientation == StageOrientation.UPSIDE_DOWN)
 					{
-						trace("Make it exit from full screen : " + player);
+						SaffronLogger.log("Make it exit from full screen : " + player);
 						//Make it exit from full screen ;
 						//player.setFullscreen( false );
 						//isFullScreen = false ;
@@ -184,7 +184,7 @@
 					}
 					else if (isLandScape(stage.orientation))// if(stage.orientation != revertLandScape(stage.deviceOrientation))
 					{
-						trace("Need to rotate to : " + stage.deviceOrientation);
+						SaffronLogger.log("Need to rotate to : " + stage.deviceOrientation);
 						stage.setOrientation(revertLandScape(stage.deviceOrientation));
 					}
 				}
@@ -193,7 +193,7 @@
 					if (stage.deviceOrientation == StageOrientation.ROTATED_RIGHT || stage.deviceOrientation == StageOrientation.ROTATED_LEFT)
 					{
 						//Enter full screen
-						trace("Make it full screen : " + player);
+						SaffronLogger.log("Make it full screen : " + player);
 						//player.setFullscreen( true );
 						//isFullScreen = true ;
 						dynamicFullscreen = true;
@@ -203,7 +203,7 @@
 			}
 			catch (e:Error)
 			{
-				trace("!!!!! Something happend: " + e.message);
+				SaffronLogger.log("!!!!! Something happend: " + e.message);
 			}
 			
 			lastStageorientetion = stage.orientation;
@@ -318,15 +318,15 @@
 		
 		private function band_test(e):void
 		{
-			trace("testSpeed:" + e.target.last_speed() + ' kb/s')
+			SaffronLogger.log("testSpeed:" + e.target.last_speed() + ' kb/s')
 		}
 		
 		private function play_video(e):void
 		{
 			var bw = e.target.getBandwidth();
 			
-			trace("Final bandwidth: " + bw + ' kb/s');
-			trace("Peak bandwidth: " + e.target.getPeak() + ' kb/s');
+			SaffronLogger.log("Final bandwidth: " + bw + ' kb/s');
+			SaffronLogger.log("Peak bandwidth: " + e.target.getPeak() + ' kb/s');
 			lastIndex = index;
 			if (bw > 400)
 			{
@@ -364,7 +364,7 @@
 				connect_stream();
 				break;
 			case "NetStream.Play.StreamNotFound": 
-				trace('Could not find video.');
+				SaffronLogger.log('Could not find video.');
 				break;
 			}
 		}
@@ -436,13 +436,13 @@
 		/**Is loading*/
 		private function isLoading(e:*):void
 		{
-			trace("*** *** ***** isLoading 1 : " + isLoading);
+			SaffronLogger.log("*** *** ***** isLoading 1 : " + isLoading);
 		}
 		
 		/**Is Loaded*/
 		private function isLoaded(e:*):void
 		{
-			trace("*** *** ***** isLoaded 2 : " + isLoaded);
+			SaffronLogger.log("*** *** ***** isLoaded 2 : " + isLoaded);
 		
 		}
 		
@@ -451,11 +451,11 @@
 		{
 			manualFullscreen = false;
 			dynamicFullscreen = false;
-			trace("*** Exit full screen !! : " + event);
+			SaffronLogger.log("*** Exit full screen !! : " + event);
 			if (/*isFullScreen && */DevicePrefrence.isPortrait())
 			{
 				stage.setOrientation(lastPortrateOrientetion);
-				trace("StageOrientation1. >>> " + lastPortrateOrientetion);
+				SaffronLogger.log("StageOrientation1. >>> " + lastPortrateOrientetion);
 			}
 			isFullScreen = false;
 		}
@@ -463,7 +463,7 @@
 		/**is full screen now*/
 		protected function isFullscreened(event:Event):void
 		{
-			trace("*** Set full screen !! : " + event);
+			SaffronLogger.log("*** Set full screen !! : " + event);
 			if (/*!isFullScreen && */DevicePrefrence.isPortrait() && isFullScreen != true)
 			{
 				if (!DevicePrefrence.isIOS())
@@ -471,7 +471,7 @@
 					var toLanscapeOrientation:String = revertLandScape(lastLandscapeOrientation);
 					stage.setOrientation(toLanscapeOrientation);
 				}
-				trace("StageOrientation2. >>> " + toLanscapeOrientation);
+				SaffronLogger.log("StageOrientation2. >>> " + toLanscapeOrientation);
 				if (!dynamicFullscreen)
 					manualFullscreen = true;
 			}
@@ -504,14 +504,14 @@
 		private function createVewPort():Rectangle
 		{
 			var rect:Rectangle = this.getBounds(stage);
-			/*trace("|rect : "+rect);
+			/*SaffronLogger.log("|rect : "+rect);
 			
-			   trace("stage.fullScreenHeight : "+stage.fullScreenHeight);
-			   trace("stage.fullScreenWidth : "+stage.fullScreenWidth);
-			   trace("stage.stageHeight : "+stage.stageHeight);
-			   trace("stage.stageWidth : "+stage.stageWidth);
-			   trace("appStageWidth : "+appStageWidth);
-			   trace("appStageHeight : "+appStageHeight);*/
+			   SaffronLogger.log("stage.fullScreenHeight : "+stage.fullScreenHeight);
+			   SaffronLogger.log("stage.fullScreenWidth : "+stage.fullScreenWidth);
+			   SaffronLogger.log("stage.stageHeight : "+stage.stageHeight);
+			   SaffronLogger.log("stage.stageWidth : "+stage.stageWidth);
+			   SaffronLogger.log("appStageWidth : "+appStageWidth);
+			   SaffronLogger.log("appStageHeight : "+appStageHeight);*/
 			
 			if (scl == 0 || lastStageW != stage.fullScreenWidth)
 			{
@@ -534,9 +534,9 @@
 				}
 			}
 			
-			/*trace("scl : "+scl);
-			   trace("deltaY : "+deltaY);
-			   trace("deltaX : "+deltaX);*/
+			/*SaffronLogger.log("scl : "+scl);
+			   SaffronLogger.log("deltaY : "+deltaY);
+			   SaffronLogger.log("deltaX : "+deltaX);*/
 			
 			rect.x *= scl;
 			rect.y *= scl;
@@ -558,7 +558,7 @@
 		public function close():void
 		{
 			NativeApplication.nativeApplication.systemIdleMode = SystemIdleMode.NORMAL;
-			trace("Hide the player");
+			SaffronLogger.log("Hide the player");
 			clearTimeout(checkSeekID);
 					clearTimeout(checkQuailyID);
 			try
@@ -591,7 +591,7 @@
 					player.removeEventListener(MediaPlayerEventClass.FULLSCREEN_ENTER, isFullscreened);
 					player.removeEventListener(MediaPlayerEventClass.FULLSCREEN_EXIT, exitFullscreened);
 					exitFullscreened(null);
-					trace("Remove player");
+					SaffronLogger.log("Remove player");
 					//player.removeEventListener(com.distriqt.extension.mediaplayer.events.MediaPlayerEvent.STOPPED,exitFullscreened);
 					player.destroy();
 					player = null;
@@ -600,7 +600,7 @@
 				}
 				catch (e)
 				{
-					trace(">>e" + e);
+					SaffronLogger.log(">>e" + e);
 				}
 			}
 			this.removeEventListener(Event.ENTER_FRAME, controlPlayerViewPort);
@@ -646,13 +646,13 @@
 		public static function setId(distriqtId:String=null):void
 		{
 			myDistriqtId = distriqtId;
-			trace("++++Distriqt media player starts+++");
+			SaffronLogger.log("++++Distriqt media player starts+++");
 			try
 			{
 				MediaPlayerClass = getDefinitionByName("com.distriqt.extension.mediaplayer.MediaPlayer") as Class;
 				MediaPlayerOptionsClass = getDefinitionByName("com.distriqt.extension.mediaplayer.MediaPlayerOptions") as Class;
 				MediaPlayerEventClass = getDefinitionByName("com.distriqt.extension.mediaplayer.events.MediaPlayerEvent") as Class;
-				trace("+++Media player starts+++");
+				SaffronLogger.log("+++Media player starts+++");
 			}
 			catch (e)
 			{
@@ -660,7 +660,7 @@
 				MediaPlayerOptionsClass = null;
 				MediaPlayerEventClass = null;
 				isSupports = false;
-				trace('*********************** You dont have com.distriqt.extension.mediaplayer.MediaPlayer embeded in your project **************************');
+				SaffronLogger.log('*********************** You dont have com.distriqt.extension.mediaplayer.MediaPlayer embeded in your project **************************');
 				return;
 			}
 			try
@@ -669,16 +669,16 @@
 				if ((MediaPlayerClass as Object).isSupported)
 				{
 					isSupports = true;
-					trace("+++Media player is supports+++");
+					SaffronLogger.log("+++Media player is supports+++");
 				}
 				else
 				{
-					trace("+++media player is not supports+++");
+					SaffronLogger.log("+++media player is not supports+++");
 				}
 			}
 			catch (e:Error)
 			{
-				trace("+++Distriqt media player isSupports : " + e);
+				SaffronLogger.log("+++Distriqt media player isSupports : " + e);
 				isSupports = false;
 			}
 		}

@@ -276,7 +276,7 @@
 				}
 			}
 			namesArray = namesArray.concat(buttonsList);
-			trace("namesArray : "+namesArray.length);
+			SaffronLogger.log("namesArray : "+namesArray.length);
 			
 			if((addBackButton && namesArray.length < 3) || (!addBackButton && namesArray.length == 0 ))
 			{
@@ -295,7 +295,7 @@
 		{
 			if(e.buttonTitle == Contents.lang.t[id_back])
 			{
-				trace("let this menu close");
+				SaffronLogger.log("let this menu close");
 				if(onBacked!=null)
 				{
 					if(onBacked.length==0)

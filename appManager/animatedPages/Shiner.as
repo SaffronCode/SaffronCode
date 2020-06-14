@@ -39,7 +39,7 @@
 		
 		private function removeShine(event:Event):void
 		{
-			trace("***Remove shine");
+			SaffronLogger.log("***Remove shine");
 			var shine:ShineElement = event.target as ShineElement ;
 			shine.removeEventListener(Event.REMOVED,removeShine);
 			Obj.remove(shine);

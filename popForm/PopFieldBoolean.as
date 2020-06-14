@@ -74,7 +74,7 @@ package popForm
 		
 		override public function get data():*
 		{
-			//trace("Get my date : "+date);
+			//SaffronLogger.log("Get my date : "+date);
 			return checkMC.visible ;
 		}
 		

@@ -83,7 +83,7 @@ package appManager.displayContentElemets
 		
 		public function color(colorNum:uint):void
 		{
-			trace("The color is : "+colorNum);
+			SaffronLogger.log("The color is : "+colorNum);
 			
 			myText.textColor = colorNum ;
 		}

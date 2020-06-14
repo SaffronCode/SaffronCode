@@ -66,7 +66,7 @@
 			
 			myID = pageID ;
 			
-			//trace("AppEvent trace : "+pageType+" vs "+pageID);
+			//SaffronLogger.log("AppEvent trace : "+pageType+" vs "+pageID);
 			
 			super(eventType,true);
 		}

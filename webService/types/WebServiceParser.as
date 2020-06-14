@@ -13,7 +13,7 @@ package webService.types
 			}
 			catch(e)
 			{
-				trace("I cannot pars this JSON : "+jsonString);
+				SaffronLogger.log("I cannot pars this JSON : "+jsonString);
 				return [];
 			}
 			

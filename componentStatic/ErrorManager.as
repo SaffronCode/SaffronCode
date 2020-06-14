@@ -98,7 +98,7 @@ package componentStatic
 			var _error:Vector.<ErrorItem> = new Vector.<ErrorItem>()
 			for(var index in errorObj)
 			{
-				//trace(index+':::::::::::::::::::::::::::::::::::',errorObj[index])
+				//SaffronLogger.log(index+':::::::::::::::::::::::::::::::::::',errorObj[index])
 				if(errorObj[index]!=noErrorId)
 				{
 					var item:ErrorItem = new ErrorItem()
@@ -112,12 +112,12 @@ package componentStatic
 		private function ignore(Index_p:String):Boolean
 		{
 			var value:Boolean = ignoreList.indexOf(Index_p)>-1
-			//trace('index name :',Index_p,' value :',value)	
+			//SaffronLogger.log('index name :',Index_p,' value :',value)	
 			return value	
 		}
 		public function chekError(CatcherObject_p:Object,Name_p:String,Type_p:String):Boolean
 		{	
-			//trace('chek errorrrrrrrrrrrrrrrrrrrrrrr :',Name_p)
+			//SaffronLogger.log('chek errorrrrrrrrrrrrrrrrrrrrrrr :',Name_p)
 			errorObj[Name_p] = noErrorId
 			if(CatcherObject_p==null || String(CatcherObject_p[Name_p])=='' || CatcherObject_p[Name_p]==null || CatcherObject_p[Name_p]==undefined )
 			{

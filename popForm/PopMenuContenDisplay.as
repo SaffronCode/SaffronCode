@@ -117,7 +117,7 @@ package popForm
 			else
 			{
 				buttonFieldType =  Obj.getObjectClass(sampleButton);
-				trace("buttonFieldType : "+buttonFieldType);
+				SaffronLogger.log("buttonFieldType : "+buttonFieldType);
 				Obj.remove(sampleButton);
 			}
 			
@@ -163,7 +163,7 @@ package popForm
 						//Update this field;
 						if(field[j] is PopFieldDate)
 						{
-							trace("Update date");
+							SaffronLogger.log("Update date");
 							field[j].update(content.fieldDefaultDate[i]);
 						}
 						else
@@ -250,7 +250,7 @@ package popForm
 				//☻
 				deltaYForButtons:Number = 0;//20;
 			
-			//trace('content.haveField : '+content.haveField);
+			//SaffronLogger.log('content.haveField : '+content.haveField);
 			
 			
 			
@@ -259,7 +259,7 @@ package popForm
 				for(i = 0 ; i<content.fieldDatas.fieldDefaults.length ; i++)
 				{
 					var oldY:Number = Y ; 
-					//trace("content.fieldDatas.keyBoards[i] : "+content.fieldDatas.keyBoards[i]);
+					//SaffronLogger.log("content.fieldDatas.keyBoards[i] : "+content.fieldDatas.keyBoards[i]);
 					switch(content.fieldDatas.popFieldType[i])
 					{
 						case(PopMenuFieldTypes.CLICK):
@@ -267,7 +267,7 @@ package popForm
 						case(PopMenuFieldTypes.PHONE):
 						case(PopMenuFieldTypes.STRING):
 						{
-							//trace("It is String field");
+							//SaffronLogger.log("It is String field");
 							var newfield:PopField = new popFieldType();
 							newfield.setUp(
 								content.fieldDatas.tagNames[i]
@@ -320,7 +320,7 @@ package popForm
 						}
 						case(PopMenuFieldTypes.DATE):
 						{
-							trace("add date input field");
+							SaffronLogger.log("add date input field");
 							var newfieldDate:PopFieldDate = new PopFieldDate(
 								content.fieldDatas.tagNames[i]
 								,content.fieldDatas.fieldDefaultDate[i]
@@ -338,7 +338,7 @@ package popForm
 						}
 						case(PopMenuFieldTypes.TIME):
 						{
-							trace("add Time input field");
+							SaffronLogger.log("add Time input field");
 							var newfieldTime:PopFieldTime = new PopFieldTime(
 								content.fieldDatas.tagNames[i]
 								,content.fieldDatas.fieldDefaultDate[i]
@@ -355,7 +355,7 @@ package popForm
 						}
 						case(PopMenuFieldTypes.BOOLEAN):
 						{
-							trace("add Boolean input field");
+							SaffronLogger.log("add Boolean input field");
 							var newBooleanTime:PopFieldBoolean = new PopFieldBoolean(
 								content.fieldDatas.tagNames[i],
 								content.fieldDatas.booleanValues[i],
@@ -391,7 +391,7 @@ package popForm
 			
 			var butY:Number = Y+deltaYForFiedl+deltaYForButtons ;
 			
-			//trace("butY1 : "+butY+' : '+Y+'+'+deltaYForFiedl+'+'+deltaYForButtons);
+			//SaffronLogger.log("butY1 : "+butY+' : '+Y+'+'+deltaYForFiedl+'+'+deltaYForButtons);
 			
 			var but:PopButton;
 			
@@ -434,14 +434,14 @@ package popForm
 				but.y = butY+but.height/2 ;
 				
 				butY += but.height+ylist ;
-				//trace("lastButFrame == but.currentFrame : "+lastButFrame+" vs "+but.currentFrame);
+				//SaffronLogger.log("lastButFrame == but.currentFrame : "+lastButFrame+" vs "+but.currentFrame);
 				if(butData!=null && butData.singleLine)
 				{
 					if(lastInLineButton == -1)
 					{
 						//Why??
 						//Because this is the first inline button
-						//trace("Pop Button began : "+i);
+						//SaffronLogger.log("Pop Button began : "+i);
 						lastInLineButton = i ;
 					}
 					else if(lastButFrame == but.currentFrame || butData.ignoreButtonFrameOnLining)
@@ -453,36 +453,36 @@ package popForm
 						var inLineButtons:uint = i-lastInLineButton+1 ;
 						var X0:Number = (menuW-butW)/-2;
 						var deltaX:Number = (menuW-butW)/(inLineButtons-1) ;
-						//trace("butW = "+butW+' inLineButtons = '+inLineButtons+' menuW = '+menuW+' >>> '+lastInLineButton);
+						//SaffronLogger.log("butW = "+butW+' inLineButtons = '+inLineButtons+' menuW = '+menuW+' >>> '+lastInLineButton);
 						if(butW*inLineButtons<menuW)
 						{
-							//trace("lastInLineButton : "+lastInLineButton+' buttonList.length : '+buttonList.length);
+							//SaffronLogger.log("lastInLineButton : "+lastInLineButton+' buttonList.length : '+buttonList.length);
 							for(var k = lastInLineButton ; k<buttonList.length && buttonList[k]!=null ; k++)
 							{
-								//trace("Manage button "+k);
+								//SaffronLogger.log("Manage button "+k);
 								buttonList[k].y = lineY ;
 								buttonList[k].x = X0 + (k-lastInLineButton)*deltaX ;
 							}
-							//trace("This button has problem : "+JSON.stringify(butData));
+							//SaffronLogger.log("This button has problem : "+JSON.stringify(butData));
 							butY = lineY+but.height/2+ylist ;
 						}
 						else
 						{
-							//trace("Time to go to next line for : "+i);
+							//SaffronLogger.log("Time to go to next line for : "+i);
 							lastInLineButton = i ;
 						}
 					}
 					else
 					{
-						//trace("The butoon frame is different");
+						//SaffronLogger.log("The butoon frame is different");
 						lastInLineButton = i ;
 					}
-					//trace("lastInLineButton : "+lastInLineButton);
+					//SaffronLogger.log("lastInLineButton : "+lastInLineButton);
 				}
 				else
 				{
 					//Cansel inline buttons
-					//trace("Cansel the inline buttons");
+					//SaffronLogger.log("Cansel the inline buttons");
 					lastInLineButton = -1 ;
 				}
 				
@@ -535,14 +535,14 @@ package popForm
 			}
 			else
 			{
-				trace("The menu had a scroller, so you are free to add extra area for scrolling.");
+				SaffronLogger.log("The menu had a scroller, so you are free to add extra area for scrolling.");
 				areaRect = new Rectangle(maxAreaMC.width/-2,0,maxAreaMC.width,butY+scrollRect.height/2);
 			}
 			
 			this.graphics.beginFill(0xff0000,0);
 			this.graphics.drawRect(areaRect.width/-2,0,areaRect.width,areaRect.height);
 			
-			//trace(maxAreaMC.height+' vs '+this.height+' vs '+butY);
+			//SaffronLogger.log(maxAreaMC.height+' vs '+this.height+' vs '+butY);
 			lastScrollY = 0 ;
 			if(!content.resetScroll && scroll!=null)
 			{
@@ -554,7 +554,7 @@ package popForm
 				scroll.setPose(NaN,lastScrollY);
 				scroll.stopFloat();
 			}
-			//trace("* : this.height:"+this.height+' vs scrollRect.height:'+scrollRect.height);
+			//SaffronLogger.log("* : this.height:"+this.height+' vs scrollRect.height:'+scrollRect.height);
 			if(this.height<=scrollRect.height+ylist)
 			{
 				scroll.reset();
@@ -565,7 +565,7 @@ package popForm
 		
 		private function clicableFieldSelects(e:MouseEvent)
 		{
-			//trace("Dispatch selected field");
+			//SaffronLogger.log("Dispatch selected field");
 			var targ:PopField = e.currentTarget as PopField ;
 			targ.title;
 			targ.data ;
@@ -578,11 +578,11 @@ package popForm
 		
 		public function updateScrollheight()
 		{
-			trace("myHieghtPlus : "+maxAreaMC.height+'+'+stagePlusHaight+'+'+myHieghtPlus);
+			SaffronLogger.log("myHieghtPlus : "+maxAreaMC.height+'+'+stagePlusHaight+'+'+myHieghtPlus);
 			var scrollRect:Rectangle = new Rectangle(this.x-maxAreaMC.width/2,thisY,maxAreaMC.width,maxAreaMC.height+stagePlusHaight+myHieghtPlus) ;
 			var areaRect:Rectangle = new Rectangle(maxAreaMC.width/-2,0,maxAreaMC.width,this.height+ylist) ;
 			scroll = new ScrollMT(this,scrollRect,areaRect,true);
-			trace("* : this.height:"+this.height+' vs scrollRect.height:'+scrollRect.height);
+			SaffronLogger.log("* : this.height:"+this.height+' vs scrollRect.height:'+scrollRect.height);
 			if(this.height<=scrollRect.height+ylist)
 			{
 				scroll.reset();
@@ -596,8 +596,8 @@ package popForm
 			var outField:Object = {};
 			for(var i = 0 ; i<field.length ; i++)
 			{
-				//trace("field[i].title : "+field[i].title);
-				//trace("field[i].data : "+field[i].data);
+				//SaffronLogger.log("field[i].title : "+field[i].title);
+				//SaffronLogger.log("field[i].data : "+field[i].data);
 				outField[field[i].title] = field[i].data ;
 			}
 			this.dispatchEvent(new PopMenuEvent(PopMenuEvent.POP_BUTTON_SELECTED,PopButton(e.currentTarget).ID,outField,PopButton(e.currentTarget).title,false,PopButton(e.currentTarget).buttonData));

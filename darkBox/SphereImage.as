@@ -85,7 +85,7 @@ package darkBox
 		protected function imageNotLoaded(event:IOErrorEvent):void
 		{
 			
-			trace("Image type is unknown");
+			SaffronLogger.log("Image type is unknown");
 		}
 		
 	}

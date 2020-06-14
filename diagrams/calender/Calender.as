@@ -64,7 +64,7 @@ package diagrams.calender
 			}
 			else
 			{
-				trace('this kind of calender is not defined yet 2');
+				SaffronLogger.log('this kind of calender is not defined yet 2');
 			}
 			
 			//return areaMC ;
@@ -122,7 +122,7 @@ package diagrams.calender
 			}
 			else
 			{
-				trace('this kind of calender is not defined yet 2');
+				SaffronLogger.log('this kind of calender is not defined yet 2');
 			}
 		}
 		

@@ -50,15 +50,15 @@
                 sharedString = str + '\n\n' + DevicePrefrence.appName + '\n' + downloadLinkLable + '\n' + ((DevicePrefrence.downloadLink_iOS == '') ? '' : 'Apple Store: ' + DevicePrefrence.downloadLink_iOS + '\n\n') + ((DevicePrefrence.downloadLink_playStore == '') ? '' : 'Android Play Store: ' + DevicePrefrence.downloadLink_playStore + '\n\n') + ((DevicePrefrence.downloadLink_cafeBazar == '') ? '' : 'کافه بازار: ' + DevicePrefrence.downloadLink_cafeBazar + '\n\n') + ((DevicePrefrence.downloadLink_myketStore == '') ? '' : 'مایکت: ' + DevicePrefrence.downloadLink_myketStore);
             else
                 sharedString = str + '\n\n' + downloadLinkLable;
-            trace("•distriqt• sharedString : " + sharedString);
+            SaffronLogger.log("•distriqt• sharedString : " + sharedString);
             if (isSupports()) {
                 var options:* = new shareOptionClass();
                 options.title = "Share with ...";
                 options.showOpenIn = true;
-                trace("•distriqt• Call the share function");
+                SaffronLogger.log("•distriqt• Call the share function");
                 shareClass.service.share(sharedString, imageBirmapData, '', options);
             } else {
-                trace("•distriqt• Share is not support here");
+                SaffronLogger.log("•distriqt• Share is not support here");
             }
         }
 
@@ -98,10 +98,10 @@
                     _isClassesLoaded = true;
                 }
             } catch (e) {
-                trace('Add \n\n\t<extensionID>com.distriqt.Share</extensionID>\n\t<extensionID>com.distriqt.Core</extensionID>\n\n to your project xmls'); // and below permitions to the <application> tag : \n\n<activity \n\n\tandroid:name="com.distriqt.extension.share.activities.ShareActivity" \n\n\tandroid:theme="@android:style/Theme.Translucent.NoTitleBar" />\n\n\t\n\n<provider\n\n\tandroid:name="android.support.v4.content.FileProvider"\n\n\tandroid:authorities="air.'+DevicePrefrence.appID+'"\n\n\tandroid:grantUriPermissions="true"\n\n\tandroid:exported="false">\n\n\t<meta-data\n\n\t\tandroid:name="android.support.FILE_PROVIDER_PATHS"\n\n\t\tandroid:resource="@xml/distriqt_paths" />\n\n</provider>';
+                SaffronLogger.log('Add \n\n\t<extensionID>com.distriqt.Share</extensionID>\n\t<extensionID>com.distriqt.Core</extensionID>\n\n to your project xmls'); // and below permitions to the <application> tag : \n\n<activity \n\n\tandroid:name="com.distriqt.extension.share.activities.ShareActivity" \n\n\tandroid:theme="@android:style/Theme.Translucent.NoTitleBar" />\n\n\t\n\n<provider\n\n\tandroid:name="android.support.v4.content.FileProvider"\n\n\tandroid:authorities="air.'+DevicePrefrence.appID+'"\n\n\tandroid:grantUriPermissions="true"\n\n\tandroid:exported="false">\n\n\t<meta-data\n\n\t\tandroid:name="android.support.FILE_PROVIDER_PATHS"\n\n\t\tandroid:resource="@xml/distriqt_paths" />\n\n</provider>';
             }
             try {
-                trace("•distriqt• Set the Share key : " + APP_KEY);
+                SaffronLogger.log("•distriqt• Set the Share key : " + APP_KEY);
 
                 (getDefinitionByName("com.distriqt.extension.core.Core") as Object).init(APP_KEY);
                 (shareClass as Object).init(APP_KEY);
@@ -113,10 +113,10 @@
 
                 if (shareClass.isSupported) {
                     //	Functionality here
-                    trace("•distriqt• Share is support");
+                    SaffronLogger.log("•distriqt• Share is support");
                     _isSupports = true;
                 } else {
-                    trace("•distriqt• Share is not supports");
+                    SaffronLogger.log("•distriqt• Share is not supports");
                     _isSupports = false;
                 }
 
@@ -129,13 +129,13 @@
                    packagedAssets.copyTo( accessibleAssets, true );*/
             } catch (e:Error) {
                 // Check if your APP_KEY is correct
-                trace("The district app id is wrong!! get a new one for this id (" + DevicePrefrence.appID + ") from : airnativeextensions.com/user/2299/applications\n\n\n" + e);
+                SaffronLogger.log("The district app id is wrong!! get a new one for this id (" + DevicePrefrence.appID + ") from : airnativeextensions.com/user/2299/applications\n\n\n" + e);
                 _isSupports = false;
             }
         }
 
         private function share_shareHandler(event:*):void {
-            trace(event.type + "::" + event.activityType + "::" + event.error);
+            SaffronLogger.log(event.type + "::" + event.activityType + "::" + event.error);
         }
 
         /*public function openApp(PackageName:String,Url:URLVariables)
@@ -210,7 +210,7 @@
          * */
         public function openIntent(intentAddress:String, extras:Object = null, onResult:Function = null):* {
             if (IntentClass == null) {
-                trace("********************\nopenIntent Error!!!\n You should call the setUp method first");
+                SaffronLogger.log("********************\nopenIntent Error!!!\n You should call the setUp method first");
                 return false;
             }
 

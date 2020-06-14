@@ -12,7 +12,7 @@ package starlingPack.core
 	 * Add this function to the Flash main:
 	 *  private function manageStageSize(e:Event):void
      {
-         trace("ScreenManager.scaleFactor : "+ScreenManager.scaleFactor)
+         SaffronLogger.log("ScreenManager.scaleFactor : "+ScreenManager.scaleFactor)
 		 root.scaleX = root.scaleY = ScreenManager.scaleFactor ;
 		 root.x = ScreenManager.deltaXOnScaleFactor();
 		 root.y = ScreenManager.deltaYOnScaleFactor();
@@ -137,7 +137,7 @@ package starlingPack.core
 			{
 				for(var i:int = 0 ; i<roots.length ; i++)
 				{
-					trace("roots[i] : "+roots[i]);
+					SaffronLogger.log("roots[i] : "+roots[i]);
 					roots[i].scaleX = roots[i].scaleY = scaleFactor ;
 					roots[i].x = deltaXOnScaleFactor();
 					roots[i].y = deltaYOnScaleFactor();
@@ -182,7 +182,7 @@ package starlingPack.core
 		/**Returns the new X and add deltaStage on it
 		public static function XaddDeltaOnScale(X0):Number
 		{
-			trace("deltaX : "+deltaX);
+			SaffronLogger.log("deltaX : "+deltaX);
 			var firstPosePrecent:Number = X0/flashW ;
 			return X0+(deltaX/2)*scaleFactorX;
 		}*/

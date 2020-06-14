@@ -60,11 +60,11 @@ package dataManager
 				{
 					query.text = "create table "+tableName+" ("+field_id+" VARCHAR(1) , "+field_value+" VARCHAR(1))";
 					query.execute();
-					trace('table is creats');
+					SaffronLogger.log('table is creats');
 				}
 				catch(e)
 				{
-					trace('table was created');
+					SaffronLogger.log('table was created');
 				}
 			}
 		}
@@ -74,14 +74,14 @@ package dataManager
 		public static function save(id:String,data:String):void
 		{
 			setUp();
-			//trace("save this data : "+data);
+			//SaffronLogger.log("save this data : "+data);
 			//hint : if data is nul , it will cause to skip this function ,at the bigining of the app job , all temporaryObject variables are null
 			if(data!= null && temporaryObject[id] == data)
 			{
-				//trace("temporaryObject[id] is : "+temporaryObject[id]);
+				//SaffronLogger.log("temporaryObject[id] is : "+temporaryObject[id]);
 				return ;
 			}
-			//trace("save this data2 : "+temporaryObject[id]);
+			//SaffronLogger.log("save this data2 : "+temporaryObject[id]);
 			temporaryObject[id] = data ;
 			sql.begin();
 			query.text = "delete from "+tableName+" where "+field_id+" == '"+id+"'" ;
@@ -95,7 +95,7 @@ package dataManager
 			{
 				query.execute();
 				sql.commit();
-				//trace(data+" saved");
+				//SaffronLogger.log(data+" saved");
 			}
 			catch(e)
 			{
@@ -115,7 +115,7 @@ package dataManager
 				return check;
 			}
 			
-			//trace("it have to send query to db to detect the data");
+			//SaffronLogger.log("it have to send query to db to detect the data");
 			
 			query.text = "select "+field_value+" from "+tableName+" where "+field_id+" == '"+id+"'";
 			try
@@ -128,7 +128,7 @@ package dataManager
 				}
 				else
 				{
-					//trace('result on query is : '+(result.data[0][field_value]==null)+' > check string : '+(result.data[0][field_value]=='null'));
+					//SaffronLogger.log('result on query is : '+(result.data[0][field_value]==null)+' > check string : '+(result.data[0][field_value]=='null'));
 					var res:String = result.data[0][field_value] ;
 					if(res == 'null')
 					{

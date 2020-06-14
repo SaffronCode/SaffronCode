@@ -71,7 +71,7 @@
 			}
 			/*if(frameForDirection==1 && isArabic_v==false)
 			{
-				trace("**** PopField conflict on text direction solved");
+				SaffronLogger.log("**** PopField conflict on text direction solved");
 				isArabic_v = true ;
 			}*/
 			keyBoardType = (keyBoardType==null)?SoftKeyboardType.DEFAULT:keyBoardType;

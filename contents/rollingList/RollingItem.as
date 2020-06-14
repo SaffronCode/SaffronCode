@@ -40,7 +40,7 @@ package contents.rollingList
 		{
 			if(myLinkData!=null)
 			{
-				trace("Dispatch event");
+				SaffronLogger.log("Dispatch event");
 				this.dispatchEvent(new AppEventContent(myLinkData));
 			}
 		}

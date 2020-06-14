@@ -61,19 +61,19 @@ tag <br><br><bold><![CDATA[ <uses-permission android:name="com.android.vending.B
 							StoreKit.create();
 							storeKitIsCreated = true ;
 						}
-						trace("*Srore kit is initialized now. continue to shop");
+						SaffronLogger.log("*Srore kit is initialized now. continue to shop");
 						return continueShoppTickets();
 					} 
 					else 
 					{
-						trace("StoreKit only works on iOS!"); 
+						SaffronLogger.log("StoreKit only works on iOS!"); 
 						faild(3);
 						return false ;
 					}
 				}
 				else
 				{
-					trace("*storeKit was initialized earlier, now controll the shop");
+					SaffronLogger.log("*storeKit was initialized earlier, now controll the shop");
 					return continueShoppTickets();
 				}
 			}
@@ -131,10 +131,10 @@ tag <br><br><bold><![CDATA[ <uses-permission android:name="com.android.vending.B
 		{
 			if(controll_PurchessPermition())
 			{
-				trace("* usser has permition to shop");
+				SaffronLogger.log("* usser has permition to shop");
 				var productIdList:Vector.<String>=new Vector.<String>();
 				productIdList.push(ticketId);
-				trace(">>> load store item info : "+ticketId);
+				SaffronLogger.log(">>> load store item info : "+ticketId);
 				
 				StoreKit.storeKit.addEventListener(StoreKitEvent.PRODUCT_DETAILS_LOADED,onProducts); 
 				StoreKit.storeKit.addEventListener(StoreKitErrorEvent.PRODUCT_DETAILS_FAILED, onProductsFailed); 
@@ -144,7 +144,7 @@ tag <br><br><bold><![CDATA[ <uses-permission android:name="com.android.vending.B
 			}
 			else
 			{
-				trace("* user has no permition to shop");
+				SaffronLogger.log("* user has no permition to shop");
 				faild(2);
 				return false ;
 			}
@@ -152,7 +152,7 @@ tag <br><br><bold><![CDATA[ <uses-permission android:name="com.android.vending.B
 		
 		private static function onProductsFailed(e:StoreKitErrorEvent):void
 		{ 
-			trace("error loading products: "+e.text); 
+			SaffronLogger.log("error loading products: "+e.text); 
 			faild(7);
 		}
 
@@ -161,19 +161,19 @@ tag <br><br><bold><![CDATA[ <uses-permission android:name="com.android.vending.B
 		private static function onProducts(e:StoreKitEvent):void
 		{
 			removeListeners();
-			trace("Product details loaded");
+			SaffronLogger.log("Product details loaded");
 			for each(var product:StoreKitProduct in e.validProducts) 
 			{ 
-				trace("ID: "+product.productId);
-				trace("Title: "+product.title);
-				trace("Description: "+product.description);
-				trace("String Price: "+product.localizedPrice);
-				trace("Price: "+product.price); 
+				SaffronLogger.log("ID: "+product.productId);
+				SaffronLogger.log("Title: "+product.title);
+				SaffronLogger.log("Description: "+product.description);
+				SaffronLogger.log("String Price: "+product.localizedPrice);
+				SaffronLogger.log("Price: "+product.price); 
 			} 
-			trace("Loaded "+e.validProducts.length+" Products.");
+			SaffronLogger.log("Loaded "+e.validProducts.length+" Products.");
 			if (e.invalidProductIds.length>0) 
 			{ 
-				trace("[ERR]: invalid product ids:"+e.invalidProductIds.join(","));
+				SaffronLogger.log("[ERR]: invalid product ids:"+e.invalidProductIds.join(","));
 			}
 
 			//StoreKit.storeKit.
@@ -184,7 +184,7 @@ tag <br><br><bold><![CDATA[ <uses-permission android:name="com.android.vending.B
 			StoreKit.storeKit.addEventListener(StoreKitErrorEvent.PURCHASE_FAILED, onPurchaseFailed); 
 			StoreKit.storeKit.addEventListener(StoreKitEvent.PURCHASE_SUCCEEDED,onPurchaseSuccess); 
 			
-			trace(">>>>>>>>>>>>>> User ticket is : "+ticketId);
+			SaffronLogger.log(">>>>>>>>>>>>>> User ticket is : "+ticketId);
 			
 			StoreKit.storeKit.purchaseProduct(ticketId,howManyTickets); 
 		}
@@ -193,7 +193,7 @@ tag <br><br><bold><![CDATA[ <uses-permission android:name="com.android.vending.B
 			private static function onPurchaseDeferred(e:StoreKitEvent):void 
 			{ 
 				removeListeners();
-				trace("* Waiting for permission to buy: "+e.productId); 
+				SaffronLogger.log("* Waiting for permission to buy: "+e.productId); 
 				faild(4);
 			} 
 		
@@ -201,7 +201,7 @@ tag <br><br><bold><![CDATA[ <uses-permission android:name="com.android.vending.B
 			private static function onPurchaseCancel(e:StoreKitEvent):void
 			{
 				removeListeners();
-				trace("* User canseled shopping: "+e.productId);
+				SaffronLogger.log("* User canseled shopping: "+e.productId);
 				faild(1);
 			}
 			
@@ -209,14 +209,14 @@ tag <br><br><bold><![CDATA[ <uses-permission android:name="com.android.vending.B
 			private static function onPurchaseFailed(e:StoreKitErrorEvent):void
 			{
 				removeListeners();
-				trace("* Purchess fails by no clear purpose : "+e.text+' > '+e);
+				SaffronLogger.log("* Purchess fails by no clear purpose : "+e.text+' > '+e);
 				faild(5);
 			}
 			
 			private static function onPurchaseSuccess(e:StoreKitEvent):void
 			{
 				removeListeners();
-				trace("* Purchase Done! "+e.transactionId);
+				SaffronLogger.log("* Purchase Done! "+e.transactionId);
 				StoreKit.storeKit.manualFinishTransaction(e.transactionId);
 				done(0,e.transactionId);
 			}
@@ -230,12 +230,12 @@ tag <br><br><bold><![CDATA[ <uses-permission android:name="com.android.vending.B
 			{
 				if(!StoreKit.storeKit.isStoreKitAvailable()) 
 				{ 
-					trace("this device has purchases disabled.");
+					SaffronLogger.log("this device has purchases disabled.");
 					return false; 
 				}
 				else
 				{
-					trace("* ios user had the shop permition");
+					SaffronLogger.log("* ios user had the shop permition");
 					return true ;
 				}
 			}

@@ -102,7 +102,7 @@
 					}
 					else
 					{
-						trace("Cannot add this item to the stage");
+						SaffronLogger.log("Cannot add this item to the stage");
 						return ;
 						break;
 					}

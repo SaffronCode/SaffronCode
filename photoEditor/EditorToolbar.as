@@ -115,7 +115,7 @@ package photoEditor
 		
 		private function close(e:MouseEvent):void
 		{
-			trace("currentEditor : "+currentEditor);
+			SaffronLogger.log("currentEditor : "+currentEditor);
 			if(currentEditor!=null)
 			{
 				currentEditor.close();
@@ -132,19 +132,19 @@ package photoEditor
 		
 		private function openStampList(event:MouseEvent):void
 		{
-			trace("Add stamp list");
+			SaffronLogger.log("Add stamp list");
 			addEditorToStage(new StampList());
 		}
 		
 		private function openPencilArchive(e:MouseEvent):void
 		{
-			trace("Open pencile archive");
+			SaffronLogger.log("Open pencile archive");
 			addEditorToStage(new EditorPencil());
 		}
 		
 		private function openCropEditor(e:MouseEvent):void
 		{
-			trace("Open crop editor");
+			SaffronLogger.log("Open crop editor");
 			addEditorToStage(new EditorCropper());
 		}
 		
@@ -155,7 +155,7 @@ package photoEditor
 			currentEditor.y = 0-(H+imageFullAreaRect.height);
 			currentEditor.x = 0 ;
 			
-			trace("Add to "+this+' and the name is : '+this.name);
+			SaffronLogger.log("Add to "+this+' and the name is : '+this.name);
 			
 			this.addChild(currentEditor);
 			this.addChild(button_exit);

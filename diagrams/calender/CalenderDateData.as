@@ -45,7 +45,7 @@ package diagrams.calender
 			
 			/*if(todayDate.fullYear == dateOnMonth.fullYear && todayDate.month == dateOnMonth.month && todayDate.date == dateOnMonth.date)
 			{
-				trace('current day is on this month');
+				SaffronLogger.log('current day is on this month');
 				currentDate = dateOnMonth ;
 			}
 			else
@@ -83,7 +83,7 @@ package diagrams.calender
 			//find the first date of this month
 			do
 			{
-				//trace(testDate+" vs "+testShamsiDate);
+				//SaffronLogger.log(testDate+" vs "+testShamsiDate);
 				eachDayData.unshift(new CalenderDayData(testDate,testShamsiDate,today));
 				
 				testDate.date--;
@@ -93,7 +93,7 @@ package diagrams.calender
 			//eachDayData.shift();
 			
 			firstDate = new Date(testDate.fullYear,testDate.month,testDate.date);
-			//trace("firstDate : "+firstDate);
+			//SaffronLogger.log("firstDate : "+firstDate);
 			firstDateShamsi = MyShamsi.miladiToShamsi(firstDate);
 			
 			//detect first day of the week
@@ -109,7 +109,7 @@ package diagrams.calender
 				testDate.date++;
 				testShamsiDate = MyShamsi.miladiToShamsi(testDate) ;
 				
-				//trace(testDate+" vs "+testShamsiDate);
+				//SaffronLogger.log(testDate+" vs "+testShamsiDate);
 				
 				eachDayData.push(new CalenderDayData(testDate,testShamsiDate,today));
 				
@@ -169,12 +169,12 @@ package diagrams.calender
 		{
 			if(today.time>=firstDate.time && today.time<lastDate.time)
 			{
-				trace("today is here");
+				SaffronLogger.log("today is here");
 				return true ;
 			}
 			else 
 			{
-				trace("today is not here");
+				SaffronLogger.log("today is not here");
 				return false ;
 			}
 		}

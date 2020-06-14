@@ -45,7 +45,7 @@ package diagrams.piChart
 				precents[i] = pieceNumbers[i]/totals ;
 				var myDegree = precents[i]*PiChart.pi2;
 				centerDegree[i] = (myDegree)/2+minDegree;
-				trace(">>maxDegree : "+centerDegree[i]/PiChart.pi*180);
+				SaffronLogger.log(">>maxDegree : "+centerDegree[i]/PiChart.pi*180);
 				maxDegree = minDegree+myDegree ;
 				minDegree = maxDegree ;
 			}

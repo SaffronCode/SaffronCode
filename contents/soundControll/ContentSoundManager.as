@@ -74,7 +74,7 @@ package contents.soundControll
 			}
 			else
 			{
-				trace("soundPose  : "+soundPlayingFrom);
+				SaffronLogger.log("soundPose  : "+soundPlayingFrom);
 				SoundPlayer.play(currentSoundId,true,true,soundPlayingFrom);
 			}
 			lastMusicState.data.state = true ;
@@ -112,22 +112,22 @@ package contents.soundControll
 			lastMusicVolume = volume ;
 			if(musicURL=='' || lastPlayingMusic == musicURL)
 			{
-				trace("Music is duplicated on ContentSoundManager.changeMainMusic : "+musicURL);
+				SaffronLogger.log("Music is duplicated on ContentSoundManager.changeMainMusic : "+musicURL);
 				SoundPlayer.volumeContril(currentSoundId,volume);
-				trace("Change volume to : "+volume);
+				SaffronLogger.log("Change volume to : "+volume);
 				return ;
 			}
 			
-			trace("Change the music to : "+musicURL);
-			trace("Change volume to : "+volume);
-			trace("Pause the sound : "+currentSoundId);
+			SaffronLogger.log("Change the music to : "+musicURL);
+			SaffronLogger.log("Change volume to : "+volume);
+			SaffronLogger.log("Pause the sound : "+currentSoundId);
 			SoundPlayer.pause(currentSoundId);
-			trace("Add the sound : "+otherSoundId);
+			SaffronLogger.log("Add the sound : "+otherSoundId);
 			SoundPlayer.addSound(musicURL,otherSoundId,true,volume);
 			if(lastPlayingMusic==null || musicWasPlaying)
 			{
-				trace("lastPlayingMusic : "+lastPlayingMusic);
-				trace("musicWasPlaying : "+musicWasPlaying);
+				SaffronLogger.log("lastPlayingMusic : "+lastPlayingMusic);
+				SaffronLogger.log("musicWasPlaying : "+musicWasPlaying);
 				SoundPlayer.play(otherSoundId);
 			}
 			

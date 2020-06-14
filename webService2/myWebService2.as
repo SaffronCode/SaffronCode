@@ -282,14 +282,14 @@ package webService2
 		{
 			if(!isitConnected)
 			{
-				trace('try to connect');
+				SaffronLogger.log('try to connect');
 				if(DEBUG_DONOT_CONNECT)
 				{
 					ws.loadWSDL("no where");
 				}
 				else
 				{
-					trace("Connect to : "+webServiceWsdl);
+					SaffronLogger.log("Connect to : "+webServiceWsdl);
 					ws.loadWSDL(webServiceWsdl);
 				}
 			}
@@ -300,7 +300,7 @@ package webService2
 		{
 			if(!isitConnected)
 			{
-				trace('connection failds');
+				SaffronLogger.log('connection failds');
 				for(var i = 0 ; i<onDisconnectedFunctionList.length ; i++)
 				{
 					onDisconnectedFunctionList[i]();
@@ -316,7 +316,7 @@ package webService2
 		{
 			if(isitConnected==false)
 			{
-				trace('web service is ready to use');
+				SaffronLogger.log('web service is ready to use');
 				isitConnected = true ;
 				eventListen.dispatchEvent(new WebEvent2(WebEvent2.CONNECTED)) ;
 				//callAllOperations() ;
@@ -344,9 +344,9 @@ package webService2
 		/**any connection failds*/
 		private static function serviceNotFound(e:*=null)
 		{
-			trace('faild : '+e);
+			SaffronLogger.log('faild : '+e);
 			var completeErrorText:String = String(e);
-			trace("faild to string  : "+completeErrorText);
+			SaffronLogger.log("faild to string  : "+completeErrorText);
 			//i dispatch event instant;ly
 			var myTocken:AsyncToken ;
 			var connectionProblem:uint = WebEvent2.error_connection_problem ;
@@ -370,7 +370,7 @@ package webService2
 					connectionProblemHint = FaultEvent(e).fault.toString() ;
 				}
 				
-				trace("connectionProblemHint : "+connectionProblemHint);
+				SaffronLogger.log("connectionProblemHint : "+connectionProblemHint);
 			}
 			eventListen.dispatchEvent(new WebEvent2(WebEvent2.NO_CONNECTTION,null,myTocken,connectionProblem,connectionProblemHint));
 		}
@@ -381,13 +381,13 @@ package webService2
 		/**Global resutl */
 		private static function Result(ev:ResultEvent)
 		{
-			trace("result : "+getQualifiedClassName(ev.result));
+			SaffronLogger.log("result : "+getQualifiedClassName(ev.result));
 			var myObject:Array = [];
 			if(ev.result is XMLList)
 			{
 				//Pure XML data
 				var clearXMLList:XMLList = XMLList(clearXML2(ev.result.toString()));
-				//trace("clearXMLList.itemCount ?? : "+clearXMLList[0].*[0].itemCount);
+				//SaffronLogger.log("clearXMLList.itemCount ?? : "+clearXMLList[0].*[0].itemCount);
 				var cashedXML:XML ;
 				try
 				{
@@ -395,19 +395,19 @@ package webService2
 				}
 				catch(e)
 				{
-					trace("Wrong inputs sent !!! check login again");
+					SaffronLogger.log("Wrong inputs sent !!! check login again");
 					eventListen.dispatchEvent(new WebEvent2(WebEvent2.NO_CONNECTTION,null,ev.token,WebEvent2.error_loginProblem));
 					return ;
 				}
 				
 				var generatedObject:Object = xmlToObject(cashedXML);
-				//trace(cashedXML+" converted to : "+JSON.stringify(generatedObject));
+				//SaffronLogger.log(cashedXML+" converted to : "+JSON.stringify(generatedObject));
 				
 				var valueNumbers:uint = 0 ;
 				for(var testValueOnObject in generatedObject)
 				{
 					valueNumbers++;
-					trace("value item is : "+testValueOnObject);
+					SaffronLogger.log("value item is : "+testValueOnObject);
 					if(generatedObject[testValueOnObject] is Array)
 					{
 						myObject = generatedObject[testValueOnObject] ;
@@ -417,14 +417,14 @@ package webService2
 						break ;
 					}
 				}
-				trace("valueNumbers : "+valueNumbers);
+				SaffronLogger.log("valueNumbers : "+valueNumbers);
 				if(valueNumbers>1 || myObject.length == 0 )
 				{
-					trace("i have to re generate MyObject");
+					SaffronLogger.log("i have to re generate MyObject");
 					myObject = [generatedObject];
 				}
 				
-				//trace('converted to : '+JSON.stringify(myObject));
+				//SaffronLogger.log('converted to : '+JSON.stringify(myObject));
 			}
 			else
 			{
@@ -433,7 +433,7 @@ package webService2
 				//Server null in not important from now
 				/*if(ev.result==null)
 				{
-					trace("Wrong inputs sent !!! check login again");
+					SaffronLogger.log("Wrong inputs sent !!! check login again");
 					eventListen.dispatchEvent(new WebEvent(WebEvent.NO_CONNECTTION,null,ev.token,WebEvent.error_loginProblem));
 					return;
 				}
@@ -453,18 +453,18 @@ package webService2
 					}
 					else
 					{
-						trace("Receved data is false");
+						SaffronLogger.log("Receved data is false");
 						eventListen.dispatchEvent(new WebEvent2(WebEvent2.NO_CONNECTTION,null,ev.token,WebEvent2.error_not_done));
 						return ;
 					}
 				}
 				else
 				{
-					trace(new Error("I don't know this type : "+getQualifiedClassName(ev.result)));
+					SaffronLogger.log(new Error("I don't know this type : "+getQualifiedClassName(ev.result)));
 				}
 			}
 			
-			//trace("Receved data is : "+JSON.stringify(myObject));
+			//SaffronLogger.log("Receved data is : "+JSON.stringify(myObject));
 			
 			eventListen.dispatchEvent(new WebEvent2(WebEvent2.RESULT,myObject,ev.token));
 		}
@@ -485,7 +485,7 @@ package webService2
 		/**Send these parameters to specific operation.*/
 		public static function sentParamsToOperation(operationName:String,params:Array):AsyncToken
 		{
-			trace(operationName+' > '+params);
+			SaffronLogger.log(operationName+' > '+params);
 			var op:AbstractOperation = ws.getOperation(operationName);
 			op.arguments = params ;
 			return op.send();
@@ -500,7 +500,7 @@ package webService2
 		
 		public static function SignIn(Username:String = 'admin' , Password:String = '1'):AsyncToken
 		{
-			trace('SignIn > ',Username,Password);
+			SaffronLogger.log('SignIn > ',Username,Password);
 			
 			var userModel:Object = new Object() ;
 			userModel.Password = Password ; 
@@ -512,13 +512,13 @@ package webService2
 		
 		/*public static function GetUserEmployeePosition():AsyncToken
 		{
-			trace('GetUserEmployeePosition > ',_ticket,username);
+			SaffronLogger.log('GetUserEmployeePosition > ',_ticket,username);
 			return ws.GetUserEmployeePosition(_ticket,username) ;
 		}*/
 		
 		/*public static function SignOut()
 		{
-			trace('SignOut > ',_ticket,_username);
+			SaffronLogger.log('SignOut > ',_ticket,_username);
 			return ws.SignOut(_ticket,_username) ;
 		}*/
 		
@@ -534,7 +534,7 @@ package webService2
 		*/
 		/*public static function GetEmployeePositionFolder(ypeKind:String)
 		{
-			trace('GetEmployeePositionFolder > ticket : ',_ticket+' , employeePositionId : '+_employeePositionId+' , typeKind : '+typeKind);
+			SaffronLogger.log('GetEmployeePositionFolder > ticket : ',_ticket+' , employeePositionId : '+_employeePositionId+' , typeKind : '+typeKind);
 			return ws.GetEmployeePositionFolder(_ticket,_employeePositionId,typeKind) ;
 		}*/
 		
@@ -542,7 +542,7 @@ package webService2
 		/**Returns sub menu list for each categorie - it can just accept Inbox and SentInbox value types
 		public static function GetLetterReferType(inboxType:String)
 		{
-			trace('GetLetterReferType > ',_ticket,_employeePositionId,inboxType);
+			SaffronLogger.log('GetLetterReferType > ',_ticket,_employeePositionId,inboxType);
 			return ws.GetLetterReferType(_ticket,_employeePositionId,inboxType) ;
 		}*/
 		
@@ -550,19 +550,19 @@ package webService2
 		/**Un used, false and removed service*/
 		//public static function GetEmployeePositionSignature(/*employeePositionId_ignored:String,*/typeKind:String)
 		//{
-		//	trace('GetEmployeePositionSignature > ',ticket,employeePositionId,typeKind);
+		//	SaffronLogger.log('GetEmployeePositionSignature > ',ticket,employeePositionId,typeKind);
 		//	return ws.GetEmployeePositionSignature(ticket,employeePositionId,typeKind) ;
 		//}
 		
 		/*public static function GetClientConfiguration()
 		{
-			trace('GetClientConfiguration > ');
+			SaffronLogger.log('GetClientConfiguration > ');
 			return ws.GetClientConfiguration() ;
 		}*/
 		
 		/*public static function GetInboxByFolder(employeePositionFolder,pageIndex,pageSize)
 		{
-			trace('GetInboxByFolder > ',_ticket,_employeePositionId,employeePositionFolder,pageIndex,pageSize);
+			SaffronLogger.log('GetInboxByFolder > ',_ticket,_employeePositionId,employeePositionFolder,pageIndex,pageSize);
 			// Two last parameters are the filterring values and sorting values
 			return ws.GetInboxByFolder(_ticket,_employeePositionId,employeePositionFolder,pageIndex,pageSize,null,null) ;
 		}*/
@@ -570,20 +570,20 @@ package webService2
 		
 		/*public static function GetConfidentialTypeList()
 		{
-			trace('GetConfidentialTypeList > ',_ticket,_employeePositionId);
+			SaffronLogger.log('GetConfidentialTypeList > ',_ticket,_employeePositionId);
 			return ws.GetConfidentialTypeList(_ticket,_employeePositionId) ;
 		}*/
 		
 		/*public static function GetLetterTypeList()
 		{
-			trace('GetLetterTypeList > ',_ticket,_employeePositionId);
+			SaffronLogger.log('GetLetterTypeList > ',_ticket,_employeePositionId);
 			return ws.GetLetterTypeList(_ticket,_employeePositionId) ;
 		}*/
 		
 		/**GetInboxLetterReferItemCount
 		public static function GetInboxLetterReferItemCount(typeKind:String)
 		{
-			trace("GetInboxLetterReferItemCount > "+_ticket,_employeePositionId,typeKind);
+			SaffronLogger.log("GetInboxLetterReferItemCount > "+_ticket,_employeePositionId,typeKind);
 			return ws.GetInboxLetterReferItemCount(_ticket,_employeePositionId,typeKind) ;
 		}*/
 		
@@ -591,14 +591,14 @@ package webService2
 		/**GetInboxEmployeePositionFolderItemCount
 		public static function GetInboxEmployeePositionFolderItemCount(typeKind:String)
 		{
-			trace("GetInboxEmployeePositionFolderItemCount > "+_ticket,_employeePositionId,typeKind);
+			SaffronLogger.log("GetInboxEmployeePositionFolderItemCount > "+_ticket,_employeePositionId,typeKind);
 			return ws.GetInboxEmployeePositionFolderItemCount(_ticket,_employeePositionId,typeKind) ;
 		}*/
 		
 		/**GetDraftInboxByFolder*/
 		/*public static function GetDraftInboxByFolder(employeePositionFolder,pageIndex,pageSize)
 		{
-			trace('GetDraftInboxByFolder > ',_ticket,_employeePositionId,employeePositionFolder,pageIndex,pageSize);
+			SaffronLogger.log('GetDraftInboxByFolder > ',_ticket,_employeePositionId,employeePositionFolder,pageIndex,pageSize);
 			// Two last parameters are the filterring values and sorting values
 			return ws.GetDraftInboxByFolder(_ticket,_employeePositionId,employeePositionFolder,pageIndex,pageSize,null,null) ;
 		}*/
@@ -606,28 +606,28 @@ package webService2
 		/**GetSentInboxByFolder
 		public static function GetSentInboxByFolder(employeePositionFolder,pageIndex,pageSize)
 		{
-			trace('GetSentInboxByFolder > ',_ticket,_employeePositionId,employeePositionFolder,pageIndex,pageSize);
+			SaffronLogger.log('GetSentInboxByFolder > ',_ticket,_employeePositionId,employeePositionFolder,pageIndex,pageSize);
 			// Two last parameters are the filterring values and sorting values
 			return ws.GetSentInboxByFolder(_ticket,_employeePositionId,employeePositionFolder,pageIndex,pageSize,null,null) ;
 		}*/
 		
 		/*public static function GetInboxByReferType(letterReferTypeId,pageIndex,pageSize)
 		{
-			trace('GetInboxByReferType > ',_ticket,_employeePositionId,letterReferTypeId,pageIndex,pageSize);
+			SaffronLogger.log('GetInboxByReferType > ',_ticket,_employeePositionId,letterReferTypeId,pageIndex,pageSize);
 			return ws.GetInboxByReferType(_ticket,_employeePositionId,letterReferTypeId,pageIndex,pageSize) ;
 		}*/
 		
 		
 		/*public static function GetSentInboxByReferType(letterReferTypeId,pageIndex=0,pageSize=0)
 		{
-			trace('GetSentInboxByReferType > ',_ticket,_employeePositionId,letterReferTypeId,pageIndex,pageSize);
+			SaffronLogger.log('GetSentInboxByReferType > ',_ticket,_employeePositionId,letterReferTypeId,pageIndex,pageSize);
 			return ws.GetSentInboxByReferType(_ticket,_employeePositionId,letterReferTypeId,pageIndex,pageSize) ;
 		}*/
 		
 		
 		/*public static function GetLetterReferSendType()
 		{
-			trace('GetLetterReferSendType > ',_ticket,_employeePositionId);
+			SaffronLogger.log('GetLetterReferSendType > ',_ticket,_employeePositionId);
 			return ws.GetLetterReferSendType(_ticket,_employeePositionId) ;
 		}*/
 		
@@ -636,9 +636,9 @@ package webService2
 		 * if Peygiri is selected from interface , set followup to true  */
 	/*	public static function SendLetterRefer(letterCode:Vector.<String>,receivers:Vector.<LetterReceiverModel>,stayInInbox:Boolean,followup:Boolean = false )
 		{
-			trace('SendLetterRefer > ',_ticket,_employeePositionId,letterCode);
-			//trace('receiver list : '+JSON.stringify(letterReferId));
-			//trace('letterReferId_vec list : '+JSON.stringify(receivers));
+			SaffronLogger.log('SendLetterRefer > ',_ticket,_employeePositionId,letterCode);
+			//SaffronLogger.log('receiver list : '+JSON.stringify(letterReferId));
+			//SaffronLogger.log('letterReferId_vec list : '+JSON.stringify(receivers));
 			
 			var receivers_arr:Array = [] ;
 			for(var i = 0 ; i<receivers.length ; i++)
@@ -658,54 +658,54 @@ package webService2
 		
 		/*public static function RequestLetterBody(letterCode:String)
 		{
-			trace('RequestLetterBody > ',_ticket,_employeePositionId,letterCode);
+			SaffronLogger.log('RequestLetterBody > ',_ticket,_employeePositionId,letterCode);
 			return ws.RequestLetterBody(_ticket,_employeePositionId,letterCode) ;
 		}*/
 		
 		/*public static function GetReferReceiverContact(searchText:String='')
 		{
-			trace('GetReferReceiverContact > ',_ticket,_employeePositionId,searchText);
+			SaffronLogger.log('GetReferReceiverContact > ',_ticket,_employeePositionId,searchText);
 			return ws.GetReferReceiverContact(_ticket,_employeePositionId,searchText) ;
 		}*/
 		
 		public static function GetLetterReceiverContact(searchText:String='')
 		{
-			trace('GetLetterReceiverContact > ',_ticket,_employeePositionId,searchText);
+			SaffronLogger.log('GetLetterReceiverContact > ',_ticket,_employeePositionId,searchText);
 			return ws.GetLetterReceiverContact(_ticket,_employeePositionId,searchText) ;
 		}
 		
 		/**Enter the pdf request id here
 		public static function GetLetterBodyRequestStatus(requestId:String='')
 		{
-			trace('GetLetterBodyRequestStatus > ',_ticket,_employeePositionId,requestId);
+			SaffronLogger.log('GetLetterBodyRequestStatus > ',_ticket,_employeePositionId,requestId);
 			return ws.GetLetterBodyRequestStatus(_ticket,_employeePositionId,requestId) ;
 		}*/
 		
 		/**Get the server date for calender
 		public static function GetServerDateTime()
 		{
-			trace("GetServerDateTime");
+			SaffronLogger.log("GetServerDateTime");
 			return ws.GetServerDateTime();
 		}*/
 		
 		/**Return recerved titles for erja*/
 		public static function GetEmployeePositionReservedReferText()
 		{
-			trace("GetEmployeePositionReservedReferText > ");
+			SaffronLogger.log("GetEmployeePositionReservedReferText > ");
 			return ws.GetEmployeePositionReservedReferText(_ticket,_employeePositionId);
 		}
 		
 		/**Return recerved titles for SentMails
 		public static function GetReservedSubjectText()
 		{
-			trace("GetReservedSubjectText >");
+			SaffronLogger.log("GetReservedSubjectText >");
 			return ws.GetReservedSubjectText(_ticket,_employeePositionId);
 		}*/
 		
 		/**Return the list of persons, who can insert into senders as sender contact from send mail service
 		public static function GetLetterSenderContact(searchText:String='')
 		{
-			trace("GetLetterSenderContact > "+searchText);
+			SaffronLogger.log("GetLetterSenderContact > "+searchText);
 			return ws.GetLetterSenderContact(_ticket,_employeePositionId,searchText);
 		}*/
 		
@@ -713,7 +713,7 @@ package webService2
 		/**Returns the list of available sighneture to use on send mail
 		public static function GetEmployeePositionSignature(searchText:String = '')
 		{
-			trace("GetEmployeePositionSignature > "+searchText);
+			SaffronLogger.log("GetEmployeePositionSignature > "+searchText);
 			return ws.GetEmployeePositionSignature(_ticket,_employeePositionId,searchText);
 		}*/
 		
@@ -721,7 +721,7 @@ package webService2
 		/**Uses to load Parvande lists for send mail
 		public static function GetLetterFolderList()
 		{
-			trace("GetLetterFolderList > ");
+			SaffronLogger.log("GetLetterFolderList > ");
 			return ws.GetLetterFolderList(_ticket,_employeePositionId);
 		}*/
 		
@@ -729,14 +729,14 @@ package webService2
 		/**Uses to load Andikators for sending new mail*/
 		public static function GetAllSecretariatToSecretariatFormat(seachText:String = '')
 		{
-			trace("GetAllSecretariatToSecretariatFormat > ");
+			SaffronLogger.log("GetAllSecretariatToSecretariatFormat > ");
 			return ws.GetAllSecretariatToSecretariatFormat(_ticket,_employeePositionId,seachText);
 		}
 		
 		/**send letter - stayInInbox = false makes mail to remove from inbox. followUp makes Flag variable returns true on Mail
 		public static function SendLetter(sendMailModel:SendMailModel,stayInInbox:Boolean,followup:Boolean)
 		{
-			trace("SendLetter");
+			SaffronLogger.log("SendLetter");
 			return ws.SendLetter(_ticket,_employeePositionId,sendMailModel,stayInInbox,followup);
 		}*/
 		
@@ -873,8 +873,8 @@ package webService2
 		{
 			var pureXML:XML = putputXML[0].*[0] ;
 			/*var ns:Namespace = putputXML.namespace('s');
-			trace('ns : '+ns);
-			trace(" putputXML.removeNamespace(ns) : "+putputXML.removeNamespace(ns));
+			SaffronLogger.log('ns : '+ns);
+			SaffronLogger.log(" putputXML.removeNamespace(ns) : "+putputXML.removeNamespace(ns));
 			putputXML.removeNamespace(ns);*/
 			return pureXML;
 		}
@@ -898,7 +898,7 @@ package webService2
 		
 		private static function clearXML2(str:String):String
 		{
-			//trace("input string : "+str);
+			//SaffronLogger.log("input string : "+str);
 			var cleared:String = '';
 			var controll:String = '' ; 
 			var tagName:String = '' ;
@@ -957,7 +957,7 @@ package webService2
 					}
 				}
 			}
-			//trace("cleared xml is : "+cleared);
+			//SaffronLogger.log("cleared xml is : "+cleared);
 			return cleared;
 		}
 		
@@ -977,7 +977,7 @@ package webService2
 				{
 					return xml.*[i].toString() ;
 				}
-				//trace('tag name : '+tagName+' item on this tag is : '+xml[xml.*[i].name()].length()+' and num child : '+xml[tagName].*.length());
+				//SaffronLogger.log('tag name : '+tagName+' item on this tag is : '+xml[xml.*[i].name()].length()+' and num child : '+xml[tagName].*.length());
 				if(xml[tagName].length()>1 || arrayParamLins.indexOf(tagName)!=-1)
 				{
 					if(cashedObject[tagName]==undefined)
@@ -989,7 +989,7 @@ package webService2
 				else
 				{
 					//This tag has many childrens
-					//trace("this is object i think : "+tagName+' because : '+xml[tagName].length()+' and the value is : '+xml.*[i]);
+					//SaffronLogger.log("this is object i think : "+tagName+' because : '+xml[tagName].length()+' and the value is : '+xml.*[i]);
 					cashedObject[tagName] = xmlToObject(xml.*[i]) ;
 				}
 			}
@@ -1005,23 +1005,23 @@ package webService2
 			if(base is ObjectProxy)
 			{
 				clearObject = (base as ObjectProxy).valueOf();
-				//trace("That was an Object and it changed to : "+JSON.stringify(clearObject));
+				//SaffronLogger.log("That was an Object and it changed to : "+JSON.stringify(clearObject));
 			}
 			else if(base is ArrayCollection)
 			{
 				clearObject = (base as ArrayCollection).toArray();
-				//trace('That was an Array and it is converted to default Array');
+				//SaffronLogger.log('That was an Array and it is converted to default Array');
 			}
 			else
 			{
 				clearObject = base ;
-				//trace("any other unkcown type");
+				//SaffronLogger.log("any other unkcown type");
 			}
 			
 			for(var i in clearObject)
 			{
 				clearObject[i] = clearFlexObjecting(clearObject[i]);
-				//trace("That Object , so I have to controll all elements on it");
+				//SaffronLogger.log("That Object , so I have to controll all elements on it");
 			}
 			
 			return clearObject ;

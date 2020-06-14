@@ -257,7 +257,7 @@ package diagrams.calender
 		protected function calBoxSelected(event:MouseEvent):void
 		{
 			
-			trace('show calender data now');
+			SaffronLogger.log('show calender data now');
 			
 			this.dispatchEvent(new CalenderEvent(CalenderEvent.DATE_SELECTED,cahsedContents,data.Mdate,data.to));
 		}		

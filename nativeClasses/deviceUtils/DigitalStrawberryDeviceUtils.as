@@ -22,7 +22,7 @@ package nativeClasses.deviceUtils {
                 try {
                     DeviceUtilsClass = getDefinitionByName("com.digitalstrawberry.ane.deviceutils.DeviceUtils") as Class;
                 } catch (e) {
-                    trace('Add \n\n\t<extensionID>com.digitalstrawberry.ane.deviceUtils</extensionID>\n\n to your project xmls');
+                    SaffronLogger.log('Add \n\n\t<extensionID>com.digitalstrawberry.ane.deviceUtils</extensionID>\n\n to your project xmls');
                 }
             }
         }

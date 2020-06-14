@@ -84,7 +84,7 @@ package webService
 		{
 			if(activatedOperations.indexOf(operationName) == -1)
 			{
-				trace('activate operation');
+				SaffronLogger.log('activate operation');
 				ws[operationName].resultFormat = "e4x" ;
 				ws[operationName].addEventListener("result", Result) ;
 				ws[operationName].addEventListener("fault", serviceNotFound) ;
@@ -154,14 +154,14 @@ package webService
 		{
 			if(!isitConnected)
 			{
-				trace('try to connect : '+webServiceWsdl);
+				SaffronLogger.log('try to connect : '+webServiceWsdl);
 				if(DEBUG_DONOT_CONNECT)
 				{
 					ws.loadWSDL("no where");
 				}
 				else
 				{
-					//trace('send webServiceWsdl');
+					//SaffronLogger.log('send webServiceWsdl');
 					ws.loadWSDL(webServiceWsdl);
 				}
 			}
@@ -172,7 +172,7 @@ package webService
 		{
 			if(!isitConnected)
 			{
-				trace('connection failds');
+				SaffronLogger.log('connection failds');
 				for(var i = 0 ; i<onDisconnectedFunctionList.length ; i++)
 				{
 					onDisconnectedFunctionList[i]();
@@ -186,7 +186,7 @@ package webService
 		/**web service is ready to use*/
 		private static function webServiceReady(e)
 		{
-			trace('web service is ready to use');
+			SaffronLogger.log('web service is ready to use');
 			if(isitConnected==false)
 			{
 				isitConnected = true ;
@@ -216,7 +216,7 @@ package webService
 		/**any connection failds*/
 		private static function serviceNotFound(e:*=null)
 		{
-			trace('faild : '+e);
+			SaffronLogger.log('faild : '+e);
 			//i dispatch event instant;ly
 			var myTocken:AsyncToken ;
 			if(e is FaultEvent)
@@ -233,7 +233,7 @@ package webService
 		private static function Result(ev:ResultEvent)
 		{
 			var result:String = pureData(ev.result);
-			trace('Result : '+result);
+			SaffronLogger.log('Result : '+result);
 			eventListen.dispatchEvent(new WebEvent(WebEvent.Result,result.toString(),ev.token));
 		}
 		
@@ -254,7 +254,7 @@ package webService
 				}
 			}
 			
-			trace(serviceName+" : "+paramList);
+			SaffronLogger.log(serviceName+" : "+paramList);
 			
 			var op:AbstractOperation = ws.getOperation(serviceName);
 			op.arguments = params;

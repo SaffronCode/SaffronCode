@@ -191,8 +191,8 @@ package photoEditor
 				mousePoseY = 1;
 			}
 			
-			//trace("mousePoseY : "+mousePoseY);
-			//trace("mousePoseX : "+mousePoseX);
+			//SaffronLogger.log("mousePoseY : "+mousePoseY);
+			//SaffronLogger.log("mousePoseX : "+mousePoseX);
 			
 			//Set the last mouse pose
 			mousePose = new Point(this.mouseX,this.mouseY);
@@ -238,7 +238,7 @@ package photoEditor
 		override internal function saveAndClose():void
 		{
 			PhotoEdit.updateImage(PhotoEdit.getImage(rs));
-			trace("Save the cropped image");
+			SaffronLogger.log("Save the cropped image");
 			super.saveAndClose();
 		}
 	}

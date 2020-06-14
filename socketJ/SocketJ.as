@@ -61,7 +61,7 @@ package socketJ
 		
 		protected static function socketClosed(event:Event):void
 		{
-			trace("* SocketJ disconnected *");
+			SaffronLogger.log("* SocketJ disconnected *");
 			if(shouldBeConnect)
 			{
 				connect();
@@ -70,25 +70,25 @@ package socketJ
 		
 		protected static function noConnectionAvailable(event:IOErrorEvent):void
 		{
-			trace("* SocketJ no connection available, try to connect again");
+			SaffronLogger.log("* SocketJ no connection available, try to connect again");
 			tryToConnectLater();
 		}
 		
 		protected static function socketConnected(event:Event):void
 		{
-			trace("* SocketJ connected!! *");
+			SaffronLogger.log("* SocketJ connected!! *");
 			tryToSendLastData();
 		}
 		
 		protected static function socketDataRecevied(event:ProgressEvent):void
 		{
 			// TODO Auto-generated method stub
-			trace("* SocketJ Some Data received *");
+			SaffronLogger.log("* SocketJ Some Data received *");
 		}
 		
 		protected static function sercurityError(event:SecurityErrorEvent):void
 		{
-			trace("* SocketJ security Error, Socket should be disconnect *");
+			SaffronLogger.log("* SocketJ security Error, Socket should be disconnect *");
 			disconnect();
 		}
 		
@@ -97,7 +97,7 @@ package socketJ
 		{
 			disconnect();
 
-			trace("* SocketJ try connect "+Ip+":"+Port+" *");
+			SaffronLogger.log("* SocketJ try connect "+Ip+":"+Port+" *");
 			if(shouldBeConnect==false)
 			{
 				dispatcher.dispatchEvent(new Event(Event.CONNECT));
@@ -113,7 +113,7 @@ package socketJ
 			/**There is no connection at all, try to connect later till disconnect function calls.*/
 			protected static function noInternetConnectionStablished(event:IOErrorEvent):void
 			{
-				trace("* SocketJ no internet Connection Stablished *");
+				SaffronLogger.log("* SocketJ no internet Connection Stablished *");
 				tryToConnectLater();
 			}
 			
@@ -135,7 +135,7 @@ package socketJ
 			
 			private static function internetConnectionIsOK(e:Event)
 			{
-				trace("* SocketJ is connected to web, try to conect to your socket now");
+				SaffronLogger.log("* SocketJ is connected to web, try to conect to your socket now");
 				socketListener.connect(Ip,Port);
 			}
 		
@@ -147,7 +147,7 @@ package socketJ
 			if(socketListener.connected)
 				socketListener.close();
 			
-			trace("* SockjetJ Disconnected *");
+			SaffronLogger.log("* SockjetJ Disconnected *");
 			
 			if(shouldBeConnect==false)
 			{
@@ -189,13 +189,13 @@ package socketJ
 			{
 				if(dataToSendList.length>0)
 				{
-					trace("* SocketJ try to send first data *");
+					SaffronLogger.log("* SocketJ try to send first data *");
 					socketListener.writeUTFBytes(JSON.stringify(dataToSendList[0]));
 					socketListener.flush();
 				}
 				else
 				{
-					trace("* SocketJ No data left to send *");
+					SaffronLogger.log("* SocketJ No data left to send *");
 				}
 			}
 			
@@ -203,7 +203,7 @@ package socketJ
 			protected static function socketDataOutputOk(event:OutputProgressEvent):void
 			{
 				// TODO Auto-generated method stub
-				trace("* Socket data sent *");
+				SaffronLogger.log("* Socket data sent *");
 				if(event.bytesPending==0)
 				{
 					dataToSendList.shift();

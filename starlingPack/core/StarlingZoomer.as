@@ -43,7 +43,7 @@ public class StarlingZoomer {
     public function StarlingZoomer(zoomableObject:Sprite) {
         if(Starling.multitouchEnabled==false)
         {
-            trace("You should set Starling.multitouchEnabled = true  before creating starling instance on the main class.");
+            SaffronLogger.log("You should set Starling.multitouchEnabled = true  before creating starling instance on the main class.");
         }
         mySprite = zoomableObject ;
         mySprite.addEventListener(StarlingZoomEvent.LOCK_UNTIL_TOUCH_UP,lockUntilTouchUp);
@@ -79,7 +79,7 @@ public class StarlingZoomer {
         for(var i:int = 0 ; i<l ; i++)
         {
             var currentPose:Point = touchToPoint(touchList[i]);
-            //trace("Global touch point is  "+i+" is : "+touchList[i].getLocation(mySprite)+' vs '+mySprite.width/mySprite.scaleX);
+            //SaffronLogger.log("Global touch point is  "+i+" is : "+touchList[i].getLocation(mySprite)+' vs '+mySprite.width/mySprite.scaleX);
             deltaX += currentPose.x-lastPose[i].x ;
             deltaY += currentPose.y-lastPose[i].y ;
 
@@ -133,15 +133,15 @@ public class StarlingZoomer {
             var spriteRelativeWidth:Number = mySprite.width/mySprite.scaleX ;
             var spriteRelativeHeight:Number = area.height/mySprite.scale ;
 
-            //trace("center : "+center+' vs width : '+spriteRelativeWidth+' from '+mySprite.width);//TODO control the center point to change the target osition on scaled.
-            //trace("scale : "+scale);
+            //SaffronLogger.log("center : "+center+' vs width : '+spriteRelativeWidth+' from '+mySprite.width);//TODO control the center point to change the target osition on scaled.
+            //SaffronLogger.log("scale : "+scale);
 
             targetX -= (((center.x/(spriteRelativeWidth))*spriteRelativeWidth)*(scale-1))*mySprite.scaleX;
             targetY -= ((center.y/(spriteRelativeHeight))*spriteRelativeHeight)*(scale-1)*mySprite.scaleY;
         }
         /*else if(l==1)
         {
-            trace("Global touch point is  "+i+" is : "+touchList[0].getLocation(mySprite)+' vs '+mySprite.width/mySprite.scaleX);
+            SaffronLogger.log("Global touch point is  "+i+" is : "+touchList[0].getLocation(mySprite)+' vs '+mySprite.width/mySprite.scaleX);
         }*/
 
 
@@ -236,7 +236,7 @@ public class StarlingZoomer {
             {
                 if(touchList[i].id==touch.id)
                 {
-                    trace("The touch was duplicated");
+                    SaffronLogger.log("The touch was duplicated");
                     return ;
                 }
             }
@@ -263,7 +263,7 @@ public class StarlingZoomer {
             {
                 touchList = new <Touch>[];
                 lastPose = new Vector.<Point>();
-                trace("All touches removed");
+                SaffronLogger.log("All touches removed");
                 return ;
             }
             for(var i:int ; i<touchList.length ;i++)
@@ -272,7 +272,7 @@ public class StarlingZoomer {
                 {
                     touchList.removeAt(i);
                     lastPose.removeAt(i);
-                    trace("Touch removed");
+                    SaffronLogger.log("Touch removed");
                     return ;
                 }
             }

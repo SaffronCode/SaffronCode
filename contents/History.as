@@ -15,7 +15,7 @@
 		public static function pushHistory(currentLink:LinkData):void
 		{
 			lastPopedHistory = null ;
-			trace("Yes, the history is changing");
+			SaffronLogger.log("Yes, the history is changing");
 			resetHistory();
 			if(currentLink.level==-1)
 			{
@@ -23,7 +23,7 @@
 			}
 			else if(currentLink.level == -2)//New level on 9/12/2015
 			{
-				trace("current page replaced with last page level");
+				SaffronLogger.log("current page replaced with last page level");
 				if(history.length>0)
 				{
 					history.pop();
@@ -32,7 +32,7 @@
 			}
 			else
 			{
-				//trace("♠ split : "+currentLink.level+' , '+history.length+' - '+currentLink.level);
+				//SaffronLogger.log("♠ split : "+currentLink.level+' , '+history.length+' - '+currentLink.level);
 				history.splice(currentLink.level/*-1*/,Math.max(history.length-currentLink.level/*+1*/,0));
 				history.push(currentLink);
 			}
@@ -59,7 +59,7 @@
 		/**You can predect if back is availabe*/
 		public static function backAvailable():Boolean
 		{
-			//trace("history : "+JSON.stringify(history));
+			//SaffronLogger.log("history : "+JSON.stringify(history));
 			//This situation will not ocure on any pages but home
 			if(history!=null && ( history.length>1 /*|| (history.length>0 && history[0].id == home)*/))
 			{
@@ -86,10 +86,10 @@
 		/**returns lastPageEvent*/
 		public static function lastPage():AppEventContent
 		{
-			//trace("dispatch last page");
+			//SaffronLogger.log("dispatch last page");
 			/*for(var i = 0 ; i<history.length ; i++)
 			{
-			trace('history['+i+'] : '+history[i].id);
+			SaffronLogger.log('history['+i+'] : '+history[i].id);
 			}*/
 			
 			lastPopedHistory = history.concat();

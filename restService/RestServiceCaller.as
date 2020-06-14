@@ -97,7 +97,7 @@
 				//headers.Add("dh-UAuth", signIn.Member.UIdAuth.ToString());
 			if(RestService.UId == '' || RestService.UIdAuth == '')
 			{
-				trace("*** Warning, User is not logged in yet ***");
+				SaffronLogger.log("*** Warning, User is not logged in yet ***");
 			}
 			
 			var newHeader3:URLRequestHeader = new URLRequestHeader('dh-U',RestService.UId);
@@ -111,7 +111,7 @@
 			requestLoader = new URLLoader();
 			if(requestedData is ByteArray)
 			{
-				trace("Requested type is Bitnary");
+				SaffronLogger.log("Requested type is Bitnary");
 				requestLoader.dataFormat = URLLoaderDataFormat.BINARY ;
 			}
 			else
@@ -135,16 +135,16 @@
 		
 		private function noInternet(e:IOErrorEvent=null,controllData:Boolean=true)
 		{
-			trace("No internet connection");
+			SaffronLogger.log("No internet connection");
 			if(controllData && offlineDataIsOK)
 			{
 				var savedData:* = RestServiceSaver.load(myId,myParams);
 				if(savedData != null)
 				{
-					trace("Saved data is not null");
+					SaffronLogger.log("Saved data is not null");
 					if(RestService.debug_show_results)
 					{
-						trace("* cashed data for "+myId+" : "+savedData);
+						SaffronLogger.log("* cashed data for "+myId+" : "+savedData);
 					}
 					parsLoadedData(savedData,true);
 					return ;
@@ -163,11 +163,11 @@
 			{
 				try
 				{
-					trace("* fresh data for "+myId+" : "+JSON.stringify(JSON.parse(requestLoader.data),null,' '));
+					SaffronLogger.log("* fresh data for "+myId+" : "+JSON.stringify(JSON.parse(requestLoader.data),null,' '));
 				}
 				catch(e)
 				{
-					trace("* JSON model had problem : "+requestLoader.data);
+					SaffronLogger.log("* JSON model had problem : "+requestLoader.data);
 				}
 			}
 			
@@ -184,7 +184,7 @@
 			
 			if(parser.error)
 			{
-				trace("Server problem");
+				SaffronLogger.log("Server problem");
 				//if(this.hasEventListener(RestEvent.SERVER_ERROR))
 				var serverError:RestEvent = new RestEvent(RestEvent.SERVER_ERROR,parser.msgs,parser.exceptionType) ;
 				if(hasErrorListenerAndDispatchOnglobal(serverError))
@@ -196,7 +196,7 @@
 				}
 				else
 				{
-					trace("User is not listening to ServerError, so ConnectionError Dispatches");
+					SaffronLogger.log("User is not listening to ServerError, so ConnectionError Dispatches");
 					noInternet(null,false);
 				}
 			}
@@ -207,26 +207,26 @@
 				{
 					RestServiceSaver.save(myId,myParams,loadedData);
 				}
-				trace("Data is ready to use");
+				SaffronLogger.log("Data is ready to use");
 				if(onUpdateProccess)
 				{
 					if(oldPureData!=loadedData)
 					{
-						trace("* This update is new");
+						SaffronLogger.log("* This update is new");
 						//I have to upste lastPureData befor dispatching the event
 						dispatch(new RestEvent(RestEvent.SERVER_RESULT_UPDATE));
 						//this.dispatchEvent(new RestEvent(RestEvent.SERVER_RESULT_UPDATE));
 					}
 					else
 					{
-						trace("* Nothing change on this update");
+						SaffronLogger.log("* Nothing change on this update");
 					}
 				}
 				else
 				{
 					//this.dispatchEvent(new RestEvent(RestEvent.SERVER_RESULT));
 					//I have to upste lastPureData befor dispatching the event
-					trace("Result event dispatching");
+					SaffronLogger.log("Result event dispatching");
 					dispatch(new RestEvent(RestEvent.SERVER_RESULT))
 				}
 			}
@@ -243,7 +243,7 @@
 				myParams = RestFullJSONParser.stringify(obj) ;
 				pureRequest.data = myParams ;
 			}
-			trace("instantOfflineData : "+instantOfflineData);
+			SaffronLogger.log("instantOfflineData : "+instantOfflineData);
 			if(instantOfflineData)
 			{
 				var savedData:* = RestServiceSaver.load(myId,myParams);
@@ -252,7 +252,7 @@
 					var expired:Boolean = RestServiceSaver.isExpired(myId,myParams,offlineDate);
 					if(RestService.debug_show_results)
 					{
-						trace("* instant cashed data for "+myId+" : "+savedData);
+						SaffronLogger.log("* instant cashed data for "+myId+" : "+savedData);
 					}
 					parsLoadedData(savedData);
 					if(expired)
@@ -261,7 +261,7 @@
 					}
 					else
 					{
-						trace("* no need to update instant data")
+						SaffronLogger.log("* no need to update instant data")
 						return ;
 					}
 				}
@@ -269,7 +269,7 @@
 			
 			
 			cansel();
-			trace(myId+" : "+myParams);
+			SaffronLogger.log(myId+" : "+myParams);
 			
 			//debug line
 				requestLoader.load(pureRequest);
@@ -295,7 +295,7 @@
 				}
 				catch(e)
 				{
-					//trace("No stream opened :\n"+e);
+					//SaffronLogger.log("No stream opened :\n"+e);
 				}
 			}
 		}

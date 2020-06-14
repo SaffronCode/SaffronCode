@@ -186,7 +186,7 @@ package contents.displayPages
 			{
 				if(horizontalMenu)
 				{
-					trace("MenuDirectionX : "+MenuDirectionX);
+					SaffronLogger.log("MenuDirectionX : "+MenuDirectionX);
 					linkScroller.activateAutoScroll(autoScrollSpeed*-MenuDirectionX);
 				}
 				else
@@ -289,18 +289,18 @@ package contents.displayPages
 			}
 			
 			linkClass = getDefinitionByName(getQualifiedClassName(sampleLink)) as Class;
-			trace('link class is : '+linkClass);
+			SaffronLogger.log('link class is : '+linkClass);
 			
 			//Controll it by it's height to prevent revert activating at most of times.
 			if(this.getBounds(this).y<this.height/-2)
 			{
-				trace("*****Reverted menu activated******");
+				SaffronLogger.log("*****Reverted menu activated******");
 				revertedY = true ;
 				revertedByMovieclipUI = true ;
 			}
 			if(this.getBounds(this).x<this.width/-2)
 			{
-				trace("*****Reverted menu activated on horizontal mode******");
+				SaffronLogger.log("*****Reverted menu activated on horizontal mode******");
 				revertedX = true ;
 				revertedByMovieclipUI = true ;
 			}
@@ -345,7 +345,7 @@ package contents.displayPages
 		protected function controllMouseSlide(event:MouseEvent):void
 		{
 			linkScroller.isInRange();
-			trace("Mouse clicked");
+			SaffronLogger.log("Mouse clicked");
 			var itemY:Number ; 
 			var currentLinkItem:LinkItem ;
 			for(var i:int = 0 ; linksInterfaceStorage!=null && i<linksInterfaceStorage.length ; i++)
@@ -363,11 +363,11 @@ package contents.displayPages
 							addLintItemButton(currentLinkItem,i);
 							this.stage.addEventListener(MouseEvent.MOUSE_MOVE,controllsliding);
 							this.stage.addEventListener(MouseEvent.MOUSE_UP,canselSliding);
-							trace("Item founded");
+							SaffronLogger.log("Item founded");
 						}
 						else
 						{
-							trace("Item si already open");
+							SaffronLogger.log("Item si already open");
 						}
 					}
 					else
@@ -426,7 +426,7 @@ package contents.displayPages
 					{
 						draggableLinkItem.slideHorizontal((linksContainer.mouseX-mouseFirstPose+mouseDeltaToSlide)/linkItemButtonsWidth,linkItemButtonsWidth) ;
 						event.updateAfterEvent();
-						//trace("Deative scroll and other buttons");
+						//SaffronLogger.log("Deative scroll and other buttons");
 						linkScroller.lock(true);
 					}
 				}
@@ -445,7 +445,7 @@ package contents.displayPages
 		{
 			if(revertedY)
 			{
-				trace("**********************Revert added");
+				SaffronLogger.log("**********************Revert added");
 				areaRect.top = newValue*-1 ;
 				areaRect.bottom = 0 ;
 			}
@@ -521,7 +521,7 @@ package contents.displayPages
 		{
 			if(myPageData==null || myPageData.links1.length != pageData.links1.length)
 			{
-				trace("**** Update function changed to setUp function ****");
+				SaffronLogger.log("**** Update function changed to setUp function ****");
 				setUp(pageData);
 				return ;
 			}
@@ -566,7 +566,7 @@ package contents.displayPages
 			firstItemIndex = -1 ;
             lastItemIndex = 0 ;
 			
-			//trace("current page data is : "+pageData.export());
+			//SaffronLogger.log("current page data is : "+pageData.export());
 			this.removeChildren();
 			myPageData = pageData;
 			linksContainer = new Sprite();
@@ -618,7 +618,7 @@ package contents.displayPages
 		
 		private function createLinks():void
 		{
-			trace("Creat links");
+			SaffronLogger.log("Creat links");
 			lastGeneratedLinkIndes = 0 ;
 			/*Bellow movieClips are allready removed by removeAllChildren() function by setUp function.
 			if(linkScroller!=null)
@@ -712,8 +712,8 @@ package contents.displayPages
 			controllSensor();
 			if(!dynamicHeight)
 			{
-				trace("linksContainer : "+linksContainer.getBounds(stage));
-				trace("areaRect : "+areaRect);
+				SaffronLogger.log("linksContainer : "+linksContainer.getBounds(stage));
+				SaffronLogger.log("areaRect : "+areaRect);
 				
 				linkScroller = new ScrollMT(linksContainer,areaRect,/*areaRect*/null,!horizontalMenu,horizontalMenu,acceptAnimation&&(!revertedX && !revertedY),revertedY,revertedX,stepSize,forseScrollEffect,fadeTheScroller);
 				
@@ -864,7 +864,7 @@ package contents.displayPages
 		public function addLink(listOfLinks:Vector.<LinkData>):void
 		{
 			addingLinksOver = false ;
-			trace("extra links are : "+listOfLinks.length);
+			SaffronLogger.log("extra links are : "+listOfLinks.length);
 			myPageData.links1 = myPageData.links1.concat(listOfLinks);
 			
 			this.addEventListener(Event.ENTER_FRAME,controllSensor);
@@ -986,7 +986,7 @@ package contents.displayPages
 					showOrHideLinkItem(visibleItem,i);
 				}
 				
-				//trace("****************************** it takes : "+(getTimer()-tim));
+				//SaffronLogger.log("****************************** it takes : "+(getTimer()-tim));
 			}*/
 
 			//Control inside links or out side links ↓
@@ -1035,7 +1035,7 @@ package contents.displayPages
 	                lastItemIndex++;
 	            }
 				//Control inside links or out side links ↑
-				//trace("firstItemIndex,lastItemIndex : "+firstItemIndex,lastItemIndex);
+				//SaffronLogger.log("firstItemIndex,lastItemIndex : "+firstItemIndex,lastItemIndex);
 			}
 
 
@@ -1077,7 +1077,7 @@ package contents.displayPages
 				)
 			)
 			{
-				trace("Request more link");
+				SaffronLogger.log("Request more link");
 				var ifTherIs:Boolean = creatOneLink();
 				if(ifTherIs)
 				{
@@ -1169,7 +1169,7 @@ package contents.displayPages
 				{
 					if(showThempRemovedLink(visibleItem))
 					{
-						trace("Backed link : "+linkIndex);
+						SaffronLogger.log("Backed link : "+linkIndex);
 					}
 					return true ;
 				}else /*if(
@@ -1180,7 +1180,7 @@ package contents.displayPages
 				{
 					if(thempRemoveLink(visibleItem))
 					{
-						trace("1 RemovedLink : "+(linkIndex));
+						SaffronLogger.log("1 RemovedLink : "+(linkIndex));
 					}
 				}
 				return false ;
@@ -1227,7 +1227,7 @@ package contents.displayPages
 				{
 					if(showThempRemovedLink(visibleItem))
 					{
-						trace("Backed link : "+linkIndex);
+						SaffronLogger.log("Backed link : "+linkIndex);
 					}
 					return true ;
 				}else /*if(
@@ -1238,7 +1238,7 @@ package contents.displayPages
 				{
 					if(thempRemoveLink(visibleItem))
 					{
-						trace("2 RemovedLink : "+(linkIndex));
+						SaffronLogger.log("2 RemovedLink : "+(linkIndex));
 					}
 				}
 				return false ;
@@ -1327,11 +1327,11 @@ package contents.displayPages
 			{
 				if(revertedX)
 				{
-					trace("!!!!!!!!!!!!!!! Control Reverted horizontal menus two");
+					SaffronLogger.log("!!!!!!!!!!!!!!! Control Reverted horizontal menus two");
 				}
 				else
 				{
-					trace("!!!!!!!!!!!!!!! Control horizontal menus two");
+					SaffronLogger.log("!!!!!!!!!!!!!!! Control horizontal menus two");
 				}
 				return true ;
 			}
@@ -1341,17 +1341,17 @@ package contents.displayPages
 				var linkBottom:Number;
 				if(revertedY)
 				{
-					trace("!!!!!!!!!!!!!!! Control vertical reverted menu");
+					SaffronLogger.log("!!!!!!!!!!!!!!! Control vertical reverted menu");
 					return true ;
 				}
 				else
 				{
 					linkY = linksInterfaceStorage.length>linkIndex?linksInterfaceStorage[linkIndex].y:linksContainer.y+Math.floor(linkIndex/iconsPerLine)*linkItemHeight();
 					linkBottom = linkY+linkItemHeight();
-					trace("* linkY : "+linkY);
-					trace("* linkBottom : "+linkBottom);
-					trace("* areaRect : "+areaRect);
-					trace("* linksContainer.y : "+linksContainer.y);
+					SaffronLogger.log("* linkY : "+linkY);
+					SaffronLogger.log("* linkBottom : "+linkBottom);
+					SaffronLogger.log("* areaRect : "+areaRect);
+					SaffronLogger.log("* linksContainer.y : "+linksContainer.y);
 					if(linkY<areaRect.bottom+areaRect.height*2 && linkBottom>areaRect.top-areaRect.height*2)
 					{
 						return true ;
@@ -1370,7 +1370,7 @@ package contents.displayPages
 			
 			if(lastGeneratedLinkIndes<myPageData.links1.length)
 			{
-				trace(":::::howManyLinksGenerates : "+howManyLinksGenerates);
+				SaffronLogger.log(":::::howManyLinksGenerates : "+howManyLinksGenerates);
 				for(var i:int = 0 ; i<howManyLinksGenerates && lastGeneratedLinkIndes<myPageData.links1.length ; i++)
 				{
 					var newLink:LinkItem ;
@@ -1513,12 +1513,12 @@ package contents.displayPages
 					}
 					else
 					{
-						//trace("************************** >>>>>>>>>>>>>>> "+index);
+						//SaffronLogger.log("************************** >>>>>>>>>>>>>>> "+index);
 						linksSensor.y = linksInterfaceStorage[index].y-myDeltaY;
 					}
 				}
 			}
-			//trace("linksSensor : "+linksSensor.y+' MenuDirectionY : '+MenuDirectionY);
+			//SaffronLogger.log("linksSensor : "+linksSensor.y+' MenuDirectionY : '+MenuDirectionY);
 			updateDynamicLinsBackGround();
 		}
 		
@@ -1588,7 +1588,7 @@ package contents.displayPages
 						linksSensor.y = newLink.y+(newLink.height+myDeltaY) ;
 					}
 				}
-				//trace(" linksSensor.y : "+linksSensor.y) ;
+				//SaffronLogger.log(" linksSensor.y : "+linksSensor.y) ;
 			}
 			else
 			{

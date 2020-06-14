@@ -38,11 +38,11 @@ package nativeClasses.localNotification
 			Core.init();
 			try
 			{
-				trace("isSupported = " + Notifications.isSupported);
+				SaffronLogger.log("isSupported = " + Notifications.isSupported);
 				
 				if (Notifications.isSupported)
 				{
-					trace("version notification     = " + Notifications.service.version);
+					SaffronLogger.log("version notification     = " + Notifications.service.version);
 					Notifications.service.addEventListener(NotificationEvent.NOTIFICATION, notifications_notificationHandler);
 					Notifications.service.addEventListener(NotificationEvent.NOTIFICATION_SELECTED, notifications_notificationHandler);
 					Notifications.service.addEventListener(AuthorisationEvent.CHANGED, requestAuthorisation);
@@ -61,29 +61,29 @@ package nativeClasses.localNotification
 					
 					requestAuthorisation();
 					
-					trace("Press to send a notification");
+					SaffronLogger.log("Press to send a notification");
 				}
 				else
 				{
-					trace("Notifications not supported");
+					SaffronLogger.log("Notifications not supported");
 				}
 			}
 			catch (e:Error)
 			{
-				trace("ERROR:" + e.message);
+				SaffronLogger.log("ERROR:" + e.message);
 			}
 		}
 		
 		private static function notifications_notificationHandler(event:NotificationEvent):void
 		{
-			trace(event.type + "::[" + event.id + "]::" + event.payload);
+			SaffronLogger.log(event.type + "::[" + event.id + "]::" + event.payload);
 		}
 		
 		public static function cancelNotification(_notificationId:int):void
 		{
 			if (Notifications.isSupported)
 			{
-				trace("cancelNotification(): cancel:" + _notificationId);
+				SaffronLogger.log("cancelNotification(): cancel:" + _notificationId);
 				Notifications.service.cancel(_notificationId);
 			}
 		}
@@ -92,7 +92,7 @@ package nativeClasses.localNotification
 		{
 			if (Notifications.isSupported)
 			{
-				trace("cancelNotification(): cancelAll()");
+				SaffronLogger.log("cancelNotification(): cancelAll()");
 				Notifications.service.cancelAll();
 			}
 		}

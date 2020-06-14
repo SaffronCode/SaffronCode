@@ -65,7 +65,7 @@ package diagrams.table
 		protected function imSelected(event:MouseEvent):void
 		{
 			
-			trace("Im selected : "+vid+' '+hid);
+			SaffronLogger.log("Im selected : "+vid+' '+hid);
 			this.dispatchEvent(new TableEvent(TableEvent.TABLE_SELECTED,vid,hid,casheValue));
 		}
 		
@@ -83,9 +83,9 @@ package diagrams.table
 		{
 			casheValue = value ;
 			UnicodeStatic.fastUnicodeOnLines(tf,value,false);
-			//trace('tf.textHeight : '+tf.textHeight+'  vs  '+tf.height+' Math.min(tf.textHeight+2,maxTextH) : '+Math.min(tf.textHeight+2,maxTextH));
+			//SaffronLogger.log('tf.textHeight : '+tf.textHeight+'  vs  '+tf.height+' Math.min(tf.textHeight+2,maxTextH) : '+Math.min(tf.textHeight+2,maxTextH));
 			tf.height = Math.min(tf.textHeight+2,maxTextH);
-			//trace("tf.height : "+tf.height);
+			//SaffronLogger.log("tf.height : "+tf.height);
 			tf.y = textY+(maxTextH-tf.height)/2;
 			
 			if(this.stage == null)
@@ -98,9 +98,9 @@ package diagrams.table
 		protected function imAddedToStage(event:Event):void
 		{
 			this.removeEventListener(Event.ADDED_TO_STAGE,imAddedToStage);
-			//trace("○○◘○• 1 : Font is : "+tf.getTextFormat().font);
+			//SaffronLogger.log("○○◘○• 1 : Font is : "+tf.getTextFormat().font);
 			tf.dispatchEvent(new Event(Event.ADDED,true));
-			//trace("○○◘○• 2 : Font is : "+tf.getTextFormat().font);
+			//SaffronLogger.log("○○◘○• 2 : Font is : "+tf.getTextFormat().font);
 			tf.text = tf.text ;
 		}
 	}

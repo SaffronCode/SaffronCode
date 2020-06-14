@@ -89,25 +89,25 @@
 				if(File.applicationDirectory.resolvePath("Data/bgWork3.swf").exists)
 					moreHints += " and remove the Data/bgWork3.swf now.\n";
 				if(DevicePrefrence.isItPC)
-					trace("Add the  "+workerTarget.name+"  file from Data-sample folder on Saffron to your Data folder"+moreHints) ;
+					SaffronLogger.log("Add the  "+workerTarget.name+"  file from Data-sample folder on Saffron to your Data folder"+moreHints) ;
 				else
-					trace(moreHints);
+					SaffronLogger.log(moreHints);
 			}
 			var workerBytes:ByteArray = FileManager.loadFile(workerTarget);
 			
-			trace("workerTarget.exists : "+workerTarget.exists);
-			trace("Capabilities.isDebugger : "+Capabilities.isDebugger);
+			SaffronLogger.log("workerTarget.exists : "+workerTarget.exists);
+			SaffronLogger.log("Capabilities.isDebugger : "+Capabilities.isDebugger);
 			
 			if(workerTarget.exists && !Capabilities.isDebugger)
 			{
-				trace("Start Creating threads");
+				SaffronLogger.log("Start Creating threads");
 				numberOfWorkersWaitnigToStart = 0 ;
 				workers = new Vector.<Worker>();
 				senderChannels = new Vector.<MessageChannel>();
 				receiverChallens = new Vector.<MessageChannel>();
 				for(var i:int = 0 ; i<totalWorkers ; i++)
 				{
-					trace("Create thread "+i);
+					SaffronLogger.log("Create thread "+i);
 					numberOfWorkersWaitnigToStart++ ;
 					var worker:Worker = WorkerDomain.current.createWorker(workerBytes,true);
 					worker.addEventListener(Event.WORKER_STATE, workerStateHandler);
@@ -118,7 +118,7 @@
 					var receiverChannel:MessageChannel = worker.createMessageChannel(Worker.current);
 					receiverChannel.addEventListener(Event.CHANNEL_MESSAGE, handlecustomeChannel);
 					//receiverChannel.addEventListener(Event.DEACTIVATE, workerDeactivated);
-					receiverChannel.addEventListener(Event.CHANNEL_STATE, function(e:Event){trace(e)});
+					receiverChannel.addEventListener(Event.CHANNEL_STATE, function(e:Event){SaffronLogger.log(e)});
 					worker.setSharedProperty("receiverChannel_fromMainProject", receiverChannel);
 					worker.start();
 					
@@ -137,7 +137,7 @@
 		
 		/*protected static function workerDeactivated(event:Event):void
 		{
-			trace("*** Deactivated! "+event);
+			SaffronLogger.log("*** Deactivated! "+event);
 			//totalWorkers=1;
 			isReady = false ;
 			activated = false ;
@@ -161,14 +161,14 @@
 		private static function selectSenderTosend():MessageChannel
 		{
 			currentWorker++ ;
-			//trace("Selected Worker is : "+(currentWorker%totalWorkers));
+			//SaffronLogger.log("Selected Worker is : "+(currentWorker%totalWorkers));
 			return senderChannels[currentWorker%totalWorkers] ;
 		}
 		
 		/**Worker state*/
 		private static function workerStateHandler(e:Event) {
 			var worker:Worker = e.currentTarget as Worker ;
-			trace("Worker State : "+worker.state);
+			SaffronLogger.log("Worker State : "+worker.state);
 			if(worker.state == WorkerState.RUNNING)
 			{
 				numberOfWorkersWaitnigToStart--;
@@ -176,7 +176,7 @@
 			if(numberOfWorkersWaitnigToStart<=0)
 			{
 				isReady = true ;
-				trace("All workers ready");
+				SaffronLogger.log("All workers ready");
 			}
 		}
 		
@@ -184,7 +184,7 @@
 		/**The receiver function will receive array of byteOfBitmap,Width,Heigh or null to make a bitmapData with BitmapData.setPixels() function. if the file is local, pass the native path for it*/
 		public static function createBitmapFromByte(byteOrURLString:*,receiver:Function,loadInThisArea:Boolean=false, imageW:Number=0, imageH:Number=0, keepRatio:Boolean=true,blur:Number=0):void
 		{
-			trace("Worker Bitmap ");
+			SaffronLogger.log("Worker Bitmap ");
 			var currentId:uint = lastID++ ;
 			
 			funcList.push(receiver);
@@ -203,11 +203,11 @@
 				//var tim:Number = getTimer();
 				//It takes time to pass big bytes here
 				selectSenderTosend().send(toSendValue);
-				//trace("Get timer : "+(getTimer()-tim));
+				//SaffronLogger.log("Get timer : "+(getTimer()-tim));
 			}
 			else
 			{
-				//trace("Worker DEBUG ");
+				//SaffronLogger.log("Worker DEBUG ");
 				setUpDebugOnce();
 				bgEmulator.handleCommandMessage(toSendValue);
 			}
@@ -221,7 +221,7 @@
 		/**You will receive your encoded bytes in a file that will target on the first unit of receiver array. so receiver must take an array*/
 		public static function base64ToByte(base64String:String,receiver:Function):void
 		{
-			trace("Worker base64ToByte ");
+			SaffronLogger.log("Worker base64ToByte ");
 			var currentId:uint = lastID++ ;
 			
 			funcList.push(receiver);
@@ -259,7 +259,7 @@
 			funcList.push(receiver);
 			idList.push(currentId);
 			
-			trace("** Convert byte to base64");
+			SaffronLogger.log("** Convert byte to base64");
 			var tempFile:File = createTemp() ;
 			var fileStream:FileStream = new FileStream();
 			fileStream.addEventListener(Event.CLOSE,fileSaved);
@@ -269,7 +269,7 @@
 			
 			function fileSaved(event:Event):void
 			{
-				trace("** File saved done!!");
+				SaffronLogger.log("** File saved done!!");
 				fileStream.close();
 				var toSendValue:Array = [BgWorker.id_byteToBase64,currentId,tempFile.nativePath] ;
 				
@@ -294,7 +294,7 @@
 			funcList.push(receiver);
 			idList.push(currentId);
 			
-			trace("** Convert wave to mp3");
+			SaffronLogger.log("** Convert wave to mp3");
 			var tempFile:File = createTemp() ;
 			var fileStream:FileStream = new FileStream();
 			fileStream.addEventListener(Event.CLOSE,fileSaved);
@@ -304,7 +304,7 @@
 			
 			function fileSaved(event:Event):void
 			{
-				trace("** File saved done!!");
+				SaffronLogger.log("** File saved done!!");
 				fileStream.close();
 				var toSendValue:Array = [BgWorker.id_wave2mp3,currentId,tempFile.nativePath] ;
 				
@@ -328,18 +328,18 @@
 			funcList.push(receiver);
 			idList.push(currentId);
 			
-			trace("Function id list updated : "+idList+' vs currentId :'+currentId);
+			SaffronLogger.log("Function id list updated : "+idList+' vs currentId :'+currentId);
 			
 			var toSendValue:Array = [BgWorker.id_jsonParser,currentId,str] ;
-			//trace("JSOn called, activated:"+activated+" isReady:"+isReady);
+			//SaffronLogger.log("JSOn called, activated:"+activated+" isReady:"+isReady);
 			if(activated && isReady)
 			{
-				//trace("JSOn called used worker");
+				//SaffronLogger.log("JSOn called used worker");
 				selectSenderTosend().send(toSendValue);
 			}
 			else
 			{
-				//trace("JSOn called used debug worker");
+				//SaffronLogger.log("JSOn called used debug worker");
 				setUpDebugOnce();
 				bgEmulator.handleCommandMessage(toSendValue);
 			}
@@ -348,7 +348,7 @@
 		/**Received data from worker*/
 		private static function handlecustomeChannel(eventOrDebugValue:*):void
 		{
-			trace('Receved event on worker caller. is it in debug moede?'+isDebugMode());
+			SaffronLogger.log('Receved event on worker caller. is it in debug moede?'+isDebugMode());
 			var received:Array;
 			if(eventOrDebugValue is Array)
 			{
@@ -361,7 +361,7 @@
 			}
 			if((received[1] is Array) && (received[1] as Array).length>0 && ((received[1] as Array)[0] is String) && ((received[1] as Array)[0].length<300))
 			{
-				trace('Receved Data is'+received[1]);
+				SaffronLogger.log('Receved Data is'+received[1]);
 			}
 			var callerId:uint = received[0] ;
 			
@@ -372,9 +372,9 @@
 		/**Send this data to its recever*/
 		private static function callFunction(callerId:uint,data:Object):void
 		{
-			//trace(callerId+' function id receved '+((data.hasOwnProperty('length'))?"[data length is : "+data.length+"]":data)+' function ids are : '+idList);
+			//SaffronLogger.log(callerId+' function id receved '+((data.hasOwnProperty('length'))?"[data length is : "+data.length+"]":data)+' function ids are : '+idList);
 			var I:int = idList.indexOf(callerId) ;
-			trace("Function founded : "+I);
+			SaffronLogger.log("Function founded : "+I);
 			if(I!=-1)
 			{
 				funcList[I](data);

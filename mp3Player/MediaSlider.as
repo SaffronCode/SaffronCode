@@ -69,7 +69,7 @@ package mp3Player
 					myPrecent = 1 ;
 				}
 				currentPrecent = myPrecent ;
-				//trace("Touched Precent is : "+currentPrecent);
+				//SaffronLogger.log("Touched Precent is : "+currentPrecent);
 				onChanged(currentPrecent);
 			}
 		}

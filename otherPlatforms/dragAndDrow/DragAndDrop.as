@@ -75,7 +75,7 @@
 					}
 					for(var j:int = 0 ; j<acceptingFormats.length ; j++)
 					{
-						trace("aFile.extension : "+aFile.extension+" vs "+acceptingFormats[j])
+						SaffronLogger.log("aFile.extension : "+aFile.extension+" vs "+acceptingFormats[j])
 						if( !aFile.isDirectory && (acceptingFormats[j].indexOf(aFile.extension)!=-1))
 						{
 							acceptedFiles.push(aFile);

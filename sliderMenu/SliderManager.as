@@ -163,7 +163,7 @@ package sliderMenu
 			private static function contolMovement(e:MouseEvent):void
 			{
 				var currentPose:Point = new Point(myStage.mouseX,myStage.mouseY);
-				//trace("currentPose.x"+currentPose.x+" tempMouseFirstPose.x"+tempMouseFirstPose.x+" >> "+Math.abs(currentPose.x-tempMouseFirstPose.x));
+				//SaffronLogger.log("currentPose.x"+currentPose.x+" tempMouseFirstPose.x"+tempMouseFirstPose.x+" >> "+Math.abs(currentPose.x-tempMouseFirstPose.x));
 				//ScrollMT.minScrollToLock = 200 ;
 				if(
 					(
@@ -304,7 +304,7 @@ package sliderMenu
 					{
 						mouseFirstPose = null ;
 						var obj:MovieClip = addGetSlider(currentDraggingPose,null,0,true);
-						//trace("obj is : "+obj);
+						//SaffronLogger.log("obj is : "+obj);
 						if(obj == null || !obj.hitTestPoint(myRoot.mouseX,myRoot.mouseY))
 						{
 							currentDraggingPose = '' ;
@@ -515,7 +515,7 @@ package sliderMenu
 				deltaPose.y = Math.min(0,Math.max(deltaPose.y,-deltaPoseNumber));
 			}
 			
-			//trace("myStage : "+myStage.x++);
+			//SaffronLogger.log("myStage : "+myStage.x++);
 			if(moveStage)
 			{
 				if(slider_l!=null || slider_r!=null)
@@ -734,9 +734,9 @@ package sliderMenu
 			stageW = Math.round(temFullScreenWidth/scl);
 			stageH = Math.round(temFullScreenHeight/scl);
 			
-			trace('scale is : '+scl);
-			trace('stage W : '+stageW);
-			trace('stage H : '+stageH);
+			SaffronLogger.log('scale is : '+scl);
+			SaffronLogger.log('stage W : '+stageW);
+			SaffronLogger.log('stage H : '+stageH);
 			
 			lx = (stageW-myStage.stageWidth)/-2;
 			rx = myStage.stageWidth-lx;

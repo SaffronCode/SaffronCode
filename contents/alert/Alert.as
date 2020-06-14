@@ -21,7 +21,7 @@ package contents.alert
 		{
             var title:String = param.join(',');
 			setUp();
-			trace("Alert:"+title);
+			SaffronLogger.log("Alert:"+title);
 			if(debugField1!=null)
 			{
 				debugField1.appendText(title+'\n');
@@ -46,7 +46,7 @@ package contents.alert
 			setUp();
 			if(VibrationDistriqt.isSupported())
 			{
-				trace("Distriqt vibratin is supported");
+				SaffronLogger.log("Distriqt vibratin is supported");
 				VibrationDistriqt.vibrate(duration);
 			}
 			else if(DevicePrefrence.isAndroid())
@@ -64,7 +64,7 @@ package contents.alert
 			setUp();
 			if(VibrationDistriqt.isSupported())
 			{
-				trace("Distriqt vibratin is supported");
+				SaffronLogger.log("Distriqt vibratin is supported");
 				VibrationDistriqt.vibrateDynamic(patternArray);
 			}
 			if(DevicePrefrence.isAndroid())
@@ -82,12 +82,12 @@ package contents.alert
 		{
 			if(VibrationDistriqt.isSupported())
 			{
-				trace("Distriqt supported")
+				SaffronLogger.log("Distriqt supported")
 				VibrationDistriqt.puls();
 			}
 			else if(DevicePrefrence.isAndroid())
 			{
-				trace("NO! Distriqt")
+				SaffronLogger.log("NO! Distriqt")
             	vibrate(30);
 			}
 		}

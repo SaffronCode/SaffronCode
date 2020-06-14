@@ -87,7 +87,7 @@
 			
 			if(neededLang!='')
 			{
-				trace( "Please add below tags to the Language.xml file for FileBrowser class.\n\n"+neededLang );
+				SaffronLogger.log( "Please add below tags to the Language.xml file for FileBrowser class.\n\n"+neededLang );
 			}
 			
 			lastLocation = File.userDirectory ;
@@ -115,7 +115,7 @@
 
 		public static function get isSupported():Boolean
 		{
-			trace("Check the iOS action for file browser first");
+			SaffronLogger.log("Check the iOS action for file browser first");
 			return true ;
 		}
 		
@@ -130,7 +130,7 @@
 		
 		public static function browsToSave(targetBytes:ByteArray,fileName:String):void
 		{
-			trace("Save the file with the name ; "+fileName);
+			SaffronLogger.log("Save the file with the name ; "+fileName);
 			selectedFileBytes = targetBytes ;
 			mode = 2;
 			Name = fileName ;
@@ -155,14 +155,14 @@
 				}
 				baseFolderTarget = baseFolder.nativePath ;
 			}
-			trace("lastLocation : "+lastLocation+' vs '+baseFolder)
+			SaffronLogger.log("lastLocation : "+lastLocation+' vs '+baseFolder)
 			if(lastLocation==null)
 			{
 				lastLocation = baseFolder ;
 			}
 			else
 			{
-				trace("Location was not null : "+lastLocation.nativePath);
+				SaffronLogger.log("Location was not null : "+lastLocation.nativePath);
 			}
 			
 			if(
@@ -262,20 +262,20 @@
 			}
 			
 			var popText:PopMenuContent = new PopMenuContent(hint,null,buttons);
-			trace("Open browser");
+			SaffronLogger.log("Open browser");
 			PopMenu1.popUp(Contents.lang.t.file_selector_title,null,popText,0,onFileSelected);
 		}
 			
 		/**Sort files by their name*/
 		private static function sortFolders(a:File,b:File):int
 		{
-			trace("Compair "+a.name+" vs "+b.name+" = "+StringFunctions.compairFarsiString(a.name,b.name));
+			SaffronLogger.log("Compair "+a.name+" vs "+b.name+" = "+StringFunctions.compairFarsiString(a.name,b.name));
 			return StringFunctions.compairFarsiString(a.name,b.name);
 		}
 		
 		private static function onFileSelected(e:PopMenuEvent):void
 		{
-			//trace('e :',JSON.stringify(e));
+			//SaffronLogger.log('e :',JSON.stringify(e));
 			var myFile:File ;
 			
 			if(e.buttonTitle == Contents.lang.t.back_folder)
@@ -304,7 +304,7 @@
 					saveTarget = lastLocation.resolvePath(baseName+'_'+index+extention);
 					index++ ;
 				}
-				trace("File saved to : "+saveTarget.nativePath);
+				SaffronLogger.log("File saved to : "+saveTarget.nativePath);
 				var status:String = FileManager.seveFile(saveTarget,selectedFileBytes);
 				if(status!='')
 				{
@@ -385,7 +385,7 @@
 		
 		private static function startSearch():void
 		{
-			trace("Start the search about : "+lastSearchVal);
+			SaffronLogger.log("Start the search about : "+lastSearchVal);
 			
 			var searchMC:MovieClip = new MovieClip();
 			searchTF = new MTTextField(0,30,"B Yekan Regular");
@@ -428,15 +428,15 @@
 				queEndTime = getTimer()+(frameTimes)*4/5;
 				while(getTimer()<queEndTime)
 				{
-					//trace("lastSearchedFolder : "+getTimer()+'<'+queEndTime);
+					//SaffronLogger.log("lastSearchedFolder : "+getTimer()+'<'+queEndTime);
 					if(lastSearchedFolder!=null)
 					{
-						//trace("Continue searching...");
+						//SaffronLogger.log("Continue searching...");
 						searchOn2(lastSearchedFolder);
 					}
 					else
 					{
-						//trace("Finished");
+						//SaffronLogger.log("Finished");
 						stopSearching();
 						ShowSearchResult();
 						break;
@@ -448,7 +448,7 @@
 			
 			private static function searchOn2(myFile:File):void
 			{
-				//trace("Check this : "+file.nativePath);
+				//SaffronLogger.log("Check this : "+file.nativePath);
 				
 				if(myFile.isDirectory)
 				{
@@ -495,7 +495,7 @@
 					{
 						myFile = nextFolder ;
 					}
-					//trace("loop on : "+file.nativePath);
+					//SaffronLogger.log("loop on : "+file.nativePath);
 				}
 				lastSearchedFolder = null ;
 				/*for(var i = 0 ; i<sub.length ; i++)
@@ -518,7 +518,7 @@
 					if(getTimer()>queEndTime)
 					{
 						searchQue.push(myFile);
-						//trace("Time out on : "+file.nativePath);
+						//SaffronLogger.log("Time out on : "+file.nativePath);
 						return ;
 					}
 					

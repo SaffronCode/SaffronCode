@@ -29,7 +29,7 @@ package contents.displayPages
 				this.addEventListener(MouseEvent.MOUSE_DOWN,showMousePose);
 				function showMousePose(e:MouseEvent):void
 				{
-					trace(this.mouseY);
+					SaffronLogger.log(this.mouseY);
 				}*/
 			
 			if(activateHTMLlink)
@@ -48,7 +48,7 @@ package contents.displayPages
 			paragH = textTF.textHeight;
 			textTF.appendText('\n-');
 			paragH = textTF.textHeight-paragH ;
-			trace("paragH is : "+paragH);
+			SaffronLogger.log("paragH is : "+paragH);
 			textTF.text = '';
 			
 			var imageW:Number = maskRect.width;
@@ -60,8 +60,8 @@ package contents.displayPages
 				//samplePagedata.contentY = maskRect.y;
 			samplePagedata.contentW = maskRect.width;
 			
-			trace("samplePagedata.contentW : "+samplePagedata.contentW);
-			trace("maskRect.width : "+maskRect.width);
+			SaffronLogger.log("samplePagedata.contentW : "+samplePagedata.contentW);
+			SaffronLogger.log("maskRect.width : "+maskRect.width);
 			if(alighn)
 			{
 				samplePagedata.contentAlign = '1';
@@ -77,7 +77,7 @@ package contents.displayPages
 			
 			var contentsString:String = '' ;
 			
-			//trace("ImageH : "+imageH+' vs ParagH : '+paragH+' : '+(imageH/paragH));
+			//SaffronLogger.log("ImageH : "+imageH+' vs ParagH : '+paragH+' : '+(imageH/paragH));
 			
 			var imageParagEnters:String = '';
 			var paragNumber:uint = Math.ceil((imageH/paragH));
@@ -85,7 +85,7 @@ package contents.displayPages
 			var singleEnter:String = ' \n';
 			for(i = 0 ; i<paragNumber ; i++)
 			{
-				//trace("•");
+				//SaffronLogger.log("•");
 				imageParagEnters+=' \n';
 			}
 			
@@ -108,14 +108,14 @@ package contents.displayPages
 						//contentsString+=imageParagEnters;
 						while(textTF.textHeight<ImageY)
 						{
-							//trace("textTF.textHeight : "+textTF.textHeight+' vs ImageY : '+ImageY);
+							//SaffronLogger.log("textTF.textHeight : "+textTF.textHeight+' vs ImageY : '+ImageY);
 							textTF.appendText(' \n ');
 							contentsString+=' \n ';
 						}
 						textTF.appendText(' \n ');
 						contentsString+=' \n '
 					//textY=imageParagHeight;
-					//trace("Enters added to content : "+contentsString+' > '+contentsString.length);
+					//SaffronLogger.log("Enters added to content : "+contentsString+' > '+contentsString.length);
 				}
 				else if(i!=0)
 				{
@@ -129,21 +129,21 @@ package contents.displayPages
 				//textY+=paragH;
 				/*while(textY<ImageY)
 				{
-					trace("•");
+					SaffronLogger.log("•");
 					textY += paragH ;
 					//if(textY<ImageY)
 					//{
 					//	contents+='\n ';
 					//}
 				}*/
-				//trace('----------------------');
-				//trace("Parag string is : • "+listOfParag[i].content+' • ');
+				//SaffronLogger.log('----------------------');
+				//SaffronLogger.log("Parag string is : • "+listOfParag[i].content+' • ');
 				if(listOfParag[i].content!='')
 				{
 					contentsString+=listOfParag[i].content;
 					TextPutter.onTextArea(textTF,contentsString,true,false,useCash,0,alighn);
 					textY = textTF.textHeight;
-				//trace("ImageY : "+ImageY);
+				//SaffronLogger.log("ImageY : "+ImageY);
 					ImageY = textY ;
 				}
 				//textY+=paragH;
@@ -153,11 +153,11 @@ package contents.displayPages
 			
 			
 			samplePagedata.content = contentsString ;
-			//trace("samplePagedata.content : "+samplePagedata.content);
+			//SaffronLogger.log("samplePagedata.content : "+samplePagedata.content);
 			super.setUp(samplePagedata);
 			
 			
-			//trace("ParagPage.scaleY : "+this.scaleY);
+			//SaffronLogger.log("ParagPage.scaleY : "+this.scaleY);
 		}
 	}
 }

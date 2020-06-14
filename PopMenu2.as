@@ -17,7 +17,7 @@
 		
 		public static function popUp(title:String='' , type:PopMenuTypes=null , content:PopMenuContent=null,closeOnTime:uint=0,onButtonSelects:Function = null)
 		{
-			//trace('POP 2 MENU OPENED '+Math.random());
+			//SaffronLogger.log('POP 2 MENU OPENED '+Math.random());
 			ME2.popUp2(title, type, content,closeOnTime,onButtonSelects);
 		}		
 		

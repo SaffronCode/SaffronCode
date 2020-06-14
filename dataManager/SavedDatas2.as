@@ -70,7 +70,7 @@
 		public static function setTableName(tableNameTitle:String='')
 		{
 			tableName = tableBaseName+tableNameTitle;
-			trace("new table name is : "+tableName);
+			SaffronLogger.log("new table name is : "+tableName);
 			setUp();
 		}
 		
@@ -122,7 +122,7 @@
 					{
 						updatedFile.copyTo(sqlFile,true);
 					}
-					catch(e){trace("SavedData2 SetUp error : "+e)}
+					catch(e){SaffronLogger.log("SavedData2 SetUp error : "+e)}
 				}
 				
 				/*var encrypt:ByteArray = new ByteArray();
@@ -131,18 +131,18 @@
 				sql = new SQLConnection();
 				try
 				{
-					trace("Is DB exists? "+sqlFile.exists);
+					SaffronLogger.log("Is DB exists? "+sqlFile.exists);
 					sql.open(sqlFile,SQLMode.CREATE,false,1024,key);
 				}
 				catch(e:Error)
 				{
-					trace("Error happend : "+e.message);
+					SaffronLogger.log("Error happend : "+e.message);
 					sql = null ;
 					var lostDB:File = updatedFile.parent.resolvePath('lostDB'+new Date().time);
-					//trace("updatedFile : "+updatedFile.nativePath);
+					//SaffronLogger.log("updatedFile : "+updatedFile.nativePath);
 					if(updatedFile.exists)
 					{
-						//trace("lostDB : "+lostDB.nativePath);
+						//SaffronLogger.log("lostDB : "+lostDB.nativePath);
 						updatedFile.moveTo(lostDB);
 					}
 					if(sqlFile.exists)
@@ -169,29 +169,29 @@
 				{
 					query.text = "create table "+tableName+" ("+field_id+" VARCHAR(1) , "+field_value+" BLOB , "+field_date+" INT) ";
 					query.execute();
-					trace('table is creats');
+					SaffronLogger.log('table is creats');
 				}
 				catch(e)
 				{
-					trace('table was created');
+					SaffronLogger.log('table was created');
 				}
 				
 				try
 				{
 					query.text = "create index if not EXISTS "+tableName+"_indexes on "+tableName+" ("+field_id+");" ;
 					query.execute() ;
-					trace('index is creates') ;
+					SaffronLogger.log('index is creates') ;
 				}
 				catch(e)
 				{
-					trace('Create index problem') ;
+					SaffronLogger.log('Create index problem') ;
 				}
 			}
 			
 			if(needToUpdate)
 			{
-				trace("sqlFile : "+sqlFile.nativePath);
-				trace("updatedFile : "+updatedFile.nativePath);
+				SaffronLogger.log("sqlFile : "+sqlFile.nativePath);
+				SaffronLogger.log("updatedFile : "+updatedFile.nativePath);
 				if(!updatedFile.exists)
 				{
 					sqlFile.copyTo(updatedFile);
@@ -203,7 +203,7 @@
 		/**SQL is opened*/
 		protected static function asincSQLisReady(event:SQLEvent):void
 		{
-			trace("****SQL is open****");
+			SaffronLogger.log("****SQL is open****");
 			asyncSQLisOpened = true ;
 			asyncSql.removeEventListener(SQLEvent.OPEN,asincSQLisReady);
 			if(!asyncQuery.executing)
@@ -221,14 +221,14 @@
 		public static function save(id:String,data:*):void
 		{
 			setUp();
-			trace("Save !!");
+			SaffronLogger.log("Save !!");
 			var dateNum:Number = new Date().time;
 			asyncQue.push(new SavedDataQueeItem(id,data,dateNum));
-			trace("asyncSQLisOpened : "+asyncSQLisOpened);
-			trace("asyncQuery.executing : "+asyncQuery.executing);
+			SaffronLogger.log("asyncSQLisOpened : "+asyncSQLisOpened);
+			SaffronLogger.log("asyncQuery.executing : "+asyncQuery.executing);
 			if(asyncQuery.executing || !asyncSQLisOpened)
 			{
-				trace("**Async db is bussy right now ...");
+				SaffronLogger.log("**Async db is bussy right now ...");
 				return ;
 			}
 			
@@ -249,7 +249,7 @@
 			asyncQuery.clearParameters();
 			asyncQuery.text = "delete from "+tableName+" where "+field_id+" == @"+field_id ;
 			asyncQuery.parameters['@'+field_id] = id ;
-			trace("*************** asyncQuery.text : "+asyncQuery.text);
+			SaffronLogger.log("*************** asyncQuery.text : "+asyncQuery.text);
 			
 			
 			asyncQuery.addEventListener(SQLEvent.RESULT,continueSaving);
@@ -261,14 +261,14 @@
 				var id:String = asyncQue[0].id ;
 				var data:* = asyncQue[0].data ;
 				var date:Number = asyncQue[0].date ;
-				trace("************Query executed");
+				SaffronLogger.log("************Query executed");
 				asyncQuery.removeEventListener(SQLEvent.RESULT,continueSaving);
 				//( "+field_id+" , "+field_value+" , "+field_date+" )
 				asyncQuery.text = "insert into "+tableName+"  values( @"+field_id+" , @"+field_value+" , "+date+" )";
 				asyncQuery.parameters["@"+field_id] =  id ;
 				asyncQuery.parameters["@"+field_value] =  data ;
 				
-				//trace("query.text : "+query.text);
+				//SaffronLogger.log("query.text : "+query.text);
 				
 				asyncQuery.addEventListener(SQLEvent.RESULT,savingCompleted);
 				asyncQuery.execute();
@@ -328,7 +328,7 @@
 			if(lastAcceptableDate != null)
 			{
 				var lastDate:Number = lastAcceptableDate.time ;
-				trace("requested date : "+lastDate);
+				SaffronLogger.log("requested date : "+lastDate);
 				dateControllQuery = ' and '+field_date+" >= "+lastDate ;
 			}
 			//var check:Object = temporaryObject[id];
@@ -337,25 +337,25 @@
 			return check.data;
 			}*/
 			
-			//trace("it have to send query to db to detect the data");
+			//SaffronLogger.log("it have to send query to db to detect the data");
 			query.clearParameters();
 			query.text = "select "+field_value+','+field_date+" from "+tableName+" where "+field_id+" == @"+field_id+dateControllQuery;
 			query.parameters["@"+field_id] = id ;
 			
-			//trace("query.text  : "+query.text);
+			//SaffronLogger.log("query.text  : "+query.text);
 			try
 			{
 				query.execute();
 				var result:SQLResult = query.getResult() ;
 				if(result.data == null)
 				{
-					//trace("didnt found");
+					//SaffronLogger.log("didnt found");
 					return null ;
 				}
 				else
 				{
-					//trace("data founds : "+result.data[0]);
-					//trace('result on query is : '+(result.data[0][field_value]==null)+' > check string : '+(result.data[0][field_value]=='null'));
+					//SaffronLogger.log("data founds : "+result.data[0]);
+					//SaffronLogger.log('result on query is : '+(result.data[0][field_value]==null)+' > check string : '+(result.data[0][field_value]=='null'));
 					var res:* = result.data[0][field_value] ;
 					savedDate = result.data[0][field_date] ;
 					TimeTracer.tr("founded on db "+id);
@@ -364,7 +364,7 @@
 			}
 			catch(e)
 			{
-				trace("DB error : "+e);
+				SaffronLogger.log("DB error : "+e);
 			}
 			return null ;
 		}

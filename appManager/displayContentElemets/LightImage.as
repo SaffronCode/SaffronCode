@@ -224,16 +224,16 @@
 		override public function setUp(imageURL:String, loadInThisArea:Boolean=false, imageW:Number=0, imageH:Number=0, X:Number=0, Y:Number=0,keepRatio:Boolean=true):*
 		{
 			PerformanceTest.traceDelay(1);
-			//trace("Load this image : "+imageURL);
+			//SaffronLogger.log("Load this image : "+imageURL);
 			if(URL!=null && URL == imageURL)
 			{
-				trace("current image is same as old image on lightImage");
+				SaffronLogger.log("current image is same as old image on lightImage");
 				this.dispatchEvent(new Event(Event.COMPLETE));
 				return ;
 			}
 			if(imageURL==null && loadedBytes==null && loadedBitmap==null)
 			{
-				trace("No URL and no LoadedBytes defined yet");
+				SaffronLogger.log("No URL and no LoadedBytes defined yet");
 				return ;
 			}
 			IsLoading = true ;
@@ -280,7 +280,7 @@
 			LoadInThisArea = loadInThisArea ;
 			if(this.name.indexOf(_full)!=-1)
 			{
-				trace("Load in this area type changed because of its name");
+				SaffronLogger.log("Load in this area type changed because of its name");
 				LoadInThisArea = true ;
 			}
 			
@@ -303,12 +303,12 @@
 			}
 			this.scaleX = this.scaleY = 1 ;
 			
-			trace("The imge W was "+W+" when you called to open image");
+			SaffronLogger.log("The imge W was "+W+" when you called to open image");
 		}
 		
 		protected function startWork(event:Event=null):void
 		{
-			//trace("Start to load");
+			//SaffronLogger.log("Start to load");
 			/*if(CPUController.isSatUp && animated)
 			{
 				CPUController.eventDispatcher.addEventListener(CPUEvents.PERVECT_CPU,startLoading);
@@ -360,7 +360,7 @@
 			wasLoadedBefor = event==null || event.wasLoadedBefor ;
 			PerformanceTest.traceDelay('image is loaded');
 			//var loaderContext:LoaderContext = new LoaderContext(false,ApplicationDomain.currentDomain);
-			//trace("Load this image : "+event.offlineTarget);
+			//SaffronLogger.log("Load this image : "+event.offlineTarget);
 			//loader = new Loader();
 			//loader.contentLoaderInfo.addEventListener(Event.COMPLETE,imageLoaded);
 			//loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR,imageNotFound);
@@ -375,7 +375,7 @@
 				fileStreamLoader.addEventListener(Event.COMPLETE,fileLoaded);
 				try
 				{
-					trace("Try to load : "+event.offlineTarget);
+					SaffronLogger.log("Try to load : "+event.offlineTarget);
 					
 					PerformanceTest.traceDelay('create target file');
 					var targetFile:File = new File(event.offlineTarget) ;
@@ -392,11 +392,11 @@
 				}
 				catch(e)
 				{
-					trace("Light image async file loader errr : "+e);
+					SaffronLogger.log("Light image async file loader errr : "+e);
 					fileStreamLoader.close();
 					fileStreamLoader = null ;*/
 					//Alert.show("event.offlineTarget : "+event.offlineTarget);
-				trace("**** event.offlineTarget on lightImage : "+event.offlineTarget);
+				SaffronLogger.log("**** event.offlineTarget on lightImage : "+event.offlineTarget);
 					WorkerFunctions.createBitmapFromByte(event.offlineTarget,imageLoaded,LoadInThisArea,W,H,keepImageRatio,blur);
 					//loader.load(new URLRequest(),loaderContext);
 				//}
@@ -408,13 +408,13 @@
 				var tim:Number = getTimer();
 				WorkerFunctions.createBitmapFromByte(loadedBytes,imageLoaded,LoadInThisArea,W,H,keepImageRatio,blur);
 				//loader.loadBytes(loadedBytes,loaderContext);
-				trace(">>> "+(getTimer()-tim));
+				SaffronLogger.log(">>> "+(getTimer()-tim));
 			}
 		}
 		
 		/*protected function fileLoaded(event:Event):void
 		{
-			//trace("\t*\tImage loaded as file");
+			//SaffronLogger.log("\t*\tImage loaded as file");
 			var loaderContext:LoaderContext = new LoaderContext(false,ApplicationDomain.currentDomain);
 			var bytes:ByteArray = new ByteArray();
 			try
@@ -424,14 +424,14 @@
 				var tim:Number = getTimer();
 				WorkerFunctions.createBitmapFromByte(bytes,imageLoaded,LoadInThisArea,W,H,keepImageRatio);
 				//loader.loadBytes(bytes,loaderContext);
-				trace("*>>> "+(getTimer()-tim));
+				SaffronLogger.log("*>>> "+(getTimer()-tim));
 				PerformanceTest.traceDelay('image file showed');
 				fileStreamLoader.close();
 				bytes.clear();
 			}
 			catch(e)
 			{
-				trace("Light image loading local file error : "+e);
+				SaffronLogger.log("Light image loading local file error : "+e);
 			}
 		}*/
 		
@@ -452,7 +452,7 @@
 			//var loadedContent:DisplayObject ;
 			/*if(loader==null && loadedBitmap==null)
 			{
-				trace("*************************why the loader is null???"+loader+' > '+event+'  >>  '+(event.target as LoaderInfo)+'  >>>  '+event.currentTarget);
+				SaffronLogger.log("*************************why the loader is null???"+loader+' > '+event+'  >>  '+(event.target as LoaderInfo)+'  >>>  '+event.currentTarget);
 				loadedContent = (event.target as LoaderInfo).content;
 				//return;
 			}*/
@@ -473,9 +473,9 @@
 			}
 			else if(workerArray!=null && workerArray is Array && workerArray.length>1 && (workerArray[0] is ByteArray))
 			{
-				trace("The image file is : "+workerArray[0].length);
-				trace("The image file W : "+workerArray[1]);
-				trace("The image file H : "+workerArray[2]);
+				SaffronLogger.log("The image file is : "+workerArray[0].length);
+				SaffronLogger.log("The image file W : "+workerArray[1]);
+				SaffronLogger.log("The image file H : "+workerArray[2]);
 				(workerArray[0] as ByteArray).position = 0 ;
 				workerBitmap = new BitmapData(workerArray[1],workerArray[2],true,0x00000000);
 				workerBitmap.setPixels(workerBitmap.rect,workerArray[0]);
@@ -495,31 +495,31 @@
 			}*/
 			if(newBitmap==null)
 			{
-				trace("Image load faild on lightImage function imageLoaded");
+				SaffronLogger.log("Image load faild on lightImage function imageLoaded");
 				return ;
 			}
 			if(workerBitmap==null)
 			{
 				var bitmapData:BitmapData = newBitmap.bitmapData ;
 				//var newBitmapData:BitmapData ;
-				trace("The W is : "+W);
-				trace("The H is : "+H);
+				SaffronLogger.log("The W is : "+W);
+				SaffronLogger.log("The H is : "+H);
 				if(W!=0 && H!=0)
 				{
-					trace("Change image size to : "+W,H);
+					SaffronLogger.log("Change image size to : "+W,H);
 					bitmapData = BitmapEffects.changeSize(bitmapData,W,H,keepImageRatio,LoadInThisArea);
 				}
 				else if(W!=0)
 				{
-					//trace("• I whant to change the bitmap width to : "+W);
-					//trace("And the height will be "+bitmapData.height*(W/bitmapData.width));
+					//SaffronLogger.log("• I whant to change the bitmap width to : "+W);
+					//SaffronLogger.log("And the height will be "+bitmapData.height*(W/bitmapData.width));
 					bitmapData = BitmapEffects.changeSize(bitmapData,W,bitmapData.height*(W/bitmapData.width),keepImageRatio,LoadInThisArea);
 					H = bitmapData.height;
 				}
 				else if(H!=0)
 				{
-					//trace("• I whant to change the bitmap height to : "+H);
-					//trace("And the width will be "+bitmapData.width*(H/bitmapData.height));
+					//SaffronLogger.log("• I whant to change the bitmap height to : "+H);
+					//SaffronLogger.log("And the width will be "+bitmapData.width*(H/bitmapData.height));
 					bitmapData = BitmapEffects.changeSize(bitmapData,bitmapData.width*(H/bitmapData.height),H,keepImageRatio,LoadInThisArea);
 					W = bitmapData.width;
 				}
@@ -581,7 +581,7 @@
 			if(acitvateAnimation && animated || (!wasLoadedBefor && animatedIfLoaded))
 			{
 				this.alpha = 0 ;
-				//trace("make it come with animation : "+this);
+				//SaffronLogger.log("make it come with animation : "+this);
 				AnimData.fadeIn(this,null,animateSpeed);
 			}
 			
@@ -638,7 +638,7 @@
 			}
 			catch(e)
 			{
-				//trace("LightImage problem : "+e);
+				//SaffronLogger.log("LightImage problem : "+e);
 			}*/
 		}
 		

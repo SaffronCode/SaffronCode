@@ -21,7 +21,7 @@ package appManager.displayObjects
 		public static function sendFeedbackTo(mailAdress:String,Subject:String="Feedback"):void
 		{
 			setUp();
-			trace("devicePrefrence : "+devicePrefrence);
+			SaffronLogger.log("devicePrefrence : "+devicePrefrence);
 			navigateToURL(new URLRequest("mailto:"+mailAdress+"?subject="+Subject+"&body="+devicePrefrence));
 		}
 	}

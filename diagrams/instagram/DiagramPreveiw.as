@@ -109,7 +109,7 @@ package diagrams.instagram
 		public function changeVals(newValues:InstagramData)
 		{
 			myDiagramVals = newValues ;
-			trace("Change the diagram interface");
+			SaffronLogger.log("Change the diagram interface");
 			changeYs();
 		}
 		

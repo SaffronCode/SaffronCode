@@ -32,7 +32,7 @@ package nativeClasses
 		public function Flic(target:IEventDispatcher=null)
 		{
 			super(target);
-			trace('Key :',Key)
+			SaffronLogger.log('Key :',Key)
 			_ignoreFirstClick = !Key;
 		}
 		public static function setup(onNewDevicePaired_p:Function=null,onNoDeviceFound_p:Function=null,onPrivateButton_p:Function=null,onButtonDown_p:Function=null,onButtonUp_p:Function=null,error_p:Function=null):void
@@ -45,7 +45,7 @@ package nativeClasses
 			_error= error_p;
 			try
 			{
-				trace('on start init flic')
+				SaffronLogger.log('on start init flic')
 				mteamFlicManager = new MteamFlicManager();
 				mteamFlicManager.addEventListener(FlicEvent.NewDevicePaired,onNewDevicePaired);
 				mteamFlicManager.addEventListener(FlicEvent.NoDeviceFound,onNoDeviceFound);
@@ -57,7 +57,7 @@ package nativeClasses
 			catch(e:*)
 			{
 				_error.call();
-				trace('flic init error')
+				SaffronLogger.log('flic init error')
 			}
 		}
 		
@@ -74,19 +74,19 @@ package nativeClasses
 		{ 			
 			GlobalStorage.save(saveDevicePaired,'oneDevaisePaired');
 			_onNewDevicePaired.call();
-			trace('******onNewDevicePaired*****')	
+			SaffronLogger.log('******onNewDevicePaired*****')	
 		}
 		
 		protected static function onNoDeviceFound(event:FlicEvent)
 		{
 			_onNoDeviceFound.call();
-			trace('onNoDeviceFound')
+			SaffronLogger.log('onNoDeviceFound')
 		}
 		
 		protected static function onPrivateButton(event:FlicEvent)
 		{		
 			_onPrivateButton.call();
-			trace('onPrivateButton')
+			SaffronLogger.log('onPrivateButton')
 		}
 		protected static  function onButtonDown(event:FlicEvent)
 		{
@@ -98,7 +98,7 @@ package nativeClasses
 		}
 		private static function lastClick(ButtonId_p:String):Boolean
 		{
-			trace('Number(ButtonId_p) :',Number(ButtonId_p), '_ignoreFirstClick :',_ignoreFirstClick);
+			SaffronLogger.log('Number(ButtonId_p) :',Number(ButtonId_p), '_ignoreFirstClick :',_ignoreFirstClick);
 			if(Number(ButtonId_p)==0 && !_ignoreFirstClick)
 			{
 				return true;

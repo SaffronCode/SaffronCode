@@ -36,6 +36,7 @@
 	import contents.History;
 	import mteam.FuncManager;
 	import flash.utils.setTimeout;
+	import flash.events.UncaughtErrorEvent;
 	
 	/**Now its ready to call other pages*/
 	[Event(name="MAIN_ANIM_IS_READY", type="appManager.event.AppEvent")]
@@ -114,6 +115,9 @@
 		public function App(autoPlayThePageMusics:Boolean=false,skipAllAnimations:Boolean = false,activateShineEffect:uint=0,PlaySounOnBackGroundTo:Boolean=false,activateVibrate:Boolean=true)
 		{
 			super();
+			loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, uncaughtErrorHandler);
+
+
 			History.reset();
 			pageVibrate = activateVibrate ;
 			
@@ -144,7 +148,7 @@
 				mainAnim.addEventListener(AppEvent.MAIN_ANIM_IS_READY,changePage);
 			}
 			
-			trace('introMC : '+introMC);
+			SaffronLogger.log('introMC : '+introMC);
 			//manage intro ↓
 			if(introMC != null)
 			{
@@ -168,6 +172,15 @@
 			this.addEventListener(MenuEvent.MENU_READY,setTheCurrentMenu);
 			this.addEventListener(MenuEvent.MENU_DELETED,removeCurrentMenu);
 		}	
+
+		private function uncaughtErrorHandler(event:UncaughtErrorEvent):void
+		{
+			if (event.error is Error)
+			{
+				var error:Error = event.error as Error;
+				SaffronLogger.log(error.message+'\n'+error.getStackTrace());
+			}
+		}
 		
 		protected function removeCurrentMenu(event:MenuEvent):void
 		{
@@ -178,7 +191,7 @@
 		protected function setTheCurrentMenu(event:MenuEvent):void
 		{
 			
-			trace("New menu is ready");
+			SaffronLogger.log("New menu is ready");
 			_currentMenu = event.menuTarget ;
 		}
 		
@@ -204,7 +217,7 @@
 		{
 			if(ev.keyCode == Keyboard.BACK || ev.keyCode == Keyboard.PAGE_UP)
 			{
-				//trace("back button selects : "+AppEventContent.backAvailable());
+				//SaffronLogger.log("back button selects : "+AppEventContent.backAvailable());
 				if(SliderManager.isOpen())
 				{
 					ev.preventDefault();
@@ -321,7 +334,7 @@
 			}
 			else
 			{
-				trace("Shiner is not activated on project");
+				SaffronLogger.log("Shiner is not activated on project");
 			}
 		}
 		
@@ -334,7 +347,7 @@
 			{
 				showShineEffect(event.target as Sprite);
 			}
-			trace('page changes to : '+event.myID);
+			SaffronLogger.log('page changes to : '+event.myID);
 			//currentAppEvent = event ;•↓
 			//Why it dosen't currentAppEvent befor???????????????????????????
 			//I had bug befot, I tried to get back to home page when the main anim is animating to external pages and it caused crash when I checked current Event with pageManager's event.
@@ -346,15 +359,15 @@
 			}
 			if(currentAppEvent!=null && /*pageManagerObject.toEvent*/currentAppEvent.myID == event.myID && AppEvent.home != event.myID && currentAppEvent.myType!=AppEvent.refresh && event.reload==false)
 			{
-				trace("Duplicated page id : "+currentAppEvent.myID);
+				SaffronLogger.log("Duplicated page id : "+currentAppEvent.myID);
 				return false;
 			}
 			//Moved from top↑•
-			trace("currentAppEvent : "+currentAppEvent);
-			trace("event : "+event);
+			SaffronLogger.log("currentAppEvent : "+currentAppEvent);
+			SaffronLogger.log("event : "+event);
 			if(event.myType == AppEvent.refresh && (currentAppEvent == null || currentAppEvent.myType == AppEvent.home))
 			{
-				trace("refresh is not works on home page");
+				SaffronLogger.log("refresh is not works on home page");
 				return false ;
 			}
 				currentAppEvent = event ;
@@ -368,13 +381,13 @@
 			if(mainAnim == null)
 			{
 				//do it if mainAnim doesent exists
-				trace("*************** page change 1");
+				SaffronLogger.log("*************** page change 1");
 				manageAllAnimatedPaged(event);
 			}
 			
 			if(event.myType == AppEvent.home)
 			{
-				trace("show homw page")
+				SaffronLogger.log("show homw page")
 				backToHomePage();
 				
 				is_in_home = true ;//This value moved up
@@ -386,7 +399,7 @@
 			}
 			else
 			{
-				trace("close home page")
+				SaffronLogger.log("close home page")
 				showExternalPages();
 				//This function calls when external pages oppened:
 				is_in_home = false ;
@@ -419,7 +432,7 @@
 		protected function changePage(s:AppEvent):void
 		{
 			
-			trace("Main anim is ready!!"+currentAppEvent.myID);
+			SaffronLogger.log("Main anim is ready!!"+currentAppEvent.myID);
 			var wasReady:Boolean = _appIsReady ;
 			_appIsReady = true ;
 			manageAllAnimatedPaged(currentAppEvent);

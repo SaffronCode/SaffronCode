@@ -78,7 +78,7 @@
 		{
 			if(pdftarget)
 			{
-				trace("PDF target is : "+pdftarget.url);
+				SaffronLogger.log("PDF target is : "+pdftarget.url);
 				navigateToURL(new URLRequest(pdftarget.url));
 			}
 		}
@@ -104,7 +104,7 @@
 				}
 				catch(e:Error)
 				{
-					trace(e.message);
+					SaffronLogger.log(e.message);
 				}
 				if(DistriqtPDFReader.isSupport && distriqtPDF==null)
 				{
@@ -135,12 +135,12 @@
 			{
 				if(NativePDF.isSupports())
 				{
-					trace("******* Open pdf with native");
+					SaffronLogger.log("******* Open pdf with native");
 					NativePDF.openPDFReader(pdftarget);
 				}
 				else
 				{
-					trace("******* Navigate to open pdf");
+					SaffronLogger.log("******* Navigate to open pdf");
 					openPDF();
 					//On android, the pdf reader can share,save and do any thing that user need to do. so close the DarkBox
 				}
@@ -150,7 +150,7 @@
 			{
 				stageVewIsOpened = true ;
 				myStageWeb.stage = stage ;
-				//trace("PDF path : "+pdftarget.nativePath);
+				//SaffronLogger.log("PDF path : "+pdftarget.nativePath);
 				myStageWeb.loadURL(onlineShow?target:pdftarget.url);
 			}
 		}

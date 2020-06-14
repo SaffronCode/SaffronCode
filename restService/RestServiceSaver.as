@@ -12,7 +12,7 @@ package restService
 		{
 			var valueName:String = generateID(id,jsonParam) ;
 			var cash:* = SavedDatas2.load(valueName) ;
-			//trace("Load > "+valueName+' ○ '+cash+' ○');
+			//SaffronLogger.log("Load > "+valueName+' ○ '+cash+' ○');
 			return cash;
 		}
 		
@@ -35,10 +35,10 @@ package restService
 		
 		public static function save(id:String,jsonParam:String,value:*):void
 		{
-			//trace("**Values saved");
+			//SaffronLogger.log("**Values saved");
 			var valueName:String = generateID(id,jsonParam);
-			trace("○ jsonParam is  :  "+jsonParam);
-		//	trace("Save > "+valueName+" ○ "+value+' ○');
+			SaffronLogger.log("○ jsonParam is  :  "+jsonParam);
+		//	SaffronLogger.log("Save > "+valueName+" ○ "+value+' ○');
 			SavedDatas2.save(valueName,value);
 		}
 		
@@ -51,7 +51,7 @@ package restService
 			}
 			
 			Parameters = Parameters.split('"').join('').split("{").join('').split("}").join('').split("[").join('').split("]").join('');
-			//trace("Storage id is :    "+Parameters+':'+Classid)
+			//SaffronLogger.log("Storage id is :    "+Parameters+':'+Classid)
 			return Classid+':'+Parameters+':'+RestService.UId+RestService.serverDomain;
 		}
 	}

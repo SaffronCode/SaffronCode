@@ -57,7 +57,7 @@
 			}
 			catch (error:Error)
 			{
-				trace("Error...Could not write SharedObject to disk");
+				SaffronLogger.log("Error...Could not write SharedObject to disk");
 			}
 		}
 	}

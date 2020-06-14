@@ -44,27 +44,27 @@ package netManager.downloadManager
 			indexByte  = indexRangeOfDownload ;
 			
 			var header:URLRequestHeader = new URLRequestHeader("range","bytes="+indexRangeOfDownload+"-");
-			trace('start download from : '+indexRangeOfDownload);
+			SaffronLogger.log('start download from : '+indexRangeOfDownload);
 			downloadRequest = new URLRequest(target);
 			downloadRequest.requestHeaders.push(header);
 			
 			loader.addEventListener(ProgressEvent.PROGRESS,tellPrecent);
 			loader.addEventListener(IOErrorEvent.IO_ERROR,reLoad);
 			loader.load(downloadRequest);
-			trace('try to load '+downloadRequest.url);
+			SaffronLogger.log('try to load '+downloadRequest.url);
 		}
 		
 		/**close this downloader
 		public function close():void
 		{
-			trace('close downloader');
+			SaffronLogger.log('close downloader');
 			if(loader.
 		}*/
 		
 		/**start over the downloading*/
 		private function reLoad(e:*=null):void
 		{
-			trace('reload');
+			SaffronLogger.log('reload');
 			//this.dispatchEvent(new DownloadManagerEvents(DownloadManagerEvents.DOWNLOAD_PROGRESS));
 			this.dispatchEvent(new DownloadManagerEvents(DownloadManagerEvents.RELOAD_REQUIRED));
 		}
@@ -74,7 +74,7 @@ package netManager.downloadManager
 		{
 			if(false && e.bytesTotal<e.bytesLoaded)
 			{
-				trace('over flowing : '+e.bytesTotal+' vs '+e.bytesLoaded);
+				SaffronLogger.log('over flowing : '+e.bytesTotal+' vs '+e.bytesLoaded);
 				close();
 				completeEvent();
 				return ;
@@ -102,7 +102,7 @@ package netManager.downloadManager
 		/**downloader is connected to file*/
 		private function downloaderIsCompleted(e:Event):void
 		{
-			trace('file is complete');
+			SaffronLogger.log('file is complete');
 			close();
 			completeEvent();
 		}

@@ -13,13 +13,13 @@ package contents
 			{
 				var fileLoader:FileStream = new FileStream();
 				fileLoader.open(fileTarget,FileMode.READ);
-				//trace("2. debug time : "+getTimer());
+				//SaffronLogger.log("2. debug time : "+getTimer());
 				fileLoader.position = skipChar ;
 				return fileLoader.readUTFBytes(fileLoader.bytesAvailable-skipChar);
 			}
 			else
 			{
-				trace(fileTarget.name+' file is not exists');
+				SaffronLogger.log(fileTarget.name+' file is not exists');
 				return null ;
 			}
 		}
@@ -29,7 +29,7 @@ package contents
 			var textBytes:ByteArray = new ByteArray();
 			textBytes.writeUTFBytes(text);
 			var stat:String = FileManager.seveFile(fileTarget,textBytes);
-			trace("File save status : "+stat);
+			SaffronLogger.log("File save status : "+stat);
 			return stat ;
 		}
 	}

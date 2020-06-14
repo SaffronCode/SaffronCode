@@ -101,7 +101,7 @@ package webService3
 		
 		protected function loadParams(...params):void
 		{
-			trace(serviceName+' - offlineDataIsOK:'+offlineDataIsOK+' _justLoadOffline:'+_justLoadOffline);
+			SaffronLogger.log(serviceName+' - offlineDataIsOK:'+offlineDataIsOK+' _justLoadOffline:'+_justLoadOffline);
 			connectinError = null ;
 			myParam = params ;
 			//#1
@@ -158,7 +158,7 @@ package webService3
 		
 		private function onConnected()
 		{
-			//trace("connected");
+			//SaffronLogger.log("connected");
 			//TODO: implement function
 			myWebService3.eventListen.addEventListener(WebEvent3.NO_CONNECTTION,noInternet) ;
 			myWebService3.eventListen.addEventListener(WebEvent3.RESULT,loaded) ;
@@ -227,8 +227,8 @@ package webService3
 					cashingDate = offlineDate ;
 				}
 				pureData = WebServiceSaver3.load(this,myParam,cashingDate) as Array ;
-				trace("try to load cash : ");
-				trace("pure data loaded : "+pureData);
+				SaffronLogger.log("try to load cash : ");
+				SaffronLogger.log("pure data loaded : "+pureData);
 				//From now , if no null receved from services , it will replace pureData with [] array
 			}
 			else if(offlineDataIsOK && pureData!=null)
@@ -236,11 +236,11 @@ package webService3
 				//Versoin 1 of the pureData 
 				WebServiceSaver3.save(this,myParam,/*JSON.stringify(*/pureData/*)*/);
 			}
-			trace("pureData is null : "+(pureData==null)+'  >>>>>  '+pureData);
+			SaffronLogger.log("pureData is null : "+(pureData==null)+'  >>>>>  '+pureData);
 			
 			if(pureData==null)
 			{
-				trace("Close this sevice");
+				SaffronLogger.log("Close this sevice");
 				if(dispatchConnectionErrorNow)
 				{
 					dispatchEveryWhere(Event.UNLOAD);
@@ -253,7 +253,7 @@ package webService3
 				}
 				else
 				{
-					trace("Try to load onlie data");
+					SaffronLogger.log("Try to load onlie data");
 				}
 				return false ;
 			}
@@ -270,7 +270,7 @@ package webService3
 				}
 				else
 				{
-					trace("No error connection listener created");
+					SaffronLogger.log("No error connection listener created");
 					dispatchEveryWhere(Event.UNLOAD)
 				}
 			}

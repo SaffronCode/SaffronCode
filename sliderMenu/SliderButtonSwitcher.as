@@ -40,12 +40,12 @@ package sliderMenu
 		{
 			if(SliderManager.isOpen())
 			{
-				trace("Hide the menu");
+				SaffronLogger.log("Hide the menu");
 				SliderManager.hide();
 			}
 			else
 			{
-				trace("Show the menu");
+				SaffronLogger.log("Show the menu");
 				if(!SliderManager.lock_flag)
 				{
 					SliderManager.openMenu();

@@ -107,7 +107,7 @@
 			//Removed for debug
 			//myTextTF.text = '' ;
 			//Added for debug
-				//trace(myTextTF.getTextFormat().font+' added to textParag class') ;
+				//SaffronLogger.log(myTextTF.getTextFormat().font+' added to textParag class') ;
 				
 			fontSize0 = myTextTF.defaultTextFormat.size as uint ;
 			
@@ -228,13 +228,13 @@
 			if(useNativeText)
 			{
 				myTextTF.text = UnicodeStatic.KaafYe(myText) ;
-				trace("myTextTF.text : "+myTextTF.text);
+				SaffronLogger.log("myTextTF.text : "+myTextTF.text);
 				nativeText = FarsiInputCorrection.setUp(myTextTF,null,true,true,false,true,false);
-				trace("Farsi input created for this text to make it native");
+				SaffronLogger.log("Farsi input created for this text to make it native");
 			}
 			else
 			{
-				//trace("1 add parag on TextParag and its font is : "+myTextTF.defaultTextFormat.font+' added to textParag class')
+				//SaffronLogger.log("1 add parag on TextParag and its font is : "+myTextTF.defaultTextFormat.font+' added to textParag class')
 				//TextPutter.onTextArea(myTextTF,myText,isArabic,true,true,1,align,knownAsHTML) ;
 				//TextPutter.onTextArea(myTextTF,myText,isArabic,!activateLinks,false,0,align,knownAsHTML,-1);
 				var verticalHeight:Number = 0 ; 
@@ -323,10 +323,10 @@
 				
 				//Debug line ↓
 				//TextPutter.onTextArea(myTextTF,myText,isArabic,false,false,1,true) ;
-				//	trace("2 add parag on TextParag and its font is : "+myTextTF.defaultTextFormat.font+' added to textParag class : '+myTextTF.text)
-				//trace("TextPutter.lastInfo_numLines : "+TextPutter.lastInfo_numLines);
-				//trace("!splitIfToLong) : "+(!splitIfToLong));
-				//trace("addScroller : "+addScroller);
+				//	SaffronLogger.log("2 add parag on TextParag and its font is : "+myTextTF.defaultTextFormat.font+' added to textParag class : '+myTextTF.text)
+				//SaffronLogger.log("TextPutter.lastInfo_numLines : "+TextPutter.lastInfo_numLines);
+				//SaffronLogger.log("!splitIfToLong) : "+(!splitIfToLong));
+				//SaffronLogger.log("addScroller : "+addScroller);
 				if(
 					(
 						!splitIfToLong
@@ -373,7 +373,7 @@
 						//Alert.show('matches');
 						var linkIsHere:String = String(links[0]).toLowerCase();
 						linkIsHere = linkIsHere.substring(linkIsHere.lastIndexOf('href=')+6,linkIsHere.length-1);
-						trace("Link is : "+linkIsHere);
+						SaffronLogger.log("Link is : "+linkIsHere);
 						return linkIsHere ;
 					}
 				}
@@ -426,9 +426,9 @@
 		public function increase(newFontSize:int,updateInterfaceInstantly:Boolean=false):void
 		{
 			var textFormat:TextFormat = myTextTF.defaultTextFormat ;
-			trace("Old text size : "+textFormat.size);
+			SaffronLogger.log("Old text size : "+textFormat.size);
 			textFormat.size = Math.max(0,fontSize0+newFontSize);
-			trace("New text size : "+textFormat.size);
+			SaffronLogger.log("New text size : "+textFormat.size);
 			myTextTF.setTextFormat(textFormat);
 			myTextTF.defaultTextFormat = textFormat ;
 			if(updateInterfaceInstantly)

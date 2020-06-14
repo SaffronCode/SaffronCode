@@ -59,11 +59,11 @@
 					RegistrationEventClass = getDefinitionByName("com.distriqt.extension.pushnotifications.events.RegistrationEvent") as Class;
 					PushNotificationEventClass = getDefinitionByName("com.distriqt.extension.pushnotifications.events.PushNotificationEvent") as Class;
 					PushNotificationGroupEventClass = getDefinitionByName("com.distriqt.extension.pushnotifications.events.PushNotificationGroupEvent") as Class;
-					trace("RegistrationEventClass : "+RegistrationEventClass);
+					SaffronLogger.log("RegistrationEventClass : "+RegistrationEventClass);
 				}
 				catch (e)
 				{
-					trace('Add \n\n\t<extensionID>com.distriqt.PushNotification</extensionID>\n\t<extensionID>com.distriqt.Core</extensionID>\n\n to your project xmls');// and below permitions to the <application> tag : \n\n<activity \n\n\tandroid:name="com.distriqt.extension.share.activities.ShareActivity" \n\n\tandroid:theme="@android:style/Theme.Translucent.NoTitleBar" />\n\n\t\n\n<provider\n\n\tandroid:name="android.support.v4.content.FileProvider"\n\n\tandroid:authorities="air.'+DevicePrefrence.appID+'"\n\n\tandroid:grantUriPermissions="true"\n\n\tandroid:exported="false">\n\n\t<meta-data\n\n\t\tandroid:name="android.support.FILE_PROVIDER_PATHS"\n\n\t\tandroid:resource="@xml/distriqt_paths" />\n\n</provider>';
+					SaffronLogger.log('Add \n\n\t<extensionID>com.distriqt.PushNotification</extensionID>\n\t<extensionID>com.distriqt.Core</extensionID>\n\n to your project xmls');// and below permitions to the <application> tag : \n\n<activity \n\n\tandroid:name="com.distriqt.extension.share.activities.ShareActivity" \n\n\tandroid:theme="@android:style/Theme.Translucent.NoTitleBar" />\n\n\t\n\n<provider\n\n\tandroid:name="android.support.v4.content.FileProvider"\n\n\tandroid:authorities="air.'+DevicePrefrence.appID+'"\n\n\tandroid:grantUriPermissions="true"\n\n\tandroid:exported="false">\n\n\t<meta-data\n\n\t\tandroid:name="android.support.FILE_PROVIDER_PATHS"\n\n\t\tandroid:resource="@xml/distriqt_paths" />\n\n</provider>';
 				}
 			}
 		}
@@ -92,12 +92,12 @@
 				onResult = function(text:String):void
 				{
 					//show registration ID :
-					trace(text);
+					SaffronLogger.log(text);
 				}
 			}
 			if (PushNotificationsClass == null)
 			{
-				trace("push notification is null");
+				SaffronLogger.log("push notification is null");
 				onResult("windowsDebug");
 				return;
 			}
@@ -105,7 +105,7 @@
 			{
 				if (PushNotificationsClass.isSupported)
 				{
-					trace("Push Notification supported")
+					SaffronLogger.log("Push Notification supported")
 					if ((PushNotificationsClass as Object).service.isServiceSupported((ServiceClass as Object).FCM))
 					{
 						var service:* = new ServiceClass((ServiceClass as Object).FCM, "");
@@ -129,51 +129,51 @@
 						requestAuthorisation();
 						function registeringHandler(event:*):void
 						{
-							trace("Registration started");
+							SaffronLogger.log("Registration started");
 						}
 						
 						function registerSuccessHandler(event:*):void
 						{
-							trace("Registration succeeded with ID: " + event.data);
+							SaffronLogger.log("Registration succeeded with ID: " + event.data);
 							deviceToken = event.data;
 							onResult(event.data);
 						}
 						
 						function registrationChangedHandler(event:*):void
 						{
-							trace("Registration ID has changed: " + event.data);
+							SaffronLogger.log("Registration ID has changed: " + event.data);
 							deviceToken = event.data;
 							onResult(event.data);
 						}
 						
 						function registerFailedHandler(event:*):void
 						{
-							trace("Registration failed");
+							SaffronLogger.log("Registration failed");
 							// onResult("Registration failed");
 						}
 						
 						function errorHandler(event:*):void
 						{
-							trace("Registration error: " + event.data);
+							SaffronLogger.log("Registration error: " + event.data);
 							// onResult("Registration error");
 						}
 						
 					}
 					else
 					{
-						trace("fcm notification is not support");
+						SaffronLogger.log("fcm notification is not support");
 						// onResult("FCM Not Support");
 					}
 				}
 				else
 				{
-					trace("notification is not support");
+					SaffronLogger.log("notification is not support");
 					// onResult("windows Debug");
 				}
 			}
 			catch (e:Error)
 			{
-				trace("ERROR:" + e.message);
+				SaffronLogger.log("ERROR:" + e.message);
 				// onResult("error occured");
 			}
 		}
@@ -181,9 +181,9 @@
 
 		private static function notificationHandler( event:* ):void
 		{
-			trace( "Notification: ["+event.type+"] state="+event.applicationState+" startup="+event.startup );
-			trace( event.payload );//{"google.delivered_priority":"high","TypeId":"2","google.ttl":2419200,"google.original_priority":"high","Id":"2096"}
-			trace(">>Complete data : "+JSON.stringify(event));
+			SaffronLogger.log( "Notification: ["+event.type+"] state="+event.applicationState+" startup="+event.startup );
+			SaffronLogger.log( event.payload );//{"google.delivered_priority":"high","TypeId":"2","google.ttl":2419200,"google.original_priority":"high","Id":"2096"}
+			SaffronLogger.log(">>Complete data : "+JSON.stringify(event));
 			if(NotifReceived!=null)
 			{
 				if(NotifReceived.length>0)
@@ -199,19 +199,19 @@
 
 		private static function actionHandler( event:* ):void
 		{
-			trace( "Action: ["+event.type+"] identifier="+event.identifier+" state="+event.applicationState+" startup="+event.startup );
-			trace( event.payload );
-			trace(">>Complete data : "+JSON.stringify(event));
+			SaffronLogger.log( "Action: ["+event.type+"] identifier="+event.identifier+" state="+event.applicationState+" startup="+event.startup );
+			SaffronLogger.log( event.payload );
+			SaffronLogger.log(">>Complete data : "+JSON.stringify(event));
 		}
 
 		private static function groupSelectedHandler( event:* ):void
 		{
-			trace( "Group Selected: ["+event.type+"] groupKey="+event.groupKey+" state="+event.applicationState+" startup="+event.startup );
+			SaffronLogger.log( "Group Selected: ["+event.type+"] groupKey="+event.groupKey+" state="+event.applicationState+" startup="+event.startup );
 			for each (var payload:String in event.payloads)
 			{
-				trace( "PAYLOAD: "+ payload );
+				SaffronLogger.log( "PAYLOAD: "+ payload );
 			}
-			trace(">>Complete data : "+JSON.stringify(event));
+			SaffronLogger.log(">>Complete data : "+JSON.stringify(event));
 		}
 		
 		private static function authorisationChangedHandler(e:*):void

@@ -19,7 +19,7 @@
 			var cash:* = SavedDatas2.load(valueName) ;
 
 			lastCashDate = SavedDatas2.savedDate ;
-			trace("Load > "+valueName+' ○ '+cash+' ○');
+			SaffronLogger.log("Load > "+valueName+' ○ '+cash+' ○');
 			return cash;
 		}
 		
@@ -42,10 +42,10 @@
 		
 		public static function save(id:String,jsonParam:String,value:*,headerArray:Array=null):void
 		{
-			//trace("**Values saved");
+			//SaffronLogger.log("**Values saved");
 			var valueName:String = generateID(id,jsonParam,headerArray);
-			trace("○ jsonParam is  :  "+jsonParam);
-			trace("Save > "+valueName+" ○ "+value+' ○');
+			SaffronLogger.log("○ jsonParam is  :  "+jsonParam);
+			SaffronLogger.log("Save > "+valueName+" ○ "+value+' ○');
 			SavedDatas2.save(valueName,value);
 		}
 		
@@ -74,7 +74,7 @@
 			var ParametersArray:Array = Parameters.split('"').join('').split("{").join('').split("}").join('').split("[").join('').split("]").join('').split(',');
 			ParametersArray.sort();
 			Parameters = ParametersArray.join(',');
-			//trace("Storage id is :    "+Parameters+':'+Classid)
+			//SaffronLogger.log("Storage id is :    "+Parameters+':'+Classid)
 			return Classid+':'+Parameters+':'+RestDoaService.serverDomain+headerString;
 		}
 	}

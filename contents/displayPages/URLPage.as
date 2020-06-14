@@ -98,11 +98,11 @@ package contents.displayPages
 				myPreLoader.visible = true ;
 			}
 			if(StringFunctions.isNullOrEmpty(myPage.content)==false){
-				trace("********** Open the page : "+myPage.content);
+				SaffronLogger.log("********** Open the page : "+myPage.content);
 				sw.loadURL(myPage.content);
 			}
 			else if(StringFunctions.isNullOrEmpty(myPage.dynamicData as String)==false){
-				trace("********** Open the page : "+myPage.dynamicData as String);
+				SaffronLogger.log("********** Open the page : "+myPage.dynamicData as String);
 				sw.loadURL(myPage.dynamicData as String);
 			}
 			
@@ -117,7 +117,7 @@ package contents.displayPages
 			{
 				myPreLoader.visible = false ;
 			}
-			trace("Page is loaded");
+			SaffronLogger.log("Page is loaded");
 		}
 		
 		/**Unload this item from web*/

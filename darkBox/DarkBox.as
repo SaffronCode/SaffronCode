@@ -97,7 +97,7 @@
 				throw "You should sat the StageManager to use DarkBox.\n\n\n";
 				return;
 			}
-			trace("Update darkbox stage area : " + newSize);
+			SaffronLogger.log("Update darkbox stage area : " + newSize);
 			rtf = RightToLeft;
 			showTitleInFullLine = titleInFullLine;
 			saveButtonFunction = downloadFunction;
@@ -136,7 +136,7 @@
 		
 		public function DarkBox()
 		{
-			trace("Dark box initialized");
+			SaffronLogger.log("Dark box initialized");
 			super();
 			/*initMask();*/
 			ME = this;
@@ -568,7 +568,7 @@
 			titleMC.setUp(imageItem.title, true, true);
 			if (imageItem.storeOffline)
 			{
-				trace("Download image first");
+				SaffronLogger.log("Download image first");
 				preLoderMC.visible = true;
 				precentMC.visible = true;
 				precentMC.width = 0;
@@ -587,7 +587,7 @@
 		
 		protected function showPrecent(event:URLSaverEvent):void
 		{
-			trace("donwloading");
+			SaffronLogger.log("donwloading");
 			
 			precentMC.width = event.precent * backMC.width;
 		}
@@ -603,7 +603,7 @@
 		
 		protected function imageDownloaded(event:URLSaverEvent):void
 		{
-			trace("Image is downloaded");
+			SaffronLogger.log("Image is downloaded");
 			
 			showReadyImage(event.target as ImageFile);
 		}
@@ -613,7 +613,7 @@
 			showQuailyBtn(0);
 			preLoderMC.visible = false;
 			precentMC.visible = false;
-			trace("show this image");
+			SaffronLogger.log("show this image");
 			downloadMC.visible = (saveButtonFunction != null);
 			switch (imageItem.type)
 			{
@@ -673,7 +673,7 @@
 				break;
 			
 			default: 
-				trace("This image is unknown");
+				SaffronLogger.log("This image is unknown");
 				break;
 			}
 		}

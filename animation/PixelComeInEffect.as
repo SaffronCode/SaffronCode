@@ -123,7 +123,7 @@ package animation
 			/**Remove object with effect*/
 			private function handleRemoveEffect(e:Event):void
 			{
-				trace("Item removed");
+				SaffronLogger.log("Item removed");
 				clearInterval(intervalId);
 				this.removeEventListener(Event.REMOVED_FROM_STAGE,handleRemoveEffect);
 				//Prevent saffron code to remove my bitmap
@@ -140,7 +140,7 @@ package animation
 					intervalId = setInterval(removeThemOneByOnePixel,pixelDelay);
 				}catch(e)
 				{
-					trace("Error : "+e);
+					SaffronLogger.log("Error : "+e);
 				}
 			}
 		

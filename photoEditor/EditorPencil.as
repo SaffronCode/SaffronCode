@@ -55,11 +55,11 @@ package photoEditor
 			
 			
 			
-			trace("toolbarRect : "+toolbarRect);
+			SaffronLogger.log("toolbarRect : "+toolbarRect);
 			
 			secondToolbarRect = new Rectangle(0,fullScreenAreaRect.height-this.height,fullImageAreaRect.width,toolbarContainer2.height);
 			
-			trace("secondToolbarRect : "+secondToolbarRect);
+			SaffronLogger.log("secondToolbarRect : "+secondToolbarRect);
 			
 			fullImageAreaRect.height-=secondToolbarRect.height ;
 			//Debug lines 
@@ -77,10 +77,10 @@ package photoEditor
 			
 			if(imageRect.height>fullImageAreaRect.height)
 			{
-				trace("imageRect.x was : "+imageRect.x);
+				SaffronLogger.log("imageRect.x was : "+imageRect.x);
 				imageRect.x=(fullImageAreaRect.width-((fullImageAreaRect.height/imageRect.height)*imageRect.width))/2;
 				imageRect.height = fullImageAreaRect.height ;
-				trace("imageRect.x is : "+imageRect.x);
+				SaffronLogger.log("imageRect.x is : "+imageRect.x);
 				PhotoEdit.removePhotoPrevew();
 			}
 			
@@ -90,7 +90,7 @@ package photoEditor
 				//paperRect.width = 200 ;
 				//paperRect.height = 10 ;
 			
-			trace("paperRect is "+paperRect);
+			SaffronLogger.log("paperRect is "+paperRect);
 			
 			myPaper = new Paper(0x00000000,imageFullBitmapData,null,paperRect);
 			myPaper.x = imageRect.x ;
@@ -230,7 +230,7 @@ package photoEditor
 			
 			if(selectedTool==null)
 			{
-				trace("No tools selected on EdotorPencil");
+				SaffronLogger.log("No tools selected on EdotorPencil");
 				return;
 			}
 			if(!imageRect.contains(mouseX,mouseY))
@@ -241,10 +241,10 @@ package photoEditor
 			
 			if(selectedTool.name.indexOf(penName)!=-1)
 			{
-				trace("selectedTool.name : "+selectedTool.name);
-				trace("selectedTool.name.split(penName).join('') : "+selectedTool.name.split(penName).join(''));
+				SaffronLogger.log("selectedTool.name : "+selectedTool.name);
+				SaffronLogger.log("selectedTool.name.split(penName).join('') : "+selectedTool.name.split(penName).join(''));
 				var color:uint = uint(parseInt(selectedTool.name.split(penName).join(''),16));
-				trace("Pen color is : "+color);
+				SaffronLogger.log("Pen color is : "+color);
 				myPaper.startDraw(color,penThickness,myPaper.mouseX,myPaper.mouseY);
 			}
 			else

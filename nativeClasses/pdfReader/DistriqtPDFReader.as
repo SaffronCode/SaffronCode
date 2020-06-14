@@ -63,7 +63,7 @@
 			if(nativesToAdd!='')
 			{
 				nativeCheck = "\n\n\n******* You should add below extentions to your project for PDF to work\n\n\n"+nativesToAdd+"\n\n\n*********************" ;
-				trace(nativeCheck);
+				SaffronLogger.log(nativeCheck);
 			}
 			
 		//////////////////////////Android permission check ↓
@@ -98,7 +98,7 @@
 				isNessesaryToShow = isNessesaryLine(allSplittedPermission[i]);
 				if(descriptString.indexOf(StringFunctions.clearSpacesAndTabsAndArrows(removeNecessaryBoolet(allSplittedPermission[i])))==-1)
 				{
-					trace("I couldnt find : "+allSplittedPermission[i]);
+					SaffronLogger.log("I couldnt find : "+allSplittedPermission[i]);
 					androidManifestMustUpdate = true ;
 					leftPermission += removeNecessaryBoolet(allSplittedPermission[i])+'\n' ;
 				}
@@ -144,7 +144,7 @@
 				isNessesaryToShow = isNessesaryLine(allSplittedPermission[i]);
 				if(descriptString.indexOf(StringFunctions.clearSpacesAndTabsAndArrows(removeNecessaryBoolet(allSplittedPermission[i])))==-1)
 				{
-					trace("I couldnt find : "+allSplittedPermission[i]);
+					SaffronLogger.log("I couldnt find : "+allSplittedPermission[i]);
 					appleManifestMustUpdate = true ;
 					leftPermission += removeNecessaryBoolet(allSplittedPermission[i])+'\n' ;
 				}
@@ -184,11 +184,11 @@
 			}
 			catch (e:Error)
 			{
-				trace("*******************\n\n\n"+ e );
+				SaffronLogger.log("*******************\n\n\n"+ e );
 				isSupport = false ;
 			}
 
-			trace("****\n\n\n\nPDF support status is : "+isSupport+"\n\n\n********");
+			SaffronLogger.log("****\n\n\n\nPDF support status is : "+isSupport+"\n\n\n********");
 			
 		}
 		
@@ -214,7 +214,7 @@
 				}
 				catch(e:Error)
 				{
-					trace(e.message);
+					SaffronLogger.log(e.message);
 				}
 			}
 		}
@@ -222,11 +222,11 @@
 		private function createViewPort():Rectangle
 		{
 			var rect:Rectangle = this.getBounds(stage);
-			//trace("****Create view port");
+			//SaffronLogger.log("****Create view port");
 			if(scl==0)
 			{
 				var stageRect:Rectangle = StageManager.stageRect ;
-				trace("stageRect : "+stageRect);
+				SaffronLogger.log("stageRect : "+stageRect);
 				var sclX:Number ;
 				var sclY:Number ;
 				deltaX = 0 ;
@@ -235,7 +235,7 @@
 				_fullScreenHeight:Number;
 				if(stageRect.width==0)
 				{
-					trace("+++default size detection")
+					SaffronLogger.log("+++default size detection")
 					sclX = (stage.fullScreenWidth/stage.stageWidth);
 					sclY = (stage.fullScreenHeight/stage.stageHeight);
 					if(sclX<=sclY)
@@ -251,13 +251,13 @@
 				}
 				else
 				{
-					trace("+++advvanced size detection");
+					SaffronLogger.log("+++advvanced size detection");
 					_fullScreenWidth = stageRect.width*StageManager.stageScaleFactor() ;
 					_fullScreenHeight = stageRect.height*StageManager.stageScaleFactor() ;
 					sclX = (_fullScreenWidth/stage.stageWidth);
 					sclY = (_fullScreenHeight/stage.stageHeight);
-					trace("sclX : "+sclX);
-					trace("sclY : "+sclY);
+					SaffronLogger.log("sclX : "+sclX);
+					SaffronLogger.log("sclY : "+sclY);
 					if(sclX<=sclY)
 					{
 						scl = sclX ;
@@ -268,16 +268,16 @@
 						scl = sclY ;
 						deltaX = _fullScreenWidth-(stage.stageWidth)*scl ;
 					}
-					trace("deltaX : "+deltaX);
-					trace("deltaY : "+deltaY);
-					trace("scl : "+scl);
+					SaffronLogger.log("deltaX : "+deltaX);
+					SaffronLogger.log("deltaY : "+deltaY);
+					SaffronLogger.log("scl : "+scl);
 				}
 			}
 			
-			//trace("Old rect : " +rect);
-			//trace("scl : "+scl);
-			//trace("deltaX : "+deltaX);
-			//trace("deltaY : "+deltaY);
+			//SaffronLogger.log("Old rect : " +rect);
+			//SaffronLogger.log("scl : "+scl);
+			//SaffronLogger.log("deltaX : "+deltaX);
+			//SaffronLogger.log("deltaY : "+deltaY);
 
 			var iphoneXScale:Number = 1 ;
 			if(StageManager.isIphoneX())
@@ -301,7 +301,7 @@
 			rect.width = round(rect.width);
 			rect.height = round(rect.height);
 			
-			//trace("new rect : " +rect);
+			//SaffronLogger.log("new rect : " +rect);
 			
 			if(rect.x<0)
 			{
@@ -339,8 +339,8 @@
 		
 		public function openPDF(PDR_URL:String):void
 		{
-			trace(">>>> > >> > >> > > >> > >Show this pdf : "+PDR_URL);
-			//trace("The PDF target is changig with "+(PDR_URL="http://oncolinq.ir/UploadImages/Pdf/Pdf48641pdf%20test.pdf"));
+			SaffronLogger.log(">>>> > >> > >> > > >> > >Show this pdf : "+PDR_URL);
+			//SaffronLogger.log("The PDF target is changig with "+(PDR_URL="http://oncolinq.ir/UploadImages/Pdf/Pdf48641pdf%20test.pdf"));
 			
 			dispose();
 			this.visible = true ;
@@ -356,7 +356,7 @@
 				.build()
 			);
 			
-			trace("**** **** **** PDFview : "+view);
+			SaffronLogger.log("**** **** **** PDFview : "+view);
 			
 			//view.addEventListener( PDFViewEvent.SHOWN, pdfView_shownHandler );
 			//view.addEventListener( PDFViewEvent.HIDDEN, pdfView_hiddenHandler );
@@ -366,12 +366,12 @@
 			
 			/*function pdfView_shownHandler( event:PDFViewEvent ):void
 			{
-				trace( "** ** ** ** * view shown" );
+				SaffronLogger.log( "** ** ** ** * view shown" );
 			}
 			
 			function pdfView_hiddenHandler( event:PDFViewEvent ):void
 			{
-				trace( "** ** ** ** * view hidden" );
+				SaffronLogger.log( "** ** ** ** * view hidden" );
 			}*/
 
 		}

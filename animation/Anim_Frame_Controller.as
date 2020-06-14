@@ -57,7 +57,7 @@
 		
 		protected function unLoad(event:Event):void
 		{
-			trace("Animation for "+mc+" is removed");
+			SaffronLogger.log("Animation for "+mc+" is removed");
 			mc.removeEventListener(Event.ENTER_FRAME,anim);
 			mc.removeEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 		}

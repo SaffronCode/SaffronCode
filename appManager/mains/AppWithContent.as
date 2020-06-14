@@ -90,13 +90,13 @@
 		/**This is the contentManager rectangle size. it will generate from the content w and h on the home xml tag*/
 		public static function get contentRect():Rectangle
 		{
-			trace("AppWithContent.contentRect() >> Expired and moved to Config class");
+			SaffronLogger.log("AppWithContent.contentRect() >> Expired and moved to Config class");
 			
 			var contentResizedRect:Rectangle = _contentRect.clone();
 			contentResizedRect.height+=StageManager.stageDelta.height ;
 			contentResizedRect.width+=StageManager.stageDelta.width ;
-			trace("StageManager.stageDelta.height : "+StageManager.stageDelta.height);
-			trace("_contentRect : "+_contentRect+" vs "+contentResizedRect);
+			SaffronLogger.log("StageManager.stageDelta.height : "+StageManager.stageDelta.height);
+			SaffronLogger.log("_contentRect : "+_contentRect+" vs "+contentResizedRect);
 			return contentResizedRect.clone();
 		}
 		
@@ -150,11 +150,11 @@
 			
 			if(manageStageManager)
 			{
-				trace("Contents.config.debugStageHeight : "+Contents.config.debugStageHeight);
+				SaffronLogger.log("Contents.config.debugStageHeight : "+Contents.config.debugStageHeight);
 				StageManager.setUp(stage,Contents.config.debugStageWidth,Contents.config.debugStageHeight);
 				StageManager.eventDispatcher.addEventListener(StageManagerEvent.STAGE_RESIZED,updateConfigRects);
 				updateConfigRects();
-				trace("**** : "+StageManager.stageRect);
+				SaffronLogger.log("**** : "+StageManager.stageRect);
 			}
 			
 			if(activateBackSwap)
@@ -171,7 +171,7 @@
 				homePageData.contentH = stage.stageHeight ;
 			}
 			_contentRect = new Rectangle(0,0,homePageData.contentW,homePageData.contentH);
-			trace("Content page rectangle is ( You can change this value by adding w and h attributes to the home.content value on data.xml : "+_contentRect);
+			SaffronLogger.log("Content page rectangle is ( You can change this value by adding w and h attributes to the home.content value on data.xml : "+_contentRect);
 			
 			this.addEventListener(PageControllEvent.PREVENT_PAGE_CHANGING,preventPageChanging);
 			this.addEventListener(PageControllEvent.LET_PAGE_CHANGE,letThePreventedAppEventRelease);
@@ -258,7 +258,7 @@
 
 		private function noFocusedText(e:FarsiInputCorrectionEvent):void
 		{
-			trace("Focused out");
+			SaffronLogger.log("Focused out");
 			root.y = 0 ;
 			if(stageMask!=null)
 			{
@@ -269,7 +269,7 @@
 
 		private function checkFocusedItem(e:FarsiInputCorrectionEvent):void
 		{
-			trace("Event distatched");
+			SaffronLogger.log("Event distatched");
 			var focucedTF:TextField = e.textField;
 			var keyBoardHeight:Number = stage.softKeyboardRect.height ;
 			//Debug line
@@ -299,12 +299,12 @@
 				(root as DisplayObjectContainer).addChild(stageMask);
 				stageMask.y = StageManager.stageVisibleArea.bottom;//stage.stageHeight;//StageManager.stageVisibleArea.bottom;
 
-				/*trace("stageScale : "+stageScale);
-				trace("keyBoardHeight : "+keyBoardHeight);
-				trace("stageFullscreenH : "+stageFullscreenH);
-				trace("textFeildBottom : "+textFeildBottom);
-				trace("focucedTF.getBounds(root) : "+focucedTF.getBounds(root));
-				trace("StageManager.stageDelta.height : "+StageManager.stageDelta.height);*/
+				/*SaffronLogger.log("stageScale : "+stageScale);
+				SaffronLogger.log("keyBoardHeight : "+keyBoardHeight);
+				SaffronLogger.log("stageFullscreenH : "+stageFullscreenH);
+				SaffronLogger.log("textFeildBottom : "+textFeildBottom);
+				SaffronLogger.log("focucedTF.getBounds(root) : "+focucedTF.getBounds(root));
+				SaffronLogger.log("StageManager.stageDelta.height : "+StageManager.stageDelta.height);*/
 
 				root.y = moveStageTo;
 			}
@@ -342,7 +342,7 @@
 		/**The application called with uri shcema*/
 		protected function URICalled(event:InvokeEvent):void
 		{
-			trace("App is oppend from an other application : "+event.arguments);
+			SaffronLogger.log("App is oppend from an other application : "+event.arguments);
 		}
 		
 		private function updateConfigRects(e:*=null):void
@@ -367,12 +367,12 @@
 			
 			if(preventedEventCash!=null)
 			{
-				trace("Prevented page event is released");
+				SaffronLogger.log("Prevented page event is released");
 				managePages(preventedEventCash);
 			}
 			else
 			{
-				trace("No AppEvent was prevented to be release");
+				SaffronLogger.log("No AppEvent was prevented to be release");
 			}
 		}
 		
@@ -380,7 +380,7 @@
 		protected function preventPageChanging(event:PageControllEvent):void
 		{
 			
-			trace("Permition sat");
+			SaffronLogger.log("Permition sat");
 			preventorFunction = event.permitionReceiver ;
 			preventorPage = event.preventerPage ;
 		}
@@ -392,7 +392,7 @@
 			preventedEvent = event ;
 			if(permitionRequiredToChangePage())
 			{
-				trace("The page changing needs a permition");
+				SaffronLogger.log("The page changing needs a permition");
 				if(preventorFunction.length>0)
 				{
 					preventorFunction(preventedEvent);
@@ -403,7 +403,7 @@
 				}
 				return true ;
 			}
-			//trace("No permition needed : "+preventorFunction+' , '+preventorPage+' , '+preventorPage.stage)
+			//SaffronLogger.log("No permition needed : "+preventorFunction+' , '+preventorPage+' , '+preventorPage.stage)
 			preventorFunction = null ;
 			preventorPage = null ;
 			preventedEvent = null ;
@@ -434,7 +434,7 @@
 			if(event.myID == AppEvent.developer_static_pageid)
 			{
 				DevicePrefrence.createDownloadLink();
-				trace("Open the developer page");
+				SaffronLogger.log("Open the developer page");
 				if(PopMenu.isAvailable())
 				{
 					var backButton:String = 'بازگشت';
@@ -456,7 +456,7 @@
 				var event2:AppEventContent = event as AppEventContent ;
 				if(!event2.SkipHistory)
 				{
-					trace("History changed");
+					SaffronLogger.log("History changed");
 					History.pushHistory((event as AppEventContent).linkData);
 				}
 				
@@ -477,7 +477,7 @@
 			if(!(skipAnimations || Contents.config.skipAnimations))
 			{
 				var versionContrllURL:String = Contents.config.version_controll_url ;
-				trace("Version controll : "+versionContrllURL);
+				SaffronLogger.log("Version controll : "+versionContrllURL);
 				var versionRequest:URLRequest = new URLRequest(versionContrllURL);
 				versionRequest.contentType = 'application/json';
 				versionRequest.method = URLRequestMethod.POST ;
@@ -502,7 +502,7 @@
 					Alert.show(str3);
 				}
 				stage.removeEventListener(MouseEvent.CLICK,openDownloadLink);
-				trace("*** The versions are ok ***");
+				SaffronLogger.log("*** The versions are ok ***");
 				playIntro();
 			}
 		
@@ -511,7 +511,7 @@
 			{
 				if(isExpired(theHint,appURL))
 				{
-					trace("Switch to the download url instantly");
+					SaffronLogger.log("Switch to the download url instantly");
 					resetIntro();
 					stage.removeEventListener(MouseEvent.CLICK,openDownloadLink);
 					stage.addEventListener(MouseEvent.CLICK,openDownloadLink);

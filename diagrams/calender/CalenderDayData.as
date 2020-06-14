@@ -30,10 +30,10 @@ package diagrams.calender
 		/**returns true if this DayData is containing this date*/
 		public function isContaining(begin:Date,end:Date):Boolean
 		{
-			trace("begin : "+begin+' > '+begin.time);
-			trace("end : "+end+' > '+end.time);
-			trace(".Mdate : "+Mdate+' > '+Mdate.time);
-			trace(".to : "+to+' > '+to.time);
+			SaffronLogger.log("begin : "+begin+' > '+begin.time);
+			SaffronLogger.log("end : "+end+' > '+end.time);
+			SaffronLogger.log(".Mdate : "+Mdate+' > '+Mdate.time);
+			SaffronLogger.log(".to : "+to+' > '+to.time);
 			//Version 1.1 change : if(begin.time<  =  to.time && end.time>=Mdate.time)
 			if(begin.time<  to.time && end.time>=Mdate.time)
 			{

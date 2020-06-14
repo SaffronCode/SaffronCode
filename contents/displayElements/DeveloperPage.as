@@ -69,7 +69,7 @@ package contents.displayElements
 		
 		protected function justClosePopMenu(event:MouseEvent):void
 		{
-			trace("Closethe popUP");
+			SaffronLogger.log("Closethe popUP");
 			PopMenu.close();
 			PopMenu1.close();
 			PopMenu2.close();

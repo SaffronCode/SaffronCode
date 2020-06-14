@@ -159,9 +159,9 @@
 		
 		override public function set height(value:Number):void
 		{
-			trace("Old H was : "+H);
+			SaffronLogger.log("Old H was : "+H);
 			H = value ;
-			trace("Nw H is : "+H);
+			SaffronLogger.log("Nw H is : "+H);
 			
 			if(myMask)
 			{
@@ -185,9 +185,9 @@
 		
 		override public function set width(value:Number):void
 		{
-			trace("Old W was : "+W);
+			SaffronLogger.log("Old W was : "+W);
 			W = value ;
-			trace("Nw W is : "+W);
+			SaffronLogger.log("Nw W is : "+W);
 			
 			if(myMask)
 			{
@@ -334,7 +334,7 @@
 					}
 					else
 					{
-						trace("No next image available");
+						SaffronLogger.log("No next image available");
 						getImageUp().x = 0 ;
 					}
 				}
@@ -346,7 +346,7 @@
 					}
 					else
 					{
-						//trace("No prev image available");
+						//SaffronLogger.log("No prev image available");
 						getImageUp().x = 0 ;
 					}
 				}
@@ -379,7 +379,7 @@
 					imageIndex += plusPages;
 				}
 
-				//trace("♠♠○♠369♠♠ compate ImageIndex vs IgnoredList "+ignoredIndexes+" vs "+getCurrentSelectedImage())
+				//SaffronLogger.log("♠♠○♠369♠♠ compate ImageIndex vs IgnoredList "+ignoredIndexes+" vs "+getCurrentSelectedImage())
 				if(ignoredIndexes.indexOf(getCurrentSelectedImage())!=-1)
 				{
 					if(nextPrevController>0)
@@ -394,7 +394,7 @@
 				else
 					nextPrevController = 0 ;
 				
-				//trace("imageIndex : "+imageIndex);
+				//SaffronLogger.log("imageIndex : "+imageIndex);
 
 				mustSwitch = false ;
 				selectedImge = (selectedImge+1)%2 ;
@@ -477,7 +477,7 @@
 					
 					mouseDownTime = getTimer();
 					
-					trace("Start sliderGallery touch");
+					SaffronLogger.log("Start sliderGallery touch");
 					stage.addEventListener(MouseEvent.MOUSE_MOVE,startSliding);
 					stage.addEventListener(MouseEvent.MOUSE_UP,canselDragging);
 					this.addEventListener(ScrollMTEvent.LOCK_SCROLL_TILL_MOUSE_UP,canselDragging);
@@ -498,7 +498,7 @@
 					stage.removeEventListener(MouseEvent.MOUSE_UP,canselDragging);
 					this.removeEventListener(ScrollMTEvent.LISTEN_TO_SCROLL,checkTheScrollerDirectionToCancel);
 					
-					trace("speed : "+(speed));
+					SaffronLogger.log("speed : "+(speed));
 					
 					if(!RTL)
 					{

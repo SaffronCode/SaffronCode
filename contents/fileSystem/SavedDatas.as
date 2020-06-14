@@ -79,11 +79,11 @@ package contents.fileSystem
 				{
 					query.text = "create table "+tableName+" ("+field_id+" VARCHAR(1) , "+field_value+" VARCHAR(1) , "+field_date+" INT) ";
 					query.execute();
-					trace('table is creats');
+					SaffronLogger.log('table is creats');
 				}
 				catch(e)
 				{
-					trace('table was created');
+					SaffronLogger.log('table was created');
 				}
 				
 				loadTemp();
@@ -95,7 +95,7 @@ package contents.fileSystem
 		public static function save(id:String,data:String):void
 		{
 			setUp();
-			//trace("save this data : "+data);
+			//SaffronLogger.log("save this data : "+data);
 			//hint : if data is nul , it will cause to skip this function ,at the bigining of the app job , all temporaryObject variables are null
 			var dateNum:Number = new Date().time;
 			if(data!= null && temporaryObject[id]!=undefined && temporaryObject[id].data == data)
@@ -106,16 +106,16 @@ package contents.fileSystem
 				{
 					query.execute();
 					sql.commit();
-					//trace(data+" saved");
+					//SaffronLogger.log(data+" saved");
 				}
 				catch(e)
 				{
 					sql.rollback();
 				}
-				//trace("temporaryObject[id] is : "+temporaryObject[id]);
+				//SaffronLogger.log("temporaryObject[id] is : "+temporaryObject[id]);
 				return ;
 			}
-			//trace("save this data2 : "+temporaryObject[id]);
+			//SaffronLogger.log("save this data2 : "+temporaryObject[id]);
 			temporaryObject[id] = {} ;
 			temporaryObject[id].data = data ;
 			temporaryObject[id].time = dateNum ;
@@ -131,7 +131,7 @@ package contents.fileSystem
 			{
 				query.execute();
 				sql.commit();
-				//trace(data+" saved");
+				//SaffronLogger.log(data+" saved");
 			}
 			catch(e)
 			{
@@ -154,7 +154,7 @@ package contents.fileSystem
 				return null ;
 			}
 			
-			//trace("it have to send query to db to detect the data");
+			//SaffronLogger.log("it have to send query to db to detect the data");
 			
 			query.text = "select "+field_value+" , "+field_date+" from "+tableName+" where "+field_id+" == '"+id+"'";
 			try
@@ -167,7 +167,7 @@ package contents.fileSystem
 				}
 				else
 				{
-					//trace('result on query is : '+(result.data[0][field_value]==null)+' > check string : '+(result.data[0][field_value]=='null'));
+					//SaffronLogger.log('result on query is : '+(result.data[0][field_value]==null)+' > check string : '+(result.data[0][field_value]=='null'));
 					var res:String = result.data[0][field_value] ;
 					if(res == 'null')
 					{
@@ -180,7 +180,7 @@ package contents.fileSystem
 					}
 					else
 					{
-						trace('saved Data is too old');
+						SaffronLogger.log('saved Data is too old');
 						return null ;
 					}
 				}
@@ -206,7 +206,7 @@ package contents.fileSystem
 				return null ;
 			}
 			
-			//trace("it have to send query to db to detect the data");
+			//SaffronLogger.log("it have to send query to db to detect the data");
 			
 			query.text = "select "+field_value+" from "+tableName+" where "+field_id+" == '"+id+"'";
 			try
@@ -219,7 +219,7 @@ package contents.fileSystem
 				}
 				else
 				{
-					//trace('result on query is : '+(result.data[0][field_value]==null)+' > check string : '+(result.data[0][field_value]=='null'));
+					//SaffronLogger.log('result on query is : '+(result.data[0][field_value]==null)+' > check string : '+(result.data[0][field_value]=='null'));
 					var res:String = result.data[0][field_value] ;
 					if(res == 'null')
 					{
@@ -246,10 +246,10 @@ package contents.fileSystem
 				}
 				else
 				{
-					//trace('result on query is : '+(result.data[0][field_value]==null)+' > check string : '+(result.data[0][field_value]=='null'));
+					//SaffronLogger.log('result on query is : '+(result.data[0][field_value]==null)+' > check string : '+(result.data[0][field_value]=='null'));
 					for(var i = 0 ; i<result.data.length ; i++)
 					{
-						//trace('load data for '+JSON.stringify(result.data[i]));
+						//SaffronLogger.log('load data for '+JSON.stringify(result.data[i]));
 						temporaryObject[result.data[i][field_id]] = {} ;
 						temporaryObject[result.data[i][field_id]].data = result.data[i][field_value] ;
 						temporaryObject[result.data[i][field_id]].time = result.data[i][field_date] ;

@@ -52,7 +52,7 @@ package combobox.comboboxStatic
 				gotoAndPlay(ComboBoxStaticEvents.OPEN)
 				this.mouseChildren = true
 				this.mouseEnabled = true	
-				trace('opeeeeeeeeeeeeeeeeeeeeeeeen :','_comboBoxId :',_comboBoxId,'event.comboBoxId :',event.comboBoxId)		
+				SaffronLogger.log('opeeeeeeeeeeeeeeeeeeeeeeeen :','_comboBoxId :',_comboBoxId,'event.comboBoxId :',event.comboBoxId)		
 			}
 		}
 		protected function select(Id_p:String,ComboBoxId_p:String,linkData_p:LinkData=null):void

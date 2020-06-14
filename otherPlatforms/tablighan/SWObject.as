@@ -30,12 +30,12 @@
 		
 		protected function preventChanging(event:LocationChangeEvent):void
 		{
-			trace("*** Request to change the location : "+event.location);
-			trace("firstLocation " +firstLocation);
-			trace("event.location " +event.location);
+			SaffronLogger.log("*** Request to change the location : "+event.location);
+			SaffronLogger.log("firstLocation " +firstLocation);
+			SaffronLogger.log("event.location " +event.location);
 			if(firstLocation!=event.location)
 			{
-				trace("*** Change the location");
+				SaffronLogger.log("*** Change the location");
 				navigateToURL(new URLRequest(event.location));
 				if(userAbsoluteNativeBrowser)
 				{
@@ -49,7 +49,7 @@
 			}
 			else
 			{
-				trace("*** Prevent page change...");
+				SaffronLogger.log("*** Prevent page change...");
 			}
 		}
 		

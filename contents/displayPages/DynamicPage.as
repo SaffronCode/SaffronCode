@@ -97,7 +97,7 @@ package contents.displayPages
 			{
 				scrollAbleObject.addChild(textContainer);	
 			}
-			//trace("scrollAbleObject.x : "+scrollAbleObject.x);
+			//SaffronLogger.log("scrollAbleObject.x : "+scrollAbleObject.x);
 			
 			
 			scrollAbleObject.graphics.clear();
@@ -147,7 +147,7 @@ package contents.displayPages
 				{
 					align = true ;
 				}
-				//trace("align : "+align+' from : '+currentPageData.contentAlign)
+				//SaffronLogger.log("align : "+align+' from : '+currentPageData.contentAlign)
 				var pageContent:String = currentPageData.content ;
 				if(activateHTMLLink)
 				{
@@ -159,11 +159,11 @@ package contents.displayPages
 				}
 				TextPutter.onTextArea(textTF,pageContent,true,!activateHTMLLink,true,1,align);
 			}
-			//trace("Number of imates : "+currentPageData.images.length);
+			//SaffronLogger.log("Number of imates : "+currentPageData.images.length);
 			for(var i = 0 ; i<currentPageData.images.length ; i++)
 			{
 				var imageData:ImageData = currentPageData.images[i] ;
-				//trace("image icon is : "+imageData.targURL);
+				//SaffronLogger.log("image icon is : "+imageData.targURL);
 				var H:Number = 0 ,
 					W:Number = 0;
 				if(!isNaN(imageData.width))
@@ -177,7 +177,7 @@ package contents.displayPages
 				var oneImage:LightImage = new LightImage();
 				oneImage.watermark = addWatermark ;
 				oneImage.setUp(imageData.targURL,fullImageShow,W,H,imageData.x,imageData.y);
-				//trace(i+"imageData.y : "+imageData.y);
+				//SaffronLogger.log(i+"imageData.y : "+imageData.y);
 				//oneImage.x = imageData.x;
 				//oneImage.y = imageData.y;
 				scrollAbleObject.addChild(oneImage)

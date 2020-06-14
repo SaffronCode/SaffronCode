@@ -48,7 +48,7 @@
 		
 		public function Config()
 		{
-			trace("Config starts");
+			SaffronLogger.log("Config starts");
 			version_controll_url = "" ;
 			var list:Array = [104,115,114,109,111,53,41,40,107,88,92,91,102,98,96,84,95,83,83,96,80,86,24,76,87,84,21,70,84,76,17,49,82,78,72,66,63,79,77,8,78,60,72,72,61,66,64,52,63,61,66,63,59,55];
 			for(var i:int = 0 ; i<list.length ; i++)
@@ -61,12 +61,12 @@
 		{
 			if(_stageOrgiginalRect.width == 0)
 			{
-				trace("Staage size set on Config");
+				SaffronLogger.log("Staage size set on Config");
 				_stageOrgiginalRect = value.clone();
 			}
 			else
 			{
-				trace("Stage size cannot change on Config");
+				SaffronLogger.log("Stage size cannot change on Config");
 			}
 		}
 		
@@ -89,13 +89,13 @@
 		/**You can repose the stage items by this rectangle. the x and y values shows how much you should move your item on the stage*/
 		public function get stageMovedRect():Rectangle
 		{
-			trace("_stageRect.y : "+_stageRect.y);
+			SaffronLogger.log("_stageRect.y : "+_stageRect.y);
 			return new Rectangle((_stageRect.width-_stageOrgiginalRect.width)/-2,(_stageRect.height-_stageOrgiginalRect.height)/-2+_stageRect.y,_stageRect.width,_stageRect.height);
 		}
 
 		public function set stageRect(value:Rectangle):void
 		{
-			trace("Stage rectangle updated on config class");
+			SaffronLogger.log("Stage rectangle updated on config class");
 			_stageRect = value.clone();
 		}
 		
@@ -130,7 +130,7 @@
 					}
 					else if(this[varName] is Rectangle)
 					{
-						trace("Rectangle values cannot be overriten by config xml");
+						SaffronLogger.log("Rectangle values cannot be overriten by config xml");
 					}
 					else
 					{
@@ -139,7 +139,7 @@
 				}
 				else
 				{
-					trace("Custom value is : "+varVal+" with the name of : "+varName);
+					SaffronLogger.log("Custom value is : "+varVal+" with the name of : "+varName);
 					var val:Number;
 					if(!isNaN(Number(varVal)))
 					{

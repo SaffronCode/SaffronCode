@@ -54,8 +54,8 @@
 		
 		override public function setUp(imageURL:String,loadInThisArea:Boolean = true ,imageW:Number=0,imageH:Number=0,X:Number=0,Y:Number=0,keepRatio:Boolean=true)
 		{
-			trace("Image box calls");
-			trace("load this image : "+imageURL+' > loadInThisArea: '+loadInThisArea);
+			SaffronLogger.log("Image box calls");
+			SaffronLogger.log("load this image : "+imageURL+' > loadInThisArea: '+loadInThisArea);
 			
 			if(imageW==0)
 			{

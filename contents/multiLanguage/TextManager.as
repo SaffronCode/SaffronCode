@@ -21,7 +21,7 @@ package contents.multiLanguage
 		{
 			var f:TextFormat = _format ;
 			var copiedFormat:TextFormat = new TextFormat(f.font,f.size,f.color,f.bold,f.italic,f.underline,f.url,f.target,f.align,f.leftMargin,f.rightMargin,f.indent,f.leading);
-			//trace("Format copied : "+copiedFormat.font);
+			//SaffronLogger.log("Format copied : "+copiedFormat.font);
 			return copiedFormat ;
 		}
 		
@@ -30,7 +30,7 @@ package contents.multiLanguage
 			var I:int = texts.indexOf(tf);
 			if(I==-1)
 			{
-				//trace("******** This is a new text");
+				//SaffronLogger.log("******** This is a new text");
 				tf.addEventListener(Event.REMOVED_FROM_STAGE,removeThisText);
 				
 				var f:TextFormat = tf.defaultTextFormat ;
@@ -41,7 +41,7 @@ package contents.multiLanguage
 			}
 			else
 			{
-				//trace("******** This text is old");
+				//SaffronLogger.log("******** This text is old");
 				_format = TextManagers[I].format ;
 			}
 		}
@@ -53,7 +53,7 @@ package contents.multiLanguage
 			var I:int = texts.indexOf(tf);
 			if(I!=-1)
 			{
-				trace("Some fonts removed form stage now");
+				SaffronLogger.log("Some fonts removed form stage now");
 				texts.splice(I,1);
 				TextManagers.splice(I,1);
 			}

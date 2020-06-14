@@ -54,13 +54,13 @@ package mp3PlayerStatic
 		private function onMouseDOWN():void
 		{
 			
-			trace('mouse down :',volumeMc.value/100)
+			SaffronLogger.log('mouse down :',volumeMc.value/100)
 		}
 		
 		private function onMousUP():void
 		{
 			
-			trace('mouse up :',volumeMc.value/100)
+			SaffronLogger.log('mouse up :',volumeMc.value/100)
 			MediaPlayerStatic.evt.dispatchEvent(new MediaPlayerEventStatic(MediaPlayerEventStatic.VOLUME,volumeMc.value/100))
 			
 		}

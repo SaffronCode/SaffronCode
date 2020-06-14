@@ -10,7 +10,7 @@ package webService2
 		{
 			var arrayOfthisClass:Array = [] ;
 			
-			//trace(classType+" parsed to this data : "+JSON.stringify(pureObject));
+			//SaffronLogger.log(classType+" parsed to this data : "+JSON.stringify(pureObject));
 			
 			for(var j = 0 ; pureObject!=null && j<pureObject.length ; j++)
 			{
@@ -25,14 +25,14 @@ package webService2
 						}
 						catch(e)
 						{
-							trace(currentObject[k]+" is different from "+pureObject[j][k]);
+							SaffronLogger.log(currentObject[k]+" is different from "+pureObject[j][k]);
 						}
 					}
 				}*/
 				currentObject = parsObjects(currentObject,pureObject[j]);
 				arrayOfthisClass.push(currentObject as classType);
 			}
-			//trace("♠♠♠ ♠♠♠parsed data is : "+JSON.stringify(arrayOfthisClass));
+			//SaffronLogger.log("♠♠♠ ♠♠♠parsed data is : "+JSON.stringify(arrayOfthisClass));
 			return arrayOfthisClass ;
 		}
 		
@@ -45,7 +45,7 @@ package webService2
 			}
 			else if(dest == null)
 			{
-				trace("web parser: dest is null");
+				SaffronLogger.log("web parser: dest is null");
 			}
 			else
 			{
@@ -59,7 +59,7 @@ package webService2
 						}
 						catch(e)
 						{
-							trace("web parser: "+source[k]+" is different from "+dest[k]+' on '+k);
+							SaffronLogger.log("web parser: "+source[k]+" is different from "+dest[k]+' on '+k);
 							parsObjects(dest[k],source[k]);
 						}
 					}

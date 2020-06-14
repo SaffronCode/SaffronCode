@@ -34,7 +34,7 @@
 		{
 			_status = !_status ;
 			this.dispatchEvent(new Event(Event.CHANGE));
-			trace(_status);
+			SaffronLogger.log(_status);
 		}
 
 		public function get status():Boolean

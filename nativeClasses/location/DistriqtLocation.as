@@ -36,11 +36,11 @@
             checkLocationPermission(openLocationSetting, openLocationSetting);
 
             function openLocationSetting():void {
-                trace("** openLocationSetting");
+                SaffronLogger.log("** openLocationSetting");
                 if (_googlePlyaSupport) {
                     if (!Location.service.isAvailable()) {
                         if (DevicePrefrence.isAndroid()) {
-                            trace("************** open location");
+                            SaffronLogger.log("************** open location");
                             var request:* = new LocationRequest();
                             request.priority = LocationRequest.PRIORITY_HIGH_ACCURACY;
 
@@ -50,35 +50,35 @@
                             Location.service.addEventListener(LocationSettingsEvent.FAILED, checkLocationSettingsHandler);
                             if (showSetting == false) {
                                 onDenied();
-                                trace("onDenided")
+                                SaffronLogger.log("onDenided")
                                 return
                             }
                             var success:Boolean = Location.service.checkLocationSettings(request) as Boolean;
                             if (!success) {
                                 onDenied();
-                                trace("onDenided")
+                                SaffronLogger.log("onDenided")
                                 Location.service.displayLocationSettings();
                             }
 
                             function checkLocationSettingsHandler(event:*):void {
-                                trace("********** Location is ? " + event.type);
+                                SaffronLogger.log("********** Location is ? " + event.type);
                             }
                         } else {
-                            trace("********* Open location setting")
+                            SaffronLogger.log("********* Open location setting")
                             onDenied();
-                            trace("onDenided")
+                            SaffronLogger.log("onDenided")
                             if (showSetting == true)
                                 Location.service.displayLocationSettings();
                         }
                     } else {
-                        trace("************* Locatoin service is available *************");
+                        SaffronLogger.log("************* Locatoin service is available *************");
                         onActivated();
-                        trace("onActive")
+                        SaffronLogger.log("onActive")
                     }
                 } else {
-                    trace("************* Google play is not support")
+                    SaffronLogger.log("************* Google play is not support")
                     onDenied();
-                    trace("onDenided")
+                    SaffronLogger.log("onDenided")
                 }
             }
         }
@@ -113,7 +113,7 @@
                 case AuthorisationStatus.ALWAYS:
                 case AuthorisationStatus.IN_USE:
                     _locationSupport = true;
-                    trace("User allowed access: " + Location.service.authorisationStatus() + " >> " + onPermissioned);
+                    SaffronLogger.log("User allowed access: " + Location.service.authorisationStatus() + " >> " + onPermissioned);
                     if (onPermissioned != null) {
                         onPermissioned();
                         return;
@@ -128,7 +128,7 @@
                 case AuthorisationStatus.RESTRICTED:
                 case AuthorisationStatus.DENIED:
                 case AuthorisationStatus.UNKNOWN:
-                    trace("User denied access");
+                    SaffronLogger.log("User denied access");
                     _locationSupport = false;
                     break;
             }
@@ -155,11 +155,11 @@
                     GoogleApiAvailability.instance.showErrorDialog(result);
                 } else {
                     _googlePlyaSupport = false;
-                    trace("Google Play Services aren't available on this device");
+                    SaffronLogger.log("Google Play Services aren't available on this device");
                 }
             } else {
                 _googlePlyaSupport = true;
-                trace("Google Play Services are Available");
+                SaffronLogger.log("Google Play Services are Available");
             }
         }
     }

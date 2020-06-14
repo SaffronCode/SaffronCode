@@ -52,7 +52,7 @@ package nativeClasses.sms
 				catch(e)
 				{
 					smsClass = null ;
-					trace("com.doitflash.air.extensions.sms.SMS is not imported : "+e);
+					SaffronLogger.log("com.doitflash.air.extensions.sms.SMS is not imported : "+e);
 				}
 				if(smsClass!=null)
 				{
@@ -65,7 +65,7 @@ package nativeClasses.sms
 		private static function getLastRecevedMessage():void
 		{
 			//sms.addEventListener(SMSEvent.ALL_SMS, allSms);
-			trace("lastSMSId : "+lastSMSId);
+			SaffronLogger.log("lastSMSId : "+lastSMSId);
 			sms.addEventListener((smsEventObject as Object).NEW_PERIOD_SMS, allSmsPeriod);
 			sms.getSmsAfterId(lastSMSId);
 		}	
@@ -74,7 +74,7 @@ package nativeClasses.sms
 			private static function allSmsPeriod(e:*):void
 			{
 				var arr:Array = e.param;
-				trace("All sms Period loaded1 : "+JSON.stringify(arr,null,' '));
+				SaffronLogger.log("All sms Period loaded1 : "+JSON.stringify(arr,null,' '));
 				
 				if(arr!=null)
 				{
@@ -82,12 +82,12 @@ package nativeClasses.sms
 					{
 						lastSMSId = arr[0].id ;
 						GlobalStorage.save(id_lastsms_id,lastSMSId);
-						trace(">>>> change last sms id to load : "+lastSMSId);
+						SaffronLogger.log(">>>> change last sms id to load : "+lastSMSId);
 						sms.getSmsAfterId(lastSMSId);
 					}
 					else
 					{
-						trace("-No new SMS");
+						SaffronLogger.log("-No new SMS");
 						lastSMSLoaded = true ;
 						sms.removeEventListener((smsEventObject as Object).NEW_PERIOD_SMS, allSmsPeriod);
 						
@@ -107,10 +107,10 @@ package nativeClasses.sms
 			setUp();
 			if(sms==null)
 			{
-				trace("SMS native is not supports on this device");
+				SaffronLogger.log("SMS native is not supports on this device");
 				return ;
 			}
-			trace(">>>lastSMSLoaded : "+lastSMSLoaded);
+			SaffronLogger.log(">>>lastSMSLoaded : "+lastSMSLoaded);
 			
 			if(lastSMSLoaded)
 			{
@@ -130,7 +130,7 @@ package nativeClasses.sms
 		/**Request smses after last sms id*/
 		private static function loadLastSMSes():void
 		{
-			//trace("....load sms after "+lastSMSId);
+			//SaffronLogger.log("....load sms after "+lastSMSId);
 			sms.getSmsAfterId(lastSMSId);
 		}
 		
@@ -139,7 +139,7 @@ package nativeClasses.sms
 			private static function receivedSMS(e:*):void
 			{
 				var arr:Array = e.param;
-				//trace("All sms Period loaded2 : "+JSON.stringify(arr,null,' '));
+				//SaffronLogger.log("All sms Period loaded2 : "+JSON.stringify(arr,null,' '));
 				
 				if(arr!=null)
 				{
@@ -147,7 +147,7 @@ package nativeClasses.sms
 					{
 						lastSMSId = arr[0].id ;
 						GlobalStorage.save(id_lastsms_id,lastSMSId);
-						trace(">>>> change last sms id to load2 : "+lastSMSId);
+						SaffronLogger.log(">>>> change last sms id to load2 : "+lastSMSId);
 						
 						for(var i:int ; i<arr.length ; i++)
 						{
@@ -163,13 +163,13 @@ package nativeClasses.sms
 		{
 			if(sms==null)
 			{
-				trace("SMS native is not supports on this device");
+				SaffronLogger.log("SMS native is not supports on this device");
 				return ;
 			}
 			
 			listenToNewSMSafterready = false ;
 			
-			trace("Cansel listening to sms");
+			SaffronLogger.log("Cansel listening to sms");
 			sms.removeEventListener((smsEventObject as Object).NEW_PERIOD_SMS, receivedSMS);
 			clearInterval(smsListenerIntervalId);
 		}
@@ -183,7 +183,7 @@ package nativeClasses.sms
 			
 			if(sms==null)
 			{
-				trace("SMS native is not supports on this device");
+				SaffronLogger.log("SMS native is not supports on this device");
 				return ;
 			}
 			
@@ -196,8 +196,8 @@ package nativeClasses.sms
 		
 		protected static function listenToAnswer(event:*):void
 		{
-			trace("SmS snet..."+JSON.stringify(event.param,null,' '));
-			trace("SMSs1 are : "+JSON.stringify(sms.smsArray));
+			SaffronLogger.log("SmS snet..."+JSON.stringify(event.param,null,' '));
+			SaffronLogger.log("SMSs1 are : "+JSON.stringify(sms.smsArray));
 			sms.removeEventListener((smsEventObject as Object).SEND_SUCCESS,listenToAnswer);
 			
 			dispatcher.dispatchEvent(new SMSEvents(SMSEvents.SMS_NOT_SENT));
@@ -205,7 +205,7 @@ package nativeClasses.sms
 		
 		protected static function sendingFaild(event:Event):void
 		{
-			trace("Sending fails");
+			SaffronLogger.log("Sending fails");
 			sms.removeEventListener((smsEventObject as Object).SEND_ERROR,sendingFaild);
 			sms.removeEventListener((smsEventObject as Object).DELIVERY_FAILED,sendingFaild);
 			sms.removeEventListener((smsEventObject as Object).SEND_SUCCESS,listenToAnswer);
@@ -220,10 +220,10 @@ package nativeClasses.sms
 		{
 			if(sms==null)
 			{
-				trace("SMS native is not supports on this device");
+				SaffronLogger.log("SMS native is not supports on this device");
 				return ;
 			}
-			trace("Delete this sms");
+			SaffronLogger.log("Delete this sms");
 			sms.deleteSmsById(smsId);
 		}
 		

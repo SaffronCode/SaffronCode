@@ -47,12 +47,12 @@ package webService2
 			
 			if(loadedString == null)
 			{
-				trace("no data is saved befor");
+				SaffronLogger.log("no data is saved befor");
 				return null;
 			}*/
 			
 			var foundedObject:Object ;
-			//trace("id is : "+valueName);
+			//SaffronLogger.log("id is : "+valueName);
 			
 			var ba:ByteArray = SavedDatas2.loadIfNewer(valueName,requiredDate) ;
 			//ba.writeUTF(loadedString);
@@ -63,7 +63,7 @@ package webService2
 			}
 			catch(e)
 			{
-				trace("un tracable object");
+				SaffronLogger.log("un tracable object");
 				return null;
 			};
 			
@@ -90,7 +90,7 @@ package webService2
 			ba.position = 0 ;
 			
 			var valueName:String = currentIndex1+currentIndex2+generateID(ClassObject,Parameters);
-			//trace("Save my datas : "+valueName);
+			//SaffronLogger.log("Save my datas : "+valueName);
 			
 			SavedDatas2.save(valueName,ba);
 			

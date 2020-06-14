@@ -54,7 +54,7 @@ package contents
 			{
 				y = Number(imageXML.@y);
 			}
-			//trace("image data is loaded : "+targURL);
+			//SaffronLogger.log("image data is loaded : "+targURL);
 			
 			swfContainer = new MovieClip();
 		}
@@ -95,7 +95,7 @@ package contents
 		/**tells load is faild*/
 		private function loadFaild(e:IOErrorEvent)
 		{
-			trace(new Error('target '+targURL+' not found'));
+			SaffronLogger.log(new Error('target '+targURL+' not found'));
 		}
 
 		/**load is complete*/

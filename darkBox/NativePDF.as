@@ -51,11 +51,11 @@
 			{
 				if(pdfReaderInstant.hasPDFApplication(pdfFile))
 				{
-					trace("PDF is loaded");
+					SaffronLogger.log("PDF is loaded");
 				}
 				else
 				{
-					trace("Use has no PDF reader");
+					SaffronLogger.log("Use has no PDF reader");
 					navigateToURL(new URLRequest("market://delails?id=com.adobe.reader"));
 					navigateToURL(new URLRequest("https://play.google.com/store/apps/details?id=com.adobe.reader"));
 				}

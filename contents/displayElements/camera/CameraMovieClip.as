@@ -30,7 +30,7 @@ package contents.displayElements.camera
 
         private function unLoad(event:Event):void
         {
-            trace("Camera element remved from stage")
+            SaffronLogger.log("Camera element remved from stage")
         }
     }
 }

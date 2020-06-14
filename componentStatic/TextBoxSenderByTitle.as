@@ -29,7 +29,7 @@ package componentStatic
 			{
 				value = getObj(this.name)	
 			}	
-			trace('value :',value)
+			SaffronLogger.log('value :',value)
 			if(title!=null && (value==null|| value==''))
 			{
 				setDefaultPass(title)

@@ -24,12 +24,12 @@ package nativeClasses.distriqtScanner
 				Scanner.init(distriqtId);
 				if (Scanner.isSupported)
 				{
-					trace("Distriqt Scanner supports");
+					SaffronLogger.log("Distriqt Scanner supports");
 				}
 			}
 			catch (e:Error)
 			{
-				trace( "District Scanner unsupport" );
+				SaffronLogger.log( "District Scanner unsupport" );
 			}
 
 		}
@@ -43,39 +43,39 @@ package nativeClasses.distriqtScanner
 			
 			if(onScanned.length==0)
 			{
-				trace("********* You should receive a paramerer throw your onScanned *********");
+				SaffronLogger.log("********* You should receive a paramerer throw your onScanned *********");
 			}
 			
 			if (Scanner.isSupported)
 			{
-				trace( "Scanner Authorisation Status: " + Scanner.service.authorisationStatus() );
+				SaffronLogger.log( "Scanner Authorisation Status: " + Scanner.service.authorisationStatus() );
 				Scanner.service.addEventListener( AuthorisationEvent.CHANGED, authorisationChangedHandler );
 				switch (Scanner.service.authorisationStatus())
 				{
 					case AuthorisationStatus.NOT_DETERMINED:
 					case AuthorisationStatus.SHOULD_EXPLAIN:
-						trace( " REQUEST ACCESS: This will display the permission dialog");
+						SaffronLogger.log( " REQUEST ACCESS: This will display the permission dialog");
 						Scanner.service.requestAccess();
 						return;
 						
 					case AuthorisationStatus.DENIED:
 					case AuthorisationStatus.UNKNOWN:
 					case AuthorisationStatus.RESTRICTED:
-						trace( "ACCESS DENIED: You should inform your user appropriately");
+						SaffronLogger.log( "ACCESS DENIED: You should inform your user appropriately");
 						return;
 						
 					case AuthorisationStatus.AUTHORISED:
-						trace( "AUTHORISED: Scanner will be available");
+						SaffronLogger.log( "AUTHORISED: Scanner will be available");
 						break;						
 				}
 				
-				trace("I'm ready for your test");
+				SaffronLogger.log("I'm ready for your test");
 				
 				startScanning();
 			}
 			else
 			{
-				trace("I'm not supporting your device");
+				SaffronLogger.log("I'm not supporting your device");
 			}
 		}
 		
@@ -85,17 +85,17 @@ package nativeClasses.distriqtScanner
 			switch (event.status)
 			{
 				case AuthorisationStatus.SHOULD_EXPLAIN:
-					trace("Should display a reason you need this feature");
+					SaffronLogger.log("Should display a reason you need this feature");
 					break;
 				
 				case AuthorisationStatus.AUTHORISED:
-					trace("AUTHORISED: Camera will be available");
+					SaffronLogger.log("AUTHORISED: Camera will be available");
 					startScanning();
 					break;
 				
 				case AuthorisationStatus.RESTRICTED:
 				case AuthorisationStatus.DENIED:
-					trace("ACCESS DENIED: You should inform your user appropriately");
+					SaffronLogger.log("ACCESS DENIED: You should inform your user appropriately");
 					break;
 			}
 		}
@@ -117,12 +117,12 @@ package nativeClasses.distriqtScanner
 		
 		protected function backToHome(event:Event):void
 		{
-			trace("Scanner oppened");
+			SaffronLogger.log("Scanner oppened");
 		}
 		
 		private function codeFoundHandler( event:ScannerEvent ):void
 		{
-			trace("Data scanned : "+event.data);
+			SaffronLogger.log("Data scanned : "+event.data);
 			lastScannedCode = event.data ;
 			if(OnScan.length>0)
 			{

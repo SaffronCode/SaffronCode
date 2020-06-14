@@ -58,7 +58,7 @@
 				var _bottonArray:Array = _data.buttonArray();
 				for(var i:int=0;i<_bottonArray.length;i++)
 				{
-					trace('this.name :',this.name,'=', getObj(this.name),'_bottonArray[i].id :',_bottonArray[i].id)
+					SaffronLogger.log('this.name :',this.name,'=', getObj(this.name),'_bottonArray[i].id :',_bottonArray[i].id)
 					var _defaultValue:PopButtonData;
 					if(getObj(this.name) == _bottonArray[i].id)
 					{
@@ -105,7 +105,7 @@
 		
 		public function openListPopUp(data:Array=null,ID:String=null):void
 		{
-			trace('_data.title() :',_data.title());
+			SaffronLogger.log('_data.title() :',_data.title());
 			if(_title!=null)
 			{
 				Hints.selector(_title,'',_data.buttonArray(),selector,null,1,2,onBackFun);
@@ -130,11 +130,11 @@
 		}
 		protected function selected():void
 		{
-			trace('select item');
+			SaffronLogger.log('select item');
 		}
 		protected function Server_Error(event:Event):void
 		{	
-			trace('combobox server erroe');	
+			SaffronLogger.log('combobox server erroe');	
 		}
 
 

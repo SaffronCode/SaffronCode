@@ -101,7 +101,7 @@ package contents
 			
 			langEnabled = supportsMultiLanguage ;
 			autoLangUpdate = supportsMultiLanguage && autoConvertFontsAndContentTextsByLanguage ;
-			//trace("autoLangUpdate : "+autoLangUpdate);
+			//SaffronLogger.log("autoLangUpdate : "+autoLangUpdate);
 			myStage = stage ;
 			
 			
@@ -141,13 +141,13 @@ package contents
 		/**Load the xml file now*/
 		private static function loadXML()
 		{
-			//trace("1. debug time : "+getTimer());
+			//SaffronLogger.log("1. debug time : "+getTimer());
 			/*var fileLoader:FileStream = new FileStream();
 			var fileTarger:File = File.applicationDirectory.resolvePath(dataFile);
 			fileLoader.open(fileTarger,FileMode.READ);*/
 			
 			var loadedFile:String = TextFile.load(File.applicationDirectory.resolvePath(dataFile));
-			//trace("2. debug time : "+getTimer());
+			//SaffronLogger.log("2. debug time : "+getTimer());
 			xmlLoaded(null,loadedFile);
 		}
 		
@@ -172,7 +172,7 @@ package contents
 				var pageData:PageData = new PageData(loadedXML.page[i]);
 				pages.push(pageData);
 			}
-			//trace("3. debug time : "+getTimer());
+			//SaffronLogger.log("3. debug time : "+getTimer());
 			
 			//You have to keep ides so you cannot override the names and titles once for all. it will distroy ides. so update it when getPage function calls.
 			//controllLanguage();
@@ -187,23 +187,23 @@ package contents
 				eventDispatcher.dispatchEvent(new ContentsEvent());
 			}
 			xmlLoadedOnce = true ;
-			//trace("4. debug time : "+getTimer());
+			//SaffronLogger.log("4. debug time : "+getTimer());
 		}
 		
 		/**add these datas to pageContents*/
 		public static function addMoreData(morePageDataOnXML:String)
 		{
-			//trace("morePageDataOnXML : "+morePageDataOnXML)
+			//SaffronLogger.log("morePageDataOnXML : "+morePageDataOnXML)
 			var cashedXML = XMLList(morePageDataOnXML);
 			
 			//pages = new Vector.<PageData>();
 			
 			for(var i = 0 ; i<cashedXML.length() ; i++)
 			{
-				//trace('each page data : '+cashedXML[i]);
+				//SaffronLogger.log('each page data : '+cashedXML[i]);
 				var pageData:PageData = new PageData(cashedXML[i]);
 				var pageFounds:Boolean = dropPage(pageData.id);
-				//trace('page '+pageData.id+' added to content and it was there befor? '+pageFounds);
+				//SaffronLogger.log('page '+pageData.id+' added to content and it was there befor? '+pageFounds);
 				pages.push(pageData);
 			}
 		}
@@ -221,42 +221,42 @@ package contents
 		 * dontUseLanguage balue will prevent this function to converting texts from language.xml clas*/
 		public static function getPage(pageID:String,dontUseLanguage:Boolean=false):PageData 
 		{
-			//trace('1- '+getTimer());
+			//SaffronLogger.log('1- '+getTimer());
 			
 			if(blockedPagesForSanction!=null && blockedPagesForSanction.indexOf(pageID)!=-1)
 			{
-				trace("This user cannot see this page!!!!!!!!!!!!!!");
+				SaffronLogger.log("This user cannot see this page!!!!!!!!!!!!!!");
 				return new PageData();
 			}
 			if(pages==null)
 			{
-				trace("You have to set Contents first");
+				SaffronLogger.log("You have to set Contents first");
 				return new PageData();
 			}
 			
 			
 			if(isDebug)
 			{
-				trace("Debug mode. Warning: Debug mode will remove all pages that added dynamicaly like News nad webGalleries!");
+				SaffronLogger.log("Debug mode. Warning: Debug mode will remove all pages that added dynamicaly like News nad webGalleries!");
 				loadLang();
 				loadXML();
 			}
 			
-			//trace('2- '+getTimer());
+			//SaffronLogger.log('2- '+getTimer());
 			
 			var foundedPage:PageData = new PageData();
 			for(var i = 0 ; i<pages.length ;i++)
 			{
 				if(pages[i].id == pageID )
 				{
-					//trace('3- '+getTimer());
+					//SaffronLogger.log('3- '+getTimer());
 					foundedPage = pages[i].clone();
-					//trace('4- '+getTimer());
+					//SaffronLogger.log('4- '+getTimer());
 					break;
 				}
 			}
 			
-			//trace('5- '+getTimer());
+			//SaffronLogger.log('5- '+getTimer());
 			
 			//This will update all contents with current language and it will controll for the existing of the language
 			if(/*langEnabled*/langEnabled && !dontUseLanguage)
@@ -322,7 +322,7 @@ package contents
 				}
 			}
 			
-			//trace('6- '+getTimer());
+			//SaffronLogger.log('6- '+getTimer());
 			return foundedPage;
 		}
 		
@@ -386,7 +386,7 @@ package contents
 		{
 			if(langEnabled)
 			{
-				trace("languageID  : "+languageID);
+				SaffronLogger.log("languageID  : "+languageID);
 				lang.changeLanguage(languageID);
 			}
 			else

@@ -111,7 +111,7 @@ package contents.rollingList
 		
 		protected function preventPageChange(event:Event):void
 		{
-			trace("Im selected");
+			SaffronLogger.log("Im selected");
 			event.stopImmediatePropagation();
 			var selectedItem:RollingItem = event.target as RollingItem ;
 			if(selectedItem == null)
@@ -228,7 +228,7 @@ package contents.rollingList
 		/**Selected item changed*/
 		private function dispatchChangeEvent():void
 		{
-			trace("Changed : "+lastSelectedItem);
+			SaffronLogger.log("Changed : "+lastSelectedItem);
 			this.dispatchEvent(new Event(Event.CHANGE));
 			this.dispatchEvent(new AppEventContent(myPageDataLink[lastSelectedItem]));
 		}
@@ -289,7 +289,7 @@ package contents.rollingList
 		{
 			var newLinkAdded:Boolean = false ;
 			var requiredLinkY:Number ;
-			//trace('bottomOfList : '+bottomOfList+' , topOfList : '+topOfList); 
+			//SaffronLogger.log('bottomOfList : '+bottomOfList+' , topOfList : '+topOfList); 
 			if(bottomOfList>=0)
 			{
 				if(bottomOfList<totalPageLinks)
@@ -409,8 +409,8 @@ package contents.rollingList
 			var sinVal:Number = Math.sin(rad)/2+0.5 ;
 			/*if(rollItem.myIndex==0)
 			{
-				trace("sinVal : "+sinVal);
-				trace("rad : "+(rad/Math.PI*180));
+				SaffronLogger.log("sinVal : "+sinVal);
+				SaffronLogger.log("rad : "+(rad/Math.PI*180));
 			}*/
 			if(sinVal<0)
 			{

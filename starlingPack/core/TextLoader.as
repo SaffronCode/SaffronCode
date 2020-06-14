@@ -24,7 +24,7 @@ public class TextLoader {
     }
 
     private function urlWasWrong(event:IOErrorEvent):void {
-        trace("*** requested url was wrong ***")
+        SaffronLogger.log("*** requested url was wrong ***")
         callError();
     }
 
@@ -64,7 +64,7 @@ public class TextLoader {
     /**You can take the bitmap directly from an input on the onLoadedFunction or loadedBitmap variable*/
     public function load(textURL:String,onLoadedFunction:Function,onErrorFunction:Function=null):void
     {
-        trace("*** Load "+textURL+" on URLLoader class ***");
+        SaffronLogger.log("*** Load "+textURL+" on URLLoader class ***");
         onLoaded = onLoadedFunction ;
         onError = onErrorFunction ;
         loader.load(new URLRequest(textURL));

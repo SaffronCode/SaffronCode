@@ -53,7 +53,7 @@ package diagrams.table
 			
 			if(myTitles==null)
 			{
-				trace("No title added");
+				SaffronLogger.log("No title added");
 				return ;
 			}
 			
@@ -65,12 +65,12 @@ package diagrams.table
 			var vl:uint = myTitles.VTitles.length ;
 			if(vl == 0)
 			{
-				trace("No vertical title added");
+				SaffronLogger.log("No vertical title added");
 				return ;
 			}
 			else if(hl == 0)
 			{
-				trace("No horizontal title added");
+				SaffronLogger.log("No horizontal title added");
 				return ;
 			}
 			var Wfix:Number ;
@@ -205,7 +205,7 @@ package diagrams.table
 					if(myContents.contentList[i].hid == tableContent.contentList[j].hid &&
 						myContents.contentList[i].vid == tableContent.contentList[j].vid)
 					{
-						trace("Old content droped");
+						SaffronLogger.log("Old content droped");
 						myContents.contentList.splice(i,1);
 						i--;
 					}
@@ -226,18 +226,18 @@ package diagrams.table
 			
 			if(myContents == null || tableBoxes==null)
 			{
-				trace("Cannot create contents");
+				SaffronLogger.log("Cannot create contents");
 				return ;
 			}
-			trace("manage contentes");
+			SaffronLogger.log("manage contentes");
 			var backUpdated:Boolean ;
 			for(var j = 0 ; j<tableBoxes.length ; j++)
 			{
 				backUpdated = false ;
 				for(var i = 0 ;i<myContents.contentList.length ; i++)
 				{
-					//trace("tableBoxes["+j+"]  vs  myContents.contentList["+i+"]")
-					//trace(tableBoxes[j].vId+' vs '+myContents.contentList[i].vid);
+					//SaffronLogger.log("tableBoxes["+j+"]  vs  myContents.contentList["+i+"]")
+					//SaffronLogger.log(tableBoxes[j].vId+' vs '+myContents.contentList[i].vid);
 					if(tableBoxes[j].vId == myContents.contentList[i].vid && tableBoxes[j].hId == myContents.contentList[i].hid)
 					{
 						backUpdated = true ;

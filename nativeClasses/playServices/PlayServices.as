@@ -11,26 +11,26 @@ package nativeClasses.playServices
 		{
 			if(DevicePrefrence.isAndroid())
 			{
-				trace("********* ControllDevicePlayService *******");
+				SaffronLogger.log("********* ControllDevicePlayService *******");
 				var result:int = GoogleApiAvailability.instance.isGooglePlayServicesAvailable();
 				if (result != ConnectionResult.SUCCESS)
 				{
-					trace("******* User needs play service ******");
+					SaffronLogger.log("******* User needs play service ******");
 					if (GoogleApiAvailability.instance.isUserRecoverableError( result ))
 					{
 						setTimeout(function(){
-							trace("c○○○ Show dialog : "+result);
+							SaffronLogger.log("c○○○ Show dialog : "+result);
 							GoogleApiAvailability.instance.attemptResolution( result )
 						},5000);
 					}
 					else
 					{
-						trace( "Google Play Services aren't available on this device" );
+						SaffronLogger.log( "Google Play Services aren't available on this device" );
 					}
 				}
 				else
 				{
-					trace( "Google Play Services are Available" );
+					SaffronLogger.log( "Google Play Services are Available" );
 				}
 			}
 		}

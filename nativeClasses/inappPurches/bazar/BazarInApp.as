@@ -93,7 +93,7 @@ package nativeClasses.inappPurches.bazar
 			{
 				throw "Controll the isSupport() function first."
 			}
-			trace("[[[[[[[[[CAFE BAZAR]]]]]]]]]]");
+			SaffronLogger.log("[[[[[[[[[CAFE BAZAR]]]]]]]]]]");
 			if(_iap==null)
 			{
 				_iap = new InAppPurchaseClass(); 
@@ -107,14 +107,14 @@ package nativeClasses.inappPurches.bazar
 			canselAllListeners();
 			if(!bazarInit)
 			{
-				trace("***connect to bazar...");
+				SaffronLogger.log("***connect to bazar...");
 				_iap.addEventListener(InAppPurchaseEventClass.INIT_SUCCESS, onInitSuccess);
 				_iap.addEventListener(InAppPurchaseEventClass.INIT_ERROR, onInitError);
 				_iap.init(key);
 			}
 			else
 			{
-				trace( "InAppBilling supported" );
+				SaffronLogger.log( "InAppBilling supported" );
 				purchessItem();
 			}
 		}
@@ -122,7 +122,7 @@ package nativeClasses.inappPurches.bazar
 		protected static  function onInitSuccess(event:*):void
 		{
 			bazarInit = true ;
-			trace( "InAppBilling supported2" );
+			SaffronLogger.log( "InAppBilling supported2" );
 			canselAllListeners();
 			
 			purchessItem();
@@ -131,7 +131,7 @@ package nativeClasses.inappPurches.bazar
 			/**Now purchess my item*/
 			private static function purchessItem():void
 			{
-				trace("****Buy this item : "+CurrentProdId);
+				SaffronLogger.log("****Buy this item : "+CurrentProdId);
 				canselAllListeners();
 				_iap.addEventListener(InAppPurchaseEventClass.PURCHASE_SUCCESS, onPurchaseSuccess);
 				_iap.addEventListener(InAppPurchaseEventClass.PURCHASE_ERROR, onPurchaseError);
@@ -141,7 +141,7 @@ package nativeClasses.inappPurches.bazar
 				protected static function onPurchaseError(event:Event):void
 				{
 					canselAllListeners();
-					trace("-----Purchase fails");
+					SaffronLogger.log("-----Purchase fails");
 					onCanseled();
 				}
 				
@@ -149,7 +149,7 @@ package nativeClasses.inappPurches.bazar
 				protected static function onPurchaseSuccess(event:*):void
 				{
 					canselAllListeners();
-					trace("-----Purchase done: ["+event.data+"] ... consume it");
+					SaffronLogger.log("-----Purchase done: ["+event.data+"] ... consume it");
 					//onDone();
 					consumeProduct(CurrentProdId,onDone,onCanseled);
 				}
@@ -157,8 +157,8 @@ package nativeClasses.inappPurches.bazar
 		protected static function onInitError(event:*):void
 		{
 			canselAllListeners();
-			trace( "!!!!!!!!InAppBilling not supported" );
-			trace(event.data); //trace error message
+			SaffronLogger.log( "!!!!!!!!InAppBilling not supported" );
+			SaffronLogger.log(event.data); //trace error message
 			onCanseled();
 		}
 		
@@ -170,7 +170,7 @@ package nativeClasses.inappPurches.bazar
 			onCanseled = onFaildToConsume;
 			CurrentProdId = producID ;
 			
-			trace("*** Restore server to consume")
+			SaffronLogger.log("*** Restore server to consume")
 			canselAllListeners();
 			_iap.addEventListener(InAppPurchaseEventClass.RESTORE_SUCCESS, onRestoreConsumeSuccess);
 			_iap.addEventListener(InAppPurchaseEventClass.RESTORE_ERROR, onRestoreConsumeError);
@@ -180,13 +180,13 @@ package nativeClasses.inappPurches.bazar
 			protected static function onRestoreConsumeError(event:*):void
 			{
 				canselAllListeners();
-				trace( "restoreConsome Failed" );
+				SaffronLogger.log( "restoreConsome Failed" );
 				onCanseled();
 			}
 		
 			protected static function onRestoreConsumeSuccess(event:*)
 			{
-				trace("**** request to consume product : "+CurrentProdId);
+				SaffronLogger.log("**** request to consume product : "+CurrentProdId);
 				
 				lastShopedItemDetail = _iap.getPurchaseDetails(CurrentProdId);
 				if(lastShopedItemDetail != null ){
@@ -224,7 +224,7 @@ package nativeClasses.inappPurches.bazar
 				protected static function onConsumeSuccess(event:*):void
 				{
 					canselAllListeners();
-					trace("Consume Success"); 
+					SaffronLogger.log("Consume Success"); 
 					var purchaseTocken:String ;
 					if(lastShopedItemDetail!=null)
 					{
@@ -242,7 +242,7 @@ package nativeClasses.inappPurches.bazar
 				protected static function onConsumeError(event:*):void
 				{
 					canselAllListeners();
-					trace("Consume Failed"); 
+					SaffronLogger.log("Consume Failed"); 
 					onCanseled();
 				}
 		

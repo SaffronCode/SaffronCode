@@ -25,16 +25,16 @@ package otherPlatforms.dynamicVersionControl
 				if(versionPart.length>0)
 				{
 					versionPart[0] = String(versionPart[0]).split('<versionNumber>').join('').split('</versionNumber>').join('');
-					trace("version loaded : "+versionPart[0]+' > '+(DevicePrefrence.appVersion==versionPart[0]));
-					trace("DevicePrefrence.appVersion : "+DevicePrefrence.appVersion);
+					SaffronLogger.log("version loaded : "+versionPart[0]+' > '+(DevicePrefrence.appVersion==versionPart[0]));
+					SaffronLogger.log("DevicePrefrence.appVersion : "+DevicePrefrence.appVersion);
 					if(!(DevicePrefrence.appVersion==versionPart[0]))
 					{
-						trace("Update Needed!");
+						SaffronLogger.log("Update Needed!");
 						needToUpdateFunction();
 					}
 				}
 			});
-			urlLoader.addEventListener(IOErrorEvent.IO_ERROR,function(e){trace("Online manifest load faild")});
+			urlLoader.addEventListener(IOErrorEvent.IO_ERROR,function(e){SaffronLogger.log("Online manifest load faild")});
 		}
 		
 		/**set the installer file from the web to the parameter and wait, it will launch your application installer automaticaly after the download completed.<br>

@@ -119,12 +119,12 @@ package darkBox
 		{
 			if(onlineTarget=='')
 			{
-				trace("NO File selected");
+				SaffronLogger.log("NO File selected");
 				return ;
 			}
 			if(offlineTarget==null)
 			{
-				trace("Start donwload the image");
+				SaffronLogger.log("Start donwload the image");
 				saver = new URLSaver();
 				saver.addEventListener(URLSaverEvent.LOAD_COMPLETE,onImageFileSaved);
 				saver.addEventListener(URLSaverEvent.NO_INTERNET,noNet);
@@ -140,7 +140,7 @@ package darkBox
 			}
 			else
 			{
-				trace("Image is donwloaded befor");
+				SaffronLogger.log("Image is donwloaded befor");
 				onImageFileSaved(null,offlineTarget);
 			}
 		}
@@ -183,7 +183,7 @@ package darkBox
 			offlineTarget = target ;
 			
 			//Be carefull, update target befor dispatchig below event
-			trace("offline image target is : "+offlineTarget);
+			SaffronLogger.log("offline image target is : "+offlineTarget);
 			this.dispatchEvent(new URLSaverEvent(URLSaverEvent.LOAD_COMPLETE,1));
 		}
 		

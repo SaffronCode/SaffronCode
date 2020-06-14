@@ -60,12 +60,12 @@ package netManager
 			
 			//this.alpha = 0.5 ;
 			loadIn = loadInThisArea;
-			//trace("ImageLoader Initialize : "+loadIn);
+			//SaffronLogger.log("ImageLoader Initialize : "+loadIn);
 			
 			myWidth = MyWidth ;
 			myHeight = MyHeight ;
 			
-			//trace('Create image width '+MyWidth+' width.');
+			//SaffronLogger.log('Create image width '+MyWidth+' width.');
 			
 			loader = new Loader();
 			
@@ -120,7 +120,7 @@ package netManager
 		
 		protected function unLoad(event:Event):void
 		{
-			//trace("Cansel "+imageURL+" downloading");
+			//SaffronLogger.log("Cansel "+imageURL+" downloading");
 			
 			this.removeChildren();
 			myURLSaver.cansel();
@@ -155,7 +155,7 @@ package netManager
 		protected function imageLoadingStarted(ev:URLSaverEvent):void
 		{
 			
-			//trace('downloading : '+ev.precent);
+			//SaffronLogger.log('downloading : '+ev.precent);
 			if(myPreLoader!=null && myPreLoader.hasOwnProperty('setUp'))
 			{
 				(myPreLoader['setUp'] as Function).apply(ev.precent);
@@ -165,11 +165,11 @@ package netManager
 		/**Generate pre loader*/
 		private function showPreLoader():void
 		{
-			//trace("ask to load pre loader");
+			//SaffronLogger.log("ask to load pre loader");
 			
 			if(myPreLoader == null && preLoaderClass!=null)
 			{
-				//trace("this is pre loader");
+				//SaffronLogger.log("this is pre loader");
 				myPreLoader = new preLoaderClass() ;
 				this.addChild(myPreLoader) ;
 				myPreLoader.x = myWidth/2 ;
@@ -197,7 +197,7 @@ package netManager
 		protected function urlProblem(event:*):void
 		{
 			
-			//trace('cansel!!');
+			//SaffronLogger.log('cansel!!');
 			myURLSaver.cansel();
 			myURLSaver.deletFileIfExists(imageURL);
 			//Bug found, i was dispatched IMAGE_LOADED by mistake.
@@ -217,7 +217,7 @@ package netManager
 			}
 			else
 			{
-				//trace("myWidth : "+myWidth+" , myHeight : "+myHeight+" > "+imageURL);
+				//SaffronLogger.log("myWidth : "+myWidth+" , myHeight : "+myHeight+" > "+imageURL);
 				image = loader.content as Bitmap ;
 				
 				if(myWidth!=0)
@@ -229,9 +229,9 @@ package netManager
 					image.height = myHeight ;
 				}
 				//
-				//trace("image current hieght : "+image.height);
+				//SaffronLogger.log("image current hieght : "+image.height);
 				//
-				//trace("loadIn : "+loadIn);
+				//SaffronLogger.log("loadIn : "+loadIn);
 				
 				if(loadIn)
 				{
@@ -242,7 +242,7 @@ package netManager
 					image.scaleX = image.scaleY = Math.max(image.scaleX,image.scaleY);
 				}
 				
-				//trace("image final hieght : "+image.height);
+				//SaffronLogger.log("image final hieght : "+image.height);
 				
 				if(myWidth==0)
 				{

@@ -84,12 +84,12 @@ package contents
 			links2 = new Vector.<LinkData>();
 			if(inputXML==null)
 			{
-				//trace('page data is not generated');
+				//SaffronLogger.log('page data is not generated');
 				return ;
 			}
 			id = inputXML.@id ;
 			musicURL = inputXML.music ;
-			//trace("inputXML.music.@v : "+inputXML.music.@v);
+			//SaffronLogger.log("inputXML.music.@v : "+inputXML.music.@v);
 			if( inputXML.music.@v != inputXML.music.@no_attribute_like_this )
 			{
 				musicVolume = Number(inputXML.music.@v);
@@ -102,7 +102,7 @@ package contents
 					musicVolume = Math.min(Math.max(0,musicVolume),1);
 				}
 			}
-			//trace("musicVolume : "+musicVolume);
+			//SaffronLogger.log("musicVolume : "+musicVolume);
 			type = inputXML.type ;
 			menuType = inputXML.menutype ;
 			title = inputXML.title ;
@@ -146,8 +146,8 @@ package contents
 				contentH = Number(inputXML.content.@h);
 			}
 			
-			///trace("inputXML.content.@w : "+inputXML.content.@w);
-			///trace("inputXML.content.@h : "+inputXML.content.@h);
+			///SaffronLogger.log("inputXML.content.@w : "+inputXML.content.@w);
+			///SaffronLogger.log("inputXML.content.@h : "+inputXML.content.@h);
 			
 			var newLink:LinkData ;
 			var newImg:ImageData ;

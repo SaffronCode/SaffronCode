@@ -142,7 +142,7 @@ package popForm
 				var cash:String = PhoneNumberEditor.clearPhoneNumber(text);
 				if(cash == 'false')
 				{
-					trace("This phone number is incorrect");
+					SaffronLogger.log("This phone number is incorrect");
 					return text ;
 				}
 				else
@@ -178,7 +178,7 @@ package popForm
 			
 			if(editable && numLines==0)
 			{
-				trace("You cant have dynamic field size on editable texts");
+				SaffronLogger.log("You cant have dynamic field size on editable texts");
 				numLines = 1 ;
 			}
 			fieldNumLines = numLines ;
@@ -341,7 +341,7 @@ package popForm
 		protected function clearText(event:MouseEvent):void
 		{
 			event.stopImmediatePropagation();
-			trace("Clear****************");
+			SaffronLogger.log("Clear****************");
 			myTXT.text = '';
 			myTXT.dispatchEvent(new Event(Event.CHANGE));
 		}
@@ -440,16 +440,16 @@ package popForm
 			}
 			if(radioButtonArray == null || radioButtonArray.length ==0)
 			{
-				trace("No radio button values receved");
+				SaffronLogger.log("No radio button values receved");
 				return false ;
 			}
 			else
 			{
 				var I:int = radioButtonArray.indexOf(myTXT.text);
-				//trace("radioButtonArray : "+radioButtonArray.indexOf(myTXT));
+				//SaffronLogger.log("radioButtonArray : "+radioButtonArray.indexOf(myTXT));
 				if(I==-1)
 				{
-					trace("Cannot find current value between enterd radio buttons : "+myTXT.text+' vs '+radioButtonArray);
+					SaffronLogger.log("Cannot find current value between enterd radio buttons : "+myTXT.text+' vs '+radioButtonArray);
 					myTXT.text = radioButtonArray[0];
 					myTXT.dispatchEvent(new Event(Event.CHANGE));
 					this.dispatchEvent(new Event(Event.CHANGE));

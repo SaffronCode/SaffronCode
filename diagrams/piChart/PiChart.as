@@ -65,7 +65,7 @@ package diagrams.piChart
 			if(showingPrecent>0.999)
 			{
 				showingPrecent = 1 ;
-				trace("done");
+				SaffronLogger.log("done");
 				this.removeEventListener(Event.ENTER_FRAME,draws);
 				
 				showTheNames();
@@ -85,7 +85,7 @@ package diagrams.piChart
 				var newName:PiChartNames = new myChartName() ;
 				newName.setUp(myPiecesData,i) ;
 				var area:Rectangle = pieces[i].getBounds(this) ;
-				trace("myPiecesData.centerDegree["+i+"] : "+myPiecesData.centerDegree[i]/PiChart.pi*180);
+				SaffronLogger.log("myPiecesData.centerDegree["+i+"] : "+myPiecesData.centerDegree[i]/PiChart.pi*180);
 				newName.x = myRadius+Math.sin(myPiecesData.centerDegree[i])*(myRadius/2) ;
 				newName.y = myRadius+Math.cos(myPiecesData.centerDegree[i])*-1*(myRadius/2) ;
 				
@@ -103,7 +103,7 @@ package diagrams.piChart
 			var maxDegree:Number = 0 ;
 			for(var i = 0 ; i<pieces.length ; i++)
 			{
-				//trace("minDegree : "+minDegree+"  vs  maxDegree : "+maxDegree);
+				//SaffronLogger.log("minDegree : "+minDegree+"  vs  maxDegree : "+maxDegree);
 				
 				gra = pieces[i].graphics ;
 				gra.clear() ;

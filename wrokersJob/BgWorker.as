@@ -61,7 +61,7 @@
 				receveidData = receiverChannel.receive() ;
 			}
 			var targetFile:File;
-			//trace("Receved data on bgWorker is : "+receveidData);
+			//SaffronLogger.log("Receved data on bgWorker is : "+receveidData);
 			var callerId:uint = receveidData[1] ;
 			var callerData:Object = receveidData[2] ;
 			
@@ -76,17 +76,17 @@
 				case id_base64ToByte:
 					if(callerData is String)
 					{
-						trace("*** File catched by worker : "+callerData);
+						SaffronLogger.log("*** File catched by worker : "+callerData);
 						try
 						{
 							targetFile = new File(callerData as String);
 							var fileStreamBase64:FileStream = new FileStream();
-							trace("*** Read file ");
+							SaffronLogger.log("*** Read file ");
 							fileStreamBase64.open(targetFile,FileMode.READ);
 							var loadedString:String = fileStreamBase64.readUTFBytes(fileStreamBase64.bytesAvailable)  ;
 							var decodedBytes:ByteArray = Base64.DecodeToByte(loadedString) ;
 							fileStreamBase64.close();
-							trace("*** File loaded");
+							SaffronLogger.log("*** File loaded");
 							try
 							{
 								targetFile.deleteFile();
@@ -114,17 +114,17 @@
 				case id_byteToBase64:
 					if(callerData is String)
 					{
-						trace("*** File catched by worker : "+callerData);
+						SaffronLogger.log("*** File catched by worker : "+callerData);
 						try
 						{
 							targetFile = new File(callerData as String);
 							var fileStreamByte:FileStream = new FileStream();
-							trace("*** Read file ");
+							SaffronLogger.log("*** Read file ");
 							fileStreamByte.open(targetFile,FileMode.READ);
 							var loadedBytes:ByteArray = new ByteArray();
 							fileStreamByte.readBytes(loadedBytes,0,fileStreamByte.bytesAvailable);
 							fileStreamByte.close();
-							trace("*** File loaded");
+							SaffronLogger.log("*** File loaded");
 							createdData.push([Base64.EncodeByte(loadedBytes)]);
 							try
 							{
@@ -145,12 +145,12 @@
 				/*case id_wave2mp3:
 					if(callerData is String)
 					{
-						trace("*** File catched by worker : "+callerData);
+						SaffronLogger.log("*** File catched by worker : "+callerData);
 						try
 						{
 							targetFile = new File(callerData as String);
 							var fileStreamByte2:FileStream = new FileStream();
-							trace("*** Read file ");
+							SaffronLogger.log("*** Read file ");
 							fileStreamByte2.open(targetFile,FileMode.READ);
 							var loadedBytes2:ByteArray = new ByteArray();
 							fileStreamByte2.readBytes(loadedBytes2,0,fileStreamByte2.bytesAvailable)
@@ -178,7 +178,7 @@
 								createdData.push([targetFile.nativePath]);
 								sendTheData(createdData);
 							}
-							trace("*** File loaded");
+							SaffronLogger.log("*** File loaded");
 							//createdData.push([fdsfds]);
 							
 						}
@@ -212,7 +212,7 @@
 						var loader:Loader = new Loader();
 						var loaderContext:LoaderContext = new LoaderContext(true,ApplicationDomain.currentDomain);
 						loaderContext.allowLoadBytesCodeExecution = true ;
-						trace("- loader created ");
+						SaffronLogger.log("- loader created ");
 						loader.contentLoaderInfo.addEventListener(Event.COMPLETE,fileLoaded);
 						loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR,fileCantLoad);
 						
@@ -220,13 +220,13 @@
 						
 						if(fileTarget!=null)
 						{
-							trace("-The file should load to load it with loader");
+							SaffronLogger.log("-The file should load to load it with loader");
 							try
 							{
 								fileLoader = new FileStream();
-								trace("-fileTarget : "+fileTarget);
+								SaffronLogger.log("-fileTarget : "+fileTarget);
 								targetFile = new File(fileTarget);
-								trace("-target file created");
+								SaffronLogger.log("-target file created");
 								fileLoader.open(targetFile,FileMode.READ);
 								byte = new ByteArray();
 								fileLoader.readBytes(byte,0,fileLoader.bytesAvailable);
@@ -250,7 +250,7 @@
 								
 								if(W!=0 && H!=0)
 								{
-									trace("Change image size to : "+W,H);
+									SaffronLogger.log("Change image size to : "+W,H);
 									bitmapData = BitmapEffects.changeSize(bitmapData,W,H,keepImageRatio,LoadInThisArea);
 								}
 								else if(W!=0)

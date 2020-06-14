@@ -89,9 +89,9 @@ package appManager.event
 		/**You can predect if back is availabe*/
 		public static function backAvailable():Boolean
 		{
-			trace("backAvailable methode is moved from AppEventContent to History Class");
+			SaffronLogger.log("backAvailable methode is moved from AppEventContent to History Class");
 			return History.backAvailable();
-			/*//trace("history : "+JSON.stringify(history));
+			/*//SaffronLogger.log("history : "+JSON.stringify(history));
 			//This situation will not ocure on any pages but home
 			if(history!=null && ( history.length>1 ))
 			{
@@ -106,12 +106,12 @@ package appManager.event
 		/**returns lastPageEvent*/
 		public static function lastPage():AppEventContent
 		{
-			trace("lastPage methode is moved from AppEventContent to History Class");
+			SaffronLogger.log("lastPage methode is moved from AppEventContent to History Class");
 			return History.lastPage();
-			//trace("dispatch last page");
+			//SaffronLogger.log("dispatch last page");
 			/*for(var i = 0 ; i<history.length ; i++)
 			{
-				trace('history['+i+'] : '+history[i].id);
+				SaffronLogger.log('history['+i+'] : '+history[i].id);
 			}*/
 			/*resetHistory()
 			

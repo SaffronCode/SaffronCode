@@ -240,7 +240,7 @@ package diagrams.instagram
 			
 			if(isLock || !isChanged)
 			{
-				trace('Diagram is lock now');
+				SaffronLogger.log('Diagram is lock now');
 				return ;
 			}
 			clearOldDiagram();
@@ -287,7 +287,7 @@ package diagrams.instagram
 				{
 					var vVal:Number = myDiagramDatas[i].values[j].Vval ;
 					minVNumber = Math.min(minVNumber,vVal) ;
-					//trace("min val : "+minVNumber,vVal);
+					//SaffronLogger.log("min val : "+minVNumber,vVal);
 					maxVNumber = Math.max(maxVNumber,vVal) ;
 					
 					myTitles.addHTitle(new InstaTitleValue(myDiagramDatas[i].values[j].Hval));
@@ -313,58 +313,58 @@ package diagrams.instagram
 			
 			if(pushedTitles != null && pushedTitles.vTitle.length>0)
 			{
-				//trace("min val2 : "+pushedTitles.vTitle[0].value);
+				//SaffronLogger.log("min val2 : "+pushedTitles.vTitle[0].value);
 				realMinimom = minVNumber = Math.min(pushedTitles.vTitle[0].value,minVNumber);
 				realMaximom = maxVNumber = Math.max(pushedTitles.vTitle[pushedTitles.vTitle.length-1].value,maxVNumber);
 			}
 			
-			//trace("minHNumber : "+minHNumber);
-			//trace("maxHNumber : "+maxHNumber);
+			//SaffronLogger.log("minHNumber : "+minHNumber);
+			//SaffronLogger.log("maxHNumber : "+maxHNumber);
 			
-			//trace("minVNumber : "+minVNumber+' < '+realMinimom);
-			//trace("maxVNumber : "+maxVNumber+' < '+realMaximom);
+			//SaffronLogger.log("minVNumber : "+minVNumber+' < '+realMinimom);
+			//SaffronLogger.log("maxVNumber : "+maxVNumber+' < '+realMaximom);
 			
 			
 			//Generate myTitles ↓
 			
 				//debug lines
-					/*trace(11+" : "+log10(11));
-					trace(98+" : "+log10(98));
-					trace(120+" : "+log10(120));
-					trace(5+" : "+log10(5));
-					trace(0.1+" : "+log10(0.1));
-					trace(0.3+" : "+log10(0.3));
+					/*SaffronLogger.log(11+" : "+log10(11));
+					SaffronLogger.log(98+" : "+log10(98));
+					SaffronLogger.log(120+" : "+log10(120));
+					SaffronLogger.log(5+" : "+log10(5));
+					SaffronLogger.log(0.1+" : "+log10(0.1));
+					SaffronLogger.log(0.3+" : "+log10(0.3));
 					return;*/
 				
 				//1- Maximom steps :
-				//trace("0-1 maxHeight : "+maxHeight); 
+				//SaffronLogger.log("0-1 maxHeight : "+maxHeight); 
 				var maxTitleNumber:uint  = Math.floor(maxHeight/vTitleHeights);
 				maxTitleNumber = dividableBy5(maxTitleNumber);
-				//trace("1-maxTitleNumber : "+maxTitleNumber);
+				//SaffronLogger.log("1-maxTitleNumber : "+maxTitleNumber);
 				/**n*///it doesn't need to increase 2 step from available places because, from now, titles can be at the toppest and bottomest places on the diagram.
 				var availableTitleNumbers:uint = Math.max(1, maxTitleNumber/*-2*/) ;
-				//trace("2-availableTitleNumbers : "+availableTitleNumbers);
+				//SaffronLogger.log("2-availableTitleNumbers : "+availableTitleNumbers);
 				//2- delta phase on availableTitileNumbers
 				var deltaPhase:Number = maxVNumber - minVNumber ;
-				//trace("3-deltaPhase : "+deltaPhase);
+				//SaffronLogger.log("3-deltaPhase : "+deltaPhase);
 				/**m*/
 				var pureSteps:Number
 				if (InstagramConstants.fixVerticalSteps)
 				pureSteps = 1 ;
 				else
 				pureSteps = deltaPhase / availableTitleNumbers ;
-				//trace("4-pureSteps : "+pureSteps);
+				//SaffronLogger.log("4-pureSteps : "+pureSteps);
 				//3- find steps level ( 10 , 100 , 1000 , ... )
 				/**o*/
 				var stepsPower:Number = log10(pureSteps);
-				//trace('5-stepsPower : '+stepsPower);
+				//SaffronLogger.log('5-stepsPower : '+stepsPower);
 				/**p*/
 				var smallSteps:Number = pureSteps/stepsPower ;
-				//trace('6-smallSteps : '+smallSteps);
+				//SaffronLogger.log('6-smallSteps : '+smallSteps);
 				var steps:Number = stepsPower * Math.round(smallSteps);
-				//trace('7-steps : '+steps);
+				//SaffronLogger.log('7-steps : '+steps);
 				var minStep:Number = Math.max(realMinimom, Math.floor(minVNumber / steps) * steps);
-				//trace("8-minStep : "+minStep);
+				//SaffronLogger.log("8-minStep : "+minStep);
 				
 				var vTitleTemp:String ;
 				var vStepValTemp:Number ;
@@ -383,19 +383,19 @@ package diagrams.instagram
 						}
 					}
 					myTitles.addVTitle(new InstaTitleValue(vStepValTemp,vTitleTemp));
-					//trace("steps : "+minStep);
+					//SaffronLogger.log("steps : "+minStep);
 					minStep+=steps;
 				}while(minStep-steps<maxVNumber);
 				//It makes maxLevel shows the wrong value
 				//maxVNumber = minStep-steps ;
 				
-				//trace("VTitles : "+myTitles.vTitle);
+				//SaffronLogger.log("VTitles : "+myTitles.vTitle);
 				
 				//Change the min and max : 
 				minVNumber = Math.min(myTitles.vTitle[0].value,minVNumber); 
 				maxVNumber = Math.max(myTitles.vTitle[myTitles.vTitle.length-1].value,maxVNumber); 
 				
-			//trace("minVNumber : "+minVNumber+" maxVNumber : "+maxVNumber);
+			//SaffronLogger.log("minVNumber : "+minVNumber+" maxVNumber : "+maxVNumber);
 			
 			//Draw vertical titles ↓
 			
@@ -442,7 +442,7 @@ package diagrams.instagram
 					
 					newTitle.y = pose - newTitle.height/2;
 					
-					trace("pose : "+pose);
+					SaffronLogger.log("pose : "+pose);
 					
 						//myTitles.vTitle[i].position = pose ;
 					//93-09-01 I change top line to buttom ↓ to controll errors when no insta data is entered
@@ -455,7 +455,7 @@ package diagrams.instagram
 			
 			if(myTitles.hTitle.length<1)
 			{
-				trace('This is not a diagram . control inputs');
+				SaffronLogger.log('This is not a diagram . control inputs');
 				return ;
 			}
 			
@@ -508,8 +508,8 @@ package diagrams.instagram
 		
 		private function generatePrecent(titleData:InstaTitleValue,min:Number,max:Number):Number
 		{
-			//trace(titleData.value,min,max)
-			//trace("("+titleData.value+"-"+min+")/("+max+"-"+min+") = "+((titleData.value-min)/(max-min)));
+			//SaffronLogger.log(titleData.value,min,max)
+			//SaffronLogger.log("("+titleData.value+"-"+min+")/("+max+"-"+min+") = "+((titleData.value-min)/(max-min)));
 			return (titleData.value-min)/(max-min);
 		}
 		

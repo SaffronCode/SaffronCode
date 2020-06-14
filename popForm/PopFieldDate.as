@@ -290,13 +290,13 @@
 		
 		override public function get data():*
 		{
-			//trace("Get my date : "+date);
+			//SaffronLogger.log("Get my date : "+date);
 			return date ;
 		}
 		
 		public function get date():Date
 		{
-			//trace("yearTF.text == "+yearTF.text+"  monthTF.text == "+monthTF.text+"    dayTF.text == "+dayTF.text);
+			//SaffronLogger.log("yearTF.text == "+yearTF.text+"  monthTF.text == "+monthTF.text+"    dayTF.text == "+dayTF.text);
 			if(yearTF.text == '' || monthTF.text == '' || dayTF.text == '')
 			{
 				return null ;
@@ -334,12 +334,12 @@
 			
 			
 			var finalDate:Date ;
-			//trace("yearNum : "+yearNum);
+			//SaffronLogger.log("yearNum : "+yearNum);
 			if(yearNum<1500)
 			{
 				var shamsiDate:DateShamsi = new DateShamsi(yearNum,(monthNum-1),dayNum);
 				finalDate = DateShamsi.shamsiToMiladi(shamsiDate);
-				//trace("This was shamsi : "+finalDate);
+				//SaffronLogger.log("This was shamsi : "+finalDate);
 			}
 			else
 			{

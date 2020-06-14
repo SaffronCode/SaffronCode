@@ -38,7 +38,7 @@ package nativeClasses.cameraUI
 		{
 			if(!isSupport())
 			{
-				trace("* Distriqt classes are not working here.");
+				SaffronLogger.log("* Distriqt classes are not working here.");
 				return ;
 			}
 			try
@@ -46,12 +46,12 @@ package nativeClasses.cameraUI
 				//(CameraUIC as Object).init( APPLICATION_KEY );
 				if (CameraUIC.isSupported)
 				{
-					trace("******** Distriqt is sat up *********");
+					SaffronLogger.log("******** Distriqt is sat up *********");
 				}
 			}
 			catch (e:Error)
 			{
-				trace( "*** Distriqt camera UI not support : "+e );
+				SaffronLogger.log( "*** Distriqt camera UI not support : "+e );
 			}
 		}
 		
@@ -104,22 +104,22 @@ package nativeClasses.cameraUI
 				{
 					case (AuthorisationStatusC as Object).SHOULD_EXPLAIN:
 					case (AuthorisationStatusC as Object).NOT_DETERMINED:
-						trace("** REQUEST ACCESS: This will display the permission dialog **");
+						SaffronLogger.log("** REQUEST ACCESS: This will display the permission dialog **");
 						(CameraUIC as Object).service.requestAuthorisation();
 						return;
 						
 					case (AuthorisationStatusC as Object).DENIED:
 					case (AuthorisationStatusC as Object).UNKNOWN:
 					case (AuthorisationStatusC as Object).RESTRICTED:
-						trace("** ACCESS DENIED: You should inform your user appropriately **")
+						SaffronLogger.log("** ACCESS DENIED: You should inform your user appropriately **")
 						return;
 						
 					case (AuthorisationStatusC as Object).AUTHORISED:
-						trace("** AUTHORISED: Camera will be available **");
+						SaffronLogger.log("** AUTHORISED: Camera will be available **");
 						break;						
 				}
 				
-				trace("** Distriqt camera ui : (CameraUIC as Object).service.requestAuthorisation(); ");
+				SaffronLogger.log("** Distriqt camera ui : (CameraUIC as Object).service.requestAuthorisation(); ");
 				(CameraUIC as Object).service.requestAuthorisation();
 			}	
 				
@@ -127,7 +127,7 @@ package nativeClasses.cameraUI
 				/**AuthorisationEvent*/
 				private static function startCapture( event:* ):void
 				{
-					trace( "(AuthorisationStatusC as Object)_changedHandler: "+event );
+					SaffronLogger.log( "(AuthorisationStatusC as Object)_changedHandler: "+event );
 					(CameraUIC as Object).service.addEventListener( (CameraUIEventC as Object).COMPLETE, cameraUI_completeHandler );
 					(CameraUIC as Object).service.addEventListener( (CameraUIEventC as Object).CANCEL, cameraUI_cancelHandler );
 					
@@ -135,7 +135,7 @@ package nativeClasses.cameraUI
 					options.saveToCameraRollQuality = (DevicePrefrence.isAndroid())?0:1 ;
 					options.videoQuality = (QualityTypeC as Object).TYPE_LOW;
 					options.videoMaximumDuration = VideoMaxiDuration ;
-					trace("Launch the camera");
+					SaffronLogger.log("Launch the camera");
 					(CameraUIC as Object).service.launch( (MediaTypeC as Object).VIDEO, options );
 						
 				}
@@ -144,11 +144,11 @@ package nativeClasses.cameraUI
 					/**Video loaded event:CameraUIEventC*/
 					private static function cameraUI_completeHandler( event:* ):void
 					{
-						trace("** camera closed **");
+						SaffronLogger.log("** camera closed **");
 						(CameraUIC as Object).service.removeEventListener( (CameraUIEventC as Object).COMPLETE, cameraUI_completeHandler );
 						(CameraUIC as Object).service.removeEventListener( (CameraUIEventC as Object).CANCEL, cameraUI_cancelHandler );
 						fileByte = FileManager.loadFile(new File(event.path));
-						trace("*** The file size is : "+fileByte.length);
+						SaffronLogger.log("*** The file size is : "+fileByte.length);
 						onDone();
 					}
 					
@@ -157,7 +157,7 @@ package nativeClasses.cameraUI
 					{
 						(CameraUIC as Object).service.removeEventListener( (CameraUIEventC as Object).COMPLETE, cameraUI_completeHandler );
 						(CameraUIC as Object).service.removeEventListener( (CameraUIEventC as Object).CANCEL, cameraUI_cancelHandler );
-						trace( "user cancel" );
+						SaffronLogger.log( "user cancel" );
 					}
 		
 		public static function isSupport():Boolean

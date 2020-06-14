@@ -25,7 +25,7 @@ package nativeClasses.vibration
                 FeedbackGeneratorClass = getDefinitionByName("com.distriqt.extension.vibration.FeedbackGenerator") as Class;
                 FeedbackGeneratorTypeClass = getDefinitionByName("com.distriqt.extension.vibration.FeedbackGeneratorType") as Class;
                 VibrationClass = getDefinitionByName("com.distriqt.extension.vibration.Vibration") as Class;
-                trace("Distriqt VibrationClass : "+VibrationClass);
+                SaffronLogger.log("Distriqt VibrationClass : "+VibrationClass);
             }
             catch(e:Error)
             {
@@ -36,7 +36,7 @@ package nativeClasses.vibration
 
         public static function isSupported():Boolean
         {
-            trace("distriqt vibration is supported ?? "+VibrationClass);
+            SaffronLogger.log("distriqt vibration is supported ?? "+VibrationClass);
             firstSetUp();
             return VibrationClass!=null && (VibrationClass as Object).isSupported;
         }

@@ -39,7 +39,7 @@ package contents.fileSystem
 			}
 			
 			fileStream.open(currentFile,FileMode.WRITE);
-			trace("data : "+data);
+			SaffronLogger.log("data : "+data);
 			fileStream.writeUTFBytes(data);
 			fileStream.close();
 		}

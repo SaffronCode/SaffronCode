@@ -4,7 +4,6 @@
     import flash.utils.clearTimeout;
     import flash.utils.getDefinitionByName;
     import flash.utils.setTimeout;
-    import contents.alert.SaffronLogger;
 
     public class DistriqtRecorder {
         public static var _file:File;
@@ -32,21 +31,21 @@
                 AudioRecorderOptionsClass = getDefinitionByName("com.distriqt.extension.audiorecorder.AudioRecorderOptions") as Class;
                 AuthorisationStatusClass = getDefinitionByName("com.distriqt.extension.audiorecorder.AuthorisationStatus") as Class;
                 AuthorisationEventClass = getDefinitionByName("com.distriqt.extension.audiorecorder.events.AuthorisationEvent") as Class;
-                trace("\n\n\n\n\n\n\n*************************** Distriqt recorder is supports ****************************\n\n\n\n\n\n\n");
+                SaffronLogger.log("\n\n\n\n\n\n\n*************************** Distriqt recorder is supports ****************************\n\n\n\n\n\n\n");
                 if (logger)
                     SaffronLogger.log("\n\n\n\n\n\n\n*************************** Distriqt recorder is supports ****************************\n\n\n\n\n\n\n");
             } catch (e) {
                 AudioRecorderClass = null;
                 AudioRecorderOptionsClass = null;
                 AuthorisationStatusClass = null;
-                trace("\n\n\n\n\n\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Distriqt recorder is NOT supports !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n\n\n\n\n\n");
+                SaffronLogger.log("\n\n\n\n\n\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Distriqt recorder is NOT supports !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n\n\n\n\n\n");
                 if (logger)
                     SaffronLogger.log("\n\n\n\n\n\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Distriqt recorder is NOT supports !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n\n\n\n\n\n");
                 return false;
             }
             switch (AudioRecorderClass.service.authorisationStatus()) {
                 case AuthorisationStatusClass.AUTHORISED:
-                    trace("authorised");
+                    SaffronLogger.log("authorised");
                     if (logger)
                         SaffronLogger.log("authorised");
                     break;
@@ -60,7 +59,7 @@
                 case AuthorisationStatusClass.DENIED:
                 case AuthorisationStatusClass.RESTRICTED:
                 case AuthorisationStatusClass.UNKNOWN:
-                    trace("denied or restricted");
+                    SaffronLogger.log("denied or restricted");
                     if (logger)
                         SaffronLogger.log("denied or restricted");
             }
@@ -68,7 +67,7 @@
         }
 
         private static function authChangedHandler(event:*):void {
-            trace("authChangedHandler( " + event.status + " )");
+            SaffronLogger.log("authChangedHandler( " + event.status + " )");
         }
 
         /**Start recording.*/
@@ -83,7 +82,7 @@
             } else {
                 _file = whereToSave;
             }
-            trace("save on : " + _file.nativePath);
+            SaffronLogger.log("save on : " + _file.nativePath);
             if (logger)
                 SaffronLogger.log("save on : " + _file.nativePath);
 
@@ -98,14 +97,14 @@
 
                 var success:Boolean = AudioRecorderClass.service.start(options) as Boolean;
 
-                trace("start(): " + success);
+                SaffronLogger.log("start(): " + success);
 
                 if (logger)
                     SaffronLogger.log("start(): " + success);
 
                 return success;
             } else {
-                trace("Not authorised for start");
+                SaffronLogger.log("Not authorised for start");
                 if (logger)
                     SaffronLogger.log("Not authorised for start");
             }
@@ -120,14 +119,14 @@
             clearTimeout(timeoutId);
             if (AudioRecorderClass.service.hasAuthorisation()) {
                 var success:Boolean = AudioRecorderClass.service.stop() as Boolean;
-                trace("stop(): " + success);
+                SaffronLogger.log("stop(): " + success);
 
                 //				AudioRecorderClass.service.removeEventListener( AudioRecorderEvent.START, audioRecorderEventHandler );
                 //				AudioRecorderClass.service.removeEventListener( AudioRecorderEvent.COMPLETE, audioRecorderEventHandler );
                 //				AudioRecorderClass.service.removeEventListener( AudioRecorderEvent.PROGRESS, audioRecorderEventHandler );
                 return success;
             } else {
-                trace("Not authorised for stop");
+                SaffronLogger.log("Not authorised for stop");
                 if (logger)
                     SaffronLogger.log("Not authorised for stop");
             }

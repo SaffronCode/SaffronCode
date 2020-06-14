@@ -161,7 +161,7 @@
 		protected function TryLater(event:URLSaverEvent):void
 		{
 			
-			trace("Internet connection fails , but I will try again ... ");
+			SaffronLogger.log("Internet connection fails , but I will try again ... ");
 		}
 		
 		protected function Loading(event:URLSaverEvent):void
@@ -171,8 +171,8 @@
 		}
 		protected function loadingPrecent(Precent_p:Number):void
 		{
-		//	trace("Im downloading..1:"+Precent_p );
-		//	trace("Im downloading..2:"+  String( Precent_p*100 ).substr(0,3)  ); 
+		//	SaffronLogger.log("Im downloading..1:"+Precent_p );
+		//	SaffronLogger.log("Im downloading..2:"+  String( Precent_p*100 ).substr(0,3)  ); 
 			var _precent:Number = Math.round(Number(String(Precent_p*100 ).substr(0,3)));		
 			this.dispatchEvent(new MediaPlayerEventStatic(MediaPlayerEventStatic.DOWNLOAD_PRECENT,1,1,1,_precent))
 			if(_precent>=100)
@@ -217,8 +217,8 @@
 			loadingPrecent(SoundPlayer.getLoadedSoundPrecent(mediaSoundID))	
 			this.dispatchEvent(new MediaPlayerEventStatic(MediaPlayerEventStatic.SOUND_PRESENT,1,1,SoundPlayer.getPlayedPrecent(mediaSoundID)))	
 			//SoundPlayer.getExtractedData(mediaSoundID,bytArray)
-			//trace('bytArray :',bytArray.readInt())
-			//trace('SoundPlayer.getPlayedPrecent(mediaSoundID) :',SoundPlayer.getPlayedPrecent(mediaSoundID))	
+			//SaffronLogger.log('bytArray :',bytArray.readInt())
+			//SaffronLogger.log('SoundPlayer.getPlayedPrecent(mediaSoundID) :',SoundPlayer.getPlayedPrecent(mediaSoundID))	
 		}
 			
 		/**precent changed by client*/

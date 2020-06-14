@@ -40,7 +40,7 @@ package appManager.animatedPages.pageManager
 		{
 			if(currentMenu != null)
 			{
-				trace("delete current page");
+				SaffronLogger.log("delete current page");
 				this.removeChild(currentMenu);
 				if(scrollerMC)
 				{
@@ -63,7 +63,7 @@ package appManager.animatedPages.pageManager
 			var pageClassType:Class ;
 			pageClassType = Obj.generateClass(currentPageData.menuType);
 			
-			trace("Menu type : "+currentPageData.menuType+' >>>>> '+pageClassType);
+			SaffronLogger.log("Menu type : "+currentPageData.menuType+' >>>>> '+pageClassType);
 			
 			
 			if(pageClassType != null)
@@ -86,11 +86,11 @@ package appManager.animatedPages.pageManager
 				}
 				catch(e)
 				{
-					trace("Page is not generated : "+e);
+					SaffronLogger.log("Page is not generated : "+e);
 					thisPageHasMenu = false ;
 					return;
 				}
-				trace("*** currentPage added to stage");
+				SaffronLogger.log("*** currentPage added to stage");
 				this.addChild(currentMenu);
 				
 				/*if(currentPageData.scrollAble)
@@ -111,17 +111,17 @@ package appManager.animatedPages.pageManager
 				{
 					if(currentMenu.hasOwnProperty('setUp'))
 					{
-						trace("This menu can get values");
+						SaffronLogger.log("This menu can get values");
 						(currentMenu as DisplayPageInterface).setUp(currentPageData);
 					}
 					else
 					{
-						trace("Static menu calls");
+						SaffronLogger.log("Static menu calls");
 					}
 				}
 				else
 				{
-					trace("static application menu");
+					SaffronLogger.log("static application menu");
 				}
 				
 				this.dispatchEvent(new MenuEvent(MenuEvent.MENU_READY,currentMenu,true));
@@ -237,7 +237,7 @@ package appManager.animatedPages.pageManager
 			if(currentMenu!=null && !pageReadyDispatched)
 			{
 				pageReadyDispatched = true ;
-				trace("Dispatch page ready event");
+				SaffronLogger.log("Dispatch page ready event");
 				currentMenu.dispatchEvent(new PageControllEvent(PageControllEvent.PAGE_ANIMATION_READY));
 			}
 		}

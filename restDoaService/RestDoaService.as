@@ -31,7 +31,7 @@
 		{
 			if(sharedObject == null)
 			{
-				//trace("♠ Set up shared Object");
+				//SaffronLogger.log("♠ Set up shared Object");
 				sharedObject = SharedObject.getLocal('restMelkFullCash','/');
 			}
 		}
@@ -40,19 +40,19 @@
 		{
 			setUpStorage();
 			var cash:String = sharedObject.data[id];
-			//trace("♠ Load "+id+" from tht shared object");
+			//SaffronLogger.log("♠ Load "+id+" from tht shared object");
 			if(cash == null)
 			{
 				return '';
 			}
-			//trace("♠ Loaded id is : "+cash);
+			//SaffronLogger.log("♠ Loaded id is : "+cash);
 			return cash ;
 		}
 		
 		private static function set(id:String,value:String):void
 		{
 			setUpStorage();
-			//trace("♠ set the "+id+" to "+value);
+			//SaffronLogger.log("♠ set the "+id+" to "+value);
 			sharedObject.data[id] = value ;
 			sharedObject.flush();
 		}
@@ -78,7 +78,7 @@
 			serverDomain = ServerDomain ;
 			//UId;
 			//UIdAuth;
-			trace("Rest service is starts on : "+serverDomain);
+			SaffronLogger.log("Rest service is starts on : "+serverDomain);
 		}
 		
 		

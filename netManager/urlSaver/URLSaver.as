@@ -107,7 +107,7 @@ package netManager.urlSaver
 			
 			if(url=='')
 			{
-				trace("Requested Url is ''. are you serius??");
+				SaffronLogger.log("Requested Url is ''. are you serius??");
 				return false;
 			}
 			
@@ -120,7 +120,7 @@ package netManager.urlSaver
 			justDownlaodToUpdate = false ;
 			
 			
-			//trace("Requested image url is : "+onlineURL);
+			//SaffronLogger.log("Requested image url is : "+onlineURL);
 			var localFileChecker:File;
 			if(onlineURL.toLowerCase().indexOf('http')!=0)
 			{
@@ -155,7 +155,7 @@ package netManager.urlSaver
 			if(localFileChecker!=null && localFileChecker.exists)
 			{
 				//This file is local already
-				//trace("The file is exists");
+				//SaffronLogger.log("The file is exists");
 				offlineURL = localFileChecker.url ;
 			}
 			else
@@ -164,12 +164,12 @@ package netManager.urlSaver
 				//offlineURL = SavedDatas.load(onlineURL) ;
 				if(datestorage != null && (datestorage.data[onlineURL] == undefined || datestorage.data[onlineURL]<myAcceptableDate.time))
 				{
-					//trace('let try to download this image : '+datestorage.data[onlineURL]+" vs "+acceptableDate);
+					//SaffronLogger.log('let try to download this image : '+datestorage.data[onlineURL]+" vs "+acceptableDate);
 					justDownlaodToUpdate = true ;
 				}
 				else
 				{
-					//trace('the data is so fresh : '+datestorage.data[onlineURL]+" vs "+acceptableDate);
+					//SaffronLogger.log('the data is so fresh : '+datestorage.data[onlineURL]+" vs "+acceptableDate);
 				}
 				offlineURL = storage.data[onlineURL];
 			}
@@ -188,30 +188,30 @@ package netManager.urlSaver
 				/*if(!justDownlaodToUpdate)
 				{
 						//DownloadManager.contentLoaderInfo.addEventListener(DownloadManagerEvents.DOWNLOAD_PROGRESS,downloading);
-					trace("Listen to progress");
+					SaffronLogger.log("Listen to progress");
 					urlLoader.addEventListener(ProgressEvent.PROGRESS,downloading);
 				}*///Why?? I whant you to listen to this event any way
 				urlLoader.addEventListener(ProgressEvent.PROGRESS,downloading);
 				
-				//trace("justDownlaodToUpdate : "+justDownlaodToUpdate);
+				//SaffronLogger.log("justDownlaodToUpdate : "+justDownlaodToUpdate);
 					//DownloadManager.contentLoaderInfo.addEventListener(DownloadManagerEvents.URL_IS_NOT_EXISTS,noFileExists);
 				//We don't have this Event type on urlLoaders
 					//DownloadManager.contentLoaderInfo.addEventListener(DownloadManagerEvents.NO_INTERNET_CONNECTION_AVAILABLE,noInternetConnection);
 				urlLoader.addEventListener(IOErrorEvent.IO_ERROR,noInternetConnection);
-				//trace('listen to download manager : '+onlineURL);
+				//SaffronLogger.log('listen to download manager : '+onlineURL);
 					//DownloadManager.download(onlineURL);
 				//urlLoader.load(new URLRequest(onlineURL));
-				//trace("Load url");
+				//SaffronLogger.log("Load url");
 				reLoadUrlLoader();
 				
-				//trace("offlineURL : "+offlineURL);
+				//SaffronLogger.log("offlineURL : "+offlineURL);
 				if(offlineURL==null)
 				{
 					return false ;
 				}
 				else
 				{
-					//trace("Load the offline url");
+					//SaffronLogger.log("Load the offline url");
 					loadOflineFile();
 					
 					return true ;
@@ -223,7 +223,7 @@ package netManager.urlSaver
 				//return itsByteArray
 				//Do not save online location again on shared objects
 					//SavedDatas.save(onlineURL,offlineURL);
-				//trace("Load offline file2");
+				//SaffronLogger.log("Load offline file2");
 				loadOflineFile();
 				
 				return true ;
@@ -235,14 +235,14 @@ package netManager.urlSaver
 		private function reLoadUrlLoader():void
 		{
 			clearTimeout(reloadTimeOutId);
-			//trace("Reload the url : "+onlineURL);
+			//SaffronLogger.log("Reload the url : "+onlineURL);
 			urlLoader.load(new URLRequest(encodeURI(onlineURL)));
 		}
 		
 		/**Cansel current download*/
 		public function cansel()
 		{
-			//trace('Cansel donwload manager : '+onlineURL);
+			//SaffronLogger.log('Cansel donwload manager : '+onlineURL);
 			if(fileSaver)
 			{
 				fileSaver.close();
@@ -256,11 +256,11 @@ package netManager.urlSaver
 			{
 				try
 				{
-					//trace("URL is closed for "+onlineURL);
+					//SaffronLogger.log("URL is closed for "+onlineURL);
 					urlLoader.close();
 				}catch(e){};
 			}
-			//trace("URI loaded is null for : "+onlineURL);
+			//SaffronLogger.log("URI loaded is null for : "+onlineURL);
 			urlLoader = null ;
 			
 			//DownloadManager.stopDwonload(onlineURL);
@@ -273,18 +273,18 @@ package netManager.urlSaver
 		
 		protected function noInternetConnection(ev:IOErrorEvent/*DownloadManagerEvents*/):void
 		{
-			//trace("Connection error");
+			//SaffronLogger.log("Connection error");
 			if(justDownlaodToUpdate)
 			{
 				//This image is dispatched befor
-				//trace("The image was dispatched befor");
+				//SaffronLogger.log("The image was dispatched befor");
 				return ;
 			}
 			
 			/*if(ev.urlID == onlineURL)
 			{*/
 				//This will dispatch this event just to tell parent to make desition on canseling download
-			//trace("no internet deteted : "+onlineURL);
+			//SaffronLogger.log("no internet deteted : "+onlineURL);
 			if(datestorage != null)
 			{
 				offlineURL = storage.data[onlineURL];
@@ -294,7 +294,7 @@ package netManager.urlSaver
 					return ;
 				}
 			}
-			//trace("Reload download request for "+onlineURL+" for the next "+reloadTime+" miliseconds later");
+			//SaffronLogger.log("Reload download request for "+onlineURL+" for the next "+reloadTime+" miliseconds later");
 			reloadTimeOutId = setTimeout(reLoadUrlLoader,reloadTime);
 			return ;
 			//Do not dispatch NO_INTERNET ever!!
@@ -304,24 +304,24 @@ package netManager.urlSaver
 		
 		protected function downloadCompletes(ev:Event/*DownloadManagerEvents*/):void
 		{
-			//trace("URL file is downloaded : "+urlLoader+' ..... ');
+			//SaffronLogger.log("URL file is downloaded : "+urlLoader+' ..... ');
 			
 			/*if(ev.urlID == onlineURL)
 			{*/
 			if(urlLoader==null || urlLoader.data == null || urlLoader.data.length==0)
 			{
-				//trace("No file loaded : "+onlineURL);
+				//SaffronLogger.log("No file loaded : "+onlineURL);
 				noInternetConnection(null);
 				return ;
 			}
 				
 				//myLoadedBytes = new ByteArray();
 				//myLoadedBytes.writeBytes(ev.loadedFile,0,ev.loadedFile.bytesAvailable);
-				//trace("urlLoader.data : "+urlLoader.data);
+				//SaffronLogger.log("urlLoader.data : "+urlLoader.data);
 				myLoadedBytes = urlLoader.data;
 				myLoadedBytes.position = 0 ;
 				
-				//trace("Downloaded bytes are : "+myLoadedBytes.length);
+				//SaffronLogger.log("Downloaded bytes are : "+myLoadedBytes.length);
 				
 				saveLoadedBytes();
 				//Moved to the above function 
@@ -332,11 +332,11 @@ package netManager.urlSaver
 		
 		protected function downloading(ev:ProgressEvent/*DownloadManagerEvents*/):void
 		{
-			//trace("Somthing downloaded");
+			//SaffronLogger.log("Somthing downloaded");
 			
 			/*if(ev.urlID == onlineURL)
 			{*/
-			//trace("Downloading");
+			//SaffronLogger.log("Downloading");
 			if(urlLoader!=null)
 			{
 				this.dispatchEvent(new URLSaverEvent(URLSaverEvent.LOADING,urlLoader.bytesLoaded/urlLoader.bytesTotal,null,'',urlLoader.bytesTotal,urlLoader.bytesLoaded/*ev.precent*/));
@@ -392,7 +392,7 @@ package netManager.urlSaver
 				oflineFolder.createDirectory();
 			}
 			var nameCash:String = onlineURL.split('\\').join('/');
-			//trace("oflineFolder : "+oflineFolder.nativePath); 
+			//SaffronLogger.log("oflineFolder : "+oflineFolder.nativePath); 
 			var offlineURLFileName:String = nameCash.substring(nameCash.indexOf('/')+1);
 			/*if(StringFunctions.isPersian(offlineURLFileName))
 			{
@@ -402,7 +402,7 @@ package netManager.urlSaver
 			offlineURLFileName = offlineURLFileName.substr(offlineURLFileName.length-Math.min(maxNameLength,offlineURLFileName.length),offlineURLFileName.length);
 			//Alert.show("Pdf texttttttttttPDF"+offlineURLFileName)
 			//offlineURLFileName = Base64.Encode(offlineURLFileName);
-			//trace("offlineURLFileName : "+offlineURLFileName);
+			//SaffronLogger.log("offlineURLFileName : "+offlineURLFileName);
 			
 			var offlineFileNameWithExtention:String ;
 			
@@ -432,7 +432,7 @@ package netManager.urlSaver
 				catch(e)
 				{
 					storage.data[onlineURL] = offlineURL ;
-					//trace('***** i cannot delete this file');
+					//SaffronLogger.log('***** i cannot delete this file');
 					return ;
 				}
 			}
@@ -450,13 +450,13 @@ package netManager.urlSaver
 			fileSaver.openAsync(oflineFile,FileMode.WRITE);
 			fileSaver.writeBytes(myLoadedBytes);
 			fileSaver.close();
-			//trace("Save the imafe on device...................................... : "+oflineFile.url+' > '+myLoadedBytes.bytesAvailable);
+			//SaffronLogger.log("Save the imafe on device...................................... : "+oflineFile.url+' > '+myLoadedBytes.bytesAvailable);
 			
 			//SavedDatas.save(onlineURL,offlineURL);
-			//trace('offile file saved on : '+onlineURL);
+			//SaffronLogger.log('offile file saved on : '+onlineURL);
 			storage.data[onlineURL] = offlineURL ;
 			datestorage.data[onlineURL] = new Date().time ;
-			//trace("datestorage.data[onlineURL] : " +datestorage.data[onlineURL]);
+			//SaffronLogger.log("datestorage.data[onlineURL] : " +datestorage.data[onlineURL]);
 			datestorage.flush();
 			storage.flush();
 		}
@@ -464,14 +464,14 @@ package netManager.urlSaver
 		protected function fileSaverError(event:IOErrorEvent):void
 		{
 			
-			//trace("URL saver file is not write able. saveLoadedByte");
+			//SaffronLogger.log("URL saver file is not write able. saveLoadedByte");
 			fileSaver.close();
 			loadOflineFile();
 		}
 		
 		protected function fileIsSaved(event:Event):void
 		{
-			//trace("******************************** File is ready to save on the device ****************");
+			//SaffronLogger.log("******************************** File is ready to save on the device ****************");
 			loadOflineFile();
 		}		
 		
@@ -486,7 +486,7 @@ package netManager.urlSaver
 			}
 			catch(e)
 			{
-				trace("I cannot find this offline file");
+				SaffronLogger.log("I cannot find this offline file");
 			}
 			var waitTillFileLoaded:Boolean = false ;
 			//I have to open the file to contrill the file size
@@ -512,7 +512,7 @@ package netManager.urlSaver
 			{
 				myLoadedBytes = null ;
 			}
-			//trace("File size : "+fileTarger.size+" urlLoader : "+urlLoader);
+			//SaffronLogger.log("File size : "+fileTarger.size+" urlLoader : "+urlLoader);
 			if(!waitTillFileLoaded)
 			{
 				completeLoadRequestAndDispatchEvent();
@@ -523,7 +523,7 @@ package netManager.urlSaver
 		{
 			if(fileTarger!=null && fileTarger.exists && (fileTarger.size!=0 || (myLoadedBytes!=null && myLoadedBytes.length!=0) || (urlLoader!=null && urlLoader.data !=null && urlLoader.data.length!=0))) 
 			{
-				//trace("offlineURL : "+offlineURL);
+				//SaffronLogger.log("offlineURL : "+offlineURL);
 				
 				//Cansel the file aftre downloaded file contrilled
 				cansel();
@@ -531,9 +531,9 @@ package netManager.urlSaver
 			}
 			else
 			{
-				trace("Offline url is not exists : "+offlineURL);
+				SaffronLogger.log("Offline url is not exists : "+offlineURL);
 				URLSaver.deletFileIfExists(onlineURL);
-				trace("So I have to download it again from "+onlineURL);
+				SaffronLogger.log("So I have to download it again from "+onlineURL);
 				load(onlineURL,savedAcceptableDate,fileExtention,fileNameOnStorage,mySpecialFolder);
 			}
 		}
@@ -541,7 +541,7 @@ package netManager.urlSaver
 		protected function fileCannotLoad(event:IOErrorEvent):void
 		{
 			
-			trace("Unable to load file");
+			SaffronLogger.log("Unable to load file");
 			fileLoader.close();
 			completeLoadRequestAndDispatchEvent();
 		}
@@ -549,7 +549,7 @@ package netManager.urlSaver
 		protected function fileLoaded(event:Event):void
 		{
 			
-			//trace("***********************************************File is ready to load***************");
+			//SaffronLogger.log("***********************************************File is ready to load***************");
 			myLoadedBytes = new ByteArray();
 			fileLoader.readBytes(myLoadedBytes,0,fileLoader.bytesAvailable);
 			fileLoader.close();
@@ -564,7 +564,7 @@ package netManager.urlSaver
 			{
 				if(datestorage.data[i] < date.time)
 				{
-					//trace("This file is old : "+i);
+					//SaffronLogger.log("This file is old : "+i);
 					deletFileIfExists(i);
 				}
 			}
@@ -577,11 +577,11 @@ package netManager.urlSaver
 				if(fileChecker.exists)
 				{
 					fileChecker.deleteFile();
-					//trace("this file deleted : "+imageList[i]);
+					//SaffronLogger.log("this file deleted : "+imageList[i]);
 				}
 				else
 				{
-					//trace("File not found : "+imageList[i]);
+					//SaffronLogger.log("File not found : "+imageList[i]);
 				}
 			}
 			//Delete all saved datas whenever all provess tested
@@ -601,7 +601,7 @@ package netManager.urlSaver
 			var localFileURL:String = storage.data[fileURL] ;
 			if(localFileURL == null)
 			{
-				trace("i can not find your image");
+				SaffronLogger.log("i can not find your image");
 				return false ;
 			}
 			else
@@ -609,13 +609,13 @@ package netManager.urlSaver
 				var fileChecker:File = new File(localFileURL);
 				if(fileChecker.exists)
 				{
-					trace("this file is deleted : "+fileChecker.url);
+					SaffronLogger.log("this file is deleted : "+fileChecker.url);
 					try
 					{
 						fileChecker.deleteFile();
 					}catch(e)
 					{
-						trace("this file is not deleted : "+fileChecker.url);
+						SaffronLogger.log("this file is not deleted : "+fileChecker.url);
 					};
 				}
 				

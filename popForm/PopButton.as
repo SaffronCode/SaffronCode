@@ -95,7 +95,7 @@
 			
 			if(str=='' && buttonID==0 && type==1 && completeButtonObject==null)
 			{
-				trace("It should be the default values for the button");
+				SaffronLogger.log("It should be the default values for the button");
 			}
 			else
 			{
@@ -189,7 +189,7 @@
 			
 			if(buttonImage!=null)
 			{
-				trace("♠ the button image is not null : "+buttonImage);
+				SaffronLogger.log("♠ the button image is not null : "+buttonImage);
 				myLightImage = Obj.findAllClass(LightImage,this)[0];
 				controllStage = true ;
 			}
@@ -206,10 +206,10 @@
 			backMC = Obj.get('back_mc',this);
 			
 			ID = buttonID ;
-			//trace("Button title is : "+title);
+			//SaffronLogger.log("Button title is : "+title);
 			title = str ;
 			
-			//trace('SAVE AND EXIT BUTTON : '+str);
+			//SaffronLogger.log('SAVE AND EXIT BUTTON : '+str);
 			
 			if(txtTF)
 			{
@@ -279,7 +279,7 @@
 						/**Create the interface now*/
 						private function createElements():void
 						{
-							//trace("Create the elemets");
+							//SaffronLogger.log("Create the elemets");
 							if(myLightImage!=null)
 							{
 								myLightImage.setUp(buttonImageURL,true);

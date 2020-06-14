@@ -47,7 +47,7 @@ package contents.displayPages
 			var loaderContex:LoaderContext = new LoaderContext(false,ApplicationDomain.currentDomain);
 				//Debug line ↓
 					//loaderContex.allowCodeImport = true ; // not efected
-			trace("SWF target is : "+pageData.imageTarget);
+			SaffronLogger.log("SWF target is : "+pageData.imageTarget);
 			loader.load(new URLRequest(pageData.imageTarget),loaderContex);
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 		}

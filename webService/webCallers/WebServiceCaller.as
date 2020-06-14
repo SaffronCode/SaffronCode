@@ -127,7 +127,7 @@
 		/**It is tile to reload service*/
 		private function reLoadLastRequest(/*e:TimerEvent*/):void
 		{
-			trace("Service reloaded");
+			SaffronLogger.log("Service reloaded");
 			loadParams.apply(this,myParam);
 		}
 		
@@ -190,7 +190,7 @@
 		
 		private function onConnected()
 		{
-			trace("connected");
+			SaffronLogger.log("connected");
 			//TODO: implement function
 			myWebService.eventListen.addEventListener(WebEvent.EVENT_DISCONNECTED,noInternet);
 			myWebService.eventListen.addEventListener(WebEvent.Result,loaded);
@@ -236,7 +236,7 @@
 			if(pureData==null)
 			{
 				pureData = WebServiceSaver.load(this,myParam);
-				//trace('cash loads : '+pureData);
+				//SaffronLogger.log('cash loads : '+pureData);
 			}
 			else if(offlineDataIsOK && pureData!=null && !dontSaveItAgain)//dontSaveItAgain added to prevent oversaving the cashed data again. it was destroies the save date
 			{
@@ -256,26 +256,26 @@
 			
 			if(parsedSituation)
 			{
-				//trace("Load complete");
-				//trace("offlineValuesToSend : "+offlineValuesToSend);
-				//trace("pureData : "+pureData);
+				//SaffronLogger.log("Load complete");
+				//SaffronLogger.log("offlineValuesToSend : "+offlineValuesToSend);
+				//SaffronLogger.log("pureData : "+pureData);
 				if(offlineValuesToSend == null && pureData!=null)
 				{
 					offlineValuesToSend = pureData ;
-					//trace("It is the first dispatching time");
+					//SaffronLogger.log("It is the first dispatching time");
 					//dispatchEveryWhere(Event.COMPLETE,false);
 					event_data();
 				}
 				else if(controllChange(pureData))
 				{
 					//There is no need to send update
-					trace(">Server data is changed");
+					SaffronLogger.log(">Server data is changed");
 					//dispatchEveryWhere(Event.COMPLETE,true);
 					event_dataUpdated()
 				}
 				else
 				{
-					trace(">Server data is steal same as old dispatched data");
+					SaffronLogger.log(">Server data is steal same as old dispatched data");
 					event_dataWasUpdated()
 				}
 			}
@@ -288,7 +288,7 @@
 				}
 				else
 				{
-					trace("User is listening to Error Event, So there is no need to dispatch netError");
+					SaffronLogger.log("User is listening to Error Event, So there is no need to dispatch netError");
 				}
 				//dispatchEveryWhere(ErrorEvent.ERROR);
 				//dispatchEveryWhere(Event.UNLOAD);
@@ -383,11 +383,11 @@
 			else if(sendChangeIfSentErlier)
 			{
 				this.dispatchEvent(new Event(Event.CHANGE));
-				trace("Service Content is Updated");
+				SaffronLogger.log("Service Content is Updated");
 			}
 			else
 			{
-				trace("I cannot dispatch my events any more : "+eventName);
+				SaffronLogger.log("I cannot dispatch my events any more : "+eventName);
 			}
 		}*/
 		

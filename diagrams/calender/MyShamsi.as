@@ -19,7 +19,7 @@
 			}
 			else
 			{
-				trace(new Error(date + " is not in standard form"));
+				SaffronLogger.log(new Error(date + " is not in standard form"));
 				return new Date();
 			}
 		}

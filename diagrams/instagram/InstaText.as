@@ -61,9 +61,9 @@ public class InstaText extends TextField {
 
 
     override public function set text(value:String):void {
-        //trace(" , seperatore used for : "+value);
+        //SaffronLogger.log(" , seperatore used for : "+value);
         if (!isNaN(Number(value))) {
-            //trace(" ... and value is number");
+            //SaffronLogger.log(" ... and value is number");
             var newText:String = '';
             var cnt:uint = 0;
             for (var i = value.length - 1; i >= 0; i--) {

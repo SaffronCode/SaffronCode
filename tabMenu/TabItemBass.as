@@ -43,7 +43,7 @@ package tabMenu
 			}
 			catch(e:Error)
 			{
-				trace('<<<Frame label '+_name+' not found in scene '+_name+'.>>>');
+				SaffronLogger.log('<<<Frame label '+_name+' not found in scene '+_name+'.>>>');
 			}
 			_defaultTabe = this.name.split('_')[1];	
 			TabMenuManager.event.addEventListener(TabMenuEvent.SELECT,onSelected);	

@@ -26,7 +26,7 @@
 		public function DistriqtNotificationManager(ONESIGNAL_APP_ID_p:String='',DISTRIQT_ID:String='')
 		{
 			super();
-			trace("*********Distriqt notification");
+			SaffronLogger.log("*********Distriqt notification");
 			
 			PlayServices.ControllDevicePlayService();
 			
@@ -41,17 +41,17 @@
 					
 					PushNotifications.service.setup( service );
 					
-					trace('notification sat up completly');
+					SaffronLogger.log('notification sat up completly');
 					autorization();
 				}
 				else
 				{
-					trace("!!! Push is not supporting here");
+					SaffronLogger.log("!!! Push is not supporting here");
 				}
 			}
 			catch (e:Error)
 			{
-				trace("DistriqtNotificationManager Error : "+ e );
+				SaffronLogger.log("DistriqtNotificationManager Error : "+ e );
 			}
 		}
 		
@@ -59,12 +59,12 @@
 		{
 			try
 			{
-				trace("autorization starts : "+PushNotifications.service.authorisationStatus());
+				SaffronLogger.log("autorization starts : "+PushNotifications.service.authorisationStatus());
 				checkAuthorisation();
 			}
 			catch(e:Error)
 			{
-				trace("Error!! "+e.message);
+				SaffronLogger.log("Error!! "+e.message);
 			}
 		}
 		
@@ -73,7 +73,7 @@
 			switch (PushNotifications.service.authorisationStatus())
 			{
 				case AuthorisationStatus.AUTHORISED:
-					trace(" This device has been authorised.");
+					SaffronLogger.log(" This device has been authorised.");
 					// You can register this device and expect:
 					//	- registration success/failed event, and; 
 					// 	- notifications to be displayed
@@ -81,7 +81,7 @@
 					break;
 				
 				case AuthorisationStatus.NOT_DETERMINED:
-					trace(" You are yet to ask for authorisation to display notifications");
+					SaffronLogger.log(" You are yet to ask for authorisation to display notifications");
 					// At this point you should consider your strategy to get your user to authorise
 					// notifications by explaining what the application will provide
 					PushNotifications.service.addEventListener( AuthorisationEvent.CHANGED, authorisationChangedHandler );
@@ -89,7 +89,7 @@
 					break;
 				
 				case AuthorisationStatus.DENIED:
-					trace("  The user has disabled notifications");
+					SaffronLogger.log("  The user has disabled notifications");
 					// Advise your user of the lack of notifications as you see fit
 					
 					// For example: You can redirect to the settings page on iOS
@@ -103,7 +103,7 @@
 		
 		private function registerNotifications():void 
 		{
-			trace("Register notification");
+			SaffronLogger.log("Register notification");
 			//PushNotifications.service.addEventListener( PushNotificationEvent.NOTIFICATION, notificationHandler );
 			PushNotifications.service.addEventListener( PushNotificationEvent.NOTIFICATION_SELECTED, notificationHandler );
 			PushNotifications.service.addEventListener( RegistrationEvent.REGISTER_SUCCESS, registerSuccessHandler );
@@ -117,19 +117,19 @@
 			}
 			catch(e:Error)
 			{
-				trace("Error 2 ! : "+e.message);
+				SaffronLogger.log("Error 2 ! : "+e.message);
 			}
 		}
 		
 		private function proplem(e:RegistrationEvent):void
 		{
-			trace("*** Distriqt notification error : "+e);
+			SaffronLogger.log("*** Distriqt notification error : "+e);
 		}
 		
 		private function registerSuccessHandler( event:RegistrationEvent ):void
 		{
 			token = PushNotifications.service.getServiceToken();
-			trace( "Registration succeeded with ID: " + token  );
+			SaffronLogger.log( "Registration succeeded with ID: " + token  );
 			this.dispatchEvent(new NotificationEvent (NotificationEvent.TOKEN_REGISTER_COMPELETED,makePNEventManager()))
 		}
 		
@@ -142,8 +142,8 @@
 		
 		private function notificationHandler( event:PushNotificationEvent ):void
 		{
-			trace( "Notification: ["+event.type+"] state="+event.applicationState+" startup="+event.startup );
-			trace( event.payload );
+			SaffronLogger.log( "Notification: ["+event.type+"] state="+event.applicationState+" startup="+event.startup );
+			SaffronLogger.log( event.payload );
 			var recevedObjecg:Object = JSON.parse(event.payload);
 			var additionalData:Object = recevedObjecg.additionalData ;
 			
@@ -152,7 +152,7 @@
 		
 		private function authorisationChangedHandler( event:AuthorisationEvent ):void
 		{
-			trace(" Check the authorisation state again (as above)");
+			SaffronLogger.log(" Check the authorisation state again (as above)");
 			PushNotifications.service.removeEventListener( AuthorisationEvent.CHANGED, authorisationChangedHandler );
 			checkAuthorisation();
 		}

@@ -56,7 +56,7 @@
 		/**Connection fails*/
 		protected function noConnectionAvailable(event:IOErrorEvent):void
 		{
-			trace("!! The connection fails");
+			SaffronLogger.log("!! The connection fails");
 			this.dispatchEvent(new Event(Event.UNLOAD));
 		}
 		
@@ -95,17 +95,17 @@
 					socketDataRecevied(null,oldData);
 					if(maxAvailableDateForOffline==null && SocketServiceSaver.isExpired(funcName,sendThisJSON,maxAvailableDateForOffline))
 					{
-						trace("The offlie data dispatched but still need to get the new version of data from server");
+						SaffronLogger.log("The offlie data dispatched but still need to get the new version of data from server");
 					}
 					else
 					{
-						trace("The dispached data is updated");
+						SaffronLogger.log("The dispached data is updated");
 						return ;
 					}
 				}
 			}
 			
-			trace("try to connect to server for "+funcName);
+			SaffronLogger.log("try to connect to server for "+funcName);
 			socketListener.connect(SocketInit.ip,SocketInit.port);
 		}
 		
@@ -129,7 +129,7 @@
 			/**Socket connection is connected*/
 			private function socketConnected(e:Event):void
 			{
-				trace(">>Now send this : "+sendThisJSON);
+				SaffronLogger.log(">>Now send this : "+sendThisJSON);
 				this.dispatchEvent(new Event(Event.CONNECT));
 				socketListener.writeUTFBytes(sendThisJSON);
 				socketListener.flush();
@@ -142,14 +142,14 @@
 					catchedData = new SocketReceivedFormat();
 					if(myAbsolutData==null)
 					{
-						trace("<<Socket data is : "+socketListener.bytesAvailable);
+						SaffronLogger.log("<<Socket data is : "+socketListener.bytesAvailable);
 						if(socketListener.bytesAvailable>0)
 						{							
 							receivedData = socketListener.readUTFBytes(socketListener.bytesAvailable);
 						}
 						else
 						{
-							trace("!!! there is no data on the socket !!!");	
+							SaffronLogger.log("!!! there is no data on the socket !!!");	
 							this.dispatchEvent(new ErrorEvent(ErrorEvent.ERROR));
 							return;
 						}
@@ -167,14 +167,14 @@
 						}
 						catch(e:Error)
 						{
-							trace("The server data is not parsable");
+							SaffronLogger.log("The server data is not parsable");
 							this.dispatchEvent(new ErrorEvent(ErrorEvent.ERROR));
 							return ;
 						}
 					}
 					else
 					{
-						trace("error is :: "+receivedData);							
+						SaffronLogger.log("error is :: "+receivedData);							
 						this.dispatchEvent(new ErrorEvent(ErrorEvent.ERROR));
 						return ;
 					}
@@ -186,7 +186,7 @@
 					
 					if(debug)
 					{
-						trace("The returned data is : "+JSON.stringify(catchedData,null,' '));
+						SaffronLogger.log("The returned data is : "+JSON.stringify(catchedData,null,' '));
 					}
 					var dataWasSentOnce:Boolean = dataSentOnce ;
 					socketListener.close();

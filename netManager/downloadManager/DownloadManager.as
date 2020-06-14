@@ -52,7 +52,7 @@ package netManager.downloadManager
 			}
 			if(!oldFile)
 			{
-				//trace('sart load');
+				//SaffronLogger.log('sart load');
 				var downlaodCatcher:CashedDownloadData = new CashedDownloadData();
 				downloadList.push(downlaodCatcher);
 				downlaodCatcher.addEventListener(DownloadManagerEvents.DOWNLOAD_PROGRESS,manageProgress);
@@ -129,7 +129,7 @@ package netManager.downloadManager
 		/**send feed back of any rpogress*/
 		private static function manageProgress(e:DownloadManagerEvents):void
 		{
-			//trace('loading ... ');
+			//SaffronLogger.log('loading ... ');
 			contentLoaderInfo.dispatchEvent(new DownloadManagerEvents(DownloadManagerEvents.DOWNLOAD_PROGRESS,e.precent,null,e.urlID));
 		}
 		
@@ -137,7 +137,7 @@ package netManager.downloadManager
 		/**send feed back of any download finishing*/
 		private static function manageFinished(e:DownloadManagerEvents):void
 		{
-			//trace('load finished');
+			//SaffronLogger.log('load finished');
 			contentLoaderInfo.dispatchEvent(new DownloadManagerEvents(DownloadManagerEvents.DOWNLOAD_COMPLETE,e.precent,e.loadedFile,e.urlID));
 		}
 		
@@ -145,7 +145,7 @@ package netManager.downloadManager
 		/**send feed back of any download finishing*/
 		private static function manageWrongURLs(e:DownloadManagerEvents):void
 		{
-			trace('file url is wrong');
+			SaffronLogger.log('file url is wrong');
 			forget(e.urlID);
 			contentLoaderInfo.dispatchEvent(new DownloadManagerEvents(DownloadManagerEvents.URL_IS_NOT_EXISTS,0,null,e.urlID));
 		}	

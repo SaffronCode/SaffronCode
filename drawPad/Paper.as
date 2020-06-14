@@ -66,7 +66,7 @@
 			super();
 			setUpCaptureWithDilay();
 			
-			trace("Hi paper");
+			SaffronLogger.log("Hi paper");
 			
 			drawingContainers = new Sprite();
 			
@@ -106,7 +106,7 @@
 				}
 			}
 			
-			trace("backImage width is : "+backImage.width);
+			SaffronLogger.log("backImage width is : "+backImage.width);
 			
 			penPlace = new Sprite();
 			drawingContainers.addChild(penPlace);
@@ -191,7 +191,7 @@
 		public function startDraw(color:uint,thickness:Number,X:Number,Y:Number,bitmapData:BitmapData=null,isRubber:Boolean = false ):void
 		{
 			canselCaptureDilay();
-			//trace("start drawing to : "+X,Y+' > '+thickness);
+			//SaffronLogger.log("start drawing to : "+X,Y+' > '+thickness);
 			if(isRubber)
 			{
 				DrawingPlace = rubberPlace ;
@@ -205,7 +205,7 @@
 			DrawingPlace.graphics.lineStyle(thickness,color,1,false,"stretch",CapsStyle.ROUND,JointStyle.ROUND,3);
 			if(bitmapData != null)
 			{
-				//trace("Rubber color : "+color);
+				//SaffronLogger.log("Rubber color : "+color);
 				DrawingPlace.graphics.lineBitmapStyle(bitmapData,new Matrix(backImage.scaleX,0,0,backImage.scaleX),false,true);
 			}
 			DrawingPlace.graphics.moveTo(X,Y);
@@ -252,11 +252,11 @@
 			}
 			else
 			{
-				trace("call it with dilay");
+				SaffronLogger.log("call it with dilay");
 				captureAndSaveDrawingDilay();
 			}
 			
-			trace("stop drawing");
+			SaffronLogger.log("stop drawing");
 		}		
 		
 		public function importBitmap(bitmap:Bitmap)
@@ -275,7 +275,7 @@
 		{
 			if(resolution==0)
 			{
-				trace("Paper resolution sat to : "+backImage.scaleX) ;
+				SaffronLogger.log("Paper resolution sat to : "+backImage.scaleX) ;
 				resolution = 1/backImage.scaleX ;
 			}
 			//New Function ↓
@@ -293,7 +293,7 @@
 			if(withBackGround)
 			{
 				captureThis = this ;
-				trace("Capture me with my background")
+				SaffronLogger.log("Capture me with my background")
 			}
 			else
 			{
@@ -309,7 +309,7 @@
 				paperRect.top -= drawingMargin ;
 				paperRect.right += drawingMargin ;
 				paperRect.bottom += drawingMargin ;
-				trace("capture this area : "+paperRect);
+				SaffronLogger.log("capture this area : "+paperRect);
 			}
 			else
 			{

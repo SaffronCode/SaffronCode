@@ -55,14 +55,14 @@ package contents.contentUpdate
 			}
 			else
 			{
-				trace("activate version contro first on ContentUpdateFromSameXML");
+				SaffronLogger.log("activate version contro first on ContentUpdateFromSameXML");
 			}
 		}
 		
 		/**download the main xml file*/
 		private static function startDownloadMain()
 		{
-			trace('try to load : '+xmlURL.url);
+			SaffronLogger.log('try to load : '+xmlURL.url);
 			//stati download version if exists
 			mainLoader = new URLLoader();
 			mainLoader.addEventListener(Event.COMPLETE,downloadComplete);
@@ -73,14 +73,14 @@ package contents.contentUpdate
 		/**url is not exists*/
 		private static function downloadFaild(e:IOErrorEvent)
 		{
-			trace("downloading are not successfull");
+			SaffronLogger.log("downloading are not successfull");
 			failds();
 		}
 		
 		private static function downloadComplete(e:Event)
 		{
 			//save downloaded file
-			trace('file is loaded');
+			SaffronLogger.log('file is loaded');
 			try
 			{
 				loadedXML = new XML(mainLoader.data);
@@ -112,7 +112,7 @@ package contents.contentUpdate
 			try
 			{
 				var storedXML:XML = XML(xmlString);
-				trace("loaded contents length : "+storedXML.page.length());
+				SaffronLogger.log("loaded contents length : "+storedXML.page.length());
 				for(var j = 0 ; j<storedXML.page.length() ; j++)
 				{
 					var pageData:PageData = new PageData(storedXML.page[j]);
@@ -135,16 +135,16 @@ package contents.contentUpdate
 							{
 								myDeleter.deletFileIfExists(samePage.links2[i].iconURL);
 							}
-							trace("try to delete old images");
+							SaffronLogger.log("try to delete old images");
 						}
 					}
-					trace('content updated');
+					SaffronLogger.log('content updated');
 					Contents.addMoreData(pageData.export());
 				}
 			}
 			catch(e)
 			{
-				trace('no xml changes');
+				SaffronLogger.log('no xml changes');
 			}
 		}
 		

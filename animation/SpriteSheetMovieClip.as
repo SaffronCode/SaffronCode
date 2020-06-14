@@ -61,7 +61,7 @@ package animation
 						for(var j:int = 0 ; j<this.parent.numChildren ; j++)
 						{
 							it = this.parent.getChildAt(j);
-							trace("this.parent.getChildAt("+j+") : "+this.parent.getChildAt(j));
+							SaffronLogger.log("this.parent.getChildAt("+j+") : "+this.parent.getChildAt(j));
 							if(it!=null)
 							{
 								visStatus.push(it.visible);

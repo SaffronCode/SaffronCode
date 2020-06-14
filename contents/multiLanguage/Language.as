@@ -120,7 +120,7 @@
 			}
 			else
 			{
-				trace("**languagesAuto Convert is disabled");
+				SaffronLogger.log("**languagesAuto Convert is disabled");
 			}
 			
 			
@@ -150,7 +150,7 @@
 			{
 				t[String(textXML.*[i].localName())] = String(textXML.*[i][currentLang]);
 				t.saveValue(String(textXML.*[i].localName()),String(textXML.*[i][currentLang]));
-				//trace("t[textXML.*[i].localName()] : "+t[textXML.*[i].localName()]);
+				//SaffronLogger.log("t[textXML.*[i].localName()] : "+t[textXML.*[i].localName()]);
 			}
 			
 			t.saveForCompiler();
@@ -187,7 +187,7 @@
 			}
 			else
 			{
-				trace("**Auto language switch is disabled");
+				SaffronLogger.log("**Auto language switch is disabled");
 			}
 			this.dispatchEvent(new LanguageEvent(LanguageEvent.LANGUAGE_CHANGED));
 		}
@@ -259,7 +259,7 @@
 		
 		public function manageAll(targ:DisplayObjectContainer)
 		{
-			//trace("Manage all calls");
+			//SaffronLogger.log("Manage all calls");
 			for(var i = 0  ; i<targ.numChildren ; i++)
 			{
 				try
@@ -277,7 +277,7 @@
 				}
 				catch(e)
 				{
-					trace('manageAll Error');
+					SaffronLogger.log('manageAll Error');
 				}
 			}	
 		}
@@ -303,8 +303,8 @@
 				targ = e ;
 			}
 			
-			//trace('some thing added : '+targ+' > '+(targ as DisplayObject).getBounds(myStage));
-			//trace('some thing added : '+targ.parent.name);
+			//SaffronLogger.log('some thing added : '+targ+' > '+(targ as DisplayObject).getBounds(myStage));
+			//SaffronLogger.log('some thing added : '+targ.parent.name);
 			if(targ is MovieClip)
 			{
 				if(addedItems.indexOf(targ)==-1)
@@ -323,7 +323,7 @@
 			{
 				if(addedItems.indexOf(targ)==-1)
 				{
-					//trace("Manage this text : "+(targ as TextField).getBounds(myStage)+' : '+(targ as TextField).text);
+					//SaffronLogger.log("Manage this text : "+(targ as TextField).getBounds(myStage)+' : '+(targ as TextField).text);
 					//var tf:TextFormat = (targ as TextField).defaultTextFormat ;
 					//Upgraded line ↓
 					var tf:TextFormat = TextManager.addThis(targ as TextField).format ;
@@ -334,16 +334,16 @@
 					{
 						///Add this later
 						var lastSize:Object = myDatas[targ];
-						//trace('last size is : '+lastSize);
+						//SaffronLogger.log('last size is : '+lastSize);
 						if(lastSize == null)
 						{
 							lastSize = myDatas[targ] = tf.size	;
 						}
 						else
 						{
-							//trace('object founds');
+							//SaffronLogger.log('object founds');
 						}
-						//trace('font size increased');
+						//SaffronLogger.log('font size increased');
 						tf.size = lastSize+increasedSize;
 						TextField(targ).height+=increasedHeight;
 						TextField(targ).y-=increasedHeight/2;
@@ -351,7 +351,7 @@
 					var direction:String = tf.align ;
 					var font:String = tf.font.toLocaleLowerCase();
 					var bold:String = String(tf.bold) ;
-					//trace("And its font name is : "+font);
+					//SaffronLogger.log("And its font name is : "+font);
 					for(var i = 0 ; i<fontSwitch.font.length() ; i++)
 					{
 						var curXML:XML = fontSwitch.font[i][currentLang][0] ;
@@ -359,10 +359,10 @@
 						{
 							var xmlFontName:String = String(curXML.from.@name).toLocaleLowerCase();
 							var xmlBoldState:String = String(curXML.from.@bold) ;
-							//trace("xmlFontName == font && xmlBoldState == String(bold) : "+xmlFontName+' == '+font+' && '+xmlBoldState+' == '+String(bold)+'  >>>  '+(xmlFontName == font)+' && '+(xmlBoldState == String(bold) ));
+							//SaffronLogger.log("xmlFontName == font && xmlBoldState == String(bold) : "+xmlFontName+' == '+font+' && '+xmlBoldState+' == '+String(bold)+'  >>>  '+(xmlFontName == font)+' && '+(xmlBoldState == String(bold) ));
 							if(xmlFontName == font && xmlBoldState == String(bold) )
 							{
-								//trace("So i have to change its font");
+								//SaffronLogger.log("So i have to change its font");
 								if(isArabic && direction == TextFormatAlign.LEFT)
 								{
 									tf.align = TextFormatAlign.RIGHT;
@@ -387,14 +387,14 @@
 								//(targ as TextField).defaultTextFormat = tf ;
 								//(targ as TextField).setTextFormat(tf) ;
 								(targ as TextField).embedFonts = true ;
-								//trace("Font changed");
+								//SaffronLogger.log("Font changed");
 							}
 						}	
 					}
 					addedItems.push(targ);
 					
 					//New Function to controll posible bugs.
-					//trace("*** required font is : "+tf.font+' > '+(targ as TextField).text);
+					//SaffronLogger.log("*** required font is : "+tf.font+' > '+(targ as TextField).text);
 					var removeText:Boolean = false ;
 					if((targ as TextField).text=='')
 					{
@@ -407,7 +407,7 @@
 					{
 						(targ as TextField).text = '' ;
 					}
-					//trace("*** final font is : "+(targ as TextField).defaultTextFormat.font+' > '+(targ as TextField).text);
+					//SaffronLogger.log("*** final font is : "+(targ as TextField).defaultTextFormat.font+' > '+(targ as TextField).text);
 					(targ as DisplayObject).dispatchEvent(new Event(EVENT_TEXT_RESIZED));
 				}
 			}

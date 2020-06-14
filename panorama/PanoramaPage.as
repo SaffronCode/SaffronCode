@@ -65,7 +65,7 @@ package panorama
 		protected function imageNotFound(event:Event):void
 		{
 			
-			trace("Cant load this image : "+myPageData.images[0].targURL);
+			SaffronLogger.log("Cant load this image : "+myPageData.images[0].targURL);
 			//Hints.hint(Contents.lang.t.image_not_loaded,myPageData.title);
 			this.dispatchEvent(AppEventContent.lastPage());
 		}
@@ -73,7 +73,7 @@ package panorama
 		protected function imageLoaded(event:URLSaverEvent):void
 		{
 			
-			trace("All images loaded");
+			SaffronLogger.log("All images loaded");
 			generatePage(event.offlineTarget);
 		}
 		

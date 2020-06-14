@@ -67,14 +67,14 @@ package photoEditor
 			
 			var orginalBitmap:BitmapData = bit.bitmapData ;
 			
-			trace("orginalBitmap vs bit : "+orginalBitmap.width+' vs '+bit.width);
+			SaffronLogger.log("orginalBitmap vs bit : "+orginalBitmap.width+' vs '+bit.width);
 			var scale:Number = bit.scaleX ;
 			rs.width = rs.width/scale ;
 			rs.height = rs.height/scale ;
 			rs.x = rs.x/scale ;
 			rs.y = rs.y/scale ;
 			
-			trace("bit scale is : "+bit.scaleX);
+			SaffronLogger.log("bit scale is : "+bit.scaleX);
 			var croppedBitmap:BitmapData = new BitmapData(rs.width,rs.height,true,0x00000000);
 			var cropMatrix:Matrix = new Matrix(1,0,0,1,-rs.x,-rs.y);
 			croppedBitmap.draw(orginalBitmap,cropMatrix);

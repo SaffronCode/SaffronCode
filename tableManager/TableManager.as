@@ -253,7 +253,7 @@
 
 			if(totalCell == listCopye.length)
 			{
-				trace("End Of Current Part Table")		
+				SaffronLogger.log("End Of Current Part Table")		
 				
 				browsList(oldTotalCell,listCopye.length)
 				scrol()

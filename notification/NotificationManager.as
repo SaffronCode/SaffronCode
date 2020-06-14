@@ -35,7 +35,7 @@
 		{
 			super();
 			autoAlertBox = autoAlerOnNativeBox ;
-			trace("SetUp easy push");
+			SaffronLogger.log("SetUp easy push");
 			ONESIGNAL_APP_ID = ONESIGNAL_APP_ID_p ;
 			GCM_PROJECT_NUMBER = GCM_PROJECT_NUMBER_p ;
 			
@@ -60,7 +60,7 @@
 		public static function setup(ONESIGNAL_APP_ID_p:String='',GCM_PROJECT_NUMBER_p:String='',autoAlerOnNativeBox:Boolean=true):NotificationManager
 		{
 			autoAlertBox = autoAlerOnNativeBox ;
-			trace("SetUp easy push");
+			SaffronLogger.log("SetUp easy push");
 			Notification_Event = new NotificationManager(ONESIGNAL_APP_ID_p,GCM_PROJECT_NUMBER_p,autoAlerOnNativeBox)
 			ONESIGNAL_APP_ID = ONESIGNAL_APP_ID_p
 			GCM_PROJECT_NUMBER = GCM_PROJECT_NUMBER_p
@@ -85,7 +85,7 @@
 				"\t</array>";
 			if(DevicePrefrence.isItPC && currentPermissions.indexOf("<key>application-identifier</key>")==-1)
 			{
-				trace("You have to add below permission on <iPhone><Entitlements>  <![CDATA[ \n\n\n"+requiredPermissionIos+'\n\n]]>\n\n') ;
+				SaffronLogger.log("You have to add below permission on <iPhone><Entitlements>  <![CDATA[ \n\n\n"+requiredPermissionIos+'\n\n]]>\n\n') ;
 			}
 			//control android permission  :  <android> <manifestAdditions><![CDATA[ 
 			var neceraryLines:String = '•' ;
@@ -134,7 +134,7 @@
 				var isNessesaryToShow:Boolean = isNessesaryLine(allAndroidPermission[i]) ;
 				if(currentPermissions.indexOf(StringFunctions.clearSpacesAndTabs(removeNecessaryBoolet(allAndroidPermission[i])))==-1)
 				{
-					trace("permission not found : "+allAndroidPermission[i]);
+					SaffronLogger.log("permission not found : "+allAndroidPermission[i]);
 					androidManifestMustUpdate = true ;
 					leftPermission += removeNecessaryBoolet(allAndroidPermission[i])+'\n' ;
 				}
@@ -186,15 +186,15 @@
 		private function setupOneSignal():void
 		{
 			// onesignal mode
-			trace('ONESIGNAL_APP_ID :',ONESIGNAL_APP_ID)
-			trace('GCM_PROJECT_NUMBER :',GCM_PROJECT_NUMBER)
+			SaffronLogger.log('ONESIGNAL_APP_ID :',ONESIGNAL_APP_ID)
+			SaffronLogger.log('GCM_PROJECT_NUMBER :',GCM_PROJECT_NUMBER)
 			log("init OneSignal...");
 			try
 			{
 				(EasyPushClass as Object).initOneSignal(ONESIGNAL_APP_ID, GCM_PROJECT_NUMBER, autoAlertBox);
 			}catch(e)
 			{
-				trace("Esy push >>>> "+e);
+				SaffronLogger.log("Esy push >>>> "+e);
 			}
 			
 			log("did init OneSignal.");
@@ -265,7 +265,7 @@
 		///////////////////end event
 		private function log(msg:String):void
 		{
-			trace("[Push Notificatoni]"+msg);
+			SaffronLogger.log("[Push Notificatoni]"+msg);
 		}
 		
 		//com.milkmangames.nativeextensions.events.PNEvent

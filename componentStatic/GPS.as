@@ -77,7 +77,7 @@ package componentStatic
 				{
 					clearTimeout(_idTimeOut)
 					_idTimeOut = setTimeout(showMap,2000)
-					trace('time out')		
+					SaffronLogger.log('time out')		
 				}
 
 			}

@@ -59,17 +59,17 @@ package contents.displayElements
 		{
 			if(e.SoundID == ContentSoundManager.MusicID)
 			{
-				trace("Music 2 played");
+				SaffronLogger.log("Music 2 played");
 				sound1Playing = true; 
 			}
 			else if(e.SoundID == ContentSoundManager.MusicID2)
 			{
-				trace("Music 1 played");
+				SaffronLogger.log("Music 1 played");
 				sound2Playing = true; 
 			}
 			if(sound2Playing || sound1Playing)
 			{
-				trace("Sound is playing");
+				SaffronLogger.log("Sound is playing");
 				this.gotoAndStop(1);
 			}
 		}
@@ -78,17 +78,17 @@ package contents.displayElements
 		{
 			if(e.SoundID == ContentSoundManager.MusicID)
 			{
-				trace("Music1 stopped");
+				SaffronLogger.log("Music1 stopped");
 				sound1Playing = false; 
 			}
 			else if(e.SoundID == ContentSoundManager.MusicID2)
 			{
-				trace("Music 2 stopped");
+				SaffronLogger.log("Music 2 stopped");
 				sound2Playing = false; 
 			}
 			if(!sound2Playing && !sound1Playing && !ContentSoundManager.MusicIsPlaying)
 			{
-				trace("Sound is stopped");
+				SaffronLogger.log("Sound is stopped");
 				this.gotoAndStop(2);
 			}
 		}

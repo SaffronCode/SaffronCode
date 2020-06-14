@@ -25,7 +25,7 @@ public class BitmapLoader {
     }
 
     private function urlWasWrong(event:IOErrorEvent):void {
-        trace("*** requested url was wrong ***")
+        SaffronLogger.log("*** requested url was wrong ***")
         callError();
     }
 
@@ -36,7 +36,7 @@ public class BitmapLoader {
         }
         else
         {
-            trace("*** The loaded file was not a bitmap ***");
+            SaffronLogger.log("*** The loaded file was not a bitmap ***");
             callError();
             return ;
         }
@@ -72,7 +72,7 @@ public class BitmapLoader {
     /**You can take the bitmap directly from an input on the onLoadedFunction or loadedBitmap variable*/
     public function load(imageURL:String,onLoadedFunction:Function,onErrorFunction:Function=null):void
     {
-        trace("*** Load "+imageURL+" on BitmapLoader class ***");
+        SaffronLogger.log("*** Load "+imageURL+" on BitmapLoader class ***");
         onLoaded = onLoadedFunction ;
         onError = onErrorFunction ;
         loader.load(new URLRequest(imageURL));

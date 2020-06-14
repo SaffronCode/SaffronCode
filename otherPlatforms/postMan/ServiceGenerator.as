@@ -36,11 +36,11 @@
 				if(inputObject==null)
 				{
 					var par:String = myWebServiceLocation.substring(myWebServiceLocation.lastIndexOf('?')+1);
-					trace("par: "+par);
+					SaffronLogger.log("par: "+par);
 					for(var ii:int = 0 ; ii<100 ; ii++){
 						par = par.replace(/\&([\w]+)([&]|$)/i,'&$1=$2');
 					}
-					trace("par : "+par);
+					SaffronLogger.log("par : "+par);
 					inputObject = new URLVariables(par);
 					//Split extra variables from the web service url at all
 					myWebServiceLocation = myWebServiceLocation.substring(0,myWebServiceLocation.lastIndexOf('?'));
@@ -62,8 +62,8 @@
 					var parameters:Array = [] ;
 					for(var i:String in inputObject)
 					{
-						trace('i+":"+getQualifiedClassName(inputObject[i]) : '+i+":"+getQualifiedClassName(inputObject[i]));
-						trace("Is is array? "+(inputObject[i] is Array)); 
+						SaffronLogger.log('i+":"+getQualifiedClassName(inputObject[i]) : '+i+":"+getQualifiedClassName(inputObject[i]));
+						SaffronLogger.log("Is is array? "+(inputObject[i] is Array)); 
 						
 						if(inputObject[i] is Array && 
 							inputObject[i].length>0 && 
@@ -81,7 +81,7 @@
 						}
 					}
 					parameters.sort();
-					trace("params : "+parameters);
+					SaffronLogger.log("params : "+parameters);
 					inputParamsFor = '{';
 					for(var j:uint ; j<parameters.length ; j++)
 					{
@@ -89,14 +89,14 @@
 						var inputVaraible:String = String(parameters[j]).split(':')[0] ;
 						inputVaraible = inputVaraible+':'+inputVaraible ;
 						inputParamsFor += inputVaraible+',' ;
-						trace("0*** inputParams : "+inputParams);
+						SaffronLogger.log("0*** inputParams : "+inputParams);
 					}
 					
 					inputParams = inputParams.substring(0,inputParams.length-1);
 					inputParamsFor = inputParamsFor.substring(0,inputParamsFor.length-1);
 					inputParamsFor += '}' ;
-					trace("*** inputParams : "+inputParams);
-					trace("*** inputParamsFor : "+inputParamsFor);
+					SaffronLogger.log("*** inputParams : "+inputParams);
+					SaffronLogger.log("*** inputParamsFor : "+inputParamsFor);
 					classString = classString.split("[inputParam]").join(inputParams);
 					classString = classString.split("[inputParam2]").join(inputParamsFor);
 				}

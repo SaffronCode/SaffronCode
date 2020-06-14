@@ -65,7 +65,7 @@
 					myImage = images[0];
 				}
 				myTitle = Obj.findThisClass(TitleText,this) as TitleText;
-				//trace("founded text title is : "+myTitle)
+				//SaffronLogger.log("founded text title is : "+myTitle)
 				myParag = Obj.findThisClass(TextParag,this);
 			}
 				
@@ -111,8 +111,8 @@
 		 * The deltaW is the max delta positioning for the item*/
 		public function slideHorizontal(precent:Number=0,deltaW:Number=0,animateIt:Boolean=false):void
 		{
-			//trace("precent : "+precent);
-			//trace("deltaW : "+deltaW);
+			//SaffronLogger.log("precent : "+precent);
+			//SaffronLogger.log("deltaW : "+deltaW);
 			if(myButtons)
 			{
 				myButtons.setAnimate(precent);
@@ -135,7 +135,7 @@
 		
 		protected function setAnim(precent:Number):void
 		{
-			trace("precent : "+precent);
+			SaffronLogger.log("precent : "+precent);
 			visibleFrame = Math.floor(Math.min(1,Math.abs(precent))*(this.totalFrames-1))+1;
 			slideAnimationActivated = true ;
 			if(!slideAnimationActivated && this.totalFrames>1)
@@ -235,11 +235,11 @@
 		
 		public function imSelected(event:MouseEvent=null):void
 		{
-			trace("Im selected");
-			trace("myLinkData : "+myLinkData);
-			trace("Xn : "+Xn);
-			trace("X0"+X0);
-			trace("Math.abs(this.x-X0)"+Math.abs(this.x-X0));
+			SaffronLogger.log("Im selected");
+			SaffronLogger.log("myLinkData : "+myLinkData);
+			SaffronLogger.log("Xn : "+Xn);
+			SaffronLogger.log("X0"+X0);
+			SaffronLogger.log("Math.abs(this.x-X0)"+Math.abs(this.x-X0));
 			if(
 				myLinkData!=null 
 				&&
@@ -278,7 +278,7 @@
 			}
 			else
 			{
-				//trace("Dispatch linkData");
+				//SaffronLogger.log("Dispatch linkData");
 				this.dispatchEvent(new AppEventContent(myLinkData));
 			}
 			

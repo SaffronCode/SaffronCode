@@ -40,17 +40,17 @@ package net
 		
 		protected function connectionClosed(event:Event):void
 		{
-			trace("• connectionClosed");
+			SaffronLogger.log("• connectionClosed");
 		}
 		
 		protected function outputProgress(event:OutputProgressEvent):void
 		{
-			trace("• Output progress");
+			SaffronLogger.log("• Output progress");
 		}
 		
 		protected function securityError(event:SecurityErrorEvent):void
 		{
-			trace("• securityError");
+			SaffronLogger.log("• securityError");
 		}
 		
 		public function load(request:URLRequest):void
@@ -94,7 +94,7 @@ package net
 				rawBodyToSend+=ln ;
 			}
 			
-			trace("Connect to : "+currentDomain+":"+currentPort);
+			SaffronLogger.log("Connect to : "+currentDomain+":"+currentPort);
 			senderSocket.connect(currentDomain,currentPort);
 		}
 		
@@ -107,7 +107,7 @@ package net
 			senderSocket.close();
 			if(serverAnswerParts.length!=2)
 			{
-				trace("Respond problem!!");
+				SaffronLogger.log("Respond problem!!");
 				this.dispatchEvent(new IOErrorEvent(IOErrorEvent.IO_ERROR));
 			}
 			var headers:Array = serverAnswerParts[0].split(ln);
@@ -116,23 +116,23 @@ package net
 				var headInPart:Array = headers[i].split(':') ;
 				if(headInPart.length==2)
 				{
-					trace(">>>header:"+headInPart);
+					SaffronLogger.log(">>>header:"+headInPart);
 					responsHeaders.push(new URLRequestHeader(headInPart[0],headInPart[1]));
 				}
 			}
 			
-			trace(">>>Body:"+serverAnswerParts[1]);
+			SaffronLogger.log(">>>Body:"+serverAnswerParts[1]);
 		}
 		
 		protected function connectionError(event:IOErrorEvent):void
 		{
-			trace("Server connection fails");
+			SaffronLogger.log("Server connection fails");
 			this.dispatchEvent(new IOErrorEvent(IOErrorEvent.IO_ERROR));
 		}
 		
 		protected function onConnectedToSocket(event:Event):void
 		{
-			trace("Server connected, Send request : "+rawBodyToSend);
+			SaffronLogger.log("Server connected, Send request : "+rawBodyToSend);
 			senderSocket.writeUTFBytes(rawBodyToSend);
 			senderSocket.flush();
 		}

@@ -17,8 +17,6 @@
 	import flash.utils.ByteArray;
 	import flash.utils.clearTimeout;
 	import flash.utils.setTimeout;
-	
-	import contents.alert.SaffronLogger;
 	import mteam.FuncManager;
 
 	/**Cannot connect to server*/
@@ -80,9 +78,6 @@
 		
 		/**This is the last acceptable date for loaded value*/
 		private var offlineDate:Date ;
-		
-		/**This is the value*/
-		//private var parser:RestFullJSONParser ;
 		
 		public var requestedData:Object ;
 		
@@ -146,7 +141,7 @@
 			requestLoader = new URLLoader();
 			if(requestedData is ByteArray)
 			{
-				trace("Requested type is Bitnary");
+				SaffronLogger.log("Requested type is Bitnary");
 				requestLoader.dataFormat = URLLoaderDataFormat.BINARY ;
 			}
 			else
@@ -188,7 +183,7 @@
 		
 		private function serverHeaderReceived(e:HTTPStatusEvent):void
 		{
-			trace("******** ***  *** * ** HTTP headers received : "+e.status);
+			SaffronLogger.log("******** ***  *** * ** HTTP headers received : "+e.status);
 			HTTPStatus = e.status ;
 			RestDoaService.eventDispatcher.dispatchEvent(e.clone());
 			this.dispatchEvent(e.clone());
@@ -221,7 +216,7 @@
 		/**Dispatch proggress event*/
 		protected function dispatchProgress(event:ProgressEvent):void
 		{
-			trace("--Rest doa service progress--",event.bytesLoaded,event.bytesTotal+' > '+myId);
+			SaffronLogger.log("--Rest doa service progress--",event.bytesLoaded,event.bytesTotal+' > '+myId);
 			this.dispatch(new ProgressEvent(ProgressEvent.PROGRESS,false,false,event.bytesLoaded,event.bytesTotal));
 		}
 		
@@ -249,16 +244,16 @@
 			RestDoaService.isOnline = false ;
 			_isLoading = false ;
 			HTTPStatus = 502 ;
-			trace("No internet connection : "+HTTPStatus);
+			SaffronLogger.log("No internet connection : "+HTTPStatus);
 			if(controllData && offlineDataIsOK)
 			{
 				var savedData:* = RestServiceSaver.load(myId,myParams,pureRequest.requestHeaders);
 				if(savedData != null)
 				{
-					trace("Saved data is not null");
+					SaffronLogger.log("Saved data is not null");
 					if(RestDoaService.debug_show_results)
 					{
-						trace("* cashed data for "+myId+" : "+savedData);
+						SaffronLogger.log("* cashed data for "+myId+" : "+savedData);
 					}
 					parsLoadedData(savedData,true,true);
 					return ;
@@ -315,11 +310,11 @@
 			{
 				try
 				{
-					trace("* fresh data for "+myId+" : "+JSON.stringify(JSON.parse(requestLoader.data),null,' '));
+					SaffronLogger.log("* fresh data for "+myId+" : "+JSON.stringify(JSON.parse(requestLoader.data),null,' '));
 				}
 				catch(e)
 				{
-					trace("* JSON model had problem : "+requestLoader.data);
+					SaffronLogger.log("* JSON model had problem : "+requestLoader.data);
 				}
 			}
 			//Alert.show("requestLoaded : "+JSON.stringify(pureRequest));
@@ -340,10 +335,10 @@
 		{
 			var serverErrorBool:Boolean = false ;
 			var pureRecevedData:String = String(loadedData);
-			trace("Receved data "+myId+": "+((pureRecevedData.length<1000)?pureRecevedData:"[larg file : "+pureRecevedData.length+"]"));
+			SaffronLogger.log("Receved data "+myId+": "+((pureRecevedData.length<1000)?pureRecevedData:"[larg file : "+pureRecevedData.length+"]"));
 			var correctedLoadedData:String = pureRecevedData;//pureRecevedData.substring(1,pureRecevedData.length-1).split('\\"').join('\"').split("\\\\u003cbr\\\\u003e").join('\\n').split("<br>").join('\\n');
 			//correctedLoadedData = StringFunctions.clearDoubleQuartmarksOnJSON(correctedLoadedData);
-			//trace("Corrected data is : "+correctedLoadedData);
+			//SaffronLogger.log("Corrected data is : "+correctedLoadedData);
 			if((ignoreHTTPStatus || (HTTPStatus!=502 && HTTPStatus!=500)) && requestedData!=null && pureRecevedData!='')
 			{
 				if(loadedData is String)
@@ -363,7 +358,7 @@
 							if(pureRecevedData.toLowerCase() != 'true')
 							{
 								serverErrorBool = true ;
-								trace("Data format error");
+								SaffronLogger.log("Data format error");
 							}
 		
 						}
@@ -378,7 +373,7 @@
 				}
 				else
 				{
-					trace("I Cannot receive any other types");
+					SaffronLogger.log("I Cannot receive any other types");
 					serverErrorBool = true ;
 				}
 			}
@@ -388,14 +383,14 @@
 				return;
 			}
 			//the receved data is not converted correctly
-			//parser = new RestFullJSONParser(loadedData,requestedData);
+			//parser = new JSONParser(loadedData,requestedData);
 			var oldPureData:String = lastPureData ;
 			lastPureData = loadedData ;
 			
 			
 			if(serverErrorBool)
 			{
-				trace("Server problem");
+				SaffronLogger.log("Server problem");
 				//if(this.hasEventListener(RestEvent.SERVER_ERROR))
 				var serverError:RestDoaEvent = new RestDoaEvent(RestDoaEvent.SERVER_ERROR,HTTPStatus,isConnected,getRequestedData,requestedData) ;
 				if(hasErrorListenerAndDispatchOnglobal(serverError))
@@ -407,7 +402,7 @@
 				}
 				else
 				{
-					trace("User is not listening to ServerError, so ConnectionError Dispatches");
+					SaffronLogger.log("User is not listening to ServerError, so ConnectionError Dispatches");
 					noInternet(null,false);
 				}
 			}
@@ -418,12 +413,12 @@
 				{
 					RestServiceSaver.save(myId,myParams,loadedData,pureRequest.requestHeaders);
 				}
-				trace("Data is ready to use");
+				SaffronLogger.log("Data is ready to use");
 				if(onUpdateProccess)
 				{
 					if(oldPureData!=loadedData)
 					{
-						trace("* This update is new");
+						SaffronLogger.log("* This update is new");
 						//I have to upste lastPureData befor dispatching the event
 						if(this.hasEventListener(RestDoaEvent.SERVER_RESULT_UPDATE))
 						{
@@ -437,7 +432,7 @@
 					}
 					else
 					{
-						trace("* Nothing change on this update");
+						SaffronLogger.log("* Nothing change on this update");
 						dispatch(new RestDoaEvent(RestDoaEvent.SERVER_WAS_UPDATED,HTTPStatus,isConnected,getRequestedData,requestedData));
 					}
 				}
@@ -445,7 +440,7 @@
 				{
 					//this.dispatchEvent(new RestEvent(RestEvent.SERVER_RESULT));
 					//I have to upste lastPureData befor dispatching the event
-					trace("Result event dispatching");
+					SaffronLogger.log("Result event dispatching");
 					dispatch(new RestDoaEvent(RestDoaEvent.SERVER_RESULT,HTTPStatus,isConnected,getRequestedData,requestedData))
 				}
 			}
@@ -491,7 +486,7 @@
 				{
 					getRequestedData = obj;
 					var urlVars:URLVariables;
-					//trace("Send this data : "+JSON.stringify(myParams,null,'\t'));
+					//SaffronLogger.log("Send this data : "+JSON.stringify(myParams,null,'\t'));
 					if(isGet)
 					{
 						myParams = JSONParser.stringify(obj) ;
@@ -519,12 +514,12 @@
 						}
 						else
 						{
-							myParams = RestFullJSONParser.stringify(obj) ;
+							myParams = JSONParser.stringify(obj) ;
 							pureRequest.data = myParams
 						}
 
-						//trace('myParams :',myParams)
-						//	trace('parse :',JSON.parse(myParams))
+						//SaffronLogger.log('myParams :',myParams)
+						//	SaffronLogger.log('parse :',JSON.parse(myParams))
 
 
 						//	var str:String = '{"KindRoof":15,"KindCabinet":27,"Loby":false,"Masahat":0,"Mobile":"","EmailAddress":"","Metraj":0,"Camera":false,"Nama":81,"Negahban":false,"Parking":false,"Pasio":false,"Pele":false,"Pic":["/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/2wBDAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/wAARCAMABAADASIAAhEBAxEB/"],"Pool":false,"Price1":0,"Age":"0","Price2":0,"Anten":false,"Sarmayesh":87,"Shomineh":false,"CaseSide":87,"Shooting":false,"Comment":"","Sona":false,"Confine":"","Storage":false,"CountBed":0,"Takhlie":false,"CountFloor":0,"Tel":false,"CountPoint":true,"TelUser":"","CountUnit":0,"Unit":"","Door":false,"Windows":35,"Family":"","kindService":87,"Elevator":false,"Lat":35.7137859,"Fire":false,"Lon":51.4148809,"Floor":"0","Furned":false,"Garmayesh":87,"Gas":false,"IPhone":false,"IdAgency":0,"IdArea":1,"IdCity":1,"IdKindCase":-1,"IdKindRequest":1,"IdRange":1,"IdState":1,"IdUsers":0,"Point":true,"KindKitchen":21}'
@@ -534,7 +529,7 @@
 				}
 
 			}
-			trace("instantOfflineData : "+instantOfflineData);
+			SaffronLogger.log("instantOfflineData : "+instantOfflineData);
 			if(instantOfflineData)
 			{
 				var savedData:* = RestServiceSaver.load(myId,myParams,pureRequest.requestHeaders) ;
@@ -543,7 +538,7 @@
 					var expired:Boolean = offlineDate.time>RestServiceSaver.lastCashDate;//RestServiceSaver.isExpired(myId,myParams,offlineDate);
 					if(RestDoaService.debug_show_results)
 					{
-						trace("* instant cashed data for "+myId+" : "+savedData);
+						SaffronLogger.log("* instant cashed data for "+myId+" : "+savedData);
 					}
 					FuncManager.callAsyncOnFrame(function(){
 							parsLoadedData(savedData);
@@ -553,7 +548,7 @@
 							}
 							else
 							{
-								trace("* no need to update instant data")
+								SaffronLogger.log("* no need to update instant data")
 								return ;
 							}
 					})
@@ -562,7 +557,7 @@
 			
 			
 			cansel(false);
-			trace(myId+" : "+myParams);
+			SaffronLogger.log(myId+" : "+myParams);
 			webServiceId++ ;
 			if(logger)
 			{
@@ -615,7 +610,7 @@
 				}
 				catch(e)
 				{
-					//trace("No stream opened :\n"+e);
+					//SaffronLogger.log("No stream opened :\n"+e);
 				}
 			}
 		}
@@ -661,7 +656,7 @@
 					functToCall = connectionErrorFunc ;
 					break ;
 			}
-			//trace("*** *** ***** DispatchEvent : "+event.type+" > "+functToCall);
+			//SaffronLogger.log("*** *** ***** DispatchEvent : "+event.type+" > "+functToCall);
 			if(functToCall!=null)
 			{
 				if(functToCall.length>0)

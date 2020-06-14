@@ -20,7 +20,7 @@ package diagrams.table
 			{
 				if(contentList[i].hid == Hid && contentList[i].vid == Vid)
 				{
-					//trace("Data deleted");
+					//SaffronLogger.log("Data deleted");
 					contentList.splice(i,1);
 					i--;
 				}

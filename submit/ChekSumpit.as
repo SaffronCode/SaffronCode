@@ -11,7 +11,7 @@ package submit
 							EMPTY_FIELD:String ="EMPTY_FIELD";				
 		public function ChekSumpit(List_p:Vector.<Field>)
 		{
-			trace('list field :',List_p)
+			SaffronLogger.log('list field :',List_p)
 		}
 	}
 }

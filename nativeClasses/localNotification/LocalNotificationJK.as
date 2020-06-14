@@ -102,7 +102,7 @@
 			{
 				readyFunctionsQue.push(onReady);
 			}
-			trace("isSupport() : " + isSupport());
+			SaffronLogger.log("isSupport() : " + isSupport());
 			if (isSupport())
 			{
 				//NativeApplication.nativeApplication.executeInBackground = true;
@@ -127,7 +127,7 @@
 			}
 			else
 			{
-				trace("!!!!!!!!!!!!!!! Notification is not supporting here !!!!!!!!!!!!!!!!!");
+				SaffronLogger.log("!!!!!!!!!!!!!!! Notification is not supporting here !!!!!!!!!!!!!!!!!");
 				
 				satUpOnce = true;
 				//callAllReadies()
@@ -164,7 +164,7 @@
 		private static function removeEarlierWakeUpNotificationAndAddNewNotification():void
 		{
 			loadClasses();
-			trace("Notif2:" + WakeMessage);
+			SaffronLogger.log("Notif2:" + WakeMessage);
 			if(notificationManager)
 				notificationManager.cancel(NOTIFICATION_IS_CLOSE);
 			var notificati:Object = new NotificationClass();
@@ -199,14 +199,14 @@
 				if(notificationManager!=null)
 				notificationManager.notifyUser(NOTIFICATION_MESSAGE, notificati);
 				//showNotification = true;
-				trace("**** Please send notification");
+				SaffronLogger.log("**** Please send notification");
 			})
 		}
 		
 		/**Cancel custom notification*/
 		public static function cancelCustomNotification():void
 		{
-			trace("Cancel cutsom notificaiton");
+			SaffronLogger.log("Cancel cutsom notificaiton");
 			setUp(function(){if(notificationManager!=null)notificationManager.cancel(NOTIFICATION_MESSAGE)});
 		}
 	

@@ -136,12 +136,12 @@
 		public static function loadObject(id:String,catcherObject:*):*
 		{
 			var jsonObject:* = load(id);
-			trace("object type is : "+getQualifiedClassName(jsonObject));
+			SaffronLogger.log("object type is : "+getQualifiedClassName(jsonObject));
 			if(jsonObject==null)
 			{
 				return null ;
 			}
-			//trace("jsonObject : "+jsonObject);
+			//SaffronLogger.log("jsonObject : "+jsonObject);
 			if(jsonObject is String)
 				return JSONParser.parse(jsonObject,catcherObject);
 			else if(jsonObject is Obj.getObjectClass(catcherObject))
@@ -159,7 +159,7 @@
 			{
 				return null ;
 			}
-			//trace('jsonObject :',jsonObject)
+			//SaffronLogger.log('jsonObject :',jsonObject)
 			var obj:Object = JSON.parse(jsonObject);
 			var _list:Vector.<uint> = new Vector.<uint>
 			for each(var value:uint in obj)

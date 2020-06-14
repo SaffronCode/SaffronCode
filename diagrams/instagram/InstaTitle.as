@@ -45,7 +45,7 @@ package diagrams.instagram
 		{
 			
 			this.graphics.lineStyle(InstagramConstants.Diagram_guide_line_thickness,InstagramConstants.Diagram_colors);
-			//trace("myText.width : "+myText.width);
+			//SaffronLogger.log("myText.width : "+myText.width);
 			this.graphics.moveTo(myText.width,myText.height/2);
 			this.graphics.lineTo(myText.width+InstagramConstants.Diagram_title_lineWidth,myText.height/2);
 		}
@@ -54,7 +54,7 @@ package diagrams.instagram
 		{
 			
 			this.graphics.lineStyle(InstagramConstants.Diagram_guide_line_thickness,InstagramConstants.Diagram_colors);
-			//trace("myText.width : "+myText.width);
+			//SaffronLogger.log("myText.width : "+myText.width);
 			this.graphics.moveTo(myText.width/2,0);
 			this.graphics.lineTo(myText.width/2,-InstagramConstants.Diagram_title_lineHeight);
 		}

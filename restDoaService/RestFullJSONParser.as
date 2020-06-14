@@ -18,7 +18,7 @@ package restDoaService
 		/**This stringiy will make server standard date on json*/
 		public static function stringify(object:Object):String
 		{
-			trace("*** use the JSONParser instead of RestFullJSONParsers");
+			SaffronLogger.log("*** use the JSONParser instead of RestFullJSONParsers");
 			return JSONParser.stringify(object);
 		}
 		
@@ -40,18 +40,18 @@ package restDoaService
 		{
 			if(fillThisObject is ByteArray)
 			{
-				trace("Type is byte array : "+getQualifiedClassName(serverData));
+				SaffronLogger.log("Type is byte array : "+getQualifiedClassName(serverData));
 				try
 				{
 					//(fillThisObject as ByteArray).endian = Endian.LITTLE_ENDIAN ;
 					(fillThisObject as ByteArray).writeBytes(serverData);
-					trace("Byte length is : "+(fillThisObject as ByteArray).length);
+					SaffronLogger.log("Byte length is : "+(fillThisObject as ByteArray).length);
 					(fillThisObject as ByteArray).position = 0 ;
 					error = false ;
 				}
 				catch(e)
 				{
-					trace("Byte array parse error ");
+					SaffronLogger.log("Byte array parse error ");
 					exceptionType = ErrorEnum.BinaryError ;
 				}
 				return ;
@@ -59,7 +59,7 @@ package restDoaService
 			else if(fillThisObject is Vector.<*>)
 			{
 				//Clear vector if it is full
-				//trace("(model as Vector.<*>).length : "+(fillThisObject as Vector.<*>).length);
+				//SaffronLogger.log("(model as Vector.<*>).length : "+(fillThisObject as Vector.<*>).length);
 				while((fillThisObject as Vector.<*>).length)
 				{
 					(fillThisObject as Vector.<*>).pop();
@@ -75,7 +75,7 @@ package restDoaService
 			}
 			catch(e)
 			{
-				trace("JSON is not parsable");
+				SaffronLogger.log("JSON is not parsable");
 				exceptionType = ErrorEnum.JsonParsProblem ;
 			}
 		}

@@ -37,7 +37,7 @@ package
 		
 		public static function popUp(title:String='' , type:PopMenuTypes=null , content:PopMenuContent=null,closeOnTime:uint=0,onButtonSelects:Function = null,onClosedByTimer:Function=null,onClose:Function=null)
 		{
-			//trace('POP 1 MENU OPENED '+Math.random());
+			//SaffronLogger.log('POP 1 MENU OPENED '+Math.random());
 			//ME1.popUp2(title, type, content,closeOnTime,onButtonSelects);
 			
 			
@@ -45,21 +45,21 @@ package
 			//ME1.y = 0 ;
 			ME1.myContent.localHeight(0);
 			
-			trace('POP 2 MENU OPENED '+Math.random());
+			SaffronLogger.log('POP 2 MENU OPENED '+Math.random());
 			ME1.popUp2(title, type, content,closeOnTime,onButtonSelects,onClosedByTimer,onClose);
 			
 			
 			
-			trace("ME2.myContent.height"+ME1.myContent.height+"  ME2.myContent.height0"+contenth0);
+			SaffronLogger.log("ME2.myContent.height"+ME1.myContent.height+"  ME2.myContent.height0"+contenth0);
 			
 			ME1.myContent.y = contenty0;
 			if(maxPageHeight!=0 && ME1.myContent.height > contenth0)
 			{
 				var deltaY:Number = Math.max(0,ME1.myContent.height-contenth0) ;
-				trace("deltaY :"+deltaY+' > '+contenth0);
+				SaffronLogger.log("deltaY :"+deltaY+' > '+contenth0);
 				//ME1.y = y0-deltaY/2 ;
-				trace("ME2.y positino changed to : "+ME1.y);
-				trace("ME2.name ?? "+ME1.name);
+				SaffronLogger.log("ME2.y positino changed to : "+ME1.y);
+				SaffronLogger.log("ME2.name ?? "+ME1.name);
 				
 				var minVisibleYOnStage:Number = (maxPageHeight-staticStageHeight)/-2;
 				var maxVisibleYOnStage:Number = staticStageHeight+(maxPageHeight-staticStageHeight)/2;
@@ -72,14 +72,14 @@ package
 				var accepdetDeltaForContent:Number = Math.max(contentPoseBasedOnStage.y,ME1.titleContainerMC.localToGlobal(new Point(0,ME1.titleContainerMC.height)).y);
 				var conentDeltaY:Number = ME1.myContent.parent.globalToLocal(new Point(0,accepdetDeltaForContent)).y ;
 				ME1.myContent.setY(conentDeltaY) ;
-				trace("conentDeltaY : "+conentDeltaY);
+				SaffronLogger.log("conentDeltaY : "+conentDeltaY);
 				
 				var contentHeightBasedOnStage:Point = ME1.myContent.parent.localToGlobal(new Point(0,ME1.myContent.y+contenth0+deltaY));
 				var maxAcceptableYForHeight:Number = Math.min(contentHeightBasedOnStage.y,maxVisibleYOnStage);
 				var maxAcceptableYOnContentArea:Point = ME1.myContent.parent.globalToLocal(new Point(0,maxAcceptableYForHeight));
-				trace("maxAcceptableYForHeight : "+maxAcceptableYForHeight);
-				trace("maxAcceptableYOnContentArea.y : "+maxAcceptableYOnContentArea);
-				trace("ME1.myContent.y : "+ME1.myContent.y);
+				SaffronLogger.log("maxAcceptableYForHeight : "+maxAcceptableYForHeight);
+				SaffronLogger.log("maxAcceptableYOnContentArea.y : "+maxAcceptableYOnContentArea);
+				SaffronLogger.log("ME1.myContent.y : "+ME1.myContent.y);
 				ME1.myContent.localHeight((maxAcceptableYOnContentArea.y-ME1.myContent.y)-contenth0);
 				ME1.myContent.updateScrollheight();
 			}

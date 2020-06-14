@@ -55,17 +55,17 @@ package nativeClasses.purchase
 		/**Product detail fails*/
 		protected static function shoppingFails(event:Event):void
 		{
-			trace("♠Un able to load products detail");
+			SaffronLogger.log("♠Un able to load products detail");
 			onFails();
 		}
 		
 		protected static function continueShopping(event:ProductEvent):void
 		{
-			trace("♠Continue shopping");
+			SaffronLogger.log("♠Continue shopping");
 			removeAllListeners();
 			if(event.products.length>0)
 			{
-				trace("♠Product is : "+JSON.stringify(event.products[0]));
+				SaffronLogger.log("♠Product is : "+JSON.stringify(event.products[0]));
 				
 				var currentID:String = event.products[0].identifier ;
 				
@@ -81,12 +81,12 @@ package nativeClasses.purchase
 				
 				//Restore transaction will not call
 				ps.addEventListener(TransactionEvent.RESTORE_TRANSACTION_SUCCESS,finishTransactionSucceeded);
-				trace("♠Buy this : "+currentID);
+				SaffronLogger.log("♠Buy this : "+currentID);
 				ps.makePurchaseTransaction(currentID);
 			}
 			else
 			{
-				trace("♠The product code not found");
+				SaffronLogger.log("♠The product code not found");
 				onFails();
 			}
 		}
@@ -94,7 +94,7 @@ package nativeClasses.purchase
 		protected static function transactionFails(event:Event):void
 		{
 			removeAllListeners();
-			trace("♠Transaction fails");
+			SaffronLogger.log("♠Transaction fails");
 			onFails();
 		}
 		
@@ -102,7 +102,7 @@ package nativeClasses.purchase
 		protected static function transactionCanseled(event:Event):void
 		{
 			removeAllListeners();
-			trace("♠Transaction fails by user request");
+			SaffronLogger.log("♠Transaction fails by user request");
 			onFails()
 		}
 		
@@ -113,7 +113,7 @@ package nativeClasses.purchase
 			var t:Transaction;
 			if(e.transactions.length==0)
 			{
-				trace("♠ transaction fails ");
+				SaffronLogger.log("♠ transaction fails ");
 				onFails();
 			}
 			while(e.transactions && i < e.transactions.length)
@@ -128,9 +128,9 @@ package nativeClasses.purchase
 				req.data = "{\"receipt-data\" : \""+ encodedReceipt+"\"}";
 				var ldr:URLLoader = new URLLoader(req);
 				ldr.load(req);
-				trace("Finish this transaction:"+t.identifier);
+				SaffronLogger.log("Finish this transaction:"+t.identifier);
 				ldr.addEventListener(Event.COMPLETE,function(e:Event):void{
-					trace("LOAD COMPLETE: " + ldr.data);
+					SaffronLogger.log("LOAD COMPLETE: " + ldr.data);
 					ps.addEventListener(TransactionEvent.FINISH_TRANSACTION_SUCCESS, finishTransactionSucceeded);
 					ps.finishTransaction(t.identifier);
 				});
@@ -142,17 +142,17 @@ package nativeClasses.purchase
 		private static function printTransaction(t:Transaction):void
 		{
 			return ;
-			trace("-------------------in Print Transaction----------------------");
-			trace("identifier :"+t.identifier);
-			trace("productIdentifier: "+ t.productIdentifier);
-			trace("productQuantity: "+t.productQuantity);
-			trace("date: "+t.date);
-			trace("receipt: "+t.receipt);
-			trace("error: "+t.error);
-			trace("originalTransaction: "+t.originalTransaction);
+			SaffronLogger.log("-------------------in Print Transaction----------------------");
+			SaffronLogger.log("identifier :"+t.identifier);
+			SaffronLogger.log("productIdentifier: "+ t.productIdentifier);
+			SaffronLogger.log("productQuantity: "+t.productQuantity);
+			SaffronLogger.log("date: "+t.date);
+			SaffronLogger.log("receipt: "+t.receipt);
+			SaffronLogger.log("error: "+t.error);
+			SaffronLogger.log("originalTransaction: "+t.originalTransaction);
 			if(t.originalTransaction)
 				printTransaction(t.originalTransaction);
-			trace("---------end of print transaction----------------------------");
+			SaffronLogger.log("---------end of print transaction----------------------------");
 		}
 		
 		protected static function finishTransactionSucceeded(event:Event):void

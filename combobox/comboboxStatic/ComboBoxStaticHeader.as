@@ -47,8 +47,8 @@
 					ComboBoxStaticManager.evt.dispatchEvent(new ComboBoxStaticEvents(ComboBoxStaticEvents.CLOSE,null,_id))
 					ComboBoxStaticManager.setStatus(_id,_status)
 				}
-				//trace("FocusDirection : "+FocusDirection);
-				//trace("(stage as Stage).focus : "+(stage as Stage).focus);
+				//SaffronLogger.log("FocusDirection : "+FocusDirection);
+				//SaffronLogger.log("(stage as Stage).focus : "+(stage as Stage).focus);
 			}
 		}
 		public function setTitle():void
@@ -116,7 +116,7 @@
 			}
 			catch(e:Error)
 			{
-				trace('no fond '+Lable_p)
+				SaffronLogger.log('no fond '+Lable_p)
 			}
 		}
 	}

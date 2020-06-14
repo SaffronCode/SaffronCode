@@ -84,12 +84,12 @@
 					{
                         (GoogleApiAvailabilityClass as Object).instance.showErrorDialog(result);
                     } else {
-                        trace("Google Play Services aren't available on this device");
+                        SaffronLogger.log("Google Play Services aren't available on this device");
                     }
                 } 
 				else 
 				{
-                    trace("Google Play Services are Available");
+                    SaffronLogger.log("Google Play Services are Available");
                 }
 
                 if (DevicePrefrence.isAndroid() && ANDROID_ACCOUNT_ID!=null) 
@@ -120,7 +120,7 @@
 			init();
 			if(!isSupported())
 			{
-				trace("AdMob is not supported here");
+				SaffronLogger.log("AdMob is not supported here");
 				return ;
 			}
 			if(satUp==false)
@@ -216,7 +216,7 @@
 			function errorHandler( event:* ):void
 			{
 				// Load error occurred. The errorCode will contain more information
-				trace( "Error" + event.errorCode );
+				SaffronLogger.log( "Error" + event.errorCode );
 			}
 			adView.load( (new AdRequestBuilderClass() as Object).build() );
 		}
@@ -236,7 +236,7 @@
 			init();
 			if(!isSupported())
 			{
-				trace("AdMob is not supported here");
+				SaffronLogger.log("AdMob is not supported here");
 				return ;
 			}
 			if(satUp==false)
@@ -269,7 +269,7 @@
 			}
 			else
 			{
-				trace("interstitials is not supported");
+				SaffronLogger.log("interstitials is not supported");
 			}
 		}
 		
@@ -289,7 +289,7 @@
 				{
 					// Load error occurred. The errorCode will contain more information
 					anInterstitialBannerWaitingToShow = false ;
-					trace( "Error" + event.errorCode );
+					SaffronLogger.log( "Error" + event.errorCode );
 				}
 	}
 }

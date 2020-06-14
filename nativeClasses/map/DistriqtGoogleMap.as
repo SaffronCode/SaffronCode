@@ -83,7 +83,7 @@
 		
 		public static function setUp(GoogleAPIKey:String=null,DistriqtId:String=null):void
 		{
-			//trace('*********GoogleAPIKey*******'+GoogleAPIKey);
+			//SaffronLogger.log('*********GoogleAPIKey*******'+GoogleAPIKey);
 			
 			try
 			{
@@ -104,7 +104,7 @@
 			}
 			catch (e:Error)
 			{
-				trace("e>>>"+ e );
+				SaffronLogger.log("e>>>"+ e );
 				isSupports = false ;
 			}
 			
@@ -117,17 +117,17 @@
 		private static function initializeMap():void
 		{
 			var autoriseStatus:String = (NativeMapsClass as Object).service.authorisationStatus();
-			trace("*********************autoriseStatus*******************"+autoriseStatus);
+			SaffronLogger.log("*********************autoriseStatus*******************"+autoriseStatus);
 			switch (autoriseStatus)
 			{
 				case (AuthorisationStatusClass as Object).ALWAYS:
 				case (AuthorisationStatusClass as Object).IN_USE:
-					trace( "User allowed access: " + (NativeMapsClass as Object).service.authorisationStatus() );
+					SaffronLogger.log( "User allowed access: " + (NativeMapsClass as Object).service.authorisationStatus() );
 					break;
 				
 				case (AuthorisationStatusClass as Object).NOT_DETERMINED:
 				case (AuthorisationStatusClass as Object).SHOULD_EXPLAIN:
-					trace("--requestAuthorisation");
+					SaffronLogger.log("--requestAuthorisation");
 					(NativeMapsClass as Object).service.requestAuthorisation( (AuthorisationStatusClass as Object).IN_USE );
 					break;
 				
@@ -135,7 +135,7 @@
 				case (AuthorisationStatusClass as Object).DENIED:
 				case (AuthorisationStatusClass as Object).UNKNOWN:
 				default:
-					trace( "Request access to location services." );
+					SaffronLogger.log( "Request access to location services." );
 					if((NativeMapsClass as Object).service.requestAuthorisation.length>0)
 					{
 						(NativeMapsClass as Object).service.requestAuthorisation( (AuthorisationStatusClass as Object).IN_USE );
@@ -150,9 +150,9 @@
 			if(!mapInitialized)
 			{
 				mapInitialized = true ;
-				trace("prepareViewOrder");
+				SaffronLogger.log("prepareViewOrder");
 				(NativeMapsClass as Object).service.prepareViewOrder();
-				trace("prepareViewOrder done");
+				SaffronLogger.log("prepareViewOrder done");
 			}
 		}
 		
@@ -183,23 +183,23 @@
 			map_style = mapStyleJSON ;
 			user_location = showUserLocation ;
 			//unload();
-			trace("AuthorisationStatus.ALWAYS : "+(AuthorisationStatusClass as Object).ALWAYS);
-			trace("AuthorisationStatus.DENIED : "+(AuthorisationStatusClass as Object).DENIED);
-			trace("AuthorisationStatus.IN_USE : "+(AuthorisationStatusClass as Object).IN_USE);
-			trace("AuthorisationStatus.NOT_DETERMINED : "+(AuthorisationStatusClass as Object).NOT_DETERMINED);
-			trace("AuthorisationStatus.RESTRICTED : "+(AuthorisationStatusClass as Object).RESTRICTED);
-			trace("AuthorisationStatus.SHOULD_EXPLAIN : "+(AuthorisationStatusClass as Object).SHOULD_EXPLAIN);
-			trace("AuthorisationStatus.UNKNOWN : "+(AuthorisationStatusClass as Object).UNKNOWN);
+			SaffronLogger.log("AuthorisationStatus.ALWAYS : "+(AuthorisationStatusClass as Object).ALWAYS);
+			SaffronLogger.log("AuthorisationStatus.DENIED : "+(AuthorisationStatusClass as Object).DENIED);
+			SaffronLogger.log("AuthorisationStatus.IN_USE : "+(AuthorisationStatusClass as Object).IN_USE);
+			SaffronLogger.log("AuthorisationStatus.NOT_DETERMINED : "+(AuthorisationStatusClass as Object).NOT_DETERMINED);
+			SaffronLogger.log("AuthorisationStatus.RESTRICTED : "+(AuthorisationStatusClass as Object).RESTRICTED);
+			SaffronLogger.log("AuthorisationStatus.SHOULD_EXPLAIN : "+(AuthorisationStatusClass as Object).SHOULD_EXPLAIN);
+			SaffronLogger.log("AuthorisationStatus.UNKNOWN : "+(AuthorisationStatusClass as Object).UNKNOWN);
 			
-			trace("----");
+			SaffronLogger.log("----");
 			
-			trace("MapType.MAP_TYPE_HYBRID : "+(MapTypeClass as Object).MAP_TYPE_HYBRID);
-			trace("MapType.MAP_TYPE_NONE : "+MapTypeClass.MAP_TYPE_NONE);
-			trace("MapType.MAP_TYPE_NORMAL : "+(MapTypeClass as Object).MAP_TYPE_NORMAL);
-			trace("MapType.MAP_TYPE_SATELLITE : "+(MapTypeClass as Object).MAP_TYPE_SATELLITE);
-			trace("MapType.MAP_TYPE_TERRAIN : "+(MapTypeClass as Object).MAP_TYPE_TERRAIN);
+			SaffronLogger.log("MapType.MAP_TYPE_HYBRID : "+(MapTypeClass as Object).MAP_TYPE_HYBRID);
+			SaffronLogger.log("MapType.MAP_TYPE_NONE : "+MapTypeClass.MAP_TYPE_NONE);
+			SaffronLogger.log("MapType.MAP_TYPE_NORMAL : "+(MapTypeClass as Object).MAP_TYPE_NORMAL);
+			SaffronLogger.log("MapType.MAP_TYPE_SATELLITE : "+(MapTypeClass as Object).MAP_TYPE_SATELLITE);
+			SaffronLogger.log("MapType.MAP_TYPE_TERRAIN : "+(MapTypeClass as Object).MAP_TYPE_TERRAIN);
 			
-			trace("-------");
+			SaffronLogger.log("-------");
 			myMarkers = new Vector.<Object>();
 			myIcons = new Vector.<MapIcon>();
 			if(icons!=null)
@@ -213,20 +213,20 @@
 			{
 				var rect:Rectangle;
 				rect = createViewPort();
-				trace("Create map : "+rect);
+				SaffronLogger.log("Create map : "+rect);
 				
 				if(!isNaN(centerLat) && !isNaN(centerLon))
 				{
 					center = new LatLngClass(centerLat,centerLon);
 				}
 				firstZoomLevel = zoomLevel ;
-				trace("...listenning...");
+				SaffronLogger.log("...listenning...");
 				(NativeMapsClass as Object).service.addEventListener( (NativeMapEventClass as Object).MAP_CREATED, mapCreatedHandler );
 				(NativeMapsClass as Object).service.addEventListener( NativeMapBitmapEvent.READY , updateCapturedBitmap);
-				trace("---Creating...");
+				SaffronLogger.log("---Creating...");
 				NativeMaps.service.createMap( rect, (MapTypeClass as Object).MAP_TYPE_NORMAL);
 				
-				trace("Create map done");
+				SaffronLogger.log("Create map done");
 				mapCreated = true ;
 				mapIsShowing = true ;
 			}
@@ -246,8 +246,8 @@
 			{
 				(NativeMapsClass as Object).service.destroyMap();
 				(NativeMapsClass as Object).service.removeEventListener( (NativeMapEventClass as Object).MAP_CREATED, mapCreatedHandler );
-				trace('map*************'+NativeMapsClass);
-				trace('event***********'+NativeMapEventClass)
+				SaffronLogger.log('map*************'+NativeMapsClass);
+				SaffronLogger.log('event***********'+NativeMapEventClass)
 			}
 			dispatcher.removeEventListener(Event.REMOVED_FROM_STAGE,removeMeBecauseSomeOneElseComes);
 			
@@ -291,7 +291,7 @@
 		
 		public function setCenter(lat:Number,lon:Number,zoomLevel:Number=-1,animationDuration:uint=2000):void
 		{
-			trace("******* first center is : "+lat,lon,zoomLevel);
+			SaffronLogger.log("******* first center is : "+lat,lon,zoomLevel);
 			center = new LatLngClass(lat,lon);
 			firstZoomLevel = zoomLevel ;
 			(NativeMapsClass as Object).service.setCentre(center,zoomLevel,animationDuration!=0,animationDuration)
@@ -302,18 +302,18 @@
 			catchedBitmap.width = 1 ;
 			catchedBitmap.height = 1 ;
 			var rect:Rectangle = this.getBounds(stage);
-			//trace("****Create view port");
+			//SaffronLogger.log("****Create view port");
 			if(scl==0)
 			{
 				var stageRect:Rectangle = StageManager.stageRect ;
-				trace("stageRect : "+stageRect);
+				SaffronLogger.log("stageRect : "+stageRect);
 				var sclX:Number ;
 				var sclY:Number ;
 				deltaX = 0 ;
 				deltaY = 0 ;
 				
 
-					trace("+++default size detection")
+					SaffronLogger.log("+++default size detection")
 					sclX = (stage.fullScreenWidth/stage.stageWidth);
 					sclY = (stage.fullScreenHeight/stage.stageHeight);
 					if(sclX<=sclY)
@@ -337,10 +337,10 @@
 
 			catchedBitmap.scaleX = catchedBitmap.scaleY = 1/scl ;
 			
-			//trace("Old rect : " +rect);
-			//trace("scl : "+scl);
-			//trace("deltaX : "+deltaX);
-			//trace("deltaY : "+deltaY);
+			//SaffronLogger.log("Old rect : " +rect);
+			//SaffronLogger.log("scl : "+scl);
+			//SaffronLogger.log("deltaX : "+deltaX);
+			//SaffronLogger.log("deltaY : "+deltaY);
 			
 			rect.x*=scl;
 			rect.y*=scl;
@@ -354,7 +354,7 @@
 			rect.width = round(rect.width);
 			rect.height = round(rect.height);
 			
-			//trace("new rect : " +rect);
+			//SaffronLogger.log("new rect : " +rect);
 			
 			if(rect.x<0)
 			{
@@ -393,18 +393,18 @@
 		protected function repose(event:Event):void
 		{
 			var rect:Rectangle = createViewPort();
-			//trace("Repose : "+rect);
+			//SaffronLogger.log("Repose : "+rect);
 			if(rect)
 				(NativeMapsClass as Object).service.setLayout(rect.width,rect.height,rect.x,rect.y);
 			
-			//trace("map place is : "+rect);
+			//SaffronLogger.log("map place is : "+rect);
 			
 			if(forceToHideMap ==false && rect!=null && Obj.isAccesibleByMouse(this))
 			{
-				//trace("Show map!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+				//SaffronLogger.log("Show map!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 				if(!mapIsShowing)
 				{
-					//trace("!!!!!!!!!!!!!!!!!show!!!!!!!!!!!!");
+					//SaffronLogger.log("!!!!!!!!!!!!!!!!!show!!!!!!!!!!!!");
 					(NativeMapsClass as Object).service.showMap();
 					mapIsShowing = true ;
 					//catchedBitmap.visible = false ;
@@ -412,10 +412,10 @@
 			}
 			else
 			{
-				//trace("Hide the map!!!");
+				//SaffronLogger.log("Hide the map!!!");
 				if(mapIsShowing)
 				{
-					//trace("!!!!!!!!!!!!!!!hide!!!!!!!!!!!!!!!");
+					//SaffronLogger.log("!!!!!!!!!!!!!!!hide!!!!!!!!!!!!!!!");
 					(NativeMapsClass as Object).service.hideMap();
 					NativeMaps.service.requestMapBitmapData();
 					mapIsShowing = false ;
@@ -426,7 +426,7 @@
 		
 		public function addMarker(markerName:String,lat:Number,lon:Number,markerTitle:String,markerInfo:String,color:uint=0,enableInfoWindow:Boolean=true,animated:Boolean=true,showInfoButton:Boolean=true,iconId:String=''):void
 		{
-			trace("****************Map marker Added : ",lat,lon,markerName,'iconId : '+iconId);
+			SaffronLogger.log("****************Map marker Added : ",lat,lon,markerName,'iconId : '+iconId);
 			var myMarker:Object = new MapMarkerClass(markerName,new LatLngClass(lat,lon),markerTitle,markerInfo,color,false,enableInfoWindow,animated,showInfoButton,iconId)
 			myMarkers.push(myMarker);
 			if(mapCretedOnStage)

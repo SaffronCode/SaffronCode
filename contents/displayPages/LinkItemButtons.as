@@ -46,7 +46,7 @@ package contents.displayPages
 		{
 			precent = Math.max(-1,Math.min(1,precent));
 			visibleFrame = Math.floor(Math.min(1,Math.abs(precent))*(this.totalFrames-1))+1;
-			//trace("*precent : "+precent+' : '+visibleFrame);
+			//SaffronLogger.log("*precent : "+precent+' : '+visibleFrame);
 		}
 	}
 }

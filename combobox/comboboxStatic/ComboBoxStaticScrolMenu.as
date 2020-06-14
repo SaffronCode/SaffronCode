@@ -27,7 +27,7 @@ package combobox.comboboxStatic
 			}
 			else if(_comboBoxDynamicItem==null)
 			{
-				trace("Dynamic manu class shouldent be empty of linkItem!");
+				SaffronLogger.log("Dynamic manu class shouldent be empty of linkItem!");
 			}
 			
 		//	setScrol()

@@ -55,7 +55,7 @@ package photoEditor
 				newItems.addEventListener(MouseEvent.CLICK,addMyStamp);
 			}
 			
-			trace("toolbarRect: "+toolbarRect);
+			SaffronLogger.log("toolbarRect: "+toolbarRect);
 			
 			
 			var stampsArea:Rectangle = toolbarRect.clone();
@@ -67,7 +67,7 @@ package photoEditor
 			button_remove.addEventListener(MouseEvent.ROLL_OUT,deffaultFrameForRemover);
 			button_remove.addEventListener(MouseEvent.MOUSE_UP,removeIfSomthingSelects);
 			
-			trace("stampsArea : "+stampsArea);
+			SaffronLogger.log("stampsArea : "+stampsArea);
 			
 			new ScrollMT(stampsMC,stampsArea,null,false,true);
 			
@@ -93,7 +93,7 @@ package photoEditor
 		
 		private function resetGestures():void
 		{
-			trace("Reset");
+			SaffronLogger.log("Reset");
 			stampInnerContainer.removeEventListener(TransformGestureEvent.GESTURE_PAN,panThem);
 			stampInnerContainer.removeEventListener(TransformGestureEvent.GESTURE_ROTATE,panThem);
 			stampInnerContainer.removeEventListener(TransformGestureEvent.GESTURE_ZOOM,panThem);
@@ -204,7 +204,7 @@ package photoEditor
 		/**Add a stamp to the stage*/
 		protected function addMyStamp(event:MouseEvent):void
 		{
-			trace("Stamp clicked");
+			SaffronLogger.log("Stamp clicked");
 			var stampItem:StampButton = event.currentTarget as StampButton;
 			
 			var newStamp:StampItem = new StampItem();

@@ -107,8 +107,8 @@ public class ScrollStarling extends Sprite {
         /**Creates points from touchs*/
         private function touchToParentPoint(touch:Touch):Point
         {
-            trace("target.parent : "+target.parent);
-            trace("touch : "+touch);
+            SaffronLogger.log("target.parent : "+target.parent);
+            SaffronLogger.log("touch : "+touch);
             return target.parent.globalToLocal(new Point(touch.globalX,touch.globalY));
         }
 
@@ -121,7 +121,7 @@ public class ScrollStarling extends Sprite {
         }
         mode = 0 ;
         freeToScrollLR = freeToScrollTD = false ;
-        trace("Stoppp!!!!!!!!!!!!!");
+        SaffronLogger.log("Stoppp!!!!!!!!!!!!!");
         //StarlingAction.removeMouseMoveListeners(target.stage,mouseMoved);
         lastCapturedTouch = currentTouch = null ;
         dispatchScrollEndEvent();
@@ -153,7 +153,7 @@ public class ScrollStarling extends Sprite {
         mode = 1 ;
         Vx = 0 ;
         Vy = 0 ;
-        trace("Touched!!!!!!!!!!!!!");
+        SaffronLogger.log("Touched!!!!!!!!!!!!!");
         currentTouch = touches ;
         firstTouch = touches.clone();
         //StarlingAction.addMouseMoveListner(target.stage,mouseMoved);
@@ -162,7 +162,7 @@ public class ScrollStarling extends Sprite {
     /**Mouse movelistner
     private function mouseMoved(touches:Touch):void
     {
-        trace("Mouse moved : ");
+        SaffronLogger.log("Mouse moved : ");
         currentTouch = touches.clone() ;
     }*/
 
@@ -214,9 +214,9 @@ public class ScrollStarling extends Sprite {
                     else if(curTargRect.bottom<maskArea.bottom)
                     {
                         Vy = ((targetY0+maskArea.height-curTargRect.height)-curTargRect.y)/rollBackAnimSpeed;
-                        trace("maskArea.height : "+maskArea.height);
-                        trace("curTargRect.height : "+curTargRect.height);
-                        trace("curTargRect.y : "+curTargRect.y);
+                        SaffronLogger.log("maskArea.height : "+maskArea.height);
+                        SaffronLogger.log("curTargRect.height : "+curTargRect.height);
+                        SaffronLogger.log("curTargRect.y : "+curTargRect.y);
                     }
                 }
 

@@ -58,7 +58,7 @@ public class VideoPlayerStarlingCompatible extends Sprite {
 
     public function loadVideo(videoTarget:String):void
     {
-        trace("* the video target is : "+videoTarget);
+        SaffronLogger.log("* the video target is : "+videoTarget);
         flashStage.addChild(myVideoClass);
         myVideoClass.addEventListener(VideoEvents.VIDEO_STATUS_CHANGED, statusChanged)
         myVideoClass.loadThiwVideo(videoTarget,true,NaN,NaN,null,false);

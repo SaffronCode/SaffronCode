@@ -114,13 +114,13 @@
 			}
 			else
 			{
-				trace("PHOTO EDIT IS NOT EXISTS!!!!");
-				trace("PHOTO EDIT IS NOT EXISTS!!!!");
-				trace("PHOTO EDIT IS NOT EXISTS!!!!");
-				trace("PHOTO EDIT IS NOT EXISTS!!!!");
-				trace("PHOTO EDIT IS NOT EXISTS!!!!");
-				trace("PHOTO EDIT IS NOT EXISTS!!!!");
-				trace("PHOTO EDIT IS NOT EXISTS!!!!");
+				SaffronLogger.log("PHOTO EDIT IS NOT EXISTS!!!!");
+				SaffronLogger.log("PHOTO EDIT IS NOT EXISTS!!!!");
+				SaffronLogger.log("PHOTO EDIT IS NOT EXISTS!!!!");
+				SaffronLogger.log("PHOTO EDIT IS NOT EXISTS!!!!");
+				SaffronLogger.log("PHOTO EDIT IS NOT EXISTS!!!!");
+				SaffronLogger.log("PHOTO EDIT IS NOT EXISTS!!!!");
+				SaffronLogger.log("PHOTO EDIT IS NOT EXISTS!!!!");
 			}
 		}
 		
@@ -133,7 +133,7 @@
 		
 		private function setUp(pageRectangle:Rectangle):void
 		{
-			trace("pageRectangle : "+pageRectangle);
+			SaffronLogger.log("pageRectangle : "+pageRectangle);
 			this.x = pageRectangle.x; 
 			this.y = pageRectangle.y; 
 			backMC.width = pageRectangle.width;
@@ -320,7 +320,7 @@
 				showCurrentImage();
 				return true;
 			}
-			trace("Undo is not available");
+			SaffronLogger.log("Undo is not available");
 			return false ;
 		}
 		
@@ -333,7 +333,7 @@
 				showCurrentImage();
 				return true;
 			}
-			trace("Redo is not available");
+			SaffronLogger.log("Redo is not available");
 			return false;
 		}
 		

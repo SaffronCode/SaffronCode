@@ -44,8 +44,8 @@ package contents.multiLanguage
 			{
 				compilerValuesFile = new File(_____compilerValuesLocation);
 			}
-			//trace("compilerValuesFile : "+compilerValuesFile.url);
-			//trace("compilerValuesFile is exists? :"+compilerValuesFile.exists);
+			//SaffronLogger.log("compilerValuesFile : "+compilerValuesFile.url);
+			//SaffronLogger.log("compilerValuesFile is exists? :"+compilerValuesFile.exists);
 			if(_____compilerValuesLocation!=null && compilerValuesFile!=null && compilerValuesFile.exists)
 			{
 				/*compilerValsAre = '';
@@ -53,7 +53,7 @@ package contents.multiLanguage
 				{
 					compilerValsAre+='public var '+i+':String ;\n';
 				}*/
-				//trace("compilerValsAre is : "+$compilerValsAre);
+				//SaffronLogger.log("compilerValsAre is : "+$compilerValsAre);
 				
 				TextFile.save(compilerValuesFile,_____compilerValsAre);
 			}

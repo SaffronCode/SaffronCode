@@ -44,7 +44,7 @@ package image
 			_bitmapdata = Bitmapdata_p
 			if(_bitmapdata==null)
 			{
-				trace('Bitmapdata is null')
+				SaffronLogger.log('Bitmapdata is null')
 				return
 			}
 			loadInThisArea = LoadInThisArea_p

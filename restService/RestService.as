@@ -26,7 +26,7 @@ package restService
 		{
 			if(sharedObject == null)
 			{
-				//trace("♠ Set up shared Object");
+				//SaffronLogger.log("♠ Set up shared Object");
 				sharedObject = SharedObject.getLocal('restFullCash','/');
 			}
 		}
@@ -35,19 +35,19 @@ package restService
 		{
 			setUpStorage();
 			var cash:String = sharedObject.data[id];
-			//trace("♠ Load "+id+" from tht shared object");
+			//SaffronLogger.log("♠ Load "+id+" from tht shared object");
 			if(cash == null)
 			{
 				return '';
 			}
-			//trace("♠ Loaded id is : "+cash);
+			//SaffronLogger.log("♠ Loaded id is : "+cash);
 			return cash ;
 		}
 		
 		private static function set(id:String,value:String):void
 		{
 			setUpStorage();
-			//trace("♠ set the "+id+" to "+value);
+			//SaffronLogger.log("♠ set the "+id+" to "+value);
 			sharedObject.data[id] = value ;
 			sharedObject.flush();
 		}
@@ -68,7 +68,7 @@ package restService
 			{
 				_UId = get(id_UId);
 			}
-			//trace("♠ Get _UId : "+_UId);
+			//SaffronLogger.log("♠ Get _UId : "+_UId);
 			return _UId;
 		}
 		
@@ -76,23 +76,23 @@ package restService
 
 		private static function setUIdAuth(value:String):void
 		{
-			//trace("♠ set id_UIdAuth from "+_UIdAuth+" To "+value);
+			//SaffronLogger.log("♠ set id_UIdAuth from "+_UIdAuth+" To "+value);
 			if(_UIdAuth!=value)
 			{
 				set(id_UIdAuth,value);
 				_UIdAuth = value;
-				//trace("♠ done");
+				//SaffronLogger.log("♠ done");
 			}
 		}
 
 		private static function setUId(value:String):void
 		{
-			//trace("♠ set _UId from "+_UId+" To "+value);
+			//SaffronLogger.log("♠ set _UId from "+_UId+" To "+value);
 			if(_UId!=value)
 			{
 				set(id_UId,value);
 				_UId = value;
-				//trace("♠ done");
+				//SaffronLogger.log("♠ done");
 			}
 		}
 
@@ -115,7 +115,7 @@ package restService
 			serverDomain = ServerDomain ;
 			UId;
 			UIdAuth;
-			trace("Rest service is starts on : "+serverDomain);
+			SaffronLogger.log("Rest service is starts on : "+serverDomain);
 		}
 		
 		/**Feal these values from signInViewModel to make user knownAsLoged in*/
@@ -123,14 +123,14 @@ package restService
 		{
 			setUId(uId) ;
 			setUIdAuth(uIdAuth) ;
-			trace("User is logged in");
+			SaffronLogger.log("User is logged in");
 		}
 		
 		public static function logOut():void
 		{
 			setUId('');
 			setUIdAuth('');
-			trace("User is logged out");
+			SaffronLogger.log("User is logged out");
 		}
 		
 		/**Returns true if user is logged in.*/

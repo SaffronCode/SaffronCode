@@ -54,7 +54,7 @@ package netManager.downloadManager
 		/**start over download manager*/
 		private function startOver():void
 		{
-			//trace('start loading');
+			//SaffronLogger.log('start loading');
 			downloader = new FileDownloader(url,file.length);
 			downloader.addEventListener(DownloadManagerEvents.DOWNLOAD_PROGRESS,someDataLoaded);
 			downloader.addEventListener(DownloadManagerEvents.DOWNLOAD_COMPLETE,fileIsComplete);
@@ -64,7 +64,7 @@ package netManager.downloadManager
 		
 		private function fileIsNotExists(e:DownloadManagerEvents)
 		{
-			trace('file is not exists on server');
+			SaffronLogger.log('file is not exists on server');
 			this.dispatchEvent(new DownloadManagerEvents(DownloadManagerEvents.URL_IS_NOT_EXISTS,0,null,url));
 		}
 										 
@@ -86,7 +86,7 @@ package netManager.downloadManager
 			{
 				url = URL ;
 			}
-			trace('cansel loading');
+			SaffronLogger.log('cansel loading');
 			stop();
 			removeMyCashedFile();
 		}
@@ -101,7 +101,7 @@ package netManager.downloadManager
 		/**cash this data*/
 		private function someDataLoaded(e:DownloadManagerEvents):void
 		{
-			//trace('download precent is : '+e.precent+' new bytes are : '+e.loadedFile.length);
+			//SaffronLogger.log('download precent is : '+e.precent+' new bytes are : '+e.loadedFile.length);
 			saveNewBytes(e.loadedFile);
 			this.dispatchEvent(new DownloadManagerEvents(DownloadManagerEvents.DOWNLOAD_PROGRESS,e.precent,null,url));
 		}
@@ -111,7 +111,7 @@ package netManager.downloadManager
 		{
 			if(tellIfCompleted())
 			{
-				//trace('this file is completed befor');
+				//SaffronLogger.log('this file is completed befor');
 				fileIsComplete();
 			}
 			else
@@ -124,7 +124,7 @@ package netManager.downloadManager
 		/**file is downloaded*/
 		private function fileIsComplete(e:DownloadManagerEvents=null):void
 		{
-			//trace('tell that the file is completed');
+			//SaffronLogger.log('tell that the file is completed');
 			markCompletedDownload();
 			this.dispatchEvent(new DownloadManagerEvents(DownloadManagerEvents.DOWNLOAD_COMPLETE,1,file,url));
 		}
@@ -156,7 +156,7 @@ package netManager.downloadManager
 		/**load the byteArray of currentID , it will load shared object from static shared object*/
 		private function loadIfExist():void
 		{
-			//trace('try to load cashed download file');
+			//SaffronLogger.log('try to load cashed download file');
 			loadSavedFiles() ;
 			file = new ByteArray();
 			for(var i:uint = 0 ; i<(savedFiles.data[shValName] as Array).length ; i++)
@@ -165,7 +165,7 @@ package netManager.downloadManager
 				{
 					file.writeBytes((savedFiles.data[shValName][i][1] as ByteArray));
 					file.position = 0 ;
-					//trace('cashed file is : '+file.length);
+					//SaffronLogger.log('cashed file is : '+file.length);
 					break ;
 				}
 			}
@@ -187,10 +187,10 @@ package netManager.downloadManager
 					break ;
 				}
 			}
-			//trace('foundedI : '+foundedI);
+			//SaffronLogger.log('foundedI : '+foundedI);
 			file.position = 0 ;
 			savedFiles.data[shValName][foundedI] = [url,file];
-			//trace('saved file is : '+(savedFiles.data[shValName][foundedI][1] as ByteArray).length);
+			//SaffronLogger.log('saved file is : '+(savedFiles.data[shValName][foundedI][1] as ByteArray).length);
 			savedFiles.flush();
 		}
 		
