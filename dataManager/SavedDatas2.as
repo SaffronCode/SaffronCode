@@ -293,7 +293,7 @@
 		 * if no value founds , it will return null instead of some Stringifi data*/
 		public static function load(id:String,lastAcceptableDate:Date=null):*
 		{
-			TimeTracer.tr("get "+id);
+			//TimeTracer.tr("get "+id);
 			setUp();
 			
 			var l:uint = asyncQue.length ;
@@ -302,7 +302,7 @@
 			{
 				if(asyncQue[i].id == id)
 				{
-					TimeTracer.tr("founded "+id);
+					//TimeTracer.tr("founded "+id);
 					savedDate = asyncQue[i].date ;
 					return asyncQue[i].data ;
 				}
@@ -313,7 +313,7 @@
 				{
 					if(lastAcceptableDate===null || asyncSaved[i].date>lastAcceptableDate.time)
 					{
-						TimeTracer.tr("founded "+id);
+						//TimeTracer.tr("founded "+id);
 						savedDate = asyncSaved[i].date ;
 						return asyncSaved[i].data ;
 					}
@@ -358,7 +358,7 @@
 					//SaffronLogger.log('result on query is : '+(result.data[0][field_value]==null)+' > check string : '+(result.data[0][field_value]=='null'));
 					var res:* = result.data[0][field_value] ;
 					savedDate = result.data[0][field_date] ;
-					TimeTracer.tr("founded on db "+id);
+					//TimeTracer.tr("founded on db "+id);
 					return res ;
 				}
 			}

@@ -2,8 +2,6 @@
 	//appManager.displayContentElemets.LightImage
 {
 	
-	import com.mteamapp.PerformanceTest;
-	
 	import contents.alert.Alert;
 	
 	import flash.display.Bitmap;
@@ -223,7 +221,7 @@
 		 * pass -1 for each dimention to make the original value to use on that side*/
 		override public function setUp(imageURL:String, loadInThisArea:Boolean=false, imageW:Number=0, imageH:Number=0, X:Number=0, Y:Number=0,keepRatio:Boolean=true):*
 		{
-			PerformanceTest.traceDelay(1);
+			//PerformanceTest.traceDelay(1);
 			//SaffronLogger.log("Load this image : "+imageURL);
 			if(URL!=null && URL == imageURL)
 			{
@@ -292,7 +290,7 @@
 			{
 				this.y=Y;
 			}
-			PerformanceTest.traceDelay(2);
+			//PerformanceTest.traceDelay(2);
 			if(this.stage!=null)
 			{
 				startWork(null);
@@ -327,7 +325,7 @@
 		/**This will make images to load*/
 		public function startLoading(e:*=null):void
 		{
-			//PerformanceTest.traceDelay(3);
+			////PerformanceTest.traceDelay(3);
 			if(this.stage==null)
 				return;
 			clearTimeout(imageLoaderTimeOutId);
@@ -358,7 +356,7 @@
 		protected function imageSaved(event:URLSaverEvent=null):void
 		{
 			wasLoadedBefor = event==null || event.wasLoadedBefor ;
-			PerformanceTest.traceDelay('image is loaded');
+			//PerformanceTest.traceDelay('image is loaded');
 			//var loaderContext:LoaderContext = new LoaderContext(false,ApplicationDomain.currentDomain);
 			//SaffronLogger.log("Load this image : "+event.offlineTarget);
 			//loader = new Loader();
@@ -377,14 +375,14 @@
 				{
 					SaffronLogger.log("Try to load : "+event.offlineTarget);
 					
-					PerformanceTest.traceDelay('create target file');
+					//PerformanceTest.traceDelay('create target file');
 					var targetFile:File = new File(event.offlineTarget) ;
-					PerformanceTest.traceDelay('Target file created');
+					//PerformanceTest.traceDelay('Target file created');
 					if(targetFile.exists)
 					{
-						PerformanceTest.traceDelay('open file async');
+						//PerformanceTest.traceDelay('open file async');
 						fileStreamLoader.openAsync(targetFile,FileMode.READ);
-						PerformanceTest.traceDelay('async loaded');
+						//PerformanceTest.traceDelay('async loaded');
 					}
 					else{
 						throw "The file is not exists" ;
@@ -420,12 +418,12 @@
 			try
 			{
 				fileStreamLoader.readBytes(bytes);
-				PerformanceTest.traceDelay('file loaded. show the image');
+				//PerformanceTest.traceDelay('file loaded. show the image');
 				var tim:Number = getTimer();
 				WorkerFunctions.createBitmapFromByte(bytes,imageLoaded,LoadInThisArea,W,H,keepImageRatio);
 				//loader.loadBytes(bytes,loaderContext);
 				SaffronLogger.log("*>>> "+(getTimer()-tim));
-				PerformanceTest.traceDelay('image file showed');
+				//PerformanceTest.traceDelay('image file showed');
 				fileStreamLoader.close();
 				bytes.clear();
 			}
@@ -446,7 +444,7 @@
 		protected function imageLoaded(workerArray:Array=null):void
 		{
 			
-			PerformanceTest.traceDelay('image loader loaded the image');
+			//PerformanceTest.traceDelay('image loader loaded the image');
 			clearTheBitmap();
 			var workerBitmap:BitmapData ;
 			//var loadedContent:DisplayObject ;
@@ -586,7 +584,7 @@
 			}
 			
 			IsLoading = false;
-			PerformanceTest.traceDelay("Now image is ready to show");
+			//PerformanceTest.traceDelay("Now image is ready to show");
 			this.dispatchEvent(new Event(Event.COMPLETE));
 		}
 		
