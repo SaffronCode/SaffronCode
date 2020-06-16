@@ -119,7 +119,15 @@ package appManager.animatedPages.pageManager
 						}
 						catch(e:Error)
 						{
-							SaffronLogger.log("**********************************************\n\n\n\n\n\n\n\nError happens :\n"+e.message+'\n'+e.getStackTrace()+"\n\n\n\n\n\n\n\n********************************************");
+							if(DevicePrefrence.isDebuggingMode())
+							{
+								throw e;
+							}
+							else
+							{
+								var errorText:String = "**********************************************\n\n\n\n\n\n\n\nError happens :\n"+e.message+'\n'+e.getStackTrace()+"\n\n\n\n\n\n\n\n********************************************" ;
+								SaffronLogger.log(errorText);
+							}
 						}
 					}
 					else
