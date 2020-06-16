@@ -19,6 +19,11 @@ package
 
 		private static var _logs:Boolean = false ;
 
+		public static function traceIsActive():Boolean
+		{
+			return _trace;
+		}
+
 		public static function deactiveTraces():void
 		{
 			_trace = false ;
@@ -32,6 +37,11 @@ package
 		public static function activateLogs():void
 		{
 			_logs = true ;
+		}
+
+		public static function deactiveLogs():void
+		{
+			_logs = false ;
 		}
 		
 		private static function init():void
