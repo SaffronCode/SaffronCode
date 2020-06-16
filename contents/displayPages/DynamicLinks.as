@@ -155,6 +155,7 @@ package contents.displayPages
 		
 		private var myStage:Stage ;
 		private var firstItem:DisplayObject;
+		private var lastItem:DisplayObject;
 		
 		/**Make the list freeze*/
 		private var isFreezed:Boolean = false ;
@@ -474,14 +475,15 @@ package contents.displayPages
 		{
 			if(dynamicHeight && linksContainer!=null)
 			{
-				if(linksSensor!=null && linksSensor.parent!=null)
+				if(linksSensor!=null)
 				{
-					linksContainer.removeChild(linksSensor);
+					linksSensor.x = linksSensor.y = 0 ;
+					linksSensor.width = linksSensor.height = 0 ;
 				}
 				var linkContainerHiegh:Number = linksContainer.height ;
 				if(linksSensor)
 				{
-					linksContainer.addChild(linksSensor);
+					linksSensor.scaleX = linksSensor.scaleY = 1 ;
 				}
 				return Math.max(linkContainerHiegh,areaRect.height);
 			}
@@ -547,6 +549,12 @@ package contents.displayPages
 			firstItem = firstElement ;
 		}
 		
+		/**You can pass an display elemet to show at the top of your list. <strong>You have to call setUp() function to make it work</strong>*/
+		public function addLastDisplayElemntForTheList(lastElement:DisplayObject=null):void
+		{
+			lastItem = lastElement ;
+		}
+		
 		/**You can pass the first element on the list to this functiom. it will show it on the top of your list*/
 		public function setUp(pageData:PageData):void
 		{
@@ -567,12 +575,23 @@ package contents.displayPages
             lastItemIndex = 0 ;
 			
 			//SaffronLogger.log("current page data is : "+pageData.export());
-			this.removeChildren();
-			myPageData = pageData;
-			linksContainer = new Sprite();
-			if(firstItem!=null)
+			if(linksContainer==null)
 			{
-				linksContainer.addChild(firstItem);
+				linksContainer = new Sprite();
+			}
+			if(firstItem==null)
+			{
+				this.removeChildren();
+			}
+			else
+			{
+				Obj.removeAllChildBut(this,[linksContainer,linksSensor]);
+				Obj.removeAllChildBut(linksContainer,[firstItem]);
+
+				if(firstItem.parent!=linksContainer)
+				{
+					linksContainer.addChild(firstItem);
+				}
 				firstItem.x = firstItem.y = 0 ;
 				if(revertedY)
 				{
@@ -583,10 +602,15 @@ package contents.displayPages
 					firstItem.x = -firstItem.width ;
 				}
 			}
+			myPageData = pageData;
+			if(firstItem!=null)
+			{
+				
+			}
 			if(pageData.links1.length == 0 && noLinksMC!=null)
 			{
 				this.addChild(noLinksMC);
-				linksSensor = new Sprite();
+				linksSensor = lastItem==null?new Sprite():lastItem as Sprite;
 			}
 			else
 			{
@@ -665,8 +689,10 @@ package contents.displayPages
 			this.addChild(linksContainer);
 			linksContainer.addChild(buttonsContainer);
 		
-			
-			linksSensor = new Sprite();
+			if(linksSensor==null)
+			{
+				linksSensor = lastItem==null?new Sprite():lastItem as Sprite;
+			}
 			if(!horizontalMenu)
 			{
 				linksSensor.y = (firstItem==null)?myDeltaY0:firstItem.height+myDeltaY0 ;
@@ -690,7 +716,8 @@ package contents.displayPages
 				{
 					stepSize = sampleLink.height+deltaY ;
 				}
-				linksSensor.graphics.drawRect(0,0,areaRect.width*MenuDirectionX,linkSensorHeight*MenuDirectionY);
+				if(lastItem==null)
+					linksSensor.graphics.drawRect(0,0,areaRect.width*MenuDirectionX,linkSensorHeight*MenuDirectionY);
 			}
 			else
 			{
@@ -698,12 +725,14 @@ package contents.displayPages
 				{
 					stepSize = sampleLink.width+deltaX ;
 				}
-				linksSensor.graphics.drawRect(0,0,linkSensorHeight*MenuDirectionX,areaRect.height*MenuDirectionY);
+				if(lastItem==null)
+					linksSensor.graphics.drawRect(0,0,linkSensorHeight*MenuDirectionX,areaRect.height*MenuDirectionY);
 			}
 			linksSensor.mouseChildren = false ;
 			linksSensor.mouseEnabled = false ;
 			
-			linksContainer.addChild(linksSensor);
+			if(linksSensor.parent!=linksContainer)
+				linksContainer.addChild(linksSensor);
 			
 			/*if(myPageData.id!='' && scrollPosesObject[myPageData.id]!=null)
 			{
@@ -1085,7 +1114,8 @@ package contents.displayPages
 					//Call this recursive function after preloader is invisible
 					if(linksSensor.parent==null)
 					{
-						linksContainer.addChild(linksSensor);
+						if(linksSensor.parent!=linksContainer)
+							linksContainer.addChild(linksSensor);
 					}
 					
 					controllSensor();
