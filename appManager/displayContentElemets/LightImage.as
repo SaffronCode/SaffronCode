@@ -95,6 +95,9 @@
 		//private var maximomImageLoadingDelay:Number = 8000 ;
 		
 		//private var minimomImageLoadingDelay:Number = 4000 ;
+
+		private var remove_cash:Boolean = false ;
+		private var remove_file_target:String = null ;
 		
 		
 		public function LightImage(BackColor:uint=0x000000,BackAlpha:Number=0)
@@ -104,6 +107,11 @@
 			super();
 			
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
+		}
+
+		public function dontCashImage():void
+		{
+			remove_cash = true ;
 		}
 		
 		/**Change the icon size*/
@@ -395,6 +403,10 @@
 					fileStreamLoader = null ;*/
 					//Alert.show("event.offlineTarget : "+event.offlineTarget);
 				SaffronLogger.log("**** event.offlineTarget on lightImage : "+event.offlineTarget);
+				if(remove_cash)
+				{
+					remove_file_target = event.offlineTarget ;
+				}
 					WorkerFunctions.createBitmapFromByte(event.offlineTarget,imageLoaded,LoadInThisArea,W,H,keepImageRatio,blur);
 					//loader.load(new URLRequest(),loaderContext);
 				//}
@@ -590,7 +602,11 @@
 		
 		protected function clearTheBitmap():void
 		{
-			
+			if(remove_file_target!=null)
+			{
+				FileManager.deleteFile(new File(remove_file_target));
+				remove_file_target = null ;
+			}
 			if(newBitmap!=null)
 			{
 				if(newBitmap.bitmapData!=null)
