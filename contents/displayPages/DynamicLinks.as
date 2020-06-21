@@ -543,8 +543,8 @@ package contents.displayPages
 				if(linksInterfaceStorage[i].stage!=null)
 				{
 					linksInterfaceStorage[i].setUp(myPageData.links1[i]);
-					if(linksInterfaceStorage[i].myLinkData==null)
-						linksInterfaceStorage[i].myLinkData = myPageData.links1[i] ;
+					//if(linksInterfaceStorage[i].myLinkData==null)
+					linksInterfaceStorage[i].myLinkData = myPageData.links1[i] ;
 				}
 				else
 				{
@@ -1319,8 +1319,8 @@ package contents.displayPages
 				newLink.x = removedLinkItem.x;
 				newLink.y = removedLinkItem.y;
 				newLink.setUp(removedLinkItem.myLinkData) ;
-				if(newLink.myLinkData==null)
-					newLink.myLinkData = removedLinkItem.myLinkData ;
+				//if(newLink.myLinkData==null)
+				newLink.myLinkData = removedLinkItem.myLinkData ;
 				
 				this.dispatchEvent(new DynamicLinksEvent(DynamicLinksEvent.UPDATE_LINKS_POSITION));
 				
@@ -1422,8 +1422,8 @@ package contents.displayPages
 						linksContainer.addChild(newLink) ;
 						newLink.setSize(areaRect.width,areaRect.height);
 						newLink.setUp(myPageData.links1[lastGeneratedLinkIndes]) ;
-						if(newLink.myLinkData==null)
-							newLink.myLinkData = myPageData.links1[lastGeneratedLinkIndes] ;
+						//if(newLink.myLinkData==null)
+						newLink.myLinkData = myPageData.links1[lastGeneratedLinkIndes] ;
 					}
 					else
 					{
