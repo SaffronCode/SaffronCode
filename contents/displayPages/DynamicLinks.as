@@ -454,7 +454,7 @@ package contents.displayPages
 		/**This will change the scroll area value but you have to call setUp after this functin*/
 		public function chageHeight(newValue:Number):void
 		{
-			if(revertedY)
+			if(revertedY && revertedByMovieclipUI)
 			{
 				SaffronLogger.log("**********************Revert added");
 				areaRect.top = newValue*-1 ;
