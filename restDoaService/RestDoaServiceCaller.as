@@ -154,9 +154,9 @@
 			requestLoader.addEventListener(ProgressEvent.PROGRESS,dispatchProgress);
 		}
 
-		public function then(onConnectionError:Function):RestDoaServiceCaller
+		public function then(onResponded:Function):RestDoaServiceCaller
 		{
-			resultReturnedFunc = onConnectionError ;
+			resultReturnedFunc = onResponded ;
 			return this ;
 		}
 

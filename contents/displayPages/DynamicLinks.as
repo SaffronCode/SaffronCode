@@ -761,8 +761,11 @@ package contents.displayPages
 				if(lastItem==null)
 					linksSensor.graphics.drawRect(0,0,linkSensorHeight*MenuDirectionX,areaRect.height*MenuDirectionY);
 			}
-			linksSensor.mouseChildren = false ;
-			linksSensor.mouseEnabled = false ;
+			if(lastItem==null)
+			{
+				linksSensor.mouseChildren = false ;
+				linksSensor.mouseEnabled = false ;
+			}
 			
 			if(linksSensor.parent!=linksContainer)
 				linksContainer.addChild(linksSensor);
