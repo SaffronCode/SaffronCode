@@ -620,6 +620,7 @@ package contents.displayPages
 			if(firstItem==null)
 			{
 				this.removeChildren();
+				linksContainer.removeChildren();
 			}
 			else
 			{
