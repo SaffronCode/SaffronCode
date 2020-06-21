@@ -527,6 +527,29 @@ package contents.displayPages
 				myDeltaY = pageDeltaY ;
 			}
 		}
+
+		public function addLinkToFirs(link:LinkData):void
+		{
+			var lastLink:LinkData = null ;
+			if(myPageData.links1.length>0)
+			{
+				lastLink = myPageData.links1.pop();
+				myPageData.links1.unshift(link);
+				update(myPageData);
+				if(lastLink!=null)
+				{
+					var linkList:Vector.<LinkData> = new Vector.<LinkData>();
+					linkList.push(lastLink);
+					addLink(linkList);
+				}
+			}
+			else
+			{
+				var linkList2:Vector.<LinkData> = new Vector.<LinkData>();
+				linkList2.push(link);
+				addLink(linkList2);
+			}
+		}
 		
 		/**Update created linkItems with same model of pageData*/
 		public function update(pageData:PageData):void
