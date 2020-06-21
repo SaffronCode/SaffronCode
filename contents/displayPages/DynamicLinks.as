@@ -574,6 +574,11 @@ package contents.displayPages
 					linksInterfaceStorage[i].myLinkData = myPageData.links1[i];
 				}
 			}
+
+			if(revertedY)
+			{
+				updateLinksPosition();
+			}
 		}
 		
 		/**You can pass an display elemet to show at the top of your list. <strong>You have to call setUp() function to make it work</strong>*/
