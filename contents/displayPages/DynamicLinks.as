@@ -35,6 +35,7 @@ package contents.displayPages
 	import flash.geom.Rectangle;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
+	import contents.displayElements.SaffronPreLoader;
 	
 	/**Reload required*/
 	[Event(name="RELOAD_REQUIRED", type="contents.displayPages.DynamicLinksEvent")]
@@ -78,6 +79,8 @@ package contents.displayPages
 		/**This is the reload item. it will add to the top of the list and when you scroll it more than defautl, it will apear.*/
 		protected var 	reloaderMC:MovieClip,
 						reloaderMCFrame:Number = 1;
+
+		private var preloaderMC:SaffronPreLoader ;
 					
 		protected var 	sampleLinkButton:LinkItemButtons,
 						linkButtonClass:Class,
@@ -280,6 +283,8 @@ package contents.displayPages
 				throw "Dynamic manu class shouldent be empty of linkItem!";
 			}
 			linkItemWidth = sampleLink.width ;
+
+			preloaderMC = Obj.findThisClass(SaffronPreLoader,this);
 			
 			sampleLinkButton = Obj.findThisClass(LinkItemButtons,this,true);
 			if(sampleLinkButton)
@@ -311,6 +316,11 @@ package contents.displayPages
 			if(activeSlideButtons)
 			{
 				this.addEventListener(MouseEvent.MOUSE_DOWN,controllMouseSlide);
+			}
+
+			if(preloaderMC)
+			{
+				this.addChild(preloaderMC);
 			}
 			
 			///It will make problem on online contents when its not loaded yet
