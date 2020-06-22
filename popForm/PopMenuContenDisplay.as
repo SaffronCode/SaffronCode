@@ -15,6 +15,7 @@ package popForm
 	import flash.geom.Rectangle;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
+	import com.mteamapp.StringFunctions;
 	
 	[Event(name="buttonSelecte", type="popForm.PopMenuEvent")]
 	[Event(name="FIELD_SELECTED", type="popForm.PopMenuEvent")]
@@ -214,11 +215,17 @@ package popForm
 			}
 			if(!content.justify)
 			{
-				UnicodeStatic.fastUnicodeOnLines(mainText,content.mainTXT,true);
+				if(StringFunctions.isPersian(content.mainTXT))
+					UnicodeStatic.fastUnicodeOnLines(mainText,content.mainTXT,true);
+				else
+					mainText.text = content.mainTXT;
 			}
 			else
 			{
-				UnicodeStatic.htmlText(mainText,content.mainTXT,false,true,true);
+				if(StringFunctions.isPersian(content.mainTXT))
+					UnicodeStatic.htmlText(mainText,content.mainTXT,false,true,true);
+				else
+					mainText.text = content.mainTXT;
 			}
 			if(content.displayObject == null)
 			{
