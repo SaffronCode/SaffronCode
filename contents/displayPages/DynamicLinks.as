@@ -592,6 +592,18 @@ package contents.displayPages
 		{
 			lastItem = lastElement ;
 		}
+
+		public function setUpOrUpdate(pageData:PageData):void
+		{
+			if(myPageData!=null && myPageData.links1.length==pageData.links1.length)
+			{
+				update(pageData);
+			}
+			else
+			{
+				setUp(pageData);
+			}
+		}
 		
 		/**You can pass the first element on the list to this functiom. it will show it on the top of your list*/
 		public function setUp(pageData:PageData):void
