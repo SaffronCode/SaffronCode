@@ -528,6 +528,25 @@ package contents.displayPages
 			}
 		}
 
+		public function addLinksToFirs(links:Vector.<LinkData>):void
+		{
+			var lastLinks:Vector.<LinkData> = new Vector.<LinkData>() ;
+			if(myPageData.links1.length>0)
+			{
+				for(var i:int = links.length-1 ; i>=0 ; i--)
+				{
+					lastLinks.unshift(myPageData.links1.pop());
+					myPageData.links1.unshift(links[i]);
+				}
+				update(myPageData);
+				addLink(lastLinks);
+			}
+			else
+			{
+				addLink(links);
+			}
+		}
+
 		public function addLinkToFirs(link:LinkData):void
 		{
 			var lastLink:LinkData = null ;
