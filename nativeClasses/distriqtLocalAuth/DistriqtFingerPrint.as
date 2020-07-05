@@ -1,4 +1,4 @@
-package nativeClasses.distriqtLocalAuth
+﻿package nativeClasses.distriqtLocalAuth
 {
 	import dataManager.GlobalStorage;
 
@@ -60,7 +60,7 @@ package nativeClasses.distriqtLocalAuth
 		{
 			setUp();
 			var loadedPass:String = loadPass();
-			if (isPasswordSaved && isSupported())
+			if (isPasswordSaved() && isSupported())
 			{
 				(LocalAuthClass as Object).service.addEventListener( (LocalAuthEventClass as Object).AUTH_SUCCESS, authSuccessHandler );
 				(LocalAuthClass as Object).service.addEventListener( (LocalAuthEventClass as Object).AUTH_FAILED, authFailedHandler );
