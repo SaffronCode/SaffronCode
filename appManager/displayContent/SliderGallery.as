@@ -221,6 +221,14 @@
 			}
 		}
 		
+		public function getCurrentSelectedImageObject():SliderImageItem
+		{
+			if(imagesList.length>getCurrentSelectedImage())
+				return imagesList[getCurrentSelectedImage()];
+			else
+				return null;
+		}
+		
 		public function totalImages():uint
 		{
 			return _totalImages ;
@@ -662,7 +670,7 @@
 			else
 			{
 				this.addEventListener(MouseEvent.CLICK,preventDefaultClick,false,1000);
-				animInterval = animateTimer ;
+				animInterval = animateTimer==0?10000:animateTimer ;
 			}
 			
 			
