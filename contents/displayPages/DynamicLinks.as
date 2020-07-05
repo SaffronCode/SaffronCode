@@ -508,10 +508,25 @@ package contents.displayPages
 		}
 		
 		/**Call this after setUp and to preventing this to call your function all the times, call noMoreLinks() method to stop it.*/
-		public function canGetMore(youCanRequestForMore:Function,preLoaderObject:Sprite):void
+		public function canGetMore(youCanRequestForMore:Function,preLoaderObject:Sprite=null):void
 		{
 			requestMore = youCanRequestForMore ;
-			requestPreLoader = preLoaderObject ;
+			if(preLoaderObject==null && preloaderMC!=null)
+			{
+				//preloaderMC.visible = true ;
+				preLoaderObject = preloaderMC ;
+				Obj.remove(preloaderMC);
+				preloaderMC = null ;
+			}
+			/*if(preLoaderObject==null)
+			{
+				preLoaderObject = new Sprite();
+			}*/
+			if(preLoaderObject!=null)
+			{
+				requestPreLoader = preLoaderObject ;
+				requestPreLoader.visible = false ;
+			}
 		}
 		
 		
@@ -648,7 +663,7 @@ package contents.displayPages
 			{
 				linksContainer = new Sprite();
 			}
-			if(firstItem==null)
+			if(firstItem==null && lastItem==null)
 			{
 				this.removeChildren();
 				linksContainer.removeChildren();
@@ -656,7 +671,7 @@ package contents.displayPages
 			else
 			{
 				Obj.removeAllChildBut(this,[linksContainer,linksSensor]);
-				Obj.removeAllChildBut(linksContainer,[firstItem]);
+				Obj.removeAllChildBut(linksContainer,[firstItem,lastItem]);
 
 				if(firstItem.parent!=linksContainer)
 				{
