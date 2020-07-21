@@ -8,13 +8,14 @@
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
-	import flash.geom.ColorTransform;
 	import flash.geom.Point;
 	import flash.text.TextField;
-	import flash.text.TextFormat;
 	import flash.ui.Keyboard;
 	import contents.LinkData;
 	import appManager.event.AppEventContent;
+	import stageManager.StageManager;
+	import flash.utils.Dictionary;
+	import flash.display.DisplayObject;
 	
 	
 	public class PopButton extends MovieClip
@@ -103,6 +104,78 @@
 			}
 		}
 		
+		public function moveUpByKeyboard(MaxMove:Number=0):void
+		{
+			allPositions = new Dictionary();
+			maxMoveUp = MaxMove ;
+			this.addEventListener(Event.ENTER_FRAME,checkKeyboard);
+			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad2);
+		}
+
+			private const extraHeight:Number = 100 ;
+			/**Will be create dynamicly */
+			private var keyBoardHeight:Number = 0 ;
+
+			private var allPositions:Dictionary ;
+
+			private var maxMoveUp:Number ;
+
+			private function checkKeyboard(e:Event):void
+			{
+				if(this.parent!=null && this.stage.softKeyboardRect.height>0)//stage.mouseX>100
+				{
+					trace("stage.fullScreenWidth : "+stage.fullScreenWidth);
+					trace("stage.stageWidth : "+stage.stageWidth);
+					if(keyBoardHeight==0)//
+					{
+						var stageScale:Number = stage.fullScreenWidth/stage.stageWidth ;
+						trace("stageScale : "+stageScale);
+						trace("this.stage.softKeyboardRect : "+this.stage.softKeyboardRect)
+						keyBoardHeight = (Math.sqrt(Math.pow(this.stage.softKeyboardRect.width,2)/2))/stageScale+extraHeight;//stage.mouseX-100;
+					}
+					var stageFullscreenH:Number = StageManager.stageVisibleArea.height;
+					trace("stageFullscreenH : "+stageFullscreenH);
+					var textFieldBottomBasedOnRoot:Number = this.parent.localToGlobal(new Point(0,this.y+this.height/2)).y ;
+					trace("textFieldBottomBasedOnRoot : "+textFieldBottomBasedOnRoot);
+					var textFeildFromBottom:Number = stageFullscreenH-(textFieldBottomBasedOnRoot+StageManager.stageDelta.height/2);
+					var moveUpTo:Number = Math.max(0,keyBoardHeight-textFeildFromBottom) ;
+					if(maxMoveUp>0)
+					{
+						moveUpTo = Math.min(maxMoveUp,moveUpTo);
+					}
+					trace("keyBoardHeight : "+keyBoardHeight);
+					trace("textFeildFromBottom : "+textFeildFromBottom);
+					trace("Move it up to : "+moveUpTo);
+					for(var i:int = 0 ; i<this.numChildren ; i++)
+					{
+						var currentItem:DisplayObject = this.getChildAt(i) ;
+						var Y:Number = allPositions[currentItem] ;
+						if(isNaN(Y))
+						{
+							Y = allPositions[currentItem] = currentItem.y ;
+						}
+						currentItem.y += ((Y-moveUpTo)-currentItem.y)/5 ;
+					}
+				}
+				else if(keyBoardHeight!=0)
+				{
+					for(var j:int = 0 ; j<this.numChildren ; j++)
+					{
+						var currentItem2:DisplayObject = this.getChildAt(j) ;
+						var Y2:Number = allPositions[currentItem2] ;
+						if(!isNaN(Y2))
+						{
+							currentItem2.y = Y2 ;
+						}
+					}
+					keyBoardHeight = 0 ;//To prevent items move
+				}
+			}
+
+			private function unLoad2(e:Event):void
+			{
+				this.removeEventListener(Event.ENTER_FRAME,checkKeyboard);
+			}
 		
 		
 		/**add titles that will triggerring the back button*/
@@ -255,7 +328,7 @@
 				/**Contrll the button position*/
 				protected function controllPosition(event:Event=null):void
 				{
-					if(this.localToGlobal(new Point()).y<1400)
+					if(this.localToGlobal(new Point()).y<1800)
 					{
 						createElements();
 					}
@@ -269,7 +342,7 @@
 					/**Controll the button y after enter frame*/
 					protected function controllPosition2(event:Event):void
 					{
-						if(this.localToGlobal(new Point()).y<1400)
+						if(this.localToGlobal(new Point()).y<1800)
 						{
 							this.removeEventListener(Event.ENTER_FRAME,controllPosition2);
 							createElements();
