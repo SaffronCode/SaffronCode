@@ -293,6 +293,11 @@
 			//SaffronLogger.log("Get my date : "+date);
 			return date ;
 		}
+
+		public function set date(value:Date):void
+		{
+			update(value);
+		}
 		
 		public function get date():Date
 		{

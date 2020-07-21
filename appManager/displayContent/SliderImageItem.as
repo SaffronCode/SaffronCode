@@ -5,7 +5,7 @@ package appManager.displayContent
 	public class SliderImageItem
 	{
 		/**This can be a bitmapData or url or ByteArray*/
-		internal var image:* ;
+		public var image:* ;
 		
 		public var title:String ;
 		public var titleColor:int;
