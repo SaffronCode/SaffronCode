@@ -102,7 +102,7 @@
 			{
 				useGetMethod = URLRequestMethod.GET;
 			}
-			else if(useGetMethod==true)
+			else if(useGetMethod==false)
 			{
 				useGetMethod = URLRequestMethod.POST;
 			}
