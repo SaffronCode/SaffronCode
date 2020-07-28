@@ -96,8 +96,16 @@
 		
 		/**Do not pass null value as RequestedData, it will cause an Error!!<br>
 		 * Integer or numeric values will loose*/
-		public function RestDoaServiceCaller(myWebServiceLocation:String,RequestedData:Object,offlineDataIsOK_v:Boolean=true,instantOfflineData_v:Boolean=false,maximomOfflineData:Date = null,useGetMethod:Boolean=false)
+		public function RestDoaServiceCaller(myWebServiceLocation:String,RequestedData:Object,offlineDataIsOK_v:Boolean=true,instantOfflineData_v:Boolean=false,maximomOfflineData:Date = null,useGetMethod:*=URLRequestMethod.POST)
 		{
+			if(useGetMethod==true)
+			{
+				useGetMethod = URLRequestMethod.GET;
+			}
+			else if(useGetMethod==true)
+			{
+				useGetMethod = URLRequestMethod.POST;
+			}
 			if(maximomOfflineData==null)
 			{
 				maximomOfflineData = new Date();
@@ -125,16 +133,10 @@
 				pureRequest = new URLRequest(RestDoaService.domain+myWebServiceLocation);
 			}
 			
-			isGet = useGetMethod;
-			if(useGetMethod)
-			{
-				pureRequest.method = URLRequestMethod.GET;
-			}
-			else
-			{
-				pureRequest.method = URLRequestMethod.POST;
+			isGet = useGetMethod==URLRequestMethod.GET;
+			pureRequest.method = useGetMethod;
+			if(!isGet)
 				pureRequest.contentType = 'application/json';
-			}
 			
 			updateHeaders();
 			
