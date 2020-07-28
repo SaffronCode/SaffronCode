@@ -635,12 +635,17 @@ package contents.displayPages
 			}
 			else
 			{
-				setUp(pageData);
+				setUpFromScratch(pageData);
 			}
 		}
-		
-		/**You can pass the first element on the list to this functiom. it will show it on the top of your list*/
+
 		public function setUp(pageData:PageData):void
+		{
+			setUpOrUpdate(pageData);
+		}
+
+		/**You can pass the first element on the list to this functiom. it will show it on the top of your list*/
+		public function setUpFromScratch(pageData:PageData):void
 		{
 			saveLastPosition();
 			//new functions
