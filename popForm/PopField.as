@@ -33,6 +33,7 @@
 		private var activeRadioMode:Boolean ;
 		
 		private var backMC:MovieClip ;
+		private var submitMC:MovieClip ;
 		private var myTitle:String;
 		
 		/**If this was true, data function will controll the phone correction befor returning the value*/
@@ -63,6 +64,8 @@
 		private var _multiLineTag:Boolean=false;
 		
 		public static var borderColor:uint = 0xD92C5C;
+
+		private var onSubmited:Function ;
 		
 		
 		public function get textField():TextField
@@ -199,6 +202,7 @@
 
 		public function onEnterPressed(func:Function):void
 		{
+			onSubmited = func ;
 			if(nativeKeyBoard!=null)
 			{
 				nativeKeyBoard.onEnterPressed(func);
@@ -210,6 +214,8 @@
 			
 			var Y0:Number ;
 			var Y1:Number ;
+
+			onSubmited = onTypedFunction ;
 			
 			if(defaultText!=null)
 				lastTXT = defaultText ;
@@ -234,13 +240,22 @@
 			
 			myTitle = tagName ;
 			backMC = Obj.getAllChilds("back_mc",this,true)[0];
+			if(backMC==null)
+			{
+				backMC = new MovieClip();
+			}
+			submitMC = Obj.get("submit_mc",this);
+
 			
 			//New Line to manage textfield background color 
 			changeColor(color);
 			
 			tagContainer = Obj.getAllChilds("tag_txt",this,true)[0];
-			tagNameTXT = Obj.getAllChilds("tag_txt",tagContainer,true)[0];
-			tagNameTXT.text = "" ;
+			if(tagContainer)
+			{
+				tagNameTXT = Obj.getAllChilds("tag_txt",tagContainer,true)[0];
+				tagNameTXT.text = "" ;
+			}
 			
 			showPassMC = Obj.get("show_pass_mc",this);
 			if(showPassMC)
@@ -268,12 +283,15 @@
 				clearMC.visible = false ;
 			}
 			_multiLineTag = multiLineTag;
-			if(multiLineTag){
-				TextPutter.onTextArea(tagNameTXT,tagName,StringFunctions.isPersian(tagName),true,true,0,false,false,-1,false,0,false);
-			}
-			else
+			if(tagNameTXT!=null)
 			{
-				TextPutter.OnButton(tagNameTXT,tagName,StringFunctions.isPersian(tagName),false,true);
+				if(multiLineTag){
+					TextPutter.onTextArea(tagNameTXT,tagName,StringFunctions.isPersian(tagName),true,true,0,false,false,-1,false,0,false);
+				}
+				else
+				{
+					TextPutter.OnButton(tagNameTXT,tagName,StringFunctions.isPersian(tagName),false,true);
+				}
 			}
 			myTXT = Obj.getAllChilds('txt_txt',this,false)[0];
 			myTXT.addEventListener(Event.CLOSE, dispatchChangeForMeToo);
@@ -283,8 +301,14 @@
 			myTXT.borderColor = borderColor;
 			myTXT.displayAsPassword = isPass ;
 			myTXT.mouseEnabled = myTXT.selectable = editable ;
+
+			if(submitMC!=null)
+			{
+				submitMC.buttonMode = true ;
+				submitMC.addEventListener(MouseEvent.CLICK,activateSubmitIfSomethingEntered);
+			}
 			
-			if(tagContainer.totalFrames>1 && tagFrameControl==null)
+			if(tagContainer!=null && tagContainer.totalFrames>1 && tagFrameControl==null)
 			{
 				tagFrameControl = new Anim_Frame_Controller(tagContainer,defaultText==''?0:uint.MAX_VALUE,false);
 				Obj.addEventListener(myTXT,FarsiInputCorrectionEvent.TEXT_FIELD_SELECTED,checkTagAnimation);
@@ -405,6 +429,18 @@
 
 			return this ;
 		}
+
+		private function activateSubmitIfSomethingEntered(e:MouseEvent):void
+		{
+			if(myTXT.text!='')
+			{
+				e.stopImmediatePropagation();
+				if(onSubmited!=null)
+				{
+					onSubmited();
+				}
+			}
+		}
 		
 		/**Return true if the field is in password mode*/
 		public function isPassword():Boolean
@@ -460,10 +496,14 @@
 		
 		override public function get height():Number
 		{
-			var tagHeight:Number = Math.max(super.height,tagNameTXT.height+tagNameTXT.y);
+			var tagHeight:Number = super.height;
+			if(tagNameTXT!=null)
+			{
+				tagHeight = Math.max(tagHeight,tagNameTXT.height+tagNameTXT.y);
+			}
 			if(myTXT==null)
 			{
-				return Math.max(tagNameTXT.height,tagHeight) ;
+				return tagHeight ;
 			}
 			return Math.max(myTXT.y+myTXT.height,backMC.y+backMC.height,tagHeight);
 		}
