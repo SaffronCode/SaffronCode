@@ -410,6 +410,7 @@
 			{
 				videoURL = videoQualities[degree-1];
 				player.load(videoURL);
+				player.seek(position);
 			}
 			else
 			{
