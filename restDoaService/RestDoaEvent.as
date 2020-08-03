@@ -20,6 +20,8 @@ package restDoaService
 		
 		/**The web service result was update, no need to change the result*/
 		public static const SERVER_WAS_UPDATED:String = "SERVER_WAS_UPDATED" ;
+
+		public static const SERVER_UNAUTHORIZED:String = "SERVER_UNAUTHORIZED" ;
 		
 		
 		public static const TITLE_ERROR:String = "TITLE_ERROR";
