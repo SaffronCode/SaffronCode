@@ -321,14 +321,14 @@
 					SaffronLogger.log("* JSON model had problem : "+requestLoader.data);
 				}
 			}
+			if(HTTPStatus == 401)
+			{
+				dispatch(new RestDoaEvent(RestDoaEvent.SERVER_UNAUTHORIZED,HTTPStatus,true,getRequestedData,null))
+			}
 			//Alert.show("requestLoaded : "+JSON.stringify(pureRequest));
 			if(HTTPStatus==502 || HTTPStatus==500/* && requestLoader.data==''*/)
 			{
 				noInternet();
-			}
-			else if(HTTPStatus == 401)
-			{
-				dispatch(new RestDoaEvent(RestDoaEvent.SERVER_UNAUTHORIZED,HTTPStatus,true,getRequestedData,null))
 			}
 			else
 			{
