@@ -18,6 +18,7 @@
 	import flash.utils.clearTimeout;
 	import flash.utils.setTimeout;
 	import mteam.FuncManager;
+	import contents.alert.Alert;
 
 	/**Cannot connect to server*/
 	[Event(name="CONNECTION_ERROR", type="restDoaService.RestDoaEvent")]
@@ -35,6 +36,8 @@
 	[Event(name="progress", type="flash.events.ProgressEvent")]
 	/**Dispatch respond header*/
 	[Event(name="httpResponseStatus", type="flash.events.HTTPStatusEvent")]
+	/**Cannot authorized users*/
+	[Event(name="SERVER_UNAUTHORIZED", type="flash.events.RestDoaEvent")]
 	public class RestDoaServiceCaller extends EventDispatcher 
 	{
 		/**200:Ok<br>
@@ -137,7 +140,6 @@
 			pureRequest.method = useGetMethod;
 			if(!isGet)
 				pureRequest.contentType = 'application/json';
-			
 			updateHeaders();
 			
 			requestLoader = new URLLoader();
@@ -323,6 +325,10 @@
 			if(HTTPStatus==502 || HTTPStatus==500/* && requestLoader.data==''*/)
 			{
 				noInternet();
+			}
+			else if(HTTPStatus == 401)
+			{
+				dispatch(new RestDoaEvent(RestDoaEvent.SERVER_UNAUTHORIZED,HTTPStatus,true,getRequestedData,null))
 			}
 			else
 			{
