@@ -237,9 +237,9 @@
 			else
 			{
 				clearAfterSelects = true ;
-				yearTF.text = 'yyyy';
-				monthTF.text = 'mm';
-				dayTF.text = 'dd';
+				yearTF.text = IsArabic?'سال':'yyyy';
+				monthTF.text = IsArabic?'ماه':'mm';
+				dayTF.text = IsArabic?'روز':'dd';
 			}
 			
 			yearKeyboard = FarsiInputCorrection.setUp(yearTF,SoftKeyboardType.NUMBER,IsArabic,true,clearAfterSelects,false,true,true,ReturnKeyLabel.NEXT,selectMonth);
