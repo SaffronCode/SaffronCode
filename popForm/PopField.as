@@ -14,6 +14,8 @@
 	import flash.utils.setTimeout;
 	import contents.alert.Alert;
 	import animation.Anim_Frame_Controller;
+	import flash.events.KeyboardEvent;
+	import flash.ui.Keyboard;
 	
 	/**Text field is changed*/
 	[Event(name="change", type="flash.events.Event")]
@@ -21,6 +23,7 @@
 	[Event(name="render", type="flash.events.Event")]
 	public class PopField extends PopFieldInterface
 	{
+		private var myTXTs:Array ;
 		private var myTXT:TextField ;
 
 		//private var _letSelectByCLick:Boolean = false ;
@@ -41,6 +44,7 @@
 		
 		private var radioButtonArray:Array ;
 		
+		private var nativeKeyBoards:Vector.<FarsiInputCorrection> ;
 		private var nativeKeyBoard:FarsiInputCorrection ;
 		private var isEditable:Boolean;
 		private var IsArabic:Object;
@@ -79,6 +83,10 @@
 		{
 			if(isEditable)
 			{
+				if(myTXTs.length>1)
+				{
+					return data;
+				}
 				return myTXT.text ;
 			}
 			else
@@ -110,6 +118,11 @@
 			
 			if(isEditable)
 			{
+				if(myTXTs.length>1)
+				{
+					update(value);
+					return;
+				}
 				myTXT.text = lastTXT ;
 				myTXT.dispatchEvent(new Event(Event.CHANGE));
 			}
@@ -143,28 +156,51 @@
 		{
 			if(data!=null)
 			{
-				myTXT.text = data as String ;
-				myTXT.dispatchEvent(new Event(Event.CHANGE));
+				var newtext:String = String(data);
+				if(myTXTs.length>1)
+				{
+					for(var i:int = 0 ; i<myTXTs.length ; i++)
+					{
+						(myTXTs[i] as TextField).text = newtext.length>i?newtext.charAt(i):'' ;
+						(myTXTs[i] as TextField).dispatchEvent(new Event(Event.CHANGE));
+					}
+				}
+				else
+				{
+					myTXT.text = newtext ;
+					myTXT.dispatchEvent(new Event(Event.CHANGE));
+				}
 			}
 		}
 		
 		override public function get data():*
 		{
-			text = myTXT.text;
+			if(myTXTs.length>1)
+			{
+				lastTXT = '' ;
+				for(var i:int = 0 ; i<myTXTs.length ; i++)
+				{
+					lastTXT += (myTXTs[i] as TextField).text ;
+				}
+			}
+			else
+			{
+				lastTXT = myTXT.text;
+			}
 			if(phoneControl)
 			{
-				var cash:String = PhoneNumberEditor.clearPhoneNumber(text);
+				var cash:String = PhoneNumberEditor.clearPhoneNumber(lastTXT);
 				if(cash == 'false')
 				{
 					SaffronLogger.log("This phone number is incorrect");
-					return text ;
+					return lastTXT ;
 				}
 				else
 				{
 					return cash ;
 				}
 			}
-			return text ;
+			return lastTXT ;
 		}
 		
 		public function changeColor(colorFrame:uint)
@@ -203,9 +239,56 @@
 		public function onEnterPressed(func:Function):void
 		{
 			onSubmited = func ;
-			if(nativeKeyBoard!=null)
+			if(nativeKeyBoard!=null || nativeKeyBoards!=null)
 			{
-				nativeKeyBoard.onEnterPressed(func);
+				if(myTXTs.length>1)
+				{
+					(nativeKeyBoards[nativeKeyBoards.length-1] as FarsiInputCorrection).onEnterPressed(func);
+				}
+				else
+				{
+					nativeKeyBoard.onEnterPressed(func);
+				}
+			}
+		}
+
+		private function nextField(currentTextField:TextField):void
+		{
+			var currentTextFieldIndex:int = myTXTs.indexOf(currentTextField);
+			trace("Next field to "+currentTextFieldIndex+" is editing>"+(nativeKeyBoards!=null && currentTextFieldIndex!=-1?nativeKeyBoards[currentTextFieldIndex].editing:''));
+			if(nativeKeyBoards!=null && currentTextFieldIndex!=-1 && nativeKeyBoards[currentTextFieldIndex].editing)
+			{
+				nativeKeyBoards[currentTextFieldIndex].closeKeyBoard(false);
+				trace("\t"+currentTextFieldIndex+" vs "+(nativeKeyBoards.length-2));
+				if(currentTextFieldIndex+1<nativeKeyBoards.length)
+				{
+					trace("Activate keyboard : "+nativeKeyBoards[currentTextFieldIndex+1]);
+					nativeKeyBoards[currentTextFieldIndex+1].activateKeyboard();
+				}
+				else// if(currentTextFieldIndex<=nativeKeyBoards.length)
+				{
+					nativeKeyBoards[currentTextFieldIndex].callDone();
+				}
+			}
+		}
+
+		private function prevField(currentTextField:TextField,andRemoveAcharFrom:Boolean=false):void
+		{
+			var currentTextFieldIndex:int = myTXTs.indexOf(currentTextField);
+			trace("Next field to "+currentTextFieldIndex+" is editing>"+nativeKeyBoards[currentTextFieldIndex].editing);
+			if(currentTextFieldIndex!=-1 && nativeKeyBoards[currentTextFieldIndex].editing)
+			{
+				nativeKeyBoards[currentTextFieldIndex].closeKeyBoard(false);
+				if(currentTextFieldIndex>0)
+				{
+					trace("Activate keyboard : "+nativeKeyBoards[currentTextFieldIndex-1]);
+					if(andRemoveAcharFrom)
+					{
+						var lastTF:TextField = myTXTs[currentTextFieldIndex-1] as TextField ;
+						lastTF.text = lastTF.text.substr(0,lastTF.text.length-1);
+					}
+					nativeKeyBoards[currentTextFieldIndex-1].activateKeyboard();
+				}
 			}
 		}
 		
@@ -293,14 +376,34 @@
 					TextPutter.OnButton(tagNameTXT,tagName,StringFunctions.isPersian(tagName),false,true);
 				}
 			}
-			myTXT = Obj.getAllChilds('txt_txt',this,false)[0];
-			myTXT.addEventListener(Event.CLOSE, dispatchChangeForMeToo);
-			myTXT.addEventListener(Event.CHANGE, dispatchRenderEventForMe);
+			myTXTs = Obj.getAllChilds('txt_txt',this,false) 
+			if(myTXTs.length>1)
+			{
+				myTXTs = myTXTs.sort(sortFields);
+				function sortFields(a:TextField,b:TextField):int
+				{
+					if(a.x<b.x)
+						return -1;
+					return 1;
+				}
+			}
+			myTXT = myTXTs[0];
+			//Do these all to myTXTs
+			for(var i:int = 0 ; i<myTXTs.length ; i++)
+			{
+				makeThisTextReady(myTXTs[i]);
+			}
+			function makeThisTextReady(txt:TextField):void
+			{
+				txt.addEventListener(Event.CLOSE, dispatchChangeForMeToo);
+				txt.addEventListener(Event.CHANGE, dispatchRenderEventForMe);
+				txt.addEventListener(KeyboardEvent.KEY_DOWN, checkBackRole);
+				txt.maxChars = maxChar ;
+				txt.borderColor = borderColor;
+				txt.displayAsPassword = isPass ;
+				txt.mouseEnabled = txt.selectable = editable ;
+			}
 			
-			myTXT.maxChars = maxChar ;
-			myTXT.borderColor = borderColor;
-			myTXT.displayAsPassword = isPass ;
-			myTXT.mouseEnabled = myTXT.selectable = editable ;
 
 			if(submitMC!=null)
 			{
@@ -329,7 +432,7 @@
 				Y0 = myTXT.height;
 				myTXT.multiline = true ;
 				myTXT.wordWrap = true ;
-				for(var i = 0 ; i<numLines-1 ; i++)
+				for(i = 0 ; i<numLines-1 ; i++)
 				{
 					myTXT.appendText('a\n') ;
 				}
@@ -347,13 +450,35 @@
 				myTXT.wordWrap = false ;
 			}
 			lastTXT = (lastTXT==null)?'': lastTXT ;
-			myTXT.text = lastTXT;
+			if(myTXTs.length>1)
+			{
+				for(i=0 ; i<myTXTs.length ; i++)
+				{
+					(myTXTs[i] as TextField).text = lastTXT.length<i?lastTXT.charAt(i):'';
+				}
+			}
+			else
+			{
+				myTXT.text = lastTXT;
+			}
 			
 			
 			//FarsiInputText.steKeyBord(myTXT,false);
 			if(editable)
 			{
-				nativeKeyBoard = FarsiInputCorrection.setUp(myTXT,KeyBordType,true,true,deleteDefautlText,justShowNativeText && !activeRadioMode,true,true,returnKey,onTypedFunction);
+				if(myTXTs.length>1)
+				{
+					nativeKeyBoards = new Vector.<FarsiInputCorrection>();
+					for(i = 0 ; i<myTXTs.length ; i++)
+					{
+						(myTXTs[i] as TextField).maxChars = 1 ;
+						nativeKeyBoards.push(FarsiInputCorrection.setUp(myTXTs[i],KeyBordType,true,true,deleteDefautlText,justShowNativeText && !activeRadioMode,true,true,returnKey,i==myTXTs.length-1?onTypedFunction:nextField));
+					}
+				}
+				else
+				{
+					nativeKeyBoard = FarsiInputCorrection.setUp(myTXT,KeyBordType,true,true,deleteDefautlText,justShowNativeText && !activeRadioMode,true,true,returnKey,onTypedFunction);
+				}
 				this.addEventListener(MouseEvent.CLICK,editThisText);
 			}
 			else
@@ -367,7 +492,7 @@
 				}
 				backMC.visible = false ;
 				
-				if(textContainerMC==null)
+				if(textContainerMC==null && myTXTs.length==1)
 				{
 					textContainerMC = new MovieClip();
 					myTXT.parent.addChild(textContainerMC);
@@ -377,7 +502,7 @@
 					myTXT.x = myTXT.y = 0 ;
 				}
 				
-				if(isAraic)
+				if(isAraic && myTXTs.length==1)
 				{
 					if(numLines==1)
 					{
@@ -396,7 +521,7 @@
 						//TextPutter.onStaticArea(myTXT,defaultText,true,true,false);
 					}
 				}
-				else
+				else if(myTXTs.length==1)
 				{
 					if(numLines==1)
 					{
@@ -465,9 +590,34 @@
 		
 		private function dispatchRenderEventForMe(e:Event):void 
 		{
+			var currentTXT:TextField = e.currentTarget as TextField ;
 			if(clearMC)
-				clearMC.visible = myTXT.text.length>0 ; 
+				clearMC.visible = currentTXT.text.length>0 ; 
+				
+			trace("* Changed > "+currentTXT.maxChars);
+			if(currentTXT.maxChars<=currentTXT.text.length)
+			{
+				trace("Show the nextField");
+				setTimeout(nextField,0,currentTXT);
+			}
 			this.dispatchEvent(new Event(Event.RENDER));
+		}
+
+		private function checkBackRole(e:KeyboardEvent):void
+		{
+			if(e.keyCode == 8)//Keyboard.BACKSPACE
+			{
+				var currentTXT:TextField = e.currentTarget as TextField ;
+				trace("Back space");
+				if(currentTXT.text=='')
+				{
+					setTimeout(prevField,0,currentTXT,true);
+				}
+			}
+			else
+			{
+				
+			}
 		}
 		
 		protected function increaseValue(event:MouseEvent):void
@@ -510,13 +660,34 @@
 		
 		protected function showPassNow(event:MouseEvent):void
 		{
-			nativeKeyBoard.showPass();
+			event.stopImmediatePropagation();
+			if(myTXTs.length>1)
+			{
+				for(var i:int = 0 ; i<myTXTs.length ; i++)
+				{
+					nativeKeyBoards[i].showPass();
+				}
+			}
+			else
+			{
+				nativeKeyBoard.showPass();
+			}
 			stage.addEventListener(MouseEvent.MOUSE_UP,hidePass);
 		}
 		
 		protected function hidePass(event:MouseEvent):void
 		{
-			nativeKeyBoard.hidePass();
+			if(myTXTs.length>1)
+			{
+				for(var i:int = 0 ; i<myTXTs.length ; i++)
+				{
+					nativeKeyBoards[i].hidePass();
+				}
+			}
+			else
+			{
+				nativeKeyBoard.hidePass();
+			}
 			stage.removeEventListener(MouseEvent.MOUSE_UP,hidePass);
 		}
 		
@@ -541,18 +712,23 @@
 		{
 			if(!super.enabled)
 				return;
-			if(!myTXT.hitTestPoint(stage.mouseX,stage.mouseY) && (showPassMC==null || !showPassMC.hitTestPoint(stage.mouseX,stage.mouseY)))
+			var selectedItem:TextField = event.target as TextField ;
+			if(selectedItem!=null && myTXTs.indexOf(selectedItem)==-1)
 			{
 				activateKeyBoard();
 			}
+			//if(!myTXT.hitTestPoint(stage.mouseX,stage.mouseY) && (showPassMC==null || !showPassMC.hitTestPoint(stage.mouseX,stage.mouseY)))
+			//{
+			//}
 		}
 		
 		/**My input text is updated, so dispatch change event on my object*/
 		protected function dispatchChangeForMeToo(event:Event):void
 		{
-			if(!isNaN(min) && !isNaN(Number(myTXT.text)))
+			var currentTXT:TextField = event.currentTarget as TextField ;
+			if(!isNaN(min) && !isNaN(Number(currentTXT.text)))
 			{
-				myTXT.text = Math.max(min,Number(myTXT.text)).toString();
+				currentTXT.text = Math.max(min,Number(currentTXT.text)).toString();
 			}
 			this.dispatchEvent(new Event(Event.CHANGE));
 		}
@@ -563,9 +739,22 @@
 			if(!super.enabled)
 				return;
 				
-			if(nativeKeyBoard && myTXT.mouseEnabled && !activeRadioMode)
+			if((nativeKeyBoard!=null || nativeKeyBoards!=null) && myTXT.mouseEnabled && !activeRadioMode)
 			{
-				nativeKeyBoard.focuseOnStageText();
+				if(myTXTs.length==1)
+					nativeKeyBoard.focuseOnStageText();
+				else
+				{
+					for(var i:int = 0 ; i<myTXTs.length ; i++)
+					{
+						if((myTXTs[i] as TextField).text=='')
+						{
+							nativeKeyBoards[i].focuseOnStageText();
+							return;
+						}
+					}
+					nativeKeyBoards[myTXTs.length-1].focuseOnStageText();
+				}
 			}
 		}
 		
