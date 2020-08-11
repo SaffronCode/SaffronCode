@@ -203,7 +203,7 @@
 			return lastTXT ;
 		}
 		
-		public function changeColor(colorFrame:uint)
+		public function changeColor(colorFrame:uint):void
 		{
 			backMC.gotoAndStop(colorFrame);
 		}
@@ -292,7 +292,7 @@
 			}
 		}
 		
-		public function setUp(tagName:String,defaultText:String,KeyBordType:String = SoftKeyboardType.DEFAULT,isPass:Boolean = false,editable:Boolean = true,isAraic:Boolean=true,numLines:uint = 1,color:uint=1,frame:uint=1,maxChar:uint=0,otherOptions:Array=null,deleteDefautlText:Boolean=false,activateRadioSwitcher:Boolean=false,returnKey:String=ReturnKeyLabel.DEFAULT,onTypedFunction:Function=null,justShowNativeText:Boolean=false,multiLineTag:Boolean=false,justify:Boolean=true):PopField
+		public function setUp(tagName:String,defaultText:String,KeyBordType:String = SoftKeyboardType.DEFAULT,isPass:Boolean = false,editable:Boolean = true,isAraic:Boolean=true,numLines:uint = 1,color:uint=1,frame:uint=1,maxChar:uint=0,otherOptions:Array=null,deleteDefautlText:Boolean=false,activateRadioSwitcher:Boolean=false,returnKey:String=ReturnKeyLabel.DEFAULT,onTypedFunction:Function=null,justShowNativeText:Boolean=false,multiLineTag:Boolean=false,justify:Boolean=true,selectAllCharchter:Boolean=false):PopField
 		{
 			
 			var Y0:Number ;
@@ -472,13 +472,14 @@
 					for(i = 0 ; i<myTXTs.length ; i++)
 					{
 						(myTXTs[i] as TextField).maxChars = 1 ;
-						nativeKeyBoards.push(FarsiInputCorrection.setUp(myTXTs[i],KeyBordType,true,true,deleteDefautlText,justShowNativeText && !activeRadioMode,true,true,returnKey,i==myTXTs.length-1?onTypedFunction:nextField));
+						nativeKeyBoards.push(FarsiInputCorrection.setUp(myTXTs[i],KeyBordType,true,true,deleteDefautlText,justShowNativeText && !activeRadioMode,true,true,returnKey,i==myTXTs.length-1?onTypedFunction:nextField,null,selectAllCharchter));
 					}
 				}
 				else
 				{
-					nativeKeyBoard = FarsiInputCorrection.setUp(myTXT,KeyBordType,true,true,deleteDefautlText,justShowNativeText && !activeRadioMode,true,true,returnKey,onTypedFunction);
+					nativeKeyBoard = FarsiInputCorrection.setUp(myTXT,KeyBordType,true,true,deleteDefautlText,justShowNativeText && !activeRadioMode,true,true,returnKey,onTypedFunction,null,selectAllCharchter);
 				}
+
 				this.addEventListener(MouseEvent.CLICK,editThisText);
 			}
 			else

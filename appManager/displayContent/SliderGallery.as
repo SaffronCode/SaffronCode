@@ -636,7 +636,7 @@
 				ignoreIndexList = [] ;
 		}
 		
-		public function setUp(images:Vector.<SliderImageItem>,currentIndex:uint=0,animateTimer:uint = 10000,rightToLeft:Boolean=false,loopEnabled:Boolean=true,addSliderEffect:SliderBooletSetting=null):void
+		public function setUp(images:Vector.<SliderImageItem>,currentIndex:uint=0,animateTimer:int = 10000,rightToLeft:Boolean=false,loopEnabled:Boolean=true,addSliderEffect:SliderBooletSetting=null):void
 		{
 			setIgnoreIndexes();
 			if(stage!=null)
@@ -670,7 +670,7 @@
 			else
 			{
 				this.addEventListener(MouseEvent.CLICK,preventDefaultClick,false,1000);
-				animInterval = animateTimer==0?10000:animateTimer ;
+				animInterval = animateTimer<0?10000:animateTimer ;
 			}
 			
 			

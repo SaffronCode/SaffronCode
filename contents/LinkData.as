@@ -12,7 +12,8 @@
 		
 		public var 	name:String='',
 					id:String='',
-					iconURL:String='';
+					iconURL:String='',
+					iconURL2:String='';
 					
 		/**if level is -1 , it will add to curren page , if level is 0 , it is the page from main menu<br>
 		 * New Level defined: -2 means this page had to replace with current page on history*/
@@ -40,6 +41,7 @@
 				y = Number(linkXML.@y);
 				id = linkXML.@id ;
 				iconURL = linkXML.@icon ;
+				iconURL2 = linkXML.@icon2 ;
 				if(String(linkXML.@level) == '')
 				{
 					level = -1 ;
@@ -107,6 +109,7 @@
 			xml.@name = name ;
 			xml.@id = id;
 			xml.@icon = iconURL;
+			xml.@icon2 = iconURL2;
 			xml.@w = w;
 			xml.@h = h;
 			xml.@x = x;
@@ -138,6 +141,7 @@
 			newLinkData.name = name ;
 			newLinkData.id = id ;
 			newLinkData.iconURL = iconURL ;
+			newLinkData.iconURL2 = iconURL2 ;
 			newLinkData.level = level ;
 			newLinkData.dynamicData = dynamicData ;
 			newLinkData.w = w ;
