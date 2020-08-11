@@ -274,6 +274,8 @@
 
 		private function prevField(currentTextField:TextField,andRemoveAcharFrom:Boolean=false):void
 		{
+			if(myTXTs.length<=1)
+				return;
 			var currentTextFieldIndex:int = myTXTs.indexOf(currentTextField);
 			trace("Next field to "+currentTextFieldIndex+" is editing>"+nativeKeyBoards[currentTextFieldIndex].editing);
 			if(currentTextFieldIndex!=-1 && nativeKeyBoards[currentTextFieldIndex].editing)
