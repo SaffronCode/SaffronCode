@@ -124,7 +124,10 @@
 					return;
 				}
 				myTXT.text = lastTXT ;
+				
+				myTXT.removeEventListener(Event.CHANGE, dispatchRenderEventForMe);
 				myTXT.dispatchEvent(new Event(Event.CHANGE));
+				myTXT.addEventListener(Event.CHANGE, dispatchRenderEventForMe);
 			}
 			else
 			{
@@ -161,8 +164,11 @@
 				{
 					for(var i:int = 0 ; i<myTXTs.length ; i++)
 					{
-						(myTXTs[i] as TextField).text = newtext.length>i?newtext.charAt(i):'' ;
-						(myTXTs[i] as TextField).dispatchEvent(new Event(Event.CHANGE));
+						var atext:TextField = myTXTs[i] as TextField;
+						atext.text = newtext.length>i?newtext.charAt(i):'' ;
+						atext.removeEventListener(Event.CHANGE, dispatchRenderEventForMe);
+						atext.dispatchEvent(new Event(Event.CHANGE));
+						atext.addEventListener(Event.CHANGE, dispatchRenderEventForMe);
 					}
 				}
 				else
@@ -280,9 +286,9 @@
 			trace("Next field to "+currentTextFieldIndex+" is editing>"+nativeKeyBoards[currentTextFieldIndex].editing);
 			if(currentTextFieldIndex!=-1 && nativeKeyBoards[currentTextFieldIndex].editing)
 			{
-				nativeKeyBoards[currentTextFieldIndex].closeKeyBoard(false);
 				if(currentTextFieldIndex>0)
 				{
+					nativeKeyBoards[currentTextFieldIndex].closeKeyBoard(false);
 					trace("Activate keyboard : "+nativeKeyBoards[currentTextFieldIndex-1]);
 					if(andRemoveAcharFrom)
 					{
@@ -601,6 +607,15 @@
 			if(currentTXT.maxChars<=currentTXT.text.length)
 			{
 				trace("Show the nextField");
+				
+				try
+				{
+					throw new Error("On Done Called");
+				}
+				catch(e:Error)
+				{
+					Alert.show(e.message+"\n\n"+e.getStackTrace());
+				}
 				setTimeout(nextField,0,currentTXT);
 			}
 			this.dispatchEvent(new Event(Event.RENDER));
