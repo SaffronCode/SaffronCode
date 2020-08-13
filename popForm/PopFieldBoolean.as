@@ -5,6 +5,7 @@ package popForm
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.text.TextField;
+	import animation.Anim_Frame_Controller;
 
 	/**Boolean field changed*/
 	[Event(name="change", type="flash.events.Event")]
@@ -14,6 +15,9 @@ package popForm
 		
 		private var checkMC:MovieClip ;
 		private var backMC:MovieClip;
+
+		private var checkAnimation:Anim_Frame_Controller ;
+		private var lastCheckStatus:Boolean ;
 		
 		private var IsArabic:Boolean,
 					myTitle:String;
@@ -32,8 +36,21 @@ package popForm
 		
 		private function switchBoolean(e):void
 		{
-			checkMC.visible = !checkMC.visible ;
+			lastCheckStatus = !lastCheckStatus ;
+			checkIt(lastCheckStatus);
 			this.dispatchEvent(new Event(Event.CHANGE));
+		}
+
+		private function checkIt(status:Boolean):void
+		{
+			if(checkAnimation!=null)
+			{
+				checkAnimation.gotoFrame(status==true?checkMC.totalFrames:1);
+			}
+			else
+			{
+				checkMC.visible = status ;
+			}
 		}
 		
 		public function setUp(tagName:String,defaultState:Boolean=false,isArabic:Boolean=true,languageFrame:uint=1,color:uint=1):void
@@ -51,6 +68,10 @@ package popForm
 			var tagContainer:MovieClip = Obj.getAllChilds("tag_txt",this,true)[0];
 			tagTF = Obj.getAllChilds("tag_txt",tagContainer,true)[0];
 			checkMC = Obj.get("check_mc",this);
+			if(checkMC.totalFrames>1)
+			{
+				checkAnimation = new Anim_Frame_Controller(checkMC,1,false);
+			}
 			
 			TextPutter.OnButton(tagTF,tagName,isArabic,true,false);
 			
@@ -64,7 +85,8 @@ package popForm
 		
 		override public function update(data:*):void
 		{
-			checkMC.visible = data ;
+			lastCheckStatus = data ;
+			checkIt(data);
 		}
 		
 		override public function get title():String
@@ -75,12 +97,14 @@ package popForm
 		override public function get data():*
 		{
 			//SaffronLogger.log("Get my date : "+date);
-			return checkMC.visible ;
+
+			return lastCheckStatus ;
 		}
 		
 		public function set data(value:Boolean):void
 		{
-			checkMC.visible = value ;
+			lastCheckStatus = value ;
+			checkIt(lastCheckStatus);
 		}
 	}
 }
