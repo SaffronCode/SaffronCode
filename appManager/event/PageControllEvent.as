@@ -21,11 +21,14 @@ package appManager.event
 		
 		/**This is the page that prevents App to change its page. controll it's stage to make sure it is steal accessable*/
 		public var preventerPage:DisplayObject ;
+
+		public var let_cashed_requested_page_activate:Boolean = true ;
 		
 		/**Feel the getPermition and preventerDisplayObject on PREVENT_PAGE_CHANGING event*/
-		public function PageControllEvent(type:String,getPermition:Function=null,preventerDisplayObject:DisplayObject=null)
+		public function PageControllEvent(type:String,getPermition:Function=null,preventerDisplayObject:DisplayObject=null,let_requested_page_to_open:Boolean=true)
 		{
 			super(type,true);
+			let_cashed_requested_page_activate = let_requested_page_to_open;
 			permitionReceiver = getPermition ;
 			preventerPage = preventerDisplayObject ;
 		}
