@@ -72,6 +72,12 @@
 		{
 			return myTXT ;
 		}
+
+		public function get backgorund():MovieClip
+		{
+			return backMC ;
+		}
+		
 		
 		
 		/**this will returns last inputed text to client*/
