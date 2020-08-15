@@ -31,6 +31,7 @@
 	import com.distriqt.extension.nativemaps.objects.LatLng;
 	import com.distriqt.extension.nativemaps.objects.CustomMarkerIcon;
 	import flash.utils.getTimer;
+	import flash.geom.Point;
 	
 	public class DistriqtGoogleMap extends Sprite
 	{
@@ -54,6 +55,8 @@
 		private static var isSupports:Boolean = false ;
 		
 		private static var mapInitialized:Boolean = false ;
+
+		public static var debuggingExtraDeltaH:Number = -5 ;
 
 		private var map_style:String,
 					user_location:Boolean ;
@@ -374,6 +377,7 @@
 				//Alert.show("statusBarSize:"+statusBarSize+", scl:"+scl);
 				statusBarSize = Math.ceil(statusBarSize/scl);
 				//Alert.show("statusBarSize2:"+statusBarSize);
+				statusBarSize+=debuggingExtraDeltaH;
 			}
 
 			catchedBitmap.scaleX = catchedBitmap.scaleY = 1/scl ;
@@ -467,11 +471,23 @@
 			if(centerMarker!=null)
 			{
 				var cent:LatLng = NativeMaps.service.getCentre() ;
-				//centerMarkerPosition.lat += (cent.lat-centerMarkerPosition.lat)/4;
-				//centerMarkerPosition.lon += (cent.lon-centerMarkerPosition.lon)/4;
-				centerMarker.setPosition(cent);
+				if(centerMarkerPosition==null)
+				{
+					centerMarkerPosition = cent ;
+				}
+				centerMarkerPosition.lat = centerMarkerPosition.lat+(cent.lat-centerMarkerPosition.lat)/2;
+				centerMarkerPosition.lon = centerMarkerPosition.lon+(cent.lon-centerMarkerPosition.lon)/2;
+				centerMarker.setPosition(centerMarkerPosition);
 				NativeMaps.service.updateMarker(centerMarker);
 			}
+		}
+
+		public function centerPosition():Point
+		{
+			var cent:LatLng = NativeMaps.service.getCentre() ;
+			if(cent!=null)
+				return new Point(cent.lat,cent.lon);
+			return new Point(0,0);
 		}
 		
 		public function addMarker(markerName:String,lat:Number,lon:Number,markerTitle:String,markerInfo:String,color:uint=0,enableInfoWindow:Boolean=true,animated:Boolean=true,showInfoButton:Boolean=true,iconId:String=''):void
