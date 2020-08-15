@@ -27,6 +27,10 @@
 	import flash.display.Bitmap;
 	import com.distriqt.extension.nativemaps.events.NativeMapBitmapEvent;
 	import com.distriqt.extension.nativemaps.events.NativeMapEvent;
+	import com.distriqt.extension.nativemaps.objects.MapMarker;
+	import com.distriqt.extension.nativemaps.objects.LatLng;
+	import com.distriqt.extension.nativemaps.objects.CustomMarkerIcon;
+	import flash.utils.getTimer;
 	
 	public class DistriqtGoogleMap extends Sprite
 	{
@@ -80,6 +84,8 @@
 
 		private var catchedBitmapData:BitmapData,
 					catchedBitmap:Bitmap ;
+
+		private static var counter:uint ;
 		
 		public static function setUp(GoogleAPIKey:String=null,DistriqtId:String=null):void
 		{
@@ -88,7 +94,7 @@
 			try
 			{
 				AuthorisationStatusClass = getDefinitionByName("com.distriqt.extension.nativemaps.AuthorisationStatus") as Class ;
-				NativeMapsClass = getDefinitionByName("com.distriqt.extension.nativemaps.NativeMaps") as Class ;
+				NativeMapsClass = NativeMaps;//getDefinitionByName("com.distriqt.extension.nativemaps.NativeMaps") as Class ;
 				NativeMapEventClass = getDefinitionByName("com.distriqt.extension.nativemaps.events.NativeMapEvent") as Class ;
 				CustomMarkerIconClass = getDefinitionByName("com.distriqt.extension.nativemaps.objects.CustomMarkerIcon") as Class ;
 				LatLngClass = getDefinitionByName("com.distriqt.extension.nativemaps.objects.LatLng") as Class ;
@@ -159,6 +165,7 @@
 		/**Some times you have to create this class after a delay, We didn't found why till now...*/
 		public function DistriqtGoogleMap(Width:Number,Height:Number)
 		{
+			counter++;
 			super();
 			dispatcher.dispatchEvent(new Event(Event.REMOVED_FROM_STAGE));
 			unload();
@@ -176,6 +183,11 @@
 		protected function removeMeBecauseSomeOneElseComes(event:Event):void
 		{
 			Obj.remove(this);
+		}
+
+		public function userCanSelecAPoint():void
+		{
+			
 		}
 		
 		public function setMap(centerLat:Number=NaN,centerLon:Number=NaN,icons:Vector.<MapIcon>=null,zoomLevel:Number=-1,mapStyleJSON:String=null,showUserLocation:Boolean=false):void
@@ -231,7 +243,34 @@
 				mapIsShowing = true ;
 			}
 			this.addEventListener(Event.ENTER_FRAME,repose,false,10000);
+		}
 
+		private var centerMarker:MapMarker,
+					centerMarkerPosition:LatLng,
+					centerMarkerIcon:CustomMarkerIcon ;
+
+		public function setAPinOnCenter(iconBitmap:BitmapData,centerName:String):void
+		{
+			const iconName:String = centerName;
+
+			centerMarkerIcon = new CustomMarkerIcon( iconName )
+					.setImage( iconBitmap )
+    				.setCenterOffset( iconBitmap.width/-2, -iconBitmap.height );
+
+			centerMarkerPosition = NativeMaps.service.getCentre();
+
+			centerMarker = new MapMarker(centerName,centerMarkerPosition,centerName,'',0,false,false,true,false,iconName);
+		}
+
+		private function updateCenterMarker():void
+		{
+			if(centerMarker==null || centerMarkerIcon==null)
+			{
+				return ;
+			}
+
+			NativeMaps.service.addCustomMarkerIcon(centerMarkerIcon);
+			NativeMaps.service.addMarker( centerMarker );
 		}
 
 		private function updateCapturedBitmap(e:NativeMapBitmapEvent):void
@@ -252,6 +291,7 @@
 			dispatcher.removeEventListener(Event.REMOVED_FROM_STAGE,removeMeBecauseSomeOneElseComes);
 			
 			this.removeEventListener(Event.ENTER_FRAME,repose);
+			NativeMaps.service.dispose();
 		}
 		
 		private function mapCreatedHandler(e:*):void
@@ -268,6 +308,7 @@
 			NativeMaps.service.showUserLocation(user_location);
 
 			updateMarkers();
+			updateCenterMarker();
 		}
 
 		private function setMapStyle():void
@@ -339,8 +380,8 @@
 			
 			//SaffronLogger.log("Old rect : " +rect);
 			//SaffronLogger.log("scl : "+scl);
-			//SaffronLogger.log("deltaX : "+deltaX);
-			//SaffronLogger.log("deltaY : "+deltaY);
+			SaffronLogger.log("deltaX : "+deltaX);
+			SaffronLogger.log("deltaY : "+deltaY);
 			
 			rect.x*=scl;
 			rect.y*=scl;
@@ -421,6 +462,15 @@
 					mapIsShowing = false ;
 					catchedBitmap.visible = true ;
 				}
+			}
+
+			if(centerMarker!=null)
+			{
+				var cent:LatLng = NativeMaps.service.getCentre() ;
+				//centerMarkerPosition.lat += (cent.lat-centerMarkerPosition.lat)/4;
+				//centerMarkerPosition.lon += (cent.lon-centerMarkerPosition.lon)/4;
+				centerMarker.setPosition(cent);
+				NativeMaps.service.updateMarker(centerMarker);
 			}
 		}
 		
