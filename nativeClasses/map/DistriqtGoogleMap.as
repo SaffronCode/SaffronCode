@@ -250,6 +250,7 @@
 
 		private var centerMarker:MapMarker,
 					centerMarkerPosition:LatLng,
+					centerMarkerId:uint,
 					centerMarkerIcon:CustomMarkerIcon ;
 
 		public function setAPinOnCenter(iconBitmap:BitmapData,centerName:String):void
@@ -258,11 +259,19 @@
 
 			centerMarkerIcon = new CustomMarkerIcon( iconName )
 					.setImage( iconBitmap )
-    				.setCenterOffset( iconBitmap.width/-2, -iconBitmap.height );
+    				.setCenterOffset( 0, -iconBitmap.height );
 
 			centerMarkerPosition = NativeMaps.service.getCentre();
 
+			if(centerMarker!=null)
+			{
+				NativeMaps.service.removeMarker(centerMarkerId);
+			}
 			centerMarker = new MapMarker(centerName,centerMarkerPosition,centerName,'',0,false,false,true,false,iconName);
+			if(mapCretedOnStage)
+			{
+				updateCenterMarker();
+			}
 		}
 
 		private function updateCenterMarker():void
@@ -272,8 +281,11 @@
 				return ;
 			}
 
-			NativeMaps.service.addCustomMarkerIcon(centerMarkerIcon);
-			NativeMaps.service.addMarker( centerMarker );
+			try
+			{
+				NativeMaps.service.addCustomMarkerIcon(centerMarkerIcon);
+			}catch(e:Error){}
+			centerMarkerId = NativeMaps.service.addMarker( centerMarker );
 		}
 
 		private function updateCapturedBitmap(e:NativeMapBitmapEvent):void
@@ -475,6 +487,8 @@
 				{
 					centerMarkerPosition = cent ;
 				}
+				if(centerMarkerPosition==null)
+					return;
 				centerMarkerPosition.lat = centerMarkerPosition.lat+(cent.lat-centerMarkerPosition.lat)/2;
 				centerMarkerPosition.lon = centerMarkerPosition.lon+(cent.lon-centerMarkerPosition.lon)/2;
 				centerMarker.setPosition(centerMarkerPosition);
