@@ -56,7 +56,7 @@
 		
 		private static var mapInitialized:Boolean = false ;
 
-		public static var debuggingExtraDeltaH:Number = -5 ;
+		public static var debuggingExtraDeltaH:Number = -12 ;
 
 		private var map_style:String,
 					user_location:Boolean ;
