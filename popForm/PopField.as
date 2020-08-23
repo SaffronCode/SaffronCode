@@ -438,12 +438,12 @@
 
 		private function activateSubmitIfSomethingEntered(e:MouseEvent):void
 		{
-			if(myTXT.text!='')
+			if(true || myTXT.text!='')//Users should decide base on situation
 			{
 				e.stopImmediatePropagation();
 				if(onSubmited!=null)
 				{
-					onSubmited();
+					nativeKeyBoard.callDone()
 				}
 			}
 		}

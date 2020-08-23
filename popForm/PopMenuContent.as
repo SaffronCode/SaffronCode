@@ -81,7 +81,7 @@
 				haveField = true;
 			}
 			
-			mainTXT = MainText ;
+			mainTXT = MainText==null?'':MainText ;
 		}
 	}
 }

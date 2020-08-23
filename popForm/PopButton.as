@@ -103,6 +103,11 @@
 				setUp(str,buttonID,type,completeButtonObject);
 			}
 		}
+
+		public function select():void
+		{
+			this.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+		}
 		
 		public function moveUpByKeyboard(MaxMove:Number=0):void
 		{
