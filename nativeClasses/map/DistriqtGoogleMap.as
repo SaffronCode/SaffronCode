@@ -20,7 +20,6 @@
 	
 	import stageManager.StageManager;
 	import flash.display.StageScaleMode;
-	import contents.alert.Alert;
 	import com.distriqt.extension.nativemaps.NativeMaps;
 	import com.distriqt.extension.nativemaps.objects.MapStyleOptions;
 	import flash.display.BitmapData;
@@ -51,6 +50,10 @@
 		private static var MapStyleOptionsClass:Class;
 		/**com.distriqt.extension.nativemaps.objects.MapType*/
 		private static var MapTypeClass:Class ;
+
+		private static var defaultZoomLevel:uint = 15;
+
+
 		
 		private static var isSupports:Boolean = false ;
 		
@@ -234,12 +237,12 @@
 				{
 					center = new LatLngClass(centerLat,centerLon);
 				}
-				firstZoomLevel = zoomLevel ;
+				firstZoomLevel = zoomLevel<0?defaultZoomLevel:zoomLevel ;
 				SaffronLogger.log("...listenning...");
 				(NativeMapsClass as Object).service.addEventListener( (NativeMapEventClass as Object).MAP_CREATED, mapCreatedHandler );
 				(NativeMapsClass as Object).service.addEventListener( NativeMapBitmapEvent.READY , updateCapturedBitmap);
 				SaffronLogger.log("---Creating...");
-				NativeMaps.service.createMap( rect, (MapTypeClass as Object).MAP_TYPE_NORMAL);
+				NativeMaps.service.createMap( rect, (MapTypeClass as Object).MAP_TYPE_NORMAL,new LatLng(centerLat,centerLon),firstZoomLevel);
 				
 				SaffronLogger.log("Create map done");
 				mapCreated = true ;
@@ -349,8 +352,8 @@
 		{
 			SaffronLogger.log("******* first center is : "+lat,lon,zoomLevel);
 			center = new LatLngClass(lat,lon);
-			firstZoomLevel = zoomLevel ;
-			(NativeMapsClass as Object).service.setCentre(center,zoomLevel,animationDuration!=0,animationDuration)
+			firstZoomLevel = zoomLevel<=0?defaultZoomLevel:zoomLevel ;
+			NativeMaps.service.setCentre(center as LatLng,firstZoomLevel,animationDuration!=0,animationDuration)
 		}
 		
 		private function createViewPort():Rectangle
@@ -506,7 +509,7 @@
 		
 		public function addMarker(markerName:String,lat:Number,lon:Number,markerTitle:String,markerInfo:String,color:uint=0,enableInfoWindow:Boolean=true,animated:Boolean=true,showInfoButton:Boolean=true,iconId:String=''):void
 		{
-			SaffronLogger.log("****************Map marker Added : ",lat,lon,markerName,'iconId : '+iconId);
+			//Alert.show("****************Map marker Added : ",lat,lon,markerName,'iconId : '+iconId);
 			var myMarker:Object = new MapMarkerClass(markerName,new LatLngClass(lat,lon),markerTitle,markerInfo,color,false,enableInfoWindow,animated,showInfoButton,iconId)
 			myMarkers.push(myMarker);
 			if(mapCretedOnStage)
@@ -520,16 +523,21 @@
 			var mapStyle:Object = new MapStyleOptionsClass(style);
 			
 		}
+
+		public function zoomLevel():Number
+		{
+			return NativeMaps.service.getZoom();
+		}
 		
 		private function updateMarkers():void
 		{
-			(NativeMapsClass as Object).service.clearMap();
+			//(NativeMapsClass as Object).service.clearMap();
 			
 			var i:int ;
 			var isDuplicated:Boolean = false ;
 			for(i = 0 ; i<myIcons.length ; i++)
 			{
-				for(var j = 0 ; j<(NativeMapsClass as Object).service.customMarkerIcons.length ; j++)
+				for(var j:int = 0 ; j<(NativeMapsClass as Object).service.customMarkerIcons.length ; j++)
 				{
 					if((NativeMapsClass as Object).service.customMarkerIcons[j].id == myIcons[i].Id)
 					{
@@ -542,10 +550,13 @@
 					(NativeMapsClass as Object).service.addCustomMarkerIcon(new CustomMarkerIconClass(myIcons[i].Id,myIcons[i].bitmapData,2));
 				}
 			}
+			myIcons = new Vector.<MapIcon>();
 			for(i = 0 ; i<myMarkers.length ; i++)
 			{
-				(NativeMapsClass as Object).service.addMarker(myMarkers[i]);
+				//Alert.show("new marker customIconId is :"+(myMarkers[i] as MapMarker).customIconId)
+				NativeMaps.service.addMarker(myMarkers[i] as MapMarker);
 			}
+			myMarkers = new Vector.<Object>();
 		}
 	}
 }
