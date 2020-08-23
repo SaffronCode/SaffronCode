@@ -240,7 +240,11 @@
 		 * onButtonSelected : function(e:PopMenuEvent);<br>
 		 * onSearchButton : function(searchParam:String);<br>
 		 * the function "onJobSelected" must have a variable based on PopMenuEvent */
-		public static function selector(title:String,text:String,buttonsList:Array,onButtonSelected:Function,onSearchButton:Function=null,defButtonFrame:uint=1,itemFrame:uint=2,onBackFUnction:Function = null,backButtonFrame:int=1,addBackButton:Boolean=true):void
+		public static function selector(title:String,text:String,buttonsList:Array,
+		onButtonSelected:Function,onSearchButton:Function=null,defButtonFrame:uint=1,
+		itemFrame:uint=2,onBackFUnction:Function = null,backButtonFrame:int=1,
+		addBackButton:Boolean=true,defaultSearchTextToShow:String='',filterButtonFrame:uint=1,
+		displayObject:DisplayObject=null):void
 		{
 			controllConfig();
 			var moreHint:String = '' ;
@@ -255,13 +259,14 @@
 			
 			if( onSearched != null )
 			{
+				var searchButton:PopButtonData = new PopButtonData(Contents.lang.t[id_search],filterButtonFrame,null,true,true);
 				if(addBackButton)
 				{
-					namesArray = [new PopButtonData(Contents.lang.t[id_search],1,null,true,true),backButton,''] ;
+					namesArray = [searchButton,backButton,''] ;
 				}
 				else
 				{
-					namesArray = [Contents.lang.t[id_search],''] ;
+					namesArray = [searchButton,''] ;
 				}
 			}
 			else
@@ -285,9 +290,9 @@
 			
 			if(onSearched != null)
 			{
-				popField.addField(Contents.lang.t[id_search],'');
+				popField.addField(Contents.lang.t[id_search],defaultSearchTextToShow);
 			}
-			var popText:PopMenuContent = new PopMenuContent(moreHint+text,popField,namesArray,null,[defButtonFrame,defButtonFrame,itemFrame]);
+			var popText:PopMenuContent = new PopMenuContent(moreHint+text,popField,namesArray,displayObject,[defButtonFrame,defButtonFrame,itemFrame]);
 			PopMenu1.popUp(title,null,popText,0,someThingSelected);
 		}
 		
