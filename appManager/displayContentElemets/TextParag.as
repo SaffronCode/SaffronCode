@@ -118,7 +118,7 @@
 		{
 			if(scrollMC==null)
 			{
-				return myTextTF.height ;
+				return forScrollContainer.height ;
 			}
 			else
 			{
