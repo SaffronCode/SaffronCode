@@ -38,7 +38,7 @@ package contents.alert
 		
 		/**
 		 * You need vibration permission:  
-		 * <uses-permission android:name="android.permission.VIBRATE" />
+		 * uses-permission android:name="android.permission.VIBRATE"
 		 * @param duration 
 		 */
 		public static function vibrate(duration:uint=1000):void
@@ -56,7 +56,7 @@ package contents.alert
 		}
 		/**
 		 * You need vibration permission:  
-		 * <uses-permission android:name="android.permission.VIBRATE" />
+		 * uses-permission android:name="android.permission.VIBRATE"
 		 * @param duration 
 		 */
 		public static function vibrateDynamic(patternArray:Array):void
@@ -75,7 +75,7 @@ package contents.alert
 		
 		/**
 		 * You need vibration permission:  
-		 * <uses-permission android:name="android.permission.VIBRATE" />
+		 * uses-permission android:name="android.permission.VIBRATE"
 		 * @param duration 
 		 */
 		public static function vibratePuls():void

@@ -6,7 +6,6 @@ package appManager.animatedPages
 	[Event(name="imFinished", type="flash.events.Event")]
 	public class Intro extends MovieClip
 	{
-		public static const EVENT_FINISHED:String = "imFinished" ;
 		public function Intro()
 		{
 			super();
@@ -18,7 +17,7 @@ package appManager.animatedPages
 		private function introIsOver()
 		{
 			this.stop();
-			this.dispatchEvent(new Event(EVENT_FINISHED));
+			this.dispatchEvent(new Event("imFinished"));
 		}
 	}
 }

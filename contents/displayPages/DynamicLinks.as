@@ -641,8 +641,7 @@ package contents.displayPages
 
 		public function setUp(pageData:PageData):void
 		{
-			//setUpOrUpdate(pageData);//Some old projects cannot take this
-			setUpFromScratch(pageData);
+			setUpOrUpdate(pageData);
 		}
 
 		/**You can pass the first element on the list to this functiom. it will show it on the top of your list*/

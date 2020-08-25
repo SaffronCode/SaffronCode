@@ -72,12 +72,6 @@
 		{
 			return myTXT ;
 		}
-
-		public function get backgorund():MovieClip
-		{
-			return backMC ;
-		}
-		
 		
 		
 		/**this will returns last inputed text to client*/
@@ -173,7 +167,7 @@
 			return text ;
 		}
 		
-		public function changeColor(colorFrame:uint):void
+		public function changeColor(colorFrame:uint)
 		{
 			backMC.gotoAndStop(colorFrame);
 		}
@@ -215,7 +209,7 @@
 			}
 		}
 		
-		public function setUp(tagName:String,defaultText:String,KeyBordType:String = SoftKeyboardType.DEFAULT,isPass:Boolean = false,editable:Boolean = true,isAraic:Boolean=true,numLines:uint = 1,color:uint=1,frame:uint=1,maxChar:uint=0,otherOptions:Array=null,deleteDefautlText:Boolean=false,activateRadioSwitcher:Boolean=false,returnKey:String=ReturnKeyLabel.DEFAULT,onTypedFunction:Function=null,justShowNativeText:Boolean=false,multiLineTag:Boolean=false,justify:Boolean=true,selectAllCharchter:Boolean=false):PopField
+		public function setUp(tagName:String,defaultText:String,KeyBordType:String = SoftKeyboardType.DEFAULT,isPass:Boolean = false,editable:Boolean = true,isAraic:Boolean=true,numLines:uint = 1,color:uint=1,frame:uint=1,maxChar:uint=0,otherOptions:Array=null,deleteDefautlText:Boolean=false,activateRadioSwitcher:Boolean=false,returnKey:String=ReturnKeyLabel.DEFAULT,onTypedFunction:Function=null,justShowNativeText:Boolean=false,multiLineTag:Boolean=false,justify:Boolean=true):PopField
 		{
 			
 			var Y0:Number ;
@@ -359,7 +353,7 @@
 			//FarsiInputText.steKeyBord(myTXT,false);
 			if(editable)
 			{
-				nativeKeyBoard = FarsiInputCorrection.setUp(myTXT,KeyBordType,true,true,deleteDefautlText,justShowNativeText && !activeRadioMode,true,true,returnKey,onTypedFunction,null,selectAllCharchter);
+				nativeKeyBoard = FarsiInputCorrection.setUp(myTXT,KeyBordType,true,true,deleteDefautlText,justShowNativeText && !activeRadioMode,true,true,returnKey,onTypedFunction);
 				this.addEventListener(MouseEvent.CLICK,editThisText);
 			}
 			else
@@ -438,12 +432,12 @@
 
 		private function activateSubmitIfSomethingEntered(e:MouseEvent):void
 		{
-			if(true || myTXT.text!='')//Users should decide base on situation
+			if(myTXT.text!='')
 			{
 				e.stopImmediatePropagation();
 				if(onSubmited!=null)
 				{
-					nativeKeyBoard.callDone()
+					onSubmited();
 				}
 			}
 		}

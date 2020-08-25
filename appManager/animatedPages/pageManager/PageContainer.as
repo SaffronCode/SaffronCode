@@ -127,8 +127,6 @@ package appManager.animatedPages.pageManager
 							{
 								var errorText:String = "**********************************************\n\n\n\n\n\n\n\nError happens :\n"+e.message+'\n'+e.getStackTrace()+"\n\n\n\n\n\n\n\n********************************************" ;
 								SaffronLogger.log(errorText);
-								if(!SaffronLogger.traceIsActive())
-									trace(errorText);
 							}
 						}
 					}

@@ -176,8 +176,6 @@
 		/**You can show loaded image by this methode.*/
 		public function setUpBytes(imageBytes:ByteArray, loadInThisArea:Boolean=false, imageW:Number=0, imageH:Number=0, X:Number=0, Y:Number=0,copyBytes:Boolean=false,keepRatio:Boolean=true):void
 		{
-			if(imageBytes==null)
-				return;
 			clearLastByte();
 			if(copyBytes)
 			{

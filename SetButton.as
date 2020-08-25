@@ -26,7 +26,7 @@
 		_total:int,
 		_target:MovieClip,
 		_fun:Function;
-		private var _targetMovie:Object = {}			
+		private var _targetMovie:Object = {}	
 		public function setup(Min_p:int,Total_p:int,Current_p:int)
 		{
 			// constructor code

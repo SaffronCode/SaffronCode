@@ -357,7 +357,7 @@
 			
 			preventorFunction = null ;
 			preventorPage = null ;
-			var preventedEventCash:AppEvent = event.let_cashed_requested_page_activate?preventedEvent:null ;
+			var preventedEventCash:AppEvent = preventedEvent ;
 			preventedEvent = null ;
 			if(prventedPageWasLastPage)
 			{

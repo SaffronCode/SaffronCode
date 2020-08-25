@@ -1,8 +1,4 @@
-﻿/***Version
- * 1.1 : Instant data.xml laoded
- * 1.1.1 : link id s on link will change with language class on multiLanguage applications
- */
-package contents 
+﻿package contents 
 {
 	import appManager.event.AppEvent;
 	
@@ -216,7 +212,7 @@ package contents
 		}
 		
 		
-		/**this will returns page data based on input id<.br>
+		/**this will returns page data based on input id<br>
 		 * IT WILL GET CLONE FROM THE FIRST PAGE. SO YOU CAN EDIT RENURNED PAGES.
 		 * dontUseLanguage balue will prevent this function to converting texts from language.xml clas*/
 		public static function getPage(pageID:String,dontUseLanguage:Boolean=false):PageData 

@@ -16,7 +16,6 @@ package popForm
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import com.mteamapp.StringFunctions;
-	import flash.text.ReturnKeyLabel;
 	
 	[Event(name="buttonSelecte", type="popForm.PopMenuEvent")]
 	[Event(name="FIELD_SELECTED", type="popForm.PopMenuEvent")]
@@ -289,7 +288,7 @@ package popForm
 								,content.fieldDatas.languageDirection[i]
 								,content.fieldDatas.maxCharacters[i]
 								,content.fieldDatas.fieldDefaultBooleans[i]
-								,false,false,ReturnKeyLabel.NEXT,selectNextFieldOrNextButton,false
+								,false,false,null,null,false
 								,content.fieldDatas.multiLineTag[i]
 								,content.fieldDatas.justify[i]
 								);
@@ -567,34 +566,6 @@ package popForm
 			{
 				scroll.reset();
 				scroll.lock();
-			}
-		}
-
-		private function selectNextFieldOrNextButton(currentField:TextField):void
-		{
-			var i:int = -1 ;
-			for(i = 0 ; i<field.length ; i++)
-			{
-				var popField:PopField = field[i] as PopField ;
-				if(popField != null)
-				{
-					if(currentField == popField.textField)
-					{
-						break;
-					}
-				}
-			}
-			var selectedFieldIndex:int = i;
-			if(selectedFieldIndex!=-1 && selectedFieldIndex<field.length-2)
-			{
-				if(field[selectedFieldIndex+1] is PopField)
-				{
-					(field[selectedFieldIndex+1] as PopField).activateKeyBoard();
-				}
-			}
-			else if(buttonList.length>0 && buttonList[0]!=null)
-			{
-				buttonList[0].select()
 			}
 		}
 		

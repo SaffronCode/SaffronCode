@@ -152,7 +152,7 @@
 			//manage intro ↓
 			if(introMC != null)
 			{
-				introMC.addEventListener(Intro.EVENT_FINISHED,intoIsOver);
+				introMC.addEventListener("imFinished",intoIsOver);
 			}
 			else
 			{
@@ -301,7 +301,6 @@
 		/**this function will dispatches whenever intro is over*/
 		protected function intoIsOver(e=null):void
 		{
-			introMC.removeEventListener(Intro.EVENT_FINISHED,intoIsOver);
 			Obj.remove(introMC);
 			//introMC = null ;
 			appIsStarts();

@@ -20,17 +20,13 @@
 	
 	import stageManager.StageManager;
 	import flash.display.StageScaleMode;
+	import contents.alert.Alert;
 	import com.distriqt.extension.nativemaps.NativeMaps;
 	import com.distriqt.extension.nativemaps.objects.MapStyleOptions;
 	import flash.display.BitmapData;
 	import flash.display.Bitmap;
 	import com.distriqt.extension.nativemaps.events.NativeMapBitmapEvent;
 	import com.distriqt.extension.nativemaps.events.NativeMapEvent;
-	import com.distriqt.extension.nativemaps.objects.MapMarker;
-	import com.distriqt.extension.nativemaps.objects.LatLng;
-	import com.distriqt.extension.nativemaps.objects.CustomMarkerIcon;
-	import flash.utils.getTimer;
-	import flash.geom.Point;
 	
 	public class DistriqtGoogleMap extends Sprite
 	{
@@ -50,16 +46,10 @@
 		private static var MapStyleOptionsClass:Class;
 		/**com.distriqt.extension.nativemaps.objects.MapType*/
 		private static var MapTypeClass:Class ;
-
-		private static var defaultZoomLevel:uint = 15;
-
-
 		
 		private static var isSupports:Boolean = false ;
 		
 		private static var mapInitialized:Boolean = false ;
-
-		public static var debuggingExtraDeltaH:Number = -12 ;
 
 		private var map_style:String,
 					user_location:Boolean ;
@@ -90,8 +80,6 @@
 
 		private var catchedBitmapData:BitmapData,
 					catchedBitmap:Bitmap ;
-
-		private static var counter:uint ;
 		
 		public static function setUp(GoogleAPIKey:String=null,DistriqtId:String=null):void
 		{
@@ -100,7 +88,7 @@
 			try
 			{
 				AuthorisationStatusClass = getDefinitionByName("com.distriqt.extension.nativemaps.AuthorisationStatus") as Class ;
-				NativeMapsClass = NativeMaps;//getDefinitionByName("com.distriqt.extension.nativemaps.NativeMaps") as Class ;
+				NativeMapsClass = getDefinitionByName("com.distriqt.extension.nativemaps.NativeMaps") as Class ;
 				NativeMapEventClass = getDefinitionByName("com.distriqt.extension.nativemaps.events.NativeMapEvent") as Class ;
 				CustomMarkerIconClass = getDefinitionByName("com.distriqt.extension.nativemaps.objects.CustomMarkerIcon") as Class ;
 				LatLngClass = getDefinitionByName("com.distriqt.extension.nativemaps.objects.LatLng") as Class ;
@@ -171,7 +159,6 @@
 		/**Some times you have to create this class after a delay, We didn't found why till now...*/
 		public function DistriqtGoogleMap(Width:Number,Height:Number)
 		{
-			counter++;
 			super();
 			dispatcher.dispatchEvent(new Event(Event.REMOVED_FROM_STAGE));
 			unload();
@@ -189,11 +176,6 @@
 		protected function removeMeBecauseSomeOneElseComes(event:Event):void
 		{
 			Obj.remove(this);
-		}
-
-		public function userCanSelecAPoint():void
-		{
-			
 		}
 		
 		public function setMap(centerLat:Number=NaN,centerLon:Number=NaN,icons:Vector.<MapIcon>=null,zoomLevel:Number=-1,mapStyleJSON:String=null,showUserLocation:Boolean=false):void
@@ -237,58 +219,19 @@
 				{
 					center = new LatLngClass(centerLat,centerLon);
 				}
-				firstZoomLevel = zoomLevel<0?defaultZoomLevel:zoomLevel ;
+				firstZoomLevel = zoomLevel ;
 				SaffronLogger.log("...listenning...");
 				(NativeMapsClass as Object).service.addEventListener( (NativeMapEventClass as Object).MAP_CREATED, mapCreatedHandler );
 				(NativeMapsClass as Object).service.addEventListener( NativeMapBitmapEvent.READY , updateCapturedBitmap);
 				SaffronLogger.log("---Creating...");
-				NativeMaps.service.createMap( rect, (MapTypeClass as Object).MAP_TYPE_NORMAL,new LatLng(centerLat,centerLon),firstZoomLevel);
+				NativeMaps.service.createMap( rect, (MapTypeClass as Object).MAP_TYPE_NORMAL);
 				
 				SaffronLogger.log("Create map done");
 				mapCreated = true ;
 				mapIsShowing = true ;
 			}
 			this.addEventListener(Event.ENTER_FRAME,repose,false,10000);
-		}
 
-		private var centerMarker:MapMarker,
-					centerMarkerPosition:LatLng,
-					centerMarkerId:uint,
-					centerMarkerIcon:CustomMarkerIcon ;
-
-		public function setAPinOnCenter(iconBitmap:BitmapData,centerName:String):void
-		{
-			const iconName:String = centerName;
-
-			centerMarkerIcon = new CustomMarkerIcon( iconName )
-					.setImage( iconBitmap )
-    				.setCenterOffset( 0, -iconBitmap.height );
-
-			centerMarkerPosition = NativeMaps.service.getCentre();
-
-			if(centerMarker!=null)
-			{
-				NativeMaps.service.removeMarker(centerMarkerId);
-			}
-			centerMarker = new MapMarker(centerName,centerMarkerPosition,centerName,'',0,false,false,true,false,iconName);
-			if(mapCretedOnStage)
-			{
-				updateCenterMarker();
-			}
-		}
-
-		private function updateCenterMarker():void
-		{
-			if(centerMarker==null || centerMarkerIcon==null)
-			{
-				return ;
-			}
-
-			try
-			{
-				NativeMaps.service.addCustomMarkerIcon(centerMarkerIcon);
-			}catch(e:Error){}
-			centerMarkerId = NativeMaps.service.addMarker( centerMarker );
 		}
 
 		private function updateCapturedBitmap(e:NativeMapBitmapEvent):void
@@ -309,7 +252,6 @@
 			dispatcher.removeEventListener(Event.REMOVED_FROM_STAGE,removeMeBecauseSomeOneElseComes);
 			
 			this.removeEventListener(Event.ENTER_FRAME,repose);
-			NativeMaps.service.dispose();
 		}
 		
 		private function mapCreatedHandler(e:*):void
@@ -326,7 +268,6 @@
 			NativeMaps.service.showUserLocation(user_location);
 
 			updateMarkers();
-			updateCenterMarker();
 		}
 
 		private function setMapStyle():void
@@ -352,8 +293,8 @@
 		{
 			SaffronLogger.log("******* first center is : "+lat,lon,zoomLevel);
 			center = new LatLngClass(lat,lon);
-			firstZoomLevel = zoomLevel<=0?defaultZoomLevel:zoomLevel ;
-			NativeMaps.service.setCentre(center as LatLng,firstZoomLevel,animationDuration!=0,animationDuration)
+			firstZoomLevel = zoomLevel ;
+			(NativeMapsClass as Object).service.setCentre(center,zoomLevel,animationDuration!=0,animationDuration)
 		}
 		
 		private function createViewPort():Rectangle
@@ -392,15 +333,14 @@
 				//Alert.show("statusBarSize:"+statusBarSize+", scl:"+scl);
 				statusBarSize = Math.ceil(statusBarSize/scl);
 				//Alert.show("statusBarSize2:"+statusBarSize);
-				statusBarSize+=debuggingExtraDeltaH;
 			}
 
 			catchedBitmap.scaleX = catchedBitmap.scaleY = 1/scl ;
 			
 			//SaffronLogger.log("Old rect : " +rect);
 			//SaffronLogger.log("scl : "+scl);
-			SaffronLogger.log("deltaX : "+deltaX);
-			SaffronLogger.log("deltaY : "+deltaY);
+			//SaffronLogger.log("deltaX : "+deltaX);
+			//SaffronLogger.log("deltaY : "+deltaY);
 			
 			rect.x*=scl;
 			rect.y*=scl;
@@ -482,34 +422,11 @@
 					catchedBitmap.visible = true ;
 				}
 			}
-
-			if(centerMarker!=null)
-			{
-				var cent:LatLng = NativeMaps.service.getCentre() ;
-				if(centerMarkerPosition==null)
-				{
-					centerMarkerPosition = cent ;
-				}
-				if(centerMarkerPosition==null)
-					return;
-				centerMarkerPosition.lat = centerMarkerPosition.lat+(cent.lat-centerMarkerPosition.lat)/2;
-				centerMarkerPosition.lon = centerMarkerPosition.lon+(cent.lon-centerMarkerPosition.lon)/2;
-				centerMarker.setPosition(centerMarkerPosition);
-				NativeMaps.service.updateMarker(centerMarker);
-			}
-		}
-
-		public function centerPosition():Point
-		{
-			var cent:LatLng = NativeMaps.service.getCentre() ;
-			if(cent!=null)
-				return new Point(cent.lat,cent.lon);
-			return new Point(0,0);
 		}
 		
 		public function addMarker(markerName:String,lat:Number,lon:Number,markerTitle:String,markerInfo:String,color:uint=0,enableInfoWindow:Boolean=true,animated:Boolean=true,showInfoButton:Boolean=true,iconId:String=''):void
 		{
-			//Alert.show("****************Map marker Added : ",lat,lon,markerName,'iconId : '+iconId);
+			SaffronLogger.log("****************Map marker Added : ",lat,lon,markerName,'iconId : '+iconId);
 			var myMarker:Object = new MapMarkerClass(markerName,new LatLngClass(lat,lon),markerTitle,markerInfo,color,false,enableInfoWindow,animated,showInfoButton,iconId)
 			myMarkers.push(myMarker);
 			if(mapCretedOnStage)
@@ -523,21 +440,16 @@
 			var mapStyle:Object = new MapStyleOptionsClass(style);
 			
 		}
-
-		public function zoomLevel():Number
-		{
-			return NativeMaps.service.getZoom();
-		}
 		
 		private function updateMarkers():void
 		{
-			//(NativeMapsClass as Object).service.clearMap();
+			(NativeMapsClass as Object).service.clearMap();
 			
 			var i:int ;
 			var isDuplicated:Boolean = false ;
 			for(i = 0 ; i<myIcons.length ; i++)
 			{
-				for(var j:int = 0 ; j<(NativeMapsClass as Object).service.customMarkerIcons.length ; j++)
+				for(var j = 0 ; j<(NativeMapsClass as Object).service.customMarkerIcons.length ; j++)
 				{
 					if((NativeMapsClass as Object).service.customMarkerIcons[j].id == myIcons[i].Id)
 					{
@@ -550,13 +462,10 @@
 					(NativeMapsClass as Object).service.addCustomMarkerIcon(new CustomMarkerIconClass(myIcons[i].Id,myIcons[i].bitmapData,2));
 				}
 			}
-			myIcons = new Vector.<MapIcon>();
 			for(i = 0 ; i<myMarkers.length ; i++)
 			{
-				//Alert.show("new marker customIconId is :"+(myMarkers[i] as MapMarker).customIconId)
-				NativeMaps.service.addMarker(myMarkers[i] as MapMarker);
+				(NativeMapsClass as Object).service.addMarker(myMarkers[i]);
 			}
-			myMarkers = new Vector.<Object>();
 		}
 	}
 }

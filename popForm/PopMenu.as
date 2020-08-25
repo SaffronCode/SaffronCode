@@ -249,7 +249,7 @@
 		private function checkBack(ev:KeyboardEvent):void
 		{
 			
-			if(ev.keyCode == Keyboard.BACK || ev.keyCode == Keyboard.PAGE_UP )
+			if(ev.keyCode == Keyboard.BACK || ev.keyCode == Keyboard.BACKSPACE || ev.keyCode == Keyboard.PAGE_UP )
 			{
 				if(show)
 				{
