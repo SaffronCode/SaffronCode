@@ -593,7 +593,7 @@
 			return Math.round(num);
 		}
 		
-		/**Add the natives below : <ber>
+		/**Add the natives below : <br>
 		 *
 		   <extensionID>com.distriqt.Core</extensionID>
 		   <extensionID>com.distriqt.MediaPlayer</extensionID>*/
