@@ -24,6 +24,9 @@
 		
 		/**List of titles that will listening to the back event from key board to act*/
 		private static var backList:Array = [] ;
+
+		/**Uses on onClickOpenLink() function */
+		private var _link_to_open:LinkData ;
 		
 		
 		private var txtTF:TextField ;
@@ -235,6 +238,16 @@
 		{
 			Obj.setButton(this,func);
 		}
+		public function onClickOpenLink(link:LinkData):void
+		{
+			Obj.setButton(this,openLink);
+			_link_to_open = link ;
+		}
+			private function openLink():void
+			{
+				if(_link_to_open!=null)
+					this.dispatchEvent(new AppEventContent(_link_to_open));
+			}
 
 		public function setUpByLink(linkData:LinkData):void
 		{
