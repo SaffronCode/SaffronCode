@@ -678,19 +678,22 @@ package contents.displayPages
 			{
 				Obj.removeAllChildBut(this,[linksContainer,linksSensor]);
 				Obj.removeAllChildBut(linksContainer,[firstItem,lastItem]);
-
-				if(firstItem.parent!=linksContainer)
+				
+				if(firstItem!=null)
 				{
-					linksContainer.addChild(firstItem);
-				}
-				firstItem.x = firstItem.y = 0 ;
-				if(revertedY)
-				{
-					firstItem.y = -firstItem.height ;
-				}
-				if(revertedX)
-				{
-					firstItem.x = -firstItem.width ;
+					if(firstItem.parent!=linksContainer)
+					{
+						linksContainer.addChild(firstItem);
+					}
+					firstItem.x = firstItem.y = 0 ;
+					if(revertedY)
+					{
+						firstItem.y = -firstItem.height ;
+					}
+					if(revertedX)
+					{
+						firstItem.x = -firstItem.width ;
+					}
 				}
 			}
 			myPageData = pageData;
