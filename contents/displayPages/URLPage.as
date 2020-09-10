@@ -13,6 +13,8 @@ package contents.displayPages
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
 	import com.mteamapp.StringFunctions;
+	import contents.alert.Alert;
+	import flash.display.BitmapData;
 	
 	public class URLPage extends MovieClip implements DisplayPageInterface
 	{
@@ -27,6 +29,10 @@ package contents.displayPages
 		private var isLoaded:Boolean = false ;
 		
 		private var myPreLoader:MovieClip ;
+
+		public var URLString:String="";
+
+		public var bitmapData:BitmapData;
 		
 		public function URLPage(newPageSize:Rectangle=null,myPreloaderMC:MovieClip=null)
 		{
@@ -75,7 +81,7 @@ package contents.displayPages
 			controllStage();
 		}
 		
-		private function controllStage(e:Event=null)
+		private function controllStage(e:Event=null):void
 		{
 			if(this.stage!=null)
 			{
@@ -87,7 +93,7 @@ package contents.displayPages
 			}
 		}
 		
-		private function createHTMLPage()
+		private function createHTMLPage():void
 		{
 			sw.stage = stage ;
 			controllStagePlace();
@@ -105,6 +111,10 @@ package contents.displayPages
 				SaffronLogger.log("********** Open the page : "+myPage.dynamicData as String);
 				sw.loadURL(myPage.dynamicData as String);
 			}
+			else if(StringFunctions.isNullOrEmpty(myPage.title)==false){
+				SaffronLogger.log("********** Open the string URL page : "+ myPage.title as String);
+				sw.loadString(myPage.title);
+			}
 			
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 			this.addEventListener(Event.ENTER_FRAME,controllStagePlace);
@@ -117,6 +127,7 @@ package contents.displayPages
 			{
 				myPreLoader.visible = false ;
 			}
+			this.dispatchEvent(new Event(Event.RENDER))
 			SaffronLogger.log("Page is loaded");
 		}
 		
@@ -129,7 +140,7 @@ package contents.displayPages
 			sw.stage = null ;
 		}
 		
-		private function controllStagePlace(e:Event=null)
+		private function controllStagePlace(e:Event=null):void
 		{
 			var rect:Rectangle = this.getBounds(stage);
 			if(openInWeb)
