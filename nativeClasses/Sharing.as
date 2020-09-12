@@ -14,8 +14,10 @@
     import flash.filesystem.File;
     import flash.utils.getDefinitionByName;
     import contents.alert.Alert;
+    import flash.events.EventDispatcher;
+    import flash.events.Event;
 
-    public class Sharing {
+    public class Sharing extends EventDispatcher{
         private var shareClass:Class, shareOptionClass:Class, shareEventClass:Class;
 
         private var _isSupports:Boolean = false;
@@ -44,7 +46,7 @@
         }
 
         /**Share this text*/
-        public function shareText(str:String, downloadLinkLable:String = '', imageBirmapData:BitmapData = null):void {
+        public function shareText(str:String, downloadLinkLable:String = '', imageBirmapData:BitmapData = null,filePath:String="",mimeType:String="application/pdf"):void {
             var sharedString:String;
             if (_addStoreMarket == true)
                 sharedString = str + '\n\n' + DevicePrefrence.appName + '\n' + downloadLinkLable + '\n' + ((DevicePrefrence.downloadLink_iOS == '') ? '' : 'Apple Store: ' + DevicePrefrence.downloadLink_iOS + '\n\n') + ((DevicePrefrence.downloadLink_playStore == '') ? '' : 'Android Play Store: ' + DevicePrefrence.downloadLink_playStore + '\n\n') + ((DevicePrefrence.downloadLink_cafeBazar == '') ? '' : 'کافه بازار: ' + DevicePrefrence.downloadLink_cafeBazar + '\n\n') + ((DevicePrefrence.downloadLink_myketStore == '') ? '' : 'مایکت: ' + DevicePrefrence.downloadLink_myketStore);
@@ -56,7 +58,10 @@
                 options.title = "Share with ...";
                 options.showOpenIn = true;
                 SaffronLogger.log("•distriqt• Call the share function");
-                shareClass.service.share(sharedString, imageBirmapData, '', options);
+                if(filePath=="")
+                    shareClass.service.share(sharedString, imageBirmapData, '', options);
+                else
+                    shareClass.service.shareFile( filePath, str, mimeType );
             } else {
                 SaffronLogger.log("•distriqt• Share is not support here");
             }
@@ -136,6 +141,11 @@
 
         private function share_shareHandler(event:*):void {
             SaffronLogger.log(event.type + "::" + event.activityType + "::" + event.error);
+            if(event.type=="share:closed" || event.type=="share:complete")
+            {
+                 this.dispatchEvent(new Event(Event.COMPLETE))
+            }
+
         }
 
         /*public function openApp(PackageName:String,Url:URLVariables)
