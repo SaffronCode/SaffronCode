@@ -291,7 +291,7 @@
 			centerMarkerId = NativeMaps.service.addMarker( centerMarker );
 		}
 
-		private function updateCapturedBitmap(e:NativeMapBitmapEvent):void
+		private function updateCapturedBitmap(e:*):void
 		{
 			var mapToBitmapData:BitmapData = e.bitmapData ;
 			catchedBitmap.bitmapData = e.bitmapData;
