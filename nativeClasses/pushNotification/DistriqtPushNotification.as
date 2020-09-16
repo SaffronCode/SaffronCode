@@ -98,7 +98,8 @@
 			if (PushNotificationsClass == null)
 			{
 				SaffronLogger.log("push notification is null");
-				onResult("windowsDebug");
+				deviceToken = "windowsDebug";
+				onResult(deviceToken);
 				return;
 			}
 			try
