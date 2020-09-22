@@ -81,6 +81,7 @@
 		public var URISchemId:String;
 
 		public static var changeKeyboardYPostion:Boolean = true;
+		public static var changeKeyboardYPostionHeight:Number = 100;
 		
 		private var mouseClickCounter:uint ;
 
@@ -277,7 +278,7 @@
 					keyBoardHeight = 400 ;
 			if(keyBoardHeight>0 && StageManager.isSatUp())
 			{
-				var extraHeight:Number = 100 ;//100
+				var extraHeight:Number = changeKeyboardYPostionHeight ;//100
 
 				var stageScale:Number = stage.fullScreenWidth/stage.stageWidth ;
 				keyBoardHeight = keyBoardHeight*stageScale+extraHeight*stageScale;
