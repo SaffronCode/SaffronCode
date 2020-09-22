@@ -43,31 +43,36 @@
                     SaffronLogger.log("\n\n\n\n\n\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Distriqt recorder is NOT supports !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n\n\n\n\n\n");
                 return false;
             }
+            return getPerrmission();
+        }
+
+        /**Return true if the permission is already granted, but you can wait till callback function calls when permission granted */
+        public static function getPerrmission(onPermissinGranted:Function=null):Boolean
+        {
             switch (AudioRecorderClass.service.authorisationStatus()) {
                 case AuthorisationStatusClass.AUTHORISED:
-                    SaffronLogger.log("authorised");
-                    if (logger)
-                        SaffronLogger.log("authorised");
+                    if(onPermissinGranted!=null)onPermissinGranted();
+                    return true ;
                     break;
 
                 case AuthorisationStatusClass.SHOULD_EXPLAIN:
                 case AuthorisationStatusClass.NOT_DETERMINED:
-                    AudioRecorderClass.service.addEventListener(AuthorisationEventClass.CHANGED, authChangedHandler);
+                    AudioRecorderClass.service.addEventListener(AuthorisationEventClass.CHANGED, permissionChanged);
                     AudioRecorderClass.service.requestAuthorisation();
                     break;
 
                 case AuthorisationStatusClass.DENIED:
                 case AuthorisationStatusClass.RESTRICTED:
                 case AuthorisationStatusClass.UNKNOWN:
-                    SaffronLogger.log("denied or restricted");
-                    if (logger)
-                        SaffronLogger.log("denied or restricted");
+                    return false ;
             }
-            return true;
-        }
+            return false ;
 
-        private static function authChangedHandler(event:*):void {
-            SaffronLogger.log("authChangedHandler( " + event.status + " )");
+            function permissionChanged(event:*):void {
+                AudioRecorderClass.service.removeEventListener(AuthorisationEventClass.CHANGED, permissionChanged);
+                SaffronLogger.log("authChangedHandler( " + event.status + " )");
+                if(onPermissinGranted!=null)onPermissinGranted();
+            }
         }
 
         /**Start recording.*/
