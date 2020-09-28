@@ -164,6 +164,19 @@ package contents.displayPages
 		private var isFreezed:Boolean = false ;
 
 		private var fadeTheScroller:Boolean = false ;
+
+
+		/**Lock the dyncamic link to dont show sliderButtons*/
+		public function lockSlideButton():void
+		{
+			this.removeEventListener(MouseEvent.MOUSE_DOWN,controllMouseSlide);
+		}
+
+		/**Unlock the dyncamic link to show sliderButton*/
+		public function unlockSlideButton():void
+		{
+			this.addEventListener(MouseEvent.MOUSE_DOWN,controllMouseSlide);
+		}
 		
 		/**Make the dynamic link not scrollable and show all items instantly*/
 		public function set_dynamicHeigh(status:Boolean=true):void

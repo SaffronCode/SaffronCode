@@ -42,7 +42,7 @@ package contents.displayPages
 			myLinkData = linkData ;
 		}
 		
-		internal function setAnimate(precent:Number):void
+		public function setAnimate(precent:Number):void
 		{
 			precent = Math.max(-1,Math.min(1,precent));
 			visibleFrame = Math.floor(Math.min(1,Math.abs(precent))*(this.totalFrames-1))+1;
