@@ -37,6 +37,10 @@ package appManager.animatedPages.pageManager
 			super();
 			
 			pageContainer = Obj.findThisClass(PageContainer,this,true) as PageContainer;
+			if(pageContainer==null)
+			{
+				throw "You have to add appManager.animatedPages.pageManager.PageContainer in the PageManager movieClip";
+			}
 			
 			this.stop();
 			//this.visible = false;

@@ -91,6 +91,10 @@
 			
 			var xmlTarget:File = File.applicationDirectory.resolvePath(languageFile);
 			var fileLoader:FileStream = new FileStream();
+			if(!xmlTarget.exists)
+			{
+				throw "You have to add Data folder contains "+xmlTarget.nativePath+" in it"
+			}
 			fileLoader.open(xmlTarget,FileMode.READ);
 			var str:String = fileLoader.readUTFBytes(fileLoader.bytesAvailable);
 			loadedXML = XML(str);

@@ -277,7 +277,7 @@
 		/**Start to play intro*/
 		public function playIntro():void
 		{
-			if(!introMC.visible || _introIsStoppedByOuterRequest)
+			if(introMC==null || !introMC.visible || _introIsStoppedByOuterRequest)
 				return;
 			if(introMC!=null)
 			{
@@ -313,6 +313,10 @@
 			ContentSoundManager.setUp(stage,playSounOnBackGroundTo);
 			this.dispatchEvent(new AppEvent(null,AppEvent.APP_STARTS));
 			currentAppEvent = new AppEvent();
+			if(mainAnim==null)
+			{
+				throw "You shoud add a MovieClip base on appManager.animatedPages.MainAnim to your project on the stage."
+			}
 			if(!mainAnim.isOpened())
 			{
 				backToHomePage();
