@@ -104,6 +104,12 @@
 		{
 			return new Rectangle(internal_menu_width_left,internal_menu_height_top,_stageRect.width-(internal_menu_width_left+internal_menu_width_right),_stageRect.height-(internal_menu_height_top+internal_menu_height_bottom));
 		}
+		
+		/**Creats a page rectangle from the config file*/
+		public function get pageRectXY0():Rectangle
+		{
+			return new Rectangle(0,0,_stageRect.width-(internal_menu_width_left+internal_menu_width_right),_stageRect.height-(internal_menu_height_top+internal_menu_height_bottom));
+		}
 
 		public function load(configURLFile:String):void
 		{
