@@ -61,6 +61,16 @@ package sliderMenu
 		private static var manageMenusFrames:Boolean;
 
 		private static var onlyFrameAnimation:Boolean;
+
+	////////////////////////Drag menu variables↓
+	
+		private static var lastX:Number ;
+		private static var lastTime:int ;
+
+		private static var deltaDraggedX:Number ;
+		private static var deltaTime:Number ;
+
+		private static const minSpeedToActivateDrag:Number = 20 ;
 							
 	/////////////////////////////////// numerical variables↓
 		/**this variable tells the number of the accepted pixel from the stage */
@@ -136,6 +146,25 @@ package sliderMenu
 			
 			mouseFirstPose = null ;
 			currentDraggingPose = MenuDirection;
+		}
+
+		private static function resetDragSpeed():void
+		{
+			lastTime = getTimer();
+			lastX = myStage.mouseX ;
+			deltaDraggedX = 0 ;
+		}
+		
+
+		private static function calculateDragSpeed():void
+		{
+			var currentTime:int = getTimer();
+			deltaTime = currentTime - lastTime ;
+			lastTime = currentTime ;
+			var devideTime:Number = Math.floor(deltaTime/4) ;
+			deltaDraggedX = deltaDraggedX/Math.max(1,devideTime) ;
+			deltaDraggedX += myStage.mouseX - lastX;
+			lastX = myStage.mouseX ;
 		}
 		
 		/**hide all menus*/
@@ -326,6 +355,7 @@ package sliderMenu
 			}
 			
 			tempMouseFirstPose = new Point(myStage.mouseX,myStage.mouseY);
+			resetDragSpeed();
 			myStage.addEventListener(MouseEvent.MOUSE_MOVE,contolMovement);
 			myStage.addEventListener(ScrollMTEvent.LOCK_SCROLL_TILL_MOUSE_UP,stopMovmentControl)
 
@@ -370,7 +400,31 @@ package sliderMenu
 		private static function stopDrag(e:MouseEvent):void
 		{
 			stopMovmentControl();
+			calculateDragSpeed();
 			var currentMenu:MovieClip = addGetSlider(currentDraggingPose,null,0,true);
+			
+
+			//Alert.show("deltaDraggedX : "+deltaDraggedX);
+
+			if(Math.abs(deltaDraggedX)>minSpeedToActivateDrag)
+			{
+				if(currentDraggingPose==LEFT_MENU)
+				{
+					if(deltaDraggedX<0)
+						setTimeout(hide,0);
+					else
+						mouseFirstPose = null ;
+					return;
+				}
+				if(currentDraggingPose==RIGHT_MENU)
+				{
+					if(deltaDraggedX>0)
+						setTimeout(hide,0);
+					else
+						mouseFirstPose = null ;
+					return;
+				}
+			}
 			
 			if(readyToCloseMenuOnMouseUp!=0 && getTimer()-readyToCloseMenuOnMouseUp<200 && //currentMenu!=null && !currentMenu.hitTestPoint(myStage.mouseX,myStage.mouseY)
 				(
@@ -390,6 +444,7 @@ package sliderMenu
 			{
 				setTimeout(hide,0);
 				mouseFirstPose = null ;
+				return;
 			}
 			if(mouseFirstPose!=null && !lock_flag)
 			{
@@ -446,12 +501,15 @@ package sliderMenu
 				}
 				
 				mouseFirstPose = null ;
+				return;
 			}
 		}
 		
 		/**animate the stage*/
 		private static function anim(e:Event):void
 		{
+			if(mouseFirstPose!=null)
+				calculateDragSpeed();
 			var deltaPose:Point = new Point(0,0);
 			var deltaPoseNumber:Number = addGetSlider(currentDraggingPose);
 			if(currentDraggingPose==LEFT_MENU || currentDraggingPose==RIGHT_MENU)
