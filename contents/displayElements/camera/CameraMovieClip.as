@@ -24,7 +24,7 @@ package contents.displayElements.camera
 
         private function activateCamera(e:Event):void
         {
-            myCamera = new MTeamCamera(this);
+            myCamera = new MTeamCamera(this,'',true);
             this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
         }
 
