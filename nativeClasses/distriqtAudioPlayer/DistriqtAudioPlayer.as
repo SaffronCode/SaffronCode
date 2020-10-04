@@ -4,6 +4,9 @@
     import flash.net.NetConnection;
     import flash.net.NetStream;
     import flash.events.NetStatusEvent;
+    import flash.desktop.NativeApplication;
+    import flash.events.Event;
+    import com.distriqt.extension.mediaplayer.events.AudioPlayerEvent;
 
     public class DistriqtAudioPlayer {
 
@@ -26,6 +29,8 @@
         private static var myId:uint ;
 
         private static var onStoppedFunc:Function ;
+
+        private static var isPlaying:Boolean = false ;
 
         public static function setUp():void
         {
@@ -58,9 +63,14 @@
                     var options:* = new AudioPlayerOptionsClass();
                         (options).enableBackgroundAudio(false);
                     player = (MediaPlayerClass as Object).service.createAudioPlayer(); 
+                    AudioPlayerEvent.PLAYING
+                    player.addEventListener( (AudioPlayerEventClass as Object).PLAYING, audioPlayer_played );
                     player.addEventListener( (AudioPlayerEventClass as Object).COMPLETE, audioPlayer_completeHandler );
                     player.addEventListener( (MediaErrorEventClass as Object).ERROR, audioPlayer_errorHandler );
                 }
+
+                NativeApplication.nativeApplication.addEventListener(Event.DEACTIVATE,pausePlayingSound);
+                NativeApplication.nativeApplication.addEventListener(Event.ACTIVATE,playPausedSound);
             }
         }
 
@@ -72,13 +82,19 @@
             switch(e.info.code)
             {
                 case "NetStream.Play.Stop":
-                trace("Playing finished");
+                    trace("Playing finished");
                     triggerStop();
                 break;
                 case "NetStream.Play.Start":
                     trace("Playing started");
+                    audioPlayer_played() ;
                 break;
             }
+        }
+
+        private static function audioPlayer_played(e:*=null):void
+        {
+            isPlaying = true ;
         }
 
         private static function audioPlayer_errorHandler(e:*):void
@@ -95,6 +111,7 @@
         private static function triggerStop():void
         {
             trace("Trigger stop");
+            isPlaying = false ;
             var cashedStop:Function = onStoppedFunc ;
             onStoppedFunc = null ;
             if(cashedStop!=null)cashedStop();
@@ -138,6 +155,28 @@
 
             myId++;
             return myId ;
+        }
+
+        private static function pausePlayingSound(event:Event):void
+        {
+            if(isPlaying)
+            {
+                if(player!=null)
+                    player.pause();
+                else
+                    _ns.pause();
+            }
+        }
+
+        private static function playPausedSound(event:Event):void
+        {
+            if(isPlaying)
+            {
+                if(player!=null)
+                    player.play();
+                else
+                    _ns.resume();
+            }
         }
     }
 }
