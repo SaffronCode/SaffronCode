@@ -6,7 +6,6 @@
     import flash.events.NetStatusEvent;
     import flash.desktop.NativeApplication;
     import flash.events.Event;
-    import com.distriqt.extension.mediaplayer.events.AudioPlayerEvent;
 
     public class DistriqtAudioPlayer {
 
@@ -31,6 +30,11 @@
         private static var onStoppedFunc:Function ;
 
         private static var isPlaying:Boolean = false ;
+
+        public static function currentPlayinID():uint
+        {
+            return myId ;
+        }
 
         public static function setUp():void
         {
@@ -63,7 +67,6 @@
                     var options:* = new AudioPlayerOptionsClass();
                         (options).enableBackgroundAudio(false);
                     player = (MediaPlayerClass as Object).service.createAudioPlayer(); 
-                    AudioPlayerEvent.PLAYING
                     player.addEventListener( (AudioPlayerEventClass as Object).PLAYING, audioPlayer_played );
                     player.addEventListener( (AudioPlayerEventClass as Object).COMPLETE, audioPlayer_completeHandler );
                     player.addEventListener( (MediaErrorEventClass as Object).ERROR, audioPlayer_errorHandler );
