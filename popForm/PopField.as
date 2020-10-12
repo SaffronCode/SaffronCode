@@ -14,6 +14,7 @@
 	import flash.utils.setTimeout;
 	import contents.alert.Alert;
 	import animation.Anim_Frame_Controller;
+	import flash.utils.clearTimeout;
 	
 	/**Text field is changed*/
 	[Event(name="change", type="flash.events.Event")]
@@ -66,6 +67,8 @@
 		public static var borderColor:uint = 0xD92C5C;
 
 		private var onSubmited:Function ;
+		private var onEditedFunc:Function ;
+		private var onEditeFuncCalDelay:uint ;
 		
 		
 		public function get textField():TextField
@@ -213,6 +216,11 @@
 			{
 				nativeKeyBoard.onEnterPressed(func);
 			}
+		}
+
+		public function onEdited(func:Function):void
+		{
+			onEditedFunc = func ;
 		}
 		
 		public function setUp(tagName:String,defaultText:String,KeyBordType:String = SoftKeyboardType.DEFAULT,isPass:Boolean = false,editable:Boolean = true,isAraic:Boolean=true,numLines:uint = 1,color:uint=1,frame:uint=1,maxChar:uint=0,otherOptions:Array=null,deleteDefautlText:Boolean=false,activateRadioSwitcher:Boolean=false,returnKey:String=ReturnKeyLabel.DEFAULT,onTypedFunction:Function=null,justShowNativeText:Boolean=false,multiLineTag:Boolean=false,justify:Boolean=true,selectAllCharchter:Boolean=false):PopField
@@ -474,7 +482,19 @@
 			if(clearMC)
 				clearMC.visible = myTXT.text.length>0 ; 
 			this.dispatchEvent(new Event(Event.RENDER));
+
+			callOnEditedFunc();
 		}
+
+			private function callOnEditedFunc():void
+			{
+				clearTimeout(onEditeFuncCalDelay);
+				onEditeFuncCalDelay = setTimeout(callOnEditedNow,100);
+			}
+				private function callOnEditedNow():void
+				{
+					if(onEditedFunc!=null)onEditedFunc();
+				}
 		
 		protected function increaseValue(event:MouseEvent):void
 		{
