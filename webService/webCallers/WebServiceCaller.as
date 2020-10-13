@@ -15,6 +15,7 @@
 	import webService.WebEvent;
 	import webService.WebServiceSaver;
 	import webService.myWebService;
+	import contents.alert.Alert;
 	
 	/**This event dispatches when ofline or server data is ready to use.*/
 	[Event(name="complete", type="flash.events.Event")]
@@ -59,8 +60,13 @@
 		
 		private var offlineDate:Date,
 					LoadForDoubleControll:Boolean = false,
-					offlineValuesToSend:String = null;//,
-					//doNotDispatchEventsAgain:Boolean = false
+					offlineValuesToSend:String = null;
+
+		private var func_onDataRetrived:Function,
+					func_onConnectionError:Function,
+					func_onError:Function;
+
+		private var reloadIfNotConnected:Boolean = false ;
 					
 					
 		/**This function will change the maximomOfflineData value to new date<br>
@@ -72,6 +78,31 @@
 				newDate = new Date();
 			}
 			offlineDate = newDate ;
+		}
+
+		public function catchThenRealad():void
+		{
+			reloadIfNotConnected = true ;
+		}
+
+		public function then(onDataRetrived:Function):WebServiceCaller
+		{
+			func_onDataRetrived = onDataRetrived;
+			return this ;
+		}
+
+		public function catch2(onError:Function):WebServiceCaller
+		{
+			func_onConnectionError = onError;
+			func_onError = onError;
+			return this ;
+		}
+
+		public function onConnected2(onError:Function):WebServiceCaller
+		{
+			func_onConnectionError = onError;
+			func_onError = onError;
+			return this ;
 		}
 		
 					/**If you dont enter a date, it will take current date as maximomOFflieneDate*/
@@ -89,6 +120,10 @@
 			myWebService.activateOperation(myWebServiceName);
 			offlineDataIsOK = offlineDataIsOK_v ;
 			justLoadOffline = justLoadOfline_v ;
+
+			func_onDataRetrived = null ;
+			func_onConnectionError = null ;
+			func_onError = null ;
 			super();
 		}
 		
@@ -151,13 +186,16 @@
 				
 				if(cashedData != null)
 				{
-					generateDataAndDispatchEvent(cashedData,true);
-					//doNotDispatchEventsAgain = true ;
-					offlineValuesToSend = cashedData ;
-					if(LoadForDoubleControll)
+					setTimeout(function():void
 					{
-	 					myWebService.Connect(onConnected,noInternet);	
-					}
+						generateDataAndDispatchEvent(cashedData,true);
+						//doNotDispatchEventsAgain = true ;
+						offlineValuesToSend = cashedData ;
+						if(LoadForDoubleControll)
+						{
+							myWebService.Connect(onConnected,noInternet);	
+						}
+					},0);
 				}
 				else
 				{
@@ -225,6 +263,10 @@
 				connected = true ;
 				cansel();
 				generateDataAndDispatchEvent(e.pureData);
+				if(func_onDataRetrived!=null)
+				{
+					func_onDataRetrived();
+				}
 				this.dispatchEvent(new Event(Event.CONNECT));
 			}
 		}
@@ -327,6 +369,15 @@
 	/////////////////////////New Managed events
 		private function event_noInternet():void
 		{
+			if(func_onConnectionError!=null)
+			{
+				func_onConnectionError();
+			}
+			Alert.show("reloadIfNotConnected : "+reloadIfNotConnected);
+			if(reloadIfNotConnected)
+			{
+				reLoad(4000);
+			}
 			this.dispatchEvent(new Event(Event.UNLOAD));
 		}
 		
@@ -362,6 +413,10 @@
 		
 		private function event_data():void
 		{
+			if(func_onDataRetrived!=null)
+			{
+				func_onDataRetrived();
+			}
 			this.dispatchEvent(new Event(Event.COMPLETE));
 		}
 		
