@@ -730,7 +730,7 @@
 		/**Open the previus question, call showExactIndex() function to open exact page*/
 		public function preve():void
 		{
-			if(_lockPrev)
+			if(_lockPrev || _totalImages<=1)
 				return ;			
 	
 			setAnimation();
@@ -750,7 +750,7 @@
 		/**Open the next question, call showExactIndex() function to open exact page*/
 		public function next():void
 		{
-			if(_lockNext)
+			if(_lockNext || _totalImages<=1)
 				return;
 			
 			if(nextAvailable())
