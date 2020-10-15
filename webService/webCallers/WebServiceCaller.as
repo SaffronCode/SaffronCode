@@ -15,7 +15,6 @@
 	import webService.WebEvent;
 	import webService.WebServiceSaver;
 	import webService.myWebService;
-	import contents.alert.Alert;
 	
 	/**This event dispatches when ofline or server data is ready to use.*/
 	[Event(name="complete", type="flash.events.Event")]
@@ -373,7 +372,6 @@
 			{
 				func_onConnectionError();
 			}
-			Alert.show("reloadIfNotConnected : "+reloadIfNotConnected);
 			if(reloadIfNotConnected)
 			{
 				reLoad(4000);
