@@ -398,7 +398,7 @@ package netManager.urlSaver
 			{
 				offlineURLFileName = Base64.Encode(offlineURLFileName);
 			}*/
-			offlineURLFileName = offlineURLFileName.split('?').join('Q').split('/').join('').split('=').join('').split(':').join('').split(' ').join('').split('\n').join('').split('\r').join('').split('!').join('T').split('|').join('P');
+			offlineURLFileName = offlineURLFileName.split('?').join('Q').split('/').join('').split('=').join('').split(':').join('').split(' ').join('').split('\n').join('').split('\r').join('').split('!').join('T').split('|').join('P').split('%').join('rsd').split('&').join('nd').split('-').join('_');
 			offlineURLFileName = offlineURLFileName.substr(offlineURLFileName.length-Math.min(maxNameLength,offlineURLFileName.length),offlineURLFileName.length);
 			//Alert.show("Pdf texttttttttttPDF"+offlineURLFileName)
 			//offlineURLFileName = Base64.Encode(offlineURLFileName);
@@ -417,6 +417,7 @@ package netManager.urlSaver
 			
 			if(fileExtention!=null && offlineFileNameWithExtention.lastIndexOf(fileExtention)!=(offlineFileNameWithExtention.length-fileExtention.length)/* && offlineFileNameWithExtention.indexOf(fileExtention)==-1*/)
 			{
+				offlineFileNameWithExtention = offlineFileNameWithExtention.split('.').join("ght");
 				offlineFileNameWithExtention+=(fileExtention.indexOf('.')==-1)?'.'+fileExtention:fileExtention;
 			}
 			
