@@ -32,6 +32,8 @@
 		private static var onWaitClosedUserFunctoin:Function ;
 		
 		private static var _onClose:Function;
+
+		public static var addButtonsOnSingleLine:Boolean = true ;
 		
 		public static function get isOpen():Boolean
 		{
@@ -63,7 +65,7 @@
 			controllConfig();
 
 			var buttons:Array = [new PopButtonData(Contents.lang.t[id_yes],ButtonFrameYes,null,true,true)
-				,new PopButtonData(Contents.lang.t[id_no],ButtonFrameNo,null,true,true)] ;
+				,new PopButtonData(Contents.lang.t[id_no],ButtonFrameNo,null,true,addButtonsOnSingleLine)] ;
 			var popFields:PopMenuFields;
 			if(descriptionFieldLines>0)
 			{
