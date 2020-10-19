@@ -28,6 +28,8 @@
 	import flash.geom.Matrix;
 	import flash.utils.setTimeout;
 	import contents.Contents;
+	import flash.display.DisplayObject;
+	import contents.alert.Alert;
 	
 	public class PopMenu extends MovieClip
 	{
@@ -95,7 +97,7 @@
 		private var cancelButton:MovieClip;
 		
 		/**Enter a String or an Array of Strings*/
-		public static function backEnable(backString:*)
+		public static function backEnable(backString:*):void
 		{
 			backButtonName = backString ;
 		}
@@ -104,7 +106,7 @@
 		public static function staticCanselEnabled(CancelNames:Array):void
 		{
 			cancelNames = CancelNames.concat() ;
-			for(var i = 0 ; i<cancelNames.length ; i++)
+			for(var i:int = 0 ; i<cancelNames.length ; i++)
 			{
 				cancelNames[i] = String(cancelNames[i]);
 			}
@@ -227,6 +229,8 @@
 
 		private static function setStaticBacksFromSaffron():void
 		{
+			if(backButtonName!=null || cancelNames!=null)
+				return;
 			if(Contents.lang!=null && Contents.lang.t !=null && Contents.lang.t.back!=null)
 			{
 				PopMenu.backEnable(Contents.lang.t.back);
@@ -273,7 +277,7 @@
 				{
 					SaffronLogger.log( "back button dose not work" ) ;
 				}
-				for(var i = 0 ; i<cashedContents.buttonList.length ; i++)
+				for(var i:int = 0 ; i<cashedContents.buttonList.length ; i++)
 				{
 					var currentButtonName:String = cashedContents.buttonList[i] ;
 					var currentButtonId:String = cashedContents.buttonList[i] ;
@@ -480,7 +484,7 @@
 		
 		
 		/**this function will close pop menu after requested time on popUp function*/
-		private function closeME(e:TimerEvent)
+		private function closeME(e:TimerEvent):void
 		{
 			close();
 			if(onTimerClose!=null)
@@ -561,7 +565,7 @@
 					{
 						backBitmapData.dispose();
 					}
-					backBitmapData = new BitmapData(Math.max(1,imageW),Math.max(1,imageH),false,0xffffff);
+					backBitmapData = new BitmapData(Math.max(1,imageW),Math.max(1,imageH),false,stage.color);
 					backBitmap.bitmapData = backBitmapData ;
 				}
 				this.visible = false ;

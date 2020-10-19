@@ -134,7 +134,7 @@ package popForm
 			maxAreaMC.graphics.beginFill(0);
 			//Why areaH/2 ????
 			maxAreaMC.graphics.drawRect(areaW/-2,0/*areaH/-2*/,areaW,areaH);
-			maxAreaMC.alpha = 0 ;
+			maxAreaMC.visible = false ;
 			
 			field = new Vector.<PopFieldInterface>();
 			
