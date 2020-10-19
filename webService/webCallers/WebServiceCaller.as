@@ -262,10 +262,10 @@
 				connected = true ;
 				cansel();
 				generateDataAndDispatchEvent(e.pureData);
-				if(func_onDataRetrived!=null)
+				/*if(func_onDataRetrived!=null)
 				{
 					func_onDataRetrived();
-				}
+				}*/
 				this.dispatchEvent(new Event(Event.CONNECT));
 			}
 		}
