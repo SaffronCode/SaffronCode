@@ -69,6 +69,8 @@
 		private var onSubmited:Function ;
 		private var onEditedFunc:Function ;
 		private var onEditeFuncCalDelay:uint ;
+
+		private var requiredMC:MovieClip ;
 		
 		
 		public function get textField():TextField
@@ -185,6 +187,13 @@
 		{
 			super();
 			stop();
+			requiredMC = Obj.get("required_mc",this);
+			if(requiredMC)requiredMC.visible = false ;
+		}
+
+		public function required():void
+		{
+			if(requiredMC)requiredMC.visible = true ;
 		}
 		
 		/**Changing the form color without making effect on other values*/
