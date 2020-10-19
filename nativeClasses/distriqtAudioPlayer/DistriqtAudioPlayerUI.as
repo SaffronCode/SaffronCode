@@ -10,6 +10,8 @@
     import contents.alert.Alert;
     import com.distriqt.extension.mediaplayer.MediaPlayer;
     import flash.events.Event;
+    import flash.events.MouseEvent;
+    import com.distriqt.extension.mediaplayer.events.AudioPlayerEvent;
 
     public class DistriqtAudioPlayerUI extends MovieClip
     {
@@ -30,6 +32,8 @@
         private var lineMC:MovieClip,
                     cursolMC:MovieClip ;
 
+        private var seekAreaMC:MovieClip ;
+
         private var pauseMC:MovieClip,
                     playMC:MovieClip;
 
@@ -40,25 +44,78 @@
 
         private static var ME:DistriqtAudioPlayerUI ;
 
+        private var seekPermission:Boolean = false ;
+
+        private var speedMC:MovieClip ;
+
         public function DistriqtAudioPlayerUI()
         {
             super();
 
             lineMC = Obj.get("line_mc",this);
+            lineMC.mouseChildren = lineMC.mouseEnabled = false ;
             cursolMC = Obj.get("cursol_mc",this);
+            cursolMC.mouseChildren = cursolMC.mouseEnabled = false ;
             pauseMC = Obj.get("pause_mc",this);
+                Obj.setButton(pauseMC,pauseCurrentSound);
             playMC = Obj.get("play_mc",this);
+                Obj.setButton(playMC,startPlayingCurrentSound);
             currentPositionTF = Obj.get("current_time_mc",this);
             durationTF = Obj.get("total_tile_mc",this);
+            speedMC = Obj.get("speed_mc",this);
+            speedMC.gotoAndStop(1);
+                Obj.setButton(speedMC,speedUp);
+            seekAreaMC = Obj.get("seek_area_mc",this);
 
             pauseMC.visible = false ;
 
             this.addEventListener(Event.ENTER_FRAME,controlCursol);
             this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 
+            seekAreaMC.addEventListener(MouseEvent.MOUSE_DOWN,permissionToSeek);
+
             ME = this ;
 
             setUp();
+        }
+
+        private function speedUp():void
+        {
+            if(speedMC.currentFrame==1)
+            {
+                speedMC.gotoAndStop(2);
+                player.setPlaybackSpeed(2);
+            }
+            else
+            {
+                speedMC.gotoAndStop(1);
+                player.setPlaybackSpeed(1);
+            }
+        }
+
+            private function permissionToSeek(e:MouseEvent):void
+            {
+                seekPermission = true ;
+                stage.addEventListener(MouseEvent.MOUSE_UP,removeSeekPermission);
+            }
+
+            private function removeSeekPermission(e:MouseEvent):void
+            {
+                seekPermission = false ;
+                stage.removeEventListener(MouseEvent.MOUSE_UP,removeSeekPermission);
+            }
+
+
+        private function pauseCurrentSound(e:MouseEvent):void
+        {
+            e.stopImmediatePropagation();
+            player.pause();
+        }
+
+        private function startPlayingCurrentSound(e:MouseEvent):void
+        {
+            e.stopImmediatePropagation();
+            player.play();
         }
 
         private function unLoad(e:Event):void
@@ -71,6 +128,16 @@
 
         private function controlCursol(e:Event):void
         {
+            if(seekPermission)
+            {
+                if(this.mouseX<lineMC.x+lineMC.width && this.mouseX>lineMC.x)
+                {
+                    var seekTo:Number = player.duration*(this.mouseX-lineMC.x)/lineMC.width ;
+                    trace("seekTo : "+seekTo);
+                    player.seek(seekTo);
+                }
+            }
+
             if(player==null)return;
             if(lastPosition != player.position)
             {
@@ -117,7 +184,8 @@
                     (options).enableBackgroundAudio(true);
                     options.enablePlaybackSpeed(true);
                 player = (MediaPlayerClass).service.createAudioPlayer(); 
-                player.addEventListener( (AudioPlayerEventClass as Object).PLAYING, audioPlayer_played );
+                player.addEventListener( (AudioPlayerEvent).PLAYING, audioPlayer_played );
+                player.addEventListener( (AudioPlayerEvent).PAUSED, audioPlayer_completeHandler );
                 player.addEventListener( (AudioPlayerEventClass as Object).COMPLETE, audioPlayer_completeHandler );
                 player.addEventListener( (MediaErrorEventClass as Object).ERROR, audioPlayer_errorHandler );
             }
@@ -136,6 +204,14 @@
         }
 
         private function audioPlayer_completeHandler(event:*):void
+        {
+            pauseMC.visible = false ;
+            playMC.visible = true ;
+            speedMC.gotoAndStop(1);
+            player.setPlaybackSpeed(1);
+        }
+
+        private function audioPlayer_paused(event:*):void
         {
             pauseMC.visible = false ;
             playMC.visible = true ;
