@@ -71,6 +71,7 @@
 
         private function controlCursol(e:Event):void
         {
+            if(player==null)return;
             if(lastPosition != player.position)
             {
                 currentPositionTF.setUp(TimeToString.timeInString(player.position),false,false,1);
@@ -82,7 +83,7 @@
             lastPosition = player.position ;
             lastDuration = player.duration ;
 
-            cursolMC.x = lineMC.x + lineMC.width*(player.position/player.duration) ;
+            cursolMC.x = lineMC.x + lineMC.width*(player.duration!=0?(player.position/player.duration):0) ;
         }
 
         public function playSound(soundPathURL:String):void
