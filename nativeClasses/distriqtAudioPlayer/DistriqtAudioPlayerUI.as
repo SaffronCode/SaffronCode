@@ -4,14 +4,8 @@
 
     import flash.display.MovieClip;
     import appManager.displayContentElemets.TitleText;
-    import com.distriqt.extension.mediaplayer.audio.AudioPlayer;
-    import com.distriqt.extension.mediaplayer.audio.AudioPlayerOptions;
-    import flash.utils.setTimeout;
-    import contents.alert.Alert;
-    import com.distriqt.extension.mediaplayer.MediaPlayer;
     import flash.events.Event;
     import flash.events.MouseEvent;
-    import com.distriqt.extension.mediaplayer.events.AudioPlayerEvent;
 
     public class DistriqtAudioPlayerUI extends MovieClip
     {
@@ -26,7 +20,7 @@
         /**com.distriqt.extension.mediaplayer.events.MediaErrorEvent */
         private var MediaErrorEventClass:Class;
 
-        private var player:AudioPlayer ;
+        private var player:* ;
 
 
         private var lineMC:MovieClip,
@@ -38,6 +32,7 @@
                     playMC:MovieClip;
 
         private var currentPositionTF:TitleText,
+                    titleTF:TitleText,
                     durationTF:TitleText;
 
         private var lastPosition:Number,lastDuration:Number ;
@@ -47,6 +42,10 @@
         private var seekPermission:Boolean = false ;
 
         private var speedMC:MovieClip ;
+
+        private var closeMC:MovieClip ;
+
+        private var hidden:Boolean = true ;
 
         public function DistriqtAudioPlayerUI()
         {
@@ -61,11 +60,15 @@
             playMC = Obj.get("play_mc",this);
                 Obj.setButton(playMC,startPlayingCurrentSound);
             currentPositionTF = Obj.get("current_time_mc",this);
+            titleTF = Obj.get("title_mc",this);
             durationTF = Obj.get("total_tile_mc",this);
             speedMC = Obj.get("speed_mc",this);
             speedMC.gotoAndStop(1);
                 Obj.setButton(speedMC,speedUp);
             seekAreaMC = Obj.get("seek_area_mc",this);
+
+            closeMC = Obj.get("close_mc",this);
+            Obj.setButton(closeMC,hide);
 
             pauseMC.visible = false ;
 
@@ -77,6 +80,27 @@
             ME = this ;
 
             setUp();
+
+            hide();
+        }
+
+        private function hide():void
+        {
+            hidden = true ;
+            pauseCurrentSound();
+        }
+
+        private function show():void
+        {
+            hidden = false ;
+        }
+
+        public static function playSound(soundURL:String,title:String=''):void
+        {
+            if(ME!=null)
+            {
+                ME.playSound(soundURL,title);
+            }
         }
 
         private function speedUp():void
@@ -106,16 +130,16 @@
             }
 
 
-        private function pauseCurrentSound(e:MouseEvent):void
+        private function pauseCurrentSound():void
         {
-            e.stopImmediatePropagation();
-            player.pause();
+            setUp();
+            if(player)player.pause();
         }
 
-        private function startPlayingCurrentSound(e:MouseEvent):void
+        private function startPlayingCurrentSound():void
         {
-            e.stopImmediatePropagation();
-            player.play();
+            setUp();
+            if(player)player.play();
         }
 
         private function unLoad(e:Event):void
@@ -128,6 +152,19 @@
 
         private function controlCursol(e:Event):void
         {
+
+            if(hidden)
+            {
+                this.prevFrame();
+                if(this.currentFrame == 1)
+                    this.visible = false ;
+            }
+            else
+            {
+                this.nextFrame();
+                this.visible = true ;
+            }
+            if(player==null)return;
             if(seekPermission)
             {
                 if(this.mouseX<lineMC.x+lineMC.width && this.mouseX>lineMC.x)
@@ -153,14 +190,16 @@
             cursolMC.x = lineMC.x + lineMC.width*(player.duration!=0?(player.position/player.duration):0) ;
         }
 
-        public function playSound(soundPathURL:String):void
+        public function playSound(soundPathURL:String,title:String=''):void
         {
+            show();
             setUp();
             trace("Play function called")
             if(AudioPlayerClass==null)return;
             trace("player : "+player+" << "+soundPathURL);
             player.load(soundPathURL);
             player.play();
+            titleTF.text = title ;
         }
 
         public function setUp():void
@@ -180,12 +219,12 @@
                 trace("AudioPlayerEventClass : "+AudioPlayerEventClass);
                 trace("MediaErrorEventClass : "+MediaErrorEventClass);
                 if(AudioPlayerClass==null)return;
-                var options:AudioPlayerOptions = new AudioPlayerOptionsClass();
+                var options:* = new AudioPlayerOptionsClass();
                     (options).enableBackgroundAudio(true);
                     options.enablePlaybackSpeed(true);
                 player = (MediaPlayerClass).service.createAudioPlayer(); 
-                player.addEventListener( (AudioPlayerEvent).PLAYING, audioPlayer_played );
-                player.addEventListener( (AudioPlayerEvent).PAUSED, audioPlayer_completeHandler );
+                player.addEventListener( (AudioPlayerEventClass as Object).PLAYING, audioPlayer_played );
+                player.addEventListener( (AudioPlayerEventClass as Object).PAUSED, audioPlayer_completeHandler );
                 player.addEventListener( (AudioPlayerEventClass as Object).COMPLETE, audioPlayer_completeHandler );
                 player.addEventListener( (MediaErrorEventClass as Object).ERROR, audioPlayer_errorHandler );
             }
