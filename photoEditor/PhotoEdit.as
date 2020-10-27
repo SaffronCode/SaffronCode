@@ -288,8 +288,7 @@
 		{
 			if(AutoSaveOnDevice && CameraRoll.supportsAddBitmapData)
 			{
-				var imageSaver:CameraRoll = new CameraRoll();
-				imageSaver.addBitmapData(image);
+				DeviceImage.saveImageToGallery(image,new Function())
 			}
 			onDone();
 			ME.disable();
@@ -297,7 +296,7 @@
 		
 		internal static function close(e:*=null):void
 		{
-			for(var i = 0 ; i<imageHistory.length ; i++)
+			for(var i:int = 0 ; i<imageHistory.length ; i++)
 			{
 				imageHistory[i].dispose();
 			}
