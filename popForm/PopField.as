@@ -191,9 +191,16 @@
 			if(requiredMC)requiredMC.visible = false ;
 		}
 
-		public function required():void
+		public function required():PopField
 		{
 			if(requiredMC)requiredMC.visible = true ;
+			return this ;
+		}
+
+		public function isCurrentcy():PopField
+		{
+			if(nativeKeyBoard)nativeKeyBoard.isCurrency()
+			return this ;
 		}
 		
 		/**Changing the form color without making effect on other values*/
