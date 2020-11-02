@@ -105,7 +105,7 @@ package appManager.animatedPages.pageManager
 					}
 					
 					//auto size detector on horizontal >< position had bug, if you set it true, the scroll will lock anyway
-					scrollerMC = new ScrollMT(currentPage,AppWithContent.contentRect,targetArea,autoSizeDetector,false/*autoSizeDetector*/,currentPageData.scrollEffect,false);
+					scrollerMC = new ScrollMT(currentPage,Contents.config.pageRectXY0,targetArea,autoSizeDetector,false/*autoSizeDetector*/,currentPageData.scrollEffect,false);
 				}
 				
 				if(myEvent is AppEventContent)
