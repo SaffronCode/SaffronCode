@@ -234,14 +234,16 @@
 			}
 		}
 
-		public function onClick(func:Function):void
+		public function onClick(func:Function):PopButton
 		{
 			Obj.setButton(this,func);
+			return this ;
 		}
-		public function onClickOpenLink(link:LinkData):void
+		public function onClickOpenLink(link:LinkData):PopButton
 		{
 			Obj.setButton(this,openLink);
 			_link_to_open = link ;
+			return this ;
 		}
 			private function openLink():void
 			{
@@ -249,13 +251,14 @@
 					this.dispatchEvent(new AppEventContent(_link_to_open));
 			}
 
-		public function setUpByLink(linkData:LinkData):void
+		public function setUpByLink(linkData:LinkData):PopButton
 		{
 			setUp(linkData.name);
 			var ME:PopButton = this ;
 			onClick(function():void{
 				ME.dispatchEvent(new AppEventContent(linkData));
 			});
+			return this ;
 		}
 
 		
