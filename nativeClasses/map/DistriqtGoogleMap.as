@@ -64,6 +64,7 @@
 		
 		/**myMarkers is an array of MapMarker*/
 		private var myMarkers:Vector.<Object>,
+					markerItemsList:Vector.<MarkerItem> = new Vector.<MarkerItem>(),
 					myIcons:Vector.<MapIcon>;
 		
 		private var mapCretedOnStage:Boolean;
@@ -246,6 +247,7 @@
 				SaffronLogger.log("...listenning...");
 				(NativeMapsClass as Object).service.addEventListener( (NativeMapEventClass as Object).MAP_CREATED, mapCreatedHandler );
 				(NativeMapsClass as Object).service.addEventListener( (NativeMapBitmapEventClass as Object).READY , updateCapturedBitmap);
+				(NativeMapsClass as Object).service.addEventListener((NativeMapEventClass as Object).MARKER_TOUCHED,getTouchedItem);
 				SaffronLogger.log("---Creating...");
 				(NativeMapsClass as Object).service.createMap( rect, (MapTypeClass as Object).MAP_TYPE_NORMAL,new LatLngClass(centerLat,centerLon),firstZoomLevel);
 				if(!super.visible)
@@ -259,6 +261,17 @@
 				SaffronLogger.log("Google map is not support");
 			}
 			this.addEventListener(Event.ENTER_FRAME,repose,false,10000);
+		}
+
+		private function getTouchedItem(e:*):void
+		{
+			for(var i:int = 0 ; i<markerItemsList.length ; i++)
+			{
+				if(markerItemsList[i].id == e.markerId)
+				{
+					markerItemsList[i].dispatchClicked();
+				}
+			}
 		}
 
 		private var centerMarker:*,
@@ -321,6 +334,7 @@
 			this.removeEventListener(Event.ENTER_FRAME,repose);
 			if(NativeMapsClass!=null)
 				(NativeMapsClass as Object).service.dispose();
+			markerItemsList = new Vector.<MarkerItem>();
 		}
 		
 		private function mapCreatedHandler(e:*):void
@@ -361,6 +375,8 @@
 		
 		public function setCenter(lat:Number,lon:Number,zoomLevel:Number=-1,animationDuration:uint=2000):void
 		{
+			setUp();
+			if(isSupports==false)return;
 			SaffronLogger.log("******* first center is : "+lat,lon,zoomLevel);
 			center = new LatLngClass(lat,lon);
 			firstZoomLevel = zoomLevel<=0?defaultZoomLevel:zoomLevel ;
@@ -518,11 +534,14 @@
 			return new Point(0,0);
 		}
 		
-		public function addMarker(markerName:String,lat:Number,lon:Number,markerTitle:String,markerInfo:String,color:uint=0,enableInfoWindow:Boolean=true,animated:Boolean=true,showInfoButton:Boolean=true,iconId:String=''):void
+		/**Be carefull to user a unique name as marekrName */
+		public function addMarker(markerName:String,lat:Number,lon:Number,markerTitle:String,markerInfo:String,color:uint=0,enableInfoWindow:Boolean=true,animated:Boolean=true,showInfoButton:Boolean=true,iconId:String=''):MarkerItem
 		{
 			setUp();
+			var markerItem:MarkerItem = new MarkerItem(markerName);
+			markerItemsList.push(markerItem);
 			if(!isSupports)
-				return;
+				return markerItem;
 			//Alert.show("****************Map marker Added : ",lat,lon,markerName,'iconId : '+iconId);
 			var myMarker:Object = new MapMarkerClass(markerName,new LatLngClass(lat,lon),markerTitle,markerInfo,color,false,enableInfoWindow,animated,showInfoButton,iconId)
 			myMarkers.push(myMarker);
@@ -530,6 +549,7 @@
 			{
 				updateMarkers();
 			}
+			return markerItem ;
 		}
 		
 		public function style(style:String):void
@@ -567,8 +587,18 @@
 			myIcons = new Vector.<MapIcon>();
 			for(i = 0 ; i<myMarkers.length ; i++)
 			{
+				var currentMarker:MarkerItem ;
 				//Alert.show("new marker customIconId is :"+(myMarkers[i] as MapMarker).customIconId)
-				(NativeMapsClass as Object).service.addMarker(myMarkers[i]/* as MapMarker*/);
+				for(var j:int = 0 ; j<markerItemsList.length ; j++)
+				{
+					if(markerItemsList[i].name==(myMarkers[i] as Object).name)
+					{
+						currentMarker = markerItemsList[i] ;
+						break;
+					}
+				}
+				var insertedMarkerId:int = (NativeMapsClass as Object).service.addMarker(myMarkers[i]/* as MapMarker*/);
+				if(currentMarker)currentMarker.id = insertedMarkerId ;
 			}
 			myMarkers = new Vector.<Object>();
 		}
