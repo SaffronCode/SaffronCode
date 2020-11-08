@@ -71,8 +71,8 @@ package appManager.animatedPages.pageManager
 			
 			if(pageClassType != null)
 			{
-				/*try
-				{*/
+				try
+				{
 					currentPage = new pageClassType();
 					pageReadyDispatched = false ;
 					var framesList:Array = currentPage.currentLabels;
@@ -85,12 +85,14 @@ package appManager.animatedPages.pageManager
 						middleFrame = currentPage.totalFrames ;
 					}
 					finishFrame = currentPage.totalFrames ;
-				/*}
-				catch(e)
+				}
+				catch(e:Error)
 				{
+					if(DevicePrefrence.isDebuggingMode())
+						throw e ;
 					SaffronLogger.log("Page is not generated : "+e);
 					return;
-				}*/
+				}
 				SaffronLogger.log("*** currentPage added to stage");
 				this.addChild(currentPage);
 				
