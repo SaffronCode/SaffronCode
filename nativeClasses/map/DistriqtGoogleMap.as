@@ -263,6 +263,11 @@
 			this.addEventListener(Event.ENTER_FRAME,repose,false,10000);
 		}
 
+		public function isCreated():Boolean
+		{
+			return mapCreated ;
+		}
+
 		private function getTouchedItem(e:*):void
 		{
 			for(var i:int = 0 ; i<markerItemsList.length ; i++)
@@ -312,6 +317,7 @@
 				(NativeMapsClass as Object).service.addCustomMarkerIcon(centerMarkerIcon);
 			}catch(e:Error){}
 			centerMarkerId = (NativeMapsClass as Object).service.addMarker( centerMarker );
+			if(super.visible==false)(NativeMapsClass as Object).service.hideMap();
 		}
 
 		private function updateCapturedBitmap(e:*):void
@@ -489,7 +495,7 @@
 			if(forceToHideMap ==false && rect!=null && Obj.isAccesibleByMouse(this))
 			{
 				//SaffronLogger.log("Show map!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-				if(!mapIsShowing)
+				if(!mapIsShowing && super.visible)
 				{
 					//SaffronLogger.log("!!!!!!!!!!!!!!!!!show!!!!!!!!!!!!");
 					(NativeMapsClass as Object).service.showMap();
@@ -528,9 +534,13 @@
 
 		public function centerPosition():Point
 		{
-			var cent:* = (NativeMapsClass as Object).service.getCentre() ;
-			if(cent!=null)
-				return new Point(cent.lat,cent.lon);
+			setUp()
+			try{
+				var cent:* = (NativeMapsClass as Object).service.getCentre() ;
+				if(cent!=null)
+					return new Point(cent.lat,cent.lon);
+			}
+			catch(e:Error){};
 			return new Point(0,0);
 		}
 		
@@ -601,6 +611,7 @@
 				if(currentMarker)currentMarker.id = insertedMarkerId ;
 			}
 			myMarkers = new Vector.<Object>();
+			if(super.visible==false)(NativeMapsClass as Object).service.hideMap();
 		}
 	}
 }
