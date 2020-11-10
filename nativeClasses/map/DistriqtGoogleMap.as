@@ -577,11 +577,11 @@
 		{
 			//(NativeMapsClass as Object).service.clearMap();
 			
-			var i:int ;
+			var i:int, j:int ;
 			var isDuplicated:Boolean = false ;
 			for(i = 0 ; i<myIcons.length ; i++)
 			{
-				for(var j:int = 0 ; j<(NativeMapsClass as Object).service.customMarkerIcons.length ; j++)
+				for(j = 0 ; j<(NativeMapsClass as Object).service.customMarkerIcons.length ; j++)
 				{
 					if((NativeMapsClass as Object).service.customMarkerIcons[j].id == myIcons[i].Id)
 					{
@@ -599,7 +599,7 @@
 			{
 				var currentMarker:MarkerItem ;
 				//Alert.show("new marker customIconId is :"+(myMarkers[i] as MapMarker).customIconId)
-				for(var j:int = 0 ; j<markerItemsList.length ; j++)
+				for(j = 0 ; j<markerItemsList.length ; j++)
 				{
 					if(markerItemsList[i].name==(myMarkers[i] as Object).name)
 					{
