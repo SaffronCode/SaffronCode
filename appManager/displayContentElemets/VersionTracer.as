@@ -31,7 +31,7 @@ package appManager.displayContentElemets
 		{
 			if(this.stage!=null)
 			{
-				intervalId = setInterval(updateVersionLabel,2000);
+				intervalId = setInterval(updateVersionLabel,10000);
 				this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 			}
 			else
