@@ -455,10 +455,10 @@
 		}
 		
 		/**Values are not case sencitive*/
-		protected function loadParam(obj:Object=null,isDataForm:Boolean=false):void
+		protected function loadParam(obj:Object=null,isDataForm:Boolean=false,clearFunctions:Boolean=true):void
 		{
 			HTTPStatus = 0 ;
-			cansel();
+			cansel(clearFunctions);
 			updateHeaders();
 			isConnected = false ;
 			onUpdateProccess = false ;
@@ -587,13 +587,14 @@
 				//noInternet();
 		}
 		
-		public function reLoad(delay:uint=20000,dontReturnOfflineData:Boolean=false):void
+		public function reLoad(delay:uint=20000,dontReturnOfflineData:Boolean=false):RestDoaServiceCaller
 		{
 			cansel(false);
 			offlineDate = new Date() ;
 			offlineDataIsOK = !dontReturnOfflineData ;
 			instantOfflineData = false ;
-			timerId = setTimeout(loadParam,delay)
+			timerId = setTimeout(loadParam,delay,null,false,false);
+			return this ;
 		}
 
 		public function cancel():void
