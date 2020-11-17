@@ -733,7 +733,7 @@ package contents.displayPages
 			
 			if(linksContainer!=null && myPageData!=null && myPageData.id!='')
 			{
-				if(myPageData.id!='')
+				if(myPageData.id!='' && myPageData.id!=null)
 				{
 					if(horizontalMenu)
 					{
