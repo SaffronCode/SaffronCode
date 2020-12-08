@@ -368,7 +368,7 @@ package contents.displayPages
 		/**Start controlling mouse down*/
 		protected function controllMouseSlide(event:MouseEvent):void
 		{
-			linkScroller.isInRange();
+			if(linkScroller)linkScroller.isInRange();
 			SaffronLogger.log("Mouse clicked");
 			var itemY:Number ; 
 			var currentLinkItem:LinkItem ;
