@@ -163,7 +163,7 @@
             SaffronLogger.log(event.payload); //{"google.delivered_priority":"high","TypeId":"2","google.ttl":2419200,"google.original_priority":"high","Id":"2096"}
             SaffronLogger.log(">>Complete data : " + JSON.stringify(event));
             if (NotifReceived != null) {
-                if (JSON.stringify(event.data).length > 0) {
+                if (JSON.stringify(event.payload).length > 0) {
                     NotifReceived(event.payload);
                 } else {
                     NotifReceived();
