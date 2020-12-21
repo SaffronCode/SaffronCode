@@ -19,31 +19,32 @@
      */
     public class DistriqtPushNotification {
         public static var deviceToken:String;
-        public static var CoreClass:Class;
-        public static var AuthorisationStatusClass:Class;
-        public static var PushNotificationsClass:Class;
-        public static var ServiceClass:Class;
-        public static var ActionBuilderClass:Class;
-        public static var CategoryBuilderClass:Class;
-        public static var ChannelBuilderClass:Class;
-        public static var AuthorisationEventClass:Class;
-        public static var RegistrationEventClass:Class;
+        private static var CoreClass:Class;
+        private static var AuthorisationStatusClass:Class;
+        private static var PushNotificationsClass:Class;
+        private static var ServiceClass:Class;
+        private static var ActionBuilderClass:Class;
+        private static var CategoryBuilderClass:Class;
+        private static var ChannelBuilderClass:Class;
+        private static var AuthorisationEventClass:Class;
+        private static var RegistrationEventClass:Class;
+        private static var InAppMessagingEventClass:Class;
         /**com.distriqt.extension.pushnotifications.events.PushNotificationEvent */
-        public static var PushNotificationEventClass:Class;
+        private static var PushNotificationEventClass:Class;
         /**com.distriqt.extension.pushnotifications.events.PushNotificationGroupEvent */
-        public static var PushNotificationGroupEventClass:Class;
+        private static var PushNotificationGroupEventClass:Class;
 
 
         private static var NotifReceived:Function;
+        private static var InAppMsgRecevied:Function;
 
         public function DistriqtPushNotification() {
 
         }
 
-        public static function loadClasses():void {
+        private static function loadClasses():void {
             if (PushNotificationsClass == null) {
                 try {
-
                     CoreClass = getDefinitionByName("com.distriqt.extension.core.Core") as Class;
                     AuthorisationStatusClass = getDefinitionByName("com.distriqt.extension.pushnotifications.AuthorisationStatus") as Class;
                     PushNotificationsClass = getDefinitionByName("com.distriqt.extension.pushnotifications.PushNotifications") as Class;
@@ -55,6 +56,7 @@
                     RegistrationEventClass = getDefinitionByName("com.distriqt.extension.pushnotifications.events.RegistrationEvent") as Class;
                     PushNotificationEventClass = getDefinitionByName("com.distriqt.extension.pushnotifications.events.PushNotificationEvent") as Class;
                     PushNotificationGroupEventClass = getDefinitionByName("com.distriqt.extension.pushnotifications.events.PushNotificationGroupEvent") as Class;
+                    InAppMessagingEventClass = getDefinitionByName("com.distriqt.extension.pushnotifications.events.InAppMessagingEvent") as Class;
                     SaffronLogger.log("RegistrationEventClass : " + RegistrationEventClass);
                 } catch (e) {
                     SaffronLogger.log('Add \n\n\t<extensionID>com.distriqt.PushNotification</extensionID>\n\t<extensionID>com.distriqt.Core</extensionID>\n\n to your project xmls'); // and below permitions to the <application> tag : \n\n<activity \n\n\tandroid:name="com.distriqt.extension.share.activities.ShareActivity" \n\n\tandroid:theme="@android:style/Theme.Translucent.NoTitleBar" />\n\n\t\n\n<provider\n\n\tandroid:name="android.support.v4.content.FileProvider"\n\n\tandroid:authorities="air.'+DevicePrefrence.appID+'"\n\n\tandroid:grantUriPermissions="true"\n\n\tandroid:exported="false">\n\n\t<meta-data\n\n\t\tandroid:name="android.support.FILE_PROVIDER_PATHS"\n\n\t\tandroid:resource="@xml/distriqt_paths" />\n\n</provider>';
@@ -71,12 +73,14 @@
         }
 
         /**
-         * You can receive server data on onNotifReceived function as a String
+         * You can receive server data on onNotifReceived & onInAppMsgRecevied function as a String
          * @param onResult
          * @param onNotifReceived
+         * @param onInAppMsgRecevied
          */
-        public static function setup(onResult:Function = null, onNotifReceived:Function = null):void {
+        public static function setup(onResult:Function = null, onNotifReceived:Function = null, onInAppMsgRecevied:Function = null):void {
             NotifReceived = onNotifReceived;
+            InAppMsgRecevied = onInAppMsgRecevied;
             var PushNotifications:Object;
             loadClasses();
             if (onResult == null) {
@@ -98,7 +102,6 @@
                     if ((PushNotificationsClass as Object).service.isServiceSupported((ServiceClass as Object).FCM)) {
                         var service:* = new ServiceClass((ServiceClass as Object).FCM, "");
                         service.sandboxMode = true; // false it in production mode!!!
-                        service.enableNotificationsWhenActive = true;
                         service.setNotificationsWhenActive(true);
                         service.categories.push(new CategoryBuilderClass().setIdentifier("MESSAGE_CATEGORY").addAction(new ActionBuilderClass().setTitle("OK").setWillLaunchApplication(true).setIdentifier("OPEN_APP_BTN").build()).addAction(new ActionBuilderClass().setTitle("Cancel").setDestructive(true).setShouldCancelOnAction(true).setIdentifier("CANCEL_APP_BTN").build()).build());
                         service.channels.push(new ChannelBuilderClass().setId("app_channel").setName("App Channel").build());
@@ -108,12 +111,10 @@
                         (PushNotificationsClass as Object).service.addEventListener((RegistrationEventClass as Object).REGISTER_FAILED, registerFailedHandler);
                         (PushNotificationsClass as Object).service.addEventListener((RegistrationEventClass as Object).ERROR, errorHandler);
                         (PushNotificationsClass as Object).service.addEventListener((AuthorisationEventClass as Object).CHANGED, authorisationChangedHandler);
-
                         (PushNotificationsClass as Object).service.addEventListener((PushNotificationEventClass as Object).NOTIFICATION, notificationHandler);
                         (PushNotificationsClass as Object).service.addEventListener((PushNotificationEventClass as Object).NOTIFICATION_SELECTED, notificationHandler);
                         (PushNotificationsClass as Object).service.addEventListener((PushNotificationEventClass as Object).ACTION, actionHandler);
                         (PushNotificationsClass as Object).service.addEventListener((PushNotificationGroupEventClass as Class).GROUP_SELECTED, groupSelectedHandler);
-
                         (PushNotificationsClass as Object).service.setup(service);
                         requestAuthorisation();
                         function registeringHandler(event:*):void {
@@ -162,7 +163,7 @@
             SaffronLogger.log(event.payload); //{"google.delivered_priority":"high","TypeId":"2","google.ttl":2419200,"google.original_priority":"high","Id":"2096"}
             SaffronLogger.log(">>Complete data : " + JSON.stringify(event));
             if (NotifReceived != null) {
-                if (NotifReceived.length > 0) {
+                if (JSON.stringify(event.data).length > 0) {
                     NotifReceived(event.payload);
                 } else {
                     NotifReceived();
@@ -184,6 +185,39 @@
             SaffronLogger.log(">>Complete data : " + JSON.stringify(event));
         }
 
+        public static function setupInAppMessaging():void {
+            // call this function after a few second after setup pushnotification
+            if (PushNotificationsClass == null) {
+                //windowsDebug;
+                return;
+            }
+            if ((PushNotificationsClass as Object).service.inAppMessaging.isSupported) {
+                (PushNotificationsClass as Object).service.inAppMessaging.addEventListener((InAppMessagingEventClass as Object).SELECTED, inappmessaging_selectedHandler);
+                 Alert.show("InAppMessaging SUPPORTED")
+            } else {
+                Alert.show("InAppMessaging NOT SUPPORTED")
+            }
+        }
+
+        public static function setTriggerForInAppMessaging(key:String, value:String = ""):void {
+            //at first,you must call setupInAppMessaging method
+            if (PushNotificationsClass == null) {
+                //windowsDebug;
+                return;
+            }
+            (PushNotificationsClass as Object).service.inAppMessaging.addTrigger(key, value);
+        }
+
+        private static function inappmessaging_selectedHandler(event:*):void {
+            if (InAppMsgRecevied != null) {
+                if (JSON.stringify(event.data).length > 0) {
+                    InAppMsgRecevied(JSON.stringify(event.data));
+                } else {
+                    InAppMsgRecevied();
+                }
+            }
+        }
+        
         private static function authorisationChangedHandler(e:*):void {
             requestAuthorisation();
         }
