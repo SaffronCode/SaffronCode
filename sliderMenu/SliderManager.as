@@ -348,7 +348,7 @@ package sliderMenu
 		/**start the drag*/
 		private static function checkDrag(e:MouseEvent):void
 		{
-			if(lock_flag)
+			if(lock_flag || PopMenu.isOpen)
 			{
 				//menu is lock
 				return ;
