@@ -32,6 +32,11 @@ package diagrams.calender
 		
 		
 		public static var dayNames:Array = [d0,d1,d2,d3,d4,d5,d6];
+
+		public static function getDayNameFarsi(date:Date):String
+		{
+			return dayNames[(date.day+1)%7];
+		}
 		
 		public static var dayNames2:Vector.<DayNamesModel> = new Vector.<DayNamesModel>();
 		dayNames2.push(dd0,dd1,dd2,dd3,dd4,dd5,dd6);
