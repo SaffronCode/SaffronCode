@@ -63,6 +63,7 @@
 
 		private var func_onDataRetrived:Function,
 					func_onConnectionError:Function,
+					func_onConnected:Function,
 					func_onError:Function;
 
 		private var reloadIfNotConnected:Boolean = false ;
@@ -97,10 +98,9 @@
 			return this ;
 		}
 
-		public function onConnected2(onError:Function):WebServiceCaller
+		public function onConnected2(onConnectedFunc:Function):WebServiceCaller
 		{
-			func_onConnectionError = onError;
-			func_onError = onError;
+			func_onConnected = onConnectedFunc;
 			return this ;
 		}
 		
@@ -225,7 +225,7 @@
 			myWebService.CanselThisToken(myToken);
 		}
 		
-		private function onConnected()
+		private function onConnected():void
 		{
 			SaffronLogger.log("connected");
 			//TODO: implement function
@@ -267,6 +267,7 @@
 					func_onDataRetrived();
 				}*/
 				this.dispatchEvent(new Event(Event.CONNECT));
+				if(func_onConnected!=null)func_onConnected();
 			}
 		}
 		
