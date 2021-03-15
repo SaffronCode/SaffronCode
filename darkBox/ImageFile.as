@@ -115,6 +115,11 @@ package darkBox
 			return target.split('|').length
 		}
 		
+		public function FirstFile():String
+		{
+			return target.split('|')[0];
+		}
+		
 		private function startDownload():void
 		{
 			if(onlineTarget=='')

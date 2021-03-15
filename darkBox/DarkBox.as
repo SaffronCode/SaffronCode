@@ -30,6 +30,9 @@
 	import stageManager.StageManagerEvent;
 	
 	import videoShow.StageVideo;
+	import flash.net.URLLoader;
+	import flash.events.HTTPStatusEvent;
+	import flash.events.IOErrorEvent;
 	
 	public class DarkBox extends MovieClip
 	{
@@ -68,6 +71,7 @@
 		private var closeFunction:Function;
 		
 		private var imageSize:Rectangle;
+		private var videoLoaderTest:URLLoader;
 		
 		/**Get the current file*/
 		public static function get currentMedia():ImageFile
@@ -607,6 +611,26 @@
 			
 			showReadyImage(event.target as ImageFile);
 		}
+
+		
+		private function httpStat(e:HTTPStatusEvent):void
+		{
+			if(e.status==404)
+			{
+				Hints.show('ویدئو مورد نظر از سرور حذف شده است.');
+				videoLoaderTest.close();
+				videoLoaderTest = undefined ;
+				if(images.length<=1)
+					hide();
+			}
+		}
+
+		private function notConnection(e:IOErrorEvent):void
+		{
+			Hints.noInternet();
+			videoLoaderTest.close();
+			videoLoaderTest = undefined ;
+		}
 		
 		private function showReadyImage(imageItem:ImageFile):void
 		{
@@ -629,6 +653,20 @@
 			case ImageFile.TYPE_VIDEO: 
 				downloadMC.visible = false;
 				showQuailyBtn(imageItem.qualityCount());
+				
+
+
+
+				if(videoLoaderTest)
+				{
+					videoLoaderTest.close();
+					videoLoaderTest = undefined ;
+				}
+				videoLoaderTest = new URLLoader();
+				videoLoaderTest.addEventListener(HTTPStatusEvent.HTTP_RESPONSE_STATUS,httpStat);
+				videoLoaderTest.addEventListener(IOErrorEvent.IO_ERROR,notConnection);
+				videoLoaderTest.load(new URLRequest(imageItem.FirstFile()));
+				
 				if (DevicePrefrence.isItPC || !DistriqtMediaPlayer.isSupports)
 				{
 					if (DevicePrefrence.isIOS() || imageItem.target.toLocaleLowerCase().indexOf('.flv') == -1)
