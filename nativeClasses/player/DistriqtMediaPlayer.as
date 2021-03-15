@@ -351,6 +351,8 @@
 			}
 			
 			videoURL = videoQualities[index];
+			if(nc)
+				nc.removeEventListener(NetStatusEvent.NET_STATUS, nc_status);
 			nc = new NetConnection();
 			nc.addEventListener(NetStatusEvent.NET_STATUS, nc_status);
 			nc.connect(null);
@@ -378,7 +380,7 @@
 			});
 			if (playFirstVideo == true) // play for first time
 			{
-				player.load(videoURL);
+				if(player)player.load(videoURL);
 				playFirstVideo = false;
 			}
 			else
