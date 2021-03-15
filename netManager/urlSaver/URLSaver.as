@@ -358,7 +358,7 @@ package netManager.urlSaver
 		
 		private function saveLoadedBytes():void
 		{
-			
+			trace("Download file done");
 			var oflineFolder:File;
 			if(mySpecialFolder!=null)
 			{
@@ -445,21 +445,27 @@ package netManager.urlSaver
 				fileSaver.close();
 				fileSaver = null ;
 			}
-			fileSaver = new FileStream();
-			fileSaver.addEventListener(Event.CLOSE,fileIsSaved);
-			fileSaver.addEventListener(IOErrorEvent.IO_ERROR,fileSaverError);
-			fileSaver.openAsync(oflineFile,FileMode.WRITE);
-			fileSaver.writeBytes(myLoadedBytes);
-			fileSaver.close();
-			//SaffronLogger.log("Save the imafe on device...................................... : "+oflineFile.url+' > '+myLoadedBytes.bytesAvailable);
-			
-			//SavedDatas.save(onlineURL,offlineURL);
-			//SaffronLogger.log('offile file saved on : '+onlineURL);
-			storage.data[onlineURL] = offlineURL ;
-			datestorage.data[onlineURL] = new Date().time ;
-			//SaffronLogger.log("datestorage.data[onlineURL] : " +datestorage.data[onlineURL]);
-			datestorage.flush();
-			storage.flush();
+
+			FileManager.controlFilePermission(startSaveItem,true);
+
+			function startSaveItem():void
+			{
+				fileSaver = new FileStream();
+				fileSaver.addEventListener(Event.CLOSE,fileIsSaved);
+				fileSaver.addEventListener(IOErrorEvent.IO_ERROR,fileSaverError);
+				fileSaver.openAsync(oflineFile,FileMode.WRITE);
+				fileSaver.writeBytes(myLoadedBytes);
+				fileSaver.close();
+				SaffronLogger.log("Save the imafe on device...................................... : "+oflineFile.url+' > '+myLoadedBytes.bytesAvailable);
+				
+				//SavedDatas.save(onlineURL,offlineURL);
+				//SaffronLogger.log('offile file saved on : '+onlineURL);
+				storage.data[onlineURL] = offlineURL ;
+				datestorage.data[onlineURL] = new Date().time ;
+				//SaffronLogger.log("datestorage.data[onlineURL] : " +datestorage.data[onlineURL]);
+				datestorage.flush();
+				storage.flush();
+			}
 		}
 		
 		protected function fileSaverError(event:IOErrorEvent):void
