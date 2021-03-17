@@ -395,7 +395,7 @@
 					myTXT.multiline = true ;
 					myTXT.wordWrap = true ;
 				}
-				backMC.visible = false ;
+				//backMC.visible = false ;
 				
 				if(textContainerMC==null)
 				{
