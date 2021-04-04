@@ -93,7 +93,7 @@
 				else
 					SaffronLogger.log(moreHints);
 			}
-			var workerBytes:ByteArray = FileManager.loadFile(workerTarget);
+			var workerBytes:ByteArray = FileManager.loadFile(workerTarget,false,null,false);
 			
 			SaffronLogger.log("workerTarget.exists : "+workerTarget.exists);
 			SaffronLogger.log("Capabilities.isDebugger : "+Capabilities.isDebugger);
