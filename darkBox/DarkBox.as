@@ -33,6 +33,7 @@
 	import flash.net.URLLoader;
 	import flash.events.HTTPStatusEvent;
 	import flash.events.IOErrorEvent;
+	import popForm.Hints;
 	
 	public class DarkBox extends MovieClip
 	{
