@@ -24,7 +24,7 @@ import flash.text.TextField;
 				color = defaultColor ;
 			var margin:uint = 1 ;
 			var extarTopMargin:uint = 0 ;
-			var roundLevel:uint = 5 ;
+			var roundLevel:uint = 0 ;
 			var frame:Sprite = new Sprite();
 			stage.addChild(frame);
 			frame.graphics.beginFill(color);
