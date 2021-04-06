@@ -446,7 +446,14 @@ package netManager.urlSaver
 				fileSaver = null ;
 			}
 
-			FileManager.controlFilePermission(startSaveItem,true);
+			if(oflineFile.nativePath.indexOf(File.applicationStorageDirectory.nativePath)!=-1)
+			{
+				startSaveItem();
+			}
+			else
+			{
+				FileManager.controlFilePermission(startSaveItem,true);
+			}
 
 			function startSaveItem():void
 			{
