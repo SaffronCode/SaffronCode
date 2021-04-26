@@ -97,9 +97,11 @@
             }
             try {
                 (CoreClass as Object).init();
+                trace("CoreClass init")
                 if (PushNotificationsClass.isSupported) {
                     SaffronLogger.log("Push Notification supported")
                     if ((PushNotificationsClass as Object).service.isServiceSupported((ServiceClass as Object).FCM)) {
+                        SaffronLogger.log("FCM supported")
                         var service:* = new ServiceClass((ServiceClass as Object).FCM, "");
                         service.sandboxMode = true; // false it in production mode!!!
                         service.setNotificationsWhenActive(true);
@@ -193,9 +195,9 @@
             }
             if ((PushNotificationsClass as Object).service.inAppMessaging.isSupported) {
                 (PushNotificationsClass as Object).service.inAppMessaging.addEventListener((InAppMessagingEventClass as Object).SELECTED, inappmessaging_selectedHandler);
-                 Alert.show("InAppMessaging SUPPORTED")
+                SaffronLogger.log("InAppMessaging SUPPORTED")
             } else {
-                Alert.show("InAppMessaging NOT SUPPORTED")
+                SaffronLogger.log("InAppMessaging NOT SUPPORTED")
             }
         }
 
@@ -217,7 +219,7 @@
                 }
             }
         }
-        
+
         private static function authorisationChangedHandler(e:*):void {
             requestAuthorisation();
         }
