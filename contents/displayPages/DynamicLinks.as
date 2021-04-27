@@ -36,6 +36,7 @@ package contents.displayPages
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
 	import contents.displayElements.SaffronPreLoader;
+	import appManager.event.AppEventContent;
 	
 	/**Reload required*/
 	[Event(name="RELOAD_REQUIRED", type="contents.displayPages.DynamicLinksEvent")]
@@ -66,11 +67,33 @@ package contents.displayPages
 		private const linkSensorDebug:Number = 0.0 ;
 		
 		protected var myPageData:PageData ;
+
+		private var _itemSelected:Function ;
 		
 		/**This is the DynamicLinks current page data*/
 		public function get pageData():PageData
 		{
 			return myPageData 
+		}
+
+		/**You will receive linkData on this function */
+		public function onItemSelected(itemSelected:Function):void
+		{
+			_itemSelected = itemSelected ;
+			this.removeEventListener(AppEventContent.PAGE_CHANGES,catchPageChange);
+			this.addEventListener(AppEventContent.PAGE_CHANGES,catchPageChange);
+		}
+
+		private function catchPageChange(e:AppEventContent):void
+		{
+			if(_itemSelected!=null)
+			{
+				e.stopImmediatePropagation();
+				if(_itemSelected.length==0)
+					_itemSelected();
+				else
+					_itemSelected(e.linkData);
+			}
 		}
 		
 		protected var sampleLink:LinkItem,
