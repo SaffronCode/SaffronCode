@@ -10,10 +10,7 @@
 	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.filesystem.File;
-	import flash.filesystem.FileMode;
-	import flash.filesystem.FileStream;
 	import flash.net.URLLoader;
-	import flash.utils.getTimer;
 
 	
 	public class Contents
