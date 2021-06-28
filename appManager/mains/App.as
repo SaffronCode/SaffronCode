@@ -78,9 +78,9 @@
 			ME.dispatchEvent(new AppEventContent(link,false,forceToRefreshPage));
 		}
 		
-		public static function changePageByLink(pageLink:LinkData):void
+		public static function changePageByLink(pageLink:LinkData,forceToReload:Boolean=false):void
 		{
-			ME.dispatchEvent(new AppEventContent(pageLink));
+			ME.dispatchEvent(new AppEventContent(pageLink,false,forceToReload));
 		}
 		
 		//replaced with TitleManager.ME
