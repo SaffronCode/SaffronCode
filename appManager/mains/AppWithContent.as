@@ -61,6 +61,7 @@
 	import flash.display.DisplayObjectContainer;
 	import com.mteamapp.BlackStageDebugger;
 	import nativeClasses.distriqtApplication.DistriqtApplication;
+	import flash.net.URLLoader;
 	
 	public class AppWithContent extends App
 	{
@@ -87,6 +88,8 @@
 
 		/**StageMask is using to cover the bottom of the page, when a keboard moves stage to up */
 		private var stageMask:Sprite ;
+
+		private var pageLoggerRequest:URLRequest,pageLoggerLoader:URLLoader;
 		
 		/**This is the contentManager rectangle size. it will generate from the content w and h on the home xml tag*/
 		public static function get contentRect():Rectangle
@@ -459,6 +462,13 @@
 				{
 					SaffronLogger.log("History changed");
 					History.pushHistory((event as AppEventContent).linkData);
+					
+
+				}
+
+				if(event2!=null)
+				{
+					logPageChange(event2.myID);
 				}
 				
 				if((!DevicePrefrence.isItPC) && mouseClickCounter>0)
@@ -468,6 +478,24 @@
 			}
 			
 			return duplicatePageController ;
+		}
+
+		/**Save teh page ID to Analytic server */
+		private function logPageChange(pageId:String):void
+		{
+			if(pageLoggerRequest==null)
+			{
+				pageLoggerRequest = new URLRequest(Contents.config.version_controll_url);
+				pageLoggerRequest.contentType = 'application/json';
+				pageLoggerRequest.method = URLRequestMethod.POST ;
+			}
+			pageLoggerRequest.data = JSON.stringify({AppId:DevicePrefrence.appID,PageName:pageId,Enter:true}) ;
+			if(pageLoggerLoader==null)
+			{
+				pageLoggerLoader = new URLLoader();
+			}
+			pageLoggerLoader.load(pageLoggerRequest);
+
 		}
 		
 		/**Contents are load now*/
