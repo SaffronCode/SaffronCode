@@ -62,6 +62,7 @@
 	import com.mteamapp.BlackStageDebugger;
 	import nativeClasses.distriqtApplication.DistriqtApplication;
 	import flash.net.URLLoader;
+	import flash.events.IOErrorEvent;
 	
 	public class AppWithContent extends App
 	{
@@ -493,6 +494,7 @@
 			if(pageLoggerLoader==null)
 			{
 				pageLoggerLoader = new URLLoader();
+				pageLoggerLoader.addEventListener(IOErrorEvent.IO_ERROR,function():void{})
 			}
 			pageLoggerLoader.load(pageLoggerRequest);
 

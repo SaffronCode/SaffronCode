@@ -11,6 +11,7 @@
 	import flash.utils.setTimeout;
 	
 	import nativeClasses.pdfReader.DistriqtPDFReader;
+	import contents.alert.Alert;
 	
 	internal class WebOpener extends DefaultImage
 	{
@@ -38,7 +39,7 @@
 			if(stageVewIsOpened && this.stage!=null)
 			{
 				myStageWeb.dispose();
-				myStageWeb = new StageWebView();
+				myStageWeb = new StageWebView(true);
 				myStageWeb.viewPort = this.getBounds(stage);
 			}
 			try
@@ -151,7 +152,21 @@
 				stageVewIsOpened = true ;
 				myStageWeb.stage = stage ;
 				//SaffronLogger.log("PDF path : "+pdftarget.nativePath);
-				myStageWeb.loadURL(onlineShow?target:pdftarget.url);
+				if(onlineShow)
+				{
+					if(target.indexOf('http')!=-1 && target.indexOf('<div')!=-1)
+					{
+						myStageWeb.loadString(target);
+					}
+					else
+					{
+						myStageWeb.loadURL(target);
+					}
+				}
+				else
+				{
+					myStageWeb.loadURL(pdftarget.url);
+				}
 			}
 		}
 	}
