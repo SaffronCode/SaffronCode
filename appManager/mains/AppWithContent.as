@@ -538,9 +538,9 @@
 			}
 		
 			/**The application is expired*/
-			private function stopThisVersion(theHint:String,appURL:String):void
+			private function stopThisVersion(theHint:String,appURL:String,forceToUpdate:Boolean=true):void
 			{
-				if(isExpired(theHint,appURL))
+				if(isExpired(theHint,appURL,forceToUpdate) && forceToUpdate)
 				{
 					SaffronLogger.log("Switch to the download url instantly");
 					resetIntro();
@@ -557,7 +557,7 @@
 		
 			
 			/**Returns true if there is no listener on this function, so the application have to redirect to the server*/
-			protected function isExpired(hint:String,link:String):Boolean
+			protected function isExpired(hint:String,link:String,forceToUpdate:Boolean=true):Boolean
 			{
 				Alert.show(hint.replace("ID","ID ("+DevicePrefrence.appID+")"));
 				return true ;
