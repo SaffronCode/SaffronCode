@@ -507,15 +507,25 @@
 			playIntro();
 			if(!(skipAnimations || Contents.config.skipAnimations))
 			{
-				var versionContrllURL:String = Contents.config.version_controll_url ;
+				controlCurrentVersion();
+			}
+		}
+
+		public static function checkVersion():void
+		{
+			ME.controlCurrentVersion(true);
+		}
+
+		private function controlCurrentVersion(useOfflineVersion:Boolean=false):void
+		{
+			var versionContrllURL:String = Contents.config.version_controll_url ;
 				SaffronLogger.log("Version controll : "+versionContrllURL);
 				var versionRequest:URLRequest = new URLRequest(versionContrllURL);
 				versionRequest.contentType = 'application/json';
 				versionRequest.method = URLRequestMethod.POST ;
 				versionRequest.data = JSON.stringify({AppId:DevicePrefrence.appID}) ;
 
-				VersionController.controllVersion(currentVersionIsOk,stopThisVersion,versionRequest,DevicePrefrence.appVersion,true);
-			}
+				VersionController.controllVersion(currentVersionIsOk,stopThisVersion,versionRequest,DevicePrefrence.appVersion,true,useOfflineVersion);
 		}
 		
 			/**The application version is ok*/
