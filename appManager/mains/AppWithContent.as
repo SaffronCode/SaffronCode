@@ -70,6 +70,8 @@
 		private static var _contentRect:Rectangle = new Rectangle() ;
 		
 		private static var ME:AppWithContent ;
+
+		private static var showTheOptionalUpateWarning:Boolean = true ;
 		
 		/**Preventor variables*/
 		private var preventorFunction:Function,
@@ -513,6 +515,7 @@
 
 		public static function checkVersion():void
 		{
+			showTheOptionalUpateWarning = true ;
 			ME.controlCurrentVersion(true);
 		}
 
@@ -550,12 +553,19 @@
 			/**The application is expired*/
 			private function stopThisVersion(theHint:String,appURL:String,forceToUpdate:Boolean=true):void
 			{
-				if(isExpired(theHint,appURL,forceToUpdate) && forceToUpdate)
+				if(forceToUpdate)
 				{
+					Alert.show(theHint.replace("ID","ID ("+DevicePrefrence.appID+")"));
 					SaffronLogger.log("Switch to the download url instantly");
 					resetIntro();
 					stage.removeEventListener(MouseEvent.CLICK,openDownloadLink);
 					stage.addEventListener(MouseEvent.CLICK,openDownloadLink);
+					setTimeout(openDownloadLink,3000);
+				}
+				else if(showTheOptionalUpateWarning)
+				{
+					Alert.show(theHint.replace("ID","ID ("+DevicePrefrence.appID+")"));
+					showTheOptionalUpateWarning = false ;
 					setTimeout(openDownloadLink,3000);
 				}
 			}
@@ -564,13 +574,5 @@
 				{
 					navigateToURL(new URLRequest(VersionController.appStoreURL));
 				}
-		
-			
-			/**Returns true if there is no listener on this function, so the application have to redirect to the server*/
-			protected function isExpired(hint:String,link:String,forceToUpdate:Boolean=true):Boolean
-			{
-				Alert.show(hint.replace("ID","ID ("+DevicePrefrence.appID+")"));
-				return true ;
-			}
 	}
 }
