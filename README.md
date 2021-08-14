@@ -22,9 +22,10 @@ SaffronCode is a collection of codes & libraries for producing powerful and flex
 SaffronCode is adding to the Adobe Animate environment to build mobile applications output. To get ready the environment, follow these steps:
 • Install the appropriate version of <a href="https://www.adobe.com/products/animate.html">Adobe Animate</a>
 • Download <a href="https://github.com/saffroncode/SaffronCode">SaffronCode</a> SDK
+• Download our <a href="https://github.com/SaffronCode/ASPack">ASPack</a> libraries to. you need these libraries to be able to use all features on SaffronCode. 
 • ASPack (Collection of key libraries)
 • <a href="https://github.com/MTeamapps/FlexLibs-andOthers">Flex and other general swc libraries</a> (if you need soap web services)
-• Download the latest version of the <a href="https://www.adobe.com/devnet/air/air-sdk-download.html">Air SDK</a>
+• Download the latest version of the <a href="https://airsdk.harman.com/download">Air SDK</a>
 • <a href="https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html">JDK</a>
 
 
