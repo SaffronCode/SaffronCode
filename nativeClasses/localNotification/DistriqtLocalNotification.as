@@ -152,16 +152,19 @@
 			}
 		}
 		
-		public static function sendMessage(title:String, body:String,date:Date=null,forground:Boolean=true,vibrate:Boolean = true,category:String="MESSAGE_CATEGORY"):void
+		public static function sendMessage(title:String, body:String,date:Date=null,forground:Boolean=true,vibrate:Boolean = true,category:String="MESSAGE_CATEGORY",newMessageId:int = MessageID):void
 		{
 			init();
 			if (isSupported())
 			{
 				service.enableNotificationsWhenActive = forground;
 				if(date==null)
-					(NotificationsClass as Object).service.notify(new NotificationBuilderClass().setId(MessageID).setAlert(DevicePrefrence.appName).setTitle(title).setBody(body).setCategory(category).enableVibration(vibrate).build());
+					(NotificationsClass as Object).service.notify(new NotificationBuilderClass().setId(newMessageId).setAlert(DevicePrefrence.appName).setTitle(title).setBody(body).setCategory(category).enableVibration(vibrate).build());
 				else
-					(NotificationsClass as Object).service.notify(new NotificationBuilderClass().setId(MessageID).setAlert(DevicePrefrence.appName).setTitle(title).setBody(body).setCategory(category).enableVibration(vibrate).setFireDate(date).build())
+				{
+					date = new Date(date.time);
+					(NotificationsClass as Object).service.notify(new NotificationBuilderClass().setId(newMessageId).setAlert(DevicePrefrence.appName).setTitle(title).setBody(body).setCategory(category).enableVibration(vibrate).setFireDate(date).build())
+				}
 			}
 		}
 		
