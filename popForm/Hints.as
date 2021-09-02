@@ -86,7 +86,8 @@
 				Alert.show(String(evt.field[credit]));<br/>
 			}<br/>
 		*/
-		public static function getText(title:String,question:String,tagLable:String,onDone:Function,OnNotAccepted:Function=null,keyboardType:String=SoftKeyboardType.DEFAULT,isPassword:Boolean=false,innerDisplayObject:DisplayObject=null,ButtonFrameYes:int=1,ButtonFrameNo:int=1,defaultTextOnField:String=''):void
+		public static function getText(title:String,question:String,tagLable:String,onDone:Function,OnNotAccepted:Function=null,keyboardType:String=SoftKeyboardType.DEFAULT,isPassword:Boolean=false,
+		innerDisplayObject:DisplayObject=null,ButtonFrameYes:int=1,ButtonFrameNo:int=1,defaultTextOnField:String='',numLine:uint=1):void
 		{
 			controllConfig();
 			onQuestionAccepted = onDone;
@@ -95,7 +96,7 @@
 			var buttons:Array = [new PopButtonData(Contents.lang.t[id_submit],ButtonFrameYes,null,true,true)
 				,new PopButtonData(Contents.lang.t[id_back],ButtonFrameNo,null,true,true)] ;
 			var popFields:PopMenuFields = new PopMenuFields();
-			popFields.addField(tagLable,defaultTextOnField,keyboardType,isPassword,true,true);
+			popFields.addField(tagLable,defaultTextOnField,keyboardType,isPassword,true,true,numLine,0,1,0,numLine>1);
 			var popText:PopMenuContent = new PopMenuContent(question,popFields,buttons,innerDisplayObject);
 			PopMenu1.popUp(title,null,popText,0,textCatched);
 		}
