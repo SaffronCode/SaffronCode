@@ -57,7 +57,7 @@
 		}
 		
 		public static function ask(title:String,question:String,onDone:Function,innerDisplayObject:DisplayObject=null,OnNotAccepted:Function=null,ButtonFrameYes:int=1,ButtonFrameNo:int=1,descriptionFieldLines:uint=0,
-								   extraDesctiptionLabel:String="توضیح:",defaultExtraDescription="",extraDescriptionKeyboard:String=SoftKeyboardType.DEFAULT):void
+								   extraDesctiptionLabel:String="توضیح:",defaultExtraDescription:String="",extraDescriptionKeyboard:String=SoftKeyboardType.DEFAULT):void
 		{
 			onQuestionAccepted = onDone;
 			onNotAccepted = OnNotAccepted;
@@ -129,7 +129,7 @@
 				}
 			}
 		
-		private static function onQuestionAnswered(e:PopMenuEvent)
+		private static function onQuestionAnswered(e:PopMenuEvent):void
 		{
 			if(e.buttonTitle == Contents.lang.t[id_yes])
 			{
@@ -182,14 +182,14 @@
 		}
 		
 		/**Show no internet connection available*/
-		public static function noInternet(fakeInput:*=null,onClosed:Function=null)
+		public static function noInternet(fakeInput:*=null,onClosed:Function=null):void
 		{
 			controllConfig();
 			show(Contents.lang.t[id_no_internet],true,-1,null,'',onClosed);
 		}
 		
 		/**hide hint*/
-		public static function hide()
+		public static function hide():void
 		{
 			PopMenu1.close();
 			//throw "Hide calls";
@@ -198,7 +198,7 @@
 		
 		/**Show the please wait page , you have to close this page manualy<br>
 		 * The onCloded function had to get popDataEvent*/
-		public static function pleaseWait( onClosed:Function = null )
+		public static function pleaseWait( onClosed:Function = null ):void
 		{
 			controllConfig();
 			var buttons:Array ;

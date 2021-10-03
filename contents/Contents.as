@@ -80,7 +80,7 @@
 		/**From this version, content.xml will load instantly and there is no need to wail till onLoaded function calls.<br>
 		 * if your application is supporting multilanguages, you have to use language.xml standart near the content.xml file. and also 
 		 * you have to set application stage here for the Language class to help it to find added elements to stage.*/
-		public static function setUp(OnLoaded:Function=null,supportsMultiLanguage:Boolean=false,autoConvertFontsAndContentTextsByLanguage:Boolean=true,stage:Stage=null,loadConfigFile:Boolean=false)
+		public static function setUp(OnLoaded:Function=null,supportsMultiLanguage:Boolean=false,autoConvertFontsAndContentTextsByLanguage:Boolean=true,stage:Stage=null,loadConfigFile:Boolean=false):void
 		{
 			onLoaded = OnLoaded ;
 			
@@ -118,7 +118,7 @@
 		}
 		
 		/**This function will controll the langEnabled, so be sure that you are calling it after langEnabled set*/
-		private static function loadLang()
+		private static function loadLang():void
 		{
 			if(langEnabled)
 			{
@@ -132,7 +132,7 @@
 		}
 		
 		/**Load the xml file now*/
-		private static function loadXML()
+		private static function loadXML():void
 		{
 			//SaffronLogger.log("1. debug time : "+getTimer());
 			/*var fileLoader:FileStream = new FileStream();
@@ -145,7 +145,7 @@
 		}
 		
 		/**xml file loaded*/
-		private static function xmlLoaded(e:Event,myInstantData:String='')
+		private static function xmlLoaded(e:Event,myInstantData:String=''):void
 		{
 			if(myInstantData!='')
 			{
@@ -160,7 +160,7 @@
 			//Dynamic pages will lost in this mode
 			pages = new Vector.<PageData>();
 			
-			for(var i = 0 ; i<loadedXML.page.length() ; i++)
+			for(var i:int = 0 ; i<loadedXML.page.length() ; i++)
 			{
 				var pageData:PageData = new PageData(loadedXML.page[i]);
 				pages.push(pageData);
@@ -184,14 +184,14 @@
 		}
 		
 		/**add these datas to pageContents*/
-		public static function addMoreData(morePageDataOnXML:String)
+		public static function addMoreData(morePageDataOnXML:String):void
 		{
 			//SaffronLogger.log("morePageDataOnXML : "+morePageDataOnXML)
-			var cashedXML = XMLList(morePageDataOnXML);
+			var cashedXML:XMLList = XMLList(morePageDataOnXML);
 			
 			//pages = new Vector.<PageData>();
 			
-			for(var i = 0 ; i<cashedXML.length() ; i++)
+			for(var i:int = 0 ; i<cashedXML.length() ; i++)
 			{
 				//SaffronLogger.log('each page data : '+cashedXML[i]);
 				var pageData:PageData = new PageData(cashedXML[i]);
@@ -202,7 +202,7 @@
 		}
 		
 		/**add this page Data*/
-		public static function addSinglePageData(pageData:PageData)
+		public static function addSinglePageData(pageData:PageData):void
 		{
 			var pageFounds:Boolean = dropPage(pageData.id);
 			pages.push(pageData);
@@ -238,7 +238,7 @@
 			//SaffronLogger.log('2- '+getTimer());
 			
 			var foundedPage:PageData = new PageData();
-			for(var i = 0 ; i<pages.length ;i++)
+			for(var i:int = 0 ; i<pages.length ;i++)
 			{
 				if(pages[i].id == pageID )
 				{
@@ -323,7 +323,7 @@
 		 * tells if this page founded on pages conten xml or not*/
 		private static function dropPage(pageID:String):Boolean
 		{
-			for(var i = 0 ; i<pages.length ;i++)
+			for(var i:int = 0 ; i<pages.length ;i++)
 			{
 				if(pages[i].id == pageID )
 				{
@@ -354,7 +354,7 @@
 		{
 			
 			var exports:String = '';
-			for(var i = 0 ; i<pages.length ; i++)
+			for(var i:int = 0 ; i<pages.length ; i++)
 			{
 				exports += pages[i].export()+'\n';
 			}

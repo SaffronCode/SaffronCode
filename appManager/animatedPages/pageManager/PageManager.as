@@ -49,7 +49,7 @@ package appManager.animatedPages.pageManager
 		}
 		
 		/**change the page event*/
-		public function setUp(newEvent:AppEvent)
+		public function setUp(newEvent:AppEvent):void
 		{
 			toEvent = newEvent ;
 		}

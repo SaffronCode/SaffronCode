@@ -23,13 +23,13 @@
 		}
 		
 		/**this is a answer type of pop ups*/
-		public static function get DEFAULT()
+		public static function get DEFAULT():PopMenuTypes
 		{
 			return new PopMenuTypes(1/*,0xFF33CC*/);
 		}
 		
 		/**this is a question type of pop ups*/
-		public static function get CAUTION()
+		public static function get CAUTION():PopMenuTypes
 		{
 			return new PopMenuTypes(2/*,0x00cc00*/);
 		}

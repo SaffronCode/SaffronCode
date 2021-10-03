@@ -325,7 +325,7 @@
 		
 		
 		/**pop menu icons are selected , now it is time to pass it to dispatcher*/
-		private function popMenuitemsAreSelected(e:PopMenuEvent)
+		private function popMenuitemsAreSelected(e:PopMenuEvent):void
 		{
 			this.close();
 			var buttonEvent:PopMenuEvent = new PopMenuEvent(e.type,e.buttonID,e.field,e.buttonTitle,false,e.buttonData) ;
@@ -340,20 +340,20 @@
 		
 		
 		/**pop the menu up*/
-		public static function popUp(title:String='' , type:PopMenuTypes=null , content:PopMenuContent=null,closeOnTime:uint=0)
+		public static function popUp(title:String='' , type:PopMenuTypes=null , content:PopMenuContent=null,closeOnTime:uint=0):void
 		{
 			SaffronLogger.log('POP MENU OPENED '+Math.random());
 			ME.popUp2(title, type, content,closeOnTime);
 		}
 		
 		/**close the menu*/
-		public static function close()
+		public static function close():void
 		{
 			ME.close();
 		}
 		
 		/**Close*/
-		public function close()
+		public function close():void
 		{
 			this.show = false ;
 			if(this.currentFrame == 1)
@@ -381,7 +381,7 @@
 		}
 		
 		/**pop the pop menu up*/
-		public function popUp2(title:String='' , type:PopMenuTypes=null , content:PopMenuContent=null,closeOnTime=0,onButtonSelects:Function=null,onClosedByTimer:Function=null,onClose:Function=null)
+		public function popUp2(title:String='' , type:PopMenuTypes=null , content:PopMenuContent=null,closeOnTime:int=0,onButtonSelects:Function=null,onClosedByTimer:Function=null,onClose:Function=null):void
 		{	
 			SliderManager.hide();
 			cashedContents = content ;
@@ -444,7 +444,7 @@
 			{
 				cancelEvent = null ;
 				cancelButton.visible = false ;
-				for(var i = 0 ; i<content.buttonList.length ; i++)
+				for(var i:int = 0 ; i<content.buttonList.length ; i++)
 				{
 					var button:* = content.buttonList[i] ;
 					//SaffronLogger.log("button : "+button);
@@ -503,7 +503,7 @@
 ///////////////////////////////////////////pop menu manager
 		
 		/**pop menu magaer*/
-		private function anim(e:Event)
+		private function anim(e:Event):void
 		{
 			if(show)
 			{
@@ -515,7 +515,7 @@
 			}
 			else
 			{
-				for(var i = 0 ; i<3 ; i++)
+				for(var i:int = 0 ; i<3 ; i++)
 				{
 					if(this.currentFrame==2)
 					{

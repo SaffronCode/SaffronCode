@@ -37,7 +37,7 @@ package appManager.animatedPages.pageManager
 		
 		
 		/**change the page event*/
-		public function setUp(newEvent:AppEventContent)
+		public function setUp(newEvent:AppEventContent):void
 		{
 			toEvent = newEvent ;
 			if(toEvent==null)

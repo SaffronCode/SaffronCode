@@ -37,7 +37,7 @@
 					dw_yearMC:MovieClip,
 					dw_monthMC:MovieClip;
 		
-		public function changeColor(colorFrame:uint)
+		public function changeColor(colorFrame:uint):void
 		{
 			backMC.gotoAndStop(colorFrame);
 		}

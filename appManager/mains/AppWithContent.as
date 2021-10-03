@@ -123,7 +123,7 @@
 			//Solving Back button on Android 28
 			DistriqtApplication.solveBackButton();
 			
-			stage.addEventListener(MouseEvent.MOUSE_DOWN, function(e):*{
+			stage.addEventListener(MouseEvent.MOUSE_DOWN, function(e:*):*{
 				mouseClickCounter++;
 			})
 			
@@ -203,7 +203,7 @@
 				
 				NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE, URICalled);
 			}
-			NativeApplication.nativeApplication.addEventListener(Event.DEACTIVATE,function(e){
+			NativeApplication.nativeApplication.addEventListener(Event.DEACTIVATE,function(e:*):void{
 				SliderManager.hide(true);
 			})
 			if(!DevicePrefrence.isAndroid() && appDescriptorString.indexOf("NSAllowsArbitraryLoads")==-1)

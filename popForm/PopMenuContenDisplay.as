@@ -58,7 +58,7 @@ package popForm
 		public static var ylist:Number = 10;
 		public static var contolBtnY:Number = 20;
 		/**Add more Height for scrolling*/
-		public function localHeight(H:Number)
+		public function localHeight(H:Number):void
 		{
 			myHieghtPlus = H ;
 		}
@@ -156,9 +156,9 @@ package popForm
 		
 		public function update(content:PopMenuFields):void
 		{
-			for(var i = 0 ; i<content.fieldDefaults.length ; i++)
+			for(var i:int = 0 ; i<content.fieldDefaults.length ; i++)
 			{
-				for(var j=0 ; j<field.length ; j++)
+				for(var j:int=0 ; j<field.length ; j++)
 				{
 					if(field[j].title == content.tagNames[i])
 					{
@@ -179,7 +179,7 @@ package popForm
 		}
 		
 		/**set up the pop menu contents*/
-		public function setUp(content:PopMenuContent=null,activateColorDeviderForFieldsBoolean:*=null/*,color:ColorTransform*//*,resetScroll:Boolean=true*/)
+		public function setUp(content:PopMenuContent=null,activateColorDeviderForFieldsBoolean:*=null/*,color:ColorTransform*//*,resetScroll:Boolean=true*/):void
 		{
 			if(activateColorDeviderForFieldsBoolean==null)
 			{
@@ -201,7 +201,7 @@ package popForm
 				myDisplay = null ;
 			}
 			
-			for(var i = 0 ; i<buttonList.length ;i++)
+			for(var i:int = 0 ; i<buttonList.length ;i++)
 			{
 				if(buttonList[i] is DisplayObject)
 				{
@@ -465,7 +465,7 @@ package popForm
 						if(butW*inLineButtons<menuW)
 						{
 							//SaffronLogger.log("lastInLineButton : "+lastInLineButton+' buttonList.length : '+buttonList.length);
-							for(var k = lastInLineButton ; k<buttonList.length && buttonList[k]!=null ; k++)
+							for(var k:int = lastInLineButton ; k<buttonList.length && buttonList[k]!=null ; k++)
 							{
 								//SaffronLogger.log("Manage button "+k);
 								buttonList[k].y = lineY ;
@@ -599,7 +599,7 @@ package popForm
 		}
 		
 		
-		private function clicableFieldSelects(e:MouseEvent)
+		private function clicableFieldSelects(e:MouseEvent):void
 		{
 			//SaffronLogger.log("Dispatch selected field");
 			var targ:PopField = e.currentTarget as PopField ;
@@ -612,7 +612,7 @@ package popForm
 			this.dispatchEvent(new PopMenuEvent(PopMenuEvent.FIELD_SELECTED,targ.title,fieldData,targ.title,true));
 		}
 		
-		public function updateScrollheight()
+		public function updateScrollheight():void
 		{
 			SaffronLogger.log("myHieghtPlus : "+maxAreaMC.height+'+'+stagePlusHaight+'+'+myHieghtPlus);
 			var scrollRect:Rectangle = new Rectangle(this.x-maxAreaMC.width/2,thisY,maxAreaMC.width,maxAreaMC.height+stagePlusHaight+myHieghtPlus) ;
@@ -627,10 +627,10 @@ package popForm
 		}
 		
 		/**one of the buttons are selected*/
-		private function buttonSelected(e:MouseEvent)
+		private function buttonSelected(e:MouseEvent):void
 		{
 			var outField:Object = {};
-			for(var i = 0 ; i<field.length ; i++)
+			for(var i:int = 0 ; i<field.length ; i++)
 			{
 				//SaffronLogger.log("field[i].title : "+field[i].title);
 				//SaffronLogger.log("field[i].data : "+field[i].data);
@@ -648,7 +648,7 @@ package popForm
 		/**Returns field values*/
 		public function getFieldValue(fieldTitle:String):*
 		{
-			for(var i = 0 ; i<field.length ; i++)
+			for(var i:int = 0 ; i<field.length ; i++)
 			{
 				if(field[i].title == fieldTitle)
 				{

@@ -63,7 +63,7 @@
 		/**add new field<br>
 		 * frameForDirection: 1 for rtl and 2 for ltr script<br>
 		 * if the field is read only, you can set numLines to 0 and make it change the lines by it's needs*/
-		public function addField(tagName:String,fieldDefault:*='',keyBoardType:String = SoftKeyboardType.DEFAULT,isPass:Boolean=false,Editable:Boolean = true,isArabic_v:Boolean=true,numLine:uint=1,frameForDirection:uint=0,fieldColorFrame:uint=1,maxChar:uint=0,MultiLineTag:Boolean=false,Align:Boolean=true)
+		public function addField(tagName:String,fieldDefault:*='',keyBoardType:String = SoftKeyboardType.DEFAULT,isPass:Boolean=false,Editable:Boolean = true,isArabic_v:Boolean=true,numLine:uint=1,frameForDirection:uint=0,fieldColorFrame:uint=1,maxChar:uint=0,MultiLineTag:Boolean=false,Align:Boolean=true):void
 		{
 			if(frameForDirection==0)
 			{
@@ -99,7 +99,7 @@
 			maxCharacters.push(maxChar);
 		}
 		
-		public function addRadioListField(tagName:String,popFieldOptions:Array,fieldDefault:*='',isArabic_v:Boolean=true,frameForDirection:uint=1,fieldColorFrame:uint=1,Align:Boolean=true)
+		public function addRadioListField(tagName:String,popFieldOptions:Array,fieldDefault:*='',isArabic_v:Boolean=true,frameForDirection:uint=1,fieldColorFrame:uint=1,Align:Boolean=true):void
 		{
 			tagNames.push(tagName);
 			if(fieldDefault==null)
@@ -124,7 +124,7 @@
 			maxCharacters.push(0);
 		}
 		
-		public function addPhoneField(tagName:String,fieldDefault:String='',isArabic_v:Boolean=true,frameForDirection:uint=1,fieldColorFrame:uint=1,isEditable:Boolean=true)
+		public function addPhoneField(tagName:String,fieldDefault:String='',isArabic_v:Boolean=true,frameForDirection:uint=1,fieldColorFrame:uint=1,isEditable:Boolean=true):void
 		{
 			tagNames.push(tagName);
 			fieldDefaults.push(fieldDefault);
@@ -147,7 +147,7 @@
 		
 		/**add new field<br>
 		 * frameForDirection: 1 for rtl and 2 for ltr script*/
-		public function addClickField(tagName:String,fieldDefault:String='',/*keyBoardType:String = SoftKeyboardType.DEFAULT*//*,isPass:Boolean=false*//*,Editable:Boolean = true,*/isArabic_v:Boolean=true,numLine:uint=1,frameForDirection:uint=1,fieldColorFrame:uint=1)
+		public function addClickField(tagName:String,fieldDefault:String='',/*keyBoardType:String = SoftKeyboardType.DEFAULT*//*,isPass:Boolean=false*//*,Editable:Boolean = true,*/isArabic_v:Boolean=true,numLine:uint=1,frameForDirection:uint=1,fieldColorFrame:uint=1):void
 		{
 			//keyBoardType = (keyBoardType==null)?SoftKeyboardType.DEFAULT:keyBoardType;
 			
@@ -172,7 +172,7 @@
 		
 		/**add new field<br>
 		 * frameForDirection: 1 for rtl and 2 for ltr script*/
-		public function addDateField(tagName:String,fieldDefaultDates:Date=null,Editable:Boolean = true,isArabic_v:Boolean=true,frameForDirection:uint=1,fieldColorFrame:uint=1)
+		public function addDateField(tagName:String,fieldDefaultDates:Date=null,Editable:Boolean = true,isArabic_v:Boolean=true,frameForDirection:uint=1,fieldColorFrame:uint=1):void
 		{
 			//keyBoardType = (keyBoardType==null)?SoftKeyboardType.DEFAULT:keyBoardType;
 			
@@ -197,7 +197,7 @@
 		
 		/**add new field<br>
 		 * frameForDirection: 1 for rtl and 2 for ltr script*/
-		public function addBooleanField(tagName:String,booleanValue:Boolean,frameForDirection:uint=1,fieldColorFrame:uint=1,Arabic:Boolean=true)
+		public function addBooleanField(tagName:String,booleanValue:Boolean,frameForDirection:uint=1,fieldColorFrame:uint=1,Arabic:Boolean=true):void
 		{
 			//keyBoardType = (keyBoardType==null)?SoftKeyboardType.DEFAULT:keyBoardType;
 			tagNames.push(tagName);
@@ -221,7 +221,7 @@
 		
 		/**add new field<br>
 		 * frameForDirection: 1 for rtl and 2 for ltr script*/
-		public function addTimeField(tagName:String,fieldDefaultDates:Date=null,Editable:Boolean = true,isArabic_v:Boolean=true,frameForDirection:uint=1,fieldColorFrame:uint=1)
+		public function addTimeField(tagName:String,fieldDefaultDates:Date=null,Editable:Boolean = true,isArabic_v:Boolean=true,frameForDirection:uint=1,fieldColorFrame:uint=1):void
 		{
 			//keyBoardType = (keyBoardType==null)?SoftKeyboardType.DEFAULT:keyBoardType;
 			

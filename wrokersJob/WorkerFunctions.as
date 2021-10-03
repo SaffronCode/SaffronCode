@@ -118,7 +118,7 @@
 					var receiverChannel:MessageChannel = worker.createMessageChannel(Worker.current);
 					receiverChannel.addEventListener(Event.CHANNEL_MESSAGE, handlecustomeChannel);
 					//receiverChannel.addEventListener(Event.DEACTIVATE, workerDeactivated);
-					receiverChannel.addEventListener(Event.CHANNEL_STATE, function(e:Event){SaffronLogger.log(e)});
+					receiverChannel.addEventListener(Event.CHANNEL_STATE, function(e:Event):void{SaffronLogger.log(e)});
 					worker.setSharedProperty("receiverChannel_fromMainProject", receiverChannel);
 					worker.start();
 					
@@ -166,7 +166,7 @@
 		}
 		
 		/**Worker state*/
-		private static function workerStateHandler(e:Event) {
+		private static function workerStateHandler(e:Event):void {
 			var worker:Worker = e.currentTarget as Worker ;
 			SaffronLogger.log("Worker State : "+worker.state);
 			if(worker.state == WorkerState.RUNNING)

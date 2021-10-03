@@ -299,7 +299,7 @@
 		
 		
 		/**this function will dispatches whenever intro is over*/
-		protected function intoIsOver(e=null):void
+		protected function intoIsOver(e:*=null):void
 		{
 			introMC.removeEventListener(Intro.EVENT_FINISHED,intoIsOver);
 			Obj.remove(introMC);

@@ -49,7 +49,7 @@
 		}
 		
 		/**change the page event*/
-		public function setUp(newEvent:AppEvent,forceToRefresh:Boolean=false)
+		public function setUp(newEvent:AppEvent,forceToRefresh:Boolean=false):void
 		{
 			if(toEvent!=null)
 			{

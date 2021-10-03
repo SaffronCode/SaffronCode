@@ -39,7 +39,7 @@ package appManager.animatedPages
 		}
 		
 		/**animate the frames*/
-		private function anim(e:Event,instantMove:Boolean=false)
+		private function anim(e:Event,instantMove:Boolean=false):void
 		{
 			if(App.skipAnimations || instantMove)
 			{
@@ -67,7 +67,7 @@ package appManager.animatedPages
 		}
 		
 		/**take main animation to home frame*/
-		public function goHome()
+		public function goHome():void
 		{
 			currentPage = frame_home ;
 			eventDispatched = false ;
@@ -75,7 +75,7 @@ package appManager.animatedPages
 		
 		/**take main menu animation to internal pages frame , it will dispatch app event after animation gone to currect frame<br>
 		 * if you pass true, it will show the page instantly*/
-		public function goInternalPage(instantMove:Boolean=false)
+		public function goInternalPage(instantMove:Boolean=false):void
 		{
 			currentPage = frame_internal ;
 			eventDispatched = false ;

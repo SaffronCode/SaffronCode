@@ -116,7 +116,7 @@
 			var loadedXMLString:String = TextFile.load(File.applicationDirectory.resolvePath(configURLFile));
 			var xml:XML = XML(loadedXMLString);
 			
-			for(var i = 0 ; i<xml.*.length() ; i++)
+			for(var i:int = 0 ; i<xml.*.length() ; i++)
 			{
 				var varName:String = String(xml.*[i].localName()) ;
 				var varVal:String = String(xml.*[i]);

@@ -187,7 +187,7 @@
 		
 		
 		/**add titles that will triggerring the back button*/
-		public static function addBackTitleTrigger(backTitle:String)
+		public static function addBackTitleTrigger(backTitle:String):void
 		{
 			backList.push(backTitle);
 		}
@@ -215,7 +215,7 @@
 			NativeApplication.nativeApplication.removeEventListener(KeyboardEvent.KEY_DOWN,checkBack);
 		}
 		
-		private function checkBack(e:KeyboardEvent)
+		private function checkBack(e:KeyboardEvent):void
 		{
 			if(!Obj.getVisible(me) || !Obj.getImOnStage(me))
 			{

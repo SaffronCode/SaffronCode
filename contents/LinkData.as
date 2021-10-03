@@ -55,9 +55,9 @@
 				{
 					if(linkXML.link != undefined)
 					{
-						for(var i = 0 ; i<linkXML.link.length() ; i++)
+						for(var i:int = 0 ; i<linkXML.link.length() ; i++)
 						{
-							var newLink = new LinkData(linkXML.link[i]) ;
+							var newLink:LinkData = new LinkData(linkXML.link[i]) ;
 							subLinks.push(newLink) ;
 						}
 					}
@@ -115,7 +115,7 @@
 			xml.@x = x;
 			xml.@y = y;
 			
-			for(var i = 0 ; i<subLinks.length ; i++)
+			for(var i:int = 0 ; i<subLinks.length ; i++)
 			{
 				xml['link'][i] = subLinks[i].export();
 			}
@@ -133,7 +133,7 @@
 			//new method for clone
 			var newLinkData:LinkData = new LinkData();
 			
-			for(var i = 0 ; i<subLinks.length ; i++)
+			for(var i:int = 0 ; i<subLinks.length ; i++)
 			{
 				newLinkData.subLinks[i] = subLinks[i].clone();
 			}
