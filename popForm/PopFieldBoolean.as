@@ -34,7 +34,7 @@ package popForm
 			}
 		}
 		
-		private function switchBoolean(e):void
+		private function switchBoolean(e:*):void
 		{
 			lastCheckStatus = !lastCheckStatus ;
 			checkIt(lastCheckStatus);
@@ -78,7 +78,7 @@ package popForm
 			update(defaultState);
 		}
 		
-		public function changeColor(colorFrame:uint)
+		public function changeColor(colorFrame:uint):void
 		{
 			backMC.gotoAndStop(colorFrame);
 		}

@@ -153,7 +153,7 @@
 			}
 		}
 		
-		private function controlOrientationPortrate()
+		private function controlOrientationPortrate():void
 		{
 			if (stage.deviceOrientation == StageOrientation.UNKNOWN || (lastDeviceOriention == stage.deviceOrientation && lastStageorientetion == stage.orientation && (isLandScape(stage.orientation) != isLandScape(stage.deviceOrientation))))
 				return;
@@ -316,14 +316,14 @@
 			}
 		}
 		
-		private function band_test(e):void
+		private function band_test(e:*):void
 		{
 			SaffronLogger.log("testSpeed:" + e.target.last_speed() + ' kb/s')
 		}
 		
-		private function play_video(e):void
+		private function play_video(e:*):void
 		{
-			var bw = e.target.getBandwidth();
+			var bw:* = e.target.getBandwidth();
 			
 			SaffronLogger.log("Final bandwidth: " + bw + ' kb/s');
 			SaffronLogger.log("Peak bandwidth: " + e.target.getPeak() + ' kb/s');
@@ -375,7 +375,7 @@
 		{
 			stream = new NetStream(nc);
 			stream.addEventListener(NetStatusEvent.NET_STATUS, nc_status);
-			stream.addEventListener(AsyncErrorEvent.ASYNC_ERROR, function(e)
+			stream.addEventListener(AsyncErrorEvent.ASYNC_ERROR, function(e:*):void
 			{
 			});
 			if (playFirstVideo == true) // play for first time

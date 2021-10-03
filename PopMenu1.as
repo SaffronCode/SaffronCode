@@ -35,7 +35,7 @@ package
 			staticStageHeight = applicationStageSize ;
 		}
 		
-		public static function popUp(title:String='' , type:PopMenuTypes=null , content:PopMenuContent=null,closeOnTime:uint=0,onButtonSelects:Function = null,onClosedByTimer:Function=null,onClose:Function=null)
+		public static function popUp(title:String='' , type:PopMenuTypes=null , content:PopMenuContent=null,closeOnTime:uint=0,onButtonSelects:Function = null,onClosedByTimer:Function=null,onClose:Function=null):void
 		{
 			//SaffronLogger.log('POP 1 MENU OPENED '+Math.random());
 			//ME1.popUp2(title, type, content,closeOnTime,onButtonSelects);
@@ -89,7 +89,7 @@ package
 		{
 			return ME1.popDispatcher ;
 		}
-		public static function close()
+		public static function close():void
 		{
 			if(ME1)
 			{

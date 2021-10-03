@@ -11,7 +11,7 @@
 		
 		public static const POP_CLOSED:String = "popClosed";
 		
-		public static const POP_BUTTON_SELECTED = "buttonSelecte";
+		public static const POP_BUTTON_SELECTED:String = "buttonSelecte";
 		
 		/**Dispatches when CLICK field selects.<br>
 		 * When this event dispatches from field, you have to detect field id from buttonID value and you can get last field value by using field[buttinID]*/

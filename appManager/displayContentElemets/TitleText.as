@@ -32,7 +32,7 @@ package appManager.displayContentElemets
 			myText.text = '';
 		}
 		
-		public function setUp(title:String,arabicText:Boolean = true,splitIfToLong:Boolean=false,resolution:uint=0,replaceWithBitmap:Boolean=true,dynamicWidth:Boolean=false)
+		public function setUp(title:String,arabicText:Boolean = true,splitIfToLong:Boolean=false,resolution:uint=0,replaceWithBitmap:Boolean=true,dynamicWidth:Boolean=false):void
 		{
 			this.title = title;
 			this.arabicText = arabicText ;
@@ -49,7 +49,7 @@ package appManager.displayContentElemets
 			TextPutter.OnButton(myText,title,arabicText,replaceWithBitmap,true,false,resolution,splitIfToLong,dynamicWidth);			
 		}
 		/**setup and split text by any car*/
-		public function setUp2(title:String,arabicText:Boolean = true,splitIfToLong:Boolean=false,resolution:uint=0,replaceWithBitmap:Boolean=true,splitRange_p:int=0,car_p:String=',',direction_p:String=TitleText.RIGHT,reverse_p:Boolean=false)
+		public function setUp2(title:String,arabicText:Boolean = true,splitIfToLong:Boolean=false,resolution:uint=0,replaceWithBitmap:Boolean=true,splitRange_p:int=0,car_p:String=',',direction_p:String=TitleText.RIGHT,reverse_p:Boolean=false):void
 		{
 			if(splitRange_p>0)
 			{

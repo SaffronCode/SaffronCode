@@ -85,7 +85,7 @@
 		{
 		}
 		
-		public function setUp( languageFile:String = 'language.xml', mystage:Stage = null )
+		public function setUp( languageFile:String = 'language.xml', mystage:Stage = null ):void
 		{
 			myStage = mystage ;
 			
@@ -142,7 +142,7 @@
 		}
 		
 		/**Change the last language - this will update all interfaces to*/
-		public function changeLanguage(languageID:String)
+		public function changeLanguage(languageID:String):void
 		{
 			addedItems = new Array();
 			
@@ -150,7 +150,7 @@
 			lastSavedLang.data.lang = loadedXML.currentlang = currentLang = languageID ;
 			lastSavedLang.flush();
 			
-			for(var i = 0 ; i<textXML.*.length() ; i++)
+			for(var i:int = 0 ; i<textXML.*.length() ; i++)
 			{
 				t[String(textXML.*[i].localName())] = String(textXML.*[i][currentLang]);
 				t.saveValue(String(textXML.*[i].localName()),String(textXML.*[i][currentLang]));
@@ -227,9 +227,9 @@
 		}*/
 		
 		/**reset the added items list if its objects removed from stage*/
-		private function resetifitsGone(e:TimerEvent)
+		private function resetifitsGone(e:TimerEvent):void
 		{
-			for(var i = 0 ; i <addedItems.length ; i++)
+			for(var i:* = 0 ; i <addedItems.length ; i++)
 			{
 				if(DisplayObject(addedItems[i]).stage == null)
 				{
@@ -261,10 +261,10 @@
 		
 		
 		
-		public function manageAll(targ:DisplayObjectContainer)
+		public function manageAll(targ:DisplayObjectContainer):void
 		{
 			//SaffronLogger.log("Manage all calls");
-			for(var i = 0  ; i<targ.numChildren ; i++)
+			for(var i:int = 0  ; i<targ.numChildren ; i++)
 			{
 				try
 				{	
@@ -286,7 +286,7 @@
 			}	
 		}
 		
-		public function MangeItem(Targ:*)
+		public function MangeItem(Targ:*):void
 		{
 			if(Targ is MovieClip || Targ is TextField)
 			{
@@ -295,7 +295,7 @@
 		}
 		
 		/**this object is added to stage*/
-		private function itemIsAdded(e:*)
+		private function itemIsAdded(e:*):void
 		{
 			var targ:* ;
 			if(e is Event)
@@ -356,7 +356,7 @@
 					var font:String = tf.font.toLocaleLowerCase();
 					var bold:String = String(tf.bold) ;
 					//SaffronLogger.log("And its font name is : "+font);
-					for(var i = 0 ; i<fontSwitch.font.length() ; i++)
+					for(var i:int = 0 ; i<fontSwitch.font.length() ; i++)
 					{
 						var curXML:XML = fontSwitch.font[i][currentLang][0] ;
 						if(!isNull(curXML))

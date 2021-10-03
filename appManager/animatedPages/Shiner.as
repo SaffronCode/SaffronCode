@@ -21,7 +21,7 @@
 		/**Update shine positions and animation*/
 		protected function updateShines(event:Event):void
 		{
-			for(var i = 0 ; i<shineList.length ; i++)
+			for(var i:int = 0 ; i<shineList.length ; i++)
 			{
 				shineList[i].update();
 			}

@@ -5,7 +5,7 @@ package darkBox
 
 	public class BinaryFile extends DefaultImage
 	{
-		var hintMC:MovieClip ;
+		private var hintMC:MovieClip ;
 		
 		public function BinaryFile()
 		{

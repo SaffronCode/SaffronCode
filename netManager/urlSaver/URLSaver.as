@@ -42,7 +42,7 @@ package netManager.urlSaver
 		
 		private static var acceptableDate:Number = 0 ;
 		
-		public static function activateDateControll(noOlder:Date)
+		public static function activateDateControll(noOlder:Date):void
 		{
 			acceptableDate = noOlder.time ;
 		}
@@ -240,7 +240,7 @@ package netManager.urlSaver
 		}
 		
 		/**Cansel current download*/
-		public function cansel()
+		public function cansel():void
 		{
 			//SaffronLogger.log('Cansel donwload manager : '+onlineURL);
 			if(fileSaver)
@@ -572,9 +572,9 @@ package netManager.urlSaver
 		
 //////////////////////////////////////////////delete temporary
 		/**Delete images older than this date*/
-		public static function deleteDatasOlderThan(date:Date)
+		public static function deleteDatasOlderThan(date:Date):void
 		{
-			for(var i in datestorage.data)
+			for(var i:* in datestorage.data)
 			{
 				if(datestorage.data[i] < date.time)
 				{

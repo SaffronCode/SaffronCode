@@ -15,7 +15,7 @@
 			ME2 = this;
 		}
 		
-		public static function popUp(title:String='' , type:PopMenuTypes=null , content:PopMenuContent=null,closeOnTime:uint=0,onButtonSelects:Function = null)
+		public static function popUp(title:String='' , type:PopMenuTypes=null , content:PopMenuContent=null,closeOnTime:uint=0,onButtonSelects:Function = null):void
 		{
 			//SaffronLogger.log('POP 2 MENU OPENED '+Math.random());
 			ME2.popUp2(title, type, content,closeOnTime,onButtonSelects);
@@ -25,7 +25,7 @@
 		{
 			return ME2.popDispatcher ;
 		}
-		public static function close()
+		public static function close():void
 		{
 			if(ME2)
 				ME2.close();

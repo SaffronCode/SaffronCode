@@ -359,7 +359,7 @@
 				Y0 = myTXT.height;
 				myTXT.multiline = true ;
 				myTXT.wordWrap = true ;
-				for(var i = 0 ; i<numLines-1 ; i++)
+				for(var i:int = 0 ; i<numLines-1 ; i++)
 				{
 					myTXT.appendText('a\n') ;
 				}
@@ -612,7 +612,7 @@
 		}
 		
 		/**Returns true if radio butto changed*/
-		public function switchRadioButton(e=null):Boolean
+		public function switchRadioButton(e:*=null):Boolean
 		{
 			if(!super.enabled)
 			{

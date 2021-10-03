@@ -93,13 +93,13 @@ package contents
 		
 		
 		/**tells load is faild*/
-		private function loadFaild(e:IOErrorEvent)
+		private function loadFaild(e:IOErrorEvent):void
 		{
 			SaffronLogger.log(new Error('target '+targURL+' not found'));
 		}
 
 		/**load is complete*/
-		private function loadComplete(e:Event)
+		private function loadComplete(e:Event):void
 		{
 			swfContainer.addChild(loader.content);
 			try
@@ -113,7 +113,7 @@ package contents
 		/**Creat copy for this ImageData*/
 		public function clone():ImageData
 		{
-			var newImageData = new ImageData();
+			var newImageData:ImageData = new ImageData();
 			newImageData.targURL = targURL ;
 			newImageData.width = width ;
 			newImageData.height = height ;

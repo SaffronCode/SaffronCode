@@ -15,7 +15,7 @@ package popForm
 		
 		
 		
-		public function changeColor(colorFrame:uint)
+		public function changeColor(colorFrame:uint):void
 		{
 			backMC.gotoAndStop(colorFrame);
 		}

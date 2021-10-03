@@ -168,7 +168,7 @@
 		}
 		
 		/**Second setting up the LightImage class*/
-		public function setUp2(doAnimation:Boolean = true)
+		public function setUp2(doAnimation:Boolean = true):void
 		{
 			animated = doAnimation ;
 		}
@@ -229,7 +229,7 @@
 		
 		/**This class will resize the loaded image to its size to prevent gpu process and also it will crop the image to.<br>
 		 * pass -1 for each dimention to make the original value to use on that side*/
-		override public function setUp(imageURL:String, loadInThisArea:Boolean=false, imageW:Number=0, imageH:Number=0, X:Number=0, Y:Number=0,keepRatio:Boolean=true):*
+		override public function setUp(imageURL:String, loadInThisArea:Boolean=false, imageW:Number=0, imageH:Number=0, X:Number=0, Y:Number=0,keepRatio:Boolean=true):void
 		{
 			//PerformanceTest.traceDelay(1);
 			//SaffronLogger.log("Load this image : "+imageURL);

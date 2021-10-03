@@ -36,7 +36,7 @@ package appManager.animatedPages.pageManager
 		}
 		
 		
-		public function setUp(myEvent:AppEvent=null)
+		public function setUp(myEvent:AppEvent=null):void
 		{
 			if(currentMenu != null)
 			{

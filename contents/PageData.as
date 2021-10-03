@@ -224,7 +224,7 @@ package contents
 		</page>*/
 		public function export():XML
 		{
-			var xml = XML('<page><links/><links/></page>');
+			var xml:XML = XML('<page><links/><links/></page>');
 			
 			xml.@id = id;
 			xml.music = musicURL ;
@@ -256,7 +256,7 @@ package contents
 			
 			//var link1Node:XML = XML('<links/>');
 			//xml.links = new XML();
-			for(var i = 0 ; i<links1.length ;i++)
+			for(var i:int = 0 ; i<links1.length ;i++)
 			{
 				xml.links[0].link[i] = links1[i].export();
 			}

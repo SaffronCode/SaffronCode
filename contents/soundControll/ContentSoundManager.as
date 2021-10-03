@@ -26,7 +26,7 @@ package contents.soundControll
 		private static var currentSoundId:uint,
 							otherSoundId:uint;
 							
-		public static function setUp(myStage:Stage,PlaySounOnBackGroundTo:Boolean)
+		public static function setUp(myStage:Stage,PlaySounOnBackGroundTo:Boolean):void
 		{
 			currentSoundId = Contents.id_music ;
 			otherSoundId = Contents.id_music2 ;
@@ -66,7 +66,7 @@ package contents.soundControll
 			}
 		}
 		
-		public static function startMusic(soundPlayingFrom:Number=NaN)
+		public static function startMusic(soundPlayingFrom:Number=NaN):void
 		{
 			if(isNaN(soundPlayingFrom))
 			{
@@ -81,19 +81,19 @@ package contents.soundControll
 			lastMusicState.flush();
 		}
 		
-		public static function pauseMusic()
+		public static function pauseMusic():void
 		{
 			SoundPlayer.pause(currentSoundId);
 			lastMusicState.data.state = false ;
 			lastMusicState.flush();
 		}
 		
-		public static function muteMusic()
+		public static function muteMusic():void
 		{
 			SoundPlayer.volumeContril(currentSoundId,0);
 		}
 		
-		public static function unMuteMusit()
+		public static function unMuteMusit():void
 		{
 			SoundPlayer.volumeContril(currentSoundId,1);
 		}

@@ -26,7 +26,7 @@ package appManager.displayContentElemets
 			this.dispatchEvent(new ImageEvent(ImageEvent.IMAGE_SELECTED,URL));
 		}
 		
-		public function setUp(imageURL:String,loadInThisArea:Boolean = false ,imageW:Number=0,imageH:Number=0,X:Number=0,Y:Number=0,keepRatio:Boolean=true)
+		public function setUp(imageURL:String,loadInThisArea:Boolean = false ,imageW:Number=0,imageH:Number=0,X:Number=0,Y:Number=0,keepRatio:Boolean=true):void
 		{
 		}
 	}

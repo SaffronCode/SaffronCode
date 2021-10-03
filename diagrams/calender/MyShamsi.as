@@ -220,7 +220,7 @@
 			return mounthName;
 		}
 		
-		public function toString(e = null):String
+		public function toString(e:* = null):String
 		{
 			return fullYear + '/' + (month + 1) + '/' + date + '   ' + hours + ':' + minutes + ':' + seconds;
 		}
