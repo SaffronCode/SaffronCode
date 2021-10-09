@@ -381,6 +381,10 @@
 				{
 					ContentSoundManager.changeMainMusic((event as AppEventContent).pageData.musicURL,(event as AppEventContent).pageData.musicVolume);
 				}
+				else
+				{
+					ContentSoundManager.changeVolume((event as AppEventContent).pageData.musicVolume);
+				}
 				
 			
 			if(mainAnim == null)

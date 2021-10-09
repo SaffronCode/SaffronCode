@@ -97,6 +97,11 @@ package contents.soundControll
 		{
 			SoundPlayer.volumeContril(currentSoundId,1);
 		}
+
+		public static function changeVolume(volume:Number):void
+		{
+			SoundPlayer.volumeContril(currentSoundId,volume);
+		}
 		
 		/**This will change the current playing music ( not tested yet )*/
 		public static function changeMainMusic(musicURL:String='',volume:Number=1):void
