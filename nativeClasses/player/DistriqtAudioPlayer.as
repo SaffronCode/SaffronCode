@@ -25,7 +25,7 @@
 	
 	import contents.alert.Alert;
 	
-	public class DistriqtMediaPlayer extends Sprite
+	public class DistriqtAudioPlayer extends Sprite
 	{
 		private var isFullScreen:Boolean = false;
 		
@@ -82,7 +82,7 @@
 		private var checkQuailyID:int;
 		private var checkSeekID:int;
 		
-		public function DistriqtMediaPlayer(Width:Number, Height:Number)
+		public function DistriqtAudioPlayer(Width:Number, Height:Number)
 		{
 			super();
 			if (myDistriqtId == null)
