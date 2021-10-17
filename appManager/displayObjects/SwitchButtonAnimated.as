@@ -11,6 +11,8 @@
 	{
 		private var _status:Boolean = false ;
 
+		private var onChangeFunction:Function ;
+
 		public function SwitchButtonAnimated(status:Boolean = false)
 		{
 			_status = status ;
@@ -21,6 +23,11 @@
 			this.addEventListener(MouseEvent.MOUSE_DOWN,switchMe);
 			this.addEventListener(Event.ENTER_FRAME,anim);
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
+		}
+
+		public function onChanged(func:Function):void
+		{
+			onChangeFunction = func ;
 		}
 
 		private function unLoad(e:Event):void
@@ -35,6 +42,7 @@
 			_status = !_status ;
 			this.dispatchEvent(new Event(Event.CHANGE));
 			SaffronLogger.log(_status);
+			if(onChangeFunction!=null)onChangeFunction();
 		}
 
 		public function get status():Boolean
@@ -48,6 +56,13 @@
 			{
 				switchMe(null);
 			}
+		}
+
+		public function setInstantStaut(status:Boolean):void
+		{
+			_status = status;
+			if(status)this.gotoAndStop(this.totalFrames);
+			else this.gotoAndStop(1);
 		}
 
 		private function anim(event:Event):void
