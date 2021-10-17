@@ -34,6 +34,8 @@
 	public class PopMenu extends MovieClip
 	{
 		private static const CANCEL_ELEMENT_NAME:String = "cancel_mc" ;
+
+		private static var onPopUpOpenned:Function ;
 		
 		/**main object of class*/
 		private static var ME:PopMenu;
@@ -100,6 +102,11 @@
 		public static function backEnable(backString:*):void
 		{
 			backButtonName = backString ;
+		}
+
+		public static function onOpen(func:Function):void
+		{
+			onPopUpOpenned = func ;
 		}
 		
 		/**Activate the static cansel button*/
@@ -383,6 +390,7 @@
 		/**pop the pop menu up*/
 		public function popUp2(title:String='' , type:PopMenuTypes=null , content:PopMenuContent=null,closeOnTime:int=0,onButtonSelects:Function=null,onClosedByTimer:Function=null,onClose:Function=null):void
 		{	
+			if(onPopUpOpenned!=null)onPopUpOpenned();
 			SliderManager.hide();
 			cashedContents = content ;
 			
