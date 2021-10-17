@@ -21,6 +21,8 @@ package contents.soundControll
 		private static var lastPlayingMusic:String ;
 		
 		private static var lastMusicVolume:Number ;
+
+		private static var muted:Boolean = false ;
 		
 		/**2 sound id to swap musics smoothly*/
 		private static var currentSoundId:uint,
@@ -59,7 +61,7 @@ package contents.soundControll
 			var soundPose:Number = SoundPlayer.getPlayedPrecent(currentSoundId);
 			pauseMusic();
 			SoundMixer.stopAll();
-			SoundPlayer.addSound(lastPlayingMusic,currentSoundId,true,lastMusicVolume);
+			SoundPlayer.addSound(lastPlayingMusic,currentSoundId,true,muted?0:lastMusicVolume);
 			if(firstSoundPlaying)
 			{
 				startMusic(soundPose);
@@ -75,10 +77,11 @@ package contents.soundControll
 			else
 			{
 				SaffronLogger.log("soundPose  : "+soundPlayingFrom);
-				SoundPlayer.play(currentSoundId,true,true,soundPlayingFrom);
 			}
+			SoundPlayer.play(currentSoundId,true,true,soundPlayingFrom);
 			lastMusicState.data.state = true ;
 			lastMusicState.flush();
+			if(muted)SoundPlayer.volumeContril(currentSoundId,0);
 		}
 		
 		public static function pauseMusic():void
@@ -90,17 +93,19 @@ package contents.soundControll
 		
 		public static function muteMusic():void
 		{
+			muted = true ;
 			SoundPlayer.volumeContril(currentSoundId,0);
 		}
 		
 		public static function unMuteMusit():void
 		{
+			muted = false 
 			SoundPlayer.volumeContril(currentSoundId,1);
 		}
 
 		public static function changeVolume(volume:Number):void
 		{
-			SoundPlayer.volumeContril(currentSoundId,volume);
+			SoundPlayer.volumeContril(currentSoundId,muted?0:volume);
 		}
 		
 		/**This will change the current playing music ( not tested yet )*/
@@ -115,7 +120,7 @@ package contents.soundControll
 				volume = Contents.homePage.musicVolume ;
 			}
 			lastMusicVolume = volume ;
-			if(musicURL=='' || lastPlayingMusic == musicURL)
+			if(muted==false && (musicURL=='' || lastPlayingMusic == musicURL))
 			{
 				SaffronLogger.log("Music is duplicated on ContentSoundManager.changeMainMusic : "+musicURL);
 				SoundPlayer.volumeContril(currentSoundId,volume);
@@ -128,13 +133,15 @@ package contents.soundControll
 			SaffronLogger.log("Pause the sound : "+currentSoundId);
 			SoundPlayer.pause(currentSoundId);
 			SaffronLogger.log("Add the sound : "+otherSoundId);
-			SoundPlayer.addSound(musicURL,otherSoundId,true,volume);
+			SoundPlayer.addSound(musicURL,otherSoundId,true,muted?0:volume);
 			if(lastPlayingMusic==null || musicWasPlaying)
 			{
 				SaffronLogger.log("lastPlayingMusic : "+lastPlayingMusic);
 				SaffronLogger.log("musicWasPlaying : "+musicWasPlaying);
 				SoundPlayer.play(otherSoundId);
+
 			}
+			if(muted)SoundPlayer.volumeContril(currentSoundId,0);
 			
 			lastPlayingMusic = musicURL ;
 			
