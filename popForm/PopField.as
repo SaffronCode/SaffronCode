@@ -234,9 +234,10 @@
 			}
 		}
 
-		public function onEdited(func:Function):void
+		public function onEdited(func:Function):PopField
 		{
 			onEditedFunc = func ;
+			return this ;
 		}
 		
 		public function setUp(tagName:String,defaultText:String,KeyBordType:String = SoftKeyboardType.DEFAULT,isPass:Boolean = false,editable:Boolean = true,isAraic:Boolean=true,numLines:uint = 1,color:uint=1,frame:uint=1,maxChar:uint=0,otherOptions:Array=null,deleteDefautlText:Boolean=false,activateRadioSwitcher:Boolean=false,returnKey:String=ReturnKeyLabel.DEFAULT,onTypedFunction:Function=null,justShowNativeText:Boolean=false,multiLineTag:Boolean=false,justify:Boolean=true,selectAllCharchter:Boolean=false):PopField
@@ -505,7 +506,10 @@
 			private function callOnEditedFunc():void
 			{
 				clearTimeout(onEditeFuncCalDelay);
-				onEditeFuncCalDelay = setTimeout(callOnEditedNow,100);
+				if(onEditedFunc!=null)
+				{
+					onEditeFuncCalDelay = setTimeout(callOnEditedNow,100);
+				}
 			}
 				private function callOnEditedNow():void
 				{

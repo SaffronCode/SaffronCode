@@ -177,7 +177,9 @@
 		{
 			if(_onClose!=null)
 			{
-				_onClose.call();
+				var cahsedhCloseFunc:Function = _onClose ;
+				_onClose = null ;
+				cahsedhCloseFunc();
 			}
 		}
 		
