@@ -372,7 +372,7 @@
 			}
 			prventedPageWasLastPage = false ;
 			
-			if(preventedEventCash!=null)
+			if(preventedEventCash!=null && !event.ignorelastCalledPage)
 			{
 				SaffronLogger.log("Prevented page event is released");
 				managePages(preventedEventCash);
@@ -486,19 +486,20 @@
 		/**Save teh page ID to Analytic server */
 		private function logPageChange(pageId:String):void
 		{
-			if(pageLoggerRequest==null)
-			{
-				pageLoggerRequest = new URLRequest(Contents.config.version_controll_url);
-				pageLoggerRequest.contentType = 'application/json';
-				pageLoggerRequest.method = URLRequestMethod.POST ;
-			}
-			pageLoggerRequest.data = JSON.stringify({AppId:DevicePrefrence.appID,PageName:pageId,Enter:true}) ;
-			if(pageLoggerLoader==null)
-			{
-				pageLoggerLoader = new URLLoader();
-				pageLoggerLoader.addEventListener(IOErrorEvent.IO_ERROR,function():void{})
-			}
-			pageLoggerLoader.load(pageLoggerRequest);
+			//GOODBY Saffron Logger... we will miss you
+			// if(pageLoggerRequest==null)
+			// {
+			// 	pageLoggerRequest = new URLRequest(Contents.config.version_controll_url);
+			// 	pageLoggerRequest.contentType = 'application/json';
+			// 	pageLoggerRequest.method = URLRequestMethod.POST ;
+			// }
+			// pageLoggerRequest.data = JSON.stringify({AppId:DevicePrefrence.appID,PageName:pageId,Enter:true}) ;
+			// if(pageLoggerLoader==null)
+			// {
+			// 	pageLoggerLoader = new URLLoader();
+			// 	pageLoggerLoader.addEventListener(IOErrorEvent.IO_ERROR,function():void{})
+			// }
+			// pageLoggerLoader.load(pageLoggerRequest);
 
 		}
 		
@@ -521,14 +522,15 @@
 
 		private function controlCurrentVersion(useOfflineVersion:Boolean=false):void
 		{
-			var versionContrllURL:String = Contents.config.version_controll_url ;
-				SaffronLogger.log("Version controll : "+versionContrllURL);
-				var versionRequest:URLRequest = new URLRequest(versionContrllURL);
-				versionRequest.contentType = 'application/json';
-				versionRequest.method = URLRequestMethod.POST ;
-				versionRequest.data = JSON.stringify({AppId:DevicePrefrence.appID}) ;
+			//GOODBY Saffron analytics, we will miss you
+			// var versionContrllURL:String = Contents.config.version_controll_url ;
+			// 	SaffronLogger.log("Version controll : "+versionContrllURL);
+			// 	var versionRequest:URLRequest = new URLRequest(versionContrllURL);
+			// 	versionRequest.contentType = 'application/json';
+			// 	versionRequest.method = URLRequestMethod.POST ;
+			// 	versionRequest.data = JSON.stringify({AppId:DevicePrefrence.appID}) ;
 
-				VersionController.controllVersion(currentVersionIsOk,stopThisVersion,versionRequest,DevicePrefrence.appVersion,true,useOfflineVersion);
+			// 	VersionController.controllVersion(currentVersionIsOk,stopThisVersion,versionRequest,DevicePrefrence.appVersion,true,useOfflineVersion);
 		}
 		
 			/**The application version is ok*/

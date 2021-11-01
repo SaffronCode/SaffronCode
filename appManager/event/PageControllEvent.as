@@ -23,14 +23,17 @@ package appManager.event
 		public var preventerPage:DisplayObject ;
 
 		public var let_cashed_requested_page_activate:Boolean = true ;
+
+		public var ignorelastCalledPage:Boolean = false ;
 		
 		/**Feel the getPermition and preventerDisplayObject on PREVENT_PAGE_CHANGING event*/
-		public function PageControllEvent(type:String,getPermition:Function=null,preventerDisplayObject:DisplayObject=null,let_requested_page_to_open:Boolean=true)
+		public function PageControllEvent(type:String,getPermition:Function=null,preventerDisplayObject:DisplayObject=null,let_requested_page_to_open:Boolean=true,ignorelastCalledPage:Boolean=false)
 		{
 			super(type,true);
 			let_cashed_requested_page_activate = let_requested_page_to_open;
 			permitionReceiver = getPermition ;
 			preventerPage = preventerDisplayObject ;
+			this.ignorelastCalledPage = ignorelastCalledPage ;
 		}
 	}
 }
