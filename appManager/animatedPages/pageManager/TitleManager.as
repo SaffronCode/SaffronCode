@@ -113,6 +113,7 @@
 		/**Set the title both for parags and titletexts*/
 		public function setTitle(text:String):void
 		{
+			this.visible = text!='';
 			if(myTitle!=null)
 			{
 				if(myTitle.text != text)
