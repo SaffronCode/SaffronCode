@@ -10,9 +10,11 @@ import flash.events.EventDispatcher;
 
 public class Anim_alpha_shine extends Sprite{
 
-    var object:Object ;
+    private var object:Object ;
 
-    var I:Number ;
+    private var I:Number ;
+
+    private var _paused:Boolean = false ;
 
     public function Anim_alpha_shine(displayObject:Object) {
         this.addEventListener(Event.ENTER_FRAME,animate);
@@ -37,8 +39,19 @@ public class Anim_alpha_shine extends Sprite{
         object.alpha = 1 ;
     }
 
+    public function pauseShine():void
+    {
+        _paused = true ;
+    }
+
+    public function playShine():void
+    {
+        _paused = false ;
+    }
+
     private function animate(e:Event):void
     {
+        if(_paused)return;
         object.alpha = 1-(Math.cos(I)+1)/4 ;
         I+=0.1;
     }
