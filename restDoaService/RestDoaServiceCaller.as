@@ -61,6 +61,7 @@
 		
 		
 		private static var webServiceId:uint = 0 ;
+		private static var _fake_no_net:Boolean = false ;
 					
 		public function get pureData():String
 		{
@@ -156,6 +157,11 @@
 			requestLoader.addEventListener(HTTPStatusEvent.HTTP_RESPONSE_STATUS,serverHeaderReceived);
 			requestLoader.addEventListener(IOErrorEvent.IO_ERROR,noInternet);
 			requestLoader.addEventListener(ProgressEvent.PROGRESS,dispatchProgress);
+		}
+
+		public static function cutConnect(status:Boolean=true):void
+		{
+			_fake_no_net = status ;
 		}
 
 		public function then(onResponded:Function):RestDoaServiceCaller
@@ -583,7 +589,16 @@
 			//debug line
 			//navigateToURL(pureRequest);
 				_isLoading = true ;
-				requestLoader.load(pureRequest);
+				if(_fake_no_net)
+				{
+					setTimeout(function():void{
+						requestLoader.dispatchEvent(new IOErrorEvent(IOErrorEvent.IO_ERROR,true,false,'no net'));
+					},100)
+				}
+				else
+				{
+					requestLoader.load(pureRequest);
+				}
 				//noInternet();
 		}
 		
