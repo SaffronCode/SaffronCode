@@ -27,7 +27,7 @@ package netManager
 				onReceiveFunction(message)
 		}
 
-		private static function getMessageOnPort(onRespond:Function,myPort:uint):void
+		public static function getMessageOnPort(onRespond:Function,myPort:uint):void
 		{
 			trace("myUDP.connected : "+myUDP.connected);
 			trace("myUDP.localPort : " +myUDP.localPort);
