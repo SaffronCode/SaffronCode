@@ -27,12 +27,12 @@ package netManager
 				onReceiveFunction(message)
 		}
 
-		private static function getMessageOnPort(onRespond:Function,myPort:uint=43243):void
+		private static function getMessageOnPort(onRespond:Function,myPort:uint):void
 		{
 			trace("myUDP.connected : "+myUDP.connected);
 			trace("myUDP.localPort : " +myUDP.localPort);
 			onReceiveFunction = onRespond ;
-			if(myUDP.localPort==0 || ( myUDP.localPort!=myPort && myPort!=43243))
+			if(myUDP.localPort==0 || ( myUDP.localPort!=myPort))
 			{
 				if(myUDP.connected)
 					myUDP.close();
@@ -42,11 +42,16 @@ package netManager
 			}
 		}
 
-		public static function sendMessageTo(message:String,onRespond:Function,targetIp:String,targetPort:uint):void
+		public static function isConnected():Boolean
+		{
+			return myUDP.connected && myUDP.localPort !=0;
+		}
+
+		public static function sendMessageTo(message:String,onRespond:Function,targetIp:String,targetPort:uint,localPort:uint=2000):void
 		{
 			setUp();
 			trace("Message sent:"+message);
-			getMessageOnPort(onRespond);
+			getMessageOnPort(onRespond,localPort);
 			var data:ByteArray = new ByteArray();
 			data.writeUTFBytes(message);
 			myUDP.send(data,0,0,targetIp,targetPort);
