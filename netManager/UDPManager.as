@@ -3,12 +3,15 @@ package netManager
 	import flash.net.DatagramSocket;
 	import flash.utils.ByteArray;
 	import flash.events.DatagramSocketDataEvent;
+	import flash.utils.getTimer;
 
 	public class UDPManager
 	{
 		private static var myUDP:DatagramSocket ;
 
 		private static var onReceiveFunction:Function ;
+
+		private static var lastMassageDeliveryTime:int ;
 
 		private static function setUp():void
 		{
@@ -22,6 +25,7 @@ package netManager
 		private static function onDataReceived(e:DatagramSocketDataEvent):void
 		{
 			trace("Message received");
+			lastMassageDeliveryTime = getTimer();
 			var message:String = e.data.toString();
 			if(onReceiveFunction!=null && onReceiveFunction.length>0)
 				onReceiveFunction(message)
@@ -56,6 +60,12 @@ package netManager
 			data.writeUTFBytes(message);
 			myUDP.send(data,0,0,targetIp,targetPort);
 			myUDP.receive();
+		}
+
+		/**Returns the last time that connection accured */
+		public function getLastConnectionTimeout():int
+		{
+			return getTimer()-lastMassageDeliveryTime;
 		}
 	}
 }
