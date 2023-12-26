@@ -130,7 +130,7 @@
 			this.addEventListener(Event.REMOVED_FROM_STAGE,unLoad);
 		}
 		
-		private function unLoad(event:Event)
+		private function unLoad(event:Event):void
 		{
 			this.removeEventListener(Event.ENTER_FRAME,drawLines);
 			this.removeEventListener(Event.REMOVED_FROM_STAGE,unLoad);
@@ -163,11 +163,11 @@
 		}
 		
 		
-		private function drawLines(ev:Event=null)
+		private function drawLines(ev:Event=null):void
 		{
 			if(draw)
 			{
-				for(var i = 0 ; i<resolutions ; i++)
+				for(var i:* = 0 ; i<resolutions ; i++)
 				{
 					Vx += (myX-stablePoint.x)/Fu ;
 					Vx *= Mu ;
@@ -224,7 +224,7 @@
 			lineTo(myX+2,myY)
 		}
 		
-		public function lineTo(X:Number,Y:Number)
+		public function lineTo(X:Number,Y:Number):void
 		{
 			//send these parameters to currentPenLine if there is an active one there
 			myX = X ;
@@ -237,7 +237,7 @@
 		/**Stop the current item to continue draw*/
 		public function stopDraw():void
 		{
-			for(var i = 0 ; i<20 ; i++)
+			for(var i:* = 0 ; i<20 ; i++)
 			{
 				drawLines();
 			}
@@ -259,7 +259,7 @@
 			SaffronLogger.log("stop drawing");
 		}		
 		
-		public function importBitmap(bitmap:Bitmap)
+		public function importBitmap(bitmap:Bitmap):void
 		{
 			var currentDrawnBitmap:Bitmap = bitmap;
 			currentDrawnBitmap.smoothing = true ;
@@ -366,7 +366,7 @@
 		
 		
 	///////////////////////////////////////////
-		private function setUpCaptureWithDilay()
+		private function setUpCaptureWithDilay():void
 		{
 			captureTimer = new Timer(captureDilay,1);
 			captureTimer.addEventListener(TimerEvent.TIMER_COMPLETE,captureAndSaveDrawing);

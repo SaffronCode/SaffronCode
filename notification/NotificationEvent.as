@@ -4,8 +4,8 @@ package notification
 	
 	public class NotificationEvent extends Event
 	{
-		public static const TOKEN_REGISTER_COMPELETED="TOKEN_REGISTER_COMPELETED"
-		public static const TOKEN_REGISTER_START = "TOKEN_REGISTER_START"
+		public static const TOKEN_REGISTER_COMPELETED:String="TOKEN_REGISTER_COMPELETED"
+		public static const TOKEN_REGISTER_START:String = "TOKEN_REGISTER_START"
 		
 		public static const NOTIFICATION:String = "NOTIFICATION";
 		public static const FOREGROUND_NOTIFICATION:String = "FOREGROUND_NOTIFICATION";	

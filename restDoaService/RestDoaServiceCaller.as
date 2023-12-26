@@ -507,7 +507,7 @@
 						var readableObject:Object = Obj.createReadAbleObject(obj);// .myParams ;
 						urlVars = new URLVariables();
 
-						for(var i in readableObject)
+						for(var i:* in readableObject)
 						{
 							urlVars[i] = readableObject[i] ;//a1=123&a2=32   ||   CaseTbl=(a1=123&a2=32)
 						}
@@ -554,7 +554,7 @@
 					{
 						SaffronLogger.log("* instant cashed data for "+myId+" : "+savedData);
 					}
-					FuncManager.callAsyncOnFrame(function(){
+					FuncManager.callAsyncOnFrame(function():void{
 							parsLoadedData(savedData);
 							if(expired)
 							{

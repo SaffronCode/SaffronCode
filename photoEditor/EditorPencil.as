@@ -194,7 +194,7 @@ package photoEditor
 			var tool:MovieClip = event.currentTarget as MovieClip ;
 			var toolSize:Number = uint(tool.name.split(toolsSizeName).join(''));
 			
-			for(var i = 0 ; i<sizes.length ; i++)
+			for(var i:* = 0 ; i<sizes.length ; i++)
 			{
 				sizes[i].gotoAndStop(1);
 			}
@@ -211,7 +211,7 @@ package photoEditor
 		{
 			selectedTool = null ;
 			
-			for(var i = 0 ; i<tools.length ; i++)
+			for(var i:* = 0 ; i<tools.length ; i++)
 			{
 				if(event.target == tools[i])
 				{

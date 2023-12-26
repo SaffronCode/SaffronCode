@@ -67,7 +67,7 @@
 		}
 		
 		/**Change the table name for this special user*/
-		public static function setTableName(tableNameTitle:String='')
+		public static function setTableName(tableNameTitle:String=''):void
 		{
 			tableName = tableBaseName+tableNameTitle;
 			SaffronLogger.log("new table name is : "+tableName);
@@ -78,7 +78,7 @@
 		
 		
 		
-		public static function setUp(checkTable:Boolean = false)
+		public static function setUp(checkTable:Boolean = false):void
 		{
 			var needToUpdate:Boolean = false ;
 			if(sql == null)
@@ -256,7 +256,7 @@
 			asyncQuery.execute();
 		}
 		
-			private static function continueSaving(e:*=null)
+			private static function continueSaving(e:*=null):void
 			{
 				var id:String = asyncQue[0].id ;
 				var data:* = asyncQue[0].data ;
@@ -283,7 +283,7 @@
 				}
 		
 		/**load the value if the value is new on data base*/
-		public static function loadIfNewer(id,lastDate:Date=null):*
+		public static function loadIfNewer(id:*,lastDate:Date=null):*
 		{
 			return load(id,lastDate);
 		}
@@ -298,7 +298,7 @@
 			
 			var l:uint = asyncQue.length ;
 			var l2:uint = asyncSaved.length ;
-			for(var i = l-1 ; i>=0 ; i--)
+			for(var i:* = l-1 ; i>=0 ; i--)
 			{
 				if(asyncQue[i].id == id)
 				{

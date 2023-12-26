@@ -210,7 +210,7 @@
 			{
 				DeviceImage.resizeLoadedImage(showImage,NaN,NaN,image,false);
 				
-				function showImage()
+				function showImage():void
 				{
 					ME.StartEditing(DeviceImage.imageBitmapData);
 				}
@@ -243,7 +243,7 @@
 			if(imageIndex<imageHistory.length-1)
 			{
 				var disposedBitmaps:Vector.<BitmapData> = imageHistory.splice(imageIndex+1,imageHistory.length-imageIndex);
-				for(var i = 0 ; i<disposedBitmaps.length ; i++)
+				for(var i:* = 0 ; i<disposedBitmaps.length ; i++)
 				{
 					disposedBitmaps[i].dispose();
 				}

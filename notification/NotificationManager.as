@@ -69,7 +69,7 @@
 			return Notification_Event ;
 		}
 		
-		private function EasyPushExample() 
+		private function EasyPushExample() :void
 		{		
 			
 			//Controll permissions↓

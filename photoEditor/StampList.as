@@ -46,7 +46,7 @@ package photoEditor
 			
 			stampInnerContainer = new Sprite();
 			
-			for(var i = 0 ; i<stampFile.length ; i++)
+			for(var i:* = 0 ; i<stampFile.length ; i++)
 			{
 				var newItems:StampButton = new StampButton();
 				newItems.load(stampFile[i]);
@@ -151,7 +151,7 @@ package photoEditor
 		{
 			onTouchItem = null ;
 			button_remove.gotoAndStop(2);
-			for(var i = 0 ; i<stampInnerContainer.numChildren ; i++)
+			for(var i:* = 0 ; i<stampInnerContainer.numChildren ; i++)
 			{
 				(stampInnerContainer.getChildAt(i) as MovieClip).stopDrag();
 			}

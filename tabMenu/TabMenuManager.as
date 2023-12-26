@@ -24,7 +24,7 @@ package tabMenu
 			}
 		
 
-			for(var valueName in _currentTabe[GroupName_p])
+			for(var valueName:* in _currentTabe[GroupName_p])
 			{
 				_currentTabe[GroupName_p][valueName] = false;
 			}
