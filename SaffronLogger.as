@@ -120,7 +120,7 @@ package
 				trace("Log file located on "+todayFile.nativePath);
 				todayFileStream = new FileStream();
 				todayFileStream.openAsync(todayFile,FileMode.WRITE);
-				todayFileStream.writeShort(-2);
+				// todayFileStream.writeShort(-2);
 			}
 		}
 		
